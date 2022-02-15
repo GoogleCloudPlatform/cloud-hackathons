@@ -1,2 +1,3 @@
-# ghacks
-Hacks
+# gHacks
+## Abstract
+Placeholder for awesomeness
