@@ -1,0 +1,4 @@
+theme: jekyll-theme-midnight
+title: gHacks
+google_analytics: 
+include: [CONTRIBUTING.md]
