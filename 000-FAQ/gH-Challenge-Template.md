@@ -1,6 +1,6 @@
 # gHacks - Challenge Template
 
-*This is a markdown template for how a WTH Challenge should be organized and formatted. If a section is marked as "(Optional)", you do not need to include it.*
+*This is a markdown template for how a gHacks Challenge should be organized and formatted. If a section is marked as "(Optional)", you* **do not need to include it.**
 
 *This file should be named according to this pattern: `Challenge-X.md` where X is the number of the challenge, ie: 0, 1, 2, etc*
 
@@ -25,7 +25,7 @@
 
 *Provide an overview of the technologies or tasks that will be needed to complete the next challenge.  This includes the technical context for the challenge, as well as any new "lessons" the attendees should learn before completing the challenge.*
 
-*Optionally, the coach or event host may present a mini-lesson (with a PPT or video) to set up the context & introduction to the next topic.*
+*Optionally, the coach or event host may present a mini-lesson (with a presentation or video) to set up the context & introduction to the next topic.*
 
 **Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo. Vivamus venenatis accumsan neque non lacinia.**
 
@@ -41,7 +41,7 @@
 
 ## Success Criteria
 
-*Success criteria goes here. This is a list of things an coach can verfiy to prove the attendee has successfully completed the challenge.*
+*Success criteria go here. This is a list of things an coach can verify to prove the attendee has successfully completed the challenge.*
 
 **- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce commodo nulla elit, vitae scelerisque lorem maximus eu. Nulla vitae ante turpis. Etiam tincidunt venenatis mauris, ac volutpat augue rutrum sed. Vivamus dignissim est sed dolor luctus aliquet. Vestibulum cursus turpis nec finibus commodo.**
 

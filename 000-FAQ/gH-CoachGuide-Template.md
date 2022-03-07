@@ -4,9 +4,9 @@
 
 # IoT Hack of the Century
 ## Introduction
-Welcome to the coach's guide for the IoT Hack of the Century What The Hack. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for the IoT Hack of the Century gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
-Also remember that this hack includes a optional [lecture presentation](Lectures.pptx) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
+Remember that this hack includes a optional [lecture presentation](Lectures.pptx) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
 
 ## Coach's Guides
 - Challenge 0: **[Prepare Your Workstation](Solution-00.md)**

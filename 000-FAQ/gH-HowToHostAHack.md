@@ -1,45 +1,41 @@
 # gHacks - How to Host a gHack
 
-We've structured the What The Hack format to make it easy to deliver to students both in person and virtually. The following are instructions, tips and tricks to hosting your own What The Hack event and have it go off without a hitch. You may choose to adopt as much or little as you would like. This guidance has been cobbled together from experience based on what has worked before.
+We've structured the gHacks format to make it easy to deliver to students both in person and virtually. The following are instructions, tips and tricks to hosting your own gHacks event and have it go off without a hitch. You may choose to adopt as much or little as you would like. This guidance has been cobbled together from experience based on what has worked before.
 
-With the Covid-19 pandemic, virtual events will be the way of the future for some time. Participating in a team-based hands-on event virtually may be a new concept for many. However, we have found that virtual What The Hack events are often more collaborative than a traditional in-person event.
+With the Covid-19 pandemic, virtual events will be the way of the future for some time. Participating in a team-based hands-on event virtually may be a new concept for many. However, we have found that virtual gHacks events are often more collaborative than a traditional in-person event.
 
 This document has the following sections:
-- [WTH Event Requirements](#what-do-you-need-to-host-a-what-the-hack-event)
-- [WTH Event Preparation](#event-preparation)
-- [WTH Event Day](#event-day)
+- [gHacks Event Requirements](#what-do-you-need-to-host-a-ghacks-event)
+- [gHacks Event Preparation](#event-preparation)
+- [gHacks Event Day](#event-day)
 
 
-## What do you need to host a What The Hack event?
+## What do you need to host a gHacks event?
 
 At a minimum, three things:
 1. [Hack Content](#hack-content)
-1. [Microsoft Teams](#microsoft-teams)
+1. [Google Meet](#google-meet)
 1. [People](#people)
 
 ### Hack Content
 
-First and most important is hack content. The What The Hack collection has many different hackathons that have been contributed. 
+First and most important is hack content. The gHacks collection has many different hackathons that have been contributed. 
 
-Choose a hack from the [What The Hack Collection](../readme.md#what-the-hack-collection)
+Choose a hack from the [gHacks Collection](../readme.md#the-ghacks-collection)
 
-Or, create your own with the guidance we have on [How To Author A What The Hack](WTH-HowToAuthorAHack.md)
+Or, create your own with the guidance we have on [How To Author A gHacks](gH-HowToAuthorAHack.md)
 
-### Microsoft Teams
+### Google Meet
 
-Next, you need Microsoft Teams. Specifically, you will need to create a team for your event that will be used as the dedicated event space that all the attendees will collaborate in.
+Next, you need Google Meet. Specifically, you will need to create an invite for your event that will be used as the dedicated event space that all the attendees will collaborate in.
 
-**NOTE:** While you could host a What The Hack event using other collaboration tools, we strongly recommend using Microsoft Teams. When we stay "strongly recommend", it means we are writing this document based on using Teams. You're on your own if you don't want to use Teams!
-
-During a What The Hack event, attendees work together in squads of 3 to 5 people to solve the hack's challenges. The attendees will need to share links, code snippets, or even screen share as they collaborate on the challenge solutions. Microsoft Teams makes this easy by having each squad assigned a Channel to work in. 
+During a gHacks event, attendees work together in squads of 3 to 5 people to solve the hack's challenges. The attendees will need to share links, code snippets, or even screen share as they collaborate on the challenge solutions. 
 
 At an in-person event, each squad will be sitting at the same table. During a virtual event, everyone will be sitting at home in their pajamas. The main difference is that during a virtual event, attendees will need to join a call in their squad's channel for the duration of the event. Most other aspects of the event are the same.
 
-**NOTE:** Why are the groups of 3 to 5 attendees working together called "squads"? It is natural to call them "teams" or "hack teams". However, the word "teams" is overloaded when we talk about "Microsoft Teams" (the app) and the "team" within the app that is created for the event. So, "squads" it is!
-
 ### People 
 
-Finally, you need people to hack. There are a few different roles that will need to be played at your What The Hack event. They include:
+Finally, you need people to hack. There are a few different roles that will need to be played at your gHacks event. They include:
 - Lead Coach
 	- The lead of the event both logistically and technically. 
 	- Responsible for the event preparation steps [outlined below](#event-preparation).
@@ -52,12 +48,15 @@ Finally, you need people to hack. There are a few different roles that will need
 	- In charge of determining whether a squad has finished a challenge based on the acceptance criteria in the challenge text. This review will determine if they move on to the next challenge.
 - Attendees
 	- The students in the event that participate in squads of 3 to 5.
-	- Must join and participate in their squad's Teams channel
-	- Must be joined to their Teams channel meeting AND have their webcam and microphone turned on at all times. This most accurately simulates an in person hack environment.
+	- Must join and participate in their squad's Google Meet event AND have their webcam and microphone turned on at all times. This most accurately simulates an in person hack environment.
 
 ## Event Preparation
 
-If you've gotten this far, then you have designated yourself as "Lead Coach" and are preparing to host a What The Hack event.
+If you've gotten this far, then you have designated yourself as "Lead Coach" and are preparing to host a gHacks event.
+
+**TODO:** Write up procedures for creating a Google Meet or even Spaces to organize the hack.
+
+**-------- CONTINUE CHANGING FROM HERE -----**
 
 As the event leader, most of the preparation steps are focused on preparing Microsoft Teams for the event. The preparation checklist focuses on three key areas:
 
@@ -69,7 +68,7 @@ As the event leader, most of the preparation steps are focused on preparing Micr
 
 If you are inviting attendees that are outside of your organization, there are multiple things to think about with respect to using Azure and Microsoft Teams.
 
-If you are hosting a hack with a single organization, it is a good practice to identify an event stakeholder in the external organization who can help you plan for your What The Hack event. The event stakeholder can help you address the following preparation concerns.
+If you are hosting a hack with a single organization, it is a good practice to identify an event stakeholder in the external organization who can help you plan for your gHacks event. The event stakeholder can help you address the following preparation concerns.
 
 #### Guest Access
 
@@ -101,7 +100,7 @@ When inviting external participants, make sure you follow your organization's pr
 
 #### Azure Subscription
 
-Most of the hacks in the What The Hack collection require attendees to have "Contributor" access to an Azure subscription. 
+Most of the hacks in the gHacks collection require attendees to have "Contributor" access to an Azure subscription. 
 
 It is important to work with the event stakeholder to decide how attendees will access Azure. Some organizations may provide individuals with their own subscriptions.  Other organizations may provide access to a shared subscription created specifically for attendees to use during the hack event. 
 
@@ -129,7 +128,7 @@ All of these security concerns and their mitigations should be identified and ad
 
 Now that you've gotten all of the overhead out of the way, it's time to build your event's team in Teams.  
 
-Create a new team for your What The Hack event in Microsoft Teams that will be used as the dedicated event space. This space will host documents, multiple channels for presenting, screen sharing, and overall collaboration in real and near real-time.
+Create a new team for your gHacks event in Microsoft Teams that will be used as the dedicated event space. This space will host documents, multiple channels for presenting, screen sharing, and overall collaboration in real and near real-time.
 
 We suggest naming your team with at minimum the hack name and date. You can also add the location or organization too. This will make it easy for attendees to remember what the team was for after the event.
 
@@ -147,49 +146,49 @@ We recommend creating the following Channels in the team:
 
 **Example Event Team**
 
-![Sample What The Hack Event Team](images/wth-sample-msteam.jpg "Example What The Hack Event Team")
+![Sample gHacks Event Team](images/wth-sample-msteam.jpg "Example gHacks Event Team")
 
 #### Team Content
 
-Most hacks in the [What The Hack Collection](../readme.md#what-the-hack-collection) have the solutions to the hack challenges included in the [WTH GitHub repo](http://aka.ms/wth). Therefore, you should avoid the attendees having any reason to access to the What The Hack repo before or during the event. Instead, we recommend pre-loading any  resources from the repo needed by the attendees for the hack into the event Team.
+Most hacks in the [gHacks Collection](../readme.md#what-the-hack-collection) have the solutions to the hack challenges included in the [WTH GitHub repo](http://aka.ms/wth). Therefore, you should avoid the attendees having any reason to access to the gHacks repo before or during the event. Instead, we recommend pre-loading any  resources from the repo needed by the attendees for the hack into the event Team.
 
 #### Challenge Guide
 
-The challenges for each hack are published in the `/Student` folder of your What The Hack.
+The challenges for each hack are published in the `/Student` folder of your gHacks.
 
 Some hacks have published their Challenges in a Word or PDF document. Other hacks have published their hacks in navigatable Markdown files which can be viewed on the web via GitHub pages.
 
-If the challenges are published in a Word or PDF document, copy the document from the What The Hack repo and upload it into the General Channel's Files tab. We recommend pinning the document as a Tab in the General Channel so it is easily accessible to attendees.
+If the challenges are published in a Word or PDF document, copy the document from the gHacks repo and upload it into the General Channel's Files tab. We recommend pinning the document as a Tab in the General Channel so it is easily accessible to attendees.
 
 **Example of Challenges PDF Tab**
 
-![Sample What The Hack Event Team - PDF Challenges](images/wth-sample-msteam-challenges-pdf.jpg)
+![Sample gHacks Event Team - PDF Challenges](images/wth-sample-msteam-challenges-pdf.jpg)
 
 
 If the challenges are published in Markdown files, we recommend pinning the hack's "homepage" as a webpage Tab in the General Channel. Each hack's homepage is available via GitHub Pages at: `https://microsoft.github.io/WhatTheHack/nnn-HackName/`
 
 **Example of Challenges Website Tab**
 
-![Sample What The Hack Event Team - Website Challenges](images/wth-sample-msteam-challenges-web.jpg)
+![Sample gHacks Event Team - Website Challenges](images/wth-sample-msteam-challenges-web.jpg)
 
 #### Student Resources
 
-Many hacks in the [What The Hack Collection](../readme.md#what-the-hack-collection) have provided resources (code snippets, templates, etc) needed for the hack in their `/HackName/Student/Resources` folder.  
+Many hacks in the [gHacks Collection](../readme.md#what-the-hack-collection) have provided resources (code snippets, templates, etc) needed for the hack in their `/HackName/Student/Resources` folder.  
 
-The lead coach should copy the contents of this folder from the repo and then upload them into the General Channel's Files tab. This will provide the files to the attendees in Microsoft Teams without them needing to visit the What The Hack repo on GitHub.
+The lead coach should copy the contents of this folder from the repo and then upload them into the General Channel's Files tab. This will provide the files to the attendees in Microsoft Teams without them needing to visit the gHacks repo on GitHub.
 
-Some hacks have provided a link to download these resources from the What The Hack repo within their Challenge instructions. If this is the case, you do not need to upload the resources into Microsoft Teams.
+Some hacks have provided a link to download these resources from the gHacks repo within their Challenge instructions. If this is the case, you do not need to upload the resources into Microsoft Teams.
 
 You should also upload both the Event Kickoff presentation and any lecture presentations into Microsoft Teams too so that they are available to attendees during the event.
 
 **Example of Student Resources**
 
-![Sample What The Hack Event Team - Student Resources](images/wth-sample-msteam-student-resources.jpg)
+![Sample gHacks Event Team - Student Resources](images/wth-sample-msteam-student-resources.jpg)
 
 
 #### Shared Tips/Wiki (Optional)
 
-During a What The Hack event, attendees are strongly encouraged to share knowledge and learn from each other. Knowledge sharing is encouraged across the entire event, including between squads.  
+During a gHacks event, attendees are strongly encouraged to share knowledge and learn from each other. Knowledge sharing is encouraged across the entire event, including between squads.  
 
 One way to encourage that is to create a place for attendees to share tips, tricks, and solutions discovered with each other. The attendees could use the Channel chats or Wiki feature in Microsoft Teams for this purpose.  However, we recommend creating a "Shared Tips" Word document and pinning it as a tab within the General channel. This makes the document portable and easier to download after the event.
 
@@ -197,11 +196,11 @@ The learnings gathered by the attendees here makes a nice parting gift after the
 
 **Example of Shared Tips Tab**
 
-![Sample What The Hack Event Team - Shared Tips](images/wth-sample-msteam-shared-tips.jpg)
+![Sample gHacks Event Team - Shared Tips](images/wth-sample-msteam-shared-tips.jpg)
 
 #### Coach Resources (Optional)
 
-The coaches should have access to the What The Hack repo and all coach resources, including the coach's guide for the hack. For ease of access, you may optionally copy the coach resources into the private Coaches Channel's file section.
+The coaches should have access to the gHacks repo and all coach resources, including the coach's guide for the hack. For ease of access, you may optionally copy the coach resources into the private Coaches Channel's file section.
 
 ### Getting People To Your Event
 
@@ -252,7 +251,7 @@ Once your attendees have been added to the event team, you can communicate with 
 Calendar invites are always important so attendees don't forget about your event.
 If someone is traveling to attend your event in person, they're not likely to forget to show up.  
 
-When it comes to hosting a virtual What The Hack event, a Calendar block is even MORE important. The key word is **BLOCK**! You need the attendees to clear their calendar so they are dedicated to participating in the hack for the full event. Attendees leaving part way through the hack are putting their squad's success at risk.
+When it comes to hosting a virtual gHacks event, a Calendar block is even MORE important. The key word is **BLOCK**! You need the attendees to clear their calendar so they are dedicated to participating in the hack for the full event. Attendees leaving part way through the hack are putting their squad's success at risk.
 
 We recommend sending a calendar invite to all registered attendees as early as possible after they have registered. If you are hosting an external organization, coordinate with the event stakeholder to send the calendar invite.
 
@@ -264,7 +263,7 @@ When you create a calendar invite, you should include:
 - Instructions to make arrangements for others to cover their day jobs.
 - Instructions to put on their OOF messages.
 
-To help you get started, we have provided a template for a What The Hack calendar invite here:
+To help you get started, we have provided a template for a gHacks calendar invite here:
 - [Hack Calendar Invite Template](WTH-CalendarInvite-Template.md)
 
 #### Automating Registration with Office 365 Tools
@@ -277,7 +276,7 @@ For more information, see: [Automate Registration with Office 365](WTH-AutomateR
 
 The big day has arrived! It's showtime!  Rest well and get a full night of sleep beforehand. You will need it to be fresh on hack day.
 
-Below is the guidance on how to actually host and run a What The Hack event:
+Below is the guidance on how to actually host and run a gHacks event:
 
 - [Kick-Off Meeting](#kick-off-meeting)
 - [Hacking](#hacking)
@@ -287,7 +286,7 @@ Below is the guidance on how to actually host and run a What The Hack event:
 	
 ### Kick-Off Meeting 
 
-Every What The Hack event starts off with a Kick Off Meeting.  *How* you get to the kick off meeting depends on if it is a virtual or an in-person event.
+Every gHacks event starts off with a Kick Off Meeting.  *How* you get to the kick off meeting depends on if it is a virtual or an in-person event.
 
 #### Getting There: In Person
 
@@ -332,7 +331,7 @@ For a large group, skip the attendee intros (no one wants to be the 25th person 
 
 #### Logistics
 
-Once everyone is acquainted, the lead coach should cover the logistics. Start off by communicating the format and flow of the event. You should assume that the attendees are not familiar with the What The Hack format.
+Once everyone is acquainted, the lead coach should cover the logistics. Start off by communicating the format and flow of the event. You should assume that the attendees are not familiar with the gHacks format.
 
 Explain the format:
 
@@ -368,11 +367,11 @@ Once squads have been formed, encourage them to each give their squad a fun name
 
 #### Event Kick Off Presentation Templates
 
-To help you get started, we have provided PowerPoint templates for kicking off a What The Hack event here:
+To help you get started, we have provided PowerPoint templates for kicking off a gHacks event here:
 - [In-Person - Kick Off Presentation Template](WTH-InPerson-EventKickoff-Template)
 - [Virtual - Kick Off Presentation Template](WTH-Virtual-EventKickoff-Template.md)
 
-The kick off presentation templates contain most of the instructions above that you can present to the attendees before starting the What The Hack. The in-person template has additional slides instructing attendees to use a code to join the event team in Microsoft Teams.
+The kick off presentation templates contain most of the instructions above that you can present to the attendees before starting the gHacks. The in-person template has additional slides instructing attendees to use a code to join the event team in Microsoft Teams.
 
 ### Hacking
 
@@ -380,7 +379,7 @@ With the logistics out of the way, it is time to crank up the tech intensity.
 
 #### Hack Presentation Lectures (Optional)
 
-While not required, many of the hacks in the [What The Hack collection](/./readme.md) have a PowerPoint deck with lecture presentations included the `/Host` folder of the hack. These optional lecture presentations typically contain:
+While not required, many of the hacks in the [gHacks collection](/./readme.md) have a PowerPoint deck with lecture presentations included the `/Host` folder of the hack. These optional lecture presentations typically contain:
 
 - An overview of the technical scenario of the hack itself.
 - A review of workstation pre-requisites needed for the hack.
@@ -417,7 +416,7 @@ Once everyone is settled, the format and interactions are the same whether virtu
 
 #### Hack Coaches
 
-Coaches are essential to a What The Hack event and can make the difference between a good experience or a poor experience for the attendees. Ideally, there should be one coach per squad. However, a coach can reasonably manage two squads at the same time if there are not enough coaches available.
+Coaches are essential to a gHacks event and can make the difference between a good experience or a poor experience for the attendees. Ideally, there should be one coach per squad. However, a coach can reasonably manage two squads at the same time if there are not enough coaches available.
 
 A coach's main over-arching role is to act as a technical advisor to the attendees in a squad. Coaches are not proctors who stand on the sideline and wait for attendees to raise their hands for help. They should be actively engaged with the squad(s) they are advising the majority of the time.
 
@@ -462,17 +461,17 @@ Things that coaches should facilitate during a stand up:
 - Upon completion of a challenge, discuss the solution and re-cap lessons learned.
 - Review a technical concept that the squad has struggled to understand
 
-The lead coach should close out the What The Hack event with a final stand-up that acts as a wrap-up session.
+The lead coach should close out the gHacks event with a final stand-up that acts as a wrap-up session.
 - Attendees should be encouraged to share their parting thoughts and key learnings.
 - Attendee feedback should be solicited for a final time and notes collected by the lead coach
 - Thank the attendees for their time and dedication during the hack
-- Finally, share the content by directing the attendees to visit the What The Hack repo on Github: <http://aka.ms/wth>
+- Finally, share the content by directing the attendees to visit the gHacks repo on Github: <http://aka.ms/wth>
 
-You have now surived a What The Hack!
+You have now surived a gHacks!
 
 ### Tips for In Person
 
-What The Hack is designed to be a casual tech event. There are no formal requirements for hosting it in person other than a decent Internet connection.
+gHacks is designed to be a casual tech event. There are no formal requirements for hosting it in person other than a decent Internet connection.
 
 If you have budget, spend it on food, glorious food!  Your attendees will appreciate you for that.
 
@@ -480,7 +479,7 @@ There are plenty of guides out there for hosting a great in-person event. There'
 
 ### Tips for Virtual
 
-What The Hack was designed to be hosted as an in-person or virtual event. While most details of ***how*** to hack were covered earlier in this document, we wanted to share some tips and lessons learned for improving the virtual experience based on previous What The Hack events that have been hosted.
+gHacks were designed to be hosted as an in-person or virtual event. While most details of ***how*** to hack were covered earlier in this document, we wanted to share some tips and lessons learned for improving the virtual experience based on previous gHacks events that have been hosted.
 
 - Require attendees to keep an open mic and use cameras as often as possible. Noisy pets, kids, or spouses. It's all fine in the spirit of keeping remote attendees engaged and feeling as though they are together. Just remember to mute the toilet flushes!
 - If a coach observes an individual on mute for long periods of time or not speaking up as the squad hacks, the coach should reach out in a private chat to ask the person if they need help. The goal is to keep the person engaged in the hack and away from their email, phone, social media, etc.

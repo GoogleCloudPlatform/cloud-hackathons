@@ -1,6 +1,6 @@
 # gHacks - Challenge Solution Template
 
-*This is a markdown template for how a WTH Challenge Solution should be organized and formatted. There really is only one section needed: "Notes & Guidance", organize all the hints for the coach there.*
+*This is a markdown template for how a gHacks Challenge Solution should be organized and formatted. There really is only one section needed: "Notes & Guidance", organize all the hints for the coach there.*
 
 *This file should be named according to this pattern: `Solution-X.md` where X is the number of the challenge, ie: 0, 1, 2, etc*
 
