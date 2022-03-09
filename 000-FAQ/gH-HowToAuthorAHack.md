@@ -1,21 +1,21 @@
 # gHacks - How to Author a gHack
 
-Developing a new What The Hack is a great way to get your content out to the world. Chances are if you've done workshops or PoCs in the past, you already have the material on which to base a What The Hack.
+Developing a new gHack is a great way to get your content out to the world. Chances are if you've done workshops or PoCs in the past, you already have the material on which to base a gHack.
 
-## Why What The Hack?
+## Why gHack?
 
-The What The Hack "challenge" format is perfect for team-based, hands-on learning experiences.
+The gHack "challenge" format is perfect for team-based, hands-on learning experiences.
 
-What The Hack is all about being "for the people, by the people". This repo was originally created to share real-world hackathons that Microsoft employees have hosted with their customers. Here are our core principles:
+gHack is all about being "for the people, by the people". This repo was originally created to share real-world hackathons that Microsoft employees have hosted with their customers. Here are our core principles:
 - Anyone can contribute a hack.
 - Anyone can use the content to host their own event.
 - Anyone can modify the content as needed.
   - Submitting a pull request for modified/improved content is encouraged.
 - The content can always be shared with attendees **(Only do this after the event is over!)**
 
-## What Does It Take To Create a What The Hack?
+## What Does It Take To Create a gHack?
 
-When you design a WTH, these are the things you should consider:
+When you design a gHack, these are the things you should consider:
 
 - [Hack Description](#hack-description) (aka "The One Pager")
 - [Challenge Design](#challenge-design)
@@ -30,7 +30,7 @@ If you create things in this order, you will be able to flush out a new hack rap
 
 ## Hack Description
 
-Why should someone take the time to deliver or participate in your hack?  This is the main question you need to answer in order to define your hack. Every WTH needs to have an executive summary (aka "one pager") that quickly describes your hack to those who will host or attend your hack. Think of this as your marketing pitch. 
+Why should someone take the time to deliver or participate in your hack?  This is the main question you need to answer in order to define your hack. Every gHack needs to have an executive summary (aka "one pager") that quickly describes your hack to those who will host or attend your hack. Think of this as your marketing pitch. 
 
 **HINT:** The "Hack Description" can serve a dual purpose. If you take the time to write it first, it can be the outline or specification for your hack before you develop the actual content.
 
@@ -56,7 +56,7 @@ This is where you describe the outcomes a hack attendee should have. Provide a s
 
 ### Challenges
 
-Every WTH is made up of a collection of technical challenges. For the one pager, you should list out your challenges by name, with no more than a single sentence description for each unless the challenge title is descriptive enough on its own.
+Every gHack is made up of a collection of technical challenges. For the one pager, you should list out your challenges by name, with no more than a single sentence description for each unless the challenge title is descriptive enough on its own.
 
 For most this page will act as a "Table of Contents" for your hack. We recommend that you create links for each challenge to its respective challenge page.
 
@@ -67,7 +67,7 @@ Provide a list of technical prerequisites for your hack here.  List out assumed 
 Provide a list of tools/software that the attendee needs to install on their machine to complete the hack. 
 
 We have compiled a list of common tool pre-requisites needed for most of the Azure related hacks here:
-- [What The Hack Common Prerequisites](WTH-Common-Prerequisites.md). 
+- [gHack Common Prerequisites](gH-Common-Prerequisites.md). 
 
 You can provide a link to it in your hack's prerequisites section in addition to any unique prerequisites for your hack.
 
@@ -82,19 +82,19 @@ Finally, give yourself and your fellow hack authors some credit. List the names 
 ### Hack Description Template
 
 To help you get started, we have provided a sample template for a Hack Description / "one pager" here:
-- [Hack Description Template](WTH-HackDescription-Template.md). 
+- [Hack Description Template](gH-HackDescription-Template.md). 
 
 Please copy this template into your hack's root folder, rename it to "README.md", and customize it for your hack.
 
 ## Challenge Design
 
-Challenges are at the heart of the WTH format. Designing challenges is what a hack author should spend the majority of their time focusing on. 
+Challenges are at the heart of the gHack format. Designing challenges is what a hack author should spend the majority of their time focusing on. 
 
 There are different approaches to designing a hackathon. If you are familiar with the Marvel Comic Universe movies, you know that they follow one of two patterns:
 - "Origin Story" - A movie focused on the back story of a SINGLE superhero that lets the audience get to know that character in depth (perhaps with a sidekick character or two included).
 - "Avengers Story" - A movie with an ensemble cast of superhero characters working together to solve a mega problem, with each character getting varying amounts of screen time. 
 
-You can use the same patterns when designing a What The Hack.
+You can use the same patterns when designing a gHack.
 
 - Singleton Hack - A hack designed to give in-depth hands-on experience with a specific technology and maybe a "sidekick technology" or two included.
 - Solution Hack - A hack designed to give experience solving a real-world scenario that involves using multiple technolgies together for the solution.
@@ -117,7 +117,7 @@ Once you have decided what type of hack you want to create, you should follow th
 
 ### Challenge Template
 To help you get started, we have provided a sample markdown template for a hack Challenge here:
-- [Challenge Template](WTH-Challenge-Template.md). 
+- [Challenge Template](gH-Challenge-Template.md). 
 
 Please copy this template into your hack's `../Student` folder, rename it to "ChallengeXX.md", where "XX" is the challenge number, and customize it for each challenge. 
 
@@ -129,9 +129,9 @@ It is common to provide attendees with resources in order to complete the hack's
 
 If your hack provides attendees with code or resources, they should be included with your hack's contents in the `../Student/Resources` folder.
 
-During a WTH event, it is recommended that you have attendees download any provided resources as a zip file instead of having them clone the entire WTH repo onto their computer.
+During a gHack event, it is recommended that you have attendees download any provided resources as a zip file instead of having them clone the entire gHack repo onto their computer.
 
-This has the benefit of not having to direct the attendees to the WTH repo during your hack. Remember, attendees can always find the WTH repo.  However, remind your attendees that they are cheating themselves out of an education if they go foraging around in the WTH repo for the answers.
+This has the benefit of not having to direct the attendees to the gHack repo during your hack. Remember, attendees can always find the gHack repo.  However, remind your attendees that they are cheating themselves out of an education if they go foraging around in the gHack repo for the answers.
 
 ### DownGit
 
@@ -142,28 +142,28 @@ You can view the DownGit project on GitHub here: <https://github.com/MinhasKamal
 And you can use DownGit from its website here: <https://minhaskamal.github.io/DownGit/#/home>
 
 To enable attendees to download hack resources using DownGit:
-1. As mentioned above, publish your resources in the WTH repo under the `..Student/Resources` folder of your hack
+1. As mentioned above, publish your resources in the gHack repo under the `..Student/Resources` folder of your hack
 2. Create a DownGit link to the "Resources" folder (or whatever sub-folder you want your attendees to download)
 3. Use the DownGit link you created in your Challenge text to provide the link to the attendees.
 
 ### Pre-load Resources into Microsoft Teams
 
-Our recommended method of providing resource files to attendees is for the WTH event host to pre-load them into the Microsoft Teams team for the WTH event. 
+Our recommended method of providing resource files to attendees is for the gHack event host to pre-load them into the Microsoft Teams team for the gHack event. 
 
 To pre-load resources into the event team, the host should:
-1. Use DownGit to download the Zip file of resources from the WTH repo.
-2. Upload the zip file (or its contents) to the Files tab of the General channel for the WTH event Teams site.
+1. Use DownGit to download the Zip file of resources from the gHack repo.
+2. Upload the zip file (or its contents) to the Files tab of the General channel for the gHack event Teams site.
 3. Direct users to download the resource files from Files tab in Microsot Teams.
 
 ## Presentation Lectures
 
-You may be wondering why there is a section called "Presentation Lectures" when the whole point of What The Hack is to be hands-on and ***NOT*** a "death by Power Point" snoozefest?!  
+You may be wondering why there is a section called "Presentation Lectures" when the whole point of gHack is to be hands-on and ***NOT*** a "death by Power Point" snoozefest?!  
 
-When you host a What The Hack event, there is always a kick off meeting where the attendees are welcomed and then introduced to the logistics of the hack. The best way to do that is with a *short* PowerPoint delivered a few slides at a time.
+When you host a gHack event, there is always a kick off meeting where the attendees are welcomed and then introduced to the logistics of the hack. The best way to do that is with a *short* PowerPoint delivered a few slides at a time.
 
-We have provided an Event Kickoff presentation template that you can customize for your hack and use to cover attendee logistics for a WTH event here:
-- [Event Kickoff Presentation Template (Virtual)](WTH-EventKickoff-Virtual-Template.pptx)
-- [Event Kickoff Presentation Template (In-Person)](WTH-EventKickoff-InPerson-Template.pptx)
+We have provided an Event Kickoff presentation template that you can customize for your hack and use to cover attendee logistics for a gHack event here:
+- [Event Kickoff Presentation Template (Virtual)](gH-EventKickoff-Virtual-Template.pptx)
+- [Event Kickoff Presentation Template (In-Person)](gH-EventKickoff-InPerson-Template.pptx)
 
 After the kickoff meeting, its up to the hack authors if they want to provide any presentation lectures.  Some hack challenges are easy to jump right into.  Others are more complex and are better preceded by a brief introduction presentation.
 
@@ -175,15 +175,15 @@ It is OK and encouraged to offer a collection of "mini" presentation lectures if
 - Provide "reference" slides that you might not present, but will have on hand if attendees need additional guidance
 - Provide a slide with the challenge description that can be displayed when attendees are working on that challenge
 
-We have more guidance on how and when to deliver mini presentation lectures for your challenges during your event in the [How To Host a What The Hack](WTH-HowToHostAHack.md) guide.
+We have more guidance on how and when to deliver mini presentation lectures for your challenges during your event in the [How To Host a gHack](gH-HowToHostAHack.md) guide.
 
 Please publish any presentations in your hack's `../Coach` folder.
 
 ## Coaches Guide
 
-Every WTH should come with a Coach's guide. The simple way to think of the Coach's guide is that should be the document with all of "the answers". The reality is, doing so would turn it into a giant step-by-step document loaded with detailed commands, screenshots, and other resources that are certain to be obsolete the minute you publish it. No one wants to maintain a document like that. 
+Every gHack should come with a Coach's guide. The simple way to think of the Coach's guide is that should be the document with all of "the answers". The reality is, doing so would turn it into a giant step-by-step document loaded with detailed commands, screenshots, and other resources that are certain to be obsolete the minute you publish it. No one wants to maintain a document like that. 
 
-Instead of treating the Coach's guide like a step-by-step document, treat it as the "owner's manual" you would want to provide to future coaches so they can host and deliver your WTH to others. 
+Instead of treating the Coach's guide like a step-by-step document, treat it as the "owner's manual" you would want to provide to future coaches so they can host and deliver your gHack to others. 
 
 The Coach's guide should include the following:
 
@@ -201,7 +201,7 @@ The Coach's guide should be updated during & post event with key learnings, such
 
 ## Coach Solutions
 
-This is where you put "the answers". There are usually multiple ways to solve a WTH Challenge. The solutions you provide here should be example solutions that represent one way to solve the challenges. The solution resources might include a full working application, configuration files, populated templates, or other resources that can be used to demonstrate how to solve the challenges. 
+This is where you put "the answers". There are usually multiple ways to solve a gHack Challenge. The solutions you provide here should be example solutions that represent one way to solve the challenges. The solution resources might include a full working application, configuration files, populated templates, or other resources that can be used to demonstrate how to solve the challenges. 
 
 Examples of Coach Solutions are:
 - Prerequisites for the Azure environment if needed. 
@@ -216,11 +216,11 @@ If your hack provides Coach Solutions with code, templates, etc, it is recommend
 
 ## Preparing Your Environment
 
-Okay, ready to get started creating your own What The Hack?
+Okay, ready to get started creating your own gHack?
 
-First we create a fork of the main WTH repo and then clone it to disk and create a branch to work in. The instructions below assume you have the git command line on your machine. If you're more comfortable in a GUI git client, you can use that too (we recommend SourceTree).
-1. Create a fork of the WTH repo
-   - Navigate to the WTH git repo at: <https://aka.ms/wth>
+First we create a fork of the main gHack repo and then clone it to disk and create a branch to work in. The instructions below assume you have the git command line on your machine. If you're more comfortable in a GUI git client, you can use that too (we recommend SourceTree).
+1. Create a fork of the gHack repo
+   - Navigate to the gHack git repo at: <go/gHacks>
    - Click the Fork button at the top right of the page and then choose the account you want to create the fork in. 
 2. Clone your new fork to your local machine
    - `git clone https://github.com/myname/WhatTheHack.git`
@@ -228,7 +228,7 @@ First we create a fork of the main WTH repo and then clone it to disk and create
 3. Create a new branch for your work. It is a best practice to never work directly on the master branch
    - `git branch MyWork`
    - `git checkout MyWork`
-4. Add a new top level folder to the WTH repo using the next available number in sequence
+4. Add a new top level folder to the gHack repo using the next available number in sequence
    - `mkdir 067-IoTCentury`
 5. Within your new folder, create the following directory structure:
 	- `../Coach`

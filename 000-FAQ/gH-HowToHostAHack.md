@@ -146,11 +146,11 @@ We recommend creating the following Channels in the team:
 
 **Example Event Team**
 
-![Sample gHacks Event Team](images/wth-sample-msteam.jpg "Example gHacks Event Team")
+![Sample gHacks Event Team](images/gH-sample-gvc.jpg "Example gHacks Event Team")
 
 #### Team Content
 
-Most hacks in the [gHacks Collection](../readme.md#what-the-hack-collection) have the solutions to the hack challenges included in the [WTH GitHub repo](http://aka.ms/wth). Therefore, you should avoid the attendees having any reason to access to the gHacks repo before or during the event. Instead, we recommend pre-loading any  resources from the repo needed by the attendees for the hack into the event Team.
+Most hacks in the [gHacks Collection](../readme.md#gHack-collection) have the solutions to the hack challenges included in the [gHack GitHub repo](go/gHacks). Therefore, you should avoid the attendees having any reason to access to the gHacks repo before or during the event. Instead, we recommend pre-loading any  resources from the repo needed by the attendees for the hack into the event Team.
 
 #### Challenge Guide
 
@@ -465,7 +465,7 @@ The lead coach should close out the gHacks event with a final stand-up that acts
 - Attendees should be encouraged to share their parting thoughts and key learnings.
 - Attendee feedback should be solicited for a final time and notes collected by the lead coach
 - Thank the attendees for their time and dedication during the hack
-- Finally, share the content by directing the attendees to visit the gHacks repo on Github: <http://aka.ms/wth>
+- Finally, share the content by directing the attendees to visit the gHacks repo on Github: <go/gHacks>
 
 You have now surived a gHacks!
 
