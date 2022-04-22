@@ -2,7 +2,7 @@
 
 gHacks are all about being "for the people, by the people". This repo was originally created to share real-world hackathons that Google Cloud teams have hosted with their customers. It has since grown to be a learning tool for anyone, anywhere, and follows these core principles:
 
-- Anyone can use the content to [host their own gHacks event](./000-FAQ/gH-HowToHostAHack.md).
+- Anyone can use the content to [host their own gHacks event](./_FAQ/gH-HowToHostAHack.md).
 - Anyone can [contribute a new hack](#contribute-a-new-hack-to-what-the-hack).
 - Anyone can modify or update a hack as needed.
   - Submitting a [pull request for updated content](#contribute-an-update-to-an-existing-hack) is encouraged.
@@ -82,7 +82,7 @@ Once you have submitted an [Issue/Proposal](https://github.com/gfilicetti/gHacks
 1.	The gHacks team will get in touch to start the on-boarding process. If they are aware of other authors with similar proposals, they will schedule a meeting with everyone to see if it makes sense to combine efforts.
 1.	The gHacks team will schedule a kick off call with you and any co-authors to:
     - Review the gHacks contribution process and set expectations for collaboration between the gHacks team and the author(s).
-    - Walk through the [gHacks Author's Guide](./000-FAQ/gH-HowToAuthorAHack.md). 
+    - Walk through the [gHacks Author's Guide](./_FAQ/gH-HowToAuthorAHack.md). 
         - All authors need to read and internalize this document to save you trouble and heartache down the line.
     - Set up a bi-weekly cadence meeting to check-in and address any questions or requests you have during development.
 1.	During the cadence meetings, the authors will dictate the pace of the call and report what they have worked on. It is essentially your time to discuss things with the gHacks team and/or collaborate with your co-authors. If there is a stint that nothing was worked on, that’s totally fine. We understand and appreciate that most folks are contributing to gHacks in their spare time.
@@ -125,7 +125,7 @@ The instructions below assume you have the [Git command line tool](https://git-s
 	../Student
 	    /Resources
     ```
-1. Follow the [gHacks Author's Guide](./000-FAQ/gH-HowToAuthorAHack.md) and scaffold out your hack's content as shown here:
+1. Follow the [gHacks Author's Guide](./_FAQ/gH-HowToAuthorAHack.md) and scaffold out your hack's content as shown here:
     - `../`
         - Hack Description
     - `../Coach`
@@ -136,7 +136,7 @@ The instructions below assume you have the [Git command line tool](https://git-s
         - The Student guide's Challenge markdown files
         - `/Resources` 
             - The code and supporting files the students will need throughout the hack.
-1. Re-read the [gHacks Author's Guide](./000-FAQ/gH-HowToAuthorAHack.md) (seriously) and make sure your hack follows the templates & styles for consistency.
+1. Re-read the [gHacks Author's Guide](./_FAQ/gH-HowToAuthorAHack.md) (seriously) and make sure your hack follows the templates & styles for consistency.
 
 ### Release Process
 
@@ -147,9 +147,9 @@ When you feel your hack is finished and ready for release, this is the process w
 1.	The gHacks team will schedule a 60-minute "pre-PR review" meeting with you and any co-authors. 
     - The purpose of this meeting is to go through the content together and reduce the amount of back and forth review cycles on GitHub once your Pull Request is submitted.
     - During this review, the gHacks team will go through the text with a fine-toothed comb checking for:
-        - Adherence to the [gHacks Author's Guide](./000-FAQ/gH-HowToAuthorAHack.md)
+        - Adherence to the [gHacks Author's Guide](./_FAQ/gH-HowToAuthorAHack.md)
         - All links work, especially the navigation links
-        - There are no links to the gHacks repo or Coach's guide from the Student guide (See the [gHacks Author's Guide](./000-FAQ/gH-HowToAuthorAHack.md))
+        - There are no links to the gHacks repo or Coach's guide from the Student guide (See the [gHacks Author's Guide](./_FAQ/gH-HowToAuthorAHack.md))
         - All images show properly.
         - Any syntax, grammar or punctuation problems that the reviewers see and want you to address.
         - This is NOT a technical content review. As the author(s), YOU are the subject matter experts. The gHacks team will trust that you have taken care of the technical bits.
@@ -176,13 +176,13 @@ To contribute an update to an existing hack, you should:
     1. [Fetch the latest updates from the upstream repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) (to merge any changes others have made to gHacks while you were working on your update) and ensure there are no conflicts with your updates. 
     2. [Create a pull request from your fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork) to submit your work back to the gHacks repo for review.
 
-The gHacks team will review the Pull Request with an eye towards compliance with the [gHacks Author's Guide](./000-FAQ/gH-HowToAuthorAHack.md), as well as any spelling or grammar issues. These reviews are generally shorter if the update is by one of the hack's original authors.  
+The gHacks team will review the Pull Request with an eye towards compliance with the [gHacks Author's Guide](./_FAQ/gH-HowToAuthorAHack.md), as well as any spelling or grammar issues. These reviews are generally shorter if the update is by one of the hack's original authors.  
 
 If the update is from a new contributor, the gHacks team will request one of the original author's of the hack to review the update for technical accuracy.
 
 ## Ask for Help Hosting a gHacks Event
 
-We've put together a lot of guidance on how to host a gHacks event in our [gHacks Hosting Guide](/000-FAQ/gH-HowToHostAHack.md).  
+We've put together a lot of guidance on how to host a gHacks event in our [gHacks Hosting Guide](/_FAQ/gH-HowToHostAHack.md).  
 
 If you have further questions, or want to get in touch with the gHacks team to learn more about hosting a gHacks event, please go to the Issues page for the gHacks repo and create an [Issue/Request](https://github.com/gfilicetti/gHacks/issues/new?assignees=&labels=request&template=request.yml&title=%5BRequest%5D%3A+).
 
