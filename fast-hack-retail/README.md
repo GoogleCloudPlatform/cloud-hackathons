@@ -27,15 +27,15 @@ You'll be using a variety of Google Cloud offerings to achieve this including:
 1. Looker
 
 ## Challenges
-1. Challenge 0: **[Installing Prerequisites and Preparing Your Environment](Student/Challenge-00.md)**
+- Challenge 0: **[Installing Prerequisites and Preparing Your Environment](Student/Challenge-00.md)**
    - Get yourself ready to develop our FastFresh solution
-1. Challenge 1: **[Replicating Oracle Data Using Datastream](Student/Challenge-01.md)**
+- Challenge 1: **[Replicating Oracle Data Using Datastream](Student/Challenge-01.md)**
    - Backfill the Oracle FastFresh schema and replicate updates to Cloud Storage in real time.
-1. Challenge 2: **[Creating a Dataflow Job using the Datastream to BigQuery Template](Student/Challenge-02.md)**
+- Challenge 2: **[Creating a Dataflow Job using the Datastream to BigQuery Template](Student/Challenge-02.md)**
    - Now it’s time to create a Dataflow job which will read from GCS and update BigQuery. You will deploy the pre-built Datastream to BigQuery Dataflow streaming template to capture these changes and replicate them into BigQuery.
-1. Challenge 3: **[Analyzing Your Data in BigQuery](Student/Challenge-03.md)**
+- Challenge 3: **[Analyzing Your Data in BigQuery](Student/Challenge-03.md)**
    - A real time view of the operational data is now available in BigQuery. In this challenge you will run queries such as comparing the sales of a particular product in real time, or combining sales and customer data to analyze spending habits.
-1. Challenge 4: **[Building a Demand Forecast](Student/Challenge-04.md)**
+- Challenge 4: **[Building a Demand Forecast](Student/Challenge-04.md)**
    - In this challenge you will use BigQuery ML to build a model to forecast the demand for products in store.
 
 ## Prerequisites
@@ -51,6 +51,8 @@ You'll be using a variety of Google Cloud offerings to achieve this including:
 ## Repository Contents
 - `../Student/Resources`
   - Various initial files needed for students
+- `../Coach/Lectures.pdf`
+  - Slides for Lectures on topics covered in this gHack
 
 ## Contributors
 - Carlos Augusto
