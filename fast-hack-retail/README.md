@@ -1,9 +1,21 @@
 # gHacks - Retail Analytics
 ## Introduction
-In today's retail environments, anticipating your customer's needs is now table-stakes if you want to keep up with your competitors. How can you achieve this? What tools in Google Cloud's deep toolbox can be used? That's what we'll explore in this gHack.
+This gHack will take you through replicating and processing operational data from an Oracle database into Google Cloud in real time. You'll also figure out how to forecast future demand, and how to visualize this forecast data as it arrives.
+
+This tutorial uses a fictitious retail store named FastFresh to help demonstrate the concepts we'll be dealing with. FastFresh specializes in selling fresh produce, and wants to minimize food waste and optimize stock levels across all stores. You will use fictitious sales transactions from FastFresh as the operational data in this tutorial.
+
+![Architecture](./images/arch-diagram.png)
+
+The above diagram showcases the flow of operational data through Google Cloud, which is as follows:
+
+- Incoming data from an Oracle source is captured and replicated into Cloud Storage through Datastream.
+- This data is processed and enriched by Dataflow templates, and is then sent to BigQuery.
+- BigQuery ML is used to forecast demand for your data, which is then visualized in Looker.
 
 ## Learning Objectives
-Over the course of this gHack you'll be replicating OLTP transactions to BigQuery and then use BigQuery ML to forecast demand for a product and present the outcome using Looker. 
+- Replicate and process data from Oracle into BigQuery in real time.
+- Run demand forecasting against  data that has been replicated and processed from Oracle in BigQuery.
+- Learn how to visualize forecasted demand and operational data in real time in Looker.
 
 You'll be using a variety of Google Cloud offerings to achieve this including:
 
