@@ -16,15 +16,15 @@ In this lab, you configure an HTTP Load Balancer with a backend, as shown in the
 1. How to validate that the bot management policy is handling traffic based on the rules configured.
 
 ## Challenges
-1. Challenge 0: **[Setup & Requirements](Student/Challenge-00.md)**
+- Challenge 0: **[Setup & Requirements](Student/Challenge-00.md)**
    - Before we can hack, you will need to set up a few things.
-2. Challenge 1: **[Create Managed Instance Groups](Student/Challenge-01.md)**
+- Challenge 1: **[Create Managed Instance Groups](Student/Challenge-01.md)**
    - SHORT DESCRIPTION
-3. Challenge 2: **[Setup Your HTTP Load Balancer](Student/Challenge-02.md)**
+- Challenge 2: **[Setup Your HTTP Load Balancer](Student/Challenge-02.md)**
    - SHORT DESCRIPTION
-4. Challenge 3: **[Deploy a reCAPTCHA Token and Challenge Page](Student/Challenge-03.md)**
+- Challenge 3: **[Deploy a reCAPTCHA Token and Challenge Page](Student/Challenge-03.md)**
    - SHORT DESCRIPTION
-5. Challenge 4: **[Configure Bot Management](Student/Challenge-04.md)**
+- Challenge 4: **[Configure Bot Management](Student/Challenge-04.md)**
    - SHORT DESCRIPTION
 
 ## Prerequisites
