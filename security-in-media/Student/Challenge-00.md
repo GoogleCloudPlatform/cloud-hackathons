@@ -100,7 +100,7 @@ We will be using the ***default*** VPC network created in your project. Create a
 
 ## Success Criteria
 
-1. You've created a new project for your hacking.
-1. You've confirmed that Cloud Shell is working for you
-1. You've enabled the specified APIs needed for this gHack
-1. You've created firewall rules to allow health checks and SSH traffic through.
+- You've created a new project for your hacking.
+- You've confirmed that Cloud Shell is working for you
+- You've enabled the specified APIs needed for this gHack
+- You've created firewall rules to allow health checks and SSH traffic through.
