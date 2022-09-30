@@ -1,6 +1,6 @@
 # Challenge 0 - Setup & Requirements
 
-[< Previous Challenge](./Challenge-deleteMe.md) - **[Home](../README.md)** - [Next Challenge>](./Challenge-01.md)
+**[Home](../README.md)** - [Next Challenge>](./Challenge-01.md)
 
 ## Introduction
 
