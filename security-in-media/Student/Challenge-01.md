@@ -39,7 +39,7 @@ A managed instance group uses an instance template to create a group of identica
     |Subnet|default (us-east1)|
     |Network tags|allow-health-check|
     
-> The network tag allow-health-check ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
+    > The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
 
 8. Click **Create**.
 8. Wait for the instance template to be created.
