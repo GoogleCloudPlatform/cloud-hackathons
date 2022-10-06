@@ -2,7 +2,7 @@
 
 [< Previous Challenge](./Challenge-01.md) - **[Home](../README.md)** - [Next Challenge>](./Challenge-03.md)
 
-## Introduction (Optional)
+## Introduction
 
 Configure the HTTP Load Balancer to send traffic to your backend **lb-backend-example**.
 
