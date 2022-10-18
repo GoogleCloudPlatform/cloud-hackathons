@@ -93,16 +93,14 @@ Now that you created the HTTP Load Balancer for your backends, verify that traff
 
 ## Success Criteria
 
-- A new blah is now blahing
-- Approved traffic is doing a blah
-- Blocked traffic is visibly blah'd
+- You've created an HTTP load balancer 
+- Traffic is forwared by the load balancer to the backend created in Challenge01
+- The load balancer backend has a working IPv4 address 
 
 ## Learning Resources
 
 - [How to use the Google Cloud Console](http://zombo.com)
-- [Markdown primer for github](http://zombo.com)
-- [How to win friends](http://zombo.com)
-- [How to influence people](http://zombo.com)
+- [External HTTP(S) Load Balancing](https://cloud.google.com/load-balancing/docs/https)
 
 ## Tips (Optional)
 
