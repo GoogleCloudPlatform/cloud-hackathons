@@ -75,16 +75,17 @@ A managed instance group uses an instance template to create a group of identica
 
 ## Success Criteria
 
-- A new blah is now blahing
-- Approved traffic is doing a blah
-- Blocked traffic is visibly blah'd
+- You've created an instance template which defines instance properties including type, boot disk image, and subnet
+- Your instance template is configured to allow health checks 
+- You've created a new managed instance group as the HTTP backend 
+- The load balancing service will be able to forward traffic to the backend
 
 ## Learning Resources
 
 - [How to use the Google Cloud Console](http://zombo.com)
-- [Markdown primer for github](http://zombo.com)
-- [How to win friends](http://zombo.com)
-- [How to influence people](http://zombo.com)
+- [Instance Templates](https://cloud.google.com/compute/docs/instance-templates)
+- [Instance Groups](https://cloud.google.com/compute/docs/instance-groups)
+- [Load balancing and scaling](https://cloud.google.com/compute/docs/load-balancing-and-autoscaling)
 
 ## Tips (Optional)
 
