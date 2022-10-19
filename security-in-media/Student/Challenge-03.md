@@ -96,19 +96,16 @@ echo '<!doctype html><html><head><title>ReCAPTCHA Session Token</title><script s
 
 ## Success Criteria
 
-- A new blah is now blahing
-- Approved traffic is doing a blah
-- Blocked traffic is visibly blah'd
+- You've enabled the reCAPTCHA API 
+- You've created a Cloud Armor WAF enabled reCAPTCHA session token with integration type score
+- Landing page is updated to include reCAPTCHA session token site key 
+- Each page shows the "protected by reCAPTCHA" image
+
 
 ## Learning Resources
 
-- [How to use the Google Cloud Console](http://zombo.com)
-- [Markdown primer for github](http://zombo.com)
-- [How to win friends](http://zombo.com)
-- [How to influence people](http://zombo.com)
-
-## Tips (Optional)
-
-- Optional tips go here
-- Don't give away
-- Too much
+- [Enable the reCAPTCHA Enterprise API](https://cloud.google.com/recaptcha-enterprise/docs/set-up-google-cloud#enable-the-recaptcha-enterprise-api)
+- [Creating reCAPTCHA keys](https://cloud.google.com/recaptcha-enterprise/docs/create-key#website-keys)
+- [reCAPTCHA: Install score-based site keys (no challenge) on websites](https://cloud.google.com/recaptcha-enterprise/docs/instrument-web-pages)
+- [reCAPTCHA: Create an assessment](https://cloud.google.com/recaptcha-enterprise/docs/create-assessment)
+- [Compute Engine: Connect to Linux VMs using Google tools](https://cloud.google.com/compute/docs/instances/connecting-to-instance#console)
