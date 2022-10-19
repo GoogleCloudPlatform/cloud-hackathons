@@ -113,16 +113,19 @@ Notice that the configuredAction is set to **ALLOW, DENY or GOOGLE_RECAPTCHA** w
 
 ## Success Criteria
 
-- A new blah is now blahing
-- Approved traffic is doing a blah
-- Blocked traffic is visibly blah'd
+- You've configured the Cloud Armor security policy rules for Bot Management 
+- The policy has been attached to the backend 
+- Users with a good score are allowed through 
+- Users with a median score are redirected to the reCAPTCHA manual challenge 
+- Users with a bad score are not allowed through 
+- A score is recorded in the Cloud Armor logs when a user attempts to access the landing page links 
 
 ## Learning Resources
 
-- [How to use the Google Cloud Console](http://zombo.com)
-- [Markdown primer for github](http://zombo.com)
-- [How to win friends](http://zombo.com)
-- [How to influence people](http://zombo.com)
+- [Overview of reCAPTCHA Enterprise for WAF and Google Cloud Armor integration](https://cloud.google.com/recaptcha-enterprise/docs/integration-overview)
+- [Implement the reCAPTCHA Enterprise for WAF and Google Cloud Armor integration](https://cloud.google.com/recaptcha-enterprise/docs/implement-tokens)
+- [Google Cloud Armor bot management overview](https://cloud.google.com/armor/docs/bot-management)
+- [Configure Google Cloud Armor security policies](https://cloud.google.com/armor/docs/configure-security-policies#bot-management)
 
 ## Tips (Optional)
 
