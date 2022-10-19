@@ -89,21 +89,15 @@ The host and path rules determine how your traffic will be directed. For example
 ### Test the HTTP Load Balancer
 Now that you created the HTTP Load Balancer for your backends, verify that traffic is forwarded to the backend service. To test IPv4 access to the HTTP Load Balancer, open a new tab in your browser and navigate to **http://[LB_IP_v4]**. Make sure to replace **[LB_IP_v4]** with the IPv4 address of the load balancer.
 
-> It might take up to 5 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
+> It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
 
 ## Success Criteria
 
 - You've created an HTTP load balancer 
-- Traffic is forwared by the load balancer to the backend created in Challenge01
-- The load balancer backend has a working IPv4 address 
+- Traffic is forwarded by the load balancer to the backend created in Challenge 1
+- The load balancer has a working IPv4 address 
 
 ## Learning Resources
 
-- [How to use the Google Cloud Console](http://zombo.com)
 - [External HTTP(S) Load Balancing](https://cloud.google.com/load-balancing/docs/https)
 
-## Tips (Optional)
-
-- Optional tips go here
-- Don't give away
-- Too much
