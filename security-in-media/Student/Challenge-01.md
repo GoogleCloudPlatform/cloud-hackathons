@@ -78,17 +78,10 @@ A managed instance group uses an instance template to create a group of identica
 - You've created an instance template which defines instance properties including type, boot disk image, and subnet
 - Your instance template is configured to allow health checks 
 - You've created a new managed instance group as the HTTP backend 
-- The load balancing service will be able to forward traffic to the backend
+- A port is configured to allow the load balancing service to forward traffic to the backend 
 
 ## Learning Resources
 
-- [How to use the Google Cloud Console](http://zombo.com)
 - [Instance Templates](https://cloud.google.com/compute/docs/instance-templates)
 - [Instance Groups](https://cloud.google.com/compute/docs/instance-groups)
 - [Load balancing and scaling](https://cloud.google.com/compute/docs/load-balancing-and-autoscaling)
-
-## Tips (Optional)
-
-- Optional tips go here
-- Don't give away
-- Too much
