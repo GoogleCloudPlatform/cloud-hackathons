@@ -19,13 +19,13 @@ In this lab, you configure an HTTP Load Balancer with a backend, as shown in the
 - Challenge 0: **[Setup & Requirements](Student/Challenge-00.md)**
    - Before we can hack, you will need to set up a few things.
 - Challenge 1: **[Create Managed Instance Groups](Student/Challenge-01.md)**
-   - SHORT DESCRIPTION
+   - Use managed instance groups to create an HTTP Load Balancer backend.
 - Challenge 2: **[Setup Your HTTP Load Balancer](Student/Challenge-02.md)**
-   - SHORT DESCRIPTION
+   - Configure the HTTP Load Balancer to send traffic to your backend.
 - Challenge 3: **[Deploy a reCAPTCHA Token and Challenge Page](Student/Challenge-03.md)**
-   - SHORT DESCRIPTION
+   - Implement reCAPTCHA on a website's landing page. 
 - Challenge 4: **[Configure Bot Management](Student/Challenge-04.md)**
-   - SHORT DESCRIPTION
+   - Use Cloud Armor bot management rules to allow, deny and redirect requests based on the reCAPTCHA score.
 
 ## Prerequisites
 - The ability to create your own GCP projects with Owner IAM role.
