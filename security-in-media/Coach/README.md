@@ -7,10 +7,10 @@ Remember that this gHack includes a optional [lecture presentation](Lectures.ppt
 
 ## Coach's Guides
 - Challenge 1: **[Create Managed Instance Groups](Solution-01.md)**
-   - SHORT DESCRIPTION
+   - Use managed instance groups to create an HTTP Load Balancer backend.
 - Challenge 2: **[Setup Your HTTP Load Balancer](Solution-02.md)**
-   - SHORT DESCRIPTION
+   - Configure the HTTP Load Balancer to send traffic to your backend.
 - Challenge 3: **[Deploy a reCAPTCHA Token and Challenge Page](Solution-03.md)**
-   - SHORT DESCRIPTION
+   - Implement reCAPTCHA on a website's landing page. 
 - Challenge 4: **[Configure Bot Management](Solution-04.md)**
-   - SHORT DESCRIPTION
+   - Use Cloud Armor bot management rules to allow, deny and redirect requests based on the reCAPTCHA score.
