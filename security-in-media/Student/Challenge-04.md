@@ -126,9 +126,3 @@ Notice that the configuredAction is set to **ALLOW, DENY or GOOGLE_RECAPTCHA** w
 - [Implement the reCAPTCHA Enterprise for WAF and Google Cloud Armor integration](https://cloud.google.com/recaptcha-enterprise/docs/implement-tokens)
 - [Google Cloud Armor bot management overview](https://cloud.google.com/armor/docs/bot-management)
 - [Configure Google Cloud Armor security policies](https://cloud.google.com/armor/docs/configure-security-policies#bot-management)
-
-## Tips (Optional)
-
-- Optional tips go here
-- Don't give away
-- Too much
