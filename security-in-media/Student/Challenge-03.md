@@ -11,9 +11,9 @@ reCAPTCHA Enterprise for WAF and Google Cloud Armor integration offers the follo
 ### Create reCAPTCHA session token and WAF challenge-page site key
 The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-user's browser after the assessment. The end-user's browser attaches the cookie and refreshes the cookie as long as the reCAPTCHA JavaScript remains active.
 
-NOTE: Before beginning make sure you've enabled the reCAPTCHA Enterprise API as specified in Challenge 0.
+> **NOTE:** Before beginning make sure you've enabled the reCAPTCHA Enterprise API as specified in Challenge 0.
 
-1. Use gcloud to create the reCAPTCHA session token site key and enable the WAF feature for the key. 
+- Use gcloud to create the reCAPTCHA session token site key and enable the WAF feature for the key. 
     - You must set the WAF service to Cloud Armor to enable the Cloud Armor integration.
     - Key type is **session-token**
     - Use the **score** integration type. Other options are **checkbox** and **invisible**.
@@ -21,21 +21,21 @@ NOTE: Before beginning make sure you've enabled the reCAPTCHA Enterprise API as 
         - This will validate that the bot management policies we create with Cloud Armor are working as intended. Replicating bot traffic is not easy and hence, this is a good way to test the feature.
     - Make note of the output of your gcloud command, it will output the key that you'll need later in this hack.
 
-1. Use gcloud to create the reCAPTCHA WAF challenge-page site key and enable the WAF feature for the key. You can use the reCAPTCHA challenge page feature to redirect incoming requests to reCAPTCHA Enterprise to determine whether each request is potentially fraudulent or legitimate. We will later associate this key with the Cloud Armor security policy to enable the manual challenge. We will refer to this key as **CHALLENGE-PAGE-KEY** in the later steps.
+- Use gcloud to create the reCAPTCHA WAF challenge-page site key and enable the WAF feature for the key. You can use the reCAPTCHA challenge page feature to redirect incoming requests to reCAPTCHA Enterprise to determine whether each request is potentially fraudulent or legitimate. We will later associate this key with the Cloud Armor security policy to enable the manual challenge. We will refer to this key as **CHALLENGE-PAGE-KEY** in the later steps.
     - You must set the WAF service to Cloud Armor to enable the Cloud Armor integration.
     - Key type is **challenge-page**
     - Use the **invisible** integration type.
     - Make note of the output of your gcloud command, it will output the key that you'll need later in this hack.
 
-1. Navigate to the reCAPTCHA Enterprise screen in the Google Cloud Console. Go to the **KEYS** tab and confirm that both of the keys you created are there.
+- Navigate to the reCAPTCHA Enterprise screen in the Google Cloud Console. Go to the **KEYS** tab and confirm that both of the keys you created are there.
 
 ### Implement reCAPTCHA session token site key
-1. In the console, locate the VM in your instance group and SSH to it.
+- In the console, locate the VM in your instance group and SSH to it.
 
-1. Go to the nginx webserver root directory and sudo to root.
+- Go to the nginx webserver root directory and sudo to root.
 
-1. Edit `index.html` and embed the reCAPTCHA session token site key. 
-    - **NOTE:** The session token site key is added to the head section of the HTML page.
+- Edit `index.html` and embed the reCAPTCHA session token site key. 
+    - **NOTE:** The session token site key is added to the ```HEAD``` section of the HTML page.
     - Change `index.html` to have 3 links on it pointing to pages we will create next:
 
         |Link Text|Link href|
@@ -44,14 +44,17 @@ NOTE: Before beginning make sure you've enabled the reCAPTCHA Enterprise API as 
         |Visit blocked|`/bad-score.html`|
         |Visit redirected|`/median-score.html`|
     
-1. Create three other HTML pages to test out the bot management policies and scores. Name them:
+- Create three other HTML pages to test out the bot management policies and scores. Name them:
     - **good-score.html**
     - **bad-score.html**
     - **median-score.html**
-    - **NOTE:** These pages need only to contain some title text to tell you which score it is for, like so:
 
-1. Validate that you are able to access all the webpages by opening them in your browser. Make sure to replace **[LB_IP_v4]** with the IPv4 address of the load balancer.
-    - Open ***http://[LB_IP_v4]/index.html***. You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the page:
+> **NOTE:** These pages only need to contain some title text to tell you which score it is for, like so:
+
+![Congrats](../Images/recaptcha-site-goodscore.png)
+
+- Validate that you are able to access all the webpages by opening them in your browser.
+    - Open ```http://{LoadBalance_IP_Here}/index.html```. You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the page:
         
         ![Protect Logo](../Images/recaptcha-protect-logo.png)
 
@@ -59,9 +62,10 @@ NOTE: Before beginning make sure you've enabled the reCAPTCHA Enterprise API as 
 
         ![Main Page](../Images/recaptcha-site-mainpage.png)
 
-    - Validate you are able to access all the pages.
-
-        ![Congrats](../Images/recaptcha-site-goodscore.png)
+    - Validate that you see the correct behaviour for each page:
+        - ```good-score.html```: You see the page perfectly.
+        - ```bad-score.html```: You are blocked from the page.
+        - ```median-score.html```: You are challenged with a puzzle.
 
 ## Success Criteria
 
