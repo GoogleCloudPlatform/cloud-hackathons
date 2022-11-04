@@ -4,19 +4,19 @@
 
 ## Introduction
 
-Configure the HTTP Load Balancer to send traffic to your backend **lb-backend-example**.
+Configure the HTTP Load Balancer to send traffic to your backend instance group named: **lb-backend-example** created in Challenge 1.
 
 ## Description
 
 ### Start the configuration
-- Create a classic HTTPS load balancer to send traffic from the Internet to your VMs with the **Name** *http-lb*.
+- Create a classic HTTPS load balancer to send traffic from the Internet to your VMs named: ```http-lb```
 
 ### Configure the backend
 Backend services direct incoming traffic to one or more attached backends. Each backend is composed of an instance group and additional serving capacity metadata.
 
 Configure the backend with the following configuration:
 
- - **Name**: http-backen
+ - **Name**: http-backend
  - **Protocol**: HTTP
  - **Named Port**: http
  - **Instance Group**: lb-backend-example
@@ -30,7 +30,7 @@ Configure the Health Check with the following configuration:
 - **Logging**: enabled
 - **Sample Rate**: 1
 
-    > Health checks determine which instances receive new connections. This HTTP health check polls instances every 5 seconds, waits up to 5 seconds for a response and treats 2 successful or 2 failed attempts as healthy or unhealthy, respectively.
+> **NOTE:** Health checks determine which instances receive new connections. This HTTP health check polls instances every 5 seconds, waits up to 5 seconds for a response and treats 2 successful or 2 failed attempts as healthy or unhealthy, respectively.
 
 ### Configure the frontend
 The host and path rules determine how your traffic will be directed. For example, you could direct video traffic to one backend and static traffic to another backend. However, you are not configuring the Host and path rules in this hack.
@@ -42,11 +42,10 @@ Configure the frontend with the following configuration:
 - **IP Address**: Ephemeral
 - **Port**: 80
 
-
 ### Test the HTTP Load Balancer
 Now that you created the HTTP Load Balancer for your backends, verify that traffic is forwarded to the backend service. To test IPv4 access to the HTTP Load Balancer.
 
-> It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
+> **NOTE:** It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
 
 ## Success Criteria
 
