@@ -7,71 +7,48 @@
 ### Create Cloud Armor security policy rules for Bot Management
 In this section, you will use Cloud Armor bot management rules to allow, deny and redirect requests based on the reCAPTCHA score. Remember that when you created the session token site key, you set a testing score of 0.5.
 
-1. In Cloud Shell, create security policy via gcloud:
+- In Cloud Shell, create a recaptcha security policy via gcloud with the description "policy for bot management"
 
-    ```bash
-    gcloud compute security-policies create recaptcha-policy \
-        --description "policy for bot management"
-    ```
-1. To use reCAPTCHA Enterprise manual challenge to distinguish between human and automated clients, associate the reCAPTCHA WAF challenge site key we created for manual challenge with the security policy. Replace "CHALLENGE-PAGE-KEY" with the key we created:
 
-    ```bash
-    gcloud compute security-policies update recaptcha-policy \
-        --recaptcha-redirect-site-key "CHALLENGE-PAGE-KEY"
-    ```
+- Update the security policy to use a reCAPTCHA Enterprise manual challenge to distinguish between human and automated clients.
+    - Associate the reCAPTCHA WAF challenge site key created for manual challenge with the security policy using the tag 
+    
+        `--recaptcha-redirect-site-key`
 
-1. Add a bot management rule to allow traffic if the url path matches good-score.html and has a score greater than 0.4:
+- Add a bot management rule to the policy to allow traffic if the url path matches good-score.html and has a score greater than 0.4 using the following tags: 
 
-    ```bash
-    gcloud compute security-policies rules create 2000 \
-        --security-policy recaptcha-policy \
-        --expression "request.path.matches('good-score.html') &&    token.recaptcha_session.score > 0.4" \
-        --action allow
-    ```
+    - expression: `"request.path.matches('good-score.html') &&    token.recaptcha_session.score > 0.4" `
+    - action: `allow` 
 
-1. Add a bot management rule to deny traffic if the url path matches bad-score.html and has a score less than 0.6: 
+- Add a bot management rule to the policy to deny traffic if the url path matches bad-score.html and has a score less than 0.6 using the following tags: 
 
-    ```bash
-    gcloud compute security-policies rules create 3000 \
-        --security-policy recaptcha-policy \
-        --expression "request.path.matches('bad-score.html') && token.recaptcha_session.score < 0.6" \
-        --action "deny-403"
-    ```
+    - expression: ` "request.path.matches('bad-score.html') && token.recaptcha_session.score < 0.6"`
+    - action: `deny-403`
 
-1. Add a bot management rule to redirect traffic to Google reCAPTCHA if the url path matches median-score.html and has a score equal to 0.5:
+- Add a bot management rule to the policy to redirect traffic to Google reCAPTCHA if the url path matches median-score.html and has a score equal to 0.5 using the following tags:
+    - expression: ` "request.path.matches('median-score.html') && token.recaptcha_session.`
+    - action: `redirect`
+    - redirect-type: `google-recaptcha`
 
-    ```bash
-    gcloud compute security-policies rules create 1000 \
-        --security-policy recaptcha-policy \
-        --expression "request.path.matches('median-score.html') && token.recaptcha_session.score == 0.5" \
-        --action redirect \
-        --redirect-type google-recaptcha
-    ```
+- Attach the security policy to the backend service http-backend using the following tags: 
+    - security-policy: `recaptcha-policy` 
+    - global
 
-1. Attach the security policy to the backend service http-backend:
-
-    ```bash
-    gcloud compute backend-services update http-backend \
-        --security-policy recaptcha-policy –-global
-    ```
-
-1. In the Console, navigate to **Navigation menu > Network Security > Cloud Armor**.
-
-1. Click **recaptcha-policy**. Your policy should resemble the following:
+- In the Console, verify your policy should resemble the following:
 
     ![recaptcha rules](../Images/armor-rules.png)
 
 ### Validate Bot Management with Cloud Armor
 
-1. Open up a browser and enter the url ***http://[LB_IP_v4]/index.html***. Navigate to **"Visit allow link"**. You should be allowed through:
+1. Open up a browser and enter the url for your load balancer. Navigate to **"Visit allow link"**. Verify are allowed through.
 
     ![armor good score](../Images/armor-good-score.png)
 
-1. Open a new window in Incognito mode to ensure we have a new session. Enter the url ***http://[LB_IP_v4]/index.html*** and navigate to **"Visit blocked link"**. You should receive a HTTP 403 error
+1. Open a new window in Incognito mode to ensure we have a new session. Enter the url for your load balancer and navigate to **"Visit blocked link"**. Verify you receive a HTTP 403 error.
 
     ![armor bad score](../Images/armor-bad-score.png)
 
-1. Open a new window in Incognito mode to ensure we have a new session. Enter the url ***http://[LB_IP_v4]/index.html*** and navigate to **"Visit redirect link"**. You should see the redirection to Google reCAPTCHA and the manual challenge page as below
+1. Open a new window in Incognito mode to ensure we have a new session. Enter the url for your load balancer and navigate to **"Visit redirect link"**. Verify you see the redirection to Google reCAPTCHA and the manual challenge page as below
 
     ![armor recaptcha click check](../Images/armor-click-check.png)
 
@@ -79,37 +56,24 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
 Explore the security policy logs to validate bot management worked as expected.
 
-1. In the Console, navigate to **Navigation menu > Network Security > Cloud Armor**.
+- In the Console, navigate to the logs for the recaptcha policy you created.
 
-1. Click **recaptcha-policy**
-
-1. Click **Logs**
-
-    ![armor logs](../Images/armor-logs.png)
-
-1. Click **View policy logs**
-
-1. Below is the MQL(monitoring query language) query, you can copy and paste into the query editor: 
+- Use the below MQL(monitoring query language) query to view the request logs 
 
     ```sql
     resource.type:(http_load_balancer) AND jsonPayload.enforcedSecurityPolicy.name:(recaptcha-policy)
     ```
 
-1. Now click Run Query.
-
-1. Look for a log entry in Query results where the request is for ***http://[LB_IP_v4]/good-score.html***. Expand jsonPayload. Expand enforcedSecurityPolicy.
+- Verify a log entry exists in Query results where the request is for each rule (good, bad, median)
+- Verify that the configuredAction is set to **ALLOW, DENY or GOOGLE_RECAPTCHA** with the name **recaptcha-policy**.
 
     ![armor good results](../Images/armor-good-results.png)
-
-1. Repeat the same for ***http://[LB_IP_v4]/bad-score.html*** and ***http://[LB_IP_v4]/median-score.html***
 
     ![armor bad results](../Images/armor-bad-results.png)
 
     ![armor median results](../Images/armor-median-results.png)
 
-Notice that the configuredAction is set to **ALLOW, DENY or GOOGLE_RECAPTCHA** with the name **recaptcha-policy**.
-
-> Cloud Armor security policies create logs that can be explored to determine when traffic is denied and when it is allowed, along with the source of the traffic.
+> NOTE: Cloud Armor security policies create logs that can be explored to determine when traffic is denied and when it is allowed, along with the source of the traffic.
 
 ## Success Criteria
 
