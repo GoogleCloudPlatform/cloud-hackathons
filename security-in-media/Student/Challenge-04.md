@@ -13,7 +13,7 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 - Update the security policy to use a reCAPTCHA Enterprise manual challenge to distinguish between human and automated clients.
     - Associate the reCAPTCHA WAF challenge site key created for manual challenge with the security policy using the tag 
     
-        `--recaptcha-redirect-site-key`
+        recaptcha-redirect: `site-key`
 
 - Add a bot management rule to the policy to allow traffic if the url path matches good-score.html and has a score greater than 0.4 using the following tags: 
 
@@ -26,6 +26,7 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
     - action: `deny-403`
 
 - Add a bot management rule to the policy to redirect traffic to Google reCAPTCHA if the url path matches median-score.html and has a score equal to 0.5 using the following tags:
+
     - expression: ` "request.path.matches('median-score.html') && token.recaptcha_session.`
     - action: `redirect`
     - redirect-type: `google-recaptcha`
@@ -34,21 +35,21 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
     - security-policy: `recaptcha-policy` 
     - global
 
-- In the Console, verify your policy should resemble the following:
+- In the Console, verify your policy resembles the following:
 
     ![recaptcha rules](../Images/armor-rules.png)
 
 ### Validate Bot Management with Cloud Armor
 
-1. Open up a browser and enter the url for your load balancer. Navigate to **"Visit allow link"**. Verify are allowed through.
+- Open up a browser and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on **"Visit allow link"**. Verify you are allowed through.
 
     ![armor good score](../Images/armor-good-score.png)
 
-1. Open a new window in Incognito mode to ensure we have a new session. Enter the url for your load balancer and navigate to **"Visit blocked link"**. Verify you receive a HTTP 403 error.
+- Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on **"Visit blocked link"**. Verify you receive a HTTP 403 error.
 
     ![armor bad score](../Images/armor-bad-score.png)
 
-1. Open a new window in Incognito mode to ensure we have a new session. Enter the url for your load balancer and navigate to **"Visit redirect link"**. Verify you see the redirection to Google reCAPTCHA and the manual challenge page as below
+- Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on **"Visit redirect link"**. Verify you see the redirection to Google reCAPTCHA and the manual challenge page.
 
     ![armor recaptcha click check](../Images/armor-click-check.png)
 
@@ -58,7 +59,7 @@ Explore the security policy logs to validate bot management worked as expected.
 
 - In the Console, navigate to the logs for the recaptcha policy you created.
 
-- Use the below MQL(monitoring query language) query to view the request logs 
+- Use the below MQL (Monitoring Query Language) query to view the request logs 
 
     ```sql
     resource.type:(http_load_balancer) AND jsonPayload.enforcedSecurityPolicy.name:(recaptcha-policy)
