@@ -112,8 +112,7 @@ Throughout this game, you will be using a number of different tools and products
     --role='roles/bigquery.admin'
     ```
 
-### PLEASE NOTE:
-When you finish this tutorial, you can avoid continued billing by deleting the resources you created. See [cleaning up](https://docs.google.com/document/d/1xxb7B7nZ7fQaHo8TdPDsxurZ7u1-wzAfgWwXQyt-r4k/edit#heading=h.mlrdlgcohh7k) for more detail.
+> **NOTE:** When you finish this tutorial, you can avoid continued billing by deleting the resources you created. See [cleaning up](https://docs.google.com/document/d/1xxb7B7nZ7fQaHo8TdPDsxurZ7u1-wzAfgWwXQyt-r4k/edit#heading=h.mlrdlgcohh7k) for more detail.
 
 ## Success Criteria
 
@@ -121,11 +120,3 @@ When you finish this tutorial, you can avoid continued billing by deleting the r
 - You've created a Google Storage bucket
 - You've created an Oracle instance
 - You've created a Pub/Sub and BigQuery instance
-
-## Learning Resources
-
-*List of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
-
-- link 1
-- link 2
-- link 3
