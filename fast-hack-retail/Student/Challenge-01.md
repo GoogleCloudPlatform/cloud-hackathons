@@ -48,14 +48,13 @@ Select the `FASTFRESH > ORDERS` table:
 
 ## Success Criteria
 
-- **TODO**: Need success criteria
+- **NOTE:** These are just examples, clean up here
+- Oracle has 3 tables populated with retail data
+- Pub/Sub has a single topic for notifications
 
 ## Learning Resources
 
-- **TODO**: Need learning resources
-
-*List of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
-
-- link 1
+- **NOTE:** These are just examples, clean up here
+- [Datastream Overview](https://cloud.google.com/datastream/docs/overview)
 - link 2
 - link 3
