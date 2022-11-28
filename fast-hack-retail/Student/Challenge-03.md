@@ -41,14 +41,12 @@ The following two new tables in the retail dataset are created by the Dataflow j
 
 ## Success Criteria
 
-- **TODO**: Need success criteria
+- BigQuery tables **hackfast.retail.ORDERS_log** and **hackfast.retail.ORDERS** created and populated successfully
+- Select count(*) on both tables (**hackfast.retail.ORDERS_log** and **hackfast.retail.ORDERS**) return the number 520217
+
+
 
 ## Learning Resources
 
-- **TODO**: Need learning resources
-
-*List of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
-
-- link 1
-- link 2
-- link 3
+- [Getting Started with BigQuery](https://cloud.google.com/bigquery/docs/quickstarts/query-public-dataset-console)
+- [Preview BigQuery Data](https://cloud.google.com/bigquery/docs/quickstarts/load-data-console#preview_table_data)

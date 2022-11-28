@@ -125,14 +125,14 @@ The training data  describes for each product (`product_name`), how many units w
 
 ## Success Criteria
 
-- **TODO**: Need success criteria
+- Table **retail.training_data** created
+- ARIMA model **retail.arima_plus_model** created
+- View **retail.orders_forecast** created
+
+
 
 ## Learning Resources
 
-- **TODO**: Need learning resources
-
-*List of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
-
-- link 1
-- link 2
-- link 3
+- [Creating and Using BigQuery Tables](https://cloud.google.com/bigquery/docs/tables)
+- [Creating Views in BigQuery](https://cloud.google.com/bigquery/docs/views)
+- [Creating ARIMA_PLUS Model](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-create-time-series)

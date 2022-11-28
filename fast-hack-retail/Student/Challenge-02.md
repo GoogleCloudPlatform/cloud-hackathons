@@ -105,14 +105,20 @@ You can extend the functionality of this template by including User Defined Func
 
 ## Success Criteria
 
-- **TODO**: Need success criteria
+- Buckets for the javascript (retail_transform.js) and the dead letter queues created
+- retail_transform.js uploaded to gs://js-${BUCKET_NAME}/utils
+- A service account created for the Dataflow job execution
+- IAM roles assigned to the Dataflow service account
+- Firewall rule created to allow Dataflow processes intercommunication
+- Dataflow job running
+- Datastream stream oracle-cdc running
+
 
 ## Learning Resources
 
-- **TODO**: Need learning resources
-
-*List of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
-
-- link 1
-- link 2
-- link 3
+- [Creating Storage Buckets](https://cloud.google.com/storage/docs/creating-buckets)
+- [Creating Service Accounts](https://cloud.google.com/sdk/gcloud/reference/iam/service-accounts)
+- [Adding IAM Policy Bindings](https://cloud.google.com/sdk/gcloud/reference/projects/add-iam-policy-binding)
+- [Configuring Firewall Rules](https://cloud.google.com/sdk/gcloud/reference/compute/firewall-rules)
+- [Starting Dataflow Jobs](https://cloud.google.com/sdk/gcloud/reference/dataflow/jobs/run)
+- [Datastream Stream Update](https://cloud.google.com/sdk/gcloud/reference/datastream/streams/update)

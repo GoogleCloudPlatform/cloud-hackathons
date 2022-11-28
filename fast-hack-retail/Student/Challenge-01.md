@@ -48,13 +48,12 @@ Select the `FASTFRESH > ORDERS` table:
 
 ## Success Criteria
 
-- **NOTE:** These are just examples, clean up here
-- Oracle has 3 tables populated with retail data
-- Pub/Sub has a single topic for notifications
+- You've created a Datastream stream named **oracle-cdc** 
+- The oracle-cdc stream is setup to replicate the **ORDERS** table
+- The oracle-cdc stream is pointing to bucket **gs://${PROJECT_ID}-oracle_retail**
 
 ## Learning Resources
 
-- **NOTE:** These are just examples, clean up here
 - [Datastream Overview](https://cloud.google.com/datastream/docs/overview)
-- link 2
-- link 3
+- [Creating a new Stream](https://cloud.google.com/datastream/docs/create-a-stream)
+- [Creating a new Connection Profile](https://cloud.google.com/datastream/docs/create-connection-profiles)
