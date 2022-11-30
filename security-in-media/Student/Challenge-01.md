@@ -19,10 +19,9 @@ A managed instance group uses an instance template to create a group of identica
         sudo apt-get install apache2 -y
         sudo a2ensite default-ssl
         sudo a2enmod ssl
-        sudo vm_hostname="$(curl -H "Metadata-Flavor:Google" \
-        http://169.254.169.254/computeMetadata/v1/instance/name)"
-        sudo echo "Page served from: $vm_hostname" ** \
-        tee /var/www/html/index.html
+        export vm_hostname="$(hostname)"
+        sudo echo "Page served from: $vm_hostname" | \
+        sudo tee /var/www/html/index.html
         ```
     - **Networking**:
         - Use the default Network and Subnet(us-east1) 
