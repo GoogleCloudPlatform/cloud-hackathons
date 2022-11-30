@@ -59,6 +59,17 @@ While Google Cloud can be operated remotely from your laptop, in this gHack you 
     gcloud services enable recaptchaenterprise.googleapis.com
     ```
 
+### Create the `default` VPC Network
+**NOTE:** Normally you should already have a `default` network defined with auto-subnet creation turned on. 
+
+If it does not already exist in your project, you can create one using this command:
+
+```bash
+gcloud compute networks create default \
+    --subnet-mode=auto \
+    --bgp-routing-mode=global 
+```
+
 ### Configure Firewall Rules
 Configure firewall rules to allow HTTP traffic to the backends from the Google Cloud health checks and the Load Balancer. Also, configure a firewall rule to allow SSH into the instances.
 
