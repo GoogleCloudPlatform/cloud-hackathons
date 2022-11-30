@@ -12,13 +12,13 @@ The attendee squads are not alone in solving the challenges. Coaches work with e
 
 Would you like to host a gHack for your organization? The gHack format and content has been designed for hosting a hack with groups of 5 to 50 people. We welcome anyone to use the content here to host their own gHacks event!
 
-See our complete guide on ["How To Host A gHack"](/_FAQ/gH-HowToHostAHack.md).
+See our complete guide on ["How To Host A gHack"](/faq/gH-HowToHostAHack.md).
 
 # How to Contribute to gHacks
 
 gHacks are community driven. Here are our core principles:
 - Anyone can [contribute a new hack](./CONTRIBUTING.md).
-- Anyone can use the content to [host their own gHacks event](./_FAQ/gH-HowToHostAHack.md).
+- Anyone can use the content to [host their own gHacks event](./faq/gH-HowToHostAHack.md).
 - Anyone can modify or update a hack as needed.
   - Contributing updates back via a [pull request](./CONTRIBUTING.md) is encouraged.
 - The content can always be shared with hack attendees **(Only do this after the event is over!)**
@@ -33,7 +33,7 @@ What makes a good hack? We have a guide that helps answer that question!
 
 Hacks can focus on a single technology or focus on a solution scenario that features multiple technologies working together to solve a business problem.
 
-Read our [gHacks Author's Guide](/_FAQ/gH-HowToAuthorAHack.md) for details on how to author a hack. The author's guide contains a set of markdown template files that help you quickly create new hack content that is consistent with the gHack format.
+Read our [gHacks Author's Guide](/faq/gH-HowToAuthorAHack.md) for details on how to author a hack. The author's guide contains a set of markdown template files that help you quickly create new hack content that is consistent with the gHack format.
 
 # The gHacks Collection
 

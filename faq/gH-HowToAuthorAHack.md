@@ -6,7 +6,7 @@ Developing a new gHack is a great way to get your content out to the world. Chan
 
 The gHack "challenge" format is perfect for team-based, hands-on learning experiences.
 
-gHack is all about being "for the people, by the people". This repo was originally created to share real-world hackathons that Microsoft employees have hosted with their customers. Here are our core principles:
+gHack is all about being "for the people, by the people". This repo was originally created to share real-world hackathons that Google employees have hosted with their customers. Here are our core principles:
 - Anyone can contribute a hack.
 - Anyone can use the content to host their own event.
 - Anyone can modify the content as needed.
@@ -66,11 +66,6 @@ Provide a list of technical prerequisites for your hack here.  List out assumed 
 
 Provide a list of tools/software that the attendee needs to install on their machine to complete the hack. 
 
-We have compiled a list of common tool pre-requisites needed for most of the Azure related hacks here:
-- [gHack Common Prerequisites](gH-Common-Prerequisites.md). 
-
-You can provide a link to it in your hack's prerequisites section in addition to any unique prerequisites for your hack.
-
 ### Repository Contents (Optional)
 
 While optional, it is a good idea to provide a catalog of the files you are providing with your hack. 
@@ -97,11 +92,11 @@ There are different approaches to designing a hackathon. If you are familiar wit
 You can use the same patterns when designing a gHack.
 
 - Singleton Hack - A hack designed to give in-depth hands-on experience with a specific technology and maybe a "sidekick technology" or two included.
-- Solution Hack - A hack designed to give experience solving a real-world scenario that involves using multiple technolgies together for the solution.
+- Solution Hack - A hack designed to give experience solving a real-world scenario that involves using multiple technologies together for the solution.
 
 Once you have decided what type of hack you want to create, you should follow these guidelines when designing the challenges:
 
-- Include a “Challenge 0” that helps attendees install all of the prerequisites that  are required on their computer, environment or Azure account.
+- Include a “Challenge 0” that helps attendees install all of the prerequisites that are required on their computer, environment or GCP account.
 - Challenge descriptions should be shorter than this section on how to design challenges. Keep it to a couple of sentences or bullet points stating the goal(s) and perhaps a hint at the skill(s) needed.
 - Think through what skills/experience you want attendees to walk away with by completing each challenge
 - Challenges should be cumulative, building upon each other and they should:
@@ -121,7 +116,7 @@ To help you get started, we have provided a sample markdown template for a hack 
 
 Please copy this template into your hack's `../Student` folder, rename it to "ChallengeXX.md", where "XX" is the challenge number, and customize it for each challenge. 
 
-**NOTE:** In each challenge's markdown file, you should create navigation links to/from the previous & next challenges. Please use relative links (eg. `"/ChallengeXX.md"`) instead of absolute links (eg. `"http://github.com/Microsoft/WhatTheHack/000-YourAwesomeHack/Student/ChallengeXX.md"`)  
+**NOTE:** In each challenge's markdown file, you should create navigation links to/from the previous & next challenges. Please use relative links (eg. `"/ChallengeXX.md"`) instead of absolute links.
 
 ## Student Resources
 
@@ -133,34 +128,22 @@ During a gHack event, it is recommended that you have attendees download any pro
 
 This has the benefit of not having to direct the attendees to the gHack repo during your hack. Remember, attendees can always find the gHack repo.  However, remind your attendees that they are cheating themselves out of an education if they go foraging around in the gHack repo for the answers.
 
-### DownGit
+### Pre-load Resources into Google Chat Space
 
-One recommended way to enable attendees to easily download hack resources is using DownGit. DownGit is a clever utility that lets you create a download link to any GitHub public directory or file. 
-
-You can view the DownGit project on GitHub here: <https://github.com/MinhasKamal/DownGit>
-
-And you can use DownGit from its website here: <https://minhaskamal.github.io/DownGit/#/home>
-
-To enable attendees to download hack resources using DownGit:
-1. As mentioned above, publish your resources in the gHack repo under the `..Student/Resources` folder of your hack
-2. Create a DownGit link to the "Resources" folder (or whatever sub-folder you want your attendees to download)
-3. Use the DownGit link you created in your Challenge text to provide the link to the attendees.
-
-### Pre-load Resources into Microsoft Teams
-
-Our recommended method of providing resource files to attendees is for the gHack event host to pre-load them into the Microsoft Teams team for the gHack event. 
+Our recommended method of providing resource files to attendees is for the gHack event host to pre-load them into the Google Chat space for the gHack event. 
 
 To pre-load resources into the event team, the host should:
-1. Use DownGit to download the Zip file of resources from the gHack repo.
-2. Upload the zip file (or its contents) to the Files tab of the General channel for the gHack event Teams site.
-3. Direct users to download the resource files from Files tab in Microsot Teams.
+1. Create a zip file of everything in the `Student/Resources`.
+2. Upload the zip file (or its contents) to the Files tab of the Google Chat space for the gHack event.
+3. Direct users to download the resource files from Files tab in the Google Chat space.
 
 ## Presentation Lectures
 
 You may be wondering why there is a section called "Presentation Lectures" when the whole point of gHack is to be hands-on and ***NOT*** a "death by Power Point" snoozefest?!  
 
-When you host a gHack event, there is always a kick off meeting where the attendees are welcomed and then introduced to the logistics of the hack. The best way to do that is with a *short* PowerPoint delivered a few slides at a time.
+When you host a gHack event, there is always a kick off meeting where the attendees are welcomed and then introduced to the logistics of the hack. The best way to do that is with a *short* presentation delivered a few slides at a time.
 
+**TODO:** - we need to turn figure out how to share Slides templates since they aren't files?? - Gino
 We have provided an Event Kickoff presentation template that you can customize for your hack and use to cover attendee logistics for a gHack event here:
 - [Event Kickoff Presentation Template (Virtual)](gH-EventKickoff-Virtual-Template.pptx)
 - [Event Kickoff Presentation Template (In-Person)](gH-EventKickoff-InPerson-Template.pptx)
@@ -189,8 +172,8 @@ The Coach's guide should include the following:
 
 - List of high-level solution steps to each challenge
 - List of known blockers (things attendees will get hung up on) and recommended hints for solving them. For example:
-    - Resources that will take a long time to deploy in Azure: Go get a coffee.
-    - If installing the Azure CLI on Windows, install it in the Windows Subsystem for Linux instead of just Windows itself
+    - Resources that will take a long time to deploy in GCP: Go get a coffee.
+    - If installing gcloud on Windows, install it in the Windows Subsystem for Linux instead of just Windows itself
     - Permission issues to be aware of, etc
 - List of key concepts that should be explained to/understood by attendees before a given challenge (perhaps with a presentation lecture)
 - List of reference links/articles/documentation that can be shared when attendees get stuck
@@ -204,15 +187,15 @@ The Coach's guide should be updated during & post event with key learnings, such
 This is where you put "the answers". There are usually multiple ways to solve a gHack Challenge. The solutions you provide here should be example solutions that represent one way to solve the challenges. The solution resources might include a full working application, configuration files, populated templates, or other resources that can be used to demonstrate how to solve the challenges. 
 
 Examples of Coach Solutions are:
-- Prerequisites for the Azure environment if needed. 
+- Prerequisites for the GCP environment if needed. 
     - Example: A VM image with Visual Studio or ML tools pre-installed. 
-    - Example: An ARM template and/or script that builds out an environment that saves time on solving a challenge
+    - Example: A Terraform template and/or script that builds out an environment that saves time on solving a challenge
 - Scripts/templates/etc for some challenges that can be shared with attendees if they get really stuck
     - Example: If challenges 1 through 3 build something (i.e. an ARM template) that is needed for challenge 4, you could “give” a stuck team the template so they could skip to challenge 4.
 
 If your hack provides Coach Solutions with code, templates, etc, it is recommended that you publish those resources as part of your hack's contents in the `../Coach/Solutions` folder.
 
-**NOTE:** This content is not intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.
+**NOTE:** This content is NOT intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.
 
 ## Preparing Your Environment
 
@@ -220,16 +203,16 @@ Okay, ready to get started creating your own gHack?
 
 First we create a fork of the main gHack repo and then clone it to disk and create a branch to work in. The instructions below assume you have the git command line on your machine. If you're more comfortable in a GUI git client, you can use that too (we recommend SourceTree).
 1. Create a fork of the gHack repo
-   - Navigate to the gHack git repo at: <go/gHacks>
+   - Navigate to the gHack git repo at: <http://github.com/gfilicetti/gHacks>
    - Click the Fork button at the top right of the page and then choose the account you want to create the fork in. 
 2. Clone your new fork to your local machine
-   - `git clone https://github.com/myname/WhatTheHack.git`
-   - `cd WhatTheHack`
+   - `git clone https://github.com/myname/gHacks.git`
+   - `cd gHacks`
 3. Create a new branch for your work. It is a best practice to never work directly on the master branch
    - `git branch MyWork`
    - `git checkout MyWork`
-4. Add a new top level folder to the gHack repo using the next available number in sequence
-   - `mkdir 067-IoTCentury`
+4. Add a new folder to the top-level `hacks` root folder. Name your hack something distinctive using snake-case. Eg:
+   - `mkdir hacks/century-of-iot`
 5. Within your new folder, create the following directory structure:
 	- `../Coach`
 		- `/Solutions`

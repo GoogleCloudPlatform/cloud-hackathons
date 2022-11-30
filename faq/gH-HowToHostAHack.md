@@ -66,7 +66,7 @@ As the event leader, most of the preparation steps are focused on preparing Micr
 
 ### Know Your Audience
 
-If you are inviting attendees that are outside of your organization, there are multiple things to think about with respect to using Azure and Microsoft Teams.
+If you are inviting attendees that are outside of your organization, there are multiple things to think about with respect to using GCP and Google Chat.
 
 If you are hosting a hack with a single organization, it is a good practice to identify an event stakeholder in the external organization who can help you plan for your gHacks event. The event stakeholder can help you address the following preparation concerns.
 
@@ -98,33 +98,27 @@ For more information, see: [Audio Conferencing in Microsoft 365](https://docs.mi
 
 When inviting external participants, make sure you follow your organization's privacy policies. At a minimum, make sure to disclose to the attendees that all members of the event will be able to see each others Name, Email Address, and anything they say and share within the various channels within the team.
 
-#### Azure Subscription
+#### GCP Subscription
 
-Most of the hacks in the gHacks collection require attendees to have "Contributor" access to an Azure subscription. 
+Most of the hacks in the gHacks collection require attendees to have "Contributor" access to a GCP project.
 
-It is important to work with the event stakeholder to decide how attendees will access Azure. Some organizations may provide individuals with their own subscriptions.  Other organizations may provide access to a shared subscription created specifically for attendees to use during the hack event. 
+It is important to work with the event stakeholder to decide how attendees will access GCP. Some organizations may provide individuals with their own subscriptions.  Other organizations may provide access to a shared subscription created specifically for attendees to use during the hack event. 
 
-If the organization provides the attendees with access to an Azure subscription, it is a good practice to share what the predicted cost of Azure resources used during the hack will be. No one wants a surprise bill at the end.
+If the organization provides the attendees with access to a GCP project, it is a good practice to share what the predicted cost of GCP resources used during the hack will be. No one wants a surprise bill at the end.
 
-If the organization is not providing access to an Azure subscription for the hack, attendees will need to provide there own.
-
-If an attendee has a Visual Studio subscription, they can use the free Azure credits that come with it. Credit amounts vary by subscription level.
-
-For more information, see: [Use Microsoft Azure in Visual Studio subscriptions](https://docs.microsoft.com/en-us/visualstudio/subscriptions/vs-azure)
-
-Finally, attendees can create a free trial Azure account to participate in the hack event by [signing up for Azure HERE.](https://azure.microsoft.com/en-us/free/)
+If the organization is not providing access to a GCP project for the hack, attendees will need to provide there own or a QwikLabs environment if the hack has created one.
 
 #### Workstation Security
 
-Some organizations have tight security policies enforced on their employees' workstations. A common one is to not provide users with adminstrator priviledges on their workstation. If this is the case, it may prevent them from installing tools or software needed to complete the hack.  
+Some organizations have tight security policies enforced on their employees' workstations. A common one is to not provide users with administrator privileges on their workstation. If this is the case, it may prevent them from installing tools or software needed to complete the hack.  
 
-One workaround is to use the Azure Cloud Shell. However, some organizations may disable access to the Azure Cloud Shell.  Another workaround is to provision a workstation VM in Azure that attendees can RDP into to complete the hack.
+One workaround is to use the Google Cloud Shell. However, some organizations may disable access to the Google Cloud Shell.  Another workaround is to provision a workstation VM in GCP that attendees can SSH into to complete the hack.
 
-Tight firewalls may make it challenging to access Azure itself from an organization's workstations. This is when you bang your head against the wall, give up, and be thankful you don't work for that organization! :)
+Tight firewalls may make it challenging to access even the GCP Console itself from an organization's workstations. This is when you bang your head against the wall, give up, and be thankful you don't work for that organization! :)
 
-All of these security concerns and their mitigations should be identified and addressed with the organization event stakeholder ahead of time.
+All of these security concerns and their mitigation should be identified and addressed with the organization event stakeholder ahead of time.
 
-### Microsoft Team Creation
+### Google Chat Space Creation
 
 Now that you've gotten all of the overhead out of the way, it's time to build your event's team in Teams.  
 
@@ -132,7 +126,7 @@ Create a new team for your gHacks event in Microsoft Teams that will be used as 
 
 We suggest naming your team with at minimum the hack name and date. You can also add the location or organization too. This will make it easy for attendees to remember what the team was for after the event.
 
-For example: `"Intro To Kubernetes - London (May 2020)"`
+For example: `"Intro To Kubernetes - London (May 2023)"`
 
 #### Team Structure
 
@@ -263,15 +257,6 @@ When you create a calendar invite, you should include:
 - Instructions to make arrangements for others to cover their day jobs.
 - Instructions to put on their OOF messages.
 
-To help you get started, we have provided a template for a gHacks calendar invite here:
-- [Hack Calendar Invite Template](WTH-CalendarInvite-Template.md)
-
-#### Automating Registration with Office 365 Tools
-
-If you are inviting people from your own organization, we have had good experience using Microsoft Forms and Microsoft Power Automate (formerly known as "Microsoft Flow") to automate adding attendees to an Outlook calendar invite when they register.
-
-For more information, see: [Automate Registration with Office 365](WTH-AutomateRegistrationWithO365.md)
-
 ## Event Day 
 
 The big day has arrived! It's showtime!  Rest well and get a full night of sleep beforehand. You will need it to be fresh on hack day.
@@ -355,15 +340,13 @@ Determine how you want to break the attendees up into the smaller groups to form
 - At an in-person event, the squads can be set by the table the attendees sit at.
 - Load balanced by skill level - This encourages a mix of experts and novices so that there is shared learning. Experts are encouraged to help novices.
 - Segregated by skill level - This enables advanced participants to progress at a faster pace or take on additional challenges, while allowing novices to move at a less stressful pace as they work together to learn.
-- Play Dodgeball - The lead coach nominates a few attendees as squad leaders. Allow the squad leaders to pick their squadmembers like in gym class at school.
+- Play Dodgeball - The lead coach nominates a few attendees as squad leaders. Allow the squad leaders to pick their squad members like in gym class at school.
 - At a virtual event, given various attendee locations, you may form squads by timezone. This enables squads to take break times that align to their timezone.
 - Random
 
 **TIP:** If hosting a hack at an external organization, it is a good idea to ask the event stakeholder to help decide.
 
 Once squads have been formed, encourage them to each give their squad a fun name and rename their Teams channel to it as depicted in the image below. This will help break the ice and get the squad members collaborating out of the gate.
-
-![Fun Squad Names](images/wth-squad-fun-namesm.jpg)
 
 #### Event Kick Off Presentation Templates
 
@@ -422,7 +405,7 @@ A coach's main over-arching role is to act as a technical advisor to the attende
 
 At an in-person event, the coaches should be sitting at the table with their squad. At a virtual event, they should be engaged in their squad's channel meeting for the duration of the event.
 
-Coaches will need to move around to interact with the lead coach, other coaches, or multiple squads. For example, a coachs may ask another coach for help if a squad runs into an issue that the coach does not know how to solve.
+Coaches will need to move around to interact with the lead coach, other coaches, or multiple squads. For example, a coach may ask another coach for help if a squad runs into an issue that the coach does not know how to solve.
 
 At a virtual event, the coaches can quickly jump in and out of the various Squad channels to check in on the squad and provide support as required by joining the various channel meetings.
 
@@ -465,9 +448,9 @@ The lead coach should close out the gHacks event with a final stand-up that acts
 - Attendees should be encouraged to share their parting thoughts and key learnings.
 - Attendee feedback should be solicited for a final time and notes collected by the lead coach
 - Thank the attendees for their time and dedication during the hack
-- Finally, share the content by directing the attendees to visit the gHacks repo on Github: <go/gHacks>
+- Finally, share the content by directing the attendees to visit the gHacks repo on Github: <http://github.com/gfilicetti/gHacks>
 
-You have now surived a gHacks!
+You have now survived a gHacks!
 
 ### Tips for In Person
 
