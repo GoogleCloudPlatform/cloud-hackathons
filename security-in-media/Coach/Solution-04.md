@@ -55,7 +55,7 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
     ```bash
     gcloud compute backend-services update http-backend \
-        --security-policy recaptcha-policy –-global
+        --security-policy=recaptcha-policy –-global
     ```
 
 1. In the Console, navigate to **Navigation menu > Network Security > Cloud Armor**.
