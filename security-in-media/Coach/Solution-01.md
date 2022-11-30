@@ -1,6 +1,6 @@
 # Challenge 1 - Create Managed Instance Groups
 
-**[Home](README.md)** - [Next Challenge>](./Solution-02.md)
+[< Previous Challenge](./Solution-00.md) - **[Home](README.md)** - [Next Challenge>](./Solution-02.md)
 
 ## Notes & Guidance
 Students will creating managed instance groups here, so there are a few things to keep an eye on:
@@ -25,10 +25,9 @@ Students will creating managed instance groups here, so there are a few things t
     sudo apt-get install apache2 -y
     sudo a2ensite default-ssl
     sudo a2enmod ssl
-    sudo vm_hostname="$(curl -H "Metadata-Flavor:Google" \
-    http://169.254.169.254/computeMetadata/v1/instance/name)"
+    export vm_hostname="$(hostname)"
     sudo echo "Page served from: $vm_hostname" | \
-    tee /var/www/html/index.html
+    sudo tee /var/www/html/index.html
     ```
 
 1. Click on the **Networking** tab, add the network tags: **allow-health-check**
