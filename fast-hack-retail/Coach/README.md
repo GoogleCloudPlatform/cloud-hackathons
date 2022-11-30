@@ -2,11 +2,9 @@
 ## Introduction
 Welcome to the coach's guide for the Retail Analytics gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
-Remember that this hack includes a optional [lecture presentation](Lectures.pdf) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
+Remember that this hack includes a [lecture presentation](Lectures.pdf) that introduces key topics associated with each challenge. It is recommended that the host present this presentation before attendees kick off the hack.
 
 ## Coach's Guides
-- Challenge 0: **[Installing Prerequisites and Preparing Your Environment](Solution-00.md)**
-   - Get yourself ready to develop our FastFresh solution
 - Challenge 1: **[Replicating Oracle Data Using Datastream](Solution-01.md)**
    - Backfill the Oracle FastFresh schema and replicate updates to Cloud Storage in real time.
 - Challenge 2: **[Creating a Dataflow Job using the Datastream to BigQuery Template](Solution-02.md)**
