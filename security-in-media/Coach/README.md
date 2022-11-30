@@ -3,9 +3,9 @@
 ## Introduction
 Welcome to the coach's guide for the Security in Media & Entertainment gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
-Remember that this gHack includes a optional [lecture presentation](Lectures.pptx) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
-
 ## Coach's Guides
+- Challenge 0: **[Setup & Requirements](Solution-00.md)**
+   - Before we can hack, you will need to set up a few things.
 - Challenge 1: **[Create Managed Instance Groups](Solution-01.md)**
    - Use managed instance groups to create an HTTP Load Balancer backend.
 - Challenge 2: **[Setup Your HTTP Load Balancer](Solution-02.md)**
