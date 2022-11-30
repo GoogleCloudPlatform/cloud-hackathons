@@ -1,4 +1,4 @@
-# gHacks - Retail Analytics
+# Retail Analytics
 ## Introduction
 This gHack will take you through replicating and processing operational data from an Oracle database into Google Cloud in real time. You'll also figure out how to forecast future demand, and how to visualize this forecast data as it arrives.
 
