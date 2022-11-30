@@ -41,7 +41,7 @@ Here is the current list of gHacks available in our repository:
 
 ## Data & AI
 - [MLOps from Scratch](/hacks/mlops-from-scratch/README.md)
-- [Data Analytics for Retail](/hacks/retail-data-analytics/README.md)
+- [Data Analytics for Retail](/hacks/retail-analytics/README.md)
 
 ## Infrastructure
 - [Security in Media](/hacks/security-in-media/README.md)
