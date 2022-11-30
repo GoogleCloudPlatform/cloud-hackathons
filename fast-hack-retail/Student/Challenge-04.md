@@ -54,7 +54,8 @@ The training data  describes for each product (`product_name`), how many units w
     QUERY hourly_timestamp, product_name AND total_sold FROM OBJECT retail.training_data
     ```
 
-    ***HACK NOW!*** *You can find information to hack this task [at this link.](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-create-time-series)*
+    **NOTE:** Look at the **Creating ARIMA_PLUS Model** documentation in the [Learning Resources](#learning-resources) section below.
+
 
 1. Run the following SQL to forecast the demand for organic bananas over the next 30 days:
 

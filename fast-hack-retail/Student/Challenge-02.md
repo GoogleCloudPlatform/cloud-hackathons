@@ -80,7 +80,7 @@ You can extend the functionality of this template by including User Defined Func
 
         In the Google Cloud Console, find the Dataflow service and verify that a new streaming job has started.
 
-        ***HACK NOW!*** *You can find information to hack this challenge [at this link.](https://cloud.google.com/dataflow/docs/guides/using-monitoring-intf)*
+        **NOTE:** Look at the **Use the Dataflow Monitoring Interface** documentation in the [Learning Resources](#learning-resources) section below.
 
     - Go back to the Cloud Shell. **Run** this command to start your Datastream stream:
 
@@ -100,7 +100,7 @@ You can extend the functionality of this template by including User Defined Func
 
         Because this task is an initial load, Datastream reads from the `ORDERS` object. It writes all records to the JSON files located in the Cloud Storage bucket that you specified during the stream creation. It will take about 10 minutes for the backfill task to complete.
 
-        ***HACK NOW!*** *You can find information to hack this challenge [at this link.](https://cloud.google.com/datastream/docs/monitor-a-stream)*
+        **NOTE:** Look at the **Monitor a Stream** documentation in the [Learning Resources](#learning-resources) section below.
         
 
 ## Success Criteria
@@ -122,3 +122,5 @@ You can extend the functionality of this template by including User Defined Func
 - [Configuring Firewall Rules](https://cloud.google.com/sdk/gcloud/reference/compute/firewall-rules)
 - [Starting Dataflow Jobs](https://cloud.google.com/sdk/gcloud/reference/dataflow/jobs/run)
 - [Datastream Stream Update](https://cloud.google.com/sdk/gcloud/reference/datastream/streams/update)
+- [Use the Dataflow Monitoring Interface](https://cloud.google.com/dataflow/docs/guides/using-monitoring-intf)
+- [Monitor a Stream](https://cloud.google.com/datastream/docs/monitor-a-stream)
