@@ -6,7 +6,7 @@ Developing a new gHack is a great way to get your content out to the world. Chan
 
 The gHack "challenge" format is perfect for team-based, hands-on learning experiences.
 
-gHack is all about being "for the people, by the people". This repo was originally created to share real-world hackathons that Google employees have hosted with their customers. Here are our core principles:
+gHack is all about being "for the people, by the people". This repo was originally created to share real-world hackathons that Google Cloud teams have hosted with their customers. Here are our core principles:
 - Anyone can contribute a hack.
 - Anyone can use the content to host their own event.
 - Anyone can modify the content as needed.

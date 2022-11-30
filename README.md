@@ -37,13 +37,14 @@ Read our [gHacks Author's Guide](/faq/gH-HowToAuthorAHack.md) for details on how
 
 # The gHacks Collection
 
-Here is the current list of gHacks hackathons available in our repository:
+Here is the current list of gHacks available in our repository:
 
 ## Data & AI
-- [MLOps from Scratch](/001-MLOps/README.md)
+- [MLOps from Scratch](/hacks/mlops-from-scratch/README.md)
+- [Data Analytics for Retail](/hacks/retail-data-analytics/README.md)
 
 ## Infrastructure
-- [Fast Hack](/002-FastHack/README.md)
+- [Security in Media](/hacks/security-in-media/README.md)
 
 ## Application Development
 - Coming soon...
