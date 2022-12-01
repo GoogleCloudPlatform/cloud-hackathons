@@ -9,7 +9,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Get ready for Jekyll
-      run: sudo apt install -y locales nodejs
+      run: sudo apt update && sudo apt-get install -y locales nodejs
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
