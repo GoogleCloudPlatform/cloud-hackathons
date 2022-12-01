@@ -1,0 +1,14 @@
+name: Website
+
+on: [push, workflow_dispatch]
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Build pages
+      uses: actions/jekyll-build-pages@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
