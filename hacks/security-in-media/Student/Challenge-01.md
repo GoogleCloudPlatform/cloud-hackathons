@@ -12,6 +12,14 @@ A managed instance group uses an instance template to create a group of identica
 - Create an instance template with the following configuration: 
     - **Name**: lb-backend-template
     - **Series**: N1
+    - **Networking**:
+        - Use the default Network and Subnet(us-east1) 
+        - Add a network tag named **allow-health-check**  
+    
+            > **NOTE**: The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
+
+            > **NOTE:** Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
+
     - **Startup Script**: 
         ```bash
         #! /bin/bash
@@ -23,13 +31,6 @@ A managed instance group uses an instance template to create a group of identica
         sudo echo "Page served from: $vm_hostname" | \
         sudo tee /var/www/html/index.html
         ```
-    - **Networking**:
-        - Use the default Network and Subnet(us-east1) 
-        - Add a network tag named **allow-health-check**  
-    
-            > **NOTE**: The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
-
-
 
 ### Create Managed Instance Group
 

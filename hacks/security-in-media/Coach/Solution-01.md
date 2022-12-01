@@ -17,6 +17,18 @@ Students will creating managed instance groups here, so there are a few things t
 
     ![MIG Startup Script](../Images/mig-startup-script.png)
 
+1. Click on the **Networking** tab, add the network tags: **allow-health-check**
+1. Set the following values and leave all other values at their defaults:
+
+    |Property|Value|
+    |--|--|
+    |Network|default|
+    |Subnet|default (us-east1)|
+    |Network tags|allow-health-check|
+    
+    > The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
+    > **NOTE:** Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
+
 1. Go to the **Management** section and insert the following script into the **Startup script** field:
 
     ```bash
@@ -30,19 +42,9 @@ Students will creating managed instance groups here, so there are a few things t
     sudo tee /var/www/html/index.html
     ```
 
-1. Click on the **Networking** tab, add the network tags: **allow-health-check**
-1. Set the following values and leave all other values at their defaults:
 
-    |Property|Value|
-    |--|--|
-    |Network|default|
-    |Subnet|default (us-east1)|
-    |Network tags|allow-health-check|
-    
-    > The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
-
-8. Click **Create**.
-8. Wait for the instance template to be created.
+1. Click **Create**.
+1. Wait for the instance template to be created.
 
 ### Create the managed instance group
 1. Still in the **Compute Engine** page, click **Instance groups** in the left menu.

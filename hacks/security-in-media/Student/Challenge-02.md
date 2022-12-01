@@ -9,7 +9,7 @@ Configure the HTTP Load Balancer to send traffic to your backend instance group 
 ## Description
 
 ### Start the configuration
-- Create a classic HTTPS load balancer to send traffic from the Internet to your VMs named: ```http-lb```
+- Create a classic HTTPS load balancer to send traffic from the Internet to your VMs named: `http-lb`
 
 ### Configure the backend
 Backend services direct incoming traffic to one or more attached backends. Each backend is composed of an instance group and additional serving capacity metadata.
