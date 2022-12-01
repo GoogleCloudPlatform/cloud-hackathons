@@ -8,10 +8,16 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Build pages
-      uses: actions/jekyll-build-pages@v1
+    - name: Get ready for Jekyll
+      run: sudo apt install -y locales nodejs
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        ruby-version: '2.7'    
+    - name: Build pages
+      run: |
+        NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install
+        github-pages build
     - name: Publish to Cloudflare Pages
       uses: cloudflare/pages-action@1
       with:
