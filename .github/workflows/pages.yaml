@@ -8,13 +8,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Get ready for Jekyll
-      run: sudo apt update && sudo apt-get install -y locales nodejs
-    - name: Setup Ruby
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: '2.7'    
-    - name: Build pages
+    - name: Build Jekyll Pages
       run: |
         NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install
         github-pages build
