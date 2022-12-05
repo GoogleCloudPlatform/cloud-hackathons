@@ -37,21 +37,21 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
 - In the Console, verify your policy resembles the following:
 
-    ![recaptcha rules](../Images/armor-rules.png)
+    ![recaptcha rules](../images/armor-rules.png)
 
 ### Validate Bot Management with Cloud Armor
 
 - Open up a browser and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on **"Visit allow link"**. Verify you are allowed through.
 
-    ![armor good score](../Images/armor-good-score.png)
+    ![armor good score](../images/armor-good-score.png)
 
 - Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on **"Visit blocked link"**. Verify you receive a HTTP 403 error.
 
-    ![armor bad score](../Images/armor-bad-score.png)
+    ![armor bad score](../images/armor-bad-score.png)
 
 - Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on **"Visit redirect link"**. Verify you see the redirection to Google reCAPTCHA and the manual challenge page.
 
-    ![armor recaptcha click check](../Images/armor-click-check.png)
+    ![armor recaptcha click check](../images/armor-click-check.png)
 
 ### Verify Cloud Armor logs
 
@@ -68,11 +68,11 @@ Explore the security policy logs to validate bot management worked as expected.
 - Verify a log entry exists in Query results where the request is for each rule (good, bad, median)
 - Verify that the configuredAction is set to **ALLOW, DENY or GOOGLE_RECAPTCHA** with the name **recaptcha-policy**.
 
-    ![armor good results](../Images/armor-good-results.png)
+    ![armor good results](../images/armor-good-results.png)
 
-    ![armor bad results](../Images/armor-bad-results.png)
+    ![armor bad results](../images/armor-bad-results.png)
 
-    ![armor median results](../Images/armor-median-results.png)
+    ![armor median results](../images/armor-median-results.png)
 
 > NOTE: Cloud Armor security policies create logs that can be explored to determine when traffic is denied and when it is allowed, along with the source of the traffic.
 

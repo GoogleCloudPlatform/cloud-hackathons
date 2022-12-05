@@ -4,7 +4,7 @@ Google Cloud HTTP(S) load balancing is deployed at the edge of Google's network 
 
 Cloud Armor is Google's distributed denial of service and web application firewall (WAF) detection system. Cloud Armor is tightly coupled with the Google Cloud HTTP Load Balancer and safeguards applications of Google Cloud customers from attacks from the internet. reCAPTCHA Enterprise is a service that protects your site from spam and abuse, building on the existing reCAPTCHA API which uses advanced risk analysis techniques to tell humans and bots apart. Cloud Armor Bot Management provides an end-to-end solution integrating reCAPTCHA Enterprise bot detection and scoring with enforcement by Cloud Armor at the edge of the network to protect downstream applications.
 
-![Security Architecture](Images/security-architecture.png)
+![Security Architecture](images/security-architecture.png)
 
 ## Learning Objectives
 In this lab, you configure an HTTP Load Balancer with a backend, as shown in the diagram below. Then, you'll learn to set up a reCAPTCHA session token site key and embed it in your website. You will also learn to set up redirection to reCAPTCHA Enterprise manual challenge. We will then configure a Cloud Armor bot management policy to showcase how bot detection protects your application from malicious bot traffic.
@@ -16,15 +16,15 @@ In this lab, you configure an HTTP Load Balancer with a backend, as shown in the
 1. How to validate that the bot management policy is handling traffic based on the rules configured.
 
 ## Challenges
-- Challenge 0: **[Setup & Requirements](Student/Challenge-00.md)**
+- Challenge 0: **[Setup & Requirements](Student/challenge-00.md)**
    - Before we can hack, you will need to set up a few things.
-- Challenge 1: **[Create Managed Instance Groups](Student/Challenge-01.md)**
+- Challenge 1: **[Create Managed Instance Groups](Student/challenge-01.md)**
    - Use managed instance groups to create an HTTP Load Balancer backend.
-- Challenge 2: **[Setup Your HTTP Load Balancer](Student/Challenge-02.md)**
+- Challenge 2: **[Setup Your HTTP Load Balancer](Student/challenge-02.md)**
    - Configure the HTTP Load Balancer to send traffic to your backend.
-- Challenge 3: **[Deploy a reCAPTCHA Token and Challenge Page](Student/Challenge-03.md)**
+- Challenge 3: **[Deploy a reCAPTCHA Token and Challenge Page](Student/challenge-03.md)**
    - Implement reCAPTCHA on a website's landing page. 
-- Challenge 4: **[Configure Bot Management](Student/Challenge-04.md)**
+- Challenge 4: **[Configure Bot Management](Student/challenge-04.md)**
    - Use Cloud Armor bot management rules to allow, deny and redirect requests based on the reCAPTCHA score.
 
 ## Prerequisites

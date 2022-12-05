@@ -35,12 +35,12 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
 
 1. Navigate to **Navigation menu > Security > reCAPTCHA Enterprise**. You should see the keys you created under Enterprise Keys:
 
-    ![Enterprise Keys](../Images/recaptcha-main.png)
+    ![Enterprise Keys](../images/recaptcha-main.png)
 
 ### Implement reCAPTCHA session token site key
 1. Navigate to **Navigation menu > Compute Engine > VM Instances**. Locate the VM in your instance group and SSH to it.
 
-    ![Enterprise Keys](../Images/recaptcha-main.png)
+    ![Enterprise Keys](../images/recaptcha-main.png)
 
 1. Go to the webserver root directory and and change user to root
 
@@ -83,12 +83,12 @@ echo '<!doctype html><html><head><title>ReCAPTCHA Session Token</title><script s
 1. Validate that you are able to access all the webpages by opening them in your browser. Make sure to replace **[LB_IP_v4]** with the IPv4 address of the load balancer.
     - Open ***http://[LB_IP_v4]/index.html***. You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the page:
         
-        ![Protect Logo](../Images/recaptcha-protect-logo.png)
+        ![Protect Logo](../images/recaptcha-protect-logo.png)
 
     - Click into each of the links:
 
-        ![Main Page](../Images/recaptcha-site-mainpage.png)
+        ![Main Page](../images/recaptcha-site-mainpage.png)
 
     - Validate you are able to access all the pages.
 
-        ![Congrats](../Images/recaptcha-site-goodscore.png)
+        ![Congrats](../images/recaptcha-site-goodscore.png)

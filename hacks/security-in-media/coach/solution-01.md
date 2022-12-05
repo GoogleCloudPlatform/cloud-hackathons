@@ -15,7 +15,7 @@ Students will creating managed instance groups here, so there are a few things t
 1. For **Series**, select **N1**.
 1. Click **Networking, Disks, Security, Management, Sole-Tenancy**.
 
-    ![MIG Startup Script](../Images/mig-startup-script.png)
+    ![MIG Startup Script](../images/mig-startup-script.png)
 
 1. Click on the **Networking** tab, add the network tags: **allow-health-check**
 1. Set the following values and leave all other values at their defaults:
@@ -49,7 +49,7 @@ Students will creating managed instance groups here, so there are a few things t
 ### Create the managed instance group
 1. Still in the **Compute Engine** page, click **Instance groups** in the left menu.
 
-    ![Create MIG](../Images/mig-create-menu.png)
+    ![Create MIG](../images/mig-create-menu.png)
 
 1. Click **Create instance group**. Select **New managed instance group (stateless)**.
 1. Set the following values, leave all other values at their defaults:

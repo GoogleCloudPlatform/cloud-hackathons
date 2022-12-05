@@ -11,7 +11,7 @@
 1. In the Cloud Console, click **Navigation menu** > click **Network Services** > **Load balancing**, and then click **Create load balancer**.
 1. Under **HTTP(S) Load Balancing**, click on **Start configuration**.
 
-    ![Start Configuration](../Images/lb-start-config.png)
+    ![Start Configuration](../images/lb-start-config.png)
 
 1. Select **From Internet to my VMs, Classic HTTP(S) Load Balancer** and click **Continue**.
 1. Set the **Name** to *http-lb*.
@@ -35,7 +35,7 @@ Backend services direct incoming traffic to one or more attached backends. Each 
 1. Click **Add Backend**.
 1. For **Health Check**, select **Create a health check**.
 
-    ![Create a Health Check](../Images/lb-create-health-check.png)
+    ![Create a Health Check](../images/lb-create-health-check.png)
 
 1. Set the following values, leave all other values at their defaults:
 
@@ -47,17 +47,17 @@ Backend services direct incoming traffic to one or more attached backends. Each 
 
     > Health checks determine which instances receive new connections. This HTTP health check polls instances every 5 seconds, waits up to 5 seconds for a response and treats 2 successful or 2 failed attempts as healthy or unhealthy, respectively.
 
-    ![Health Criteria](../Images/lb-health-criteria.png)
+    ![Health Criteria](../images/lb-health-criteria.png)
 
 1. Click **Save**.
 1. Check the **Enable Logging** box.
 1. Set the **Sample Rate** to 1:
 
-    ![Sample Rate](../Images/lb-sample-rate.png)
+    ![Sample Rate](../images/lb-sample-rate.png)
 
 1. Click Create to create the backend service.
 
-    ![Create Backend](../Images/lb-create-backend.png)
+    ![Create Backend](../images/lb-create-backend.png)
 
 ### Configure the frontend
 The host and path rules determine how your traffic will be directed. For example, you could direct video traffic to one backend and static traffic to another backend. However, you are not configuring the Host and path rules in this hack.
@@ -77,7 +77,7 @@ The host and path rules determine how your traffic will be directed. For example
 ### Review and create the HTTP Load Balancer
 1. Click on **Review and finalize**.
 
-    ![Review and Finalize](../Images/lb-review-finalize.png)
+    ![Review and Finalize](../images/lb-review-finalize.png)
 
 1. Review the **Backend services** and **Frontend**.
 1. Click on **Create**.
