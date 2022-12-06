@@ -40,7 +40,7 @@ Read our [gHacks Author's Guide](/faq/gH-HowToAuthorAHack.md) for details on how
 Here is the current list of gHacks available in our repository:
 
 ## Data & AI
-- [MLOps from Scratch](/hacks/mlops-from-scratch/README.md)
+- [MLOps on GCP](/hacks/mlops-on-gcp/README.md)
 - [Data Analytics for Retail](/hacks/retail-analytics/README.md)
 
 ## Infrastructure
