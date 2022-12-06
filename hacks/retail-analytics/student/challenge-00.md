@@ -1,6 +1,6 @@
 # Challenge 0 - Installing Prerequisites and Preparing Your Environment
 
-**[Home](../readme.md)** - [Next Challenge>](./Challenge-01.md)
+**[Home](../readme.md)** - [Next Challenge>](./challenge-01.md)
 
 ## Introduction
 

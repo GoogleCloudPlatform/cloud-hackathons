@@ -1,6 +1,6 @@
 # Challenge 4 - Configure Bot Management
 
-[< Previous Challenge](./Challenge-03.md) - **[Home](../README.md)**
+[< Previous Challenge](./challenge-03.md) - **[Home](../README.md)**
 
 ## Description
 

@@ -1,6 +1,6 @@
 # Challenge 2 - Setup Your HTTP Load Balancer
 
-[< Previous Challenge](./Challenge-01.md) - **[Home](../README.md)** - [Next Challenge>](./Challenge-03.md)
+[< Previous Challenge](./challenge-01.md) - **[Home](../README.md)** - [Next Challenge>](./challenge-03.md)
 
 ## Introduction
 

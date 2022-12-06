@@ -1,6 +1,6 @@
 # Challenge 2 - Setup Your HTTP Load Balancer
 
-[< Previous Challenge](./Solution-01.md) - **[Home](README.md)** - [Next Challenge>](./Solution-03.md)
+[< Previous Challenge](./solution-01.md) - **[Home](README.md)** - [Next Challenge>](./solution-03.md)
 
 ## Notes & Guidance
 - Remember that the HTTP Load Balancer can take up to 15 minutes to provision, make sure the students are patient.

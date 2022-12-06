@@ -1,6 +1,6 @@
 # Challenge 3 - Deploy a reCAPTCHA Token and Challenge Page
 
-[< Previous Challenge](./Challenge-02.md) - **[Home](../README.md)** - [Next Challenge>](./Challenge-04.md)
+[< Previous Challenge](./challenge-02.md) - **[Home](../README.md)** - [Next Challenge>](./challenge-04.md)
 
 ## Introduction 
 

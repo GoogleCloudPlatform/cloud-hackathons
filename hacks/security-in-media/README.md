@@ -16,15 +16,15 @@ In this lab, you configure an HTTP Load Balancer with a backend, as shown in the
 1. How to validate that the bot management policy is handling traffic based on the rules configured.
 
 ## Challenges
-- Challenge 0: **[Setup & Requirements](Student/challenge-00.md)**
+- Challenge 0: **[Setup & Requirements](student/challenge-00.md)**
    - Before we can hack, you will need to set up a few things.
-- Challenge 1: **[Create Managed Instance Groups](Student/challenge-01.md)**
+- Challenge 1: **[Create Managed Instance Groups](student/challenge-01.md)**
    - Use managed instance groups to create an HTTP Load Balancer backend.
-- Challenge 2: **[Setup Your HTTP Load Balancer](Student/challenge-02.md)**
+- Challenge 2: **[Setup Your HTTP Load Balancer](student/challenge-02.md)**
    - Configure the HTTP Load Balancer to send traffic to your backend.
-- Challenge 3: **[Deploy a reCAPTCHA Token and Challenge Page](Student/challenge-03.md)**
+- Challenge 3: **[Deploy a reCAPTCHA Token and Challenge Page](student/challenge-03.md)**
    - Implement reCAPTCHA on a website's landing page. 
-- Challenge 4: **[Configure Bot Management](Student/challenge-04.md)**
+- Challenge 4: **[Configure Bot Management](student/challenge-04.md)**
    - Use Cloud Armor bot management rules to allow, deny and redirect requests based on the reCAPTCHA score.
 
 ## Prerequisites

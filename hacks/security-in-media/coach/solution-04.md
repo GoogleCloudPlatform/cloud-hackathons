@@ -1,6 +1,6 @@
 # Challenge 4 - Configure Bot Management
 
-[< Previous Challenge](./Solution-03.md) - **[Home](README.md)**
+[< Previous Challenge](./solution-03.md) - **[Home](README.md)**
 
 ## Notes & Guidance
 - There are a lot of gcloud command line calls that need to be discovered here, make sure they're reading the linked documentation.

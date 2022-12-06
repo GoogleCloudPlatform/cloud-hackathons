@@ -1,6 +1,6 @@
 # Challenge 3 - Deploy a reCAPTCHA Token and Challenge Page
 
-[< Previous Challenge](./Solution-02.md) - **[Home](README.md)** - [Next Challenge>](./Solution-04.md)
+[< Previous Challenge](./solution-02.md) - **[Home](README.md)** - [Next Challenge>](./solution-04.md)
 
 ## Notes & Guidance
 - Before starting make sure to give them another overview of how reCAPTCHA works and how it uses different levels of scoring.

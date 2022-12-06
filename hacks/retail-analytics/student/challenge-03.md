@@ -1,6 +1,6 @@
 # Challenge 3 - Analyzing Your Data in BigQuery
 
-[< Previous Challenge](./Challenge-02.md) - **[Home](../readme.md)** - [Next Challenge>](./Challenge-04.md)
+[< Previous Challenge](./challenge-02.md) - **[Home](../readme.md)** - [Next Challenge>](./challenge-04.md)
 
 ## Introduction
 

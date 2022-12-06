@@ -1,6 +1,6 @@
 # Challenge 1 - Create Managed Instance Groups
 
-[< Previous Challenge](./Challenge-00.md) - **[Home](../README.md)** - [Next Challenge>](./Challenge-02.md)
+[< Previous Challenge](./challenge-00.md) - **[Home](../README.md)** - [Next Challenge>](./challenge-02.md)
 
 ## Introduction
 

@@ -1,6 +1,6 @@
 # Challenge 1 - Create Managed Instance Groups
 
-[< Previous Challenge](./Solution-00.md) - **[Home](README.md)** - [Next Challenge>](./Solution-02.md)
+[< Previous Challenge](./solution-00.md) - **[Home](README.md)** - [Next Challenge>](./solution-02.md)
 
 ## Notes & Guidance
 Students will creating managed instance groups here, so there are a few things to keep an eye on:

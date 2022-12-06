@@ -1,6 +1,6 @@
 # Challenge 4 - Building a Demand Forecast
 
-[< Previous Challenge](./Challenge-03.md) - **[Home](../readme.md)**
+[< Previous Challenge](./challenge-03.md) - **[Home](../readme.md)**
 
 ## Introduction
 

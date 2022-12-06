@@ -1,6 +1,6 @@
 # Challenge 1 - Replicating Oracle Data Using Datastream
 
-[< Previous Challenge](./Challenge-00.md) - **[Home](../readme.md)** - [Next Challenge>](./Challenge-02.md)
+[< Previous Challenge](./challenge-00.md) - **[Home](../readme.md)** - [Next Challenge>](./challenge-02.md)
 
 ## Introduction
 

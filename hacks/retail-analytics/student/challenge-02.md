@@ -1,6 +1,6 @@
 # Challenge 2 - Creating a Dataflow Job using the Datastream to BigQuery Template
 
-[< Previous Challenge](./Challenge-01.md) - **[Home](../readme.md)** - [Next Challenge>](./Challenge-03.md)
+[< Previous Challenge](./challenge-01.md) - **[Home](../readme.md)** - [Next Challenge>](./challenge-03.md)
 
 ## Introduction
 

@@ -1,6 +1,6 @@
 # Challenge 0 - Setup & Requirements
 
-**[Home](README.md)** - [Next Challenge>](./Solution-01.md)
+**[Home](README.md)** - [Next Challenge>](./solution-01.md)
 
 ## Notes & Guidance
 
