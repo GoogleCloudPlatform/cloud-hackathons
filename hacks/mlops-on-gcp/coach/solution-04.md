@@ -1,6 +1,6 @@
 # Challenge 4: Automagic training with pipelines
 
-[< Previous Challenge](solution-03.md) - **[Home](../README.md)** - [Next Challenge >](solution-05.md)
+[< Previous Challenge](solution-03.md) - **[Home](./README.md)** - [Next Challenge >](solution-05.md)
 
 ## Notes & Guidance
 

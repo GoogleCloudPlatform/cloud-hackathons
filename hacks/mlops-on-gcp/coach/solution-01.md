@@ -1,6 +1,6 @@
 # Challenge 1: Let’s start exploring!
 
-**[Home](../README.md)** - [Next Challenge >](solution-02.md)
+**[Home](./README.md)** - [Next Challenge >](solution-02.md)
 
 ## Notes & Guidance
 

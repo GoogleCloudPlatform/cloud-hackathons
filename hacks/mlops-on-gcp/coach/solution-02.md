@@ -1,6 +1,6 @@
 # Challenge 2: If it isn’t in version control, it doesn’t exist
 
-[< Previous Challenge](solution-01.md) - **[Home](../README.md)** - [Next Challenge >](solution-03.md)
+[< Previous Challenge](solution-01.md) - **[Home](./README.md)** - [Next Challenge >](solution-03.md)
 
 ## Notes & Guidance
 

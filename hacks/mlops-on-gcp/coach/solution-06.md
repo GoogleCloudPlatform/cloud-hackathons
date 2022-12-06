@@ -1,6 +1,6 @@
 # Challenge 6: Monitor your models
 
-[< Previous Challenge](solution-05.md) - **[Home](../README.md)** - [Next Challenge >](solution-07.md)
+[< Previous Challenge](solution-05.md) - **[Home](./README.md)** - [Next Challenge >](solution-07.md)
 
 ## Notes & Guidance
 

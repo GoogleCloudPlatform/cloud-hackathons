@@ -1,6 +1,6 @@
 # Challenge 7: Close the loop
 
-[< Previous Challenge](solution-06.md) - **[Home](../README.md)**
+[< Previous Challenge](solution-06.md) - **[Home](./README.md)**
 
 ## Notes & Guidance
 
