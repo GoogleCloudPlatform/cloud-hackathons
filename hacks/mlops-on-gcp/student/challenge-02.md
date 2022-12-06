@@ -1,5 +1,7 @@
+# Challenge 2: If it isn’t in version control, it doesn’t exist
 
 [< Previous Challenge](challenge-01.md) - **[Home](../README.md)** - [Next Challenge >](challenge-03.md)
+
 ## Introduction
 
 The objective of this challenge is to create and configure a Git repository so that the code can be version controlled. You could use any external Git repository (Github/BitBucket/Gitlab etc) but the easiest way for this challenge is to use a Cloud Source Repository on GCP.

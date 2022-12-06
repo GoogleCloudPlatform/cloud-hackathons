@@ -1,5 +1,7 @@
+# Challenge 7: Close the loop
 
 [< Previous Challenge](challenge-06.md) - **[Home](../README.md)**
+
 ## Introduction
 
 If you’ve completed all of the previous challenges, you’re now ready to bring it all together. This task is all about automating the whole process, so that when Model Monitoring raises an alert, a new model is trained and deployed. 

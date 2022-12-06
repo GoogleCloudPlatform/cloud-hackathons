@@ -1,5 +1,7 @@
+# Challenge 5: Make it work and make it scale
 
 [< Previous Challenge](challenge-04.md) - **[Home](../README.md)** - [Next Challenge >](challenge-06.md)
+
 ## Introduction
 
 Having a model is only the first step, in order to use the model it has to be deployed to an endpoint. Vertex AI Endpoints provide a managed service for serving predictions.

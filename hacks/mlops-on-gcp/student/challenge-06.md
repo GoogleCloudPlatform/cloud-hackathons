@@ -1,5 +1,7 @@
+# Challenge 6: Monitor your models
 
 [< Previous Challenge](challenge-05.md) - **[Home](../README.md)** - [Next Challenge >](challenge-07.md)
+
 ## Introduction
 
 There are times when the training data becomes not representative anymore because of changing demographics, trends etc. To catch any skew or drift in feature distributions or even in predictions, it is necessary to monitor your model performance continuously. Luckily Vertex AI Endpoints have Model Monitoring capabilities that you can use for that purpose.

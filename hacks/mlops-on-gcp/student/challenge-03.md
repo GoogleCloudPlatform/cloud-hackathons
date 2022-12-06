@@ -1,5 +1,7 @@
+# Challenge 3: You break the build, you buy cake
 
 [< Previous Challenge](challenge-02.md) - **[Home](../README.md)** - [Next Challenge >](challenge-04.md)
+
 ## Introduction
 
 This task is all about automating things using Cloud Build.

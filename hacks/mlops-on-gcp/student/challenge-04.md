@@ -1,5 +1,7 @@
+# Challenge 4: Automagic training with pipelines
 
 [< Previous Challenge](challenge-03.md) - **[Home](../README.md)** - [Next Challenge >](challenge-05.md)
+
 ## Introduction
 
 The previous challenge introduced the concept of build pipelines. But there are different types of pipelines, and this task is getting started with Vertex AI pipelines for continuous training. 
