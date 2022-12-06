@@ -1,0 +1,32 @@
+name: Website
+
+on: [push, workflow_dispatch]
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '2.7'    
+    - name: Build Jekyll Pages
+      run: |
+        NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install
+        github-pages build
+    - name: Publish to Cloudflare Pages
+      uses: cloudflare/pages-action@1
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: ghacks
+        directory: _site
+        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        branch: main
+        # branch: ${GITHUB_REF#refs/heads/}

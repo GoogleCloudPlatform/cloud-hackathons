@@ -51,16 +51,16 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
 
 > **NOTE:** These pages only need to contain some title text to tell you which score it is for, like so:
 
-![Congrats](../Images/recaptcha-site-goodscore.png)
+![Congrats](../images/recaptcha-site-goodscore.png)
 
 - Validate that you are able to access all the webpages by opening them in your browser.
     - Open ```http://{LoadBalance_IP_Here}/index.html```. You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the page:
         
-        ![Protect Logo](../Images/recaptcha-protect-logo.png)
+        ![Protect Logo](../images/recaptcha-protect-logo.png)
 
     - Click into each of the links:
 
-        ![Main Page](../Images/recaptcha-site-mainpage.png)
+        ![Main Page](../images/recaptcha-site-mainpage.png)
 
     - Validate that you see the correct behaviour for each page:
         - ```good-score.html```: You see the page perfectly.

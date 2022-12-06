@@ -2,7 +2,7 @@
 ---
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Roboto+Mono&family=Roboto:wght@300;400;500;700&display=swap');
-@import "jekyll-theme-midnight";
+@import '{{ site.theme }}';
 
 body {
   font:14px/1.5 'Roboto', 'OpenSansRegular', 'Helvetica Neue', Helvetica, Arial, sans-serif;

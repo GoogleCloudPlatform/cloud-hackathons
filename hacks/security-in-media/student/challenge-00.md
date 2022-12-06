@@ -11,9 +11,9 @@ Thank you for participating in the Security in Media & Entertainment gHack. Befo
 ### Setup Your Project
 1. Sign-in to the [Google Cloud Console](http://console.cloud.google.com/) and create a new project or reuse an existing one. If you don't already have a Gmail or Google Workspace account, you must [create one](https://accounts.google.com/SignUp).
 
-    ![Select a project](../Images/select-project.png)
-    ![New project button](../Images/new-project-button.png)
-    ![New project](../Images/new-project.png)
+    ![Select a project](../images/select-project.png)
+    ![New project button](../images/new-project-button.png)
+    ![New project](../images/new-project.png)
 
 - The **Project name** is the display name for this project's participants. It is a character string not used by Google APIs, and you can update it at any time.
 
@@ -32,11 +32,11 @@ While Google Cloud can be operated remotely from your laptop, in this gHack you 
 
 - From the GCP Console click the Cloud Shell icon on the top right toolbar:
 
-    ![Console toolbar](../Images/toolbar.png)
+    ![Console toolbar](../images/toolbar.png)
 
 - It should only take a few moments to provision and connect to the environment. When it is finished, you should see something like this:
 
-    ![Cloud Shell](../Images/cloud-shell.png)
+    ![Cloud Shell](../images/cloud-shell.png)
 
 - This virtual machine is loaded with all the development tools you'll need. It offers a persistent 5GB home directory, and runs on Google Cloud, greatly enhancing network performance and authentication. All of your work in this gHack can be done completely in the browser.
 
@@ -77,7 +77,7 @@ We will be using the ***default*** VPC network created in your project. Create a
 
 1. In the Cloud Console, navigate to Navigation at the top left and go to: **VPC network > Firewall**.
 
-    ![Networking menu](../Images/networking-menu.png)
+    ![Networking menu](../images/networking-menu.png)
 
 1. Notice the existing ICMP, internal, RDP, and SSH firewall rules.Each Google Cloud project starts with the default network and these firewall rules.
 
