@@ -1,6 +1,11 @@
 name: Website
 
-on: [push, workflow_dispatch]
+on: 
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+#      - staging
 
 jobs:
   pages:
@@ -28,5 +33,4 @@ jobs:
         projectName: ghacks
         directory: _site
         gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-        branch: main
-        # branch: ${GITHUB_REF#refs/heads/}
+
