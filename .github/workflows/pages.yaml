@@ -25,12 +25,12 @@ jobs:
       run: |
         NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install
         github-pages build
-    - name: Publish to Cloudflare Pages
-      uses: cloudflare/pages-action@1
+    - name: GCP Login
+      uses: google-github-actions/auth@v0
       with:
-        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        projectName: ghacks
-        directory: _site
-        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+    - name: Publish to GCS
+      run: gsutil rsync -d -r _site gs://ghacks
 
