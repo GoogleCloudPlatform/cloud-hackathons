@@ -6,6 +6,7 @@ on:
     branches:
       - main
 #      - staging
+# 'staging' branch now exists
 
 jobs:
   pages:
@@ -32,5 +33,7 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
     - name: Publish to GCS
-      run: gsutil rsync -d -r _site gs://ghacks
+      run: gsutil rsync -d -r _site ${{ secrets.GCS_BUCKET_main }}
+      # run: gsutil rsync -d -r _site ${{ secrets.GCS_BUCKET_staging }}
+# need to figure out how to concat the branch name ('main' or 'staging') with the secret name
 
