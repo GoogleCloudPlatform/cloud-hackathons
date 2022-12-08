@@ -16,9 +16,9 @@ jobs:
       id: environment
       run: |
         if [[ "${GITHUB_REF#refs/heads/}" =~ (main|staging) ]]; then
-          echo "::set-output name=BRANCH_SPECIFIC_BUCKET_NAME::GCS_BUCKET_${GITHUB_REF#refs/heads/}"
+          echo "BRANCH_SPECIFIC_BUCKET_NAME=GCS_BUCKET_${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=BRANCH_SPECIFIC_BUCKET_NAME::GCS_BUCKET_staging"
+          echo "BRANCH_SPECIFIC_BUCKET_NAME=GCS_BUCKET_staging" >> $GITHUB_OUTPUT
         fi
     - name: Set up Node
       uses: actions/setup-node@v3
@@ -39,4 +39,4 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
     - name: Publish to GCS
-      run: gsutil rsync -d -r _site ${{ secrets[steps.environment.outputs.BRANCH_SPECIFIC_BUCKET_NAME] }}
+      run: gsutil -m -q rsync -d -r _site ${{ secrets[steps.environment.outputs.BRANCH_SPECIFIC_BUCKET_NAME] }}
