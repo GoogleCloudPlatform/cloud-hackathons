@@ -4,7 +4,7 @@ This gHack will take you through replicating and processing operational data fro
 
 This tutorial uses a fictitious retail store named FastFresh to help demonstrate the concepts we'll be dealing with. FastFresh specializes in selling fresh produce, and wants to minimize food waste and optimize stock levels across all stores. You will use fictitious sales transactions from FastFresh as the operational data in this tutorial.
 
-![Architecture](./images/arch-diagram.png)
+![Architecture](images/arch-diagram.png)
 
 The above diagram showcases the flow of operational data through Google Cloud, which is as follows:
 
@@ -207,7 +207,7 @@ In this challenge, Datastream backfills the Oracle FastFresh schema and replicat
 1. The **Select Objects to Include** defines the objects to replicate, specific schemas, tables and columns and be included or excluded.
 Select the `FASTFRESH > ORDERS` table:
 
-    ![Select Objects](../images/select-objects-to-include.png)
+    ![Select Objects](images/select-objects-to-include.png)
 
 1. To load existing records, set the **Backfill mode** to Automatic,  and then click **Continue**.
 
@@ -328,7 +328,7 @@ You can extend the functionality of this template by including User Defined Func
 
     - Return to the Datastream console to validate the progress of the `ORDERS` table backfill as shown here:
 
-        ![Datastream Console](../images/datastream-console.png)
+        ![Datastream Console](images/datastream-console.png)
 
         Because this task is an initial load, Datastream reads from the `ORDERS` object. It writes all records to the JSON files located in the Cloud Storage bucket that you specified during the stream creation. It will take about 10 minutes for the backfill task to complete.
 
@@ -384,7 +384,7 @@ The following two new tables in the retail dataset are created by the Dataflow j
 
     The output should be similar to the following:
 
-    ![Query results](../images/query-results.png)
+    ![Query results](images/query-results.png)
 
 1. In BigQuery, execute the following SQL statements to query the number of rows on both the `ORDERS` and `ORDERS_log` tables:
 
@@ -439,7 +439,7 @@ The training data  describes for each product (`product_name`), how many units w
     SELECT * FROM `retail.training_data` LIMIT 10;
     ```
 
-    ![Training Query Results](../images/training-query-results.png)
+    ![Training Query Results](images/training-query-results.png)
 
 #### Forecast Demand
 1. Still In BigQuery, execute the following SQL to create a time-series model that uses the ARIMA_PLUS algorithm:
@@ -472,7 +472,7 @@ The training data  describes for each product (`product_name`), how many units w
 
     The output should be similar to:
 
-    ![Banana Query Results](../images/banana-query-results.png)
+    ![Banana Query Results](images/banana-query-results.png)
 
     Because the training data is hourly, the horizon value will use the same unit of time when forecasting (hours). A horizon value of 720 hours will return forecast results over the next 30 days.
 
@@ -525,7 +525,7 @@ The training data  describes for each product (`product_name`), how many units w
 
     You see an output that is similar to the following:
 
-    ![Looker Query Results](../images/looker-query-results.png)
+    ![Looker Query Results](images/looker-query-results.png)
 
     As an alternative to BigQuery views, you can also use Looker’s built-in derived tables capabilities. These include built-in derived tables and SQL-based derived tables. For more information, see [Derived Tables in Looker](https://docs.looker.com/data-modeling/learning-lookml/derived-tables).
 
