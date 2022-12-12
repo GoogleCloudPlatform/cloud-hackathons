@@ -16,9 +16,9 @@ We'll be assuming that all necessary services have been enabled and the (default
 - Challenge 6: Monitor your models
 - Challenge 7: Close the loop
 
-# Challenge 1: Let’s start exploring!
+## Challenge 1: Let’s start exploring!
 
-## Notes & Guidance
+### Notes & Guidance
 
 For Qwiklabs users the only option is User-Managed Notebooks as the Managed Notebooks option is not available. 
 
@@ -41,9 +41,9 @@ Once the archive is extracted, the notebook should be opened and the cells must 
 
 No changes are needed for the notebook, the GCS bucket is created by default in the selected region `us-central1`. No need to change that. But if users change that, they need to make sure that the new region is also used in other challenges.
 
-# Challenge 2: If it isn’t in version control, it doesn’t exist
+## Challenge 2: If it isn’t in version control, it doesn’t exist
 
-## Notes & Guidance
+### Notes & Guidance
 
 Keep in mind that the users need the _Owner_ permission to create a new Cloud Source Repository.
 
@@ -91,17 +91,17 @@ git push --all google
 
 Note also that it's possible to use `gcloud` authentication instead of SSH but that's not the challenge :)
 
-# Challenge 3: You break the build, you buy cake
+## Challenge 3: You break the build, you buy cake
 
-## Notes & Guidance
+### Notes & Guidance
 
 Any region can be selected to do the build. Users need to point to the right build file, and that's `/build/cloudbuild.yaml`, note the `/build/` prefix.
 
 There's trailing whitespace in one of the files, which causes the linter to fail. That needs to be removed, and when the changes are pushed, the push trigger will yield a succesfull build.
 
-# Challenge 4: Automagic training with pipelines
+## Challenge 4: Automagic training with pipelines
 
-## Notes & Guidance
+### Notes & Guidance
 
 The `pipeline` module can be used to generate the pipeline definition. Assuming that the user is in the right environment:
 
@@ -121,9 +121,9 @@ The parameters for the Vertex AI Pipeline Job:
 
 The `python_pkg` parameter can also be the full path to the package, and also works without the `tar.gz` extension. `GCS output directory` could also be any folder in the bucket (no trailing `/` characters though).
 
-# Challenge 5: Make it work and make it scale
+## Challenge 5: Make it work and make it scale
 
-## Notes & Guidance
+### Notes & Guidance
 
 Once the model is deployed the following request payload can be used to verify things. 
 
@@ -157,9 +157,9 @@ ab -n 30000 -c 100 -p request.json -T "application/json" -H "Authorization: Bear
 
 Managed Notebooks don't allow any installation, so in that case users should use Cloud Shell.
 
-# Challenge 6: Monitor your models
+## Challenge 6: Monitor your models
 
-## Notes & Guidance
+### Notes & Guidance
 
 Once the Endpoint is up and running, it's possible to edit it from the UI and turn on Monitoring. Alternatively the following `gcloud` command can be used (this command also enabled Cloud Logging which is at the moment not possible through the UI).
 
@@ -180,9 +180,9 @@ gcloud ai model-monitoring-jobs create --region=$REGION \
     --feature-thresholds=trip_month,trip_day,trip_day_of_week,trip_hour,trip_duration,trip_distance,payment_type,pickup_zone,dropoff_zone 
 ```
 
-# Challenge 7: Close the loop
+## Challenge 7: Close the loop
 
-## Notes & Guidance
+### Notes & Guidance
 
 Users need to make sure that Cloud Logging is enabled.
 
