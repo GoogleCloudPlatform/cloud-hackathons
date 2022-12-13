@@ -33,7 +33,7 @@ jobs:
         ruby-version: '2.7'    
     - name: Build Jekyll Pages
       run: |
-        NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install --gemfile=tools/Gemfile
+        NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install --quiet --gemfile=tools/Gemfile
         github-pages build --source=dist
     - name: GCP Login
       uses: google-github-actions/auth@v0

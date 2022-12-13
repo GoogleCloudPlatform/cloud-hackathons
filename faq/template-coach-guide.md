@@ -2,7 +2,7 @@
 
 *The following is a quick example of what the coach's guide should look like for a fictional hack*.
 
-*This file should be named solutions.md*.
+*This file must be named `solutions.md`*.
 
 # IoT Hack of the Century
 
