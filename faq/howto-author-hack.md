@@ -26,13 +26,13 @@ When you design a gHack, these are the things you should consider:
 
 If you create things in this order, you will be able to flush out a new hack rapidly. 
 
-**HINT:** The Coach's guide and Coach Solutions is the most detail oriented & time consuming item to produce.  Shhh...  don't say we told you this, but hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
+> **HINT:** The Coach's guide is the most detail oriented & time consuming item to produce. Shhh...  don't say we told you this, but hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
 
 ## Hack Description
 
 Why should someone take the time to deliver or participate in your hack?  This is the main question you need to answer in order to define your hack. Every gHack needs to have an executive summary (aka "one pager") that quickly describes your hack to those who will host or attend your hack. Think of this as your marketing pitch. 
 
-**HINT:** The "Hack Description" can serve a dual purpose. If you take the time to write it first, it can be the outline or specification for your hack before you develop the actual content.
+> **HINT:** The "Hack Description" can serve a dual purpose. If you take the time to write it first, it can be the outline or specification for your hack before you develop the actual content.
 
 The "Hack Description" shall be the README.md that lives in the root of your hack's top level folder.
 
@@ -66,10 +66,6 @@ Provide a list of technical prerequisites for your hack here.  List out assumed 
 
 Provide a list of tools/software that the attendee needs to install on their machine to complete the hack. 
 
-### Repository Contents (Optional)
-
-While optional, it is a good idea to provide a catalog of the files you are providing with your hack. 
-
 ### Contributors
 
 Finally, give yourself and your fellow hack authors some credit. List the names and optionally contact info for all of the authors that have contributed to this hack.
@@ -77,7 +73,7 @@ Finally, give yourself and your fellow hack authors some credit. List the names 
 ### Hack Description Template
 
 To help you get started, we have provided a sample template for a Hack Description / "one pager" here:
-- [Hack Description Template](gH-HackDescription-Template.md). 
+- [Hack Description Template](template-student-guide.md). 
 
 Please copy this template into your hack's root folder, rename it to "README.md", and customize it for your hack.
 
@@ -111,18 +107,16 @@ Once you have decided what type of hack you want to create, you should follow th
 - Do **NOT** provide a list of step-by-step instructions. These are challenges designed to make the attendees learn by solving problems, not blindly following instructions.
 
 ### Challenge Template
-To help you get started, we have provided a sample markdown template for a hack Challenge here:
-- [Challenge Template](gH-Challenge-Template.md). 
 
-Please copy this template into your hack's `../Student` folder, rename it to "ChallengeXX.md", where "XX" is the challenge number, and customize it for each challenge. 
+To help you get started, we have provided a sample markdown template for a hack Challenge in the [Hack Description Template](template-student-guide.md)
 
-**NOTE:** In each challenge's markdown file, you should create navigation links to/from the previous & next challenges. Please use relative links (eg. `"/ChallengeXX.md"`) instead of absolute links.
+Please copy this template into your hack's top folder, rename it to `README.md`, and customize it for each challenge. 
 
 ## Student Resources
 
 It is common to provide attendees with resources in order to complete the hack's challenges.  One example is to provide the code for an application that the hack's challenges are based on. Another example might be to provide sample code files, artifacts, or templates that provide guidance for completing the hack's challenges.
 
-If your hack provides attendees with code or resources, they should be included with your hack's contents in the `../Student/Resources` folder.
+If your hack provides attendees with code or resources, they should be included with your hack's contents in the `resources` folder.
 
 During a gHack event, it is recommended that you have attendees download any provided resources as a zip file instead of having them clone the entire gHack repo onto their computer.
 
@@ -133,7 +127,7 @@ This has the benefit of not having to direct the attendees to the gHack repo dur
 Our recommended method of providing resource files to attendees is for the gHack event host to pre-load them into the Google Chat space for the gHack event. 
 
 To pre-load resources into the event team, the host should:
-1. Create a zip file of everything in the `Student/Resources`.
+1. Create a zip file of everything in the `resources`.
 2. Upload the zip file (or its contents) to the Files tab of the Google Chat space for the gHack event.
 3. Direct users to download the resource files from Files tab in the Google Chat space.
 
@@ -158,9 +152,9 @@ It is OK and encouraged to offer a collection of "mini" presentation lectures if
 - Provide "reference" slides that you might not present, but will have on hand if attendees need additional guidance
 - Provide a slide with the challenge description that can be displayed when attendees are working on that challenge
 
-We have more guidance on how and when to deliver mini presentation lectures for your challenges during your event in the [How To Host a gHack](gH-HowToHostAHack.md) guide.
+We have more guidance on how and when to deliver mini presentation lectures for your challenges during your event in the [How To Host a gHack](howto-host-hack.md) guide.
 
-Please publish any presentations in your hack's `../Coach` folder.
+Please publish any presentations in your hack's `resources` folder.
 
 ## Coaches Guide
 
@@ -193,9 +187,15 @@ Examples of Coach Solutions are:
 - Scripts/templates/etc for some challenges that can be shared with attendees if they get really stuck
     - Example: If challenges 1 through 3 build something (i.e. an ARM template) that is needed for challenge 4, you could “give” a stuck team the template so they could skip to challenge 4.
 
-If your hack provides Coach Solutions with code, templates, etc, it is recommended that you publish those resources as part of your hack's contents in the `../Coach/Solutions` folder.
+If your hack provides Coach Solutions with code, templates, etc, it is recommended that you publish those resources as part of your hack's contents.
 
-**NOTE:** This content is NOT intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.
+> **NOTE:** This content is NOT intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.
+
+### Challenge Template
+
+To help you get started, we have provided a sample markdown template for a Coach's Guide in the [Coach's Guide Template](template-coach-guide.md).
+
+Please copy this template into your hack's top folder, rename it to `solutions.md`, and customize it for each challenge.
 
 ## Preparing Your Environment
 
@@ -209,26 +209,30 @@ First we create a fork of the main gHack repo and then clone it to disk and crea
    - `git clone https://github.com/myname/gHacks.git`
    - `cd gHacks`
 3. Create a new branch for your work. It is a best practice to never work directly on the master branch
-   - `git branch MyWork`
-   - `git checkout MyWork`
+   - `git checkout -b my-branch`
 4. Add a new folder to the top-level `hacks` root folder. Name your hack something distinctive using snake-case. Eg:
    - `mkdir hacks/century-of-iot`
-5. Within your new folder, create the following directory structure:
-	- `../Coach`
-		- `/Solutions`
-	- `../Student`
-		- `/Resources`
-
+5. Within your new folder, you'll need at least two files `README.md` and `solutions.md`. If you have additional assets such as images for the descriptions, you can put those in an `images` folder. If you choose to associate a Qwiklabs lab with the hack, you'll need to provide a `QL_OWNER` file (which includes the email addresses of the lab owners), a `qwiklabs.yaml` file (which configures the lab and its resources). Additionally if you need to do any setup for the lab you can use Terraform scripts for that which need to be in the `artifacts` directory accompanied by a `runtime.yaml`.   
 
 ### Files and Folders
+
 Now that you've created the directory structure above, here is what each of them will contain:
-- `../`
-	- Hack Description (README.md)
-- `../Coach`
-	- The Coach's Guide, Lecture presentations, and any supporting files.
-	- `/Solutions`
-		- Solution code for the coach only. These are the answers and should not be shared with students.
-- `../Student`
-	- The Challenge markdown files
-	- `/Resources` 
-		- The code and supporting files the students will need throughout the hack.
+
+```
+hacks
+├── century-of-iot
+│   ├── artifacts  # (Optional) Terraform setup for Qwiklabs
+│   │   ├── main.tf
+│   │   ├── runtime.yaml
+│   │   └── variables.tf
+│   ├── images  # (Optional) Images used for hack description and/or solutions 
+│   │   ├── architecture.png
+│   │   └── results.png
+│   ├── resources
+│   │   └── lectures.pdf  # (Optional) Lecture presentations, and any supporting files
+│   ├── README.md  # (Required) Hack description
+│    solutions.md  # (Required) The coach's guide
+│   ├── QL_OWNER  # (Required iff qwiklabs) Line separated list of owner & collaborator's emails for the Qwiklab
+|   └── qwiklabs.yaml  # (Required iff qwiklabs) Qwiklab configuration
+└── ...
+```

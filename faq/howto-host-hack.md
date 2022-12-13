@@ -21,9 +21,9 @@ At a minimum, three things:
 
 First and most important is hack content. The gHacks collection has many different hackathons that have been contributed. 
 
-Choose a hack from the [gHacks Collection](../readme.md#the-ghacks-collection)
+Choose a hack from the [gHacks Collection](../README.md#the-ghacks-collection)
 
-Or, create your own with the guidance we have on [How To Author A gHacks](gH-HowToAuthorAHack.md)
+Or, create your own with the guidance we have on [How To Author A gHacks](howto-author-hack.md)
 
 ### Google Meet
 
@@ -144,7 +144,7 @@ We recommend creating the following Channels in the team:
 
 #### Team Content
 
-Most hacks in the [gHacks Collection](../readme.md#gHack-collection) have the solutions to the hack challenges included in the [gHack GitHub repo](go/gHacks). Therefore, you should avoid the attendees having any reason to access to the gHacks repo before or during the event. Instead, we recommend pre-loading any  resources from the repo needed by the attendees for the hack into the event Team.
+Most hacks in the [gHacks Collection](../README.md#the-ghacks-collection) have the solutions to the hack challenges included in the [gHack GitHub repo](go/gHacks). Therefore, you should avoid the attendees having any reason to access to the gHacks repo before or during the event. Instead, we recommend pre-loading any  resources from the repo needed by the attendees for the hack into the event Team.
 
 #### Challenge Guide
 
@@ -167,7 +167,7 @@ If the challenges are published in Markdown files, we recommend pinning the hack
 
 #### Student Resources
 
-Many hacks in the [gHacks Collection](../readme.md#what-the-hack-collection) have provided resources (code snippets, templates, etc) needed for the hack in their `/HackName/Student/Resources` folder.  
+Many hacks in the [gHacks Collection](../README.md#the-ghacks-collection) have provided resources (code snippets, templates, etc) needed for the hack in their `/HackName/Student/Resources` folder.  
 
 The lead coach should copy the contents of this folder from the repo and then upload them into the General Channel's Files tab. This will provide the files to the attendees in Microsoft Teams without them needing to visit the gHacks repo on GitHub.
 
@@ -362,7 +362,7 @@ With the logistics out of the way, it is time to crank up the tech intensity.
 
 #### Hack Presentation Lectures (Optional)
 
-While not required, many of the hacks in the [gHacks collection](/./readme.md) have a PowerPoint deck with lecture presentations included the `/Host` folder of the hack. These optional lecture presentations typically contain:
+While not required, many of the hacks in the [gHacks collection](../README.md#the-ghacks-collection) have a PowerPoint deck with lecture presentations included the `/Host` folder of the hack. These optional lecture presentations typically contain:
 
 - An overview of the technical scenario of the hack itself.
 - A review of workstation pre-requisites needed for the hack.
