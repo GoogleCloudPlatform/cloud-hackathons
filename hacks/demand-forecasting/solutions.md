@@ -2,7 +2,7 @@
 
 ## Introduction
 
-pass
+See below for the solutions as code snippets.
 
 ## Coach's Guides
 
