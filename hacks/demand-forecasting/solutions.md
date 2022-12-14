@@ -78,3 +78,8 @@ batch_prediction_job = model.batch_predict(
 
 print(batch_prediction_job)
 ```
+
+```python
+for row in batch_prediction_job.iter_outputs():
+    print(row)
+```
