@@ -1,0 +1,90 @@
+schema_version: 2
+default_locale: en
+title: "[gHacks] MLOps on GCP"
+description: "In this hack, you’ll implement the full lifecycle of an ML project.
+  We’ll provide you with a sample code base and you’ll work on automating continuous
+  integration (CI), continuous delivery (CD), and continuous training (CT) for a machine
+  learning (ML) system."
+instruction:
+  type: md
+  uri: instructions/en.md
+duration: 480
+max_duration: 600
+credits: 0
+level: fundamental
+tags:
+- meken
+- ghacks
+- mlops
+- vertex ai
+- ghacks001
+product_tags: 
+role_tags:
+- site reliability engineers / dev ops
+- developers backend
+- data scientist
+- data engineer
+domain_tags:
+- machine learning
+environment:
+  resources:
+  - type: gcp_project
+    id: project
+    startup_script:
+      type: qwiklabs
+      path: artifacts
+  - type: gcp_user
+    id: user_1
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+  - type: gcp_user
+    id: user_2
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+  - type: gcp_user
+    id: user_3
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+  - type: gcp_user
+    id: user_4
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+  - type: gcp_user
+    id: user_5
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+  student_visible_outputs:
+  - label: Open Console
+    reference: project.console_url
+  - label: Username 1
+    reference: user_1.username
+  - label: Password 1
+    reference: user_1.password
+  - label: Username 2
+    reference: user_2.username
+  - label: Password 2
+    reference: user_2.password
+  - label: Username 3
+    reference: user_3.username
+  - label: Password 3
+    reference: user_3.password
+  - label: Username 4
+    reference: user_4.username
+  - label: Password 4
+    reference: user_4.password
+  - label: Username 5
+    reference: user_5.username
+  - label: Password 5
+    reference: user_5.password
+  - label: Project ID
+    reference: project.project_id
