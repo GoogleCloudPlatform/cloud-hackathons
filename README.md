@@ -42,6 +42,7 @@ Here is the current list of gHacks available in our repository:
 ## Data & AI
 - [MLOps on GCP](./hacks/mlops-on-gcp/README.md)
 - [Data Analytics for Retail](./hacks/retail-analytics/README.md)
+- [Demand Forecasting](./hacks/demand-forecasting/README.md)
 
 ## Infrastructure
 - [Security in Media](./hacks/security-in-media/README.md)
