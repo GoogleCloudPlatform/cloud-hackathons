@@ -112,3 +112,23 @@ section {
     }
   }
 }
+
+ql-infobox {
+  display: block;
+  background-color: rgb(179, 212, 252);
+  border: 1px solid rgb(210, 227, 252);
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 8px;
+  color: black;
+}
+
+ql-warningbox {
+  display: block;
+  background-color: rgb(252, 232, 230);
+  border: 1px solid rgb(250, 210, 207);
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 8px;
+  color: black;
+}
