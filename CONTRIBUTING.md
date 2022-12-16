@@ -3,7 +3,7 @@
 gHacks are all about being "for the people, by the people". This repo was originally created to share real-world hackathons that Google Cloud teams have hosted with their customers. It has since grown to be a learning tool for anyone, anywhere, and follows these core principles:
 
 - Anyone can use the content to [host their own gHacks event](./faq/howto-host-hack.md).
-- Anyone can [contribute a new hack](#contribute-a-new-hack-to-what-the-hack).
+- Anyone can [contribute a new hack](#contribute-a-new-hack-to-ghacks).
 - Anyone can modify or update a hack as needed.
   - Submitting a [pull request for updated content](#contribute-an-update-to-an-existing-hack) is encouraged.
 - The content can always be shared with hack attendees **(AFTER your event)**.
@@ -17,11 +17,11 @@ The best way to contribute is to engage the gHacks team by [submitting an issue 
 There are multiple ways to contribute:
 
 - [Report a bug in an existing hack](#report-a-bug-in-an-existing-hack)
-- [Propose new hack topic or improvement to existing hack](#propose-new-hack-topic-or-improvement-to-existing-hack)
-- [Contribute a new hack](#contribute-a-new-hack-to-what-the-hack)
+- [Propose new hack topic or improvement to existing hack](#propose-a-new-hack-or-an-improvement-to-an-existing-hack)
+- [Contribute a new hack](#contribute-a-new-hack-to-ghacks)
 - [Contribute an update to an existing hack](#contribute-an-update-to-an-existing-hack)
-- [Ask for help hosting a gHacks event](#ask-for-help-hosting-a-what-the-hack)
-- [Let us know where you have used gHacks](#let-us-know-where-you-have-used-what-the-hack)
+- [Ask for help hosting a gHacks event](#ask-for-help-hosting-a-ghacks-event)
+- [Let us know where you have used gHacks](#let-us-know-where-you-have-used-ghacks)
 
 ### Before You Start
 
@@ -56,7 +56,7 @@ Please go to the Issues page for the gHacks repo and create an [Issue/Proposal](
 The form will guide you on what information you should submit. The gHacks team will follow up on your proposal. 
 
 We welcome new hacks and improvements to existing hacks. If you intend to 'do the work' you are proposing, read on for how to:
-- [Contribute a new hack to gHacks](#contribute-a-new-hack-to-what-the-hack)
+- [Contribute a new hack to gHacks](#contribute-a-new-hack-to-ghacks)
 OR
 - [Contribute an update to an existing hack](#contribute-an-update-to-an-existing-hack)
 
@@ -108,8 +108,8 @@ The instructions below assume you have the [Git command line tool](https://git-s
    - Click the "Fork" button at the top right of the page and then choose the account you want to create the fork in. 
 1. Clone your new fork to your local machine
    ```
-   git clone https://github.com/<myname>/WhatTheHack.git
-   cd WhatTheHack
+   git clone https://github.com/<myname>/gHacks.git
+   cd gHacks
    ```
 1. Create a new branch for your work in your fork. It is a best practice to never work directly on the main/master branch
    ```
