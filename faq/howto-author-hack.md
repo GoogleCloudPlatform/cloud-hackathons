@@ -17,7 +17,7 @@ gHacks are all about being "for the people, by the people". Here are our core pr
 
 When you design a gHack, these are the things you should consider:
 
-- [Hack Description](#hack-description) (aka "The One Pager")
+- [Student Guide](#student-guide)
 - [Challenge Design](#challenge-design)
 - [Student Resources](#student-resources)
 - [Presentation Lectures](#presentation-lectures) (optional)
@@ -28,15 +28,13 @@ If you create things in this order, you will be able to quickly flesh out a new 
 
 > **HINT:** The Coach's guide is the most detail oriented & time consuming item to produce however, there's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
 
-## Hack Description
+## Student Guide
 
-Why should someone take the time to deliver or participate in your hack?  This is the main question you need to answer in order to define your hack. Every gHack needs to have an executive summary (aka "one pager") that quickly describes your hack to those who will host or attend your hack. Think of this as your marketing pitch. 
+Why should someone take the time to deliver or participate in your hack?  This is the main question you need to answer in order to define your hack. Every gHack needs to have a good executive summary that quickly describes your hack to those who will host or attend your hack. Think of this as your marketing pitch. 
 
-> **HINT:** The **Hack Description** can serve a dual purpose. If you take the time to write it first, it can be the outline or specification for your hack before you develop the actual content.
+The **Student Guide** is the README.md that lives in the root of your hack's top level folder.
 
-The **Hack Description** is the README.md that lives in the root of your hack's top level folder.
-
-The **Hack Description** must include the following:
+The **Student Guide** must include the following:
 
 ### Hack Title
 
@@ -54,11 +52,11 @@ This is your chance to sell the casual reader on why they should consider your h
 
 This is where you describe the outcomes a hack attendee should have. Provide a short list of key learnings you expect someone to come away with when they complete this hack.
 
-### Challenges
+### Challenges - Table of Contents
 
-Every gHack is made up of a collection of technical challenges. For the one pager, you should list out your challenges by name, with no more than a single sentence description for each unless the challenge title is descriptive enough on its own.
+Every gHack is made up of a collection of technical challenges. Here we list out the challenges by name, with no more than a single sentence description for each unless the challenge title is descriptive enough on its own.
 
-For most this page will act as a **Table of Contents** for your hack. We recommend that you create links for each challenge to its respective challenge page.
+Because this is a table of contents, we recommend that you create links to the challenge text further down in the Student Guide.
 
 ### Prerequisites
 
@@ -70,10 +68,10 @@ Provide a list of tools/software that the attendee needs to install on their mac
 
 Finally, give yourself and your fellow hack authors some credit. List the names and optionally contact info for all of the authors that have contributed to this hack.
 
-### Hack Description Template
+### Student Guide Template
 
-To help you get started, we have provided a sample template for a Hack Description / "one pager" here:
-- [Hack Description Template](template-student-guide.md). 
+To help you get started, we have provided a sample template for the Student Guide here:
+- [Student Guide Template](template-student-guide.md). 
 
 Please copy this template into your hack's root folder, rename it to **README.md**, and customize it for your hack.
 
@@ -108,9 +106,16 @@ Once you have decided what type of hack you want to create, you should follow th
 
 ### Challenge Template
 
-To help you get started, we have provided a sample markdown template for an individual gHack Challenge in the [Hack Description Template](template-student-guide.md)
+To help you get started, we have provided a sample markdown template for an individual gHack Challenge in the [Student Guide Template](template-student-guide.md).
 
-Please copy this template into your hack's top folder, rename it to `README.md`, and customize it for each challenge. 
+If you haven't already, please copy this template into your hack's root folder and rename it to `README.md`.
+
+For each of your challenges, you will add to the end of your Student Guide a new copy of the challenge template markdown that starts with: 
+```markdown
+## Challenge \#: \<Challenge Name>
+```
+
+**NOTE:** Don't forget to link to each challenge's text from the table of contents.
 
 ## Student Resources
 
@@ -174,7 +179,7 @@ Examples of Coach Solutions are:
 
 > **NOTE:** This content is NOT intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.
 
-### Challenge Template
+### Solution Template
 
 To help you get started, we have provided a sample markdown template for a Coach's Guide in the [Coach's Guide Template](template-coach-guide.md).
 
