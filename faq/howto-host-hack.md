@@ -179,6 +179,15 @@ You should also upload both the Event Kickoff presentation and any lecture prese
 
 ![Sample gHacks Event Team - Student Resources](images/wth-sample-msteam-student-resources.jpg)
 
+#### Pre-load Resources into Google Chat Space
+
+Our recommended method of providing resource files to attendees is for the gHack event host to pre-load them into the Google Chat space for the gHack event. 
+
+To pre-load resources into the event team, the host should:
+1. Create a zip file of everything in the `resources`.
+2. Upload the zip file (or its contents) to the Files tab of the Google Chat space for the gHack event.
+3. Direct users to download the resource files from Files tab in the Google Chat space.
+
 
 #### Shared Tips/Wiki (Optional)
 
