@@ -2,11 +2,11 @@
 
 gHacks are a set of challenge based hackathons that can be hosted in-person or virtually via Google Meet.
 
-Attendees work in squads of 3 to 5 people to solve a series of technical challenges for a given technology or solution scenario. Challenges describe high-level tasks and goals to be accomplished. Challenges are not step-by-step labs.
+Attendees work in squads of 3 to 5 people to solve a series of technical challenges for a given technology or solution scenario. Challenges describe high-level tasks and goals to be accomplished. gHacks are **NOT** step-by-step labs.
 
-gHacks are designed to be a collaborative learning experience.  Attendees "learn from" and "share with" each other. Without step-by-step instructions given for the challenges, attendees have to "figure it out" together as a team.  This results in greater knowledge retention for the attendees. 
+gHacks are designed to be a collaborative learning experience.  Attendees "learn from" and "share with" each other. Without giving step-by-step instructions for the challenges, attendees have to work hard to solve the challenges together as a team.  This results in greater knowledge retention for the attendees. 
 
-The attendee squads are not alone in solving the challenges. Coaches work with each squad to provide guidance for, but not answers to, the challenges.  The coaches may also provide lectures and demos to introduce the challenges, as well as review challenge solutions throughout the event.
+Squads are not left on their own to solve the challenges. Coaches work with each squad to provide guidance for, but not answers to, the challenges.  The coaches may also provide lectures and/or demos to introduce concepts needed to solve the challenges, as well as review challenge solutions throughout the event.
 
 # How to Host gHacks
 
@@ -17,15 +17,13 @@ See our complete guide on [How To Host a gHack](./faq/howto-host-hack.md).
 # How to Contribute to gHacks
 
 gHacks are community driven. Here are our core principles:
-- Anyone can [contribute a new hack](./CONTRIBUTING.md).
+- Anyone can [contribute a new hack](./faq/howto-author-hack.md).
 - Anyone can use the content to [host their own gHacks event](./faq/howto-host-hack.md).
 - Anyone can modify or update a hack as needed.
-  - Contributing updates back via a [pull request](./CONTRIBUTING.md) is encouraged.
-- The content can always be shared with hack attendees **(Only do this after the event is over)**
+  - Contributing updates back via a [pull request](./faq/howto-author-hack.md) is encouraged.
+- The content can be shared with attendees AFTER the event for continuity purposes.
 
-Would you like to contribute to gHacks?  We welcome new hacks and updates to existing hacks.  We have developed a process for doing this.  
-
-See our [gHacks Contribution Guide](./CONTRIBUTING.md) to learn about the contribution and review process.
+Would you like to contribute to gHacks?  We welcome new hacks and updates to existing hacks.  Please reach out to ginof@ and meken@.
 
 # How to Author gHacks
 
