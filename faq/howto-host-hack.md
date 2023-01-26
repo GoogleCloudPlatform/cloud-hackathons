@@ -1,8 +1,8 @@
 # gHacks - How to Host a gHack
 
-We've structured the gHacks format to make it easy to deliver to students both in person and virtually. The following are instructions, tips and tricks to hosting your own gHacks event and have it go off without a hitch. You may choose to adopt as much or little as you would like. This guidance has been cobbled together from experience based on what has worked before.
+We've structured the gHacks format to make it easy to deliver to students both in person and virtually. The following are instructions, tips and tricks to hosting your own gHacks event and have it go off without a hitch. You may choose to adopt as much or little as you would like. 
 
-With the Covid-19 pandemic, virtual events will be the way of the future for some time. Participating in a team-based hands-on event virtually may be a new concept for many. However, we have found that virtual gHacks events are often more collaborative than a traditional in-person event.
+In a post-covid world, virtual events will be the way of the future for some time. Participating in a team-based hands-on event virtually may be a new concept for many. However, we have found that virtual gHacks events are often more collaborative than a traditional in-person event.
 
 This document has the following sections:
 - [gHacks Event Requirements](#what-do-you-need-to-host-a-ghacks-event)
@@ -14,24 +14,24 @@ This document has the following sections:
 
 At a minimum, three things:
 1. [Hack Content](#hack-content)
-1. [Google Meet](#google-meet)
+1. [Google Chat and Meet](#google-chat-and-meet)
 1. [People](#people)
 
 ### Hack Content
 
-First and most important is hack content. The gHacks collection has many different hackathons that have been contributed. 
+First and most important is hack content. The gHacks collection has many different hacks that have been contributed. 
 
 Choose a hack from the [gHacks Collection](../README.md#the-ghacks-collection)
 
-Or, create your own with the guidance we have on [How To Author A gHacks](howto-author-hack.md)
+Or, create your own with the guidance we have on [How To Author gHacks](howto-author-hack.md)
 
-### Google Meet
+### Google Chat and Meet
 
-Next, you need Google Meet. Specifically, you will need to create an invite for your event that will be used as the dedicated event space that all the attendees will collaborate in.
+Next, you need Google Chat and Google Meet. Specifically, we'll be creating a Google Chat Space that will be dedicated for your particular event. In this Space we'll be able to share files with the attendees, chat together and we'll host a single Google Meet for all participants which will have breakout rooms for each team. 
 
 During a gHacks event, attendees work together in squads of 3 to 5 people to solve the hack's challenges. The attendees will need to share links, code snippets, or even screen share as they collaborate on the challenge solutions. 
 
-At an in-person event, each squad will be sitting at the same table. During a virtual event, everyone will be sitting at home in their pajamas. The main difference is that during a virtual event, attendees will need to join a call in their squad's channel for the duration of the event. Most other aspects of the event are the same.
+At an in-person event, each squad will be sitting at the same table. During a virtual event, everyone will be sitting at home in their pajamas. The main difference is that during a virtual event, attendees will need to join the Meet call in the event's Chat Space for the duration of the event. Most other aspects of the event are the same.
 
 ### People 
 
@@ -48,63 +48,28 @@ Finally, you need people to hack. There are a few different roles that will need
 	- In charge of determining whether a squad has finished a challenge based on the acceptance criteria in the challenge text. This review will determine if they move on to the next challenge.
 - Attendees
 	- The students in the event that participate in squads of 3 to 5.
-	- Must join and participate in their squad's Google Meet event AND have their webcam and microphone turned on at all times. This most accurately simulates an in person hack environment.
+	- Must join and participate in the event's Google Meet AND have their webcam and microphone turned on at all times. This most accurately simulates an in person team environment.
 
 ## Event Preparation
 
 If you've gotten this far, then you have designated yourself as "Lead Coach" and are preparing to host a gHacks event.
 
-**TODO:** Write up procedures for creating a Google Meet or even Spaces to organize the hack.
-
-**-------- CONTINUE CHANGING FROM HERE -----**
-
-As the event leader, most of the preparation steps are focused on preparing Microsoft Teams for the event. The preparation checklist focuses on three key areas:
+As the event leader, most of the preparation steps are focused on preparing the collaboration tools: Google Chat, Spaces, Meet, etc. The preparation checklist focuses on three key areas:
 
 - [Know Your Audience](#know-your-audience)
-- [Microsoft Team Creation](#microsoft-team-creation)
+- [Google Space Creation](#google-space-creation)
 - [Getting People To Your Event](#getting-people-to-your-event)
 
 ### Know Your Audience
 
-If you are inviting attendees that are outside of your organization, there are multiple things to think about with respect to using GCP and Google Chat.
+If you are inviting attendees that are outside of your organization, there are multiple things to think about with respect to using the hack environment and collaboration tools.
 
-If you are hosting a hack with a single organization, it is a good practice to identify an event stakeholder in the external organization who can help you plan for your gHacks event. The event stakeholder can help you address the following preparation concerns.
-
-#### Guest Access
-
-You will need to have “Guest” access enabled in your Microsoft Teams tenant to have the external individuals to be part of the event. External attendees are not required to have a user license in Microsoft Teams. You will be inviting them into your event's team as a guest. This is covered by your organization’s guest licenses which are included with its Office 365 license.
-
-Adding external users as guests in Microsoft Teams requires you to add each user manually via the Teams admin UI. 
-
-For more information, see [Guest access in Microsoft Teams](https://docs.microsoft.com/en-us/MicrosoftTeams/guest-access)
-
-**NOTE:** Guest access is an organization-wide setting in Microsoft Teams. Therefore, in most organizations, enabling Guest acccess is typically managed by someone in the IT department who is **NOT** you.  If it is not enabled in your organization, you might want to consider using the external organization's tenant as described in the next section.
-
-#### Reverse Guest Access
-
-If your attendees are all from the same external organization and that organization has its own Microsoft Teams tenant, it is easier to host the hack event's team in the external organization's tenant. Then, have the event stakeholder invite you and/or the other coaches to join their team as a guest.
-
-This provides the benefit of the external organization having full access and control of all resources, discussions, and knowledge shared in the event's team once the event has completed.
-
-#### Audio Conferencing
-
-Some individuals may not have a computer with speakers and a microphone or be equipped with a headset. In that case, you will need to provide a dial-in number for the event. This will require that you have the “Audio Conferencing” license within your Microsoft Teams account (included in the Office 365 E5 plan). 
-
-Individuals that join in over their computer or mobile device will leverage voice over IP and do not require the Audio Conferencing license. In all cases people will utilize the Microsoft Teams client or a web browser to join the video, screen sharing, and collaboration aspects within Microsoft Teams.
-
-For more information, see: [Audio Conferencing in Microsoft 365](https://docs.microsoft.com/en-us/microsoftteams/audio-conferencing-in-office-365)
-
-#### Privacy
-
-When inviting external participants, make sure you follow your organization's privacy policies. At a minimum, make sure to disclose to the attendees that all members of the event will be able to see each others Name, Email Address, and anything they say and share within the various channels within the team.
+If you are hosting a hack with a single organization, it is critical to identify an event stakeholder in the external organization who can help you plan for your gHacks event. The event stakeholder can help you address the following preparation concerns. **NOTE:** It is recommended that you start planning at least 2 weeks before the event to make sure everything is ironed out.
 
 #### GCP Subscription
+Most of the hacks in the gHacks collection require attendees to have "Contributor" access to a GCP project. 
 
-Most of the hacks in the gHacks collection require attendees to have "Contributor" access to a GCP project.
-
-It is important to work with the event stakeholder to decide how attendees will access GCP. Some organizations may provide individuals with their own subscriptions.  Other organizations may provide access to a shared subscription created specifically for attendees to use during the hack event. 
-
-If the organization provides the attendees with access to a GCP project, it is a good practice to share what the predicted cost of GCP resources used during the hack will be. No one wants a surprise bill at the end.
+It is important to work with the event stakeholder to decide how attendees will access GCP. Some organizations may provide individuals with their own projects.  Other organizations may provide access to a shared project created specifically for attendees to use during the hack event. 
 
 If the organization is not providing access to a GCP project for the hack, attendees will need to provide there own or a QwikLabs environment if the hack has created one.
 
@@ -118,9 +83,18 @@ Tight firewalls may make it challenging to access even the GCP Console itself fr
 
 All of these security concerns and their mitigation should be identified and addressed with the organization event stakeholder ahead of time.
 
-### Google Chat Space Creation
+### Google Space Creation
 
-Now that you've gotten all of the overhead out of the way, it's time to build your event's team in Teams.  
+Now that you've gotten all of the overhead out of the way, it's time to build your event's Google Space.
+
+**-------- CONTINUE CHANGING FROM HERE -----**
+
+
+
+----------------------------------
+
+
+
 
 Create a new team for your gHacks event in Microsoft Teams that will be used as the dedicated event space. This space will host documents, multiple channels for presenting, screen sharing, and overall collaboration in real and near real-time.
 
