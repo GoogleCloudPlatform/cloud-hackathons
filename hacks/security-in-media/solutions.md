@@ -80,11 +80,11 @@ Students will creating managed instance groups here, so there are a few things t
 
     |Property|Value|
     |--|--|
-    |Name|lb-backend-example|
+    |Name|lb-backend-instance-group|
     |Location|Single zone|
     |Region|us-east1|
     |Zone|us-east1-b|
-    |Instance template|lb-backend-example|
+    |Instance template|lb-backend-instance-group|
     |Autoscaling|Don't autoscale|
     |Number of instances|1|
 
@@ -94,7 +94,7 @@ Students will creating managed instance groups here, so there are a few things t
 1. For your instance group, use this command to define an HTTP service and map a port name to the relevant port. The load balancing service forwards traffic to the named port.
 
     ```bash
-    gcloud compute instance-groups set-named-ports lb-backend-example \
+    gcloud compute instance-groups set-named-ports lb-backend-instance-group \
         --named-ports http:80 \
         --zone us-east1-b
     ```
@@ -124,10 +124,10 @@ Backend services direct incoming traffic to one or more attached backends. Each 
 
     |Property|Value|
     |--|--|
-    |Name|http-backend|
+    |Name|lb-backend|
     |Protocol|HTTP|
     |Named Port|http|
-    |Instance Group|lb-backend-example|
+    |Instance Group|lb-backend-instance-group|
     |Port Numbers|80|
 
 1. Click **Done**.
@@ -332,10 +332,10 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
         --redirect-type google-recaptcha
     ```
 
-1. Attach the security policy to the backend service http-backend:
+1. Attach the security policy to the backend service lb-backend:
 
     ```bash
-    gcloud compute backend-services update http-backend \
+    gcloud compute backend-services update lb-backend \
         --security-policy=recaptcha-policy –-global
     ```
 

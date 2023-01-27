@@ -187,11 +187,11 @@ A managed instance group uses an instance template to create a group of identica
 #### Create Managed Instance Group
 
 - Create a new stateless managed instance group with the following configuration: 
-    - **Name:** lb-backend-example
+    - **Name:** lb-backend-instance-group
     - **Location:** Single zone
     - **Region:** us-east1
     - **Zone:** us-east1-b
-    - **Instance template:** lb-backend-example
+    - **Instance template:** lb-backend-instance-group
     - **Autoscaling:** Don't autoscale
     - **Number of instances:** 1
 
@@ -216,7 +216,7 @@ For your instance group, set port 80 as a "named port" port. This allows the loa
 
 ### Introduction
 
-Configure the HTTP Load Balancer to send traffic to your backend instance group named: **lb-backend-example** created in Challenge 1.
+Configure the HTTP Load Balancer to send traffic to your backend instance group named: **lb-backend-instance-group** created in Challenge 1.
 
 ### Description
 
@@ -228,10 +228,10 @@ Backend services direct incoming traffic to one or more attached backends. Each 
 
 Configure the backend with the following configuration:
 
- - **Name**: http-backend
+ - **Name**: lb-backend
  - **Protocol**: HTTP
  - **Named Port**: http
- - **Instance Group**: lb-backend-example
+ - **Instance Group**: lb-backend-instance-group
  - **Port Numbers**: 80
 
 Configure the Health Check with the following configuration: 
@@ -383,7 +383,7 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
     - action: `redirect`
     - redirect-type: `google-recaptcha`
 
-- Attach the security policy to the backend service http-backend using the following tags: 
+- Attach the security policy to the backend service lb-backend using the following tags: 
     - security-policy: `recaptcha-policy` 
     - global
 
