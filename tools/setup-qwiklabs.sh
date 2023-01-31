@@ -38,12 +38,15 @@ fi
 LAB_DIR="${DST_DIR}/labs/${SLUG}"
 mkdir -p ${LAB_DIR}
 
-rsync -av --exclude=solutions.md ${HACK_DIR}/ ${LAB_DIR}/
+rsync -av --delete --exclude=solutions.md ${HACK_DIR}/ ${LAB_DIR}/
 
 INST_DIR="${LAB_DIR}/instructions"
 mkdir -p ${INST_DIR}
 mv ${LAB_DIR}/README.md ${INST_DIR}/en.md
-mv ${LAB_DIR}/images ${INST_DIR}/
+if [ -d ${LAB_DIR}/images ]; then
+    rsync -av --delete ${LAB_DIR}/images ${INST_DIR}
+    rm -rf ${LAB_DIR}/images
+fi
 
 # git --git-dir="${DST_DIR}/.git" checkout -b ${HACK}
 # git --git-dir="${DST_DIR}/.git" commit -am "adding gHacks ${HACK}"
