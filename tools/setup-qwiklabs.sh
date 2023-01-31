@@ -43,6 +43,7 @@ rsync -av --exclude=solutions.md ${HACK_DIR}/ ${LAB_DIR}/
 INST_DIR="${LAB_DIR}/instructions"
 mkdir -p ${INST_DIR}
 mv ${LAB_DIR}/README.md ${INST_DIR}/en.md
+mv ${LAB_DIR}/images ${INST_DIR}/
 
 # git --git-dir="${DST_DIR}/.git" checkout -b ${HACK}
 # git --git-dir="${DST_DIR}/.git" commit -am "adding gHacks ${HACK}"
