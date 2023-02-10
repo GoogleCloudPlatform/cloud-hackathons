@@ -216,8 +216,10 @@ hacks
 │   ├── images  # (Optional) Images used for hack description and/or solutions 
 │   │   ├── architecture.png
 │   │   └── results.png
-│   ├── resources
-│   │   └── lectures.pdf  # (Optional) Lecture presentations, and any supporting files
+│   ├── resources # (Optional) Lecture presentations, supporting files, etc. Will be supplied to students
+│   │   └── lectures.pdf  
+│   │   └── kube-deploy.yaml
+│   │   └── testing.html
 │   ├── README.md  # (Required) Hack description
 │    solutions.md  # (Required) The coach's guide
 │   ├── QL_OWNER  # (Required for qwiklabs) Line separated list of owner & collaborator's emails for the Qwiklab
