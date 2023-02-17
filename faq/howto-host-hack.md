@@ -1,7 +1,5 @@
 # gHacks - How to Host a gHack
 
-We've structured the gHacks format to make it easy to deliver to students both in person and virtually. The following are instructions, tips and tricks to hosting your own gHacks event and have it go off without a hitch. You may choose to adopt as much or little as you would like. 
-
 In a post-covid world, virtual events will be the way of the future for some time. Participating in a team-based hands-on event virtually may be a new concept for many. However, we have found that virtual gHacks events are often more collaborative than a traditional in-person event.
 
 This document has the following sections:
@@ -87,158 +85,62 @@ All of these security concerns and their mitigation should be identified and add
 
 Now that you've gotten all of the overhead out of the way, it's time to build your event's Google Space.
 
-**-------- CONTINUE CHANGING FROM HERE -----**
+This new Google Space will be used as the dedicated event space. This space will host documents, the Google Meet for the event along with its break-out rooms for each team and overall collaboration in real and near real-time.
 
+We suggest naming your Google Space with at minimum the hack name and organization. You can also add the location or date too. This will make it easy for attendees to remember what the Space was for after the event.
 
+For example: `"gHack - Acme - Security in Media"`
 
-----------------------------------
+#### Space Structure
+----------------- NEED SCREENSHOTS FOR EACH BULLET ----------
 
+In our Google Space, we will have the following:
 
-
-
-Create a new team for your gHacks event in Microsoft Teams that will be used as the dedicated event space. This space will host documents, multiple channels for presenting, screen sharing, and overall collaboration in real and near real-time.
-
-We suggest naming your team with at minimum the hack name and date. You can also add the location or organization too. This will make it easy for attendees to remember what the team was for after the event.
-
-For example: `"Intro To Kubernetes - London (May 2023)"`
-
-#### Team Structure
-
-We recommend creating the following Channels in the team:
-
-- **General** – The General channel will be used as the central gathering place. All event challenges, documents, and supporting material will be hosted in this channel. Key event items can be pinned to individual Tabs. Within the general channel you will host the kickoff meeting to start the event and have various checkpoints throughout the event to communicate with the all the attendees at once.
-- **Coaches ONLY (Private)** - Coaches should communicate with each other privately from attendees to share learnings/practices during the event. Coaches can work together to decide if/when to communicate issues broadly to all attendees during the event.
-- **Feedback** - Encourage attendees to post feedback here during & after the event so coaches can improve it for future events. It's a great way to collect feedback in one place.
-- **Squad Channels** – The Squad channels will be where teams of individuals will go to work and collaborate during the event. We find squads of 3 to 5 people work well. You should create an appropriate number of squad channels based on the number of individuals attending your event. Name each channel "Squad X" where X is the squad number.
-- **Coach Channels (Optional)** – The Coach channels are optional dedicated spaces where a coach can meet 1:1 with a specific person to help work through some task or issue during the event that is not worthy of the rest of the squad following along with. You should create a dedicated coach channel for each coach that will be part of the event.
-
-**Example Event Team**
-
-![Sample gHacks Event Team](images/gH-sample-gvc.jpg "Example gHacks Event Team")
-
-#### Team Content
-
-Most hacks in the [gHacks Collection](../README.md#the-ghacks-collection) have the solutions to the hack challenges included in the [gHack GitHub repo](go/gHacks). Therefore, you should avoid the attendees having any reason to access to the gHacks repo before or during the event. Instead, we recommend pre-loading any  resources from the repo needed by the attendees for the hack into the event Team.
-
-#### Challenge Guide
-
-The challenges for each hack are published in the `/Student` folder of your gHacks.
-
-Some hacks have published their Challenges in a Word or PDF document. Other hacks have published their hacks in navigatable Markdown files which can be viewed on the web via GitHub pages.
-
-If the challenges are published in a Word or PDF document, copy the document from the gHacks repo and upload it into the General Channel's Files tab. We recommend pinning the document as a Tab in the General Channel so it is easily accessible to attendees.
-
-**Example of Challenges PDF Tab**
-
-![Sample gHacks Event Team - PDF Challenges](images/wth-sample-msteam-challenges-pdf.jpg)
-
-
-If the challenges are published in Markdown files, we recommend pinning the hack's "homepage" as a webpage Tab in the General Channel. Each hack's homepage is available via GitHub Pages at: `https://microsoft.github.io/WhatTheHack/nnn-HackName/`
-
-**Example of Challenges Website Tab**
-
-![Sample gHacks Event Team - Website Challenges](images/wth-sample-msteam-challenges-web.jpg)
-
-#### Student Resources
-
-Many hacks in the [gHacks Collection](../README.md#the-ghacks-collection) have provided resources (code snippets, templates, etc) needed for the hack in their `/HackName/Student/Resources` folder.  
-
-The lead coach should copy the contents of this folder from the repo and then upload them into the General Channel's Files tab. This will provide the files to the attendees in Microsoft Teams without them needing to visit the gHacks repo on GitHub.
-
-Some hacks have provided a link to download these resources from the gHacks repo within their Challenge instructions. If this is the case, you do not need to upload the resources into Microsoft Teams.
-
-You should also upload both the Event Kickoff presentation and any lecture presentations into Microsoft Teams too so that they are available to attendees during the event.
-
-**Example of Student Resources**
-
-![Sample gHacks Event Team - Student Resources](images/wth-sample-msteam-student-resources.jpg)
-
-#### Pre-load Resources into Google Chat Space
-
-Our recommended method of providing resource files to attendees is for the gHack event host to pre-load them into the Google Chat space for the gHack event. 
-
-To pre-load resources into the event team, the host should:
-1. Create a zip file of everything in the `resources`.
-2. Upload the zip file (or its contents) to the Files tab of the Google Chat space for the gHack event.
-3. Direct users to download the resource files from Files tab in the Google Chat space.
-
-
-#### Shared Tips/Wiki (Optional)
-
-During a gHacks event, attendees are strongly encouraged to share knowledge and learn from each other. Knowledge sharing is encouraged across the entire event, including between squads.  
-
-One way to encourage that is to create a place for attendees to share tips, tricks, and solutions discovered with each other. The attendees could use the Channel chats or Wiki feature in Microsoft Teams for this purpose.  However, we recommend creating a "Shared Tips" Word document and pinning it as a tab within the General channel. This makes the document portable and easier to download after the event.
-
-The learnings gathered by the attendees here makes a nice parting gift after the event as a resource they can keep and use.
-
-**Example of Shared Tips Tab**
-
-![Sample gHacks Event Team - Shared Tips](images/wth-sample-msteam-shared-tips.jpg)
-
-#### Coach Resources (Optional)
-
-The coaches should have access to the gHacks repo and all coach resources, including the coach's guide for the hack. For ease of access, you may optionally copy the coach resources into the private Coaches Channel's file section.
+- **Student Guide** - The lead coach will paste a link to the student guide as the first entry in the chat.
+- **Files** - The lead coach will upload all files from the `resources` folder to make them available to the students. Also if there is a Lectures PDF or other needed files they should go here.
+- **Google Meet** - The lead coach will kick off by creating a new Google Meet in the space. This will be the central gathering spot for all the attendees. This is where the kick off session, lectures, Q&A and the wrap up sessions are held together with all attendees and coaches.
+- **Breakout Room** - The lead coach will create 1 breakout room per team in the hack and name it appropriately. The students will then join the breakout room they were assigned to work with their team. Coaches will join the breakout room for the team they were assigned. The lead coach will float around each of the breakout rooms as needed.
+- **Coaches ONLY Chat** - The lead coach will create a multi-person chat for all the coaches to discuss things in private, away from student eyes.
 
 ### Getting People To Your Event
 
-Now that you have taken care of creating and preparing a Microsoft Team for your hack, you need to get people to your hack.
+Now that you have taken care of creating and preparing a Google Space for your hack, you need to get people to your hack.
 
 #### Registration and Invites
 
-It is up to you to decide how you will advertise your hack. You might send an invite to a larger group and let those interested RSVP by registering. There are many tools out there on the web to help you manage event registrations like Eventbrite, Eventzilla, or RSVPify.
+It is up to you to decide how you will advertise your hack. You might send an invite to a larger group and let those interested RSVP by registering. Using [Google Forms](https://forms.google.com) is a great way to manage your event registration. **NOTE:** Be sure you understand the privacy implications of gathering personal information in a Google Form.
 
-**NOTE:** Be sure you understand the privacy implications of using online registration tools.
+If you are hosting an hack for an external organization, you should coordinate with the event stakeholder to determine how attendees will be invited. It is often best to let the event stakeholder manage the invite and registration process. That's one less job for you.
 
-If you are inviting people from within your own organization, you can use [Microsoft Forms](https://forms.microsoft.com), which is a part of Office 365.
+#### Add Registered Attendees To Google Space
 
-If you are hosting an hack for an external organization, you should coordinate with the event stakeholder how attendees will be invited. It is often best to let the event stakeholder manage the invite and registration process. That's one less job for you.
+If you are hosting a virtual event, the event location <u>***IS***</u> the event Space you created in Google Chat. Therefore, it is important that the attendees be added to the Space <u>***before***</u> the event.
 
-#### Add Registered Attendees To Teams
+Whether you used a Google Form or worked with an external organization stakeholder, you should gather the list of registered attendees and add them to the Google Space a couple of days before the event.
 
-If you are hosting a virtual event, the event location <u>***IS***</u> the event team you created in Microsoft Teams. Therefore, it is important that the attendees be added to the event team <u>***before***</u> the event.
-
-Whether you used an online registration service or worked with an external organization stakeholder, you should gather the list of registered attendees and add them to the event team in Microsoft Teams a couple of days before the event.
-
-There are differences how you add people to a team in Microsoft Teams if they are part of your organization versus part of an external organization. Attendees from an external organization must be added to a team in Microsoft Teams manually, one-by-one, using their email addresses, via the team admin screen.
-
-To add external guests, see: [Add guests to a team in Teams](https://support.office.com/en-us/article/Add-guests-to-a-team-in-Teams-fccb4fa6-f864-4508-bdde-256e7384a14f)
-
-**Example of adding attendees to a team via the admin interface:**
+**Example of adding attendees to a Google Space:**
 
 ![How to Add Team Member - Part 1](images/wth-add-team-member-01am.jpg)
 
 ![How to Add Team Member - Part 2](images/wth-add-team-member-02am.jpg)
 
-We recommend creating a "join code" to share with internal organization attendeess which they can use to add themselves to the event team. The join code can be shared in the event invite or calendar meeting you will put together in the next section.
-
-For an in-person event, you can share the join code on the screen during the kick off meeting on event day.
-
-To create a join code, see: [Create a link or code for joining a team](https://support.microsoft.com/en-us/office/create-a-link-or-a-code-for-joining-a-team-11b0de3b-9288-4cb4-bc49-795e7028296f?ui=en-us&rs=en-us&ad=us)
-
-To use the join code, see: [Use a link or code to join a team](https://support.microsoft.com/en-us/office/use-a-link-or-code-to-join-a-team-c957af50-df15-46e3-b5c4-067547b64548?ui=en-us&rs=en-us&ad=us)
-
-**Example of creating a join code for a team:**
-
-![How to Create a Join Code](images/wth-create-join-codem.jpg)
-
-Once your attendees have been added to the event team, you can communicate with them ahead of the event by posting in the General channel. Consider sharing any preparation materials or prerequisites or announcements to provide details and clarity of your event.
+When someone is added to a Space, they will be emailed to accept the invite and join the Space. **NOTE:** The user will need to "activate" Google Chat if they've never used it before. Be aware of this.
 
 #### Calendar Invite
 
 Calendar invites are always important so attendees don't forget about your event.
 If someone is traveling to attend your event in person, they're not likely to forget to show up.  
 
-When it comes to hosting a virtual gHacks event, a Calendar block is even MORE important. The key word is **BLOCK**! You need the attendees to clear their calendar so they are dedicated to participating in the hack for the full event. Attendees leaving part way through the hack are putting their squad's success at risk.
+When it comes to hosting a virtual gHacks event, a Calendar block is even MORE important. The key word is **BLOCK**! You need the attendees to clear their calendar so they are dedicated to participating in the hack for the full event. Attendees leaving part way through the hack are putting their team's success at risk.
 
 We recommend sending a calendar invite to all registered attendees as early as possible after they have registered. If you are hosting an external organization, coordinate with the event stakeholder to send the calendar invite.
 
 When you create a calendar invite, you should include:
 
 - A brief description of the event format
-- Instructions to join the team via a "join code" if an internal audience
-- A link to the General Channel with instructions to join the kick off meeting
+- A mention that they should have received an invite email for the event's Google Space.
 - Instructions to make arrangements for others to cover their day jobs.
-- Instructions to put on their OOF messages.
+- Instructions to turn on their Out of Office messages.
 
 ## Event Day 
 
@@ -260,34 +162,19 @@ Every gHacks event starts off with a Kick Off Meeting.  *How* you get to the kic
 
 If you are hosting an in-person event, it is simple. Attendees show up at the venue you shared with them in your invite, take a seat, and give you their full attention to kick off.
 
-The in-person attendees should be instructed to join the event team in Microsoft Teams using a join code as depicted in the image below. Put the code in the corner of each of the slides in you kickoff presentation to give the attendees time to type it in.
-
-![Join Team with code](images/wth-join-team-with-code2.jpg)
+The in-person attendees should be instructed to join the event's Google Space that they were invited to in email. Even though we'll be together in person during the hack, having access to a system to share files and code, etc is key.
 
 #### Getting There: Virtual Event
 
-Getting to the kick off meeting can be a little tricky for virtual attendees. They will not join the kick off meeting the way they normally join meetings in Microsoft Teams. Instead they will join a Channel meeting in the General channel of the event team.
+Getting to the kick off meeting can be a little tricky for virtual attendees. They will not join the kick off meeting the way they normally join a Google Meet from a calendar invite. Instead they will join a Google Meet that is taking place inside of the event's Google Space.
 
-The reason we recommend hosting the kick off meeting as a Channel meeting in the General channel is so that the attendees are brought into the team and learn to collaborate there from the start. If you host the kick off meeting as a regular meeting in Microsoft Teams, it will be a private meeting that is not connected to the event team. Therefore, any chat conversations will not be captured in the team.
+As covered in the [previous section](#wth-event-preparation), attendees should have been added to the Google Space before the event based on registration.
 
-As covered in the [previous section](#wth-event-preparation), attendees should have been added to the MS Team before the event based on registration.
-
-The lead coach should start the kick off meeting in the General channel 15-20 mins before the kick off by clicking the "Meet Now" button as depicted below.
+The lead coach should start the kick off meeting in the Google Space 15-20 mins before the kick off by clicking camera icon in the chat text field. 
 
 ![Start a Channel Meeting](images/wth-kickoff-meeting-meet-now.jpg)
 
-The lead coach should set the name of the meeting **before** joining the meeting, as depicted below.
-
-![Set meeting name](images/wth-kickoff-meeting-title.jpg)
-
-To join the kick off meeting, attendees will first click the link to the General Channel in their calendar invite. Then they will click either purple "Join" button in the General channel to join the kick off as depicted below.
-
-![Join a Channel meeting](images/wth-kickoff-meeting-join-button.jpg)
-
-This can be tricky as most Teams users are used to clicking the "Join Teams Meeting" button in their Outlook calendar invite. Congratulate all attendees when they join the meeting for completing their first challenge:  Finding the kick off meeting.
-
-**NOTE:** It is important for the Lead Coach to start the kick-off meeting ahead of the start time. It is technically possible to have multiple parallel meetings in a channel at the same time. If a meeting has not been started, arriving attendees may start their own meeting(s) in the General channel by clicking the "Meet Now" button. This can lead to confusion as to which one to join.
-    
+To join the kick off meeting, attendees will first open up Google Chat and go to the event's Google Space. In there, they will find the link to join the Google Meet that the lead coach created.
 
 #### Welcomes & Intros
 
@@ -295,7 +182,7 @@ Now that you have everyone's attention, it is time to kick off by welcoming the 
 
 If the size of the group is small, it is a good idea to get to know your attendees by letting them introduce themselves.  Ask them to state their experience with the technology and what a successful event will look like for them.
 
-For a large group, skip the attendee intros (no one wants to be the 25th person to introduce themselves). Instead, the coaches should have the attendees introduce themselves later when they split into their smaller squads.
+For a large group, skip the attendee intros (no one wants to be the 25th person to introduce themselves). Instead, the coaches should have the attendees introduce themselves later when they split into their smaller teams.
 
 #### Logistics
 
@@ -303,20 +190,20 @@ Once everyone is acquainted, the lead coach should cover the logistics. Start of
 
 Explain the format:
 
+- Attendees will spend most of the time working in teams of 3-5 people to solve technical challenges.
+- Challenges are not labs with step-by-step instructions. Attendees will need to work together as a team to solve the challenge by researching documentation and following guidance from the coaches.
+- Teams will move at their own pace through the challenges and not be beholden to the clock.
 - There may be brief lecture presentations to the entire group at various points throughout the event to set up the hack's challenges.
-- Attendees will spend most of the time working in squads of 3-5 people to solve technical challenges.
-- Challenges are not labs with step-by-step instructions. Attendees will need to work together as a team to solve them by researching documentation and following guidance from the coaches.
-- Squads will move at their own pace through the challenges and not be beholden to the clock.
-- Break times will be set for lunch and the end of each hack day, however each squad can set additional break times as needed.
-- The coaches will bring the squads together at the beginning and end of each day for stand-up meetings to review progress and what they learned during each challenge.
+- Break times will be set for lunch and the end of each hack day, however each team can set additional break times as needed.
+- The coaches will bring the teams together at the beginning and end of each day for stand-up meetings to review progress and what they learned during each challenge.
 
-Next, review how everyone will interact using Microsoft Teams. The lead coach should provide a tour of of the event team, including where the resources for the hack are located, such as the Files Tab, Challenges, Shared Tips, and Feedback channel.
+Next, review how everyone will interact using the event's Google Space. The lead coach should provide a tour of the event Space, including the File tab where the student resources for the hack are located. The link to the Student Guide and the Google Meet.
 
-For a virtual event, the lead coach should explain how squads will use the "Meet Now" feature to start a meeting in their squad channels where they will do their work together. Attendees should be expected to be online and engaged in their squad meetings for the duration of the event.
+For a virtual event, the lead coach should explain how teams will use the breakout rooms to move into their team specific room and the larger meet.  Attendees should be expected to be online and engaged in their team meetings for the duration of the event with mic and camera turned on.
 
-At an in-person event, coaches may walk from table to table helping coach different squads. At a virtual event, they do the same by popping in and out of each squad's meeting throughout the event. When the coaches want all squads to come together, they will announce on each squad's call to rejoin the meeting in the General channel.
+At an in-person event, coaches may walk from table to table helping coach different teams. At a virtual event, they do the same by popping in and out of each team's breakout room throughout the event. When the coaches want all squads to come together, they will announce on each squad's call to rejoin the main room.
 
-#### Squad Formation
+#### Team Formation
 
 Determine how you want to break the attendees up into the smaller groups to form the hack squads. There are several options to consider.
 
