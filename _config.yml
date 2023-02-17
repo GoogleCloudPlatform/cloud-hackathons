@@ -1,9 +1,11 @@
 theme: minimal-mistakes-jekyll 
+minimal_mistakes_skin: dark
 title: gHacks
 google_analytics:
 include: [CONTRIBUTING.md]
 logo: /assets/images/gh-logo.png
 title: ""
+subtitle: "Learning By Doing on Google Cloud"
 defaults:
   - scope:
       path: ""
@@ -12,6 +14,7 @@ defaults:
       layout: single
       search: true
       title: ""
-minimal_mistakes_skin: dark
+      toc: true
+      toc_sticky: true
 atom_feed:
   hide: true

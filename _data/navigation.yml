@@ -1,6 +1,8 @@
 main:
   - title: "Hacks"
-    url: /index.html#the-ghacks-collection 
-  - title: "FAQ"
-    url: /index.html#how-to-host-ghacks
+    url: "#the-ghacks-collection"
+  - title: "Hosting"
+    url: "#how-to-host-ghacks"
+  - title: "Creating"
+    url: "#how-to-author-ghacks"
 
