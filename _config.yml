@@ -1,4 +1,17 @@
-theme: jekyll-theme-midnight
+theme: minimal-mistakes-jekyll 
 title: gHacks
 google_analytics:
 include: [CONTRIBUTING.md]
+logo: /assets/images/gh-logo.png
+title: ""
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      search: true
+      title: ""
+minimal_mistakes_skin: dark
+atom_feed:
+  hide: true
