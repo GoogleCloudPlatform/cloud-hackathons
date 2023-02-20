@@ -5,16 +5,20 @@ google_analytics:
 include: [CONTRIBUTING.md]
 logo: /assets/images/gh-logo.png
 title: ""
-subtitle: "Learning By Doing on Google Cloud"
+#subtitle: "Learning By Doing on Google Cloud"
 defaults:
   - scope:
       path: ""
       type: pages
     values:
-      layout: single
+      layout: splash 
       search: true
       title: ""
       toc: true
       toc_sticky: true
 atom_feed:
   hide: true
+
+plugins:
+  - jemoji
+  - jekyll-octicons

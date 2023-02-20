@@ -57,9 +57,8 @@ Create a Managed Notebook on Vertex AI. It's a good practice to have isolated vi
 
 We’ve prepared a [sample project on Github](https://github.com/meken/gcp-mlops-demo/archive/refs/heads/main.zip), navigate there and download the project as a **zip** file and extract the contents of the zip file into your notebook environment. Open the notebook `01-tip-toe-vertex-ai.ipynb`, make sure that you've selected the newly created kernel. You should now be able to run the first notebook and get familiar with some of the Vertex AI concepts.
 
-<ql-warningbox>
-Unfortunately at the moment it's not possible to create Managed Notebooks in Qwiklab environments. For this lab you can use _User-Managed Notebooks_. Pick a region close to you, create a simple vanilla Python3 notebook instance (with no GPUs) and please make sure that you've selected the **single user only** mode for the permissions. 
-</ql-warningbox>
+> **Warning**  
+> Unfortunately at the moment it's not possible to create Managed Notebooks in Qwiklab environments. For this lab you can use **User-Managed Notebooks**. Pick a region close to you, create a simple vanilla Python3 notebook instance (with no GPUs) and please make sure that you've selected the **single user only** mode for the permissions. 
 
 ### Success Criteria
 
@@ -143,9 +142,8 @@ If you’ve successfully completed the previous challenge, your training code ha
 
 The provided project has a `pipeline.py` file that can generate a pipeline definition. Run that to generate a pipeline definition file (JSON). Use the generated pipeline definition file to create a new Pipeline Run through the GCP Console. You'll need to fill in some parameters (you can look up the Python package location). Do not set/override the endpoint and monitoring_job parameters (keep the default values).
 
-<ql-infobox>
-Once the pipeline is triggered, it will take ~10 minutes to complete.
-</ql-infobox>
+> **Note**  
+> Once the pipeline is triggered, it will take ~10 minutes to complete.
 
 ### Success Criteria
 
@@ -175,13 +173,11 @@ Having a model is only the first step, in order to use the model it has to be de
 
 Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest instance size but make sure that it can scale to more than 1 instance. 
 
-<ql-infobox>
-The deployment of the model will take ~10 minutes to complete.
-</ql-infobox>
+> **Note**  
+> The deployment of the model will take ~10 minutes to complete.
 
-<ql-warningbox>
-Note that the Qwiklab environment we're using has a quota on the endpoint throughput (30K requests per minute), **do not exceed that**.
-</ql-warningbox>
+> **Warning**  
+> Note that the Qwiklab environment we're using has a quota on the endpoint throughput (30K requests per minute), **do not exceed that**.
 
 ### Success Criteria
 
@@ -230,9 +226,8 @@ If you’ve completed all of the previous challenges, you’re now ready to brin
 
 ### Description
 
-<ql-infobox>
-For this challenge we’ll keep things simple, we’ll re-use the original training data to re-train and won’t do anything if the model is not better, but in real world you’d be using a combination of existing data with the new data, and take manual actions if automatic re-training doesn’t yield better results. Note also that Vertex AI Endpoints allow deploying multiple versions of a model to enable blue-green style deployments, but we’ll ignore that too, the latest version will get all the traffic for this task.
-</ql-infobox>
+> **Note**  
+> For this challenge we’ll keep things simple, we’ll re-use the original training data to re-train and won’t do anything if the model is not better, but in real world you’d be using a combination of existing data with the new data, and take manual actions if automatic re-training doesn’t yield better results. Note also that Vertex AI Endpoints allow deploying multiple versions of a model to enable blue-green style deployments, but we’ll ignore that too, the latest version will get all the traffic for this task.
 
 Use the provided build pipeline (`clouddeploy.yaml`) to create a new build configuration. Make sure that it’s only triggered when a webhook is called. Also provide the necessary variables, such as the model training code version, endpoint name etc. Configure Log based alerts for Model Monitoring, and use webhooks as a notification channel to trigger the build.
 
