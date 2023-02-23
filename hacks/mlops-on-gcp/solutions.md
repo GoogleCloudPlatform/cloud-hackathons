@@ -24,7 +24,7 @@ For Qwiklabs users the only option is User-Managed Notebooks as the Managed Note
 
 The Notebook can run anywhere, but a region close to the participants is preferred. For User-Managed Notebooks, a vanilla Python image is faster than the other options, so that should be chosen. And the _Permissions_&rarr;_Single user only_ option must be chosen (which is the default for Managed Notebooks), which requires to enter the Advanced Setting section for User-Managed Notebooks.
 
-Creating a virtual environment is essential otherwise things might break due to dependency conflicts. The instructions point to a gist that works with `conda` and both standard and User-Managed Notebooks have that installed. However Managed Notebooks might require a different approach; participants can use `pip` virtual environments.
+Creating a virtual environment is essential otherwise things might break due to dependency conflicts. The instructions point to a gist that works with `pip` and both standard and User-Managed Notebooks have that installed. However, `conda` virtual environments would work fine too (and might give better control of the Python version).
 
 ```shell
 python3 -m venv .playground
@@ -113,6 +113,8 @@ The generated json file can be copied to the default GCS bucket (created as part
 
 The parameters for the Vertex AI Pipeline Job:
 
+| Parameter            | Value |
+| ---                  | ---   |
 | GCS output directory | `gs://{QWIKLAB_PROJECT_ID}/pipelines`|
 | endpoint             | `[none]`  |
 | location             | `us-central1` |
@@ -139,9 +141,9 @@ Once the model is deployed the following request payload can be used to verify t
 Assuming that the payload is stored in a file `request.json` and there's only one `Endpoint` in the project.
 
 ```shell
+REGION=...
 PROJECT_ID=`gcloud config list --format="value(core.project)"`
-ENDPOINT_ID=`gcloud ai endpoints list --region=us-central1 --format="value(ENDPOINT_ID)"`
-REGION=... 
+ENDPOINT_ID=`gcloud ai endpoints list --region=${REGION} --format="value(ENDPOINT_ID)"`
 TOKEN=`gcloud auth print-access-token`
 URL="https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${REGION}/endpoints/${ENDPOINT_ID}:predict"
 

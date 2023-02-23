@@ -53,16 +53,15 @@ As depicted in the overview diagram, the first step of any ML project is data an
 
 ### Description 
 
-Create a Managed Notebook on Vertex AI. It's a good practice to have isolated virtual environments for experiments, so create a new virtual environment and install that as a kernel. See this [gist](https://gist.github.com/meken/e6c7430997de9b3f2cf7721f8ecffc04) for the instructions. 
+Create a User-Managed Notebook on Vertex AI. Pick a region close to you, create a simple vanilla **Python3** notebook instance (with no GPUs) and make sure that you've selected the **single user only** option.
+
+It's a good practice to have isolated virtual environments for experiments, so create a new virtual environment and install that as a kernel. See this [gist](https://gist.github.com/meken/e6c7430997de9b3f2cf7721f8ecffc04) for the instructions. 
 
 We’ve prepared a [sample project on Github](https://github.com/meken/gcp-mlops-demo/archive/refs/heads/main.zip), navigate there and download the project as a **zip** file and extract the contents of the zip file into your notebook environment. Open the notebook `01-tip-toe-vertex-ai.ipynb`, make sure that you've selected the newly created kernel. You should now be able to run the first notebook and get familiar with some of the Vertex AI concepts.
 
-> **Warning**  
-> Unfortunately at the moment it's not possible to create Managed Notebooks in Qwiklab environments. For this lab you can use **User-Managed Notebooks**. Pick a region close to you, create a simple vanilla Python3 notebook instance (with no GPUs) and please make sure that you've selected the **single user only** mode for the permissions. 
-
 ### Success Criteria
 
-1. There’s a new (User-)Managed Notebook
+1. There’s a new User-Managed Notebook
 2. The sample notebook `01-tip-toe-vertex-ai.ipynb` is successfully run and a model file is generated/stored in Google Cloud Storage
 3. No code changes are needed for this challenge
 
@@ -74,7 +73,7 @@ We’ve prepared a [sample project on Github](https://github.com/meken/gcp-mlops
 
 ### Learning Resources
 
-- Documentation on [Vertex AI Workbench](https://cloud.google.com/vertex-ai/docs/workbench/managed/introduction)
+- Documentation on [Vertex AI Workbench](https://cloud.google.com/vertex-ai/docs/workbench/user-managed/introduction)
 
 ## Challenge 2: If it isn’t in version control, it doesn’t exist
 
@@ -84,9 +83,9 @@ The objective of this challenge is to create and configure a Git repository so t
 
 ### Description
 
-If you have completed the previous challenge, you should have the source code already unpacked on your Managed Notebook. But you’re free to complete this challenge on another environment such as Cloud Shell or your local machine.
+If you have completed the previous challenge, you should have the source code already unpacked on your User-Managed Notebook. But you’re free to complete this challenge on another environment such as Cloud Shell or your local machine.
 
-Create a Cloud Source Repository, configure access through SSH.
+Create a Cloud Source Repository, configure access through **SSH**.
 
 Make sure that the source code is pushed to the freshly created repository and can be cloned from it.
 
@@ -152,10 +151,10 @@ The provided project has a `pipeline.py` file that can generate a pipeline defin
 
 ### Tips
 
-- You have already created a bucket, you can use that as the pipeline root (optionally add `pipelines` folder in it).
-- Make sure that you're consistent in your region selection.
-- You can either upload the pipeline definition from a local machine, or put it on GCS and refer to its location.
-- Make sure that you're running the module `trainer.pipeline` in the virtual environment you have created as part of the first challenge.
+- Make sure that you're running the module `trainer.pipeline` in the virtual environment you have created as part of the first challenge
+- You can either upload the pipeline definition from a local machine, or put it on GCS and refer to its location
+- You have already created a bucket, you can use that as the pipeline root (optionally add `pipelines` folder in it)
+- For the parameters *location* and *python_pkg* check the Cloud Build pipeline to find out where and how the created package is stored
 - If you're in doubt about the parameters, remember to _Use the Force and read the Source_ ;)
 
 ### Learning Resources
@@ -212,7 +211,7 @@ Turn on Training-serving skew detection for your model, use an hourly granularit
 ### Tips
 
 - You can use the sample.csv file from challenge 1 as the baseline data
-- You can use the same tool you’ve used for the previous challenge to generate the requests, make sure to include some data that has a different distribution than the training data.
+- You can use the same tool you’ve used for the previous challenge to generate the requests, make sure to include some data that has a different distribution than the training data
 
 ### Learning Resources
 
