@@ -115,7 +115,7 @@ For each of your challenges, you will add to the end of your Student Guide a new
 ## Challenge \#: \<Challenge Name>
 ```
 
-**NOTE:** Don't forget to link to each challenge's text from the table of contents.
+Keep in mind that we're using [Github Flavored Markdown](https://github.github.com/gfm/) and support highlighting of blockquotes that start with `> **Note**` or `> **Warning**`. In addition any line that ends with two spaces and a newline will cause renderer to emit a linebreak. 
 
 ## Student Resources
 
@@ -177,7 +177,8 @@ Examples of Coach Solutions are:
 - Scripts/templates/etc for some challenges that can be shared with attendees if they get really stuck
     - Example: If challenges 1 through 3 build something (i.e. a GKE cluster) that is needed for challenge 4, you could “give” a stuck team the scripts so they could skip to challenge 4.
 
-> **NOTE:** This content is NOT intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.
+> **Note**  
+> This content is NOT intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.
 
 ### Solution Template
 
@@ -217,12 +218,12 @@ hacks
 │   │   ├── architecture.png
 │   │   └── results.png
 │   ├── resources # (Optional) Lecture presentations, supporting files, etc. Will be supplied to students
-│   │   └── lectures.pdf  
-│   │   └── kube-deploy.yaml
+│   │   ├── lectures.pdf
+│   │   ├── kube-deploy.yaml
 │   │   └── testing.html
-│   ├── README.md  # (Required) Hack description
-│    solutions.md  # (Required) The coach's guide
-│   ├── QL_OWNER  # (Required for qwiklabs) Line separated list of owner & collaborator's emails for the Qwiklab
-|   └── qwiklabs.yaml  # (Required for qwiklabs) Qwiklab configuration
+│   ├── README.md      # (Required) Hack description
+│   ├── solutions.md   # (Required) The coach's guide
+│   ├── QL_OWNER       # (Required for qwiklabs) Line separated list of owner & collaborator's emails for the Qwiklab
+│   └── qwiklabs.yaml  # (Required for qwiklabs) Qwiklab configuration
 └── ...
 ```
