@@ -64,9 +64,12 @@ git add .
 git commit -m "initial commit"
 ```
 
+> **Warning**  
+> If participants initialize the repo in their home directory instead of in the root of the extracted archive, that will cause problems in the next challenges.
+
 If users ignored the instructions and cloned the repo, they can skip the local Git repo creation, but they'll have to do the following steps.
 
-Creating a Cloud Source Repository should be trivial, it should be created in the lab project. And then an SSH key should be added (see the vertical ellipsis on the right side of the top bar for Cloud Source Repositories).
+Creating a Cloud Source Repository should be trivial, it should be created in the lab project when Qwiklabs is used. And then an SSH key should be added (see the vertical ellipsis on the right side of the top bar for Cloud Source Repositories).
 
 The following command will generate an SSH key pair and show the contents of the public key to be copied to the Cloud Source Repositories.
 
@@ -87,15 +90,17 @@ And finally push the changes.
 git push --all google
 ```
 
+> **Note**  
 > The Cloud Source Repositories still defaults to `master` branch, you might need to switch to a different branch to see the contents if you've used `main` as your default branch.
 
-Note also that it's possible to use `gcloud` authentication instead of SSH but that's not the challenge :)
+> **Warning**  
+> It's possible to use `gcloud` authentication instead of SSH but that's not the challenge :)
 
 ## Challenge 3: You break the build, you buy cake
 
 ### Notes & Guidance
 
-Any region can be selected to do the build. Users need to point to the right build file, and that's `/build/cloudbuild.yaml`, note the `/build/` prefix.
+Any region can be selected to do the build (with Qwiklabs you might need to choose the global option). Users need to point to the right build file, and that's `/build/cloudbuild.yaml`, note the `/build/` prefix.
 
 There's trailing whitespace in one of the files, which causes the linter to fail. That needs to be removed, and when the changes are pushed, the push trigger will yield a succesfull build.
 
@@ -115,10 +120,10 @@ The parameters for the Vertex AI Pipeline Job:
 
 | Parameter            | Value |
 | ---                  | ---   |
-| GCS output directory | `gs://{QWIKLAB_PROJECT_ID}/pipelines`|
+| GCS output directory | `gs://{PROJECT_ID}/pipelines`|
 | endpoint             | `[none]`  |
 | location             | `us-central1` |
-| project\_id          | `QWIKLAB_PROJECT_ID`|
+| project\_id          | `{PROJECT_ID}`|
 | python\_pkg          | `gcp-mlops-demo-0.8.0.dev0.tar.gz`|
 
 The `python_pkg` parameter can also be the full path to the package, and also works without the `tar.gz` extension. `GCS output directory` could also be any folder in the bucket (no trailing `/` characters though).
@@ -127,7 +132,9 @@ The `python_pkg` parameter can also be the full path to the package, and also wo
 
 ### Notes & Guidance
 
-Once the model is deployed the following request payload can be used to verify things. 
+During model deployment the smallest instance size (`n1-standard-2`) should be chosen, with the minimum number of instances set to 1 and the maximum number of instances set to >1 for autoscaling to work.
+
+Once the model is deployed the following request payload can be used to verify things. Sample data contains valid values but participants need to make sure that they don't copy the target column.
 
 ```json
 {
@@ -150,20 +157,23 @@ URL="https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locat
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN"  -d @request.json $URL
 ```
 
-The following commands will install & run apache-bench load tool.
+The following commands will install & run `apache-bench` load tool. The parameters 30000 requests and 100 connections will generate sufficient throughput for the endpoint to scale (assuming that the smallest instance size, `n1-standard-2`, is chosen). 
 
-```
+```shell
 sudo apt-get -y install apache2-utils
 ab -n 30000 -c 100 -p request.json -T "application/json" -H "Authorization: Bearer $TOKEN" $URL
 ```
 
-Managed Notebooks don't allow any installation, so in that case users should use Cloud Shell.
+> **Warning**  
+> Participants need to make sure that the output of `ab` doesn't contain any non 2XX responses or failed requests.
+
+This exercise can be completed either on the notebook terminal or Cloud Shell.
 
 ## Challenge 6: Monitor your models
 
 ### Notes & Guidance
 
-Once the Endpoint is up and running, it's possible to edit it from the UI and turn on Monitoring. Alternatively the following `gcloud` command can be used (this command also enabled Cloud Logging which is at the moment not possible through the UI).
+Once the Endpoint is up and running, it's possible to edit it from the UI and turn on Monitoring. Alternatively the following `gcloud` command can be used (this command also enables Cloud Logging alerts which is at the moment not possible through the UI).
 
 ```shell
 REGION=...
@@ -186,30 +196,34 @@ gcloud ai model-monitoring-jobs create --region=$REGION \
 
 ### Notes & Guidance
 
-Users need to make sure that Cloud Logging is enabled.
+There's a few things that require additional attention at the time of this writing.
+
+Currently it's not possible to set the Model Monitoring Cloud Logging alerts through the UI, so participants will need to use the CLI for that purpose.
+
+The following `gcloud` command turns on the option (assuming there's already a monitoring job).
 
 ```shell
 JOB_ID=`gcloud ai model-monitoring-jobs list --region=$REGION --format="value(name)"`
-```
-
-Note that the following command will only successfully run if a monitoring job has been completed previously (which might take up to an hour)
-
-```shell
 gcloud ai model-monitoring-jobs update $JOB_ID --region=$REGION --anomaly-cloud-logging
 
 ```
 
-In order to verify if Cloud Logging is enabled
+> **Warning**  
+> Updating a monitoring job is only possible when the job is running, which might take some time, so if the job status is `PENDING` the command will fail with an error message indicating that. Typically this would only happen if the participants are very quick with the challenges, in that case they could consider deleting the monitoring job and recreate it with the command line, enabling the anomaly-cloud-logging option.
+
+You can verify that the option is enabled by using this command (search for `enableLogging: true` in the `modelMonitoringAlertConfig` section).
 
 ```shell
-gcloud ai model-monitoring-jobs describe $JOB_ID --region=$REGION
+gcloud ai model-monitoring-jobs describe $JOB_ID --region=$REGION | grep enableLogging
 ```
 
-The following conditions are needed to filter the logs for alerting.
+When configuring the Cloud Logging the following conditions are needed to filter the logs for alerting. 
 
 ```text
-logName="projects/QWIKLAB_PROJECT_ID/logs/aiplatform.googleapis.com%2Fmodel_monitoring_anomaly"
-resource.labels.model_deployment_monitoring_job=JOB_ID
+logName="projects/{PROJECT_ID}/logs/aiplatform.googleapis.com%2Fmodel_monitoring_anomaly"
+resource.labels.model_deployment_monitoring_job={JOB_ID}
 ```
 
-> Note that completing this might take a few hours as monitoring jobs only run once every hour. It's sufficient to see if things are configured properly than the full trigger of the pipeline.
+> **Note** At the time of this writing the docs contain an error, `logName` reference `...aiplatform.googleapis.com%2FFmodel_monitoring_anomaly...` in the provided example has one `F` too many, it should be `...aiplatform.googleapis.com%2Fmodel_monitoring_anomaly...`
+
+> **Note** Completing this might take a few hours as monitoring jobs only run once every hour. It's sufficient to see if things are configured properly than the full trigger of the pipeline.

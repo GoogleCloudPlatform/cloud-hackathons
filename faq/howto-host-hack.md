@@ -176,6 +176,10 @@ The lead coach should start the kick off meeting in the Google Space 15-20 mins 
 
 To join the kick off meeting, attendees will first open up Google Chat and go to the event's Google Space. In there, they will find the link to join the Google Meet that the lead coach created.
 
+#### Qwiklabs
+
+Some of the gHacks have been designed to work in a special Qwiklabs environment. If you're not able to run the hack in your own environment this could be an alternative. In that case, each team should assign a _team lead_ who'd need to sign up for the special Qwiklabs environment. Once the team lead logs into this environment and starts the lab, the details for that lab (project id, user names and passwords) can be shared with the rest of the team and attendees can log into the GCP console with that information. So, in summary, only one person, the team lead needs to join and log into the Qwiklabs environment, get the information and then the lab can be ignored for the rest of the event.
+
 #### Welcomes & Intros
 
 Now that you have everyone's attention, it is time to kick off by welcoming the attendees and introducing the coaches. If it is a virtual event, we recommend the coaches turn on their cameras during the kick off as it helps drive the collaboration and interaction with the group.
