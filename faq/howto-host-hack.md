@@ -65,11 +65,16 @@ If you are inviting attendees that are outside of your organization, there are m
 If you are hosting a hack with a single organization, it is critical to identify an event stakeholder in the external organization who can help you plan for your gHacks event. The event stakeholder can help you address the following preparation concerns. **NOTE:** It is recommended that you start planning at least 2 weeks before the event to make sure everything is ironed out.
 
 #### GCP Subscription
-Most of the hacks in the gHacks collection require attendees to have "Contributor" access to a GCP project. 
+
+Most of the hacks in the gHacks collection require attendees to have "Editor" access to a GCP project. 
 
 It is important to work with the event stakeholder to decide how attendees will access GCP. Some organizations may provide individuals with their own projects.  Other organizations may provide access to a shared project created specifically for attendees to use during the hack event. 
 
-If the organization is not providing access to a GCP project for the hack, attendees will need to provide there own or a QwikLabs environment if the hack has created one.
+If the organization is not providing access to a GCP project for the hack, attendees will need to provide their own or a Qwiklabs environment if the hack has created one. 
+
+##### Qwiklabs
+
+Some of the gHacks have been designed to work in a special Qwiklabs instance. If you're not able to run the hack in your own environment this could be an alternative. It will require at least one person from the squad to sign up to the gHacks Qwiklabs instance and start the lab. Most gHacks are intended to be executed as teams, so it's sufficient for only one person to start the lab, retrieve the GCP project details (project id, user names & passwords), share that with the rest of the squad so that attendees can log in to the sandbox GCP project created as part of the lab. Even though the lab will contain the same instructions, it's better to ignore that and use the gHacks [website](https://ghacks.dev) like the rest of the squad (which won't have access to the lab, only to the GCP project, using the credentials shared by the person who signed up).
 
 #### Workstation Security
 
@@ -175,10 +180,6 @@ The lead coach should start the kick off meeting in the Google Space 15-20 mins 
 ![Start a Channel Meeting](images/wth-kickoff-meeting-meet-now.jpg)
 
 To join the kick off meeting, attendees will first open up Google Chat and go to the event's Google Space. In there, they will find the link to join the Google Meet that the lead coach created.
-
-#### Qwiklabs
-
-Some of the gHacks have been designed to work in a special Qwiklabs environment. If you're not able to run the hack in your own environment this could be an alternative. In that case, each team should assign a _team lead_ who'd need to sign up for the special Qwiklabs environment. Once the team lead logs into this environment and starts the lab, the details for that lab (project id, user names and passwords) can be shared with the rest of the team and attendees can log into the GCP console with that information. So, in summary, only one person, the team lead needs to join and log into the Qwiklabs environment, get the information and then the lab can be ignored for the rest of the event.
 
 #### Welcomes & Intros
 
