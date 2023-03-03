@@ -27,9 +27,9 @@ Or, create your own with the guidance we have on [How To Author gHacks](howto-au
 
 Next, you need Google Chat and Google Meet. Specifically, we'll be creating a Google Chat Space that will be dedicated for your particular event. In this Space we'll be able to share files with the attendees, chat together and we'll host a single Google Meet for all participants which will have breakout rooms for each team. 
 
-During a gHacks event, attendees work together in squads of 3 to 5 people to solve the hack's challenges. The attendees will need to share links, code snippets, or even screen share as they collaborate on the challenge solutions. 
+During a gHacks event, attendees work together in teams of 3 to 5 people to solve the hack's challenges. The attendees will need to share links, code snippets, or even screen share as they collaborate on the challenge solutions. 
 
-At an in-person event, each squad will be sitting at the same table. During a virtual event, everyone will be sitting at home in their pajamas. The main difference is that during a virtual event, attendees will need to join the Meet call in the event's Chat Space for the duration of the event. Most other aspects of the event are the same.
+At an in-person event, each team will be sitting at the same table. During a virtual event, everyone will be sitting at home in their pajamas. The main difference is that during a virtual event, attendees will need to join the Meet call in the event's Chat Space for the duration of the event. Most other aspects of the event are the same.
 
 ### People 
 
@@ -40,12 +40,12 @@ Finally, you need people to hack. There are a few different roles that will need
 	- This person should be intimately familiar with the content and all of its solutions.
 	- Delivers kick off meeting & challenge intro lecture presentations (if required)
 - Coaches
-	- The personal coach/facilitator/TA for a squad of 3 to 5 attendees.
+	- The personal coach/facilitator/TA for a team of 3 to 5 attendees.
     	- It is recommended to have 1 coach for every 5 attendees. At a minimum, there should be 1 coach for every 10 attendees.
-	- Provides guidance and direction for the squad but does **NOT** provide answers. Typically answering questions with more questions and things to "ponder".
-	- In charge of determining whether a squad has finished a challenge based on the acceptance criteria in the challenge text. This review will determine if they move on to the next challenge.
+	- Provides guidance and direction for the team but does **NOT** provide answers. Typically answering questions with more questions and things to "ponder".
+	- In charge of determining whether a team has finished a challenge based on the acceptance criteria in the challenge text. This review will determine if they move on to the next challenge.
 - Attendees
-	- The students in the event that participate in squads of 3 to 5.
+	- The students in the event that participate in teams of 3 to 5.
 	- Must join and participate in the event's Google Meet AND have their webcam and microphone turned on at all times. This most accurately simulates an in person team environment.
 
 ## Event Preparation
@@ -206,22 +206,22 @@ Next, review how everyone will interact using the event's Google Space. The lead
 
 For a virtual event, the lead coach should explain how teams will use the breakout rooms to move into their team specific room and the larger meet.  Attendees should be expected to be online and engaged in their team meetings for the duration of the event with mic and camera turned on.
 
-At an in-person event, coaches may walk from table to table helping coach different teams. At a virtual event, they do the same by popping in and out of each team's breakout room throughout the event. When the coaches want all squads to come together, they will announce on each squad's call to rejoin the main room.
+At an in-person event, coaches may walk from table to table helping coach different teams. At a virtual event, they do the same by popping in and out of each team's breakout room throughout the event. When the coaches want all teams to come together, they will announce on each team's call to rejoin the main room.
 
 #### Team Formation
 
-Determine how you want to break the attendees up into the smaller groups to form the hack squads. There are several options to consider.
+Determine how you want to break the attendees up into the smaller groups to form the hack teams. There are several options to consider:
 
-- At an in-person event, the squads can be set by the table the attendees sit at.
+- At an in-person event, the teams can be set by the table the attendees sit at.
 - Load balanced by skill level - This encourages a mix of experts and novices so that there is shared learning. Experts are encouraged to help novices.
 - Segregated by skill level - This enables advanced participants to progress at a faster pace or take on additional challenges, while allowing novices to move at a less stressful pace as they work together to learn.
-- Play Dodgeball - The lead coach nominates a few attendees as squad leaders. Allow the squad leaders to pick their squad members like in gym class at school.
-- At a virtual event, given various attendee locations, you may form squads by timezone. This enables squads to take break times that align to their timezone.
+- Play Dodgeball - The lead coach nominates a few attendees as team leaders. Allow the team leaders to pick their team members like in gym class at school.
+- At a virtual event, given various attendee locations, you may form teams by timezone. This enables teams to take break times that align to their timezone.
 - Random
 
-**TIP:** If hosting a hack at an external organization, it is a good idea to ask the event stakeholder to help decide.
+**TIP:** If hosting a hack at an external organization, it is a good idea to ask the event stakeholder to help decide on team formation.
 
-Once squads have been formed, encourage them to each give their squad a fun name and rename their Teams channel to it as depicted in the image below. This will help break the ice and get the squad members collaborating out of the gate.
+Once teams have been formed, encourage them to each give their team a fun name and rename their breakout room. This will help break the ice and get the team members collaborating out of the gate.
 
 #### Event Kick Off Presentation Templates
 
@@ -243,65 +243,65 @@ While not required, many of the hacks in the [gHacks collection](../README.md#th
 - A review of workstation pre-requisites needed for the hack.
 - Overviews for each challenge including technology concepts needed to complete them.
 
-Before the squads depart the kick-off meeting, the lead coach should cover the hack overview, prerequisites, and overview of technology concepts for the first challenge.
+Before the teams depart the kick-off meeting, the lead coach should cover the hack overview, prerequisites, and overview of technology concepts for the first challenge.
 
-Later, throughout the event, the lead coach should work with the coaches to monitor progress of the squads on each challenge. When the majority of squads (or individuals in a squad) have completed a challenge, the lead coach should deliver the lecture for the next challenge. Ask those who are still working to pay attention to the short lecture, then return to completing the previous challenge.
+Later, throughout the event, the lead coach should work with the coaches to monitor progress of the teams on each challenge. When the majority of teams (or individuals in a team) have completed a challenge, the lead coach should deliver the lecture for the next challenge. Ask those who are still working to pay attention to the short lecture, then return to completing the previous challenge.
 
-At an in-person event, the lead coach calls everyone's attention to the front of the room to present. At a virtual event, the lead coach directs the squads to return to the General channel for the lecture.
+At an in-person event, the lead coach calls everyone's attention to the front of the room to present. At a virtual event, the lead coach directs the teams to return to the General channel for the lecture.
 
-Alternatively, if the squads are progressing at vastly different paces, the coaches may deliver the lecture for each challenge to the individual squad in their own squad meetings.
+Alternatively, if the teams are progressing at vastly different paces, the coaches may deliver the lecture for each challenge to the individual team in their own team meetings.
 
-#### Hack Squads
+#### Hack teams
 
-Now it's time to get down to the business of solving the challenges as a squad. If you are hosting an in-person hack, attendees will start talking to each other and working together at their squad tables to solve the challenges.
+Now it's time to get down to the business of solving the challenges as a team. If you are hosting an in-person hack, attendees will start talking to each other and working together at their team tables to solve the challenges.
 
-If it is a virtual event, the attendees will leave the meeting in the General channel. They will then go to their squad's channel and participate in a meeting in that channel. Coaches should be prepared to assist folks and direct them where they need to go within Microsoft Teams.
+If it is a virtual event, the attendees will leave the meeting in the General channel. They will then go to their team's channel and participate in a meeting in that channel. Coaches should be prepared to assist folks and direct them where they need to go within Microsoft Teams.
 
 Please be aware the first person enter the channel will hit the “Meet now” button within the channel (as indicated by the red arrow below) to start the channel meeting. All subsequent individuals will see a notice that there is an active meeting and can simply hit the “Join” button.
 
-![Start a Squad Meeting](images/wth-squad-meet-now-buttonm.jpg)
+![Start a team Meeting](images/wth-team-meet-now-buttonm.jpg)
 
 Once everyone is settled, the format and interactions are the same whether virtual or in-person:
 
-- The individuals within the squads can now work together on their tasks, share screens, links, etc. to help complete the challenges.
-- Squads must complete the challenges as a team. Individuals who complete a challenge before their squad-mates should not continue to the next challenge. Instead, they should help other members of their squad get over the finish line.
-- While the squad works together solve the challenges, it is expected that each individual contributes meaningfully to the group and completes the challenge on their own workstation.
-- To ensure each individual is contributing to the team effort, we recommend one person be the "designated driver" for each challenge and share their screen with the squad as they work through the challenge for all to observe. The rest of the squad may be doing research or implementing the solution in parallel on their own workstation.
-- As people get stuck the coaches should encourage them to talk through the issues with the squad and share their screen to work through the challenge. Group collaboration is a very effective learning tool.  
-- If a person within the squad is having a problem that requires individual attention, the coach can ask the person to go to the coach’s dedicated channel where they can start a channel meeting and work together to resolve the issues.
-- Sharing is caring. As individuals or squads find useful tips and tricks, or solve roadblocks, the coaches should encourage them to share those items in the General Channel as a Chat or within the Shared Tips document.
-- Squads should not be beholden to the clock as they progress through the challenges. Therefore, they control their own schedule during the event and can decide to take breaks as needed outside of any scheduled meal breaks.
+- The individuals within the teams can now work together on their tasks, share screens, links, etc. to help complete the challenges.
+- teams must complete the challenges as a team. Individuals who complete a challenge before their team-mates should not continue to the next challenge. Instead, they should help other members of their team get over the finish line.
+- While the team works together solve the challenges, it is expected that each individual contributes meaningfully to the group and completes the challenge on their own workstation.
+- To ensure each individual is contributing to the team effort, we recommend one person be the "designated driver" for each challenge and share their screen with the team as they work through the challenge for all to observe. The rest of the team may be doing research or implementing the solution in parallel on their own workstation.
+- As people get stuck the coaches should encourage them to talk through the issues with the team and share their screen to work through the challenge. Group collaboration is a very effective learning tool.  
+- If a person within the team is having a problem that requires individual attention, the coach can ask the person to go to the coach’s dedicated channel where they can start a channel meeting and work together to resolve the issues.
+- Sharing is caring. As individuals or teams find useful tips and tricks, or solve roadblocks, the coaches should encourage them to share those items in the General Channel as a Chat or within the Shared Tips document.
+- teams should not be beholden to the clock as they progress through the challenges. Therefore, they control their own schedule during the event and can decide to take breaks as needed outside of any scheduled meal breaks.
 
 #### Hack Coaches
 
-Coaches are essential to a gHacks event and can make the difference between a good experience or a poor experience for the attendees. Ideally, there should be one coach per squad. However, a coach can reasonably manage two squads at the same time if there are not enough coaches available.
+Coaches are essential to a gHacks event and can make the difference between a good experience or a poor experience for the attendees. Ideally, there should be one coach per team. However, a coach can reasonably manage two teams at the same time if there are not enough coaches available.
 
-A coach's main over-arching role is to act as a technical advisor to the attendees in a squad. Coaches are not proctors who stand on the sideline and wait for attendees to raise their hands for help. They should be actively engaged with the squad(s) they are advising the majority of the time.
+A coach's main over-arching role is to act as a technical advisor to the attendees in a team. Coaches are not proctors who stand on the sideline and wait for attendees to raise their hands for help. They should be actively engaged with the team(s) they are advising the majority of the time.
 
-At an in-person event, the coaches should be sitting at the table with their squad. At a virtual event, they should be engaged in their squad's channel meeting for the duration of the event.
+At an in-person event, the coaches should be sitting at the table with their team. At a virtual event, they should be engaged in their team's channel meeting for the duration of the event.
 
-Coaches will need to move around to interact with the lead coach, other coaches, or multiple squads. For example, a coach may ask another coach for help if a squad runs into an issue that the coach does not know how to solve.
+Coaches will need to move around to interact with the lead coach, other coaches, or multiple teams. For example, a coach may ask another coach for help if a team runs into an issue that the coach does not know how to solve.
 
-At a virtual event, the coaches can quickly jump in and out of the various Squad channels to check in on the squad and provide support as required by joining the various channel meetings.
+At a virtual event, the coaches can quickly jump in and out of the various team channels to check in on the team and provide support as required by joining the various channel meetings.
 
 During the hack, a coach's responsibilities include:
 
-- Keep the squads working as teams
+- Keep the teams working as teams
     - Encourage attendees to “learn from” and “share with” each other
     - If a coach observes individuals racing ahead, encourage them to help those who are behind.
-    - Encourage attendees to use their squad’s channel to collaborate/share info
-	- Encourage attendees to take turns "driving" for each challenge so each gets an opportunity to lead their squad 
-- Help unblock squads that get stuck
-    - Always and repeatedly encourage squad members to unblock each other first
+    - Encourage attendees to use their team’s channel to collaborate/share info
+	- Encourage attendees to take turns "driving" for each challenge so each gets an opportunity to lead their team 
+- Help unblock teams that get stuck
+    - Always and repeatedly encourage team members to unblock each other first
     - Provide hints, but not answers
 	- Repeat and confirm the challenge goals if there is ambiguity
     - If a coach observes an individuals blocked for a while, help them get moving so they don’t lose interest and disengage.
 - Be a technical advisor and subject matter expert
-	- Provide hints/pointers to the squads on how to solve problems and where to find information.
+	- Provide hints/pointers to the teams on how to solve problems and where to find information.
     - Use the solutions in the Coach’s guide to provide guidance, but do not share with the attendees
     - The Coach’s guide will not be comprehensive. As subject matter experts, coaches should share their knowledge and explain key concepts to help the attendees
-- Notify the lead coach of unexpected blockers that arise during the event so they can be communicated to all squads and recorded for future reference.
-- Verify that a squad has completed each challenge by checking that they have met all of the success criterias.
+- Notify the lead coach of unexpected blockers that arise during the event so they can be communicated to all teams and recorded for future reference.
+- Verify that a team has completed each challenge by checking that they have met all of the success criterias.
 - Solicit continuous feedback from the attendees on their experience, the content, and what can be done to improve it. Encourage them to use the Feedback channel to share with all of the coaches.
 
 **NOTE:** Attendees should not be judged on how far they get.  No trophies should be given for challenge completion.  If event hosts want to gamify/incentivize attendees, they should focus on encouraging attendees to share with each other.
@@ -310,14 +310,14 @@ During the hack, a coach's responsibilities include:
 
 Throughout the event, the coaches should have various checkpoints or stand-ups that require all the individuals to take a break from hacking to... stand up. This is a good thing to do before starting a scheduled meal break, at the end of each day, and start of each subsequent day of the hack.
 
-Coaches may have stand ups with their individual squads, or the lead coach may call all attendees back to the General channel to address them as a group.
+Coaches may have stand ups with their individual teams, or the lead coach may call all attendees back to the General channel to address them as a group.
 
 Things that coaches should facilitate during a stand up:
 - Require the attendees to physically get up, stretch and take a minute away from their screens
-- Ask for a quick status check of where the squad is on a given challenge
+- Ask for a quick status check of where the team is on a given challenge
 - Review next steps and plan going forward to solve the challenges
 - Upon completion of a challenge, discuss the solution and re-cap lessons learned.
-- Review a technical concept that the squad has struggled to understand
+- Review a technical concept that the team has struggled to understand
 
 The lead coach should close out the gHacks event with a final stand-up that acts as a wrap-up session.
 - Attendees should be encouraged to share their parting thoughts and key learnings.
@@ -340,7 +340,7 @@ There are plenty of guides out there for hosting a great in-person event. There'
 gHacks were designed to be hosted as an in-person or virtual event. While most details of ***how*** to hack were covered earlier in this document, we wanted to share some tips and lessons learned for improving the virtual experience based on previous gHacks events that have been hosted.
 
 - Require attendees to keep an open mic and use cameras as often as possible. Noisy pets, kids, or spouses. It's all fine in the spirit of keeping remote attendees engaged and feeling as though they are together. Just remember to mute the toilet flushes!
-- If a coach observes an individual on mute for long periods of time or not speaking up as the squad hacks, the coach should reach out in a private chat to ask the person if they need help. The goal is to keep the person engaged in the hack and away from their email, phone, social media, etc.
+- If a coach observes an individual on mute for long periods of time or not speaking up as the team hacks, the coach should reach out in a private chat to ask the person if they need help. The goal is to keep the person engaged in the hack and away from their email, phone, social media, etc.
 - If bandwidth is tight for an attendee, they can turn off their camera as well as the ***incoming*** video stream from other participants.
 - Coaches should never turn their cameras off so that attendees know they are available, especially during any lectures or re-caps
 - Stand-ups really need to be stand ups. Encourage attendees to take a break from their screen and headsets and walk around. Sitting at a desk for long periods is not healthy.
@@ -350,19 +350,19 @@ Remote attendees may be spread across timezones. There are multiple related lear
 - Attendees should be in a similar timezone region (+/- 3 hours) to optimize scheduling and collaboration.
 - Coaches should also be in the same timezone region. However, coaches can adjust their schedule to support remote attendees in a different region if needed. For example, a North American coach can agree to wake up early (4am) to support a virtual event scheduled for the European region.
 - Balance kick-off and end times across a time zone region with an early start for the western-most time zone and a later end time for the eastern-most time zone.  For example, if hosting an event for North American attendees, start at 7am Pacific/10am Eastern. End at 6pm Eastern/3pm Pacific.
-- When forming squads, encourage folks to group by time zone. This allows the members of each squad to take the same lunch or dinner break together.
-- For a multi-day hack, after a shared kick-off meeting on day 1, coaches can designate the hours they will be available on the subsequent days. The squads can then decide to start earlier/finish later if all members are in the same time zone. For example, coaches can be available 10am-6pm Eastern. A squad in the eastern time zone can start 9am and finish at 4pm. The squad in the western time zone can work the same hours in their own time zone, resulting in them working the last hour without a coach.
+- When forming teams, encourage folks to group by time zone. This allows the members of each team to take the same lunch or dinner break together.
+- For a multi-day hack, after a shared kick-off meeting on day 1, coaches can designate the hours they will be available on the subsequent days. The teams can then decide to start earlier/finish later if all members are in the same time zone. For example, coaches can be available 10am-6pm Eastern. A team in the eastern time zone can start 9am and finish at 4pm. The team in the western time zone can work the same hours in their own time zone, resulting in them working the last hour without a coach.
 
 It is possible to host a "hybrid" event that has some attendees and coaches in person, and others remote. Here are recommendations from experiences we have had with different permutations:
 
 - Hosting an in-person event with remote attendees.
-	- Group remote attendees into one or more squads consisting only of remote attendees. Don't mix and match.
-	- Dedicate an in-person coach to support the remote squads
+	- Group remote attendees into one or more teams consisting only of remote attendees. Don't mix and match.
+	- Dedicate an in-person coach to support the remote teams
 	- The dedicated in-person coach is responsible for making sure the A/V connections between the venue and the event team in Microsoft Teams is working
 	- The dedicated in-person coach must represent the remote attendees to the lead coach & other in-person attendees. When questions come up online, the dedicated in-person coach can be the one to get the attention of the lead or other in-person coaches.
 - Hosting an event where the attendees are in-person, but the coaches are remote
 	- This is a great solution when you want to host an event for attendees in a different region
 	- The coaches need to adjust their working hours to support the remote region.  For example, to support an event in Australia, a coach in the eastern US time zone would need to agree to work from 5pm to 1am.
 	- This does require volunteers to be designated as facilitators in the physical venue. The facilitators are responsible for the A/V connectivity to the remote coaches and raising questions from attendees in the venue to the online coaches.
-- Hosting an event where individual squads work together in person, but distributed and remote from other squads. 
-	- For example, squads can work together in New York, Chicago, and Seattle. The lead coach may be in Chicago leading all three groups online. 
+- Hosting an event where individual teams work together in person, but distributed and remote from other teams. 
+	- For example, teams can work together in New York, Chicago, and Seattle. The lead coach may be in Chicago leading all three groups online. 
