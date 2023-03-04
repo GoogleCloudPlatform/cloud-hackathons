@@ -38,10 +38,10 @@ Finally, you need people to hack. There are a few different roles that will need
 	- The lead of the event both logistically and technically. 
 	- Responsible for the event preparation steps [outlined below](#event-preparation).
 	- This person should be intimately familiar with the content and all of its solutions.
-	- Delivers kick off meeting & challenge intro lecture presentations (if required)
+	- Delivers the kick off meeting & challenge intro lecture presentations (if required)
 - Coaches
-	- The personal coach/facilitator/TA for a team of 3 to 5 attendees.
-    	- It is recommended to have 1 coach for every 5 attendees. At a minimum, there should be 1 coach for every 10 attendees.
+	- The dedicated coach for a team of 3 to 5 attendees.
+    	- It is recommended to have 1 coach for every 5 attendees. For experienced coaches, they can usually cover 2 teams (10 attendees).
 	- Provides guidance and direction for the team but does **NOT** provide answers. Typically answering questions with more questions and things to "ponder".
 	- In charge of determining whether a team has finished a challenge based on the acceptance criteria in the challenge text. This review will determine if they move on to the next challenge.
 - Attendees
@@ -70,11 +70,17 @@ Most of the hacks in the gHacks collection require attendees to have "Editor" ac
 
 It is important to work with the event stakeholder to decide how attendees will access GCP. Some organizations may provide individuals with their own projects.  Other organizations may provide access to a shared project created specifically for attendees to use during the hack event. 
 
-If the organization is not providing access to a GCP project for the hack, attendees will need to provide their own or a Qwiklabs environment if the hack has created one. 
+If the organization is not providing access to a GCP project for the hack, attendees will need to provide their own project or create a Qwiklabs environment if the hack has created one (see next section).
 
-##### Qwiklabs
+#### Qwiklabs
 
-Some of the gHacks have been designed to work in a special Qwiklabs instance. If you're not able to run the hack in your own environment this could be an alternative. It will require at least one person from the squad to sign up to the gHacks Qwiklabs instance and start the lab. Most gHacks are intended to be executed as teams, so it's sufficient for only one person to start the lab, retrieve the GCP project details (project id, user names & passwords), share that with the rest of the squad so that attendees can log in to the sandbox GCP project created as part of the lab. Even though the lab will contain the same instructions, it's better to ignore that and use the gHacks [website](https://ghacks.dev) like the rest of the squad (which won't have access to the lab, only to the GCP project, using the credentials shared by the person who signed up).
+Some of the gHacks have been designed to work in a special Qwiklabs instance. If you're not able to run the hack in your own environment this could be an alternative. 
+
+It will require at least one person from the team to sign up for the gHacks Qwiklabs instance and start the lab. Since gHacks are team based events, it's sufficient for only one person to start the lab and should:
+- Retrieve the GCP project details (project id, user names & passwords)
+- Share details with the rest of the team so that attendees can log in to the sandbox GCP project. 
+
+**NOTE:** Even though the QwikLab will contain the same instructions, it's better to ignore that and use the gHacks [website](https://ghacks.dev) like the rest of the team (they won't have access to the lab, only to the GCP project, using the credentials shared by the person who signed up).
 
 #### Workstation Security
 
@@ -82,29 +88,47 @@ Some organizations have tight security policies enforced on their employees' wor
 
 One workaround is to use the Google Cloud Shell. However, some organizations may disable access to the Google Cloud Shell.  Another workaround is to provision a workstation VM in GCP that attendees can SSH into to complete the hack.
 
-Tight firewalls may make it challenging to access even the GCP Console itself from an organization's workstations. This is when you bang your head against the wall, give up, and be thankful you don't work for that organization! :)
+Tight firewalls may make it challenging to access even the GCP Console itself from an organization's workstations. This is when you bang your head against the wall, give up, and be thankful you don't work for that organization.
 
-All of these security concerns and their mitigation should be identified and addressed with the organization event stakeholder ahead of time.
+All of these security concerns and their mitigation should be identified and addressed with your stakeholder at the customer at least **2 weeks** ahead of time.
 
 ### Google Space Creation
 
-Now that you've gotten all of the overhead out of the way, it's time to build your event's Google Space.
+Now that all of the overhead is out of the way, it's time to build your event's Google Space.
 
-This new Google Space will be used as the dedicated event space. This space will host documents, the Google Meet for the event along with its break-out rooms for each team and overall collaboration in real and near real-time.
+This new Google Space will be used as the dedicated event space. This space will host documents, hold the Google Meet for the event along with its break-out rooms for each team and overall collaboration in real and near real-time.
 
 We suggest naming your Google Space with at minimum the hack name and organization. You can also add the location or date too. This will make it easy for attendees to remember what the Space was for after the event.
 
-For example: `"gHack - Acme - Security in Media"`
+For example: `"gHack - Acme Corp - MLOps on GCP"`
 
-#### Space Structure
------------------ NEED SCREENSHOTS FOR EACH BULLET ----------
+![Create Google Space](images/host-create-space.png)
+
+**NOTE:** Make sure that you check off the book to allow external users otherwise your customers won't be able to join.
+
+**NOTE:** Turn off conversation view as it will only get in the way and make things harder to read.
+
+### Space Structure
 
 In our Google Space, we will have the following:
 
+- **Add Students** - The lead coach will click on `Add people & apps` and enter the email addresses of all the participants and coaches for this event
 - **Student Guide** - The lead coach will paste a link to the student guide as the first entry in the chat.
-- **Files** - The lead coach will upload all files from the `resources` folder to make them available to the students. Also if there is a Lectures PDF or other needed files they should go here.
+- **Files** - The lead coach will click on `Share a file` and upload all files from the hack's `resources` folder to make them available to the students. Also if there is a Lectures PDF or other needed files they should be uploaded as well.
+- **Chat** - Make sure to turn on History so that the chats are persisted between days.
+
+![New Space Config](images/host-new-space.png)
+
 - **Google Meet** - The lead coach will kick off by creating a new Google Meet in the space. This will be the central gathering spot for all the attendees. This is where the kick off session, lectures, Q&A and the wrap up sessions are held together with all attendees and coaches.
-- **Breakout Room** - The lead coach will create 1 breakout room per team in the hack and name it appropriately. The students will then join the breakout room they were assigned to work with their team. Coaches will join the breakout room for the team they were assigned. The lead coach will float around each of the breakout rooms as needed.
+
+![Create the Meet](images/host-create-meet.png)
+
+- **Breakout Rooms** - The lead coach will create 1 breakout room per team in the hack and name it appropriately. The students will then join the breakout room they were assigned to work with their team. Coaches will join the breakout room for the team they were assigned. The lead coach will float around each of the breakout rooms as needed.
+
+![Create Breakouts](images/host-breakouts-1.png)
+![Create Breakouts](images/host-breakouts-2.png)
+![Create Breakouts](images/host-breakouts-3.png)
+
 - **Coaches ONLY Chat** - The lead coach will create a multi-person chat for all the coaches to discuss things in private, away from student eyes.
 
 ### Getting People To Your Event
@@ -125,11 +149,11 @@ Whether you used a Google Form or worked with an external organization stakehold
 
 **Example of adding attendees to a Google Space:**
 
-![How to Add Team Member - Part 1](images/wth-add-team-member-01am.jpg)
+![Adding people to a space](images/host-add-people.png)
 
-![How to Add Team Member - Part 2](images/wth-add-team-member-02am.jpg)
+When someone is added to a Space, they will be emailed to accept the invite and join the Space. 
 
-When someone is added to a Space, they will be emailed to accept the invite and join the Space. **NOTE:** The user will need to "activate" Google Chat if they've never used it before. Be aware of this.
+**NOTE:** The user will need to "activate" Google Chat if they've never used it before. Be aware of this.
 
 #### Calendar Invite
 
@@ -149,7 +173,7 @@ When you create a calendar invite, you should include:
 
 ## Event Day 
 
-The big day has arrived! It's showtime!  Rest well and get a full night of sleep beforehand. You will need it to be fresh on hack day.
+The big day has arrived! It's show time!  Rest well and get a full night of sleep beforehand. You will need it to be fresh on hack day.
 
 Below is the guidance on how to actually host and run a gHacks event:
 
@@ -173,13 +197,13 @@ The in-person attendees should be instructed to join the event's Google Space th
 
 Getting to the kick off meeting can be a little tricky for virtual attendees. They will not join the kick off meeting the way they normally join a Google Meet from a calendar invite. Instead they will join a Google Meet that is taking place inside of the event's Google Space.
 
-As covered in the [previous section](#wth-event-preparation), attendees should have been added to the Google Space before the event based on registration.
+As covered in the [previous section](#event-preparation), attendees should have been added to the Google Space before the event based on registration.
 
 The lead coach should start the kick off meeting in the Google Space 15-20 mins before the kick off by clicking camera icon in the chat text field. 
 
-![Start a Channel Meeting](images/wth-kickoff-meeting-meet-now.jpg)
+![Start a Google Meet](images/host-create-meet.png)
 
-To join the kick off meeting, attendees will first open up Google Chat and go to the event's Google Space. In there, they will find the link to join the Google Meet that the lead coach created.
+To join the kick off meeting, attendees will first open up Google Chat and go to the event's Google Space. In there, they will find the icon to join the Google Meet that the lead coach created.
 
 #### Welcomes & Intros
 
@@ -202,7 +226,7 @@ Explain the format:
 - Break times will be set for lunch and the end of each hack day, however each team can set additional break times as needed.
 - The coaches will bring the teams together at the beginning and end of each day for stand-up meetings to review progress and what they learned during each challenge.
 
-Next, review how everyone will interact using the event's Google Space. The lead coach should provide a tour of the event Space, including the File tab where the student resources for the hack are located. The link to the Student Guide and the Google Meet.
+Next, review how everyone will interact using the event's Google Space. The lead coach should provide a tour of the event Space, including showing the Files tab where the student resources for the hack are located, the link to the Student Guide and the event's Google Meet.
 
 For a virtual event, the lead coach should explain how teams will use the breakout rooms to move into their team specific room and the larger meet.  Attendees should be expected to be online and engaged in their team meetings for the duration of the event with mic and camera turned on.
 
@@ -219,17 +243,17 @@ Determine how you want to break the attendees up into the smaller groups to form
 - At a virtual event, given various attendee locations, you may form teams by timezone. This enables teams to take break times that align to their timezone.
 - Random
 
-**TIP:** If hosting a hack at an external organization, it is a good idea to ask the event stakeholder to help decide on team formation.
+**NOTE:** If hosting a hack at an external organization, it is a good idea to ask the event stakeholder to help decide on team formation.
 
 Once teams have been formed, encourage them to each give their team a fun name and rename their breakout room. This will help break the ice and get the team members collaborating out of the gate.
 
 #### Event Kick Off Presentation Templates
 
-To help you get started, we have provided PowerPoint templates for kicking off a gHacks event here:
-- [In-Person - Kick Off Presentation Template](WTH-InPerson-EventKickoff-Template)
-- [Virtual - Kick Off Presentation Template](WTH-Virtual-EventKickoff-Template.md)
+To help you get started, we have provided a Google Slides template for kicking off a gHacks event here:
+- [Make a copy of these slides](http://goto.google.com/ghacks-template-eventkickoff) 
+- [Or use this generic PDF](event-kickoff.pdf)
 
-The kick off presentation templates contain most of the instructions above that you can present to the attendees before starting the gHacks. The in-person template has additional slides instructing attendees to use a code to join the event team in Microsoft Teams.
+The kick off presentation template contains most of the instructions above that you can present to the attendees before starting your gHacks event.
 
 ### Hacking
 
@@ -237,7 +261,7 @@ With the logistics out of the way, it is time to crank up the tech intensity.
 
 #### Hack Presentation Lectures (Optional)
 
-While not required, many of the hacks in the [gHacks collection](../README.md#the-ghacks-collection) have a PowerPoint deck with lecture presentations included the `/Host` folder of the hack. These optional lecture presentations typically contain:
+While not required, many of the hacks in the [gHacks collection](../README.md#the-ghacks-collection) have a PDF with lecture presentations included the `/resources` folder of the hack. These optional lecture presentations typically contain:
 
 - An overview of the technical scenario of the hack itself.
 - A review of workstation pre-requisites needed for the hack.
@@ -247,7 +271,7 @@ Before the teams depart the kick-off meeting, the lead coach should cover the ha
 
 Later, throughout the event, the lead coach should work with the coaches to monitor progress of the teams on each challenge. When the majority of teams (or individuals in a team) have completed a challenge, the lead coach should deliver the lecture for the next challenge. Ask those who are still working to pay attention to the short lecture, then return to completing the previous challenge.
 
-At an in-person event, the lead coach calls everyone's attention to the front of the room to present. At a virtual event, the lead coach directs the teams to return to the General channel for the lecture.
+At an in-person event, the lead coach calls everyone's attention to the front of the room to present. At a virtual event, the lead coach directs the teams to leave their breakout room and return to the main meeting.
 
 Alternatively, if the teams are progressing at vastly different paces, the coaches may deliver the lecture for each challenge to the individual team in their own team meetings.
 
@@ -255,62 +279,58 @@ Alternatively, if the teams are progressing at vastly different paces, the coach
 
 Now it's time to get down to the business of solving the challenges as a team. If you are hosting an in-person hack, attendees will start talking to each other and working together at their team tables to solve the challenges.
 
-If it is a virtual event, the attendees will leave the meeting in the General channel. They will then go to their team's channel and participate in a meeting in that channel. Coaches should be prepared to assist folks and direct them where they need to go within Microsoft Teams.
-
-Please be aware the first person enter the channel will hit the “Meet now” button within the channel (as indicated by the red arrow below) to start the channel meeting. All subsequent individuals will see a notice that there is an active meeting and can simply hit the “Join” button.
-
-![Start a team Meeting](images/wth-team-meet-now-buttonm.jpg)
+If it is a virtual event, the attendees will leave the main meeting and gather in their team's breakout room and participate from there. The lead coach will take care of creating the breakout rooms and add each student to their team's breakout room.
 
 Once everyone is settled, the format and interactions are the same whether virtual or in-person:
 
 - The individuals within the teams can now work together on their tasks, share screens, links, etc. to help complete the challenges.
-- teams must complete the challenges as a team. Individuals who complete a challenge before their team-mates should not continue to the next challenge. Instead, they should help other members of their team get over the finish line.
-- While the team works together solve the challenges, it is expected that each individual contributes meaningfully to the group and completes the challenge on their own workstation.
+- Teams must complete the challenges as a team. Individuals who complete a challenge before their team-mates should not continue to the next challenge. Instead, they should help other members of their team get over the finish line.
+- While the team works together to solve challenges, it is expected that each individual contributes meaningfully to the group and completes the challenge on their own workstation.
 - To ensure each individual is contributing to the team effort, we recommend one person be the "designated driver" for each challenge and share their screen with the team as they work through the challenge for all to observe. The rest of the team may be doing research or implementing the solution in parallel on their own workstation.
 - As people get stuck the coaches should encourage them to talk through the issues with the team and share their screen to work through the challenge. Group collaboration is a very effective learning tool.  
 - If a person within the team is having a problem that requires individual attention, the coach can ask the person to go to the coach’s dedicated channel where they can start a channel meeting and work together to resolve the issues.
-- Sharing is caring. As individuals or teams find useful tips and tricks, or solve roadblocks, the coaches should encourage them to share those items in the General Channel as a Chat or within the Shared Tips document.
-- teams should not be beholden to the clock as they progress through the challenges. Therefore, they control their own schedule during the event and can decide to take breaks as needed outside of any scheduled meal breaks.
+- Sharing is caring. As individuals or teams find useful tips and tricks, or solve roadblocks, the coaches should encourage them to share those items in the Google Space chat for everyone to see.
+- Teams should not be beholden to the clock as they progress through the challenges. Therefore, they control their own schedule during the event and can decide to take breaks as needed outside of any scheduled meal breaks.
 
 #### Hack Coaches
 
-Coaches are essential to a gHacks event and can make the difference between a good experience or a poor experience for the attendees. Ideally, there should be one coach per team. However, a coach can reasonably manage two teams at the same time if there are not enough coaches available.
+Coaches are essential to a gHacks event and can make the difference between a good experience and a poor experience for the attendees. Ideally, there should be one coach per team. However, a coach with previous experience can reasonably manage two teams at the same time if there are not enough coaches available.
 
-A coach's main over-arching role is to act as a technical advisor to the attendees in a team. Coaches are not proctors who stand on the sideline and wait for attendees to raise their hands for help. They should be actively engaged with the team(s) they are advising the majority of the time.
+A coach's main role is to act as a technical advisor to the attendees in a team. Coaches are not proctors who stand on the sideline and wait for attendees to raise their hands for help. They should be actively engaged with the team(s) they are advising the majority of the time.
 
-At an in-person event, the coaches should be sitting at the table with their team. At a virtual event, they should be engaged in their team's channel meeting for the duration of the event.
+At an in-person event, the coaches should be sitting at the table with their team. At a virtual event, they should be engaged in their team's breakout room for the duration of the event.
 
 Coaches will need to move around to interact with the lead coach, other coaches, or multiple teams. For example, a coach may ask another coach for help if a team runs into an issue that the coach does not know how to solve.
 
-At a virtual event, the coaches can quickly jump in and out of the various team channels to check in on the team and provide support as required by joining the various channel meetings.
+At a virtual event, the coaches can quickly jump in and out of the various team breakout rooms to check in on the team and provide support as required by joining the various channel meetings.
 
 During the hack, a coach's responsibilities include:
 
 - Keep the teams working as teams
-    - Encourage attendees to “learn from” and “share with” each other
+    - Encourage attendees to "learn from" and "share with" each other
     - If a coach observes individuals racing ahead, encourage them to help those who are behind.
-    - Encourage attendees to use their team’s channel to collaborate/share info
+    - Encourage attendees to use the Google Space chat to collaborate/share info
 	- Encourage attendees to take turns "driving" for each challenge so each gets an opportunity to lead their team 
 - Help unblock teams that get stuck
     - Always and repeatedly encourage team members to unblock each other first
     - Provide hints, but not answers
 	- Repeat and confirm the challenge goals if there is ambiguity
-    - If a coach observes an individuals blocked for a while, help them get moving so they don’t lose interest and disengage.
+    - If a coach observes an individual is blocked for a long time, help them get moving so they don’t lose interest and disengage.
 - Be a technical advisor and subject matter expert
 	- Provide hints/pointers to the teams on how to solve problems and where to find information.
-    - Use the solutions in the Coach’s guide to provide guidance, but do not share with the attendees
+    - Use the solutions in the Coach’s guide to provide guidance, but do not share the guide with the attendees
     - The Coach’s guide will not be comprehensive. As subject matter experts, coaches should share their knowledge and explain key concepts to help the attendees
 - Notify the lead coach of unexpected blockers that arise during the event so they can be communicated to all teams and recorded for future reference.
-- Verify that a team has completed each challenge by checking that they have met all of the success criterias.
-- Solicit continuous feedback from the attendees on their experience, the content, and what can be done to improve it. Encourage them to use the Feedback channel to share with all of the coaches.
+- Verify that a team has completed each challenge by checking that they have met all of the success criteria.
+- Solicit continuous feedback from the attendees on their experience, the content, and what can be done to improve it. Encourage them to use the Google Space chat to share with all of the coaches and attendees.
 
-**NOTE:** Attendees should not be judged on how far they get.  No trophies should be given for challenge completion.  If event hosts want to gamify/incentivize attendees, they should focus on encouraging attendees to share with each other.
+**NOTE:** Attendees should not be judged on how far they get.  No trophies should be given for challenge completion.  If event hosts want to gamify/incentivize attendees, they should focus on encouraging attendees to share gained knowledge with each other.
 
 ### Stand-Ups
 
 Throughout the event, the coaches should have various checkpoints or stand-ups that require all the individuals to take a break from hacking to... stand up. This is a good thing to do before starting a scheduled meal break, at the end of each day, and start of each subsequent day of the hack.
 
-Coaches may have stand ups with their individual teams, or the lead coach may call all attendees back to the General channel to address them as a group.
+Coaches may have stand ups with their individual teams, or the lead coach may call all attendees out of the breakout rooms and back into the main meeting to address them as a group.
 
 Things that coaches should facilitate during a stand up:
 - Require the attendees to physically get up, stretch and take a minute away from their screens
@@ -325,13 +345,11 @@ The lead coach should close out the gHacks event with a final stand-up that acts
 - Thank the attendees for their time and dedication during the hack
 - Finally, share the content by directing the attendees to visit the gHacks repo on Github: <http://github.com/gfilicetti/gHacks>
 
-You have now survived a gHacks!
-
 ### Tips for In Person
 
 gHacks is designed to be a casual tech event. There are no formal requirements for hosting it in person other than a decent Internet connection.
 
-If you have budget, spend it on food, glorious food!  Your attendees will appreciate you for that.
+If you have budget, spend it on food or swag.  Your attendees will appreciate you for that.
 
 There are plenty of guides out there for hosting a great in-person event. There's not much more we can add here.
 
@@ -339,16 +357,15 @@ There are plenty of guides out there for hosting a great in-person event. There'
 
 gHacks were designed to be hosted as an in-person or virtual event. While most details of ***how*** to hack were covered earlier in this document, we wanted to share some tips and lessons learned for improving the virtual experience based on previous gHacks events that have been hosted.
 
-- Require attendees to keep an open mic and use cameras as often as possible. Noisy pets, kids, or spouses. It's all fine in the spirit of keeping remote attendees engaged and feeling as though they are together. Just remember to mute the toilet flushes!
+- Require attendees to keep an open mic and use cameras as often as possible. Noisy pets, kids, or spouses. It's all fine in the spirit of keeping remote attendees engaged and feeling as though they are together. 
 - If a coach observes an individual on mute for long periods of time or not speaking up as the team hacks, the coach should reach out in a private chat to ask the person if they need help. The goal is to keep the person engaged in the hack and away from their email, phone, social media, etc.
-- If bandwidth is tight for an attendee, they can turn off their camera as well as the ***incoming*** video stream from other participants.
 - Coaches should never turn their cameras off so that attendees know they are available, especially during any lectures or re-caps
 - Stand-ups really need to be stand ups. Encourage attendees to take a break from their screen and headsets and walk around. Sitting at a desk for long periods is not healthy.
 
 Remote attendees may be spread across timezones. There are multiple related learnings here:
 
 - Attendees should be in a similar timezone region (+/- 3 hours) to optimize scheduling and collaboration.
-- Coaches should also be in the same timezone region. However, coaches can adjust their schedule to support remote attendees in a different region if needed. For example, a North American coach can agree to wake up early (4am) to support a virtual event scheduled for the European region.
+- Coaches should also be in the same timezone region. However, coaches can adjust their schedule to support remote attendees in a different region if needed. For example, an east coast North American coach can agree to wake up early (4am) to support a virtual event scheduled for the European region.
 - Balance kick-off and end times across a time zone region with an early start for the western-most time zone and a later end time for the eastern-most time zone.  For example, if hosting an event for North American attendees, start at 7am Pacific/10am Eastern. End at 6pm Eastern/3pm Pacific.
 - When forming teams, encourage folks to group by time zone. This allows the members of each team to take the same lunch or dinner break together.
 - For a multi-day hack, after a shared kick-off meeting on day 1, coaches can designate the hours they will be available on the subsequent days. The teams can then decide to start earlier/finish later if all members are in the same time zone. For example, coaches can be available 10am-6pm Eastern. A team in the eastern time zone can start 9am and finish at 4pm. The team in the western time zone can work the same hours in their own time zone, resulting in them working the last hour without a coach.
@@ -358,7 +375,7 @@ It is possible to host a "hybrid" event that has some attendees and coaches in p
 - Hosting an in-person event with remote attendees.
 	- Group remote attendees into one or more teams consisting only of remote attendees. Don't mix and match.
 	- Dedicate an in-person coach to support the remote teams
-	- The dedicated in-person coach is responsible for making sure the A/V connections between the venue and the event team in Microsoft Teams is working
+	- The dedicated in-person coach is responsible for making sure the A/V connections between the venue and the Google Meet for this event is working.
 	- The dedicated in-person coach must represent the remote attendees to the lead coach & other in-person attendees. When questions come up online, the dedicated in-person coach can be the one to get the attention of the lead or other in-person coaches.
 - Hosting an event where the attendees are in-person, but the coaches are remote
 	- This is a great solution when you want to host an event for attendees in a different region
