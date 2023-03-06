@@ -2,7 +2,7 @@ main:
   - title: "Hacks"
     url: "#the-ghacks-collection"
   - title: "Hosting"
-    url: "#how-to-host-ghacks"
-  - title: "Creating"
-    url: "#how-to-author-ghacks"
+    url: "faq/howto-host-hack.md"
+  - title: "Contributing"
+    url: "faq/howto-author-hack.md"
 

@@ -28,16 +28,16 @@ defaults:
           alt: "how to host"
           title: "Hosting a gHack"
           excerpt: "Start here with detail instructions on how to setup and host your own in-person or virtual gHack"
-          url: "#how-to-host-ghacks"
+          url: "faq/howto-host-hack.md"
           btn_class: "btn--primary"
-          btn_label: "Learn more"
+          btn_label: "Host a gHack"
         - image_path: /assets/images/right.png
           alt: "how to author"
           title: "Creating Your Own gHack"
           excerpt: "Learn how easy it is to author your own gHack and contribute it to the catalog. Find detailed instructions here."
-          url: "#how-to-author-ghacks"
+          url: "faq/howto-author-hack.md"
           btn_class: "btn--primary"
-          btn_label: "Learn more"
+          btn_label: "Create a gHack"
   - scope:
       path: "hacks"
       type: pages

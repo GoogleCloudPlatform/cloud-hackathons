@@ -33,21 +33,5 @@ Squads are not left on their own to solve the challenges. Coaches work with each
 ## Networking
 - Coming soon...
 
-# How to Host gHacks
-
-Would you like to host a gHack for your organization? The gHack format and content has been designed for hosting a hack with groups of 5 to 50 people. We welcome anyone to use the content here to host their own gHacks event!
-
-See our complete guide on [How To Host a gHack](./faq/howto-host-hack.md).
-
-# How to Author gHacks
-
-What makes a good hack? We have a guide that helps answer that question!
-
-Hacks can focus on a single technology or focus on a solution scenario that features multiple technologies working together to solve a business problem.
-
-Read our [gHacks Author's Guide](./faq/howto-author-hack.md) for details on how to author a hack. The author's guide contains a set of markdown template files that help you quickly create new hack content that is consistent with the gHack format.
-
-Would you like to contribute to gHacks?  We welcome new hacks and updates to existing hacks.  Please reach out to ginof@ and meken@.
-
 # [License](./LICENSE)
 This repository is licensed under Apache2 license. More info can be found [here](./LICENSE).
