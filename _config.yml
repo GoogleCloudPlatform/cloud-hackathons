@@ -4,18 +4,52 @@ title: gHacks
 google_analytics:
 include: [CONTRIBUTING.md]
 logo: /assets/images/gh-logo.png
-title: ""
 #subtitle: "Learning By Doing on Google Cloud"
 defaults:
   - scope:
       path: ""
       type: pages
     values:
-      layout: splash 
-      search: true
-      title: ""
-      toc: true
-      toc_sticky: true
+      layout: splash
+      header:
+        overlay_color: "#5e616c"
+        overlay_image: /assets/images/splash.jpg
+      excerpt: >
+        gHacks are a catalog of challenge based hackathons where attendees work in teams of 3 to 5 people to solve a series of technical challenges without spoon-fed answers.<br />
+        <small>Would you like to host a gHack for your organization? The gHack format and content has been designed for hosting a hack with groups of 5 to 50 people. We welcome anyone to use the content here to host their own gHacks event.</small>
+      feature_row:
+        - image_path: /assets/images/left.png
+          alt: "catalog"
+          title: "The gHack Catalog"
+          excerpt: "Find a gHack to deliver to your team. We have a wide range of gHacks covering all aspects of Google Cloud"
+          url: "#the-ghacks-collection"
+          btn_class: "btn--primary"
+          btn_label: "Find a gHack"
+        - image_path: /assets/images/center.png
+          alt: "how to host"
+          title: "Hosting a gHack"
+          excerpt: "Start here with detail instructions on how to setup and host your own in-person or virtual gHack"
+          url: "#how-to-host-ghacks"
+          btn_class: "btn--primary"
+          btn_label: "Learn more"
+        - image_path: /assets/images/right.png
+          alt: "how to author"
+          title: "Creating Your Own gHack"
+          excerpt: "Learn how easy it is to author your own gHack and contribute it to the catalog. Find detailed instructions here."
+          url: "#how-to-author-ghacks"
+          btn_class: "btn--primary"
+          btn_label: "Learn more"
+  - scope:
+      path: "hacks"
+      type: pages
+    values:
+      layout: splash
+  - scope:
+      path: "faq"
+      type: pages
+    values:
+      layout: splash
+
 atom_feed:
   hide: true
 
