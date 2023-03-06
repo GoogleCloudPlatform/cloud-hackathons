@@ -1,10 +1,20 @@
 theme: minimal-mistakes-jekyll 
 minimal_mistakes_skin: dark
-title: gHacks
+title: 
 google_analytics:
 logo: /assets/images/gh-logo.png
 #subtitle: "Learning By Doing on Google Cloud"
 defaults:
+  - scope:
+      path: "hacks"
+      type: pages
+    values:
+      layout: splash
+  - scope:
+      path: "faq"
+      type: pages
+    values:
+      layout: splash
   - scope:
       path: ""
       type: pages
@@ -38,16 +48,6 @@ defaults:
           url: "faq/howto-author-hack.md"
           btn_class: "btn--primary"
           btn_label: "Create a gHack"
-  - scope:
-      path: "hacks"
-      type: pages
-    values:
-      layout: splash
-  - scope:
-      path: "faq"
-      type: pages
-    values:
-      layout: splash
 
 atom_feed:
   hide: true
