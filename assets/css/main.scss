@@ -8,6 +8,11 @@ search: false
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
+// restore margin for h1, it shouldn't be 0
+h1 {
+  margin-top: revert;
+}
+
 .alert {
   color: $warning-color;
   fill: $warning-color;
