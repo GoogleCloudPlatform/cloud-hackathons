@@ -20,19 +20,19 @@ Remember that this hack includes a [lecture presentation](resources/lectures.pdf
 ## Challenge 1: Replicating Oracle Data Using Datastream - Coach's Guide
 
 ### Notes & Guidance
-- **NOTE:** We are actively collecting feedback from deliveries of this gHack to add notes and guidance in this coach's guide.
+> **Note** We are actively collecting feedback from deliveries of this gHack to add notes and guidance in this coach's guide.
 
 ## Challenge 2: Creating a Dataflow Job using the Datastream to BigQuery Template - Coach's Guide
 
 ### Notes & Guidance
-- **NOTE:** We are actively collecting feedback from deliveries of this gHack to add notes and guidance in this coach's guide.
+> **Note** We are actively collecting feedback from deliveries of this gHack to add notes and guidance in this coach's guide.
 
 ## Challenge 3: Analyzing Your Data in BigQuery - Coach's Guide
 
 ### Notes & Guidance
-- **NOTE:** We are actively collecting feedback from deliveries of this gHack to add notes and guidance in this coach's guide.
+> **Note** We are actively collecting feedback from deliveries of this gHack to add notes and guidance in this coach's guide.
 
 ## Challenge 4: Building a Demand Forecast - Coach's Guide
 
 ### Notes & Guidance
-- **NOTE:** We are actively collecting feedback from deliveries of this gHack to add notes and guidance in this coach's guide.
+> **Note** We are actively collecting feedback from deliveries of this gHack to add notes and guidance in this coach's guide.

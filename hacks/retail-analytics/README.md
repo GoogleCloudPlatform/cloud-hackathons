@@ -165,7 +165,7 @@ Throughout this game, you will be using a number of different tools and products
     --role='roles/bigquery.admin'
     ```
 
-> **NOTE:** When you finish this tutorial, you can avoid continued billing by deleting the resources you created. See [cleaning up](https://docs.google.com/document/d/1xxb7B7nZ7fQaHo8TdPDsxurZ7u1-wzAfgWwXQyt-r4k/edit#heading=h.mlrdlgcohh7k) for more detail.
+> **Note** When you finish this tutorial, you can avoid continued billing by deleting the resources you created. See [cleaning up](https://docs.google.com/document/d/1xxb7B7nZ7fQaHo8TdPDsxurZ7u1-wzAfgWwXQyt-r4k/edit#heading=h.mlrdlgcohh7k) for more detail.
 
 ### Success Criteria
 
@@ -312,7 +312,7 @@ You can extend the functionality of this template by including User Defined Func
 
         In the Google Cloud Console, find the Dataflow service and verify that a new streaming job has started.
 
-        **NOTE:** Look at the **Use the Dataflow Monitoring Interface** documentation in the [Learning Resources](#learning-resources) section below.
+        > **Note** Look at the **Use the Dataflow Monitoring Interface** documentation in the [Learning Resources](#learning-resources) section below.
 
     - Go back to the Cloud Shell. **Run** this command to start your Datastream stream:
 
@@ -332,7 +332,7 @@ You can extend the functionality of this template by including User Defined Func
 
         Because this task is an initial load, Datastream reads from the `ORDERS` object. It writes all records to the JSON files located in the Cloud Storage bucket that you specified during the stream creation. It will take about 10 minutes for the backfill task to complete.
 
-        **NOTE:** Look at the **Monitor a Stream** documentation in the [Learning Resources](#learning-resources) section below.
+        > **Note** Look at the **Monitor a Stream** documentation in the [Learning Resources](#learning-resources) section below.
         
 
 ### Success Criteria
@@ -393,7 +393,7 @@ The following two new tables in the retail dataset are created by the Dataflow j
     SELECT count(*) FROM `hackfast.retail.ORDERS`;
     ```
 
-    **NOTE:** With the backfill completed, both statements return the number `520217`. Please wait until the backfill is done before closing this challenge.
+    > **Note** With the backfill completed, both statements return the number `520217`. Please wait until the backfill is done before closing this challenge.
 
 ### Success Criteria
 
@@ -459,12 +459,12 @@ The training data  describes for each product (`product_name`), how many units w
     QUERY hourly_timestamp, product_name AND total_sold FROM OBJECT retail.training_data
     ```
 
-    **NOTE:** Look at the **Creating ARIMA_PLUS Model** documentation in the [Learning Resources](#learning-resources) section below.
+    > **Note** Look at the **Creating ARIMA_PLUS Model** documentation in the [Learning Resources](#learning-resources) section below.
 
 
 1. Run the following SQL to forecast the demand for organic bananas over the next 30 days:
 
-    **NOTE:** The [`ML.FORECAST`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-forecast) function is used to forecast the expected demand over a horizon of n hours.
+    > **Note** The [`ML.FORECAST`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-forecast) function is used to forecast the expected demand over a horizon of n hours.
 
     ```sql
     SELECT * FROM ML.FORECAST(MODEL retail.arima_plus_model, STRUCT(720 AS horizon))
@@ -476,7 +476,7 @@ The training data  describes for each product (`product_name`), how many units w
 
     Because the training data is hourly, the horizon value will use the same unit of time when forecasting (hours). A horizon value of 720 hours will return forecast results over the next 30 days.
 
-    **NOTE:** Since this is a small sample dataset, further investigation into the accuracy of the model is out of scope for this tutorial.
+    > **Note** Since this is a small sample dataset, further investigation into the accuracy of the model is out of scope for this tutorial.
 
 #### Create a view for easier visualization
 1. In BigQuery, **run** the following SQL query to create a view, joining the actual and forecasted sales for a given product:
@@ -512,7 +512,7 @@ The training data  describes for each product (`product_name`), how many units w
     )    
     ```
 
-    **NOTE:** This view lets Looker query the relevant data when you explore the actual and forecasted data.
+    > **Note** This view lets Looker query the relevant data when you explore the actual and forecasted data.
 
 1. Still in BigQuery, **run** the following SQL to validate the view:
 

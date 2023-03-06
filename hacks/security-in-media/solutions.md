@@ -51,7 +51,8 @@ Students will creating managed instance groups here, so there are a few things t
     |Network tags|allow-health-check|
     
     > The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
-    > **NOTE:** Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
+
+    > **Note** Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
 
 1. Go to the **Management** section and insert the following script into the **Startup script** field:
 
@@ -209,7 +210,7 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
         --waf-feature=session-token --waf-service=ca
     ```
 
-    > **NOTE:** We are using the integration type **score** which will be leveraged in the Cloud Armor policy. You can alternatively use **checkbox** and **invisible**.
+    > **Note** We are using the integration type **score** which will be leveraged in the Cloud Armor policy. You can alternatively use **checkbox** and **invisible**.
 
     > We are also setting a **testing score** when creating the key to validate that the bot management policies we create with Cloud Armor are working as intended. Replicating bot traffic is not easy and hence, this is a good way to test the feature.
 

@@ -26,7 +26,7 @@ When you design a gHack, these are the things you should consider:
 
 If you create things in this order, you will be able to quickly flesh out a new hack. 
 
-> **HINT:** The Coach's guide is the most detail oriented & time consuming item to produce however, there's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
+> **Note** The Coach's guide is the most detail oriented & time consuming item to produce however, there's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
 
 ## Student Guide
 
@@ -112,7 +112,7 @@ If you haven't already, please copy this template into your hack's root folder a
 
 For each of your challenges, you will add to the end of your Student Guide a new copy of the challenge template markdown that starts with: 
 ```markdown
-## Challenge \#: \<Challenge Name>
+## Challenge <#>: <Challenge Name>
 ```
 
 Keep in mind that we're using [Github Flavored Markdown](https://github.github.com/gfm/) and support highlighting of blockquotes that start with `> **Note**` or `> **Warning**`. In addition any line that ends with two spaces and a newline will cause renderer to emit a linebreak. 
@@ -147,7 +147,7 @@ We have more guidance on how and when to deliver mini presentation lectures for 
 
 Please publish any presentations in your hack's `resources` folder as a PDF file.
 
-## Coaches Guide
+## Coach's Guide
 
 Every gHack should come with a Coach's guide. The simple way to think of the Coach's guide is that should be the document with all of "the answers". The reality is, doing so would turn it into a giant step-by-step document loaded with detailed commands, screenshots, and other resources that are certain to be obsolete the minute you publish it. No one wants to maintain a document like that. 
 

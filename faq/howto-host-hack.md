@@ -62,7 +62,9 @@ As the event leader, most of the preparation steps are focused on preparing the 
 
 If you are inviting attendees that are outside of your organization, there are multiple things to think about with respect to using the hack environment and collaboration tools.
 
-If you are hosting a hack with a single organization, it is critical to identify an event stakeholder in the external organization who can help you plan for your gHacks event. The event stakeholder can help you address the following preparation concerns. **NOTE:** It is recommended that you start planning at least 2 weeks before the event to make sure everything is ironed out.
+If you are hosting a hack with a single organization, it is critical to identify an event stakeholder in the external organization who can help you plan for your gHacks event. The event stakeholder can help you address the following preparation concerns. 
+
+> **Note** It is recommended that you start planning at least 2 weeks before the event to make sure everything is ironed out.
 
 #### GCP Subscription
 
@@ -80,13 +82,13 @@ It will require at least one person from the team to sign up for the gHacks Qwik
 - Retrieve the GCP project details (project id, user names & passwords)
 - Share details with the rest of the team so that attendees can log in to the sandbox GCP project. 
 
-**NOTE:** Even though the QwikLab will contain the same instructions, it's better to ignore that and use the gHacks [website](https://ghacks.dev) like the rest of the team (they won't have access to the lab, only to the GCP project, using the credentials shared by the person who signed up).
+> **Note** Even though the QwikLab will contain the same instructions, it's better to ignore that and use the gHacks [website](https://ghacks.dev) like the rest of the team (they won't have access to the lab, only to the GCP project, using the credentials shared by the person who signed up).
 
 #### Workstation Security
 
 Some organizations have tight security policies enforced on their employees' workstations. A common one is to not provide users with administrator privileges on their workstation. If this is the case, it may prevent them from installing tools or software needed to complete the hack.  
 
-One workaround is to use the Google Cloud Shell. However, some organizations may disable access to the Google Cloud Shell.  Another workaround is to provision a workstation VM in GCP that attendees can SSH into to complete the hack.
+One workaround is to use the Google Cloud Shell. However, some organizations may disable access to the Google Cloud Shell. Another workaround is to provision a workstation VM in GCP that attendees can SSH into to complete the hack.
 
 Tight firewalls may make it challenging to access even the GCP Console itself from an organization's workstations. This is when you bang your head against the wall, give up, and be thankful you don't work for that organization.
 
@@ -104,9 +106,9 @@ For example: `"gHack - Acme Corp - MLOps on GCP"`
 
 ![Create Google Space](images/host-create-space.png)
 
-**NOTE:** Make sure that you check off the book to allow external users otherwise your customers won't be able to join.
+> **Note** Make sure that you check off the book to allow external users otherwise your customers won't be able to join.
 
-**NOTE:** Turn off conversation view as it will only get in the way and make things harder to read.
+> **Note** Turn off conversation view as it will only get in the way and make things harder to read.
 
 ### Space Structure
 
@@ -137,7 +139,9 @@ Now that you have taken care of creating and preparing a Google Space for your h
 
 #### Registration and Invites
 
-It is up to you to decide how you will advertise your hack. You might send an invite to a larger group and let those interested RSVP by registering. Using [Google Forms](https://forms.google.com) is a great way to manage your event registration. **NOTE:** Be sure you understand the privacy implications of gathering personal information in a Google Form.
+It is up to you to decide how you will advertise your hack. You might send an invite to a larger group and let those interested RSVP by registering. Using [Google Forms](https://forms.google.com) is a great way to manage your event registration. 
+
+> **Warning** Be sure you understand the privacy implications of gathering personal information in a Google Form.
 
 If you are hosting an hack for an external organization, you should coordinate with the event stakeholder to determine how attendees will be invited. It is often best to let the event stakeholder manage the invite and registration process. That's one less job for you.
 
@@ -153,7 +157,7 @@ Whether you used a Google Form or worked with an external organization stakehold
 
 When someone is added to a Space, they will be emailed to accept the invite and join the Space. 
 
-**NOTE:** The user will need to "activate" Google Chat if they've never used it before. Be aware of this.
+> **Warning** The user will need to "activate" Google Chat if they've never used it before. Be aware of this.
 
 #### Calendar Invite
 
@@ -243,7 +247,7 @@ Determine how you want to break the attendees up into the smaller groups to form
 - At a virtual event, given various attendee locations, you may form teams by timezone. This enables teams to take break times that align to their timezone.
 - Random
 
-**NOTE:** If hosting a hack at an external organization, it is a good idea to ask the event stakeholder to help decide on team formation.
+> **Note** If hosting a hack at an external organization, it is a good idea to ask the event stakeholder to help decide on team formation.
 
 Once teams have been formed, encourage them to each give their team a fun name and rename their breakout room. This will help break the ice and get the team members collaborating out of the gate.
 
@@ -324,7 +328,7 @@ During the hack, a coach's responsibilities include:
 - Verify that a team has completed each challenge by checking that they have met all of the success criteria.
 - Solicit continuous feedback from the attendees on their experience, the content, and what can be done to improve it. Encourage them to use the Google Space chat to share with all of the coaches and attendees.
 
-**NOTE:** Attendees should not be judged on how far they get.  No trophies should be given for challenge completion.  If event hosts want to gamify/incentivize attendees, they should focus on encouraging attendees to share gained knowledge with each other.
+> **Note** Attendees should not be judged on how far they get.  No trophies should be given for challenge completion.  If event hosts want to gamify/incentivize attendees, they should focus on encouraging attendees to share gained knowledge with each other.
 
 ### Stand-Ups
 

@@ -10,17 +10,16 @@ def get_file_name(path: str) -> str:
     return path[idx+1:]
 
 
-def format_bq(header: str, remainder: str) -> str:
+def format_bq(prefix: str, header: str, suffix: str) -> str:
     clazz = "alert" if header == "Warning" else "info"
-    return f"> <span class=\"{clazz}\">{{% octicon {clazz} %}} {header}</span>{remainder}\n"
+    return f"{prefix}> <span class=\"{clazz}\">{{% octicon {clazz} %}} {header}</span>{suffix}\n"
 
 
 def write(f: TextIO, line: str) -> str:
-    if line.startswith("> **"):
-        regex = r"> \*\*(Note|Warning)\*\*(.*)"
-        matches = re.match(regex, line)
-        if matches:
-            line = format_bq(matches.group(1), matches.group(2))
+    regex = r"(\s*)> \*\*(Note|Warning)\*\*(.*)"
+    matches = re.match(regex, line)
+    if matches:
+        line = format_bq(matches.group(1), matches.group(2), matches.group(3))
     f.write(line)
 
 
