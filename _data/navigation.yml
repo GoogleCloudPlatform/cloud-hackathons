@@ -3,5 +3,5 @@ main:
     url: "#the-ghacks-collection"
   - title: "Hosting"
     url: "faq/howto-host-hack.md"
-  - title: "Contributing"
+  - title: "Contributing Cash"
     url: "faq/howto-author-hack.md"
