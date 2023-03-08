@@ -8,9 +8,8 @@ search: false
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
-// restore margin for h1, it shouldn't be 0
-h1 {
-  margin-top: revert;
+section.page__content h1 {
+  display: none;
 }
 
 .alert {
