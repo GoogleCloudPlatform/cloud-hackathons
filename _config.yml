@@ -10,6 +10,9 @@ defaults:
       type: pages
     values:
       layout: splash
+      header:
+        overlay_color: "#5e616c"
+        overlay_image: /assets/images/splash.jpg
   - scope:
       path: "README.md"
     values:
@@ -32,14 +35,14 @@ defaults:
           alt: "how to host"
           title: "Hosting a gHack"
           excerpt: "Start here with detail instructions on how to setup and host your own in-person or virtual gHack"
-          url: "faq/howto-host-hack.md"
+          url: "faq/howto-host-hack.html"
           btn_class: "btn--primary"
           btn_label: "Host a gHack"
         - image_path: /assets/images/right.png
           alt: "how to author"
           title: "Creating Your Own gHack"
           excerpt: "Learn how easy it is to author your own gHack and contribute it to the catalog. Find detailed instructions here."
-          url: "faq/howto-author-hack.md"
+          url: "faq/howto-author-hack.html"
           btn_class: "btn--primary"
           btn_label: "Create a gHack"
 
