@@ -8,3 +8,5 @@ gem "github-pages", "= 227"
 
 gem "jekyll-include-cache", "= 0.2.1"
 gem "jekyll-octicons", "~> 14.2"
+
+gem "minimal-mistakes-jekyll"

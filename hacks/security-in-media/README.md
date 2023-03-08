@@ -59,7 +59,7 @@ Thank you for participating in the Security in Media & Entertainment gHack. Befo
 
     > **Caution:** A project ID must be globally unique and cannot be used by anyone else after you've selected it. You are the only user of that ID. If a project is deleted, that ID can never be used again.
 
-    > **Note:** If you're using a Gmail account, you can leave the default location set to **No organization**. If you're using a Google Workspace account, then choose a location that makes sense for your organization.
+    > **Note** If you're using a Gmail account, you can leave the default location set to **No organization**. If you're using a Google Workspace account, then choose a location that makes sense for your organization.
 
 2. Next, you'll need to [enable billing](https://console.cloud.google.com/billing) in the Cloud Console in order to use Cloud resources/APIs. Running through this gHack shouldn't cost much, if anything at all. To shut down resources so you don't incur billing beyond this tutorial, follow any "clean-up" instructions found at the end of this gHack. New users of Google Cloud are eligible for the [$300 USD Free Trial program](http://cloud.google.com/free).
 
@@ -96,7 +96,7 @@ While Google Cloud can be operated remotely from your laptop, in this gHack you 
     ```
 
 #### Create the `default` VPC Network
-**NOTE:** Normally you should already have a `default` network defined with auto-subnet creation turned on. 
+> **Note** Normally you should already have a `default` network defined with auto-subnet creation turned on. 
 
 If it does not already exist in your project, you can create one using this command:
 
@@ -167,10 +167,10 @@ A managed instance group uses an instance template to create a group of identica
     - **Networking**:
         - Use the default Network and Subnet(us-east1) 
         - Add a network tag named **allow-health-check**  
-    
-            > **NOTE**: The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
 
-            > **NOTE:** Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
+            > **Note** The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
+
+            > **Note** Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
 
     - **Startup Script**: 
         ```bash
@@ -242,7 +242,7 @@ Configure the Health Check with the following configuration:
 - **Logging**: enabled
 - **Sample Rate**: 1
 
-> **NOTE:** Health checks determine which instances receive new connections. This HTTP health check polls instances every 5 seconds, waits up to 5 seconds for a response and treats 2 successful or 2 failed attempts as healthy or unhealthy, respectively.
+> **Note** Health checks determine which instances receive new connections. This HTTP health check polls instances every 5 seconds, waits up to 5 seconds for a response and treats 2 successful or 2 failed attempts as healthy or unhealthy, respectively.
 
 #### Configure the frontend
 The host and path rules determine how your traffic will be directed. For example, you could direct video traffic to one backend and static traffic to another backend. However, you are not configuring the Host and path rules in this hack.
@@ -257,7 +257,7 @@ Configure the frontend with the following configuration:
 #### Test the HTTP Load Balancer
 Now that you created the HTTP Load Balancer for your backends, verify that traffic is forwarded to the backend service. To test IPv4 access to the HTTP Load Balancer.
 
-> **NOTE:** It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
+> **Note** It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
 
 ### Success Criteria
 
@@ -280,7 +280,7 @@ reCAPTCHA Enterprise for WAF and Google Cloud Armor integration offers the follo
 #### Create reCAPTCHA session token and WAF challenge-page site key
 The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-user's browser after the assessment. The end-user's browser attaches the cookie and refreshes the cookie as long as the reCAPTCHA JavaScript remains active.
 
-> **NOTE:** Before beginning make sure you've enabled the reCAPTCHA Enterprise API as specified in Challenge 0.
+> **Note** Before beginning make sure you've enabled the reCAPTCHA Enterprise API as specified in Challenge 0.
 
 - Use gcloud to create the reCAPTCHA session token site key and enable the WAF feature for the key. 
     - You must set the WAF service to Cloud Armor to enable the Cloud Armor integration.
@@ -304,7 +304,7 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
 - Go to the nginx webserver root directory and sudo to root.
 
 - Edit `index.html` and embed the reCAPTCHA session token site key. 
-    - **NOTE:** The session token site key is added to the ```HEAD``` section of the HTML page.
+    > **Note** The session token site key is added to the ```HEAD``` section of the HTML page.
     - Change `index.html` to have 3 links on it pointing to pages we will create next:
 
         |Link Text|Link href|
@@ -318,7 +318,7 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
     - **bad-score.html**
     - **median-score.html**
 
-> **NOTE:** These pages only need to contain some title text to tell you which score it is for, like so:
+> **Note** These pages only need to contain some title text to tell you which score it is for, like so:
 
 ![Congrats](images/recaptcha-site-goodscore.png)
 

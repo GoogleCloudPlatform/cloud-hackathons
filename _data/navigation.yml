@@ -1,0 +1,7 @@
+main:
+  - title: "Hacks"
+    url: "#the-ghacks-collection"
+  - title: "Hosting"
+    url: "faq/howto-host-hack.html"
+  - title: "Contributing"
+    url: "faq/howto-author-hack.html"

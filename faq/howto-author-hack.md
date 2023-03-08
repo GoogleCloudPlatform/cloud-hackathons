@@ -26,7 +26,7 @@ When you design a gHack, these are the things you should consider:
 
 If you create things in this order, you will be able to quickly flesh out a new hack. 
 
-> **HINT:** The Coach's guide is the most detail oriented & time consuming item to produce however, there's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
+> **Note** The Coach's guide is the most detail oriented & time consuming item to produce however, there's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
 
 ## Student Guide
 
@@ -112,10 +112,10 @@ If you haven't already, please copy this template into your hack's root folder a
 
 For each of your challenges, you will add to the end of your Student Guide a new copy of the challenge template markdown that starts with: 
 ```markdown
-## Challenge \#: \<Challenge Name>
+## Challenge <#>: <Challenge Name>
 ```
 
-**NOTE:** Don't forget to link to each challenge's text from the table of contents.
+Keep in mind that we're using [Github Flavored Markdown](https://github.github.com/gfm/) and support highlighting of blockquotes that start with `> **Note**` or `> **Warning**`. In addition any line that ends with two spaces and a newline will cause renderer to emit a linebreak. 
 
 ## Student Resources
 
@@ -147,7 +147,7 @@ We have more guidance on how and when to deliver mini presentation lectures for 
 
 Please publish any presentations in your hack's `resources` folder as a PDF file.
 
-## Coaches Guide
+## Coach's Guide
 
 Every gHack should come with a Coach's guide. The simple way to think of the Coach's guide is that should be the document with all of "the answers". The reality is, doing so would turn it into a giant step-by-step document loaded with detailed commands, screenshots, and other resources that are certain to be obsolete the minute you publish it. No one wants to maintain a document like that. 
 
@@ -177,7 +177,8 @@ Examples of Coach Solutions are:
 - Scripts/templates/etc for some challenges that can be shared with attendees if they get really stuck
     - Example: If challenges 1 through 3 build something (i.e. a GKE cluster) that is needed for challenge 4, you could “give” a stuck team the scripts so they could skip to challenge 4.
 
-> **NOTE:** This content is NOT intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.
+> **Note**  
+> This content is NOT intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.
 
 ### Solution Template
 
@@ -216,11 +217,13 @@ hacks
 │   ├── images  # (Optional) Images used for hack description and/or solutions 
 │   │   ├── architecture.png
 │   │   └── results.png
-│   ├── resources
-│   │   └── lectures.pdf  # (Optional) Lecture presentations, and any supporting files
-│   ├── README.md  # (Required) Hack description
-│    solutions.md  # (Required) The coach's guide
-│   ├── QL_OWNER  # (Required for qwiklabs) Line separated list of owner & collaborator's emails for the Qwiklab
-|   └── qwiklabs.yaml  # (Required for qwiklabs) Qwiklab configuration
+│   ├── resources # (Optional) Lecture presentations, supporting files, etc. Will be supplied to students
+│   │   ├── lectures.pdf
+│   │   ├── kube-deploy.yaml
+│   │   └── testing.html
+│   ├── README.md      # (Required) Hack description
+│   ├── solutions.md   # (Required) The coach's guide
+│   ├── QL_OWNER       # (Required for qwiklabs) Line separated list of owner & collaborator's emails for the Qwiklab
+│   └── qwiklabs.yaml  # (Required for qwiklabs) Qwiklab configuration
 └── ...
 ```

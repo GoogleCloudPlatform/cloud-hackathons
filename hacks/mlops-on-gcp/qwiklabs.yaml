@@ -1,8 +1,8 @@
 schema_version: 2
 default_locale: en
 title: "[gHacks] MLOps on GCP"
-description: "In this hack, you’ll implement the full lifecycle of an ML project.
-  We’ll provide you with a sample code base and you’ll work on automating continuous
+description: "In this hack, you'll implement the full lifecycle of an ML project.
+  We'll provide you with a sample code base and you'll work on automating continuous
   integration (CI), continuous delivery (CD), and continuous training (CT) for a machine
   learning (ML) system."
 instruction:

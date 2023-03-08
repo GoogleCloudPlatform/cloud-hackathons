@@ -2,10 +2,25 @@ import argparse
 import os
 import re
 
+from typing import TextIO
 
-def get_file_name(path: str):
+
+def get_file_name(path: str) -> str:
     idx = path.rfind("/")
     return path[idx+1:]
+
+
+def format_bq(prefix: str, header: str, suffix: str) -> str:
+    clazz = "alert" if header == "Warning" else "info"
+    return f"{prefix}> <span class=\"{clazz}\">{{% octicon {clazz} %}} {header}</span>{suffix}\n"
+
+
+def write(f: TextIO, line: str) -> str:
+    regex = r"(\s*)> \*\*(Note|Warning)\*\*(.*)"
+    matches = re.match(regex, line)
+    if matches:
+        line = format_bq(matches.group(1), matches.group(2), matches.group(3))
+    f.write(line)
 
 
 def process(filename: str, output_dir: str, student: bool):
@@ -24,7 +39,7 @@ def process(filename: str, output_dir: str, student: bool):
             if curr_line.startswith(challenges_header):
                 challenges_found = True
             else:
-                f.write(curr_line)
+                write(f, curr_line)
                 curr_line = next(contents)
         first_challenge_found = False
         while not first_challenge_found:
@@ -37,23 +52,23 @@ def process(filename: str, output_dir: str, student: bool):
                     challenge_no = int(matches.group(1))
                     challenge_file = f"{prefix}{challenge_no:02d}.md"
                     challenges.append(f"{output_dir}/{challenge_file}")
-                    f.write(f"- Challenge {challenge_no}: **[{matches.group(2)}]({challenge_file})**\n")
+                    write(f, f"- Challenge {challenge_no}: **[{matches.group(2)}]({challenge_file})**\n")
                 else:
-                    f.write(curr_line)
+                    write(f, curr_line)
                 curr_line = next(contents)
         home_file = "README.md" if student else "solutions.md"
         for idx, challenge in enumerate(challenges):
             with open(challenge, "w") as f:
-                f.write(f"{curr_line[1:]}\n")  # ## Challenge X: becoming # Challenge X
+                write(f, f"{curr_line[1:]}\n")  # ## Challenge X: becoming # Challenge X
                 # navigation
                 prv = get_file_name(challenges[idx - 1]) if idx > 0 else None
                 nxt = get_file_name(challenges[idx + 1]) if idx < (len(challenges) - 1) else None
                 if prv:
-                    f.write(f"[< Previous Challenge]({prv}) - ")
-                f.write(f"**[Home]({home_file})**")
+                    write(f, f"[< Previous Challenge]({prv}) - ")
+                write(f, f"**[Home]({home_file})**")
                 if nxt:
-                    f.write(f" - [Next Challenge >]({nxt})")
-                f.write("\n")
+                    write(f, f" - [Next Challenge >]({nxt})")
+                write(f, "\n")
                 curr_line = next(contents)
                 next_challenge_found = False
                 while curr_line is not None and not next_challenge_found:
@@ -61,9 +76,9 @@ def process(filename: str, output_dir: str, student: bool):
                         next_challenge_found = True
                         break
                     elif curr_line.startswith("#"):
-                        f.write(curr_line[1:])
+                        write(f, curr_line[1:])
                     else:
-                        f.write(curr_line)
+                        write(f, curr_line)
                     curr_line = next(contents, None)
 
 
