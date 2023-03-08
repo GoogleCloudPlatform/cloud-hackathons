@@ -8,6 +8,7 @@ search: false
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
+// We are removing h1's from the content because we're showing that text in the splash page header
 section.page__content h1 {
   display: none;
 }
