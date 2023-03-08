@@ -4,6 +4,7 @@
 
 *This file must be named `solutions.md`*.
 
+*-------- DELETE EVERYTHING ABOVE THIS LINE --------* 
 # IoT Hack of the Century
 
 ## Introduction
