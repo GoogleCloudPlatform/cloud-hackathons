@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to the coach's guide for the Retail Analytics gHack. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for the Real-time analytics with CDC gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
 Remember that this hack includes a [lecture presentation](resources/lectures.pdf) that introduces key topics associated with each challenge. It is recommended that the host present this presentation before attendees kick off the hack.
 
