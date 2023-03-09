@@ -15,19 +15,61 @@ gHacks are all about being "for the people, by the people". Here are our core pr
 
 ## What Does It Take To Create a gHack?
 
-When you design a gHack, these are the things you should consider:
+When you design a gHack, these are the steps you will run through:
 
+- [Preparing Your Environment](#preparing-your-environment)
 - [Student Guide](#student-guide)
 - [Challenge Design](#challenge-design)
-- [Student Resources](#student-resources)
+- [Student Resources Folder](#student-resources-folder)
 - [Presentation Lectures](#presentation-lectures) (optional)
-- [Coach's Guide](#coaches-guide)
-- [Coach Solutions](#coach-solutions)
+- [Coach's Guide](#coachs-guide)
+- [Coach Solutions Folder](#coach-solutions-folder)
 
 If you create things in this order, you will be able to quickly flesh out a new hack. 
 
-> **Note** The Coach's guide is the most detail oriented & time consuming item to produce however, there's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
+> **Note** The Coach's guide is the most detail oriented & time consuming item to produce however, here's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
 
+## Preparing Your Environment
+
+Okay, ready to get started creating your own gHack?
+
+First we create a fork of the main gHack repo and then clone it to disk and create a branch to work in. The instructions below assume you have the git command line on your machine. If you're more comfortable in a GUI git client, you can use that too (we recommend SourceTree).
+1. Create a fork of the gHack repo
+   - Navigate to the gHack git repo at: <http://github.com/gfilicetti/gHacks>
+   - Click the Fork button at the top right of the page and then choose the account you want to create the fork in. 
+2. Clone your new fork to your local machine
+   - `git clone https://github.com/myname/gHacks.git`
+   - `cd gHacks`
+3. Create a new branch for your work. It is a best practice to never work directly on the main branch
+   - `git checkout -b my-branch`
+4. Add a new folder to the top-level `hacks` root folder. Name your hack something distinctive using snake-case. Eg:
+   - `mkdir hacks/century-of-iot`
+5. Within your new folder, you'll need at least two files `README.md` and `solutions.md`. If you have additional assets such as images for the descriptions, you can put those in an `images` folder. If you choose to associate a Qwiklabs lab with the hack, you'll need to provide a `QL_OWNER` file (which includes the email addresses of the lab owners), a `qwiklabs.yaml` file (which configures the lab and its resources). Additionally if you need to do any setup for the lab you can use Terraform scripts for that which need to be in the `artifacts` directory accompanied by a `runtime.yaml`.   
+
+### Files and Folders
+
+Now that you've created the directory structure above, here is what each of them will contain:
+
+```
+hacks
+├── century-of-iot
+│   ├── artifacts  # (Optional) Terraform setup for Qwiklabs
+│   │   ├── main.tf
+│   │   ├── runtime.yaml
+│   │   └── variables.tf
+│   ├── images  # (Optional) Images used for hack description and/or solutions 
+│   │   ├── architecture.png
+│   │   └── results.png
+│   ├── resources # (Optional) Lecture presentations, supporting files, etc. Will be supplied to students
+│   │   ├── lectures.pdf
+│   │   ├── kube-deploy.yaml
+│   │   └── testing.html
+│   ├── README.md      # (Required) Hack description
+│   ├── solutions.md   # (Required) The coach's guide
+│   ├── QL_OWNER       # (Required for qwiklabs) Line separated list of owner & collaborator's emails for the Qwiklab
+│   └── qwiklabs.yaml  # (Required for qwiklabs) Qwiklab configuration
+└── ...
+```
 ## Student Guide
 
 Why should someone take the time to deliver or participate in your hack?  This is the main question you need to answer in order to define your hack. Every gHack needs to have a good executive summary that quickly describes your hack to those who will host or attend your hack. Think of this as your marketing pitch. 
@@ -74,6 +116,7 @@ To help you get started, we have provided a sample template for the Student Guid
 - [Student Guide Template](template-student-guide.md). 
 
 Please copy this template into your hack's root folder, rename it to **README.md**, and customize it for your hack.
+> **Note** It is a good idea to read through the example markdown in the template to familiarize yourself with the various sections. The sections marked as "(Optional)" do **NOT** need to be in your Student Guide if you don't have content for those sections.
 
 ## Challenge Design
 
@@ -117,7 +160,7 @@ For each of your challenges, you will add to the end of your Student Guide a new
 
 Keep in mind that we're using [Github Flavored Markdown](https://github.github.com/gfm/) and support highlighting of blockquotes that start with `> **Note**` or `> **Warning**`. In addition any line that ends with two spaces and a newline will cause renderer to emit a linebreak. 
 
-## Student Resources
+## Student Resources Folder
 
 It is common to provide attendees with resources in order to complete the hack's challenges.  One example is to provide the code for an application that the hack's challenges are based on. Another example might be to provide sample or starter code files, artifacts, or templates that provide guidance for completing the hack's challenges.
 
@@ -166,11 +209,21 @@ The Coach's guide should include the following:
 
 The Coach's guide should be updated during & post event with key learnings, such as all the gotchas, snags, and other unexpected blockers that your attendees hit.
 
-## Coach Solutions
+### Coach's Guide Template
 
-This is where you put "the answers". There are usually multiple ways to solve a gHack Challenge. The solutions you provide here should be example solutions that represent one way to solve the challenges. The solution resources might include a full working application, configuration files, populated templates, or other resources that can be used to demonstrate how to solve the challenges. 
+To help you get started, we have provided a sample markdown template for a Coach's Guide in the [Coach's Guide Template](template-coach-guide.md).
 
-Examples of Coach Solutions are:
+Please copy this template into your hack's top folder, rename it to `solutions.md`, customize it and add in all of your challenges.
+
+> **Note** It is a good idea to read through the example markdown in the template to familiarize yourself with the various sections. The sections marked as "(Optional)" do **NOT** need to be in your Coach's Guide if you don't have content for those sections.
+
+## Coach Solutions Folder
+
+This is where you can put any completed scripts/templates/code files for the coach's reference. It is understood that the solutions you provide here will be example solutions that represent **ONE** way to solve the challenges. 
+
+The solution resources might include a full working application, configuration files, populated templates, or other resources that can be used to demonstrate how to solve the challenges. 
+
+Examples of Coach solutions resources are:
 - Prerequisites for the GCP environment if needed. 
     - Example: A VM image with Visual Studio or ML tools pre-installed. 
     - Example: A Terraform template and/or script that builds out an environment that saves time on solving a challenge
@@ -179,51 +232,3 @@ Examples of Coach Solutions are:
 
 > **Note**  
 > This content is NOT intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.
-
-### Solution Template
-
-To help you get started, we have provided a sample markdown template for a Coach's Guide in the [Coach's Guide Template](template-coach-guide.md).
-
-Please copy this template into your hack's top folder, rename it to `solutions.md`, customize it and add in all of your challenges.
-
-## Preparing Your Environment
-
-Okay, ready to get started creating your own gHack?
-
-First we create a fork of the main gHack repo and then clone it to disk and create a branch to work in. The instructions below assume you have the git command line on your machine. If you're more comfortable in a GUI git client, you can use that too (we recommend SourceTree).
-1. Create a fork of the gHack repo
-   - Navigate to the gHack git repo at: <http://github.com/gfilicetti/gHacks>
-   - Click the Fork button at the top right of the page and then choose the account you want to create the fork in. 
-2. Clone your new fork to your local machine
-   - `git clone https://github.com/myname/gHacks.git`
-   - `cd gHacks`
-3. Create a new branch for your work. It is a best practice to never work directly on the main branch
-   - `git checkout -b my-branch`
-4. Add a new folder to the top-level `hacks` root folder. Name your hack something distinctive using snake-case. Eg:
-   - `mkdir hacks/century-of-iot`
-5. Within your new folder, you'll need at least two files `README.md` and `solutions.md`. If you have additional assets such as images for the descriptions, you can put those in an `images` folder. If you choose to associate a Qwiklabs lab with the hack, you'll need to provide a `QL_OWNER` file (which includes the email addresses of the lab owners), a `qwiklabs.yaml` file (which configures the lab and its resources). Additionally if you need to do any setup for the lab you can use Terraform scripts for that which need to be in the `artifacts` directory accompanied by a `runtime.yaml`.   
-
-### Files and Folders
-
-Now that you've created the directory structure above, here is what each of them will contain:
-
-```
-hacks
-├── century-of-iot
-│   ├── artifacts  # (Optional) Terraform setup for Qwiklabs
-│   │   ├── main.tf
-│   │   ├── runtime.yaml
-│   │   └── variables.tf
-│   ├── images  # (Optional) Images used for hack description and/or solutions 
-│   │   ├── architecture.png
-│   │   └── results.png
-│   ├── resources # (Optional) Lecture presentations, supporting files, etc. Will be supplied to students
-│   │   ├── lectures.pdf
-│   │   ├── kube-deploy.yaml
-│   │   └── testing.html
-│   ├── README.md      # (Required) Hack description
-│   ├── solutions.md   # (Required) The coach's guide
-│   ├── QL_OWNER       # (Required for qwiklabs) Line separated list of owner & collaborator's emails for the Qwiklab
-│   └── qwiklabs.yaml  # (Required for qwiklabs) Qwiklab configuration
-└── ...
-```

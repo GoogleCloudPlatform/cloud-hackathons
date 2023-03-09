@@ -4,6 +4,7 @@
 
 *This file must be named `README.md`*.
 
+*-------- DELETE EVERYTHING ABOVE THIS LINE --------* 
 # IoT Hack of the Century
 
 ## Introduction

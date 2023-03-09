@@ -131,7 +131,7 @@ In our Google Space, we will have the following:
 ![Create Breakouts](images/host-breakouts-2.png)
 ![Create Breakouts](images/host-breakouts-3.png)
 
-- **Coaches ONLY Chat** - The lead coach will create a multi-person chat for all the coaches to discuss things in private, away from student eyes.
+- **Coaches ONLY Chat** - The lead coach will create a multi-person chat for all the coaches to discuss things in private, away from student eyes. Here you can put a direct link to the `solutions` folder for this hack from the github repo so coaches can easily look at solution files if they exist.
 
 ### Getting People To Your Event
 
