@@ -1,8 +1,8 @@
 schema_version: 2
 default_locale: en
-title: "[gHacks] Retail Analytics"
+title: "[gHacks] Real-time Analytics with CDC"
 description: "This hack will take you through replicating and processing operational data from 
-  an Oracle database into Google Cloud in real time"
+  an Oracle database into Google Cloud in real time using Change Data Capture (CDC)"
 instruction:
   type: md
   uri: instructions/en.md
@@ -12,6 +12,7 @@ credits: 0
 level: fundamental
 tags:
 - caugusto
+- meken
 - ghacks
 - ghacks003
 product_tags: 
