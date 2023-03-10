@@ -1,7 +1,7 @@
-# Security in Media & Entertainment
+# Security with reCAPTCHA and Cloud Armor
 
 ## Introduction
-Welcome to the coach's guide for the Security in Media & Entertainment gHack. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for the Security with reCAPTCHA and Cloud Armor gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
 ## Coach's Guides
 - Challenge 0: Setup & Requirements
@@ -66,7 +66,6 @@ Students will creating managed instance groups here, so there are a few things t
     sudo echo "Page served from: $vm_hostname" | \
     sudo tee /var/www/html/index.html
     ```
-
 
 1. Click **Create**.
 1. Wait for the instance template to be created.
