@@ -19,7 +19,12 @@ Welcome to the coach's guide for the Security with reCAPTCHA and Cloud Armor gHa
 
 ### Notes & Guidance
 
-If you are running this hack in an Argolis environment there are a few important things to keep in mind:
+**IMPORTANT:** This hack includes student resources that need to be made available to participants. When you create the Google Space you'll also have to do the following:
+
+- Create a zip file of the `resources` folder in this gHack. The HTML files need to be at the root of the zip, do not include the resources folder itself in the zip.
+- Upload this zip file to the **"Files"** tab in the Google Space
+
+If you are running this hack in an Argolis environment there are a few extra important things to keep in mind:
 
 - The `default` network isn't automatically created. Students will be instructed to create a default network with auto-subnet creation turned on at the start of the hack.
 - There are some default Argolis policies that will need to be changed to allow traffic through to the load balancer. Run the `argolis-fix-policy-defaults.sh` script in [this repository](https://github.com/gfilicetti/gcp-scripts) to set all the proper defaults.
