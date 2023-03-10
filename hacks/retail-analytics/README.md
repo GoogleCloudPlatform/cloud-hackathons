@@ -27,7 +27,7 @@ You'll be using a variety of Google Cloud offerings to achieve this including:
 1. Datastream
 1. Dataflow
 1. BigQuery ML
-1. Looker Studio
+1. Looker or Looker Studio
 
 ## Challenges
 
@@ -57,30 +57,32 @@ You'll be using a variety of Google Cloud offerings to achieve this including:
 
 ### Introduction
 
-Throughout this hack, you will be using a number of different tools and products within Google Cloud. Our focus in this first challenge will be setting up the pre-requisites. As part of the project setup, we've already created a VM that hosts Oracle for you, but there's more to set up :)
+Throughout this hack, you will be using a number of different tools and products within Google Cloud. Our focus in this first challenge will be setting up the pre-requisites. As part of the project setup, we've already created a VM that hosts a Oracle database for you, but there's more to set up :)
 
 ### Description
 
-We'll need to stage the CDC stream from the Oracle database into a Google Cloud Storage bucket. Create a new bucket that minimizes e-gress costs. 
+We'll need to stage the CDC stream from the Oracle database into a Google Cloud Storage bucket. Create a new bucket that minimizes egress costs. 
 
-In order to trigger Dataflow processing we'll use Pub/Sub notifications for Cloud Storage, so go ahead and turn on Pub/Sub notifications for the newly created bucket.
+In order to trigger Dataflow processing we'll use Pub/Sub notifications for Cloud Storage, so go ahead and turn on Pub/Sub notifications for the newly created bucket. Once the topic is ready, add a subscription to it.
 
-Finally create a BigQuery dataset in the same region, which will use to store and analyze the data.
+Finally create a BigQuery dataset in the same region, which will be used to store and analyze the data.
 
 ### Success Criteria
 
 1. There's a new Cloud Storage bucket
-2. And the bucket is configured to send Pub/Sub notifications
-3. There's a new BigQuery dataset
+2. The bucket is configured to send Pub/Sub notifications
+3. There's a Pub/Sub subscription on the new notifications topic
+4. There's a new BigQuery dataset
 
 ### Tips
 
-- You can use the UI to configure things but [Cloud Shell](https://cloud.google.com/shell) has all the tools you need to complete this challenge
+- You can use the UI to configure some of the requirements (not everything possible through the UI) but [Cloud Shell](https://cloud.google.com/shell) has all the tools you need to complete this challenge
 
 ### Learning Resources
 
 - [Creating Storage Buckets](https://cloud.google.com/storage/docs/creating-buckets)
-- [Pub/Sub notifications for Cloud Storage](https://cloud.google.com/storage/docs/pubsub-notifications)
+- [Pub/Sub notifications for Cloud Storage](https://cloud.google.com/storage/docs/reporting-changes)
+- [Pub/Sub subscriptions](https://cloud.google.com/pubsub/docs/create-subscription)
 - [Creating BQ Datasets](https://cloud.google.com/bigquery/docs/datasets)
 
 ## Challenge 1: Replicating Oracle Data Using Datastream
@@ -126,24 +128,27 @@ You can also extend the functionality of this template by including User Defined
 
 We've already prepared a some transformation logic that masks a column in the data, you can download it from [here](https://raw.githubusercontent.com/caugusto/datastream-bqml-looker-tutorial/main/udf/retail_transform.js).
 
-Configure a Dataflow job that reads from the Pub/Sub notifications using the pre-built Datastream template with the target as the BQ dataset that's been created in the very first challenge. Start the Dataflow job and then start the Datastream job.
+Configure a Dataflow job that reads from the Pub/Sub notifications using the pre-built Datastream template with the target as the BQ dataset that's been created in the very first challenge. Use the provided UDF to process the data before it's stored in BQ.
 
-> **Warning** The template needs Cloud Storage Buckets for a few more things. Keep in mind that if you use the same bucket as the CDC staging, you might end up triggering Dataflow with invalid data.
+Start the Dataflow job and once it's running, then start the Datastream job.
+
+> **Warning** The template needs Cloud Storage Buckets for a few more things, these need to be different from the bucket that contains the staging data.
+
+> **Note** It will take ~10 minutes to complete the replication.
 
 ### Tips
 
 - Create a new bucket to hold the transformation logic and other data
+- Some of the settings needed to complete this challenge are in the *Optional Parameters* section
 
 ### Success Criteria
 
 1. All the data from Oracle table **ORDERS** has been replicated to the new BigQuery dataset using Datastream & Dataflow
-2. Both tables should have a row count `520217`
+2. The **ORDERS** table in BQ dataset should have a row count `520217`
 
 ### Learning Resources
 
 - [Pre-built Dataflow templates](https://cloud.google.com/dataflow/docs/guides/templates/provided-streaming)
-- [Creating Service Accounts](https://cloud.google.com/sdk/gcloud/reference/iam/service-accounts)
-- [Adding IAM Policy Bindings](https://cloud.google.com/sdk/gcloud/reference/projects/add-iam-policy-binding)
 - [Configuring Firewall Rules](https://cloud.google.com/sdk/gcloud/reference/compute/firewall-rules)
 - [Starting Dataflow Jobs](https://cloud.google.com/sdk/gcloud/reference/dataflow/jobs/run)
 - [Datastream Stream Update](https://cloud.google.com/sdk/gcloud/reference/datastream/streams/update)
@@ -164,8 +169,7 @@ In order to build a model, we need to prepare the data first. Create a new table
 
 Using this training data create a new `ARIMA_PLUS` model to predict expect sales quantity for a product.
 
-Once the model is ready use it to forecast the sales for all products for the next 2 days (48 hours) starting from
-`2021-11-29` and store the results in a new table.
+Once the model is ready use it to forecast the sales for all the products for the next 2 days (48 hours) and store it in a table.
 
 ### Success Criteria
 
@@ -176,6 +180,7 @@ Once the model is ready use it to forecast the sales for all products for the ne
 ### Learning Resources
 
 - [Creating and Using BigQuery Tables](https://cloud.google.com/bigquery/docs/tables)
+- [BQ timestamp functions](https://cloud.google.com/bigquery/docs/reference/standard-sql/timestamp_functions)
 - [Creating ARIMA_PLUS Model](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-create-time-series)
 
 
@@ -183,16 +188,20 @@ Once the model is ready use it to forecast the sales for all products for the ne
 
 ### Introduction
 
-> TODO ME
+We can look at the data in BigQuery SQL workbench, but it's usually better to visualize data using a BI tool. We could use any BI tool for that purpose but for this challenge we'll use Looker or Looker Studio to achieve that.
 
 ### Description
 
-> TODO ME
+Build a time series chart that displays the forecasts for the product `Bag of Organic Bananas`, including the lower and upper bounds of the predictions (confidence bands).
+
+See below for an example:
+
+![Example](images/expected-chart.png)
 
 ### Success Criteria
 
-1. There's a line graph that shows the hourly sales for an individual product and its forecasted sales for the next two days
+1. There's a line graph that shows the hourly sales for an individual product and its forecasted sales for the next two days, including the confidence bands
 
 ### Learning Resources
 
-- TODO ME
+- [Looker Studio with BigQuery](https://cloud.google.com/bigquery/docs/visualize-looker-studio)

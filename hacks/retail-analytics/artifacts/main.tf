@@ -35,6 +35,18 @@ resource "google_project_service" "pubsub_api" {
   service = "pubsub.googleapis.com"
 }
 
+data "google_compute_default_service_account" "default" {
+  depends_on = [
+    google_project_service.compute_api
+  ]
+}
+
+resource "google_project_iam_member" "default_editor" {
+  project = var.gcp_project_id
+  role    = "roles/editor"
+  member  = "serviceAccount:${data.google_compute_default_service_account.default.email}"
+}
+
 resource "google_compute_network" "vpc_sample" {
   name                    = "vpc-${local.suffix}"
   auto_create_subnetworks = false
