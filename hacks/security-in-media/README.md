@@ -109,10 +109,9 @@ You should see output similar to this:
 
 ### Success Criteria
 
-- You've created a new project for your hacking
+- You have a project for your hacking
 - You've confirmed that Cloud Shell is working for you
-- You've enabled the specified APIs needed for this gHack
-- You've created firewall rules to allow health checks and SSH traffic through
+- You've run the Terraform script to install all needed pre-requisites
 
 ### Learning Resources
 - [Creating and Managing Projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects#before_you_begin)
