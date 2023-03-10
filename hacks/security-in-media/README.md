@@ -92,19 +92,18 @@ There are some resources that need to be created before starting our hack. We ha
 - Enable the Google Cloud services we'll be using.
 - Create the `default` VPC Network (if it does not already exist).
 
-Now run Terraform to provision all our pre-requisites:
+Now run these commands to get Terraform to provision all of our pre-requisites:
 
 ```bash
-terraform apply ./setup-prereqs.tf
+terraform init
+terraform apply --auto-approve --var gcp_project_id=${GOOGLE_PROJECT_ID}
 ```
+
+> **Note** You can safely ignore any errors about the `default` network already existing if encountered.
 
 You should see output similar to this:
 
-***
-***Screenshot needed***
-
-![Terraform Output]()
-***
+![Terraform Output](images/cloud-shell-terraform.png)
 
 ### Success Criteria
 
