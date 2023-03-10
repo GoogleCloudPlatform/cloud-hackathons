@@ -91,7 +91,6 @@ There are some resources that need to be created before starting our hack. We ha
 
 - Enable the Google Cloud services we'll be using.
 - Create the `default` VPC Network (if it does not already exist).
-- Config the firewall rules for the VPC to enable the HTTP load balancer's health checks.
 
 Now run Terraform to provision all our pre-requisites:
 
