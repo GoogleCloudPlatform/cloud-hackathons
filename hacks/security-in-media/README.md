@@ -96,7 +96,7 @@ Now run these commands to get Terraform to provision all of our pre-requisites:
 
 ```bash
 terraform init
-terraform apply --auto-approve --var gcp_project_id=${GOOGLE_PROJECT_ID}
+terraform apply --auto-approve --var gcp_project_id=${GOOGLE_CLOUD_PROJECT}
 ```
 
 > **Note** You can safely ignore any errors about the `default` network already existing if encountered.
@@ -183,11 +183,10 @@ At a high level, in this challenge you will need to:
 - Configure a health check.
 - Configure its frontend services.
 
-#### Start the configuration
-- Create a "classic" HTTPS load balancer to send traffic from the Internet to the VMs in your instance group.
-
 #### Open the VPC Firewall 
-We will need to open up the `default` network's firewall to allow HTTP connections (for the load balancer's health-check) and SSH connections (for us to ssh into VMs).
+Before we start, we need to make sure that HTTP traffic can flow within our network and that we can access our backend VMs
+
+To achieve this, we will need to open up the `default` network's firewall to allow HTTP connections (for the load balancer's health-check) and SSH connections (for us to ssh into VMs).
 
 You need to create 2 inbound firewall rules:
 
@@ -197,6 +196,9 @@ You need to create 2 inbound firewall rules:
 2. Open up SSH for us to log into VMs
     - Source must be all of the internet
     - Use a target tag of: `allow-health-check`
+
+#### Start the configuration
+- Create a "classic" HTTPS load balancer to send traffic from the Internet to the VMs in your instance group.
 
 #### Configure the backend
 Backend services direct incoming traffic to one or more attached backends. Each backend is composed of an instance group and additional serving capacity metadata.
