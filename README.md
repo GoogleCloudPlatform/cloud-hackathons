@@ -21,8 +21,8 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
   > We will be implementing a state of the art deep learning forecasting model in just a few hours thanks to Vertex AI AutoML. We’ll provide you with a sample notebook and you’ll work on extending that notebook to train a model, run inference and see results. 
 
 ### Infrastructure
-- [Security in Media](./hacks/security-in-media/README.md)
-  > We will be configuring an HTTP Load Balancer with a backend and then you'll learn to set up a reCAPTCHA session token site key and embed it in your website. You will also learn to set up redirection to reCAPTCHA Enterprise manual challenge. We will then configure a Cloud Armor bot management policy to showcase how bot detection protects your application from malicious bot traffic.
+- [Security with reCAPTCHA and Cloud Armor](./hacks/security-in-media/README.md)
+  > We will be setting up gHacks+, the hottest new streaming site. We will configure an HTTP Load Balancer in front of the site and then you'll learn how to set up a reCAPTCHA session token site key and embed it the site. You will also learn how to set up redirection to reCAPTCHA Enterprise manual challenge. We will then configure a Cloud Armor bot management policy to showcase how bot detection can protect gHacks+ from malicious bot traffic.
 
 ### Application Development
 - Coming soon...
