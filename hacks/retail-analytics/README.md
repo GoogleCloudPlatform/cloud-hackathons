@@ -31,15 +31,15 @@ You'll be using a variety of Google Cloud offerings to achieve this including:
 
 ## Challenges
 
-- Challenge 0: Installing Prerequisites and Preparing Your Environment
+- Challenge 1: Getting started
    - Get yourself ready to develop our FastFresh solution
-- Challenge 1: Replicating Oracle Data Using Datastream
+- Challenge 2: Replicating Oracle Data Using Datastream
    - Backfill the Oracle FastFresh schema and replicate updates to Cloud Storage in real time.
-- Challenge 2: Creating a Dataflow Job using the Datastream to BigQuery Template
+- Challenge 3: Creating a Dataflow Job using the Datastream to BigQuery Template
    - Now it’s time to create a Dataflow job which will read from GCS and update BigQuery. You will deploy the pre-built Datastream to BigQuery Dataflow streaming template to capture these changes and replicate them into BigQuery.
-- Challenge 3: Building a Demand Forecast
+- Challenge 4: Building a Demand Forecast
    - In this challenge you will use BigQuery ML to build a model to forecast the demand for products in store.
-- Challenge 4: Visualizing the results
+- Challenge 5: Visualizing the results
    - In this challenge you will use your favourite visualization tool to display the predictions from the previous challenge
 
 ## Prerequisites
@@ -53,7 +53,7 @@ You'll be using a variety of Google Cloud offerings to achieve this including:
 - Gino Filicetti
 - Murat Eken
 
-## Challenge 0: Installing Prerequisites and Preparing Your Environment
+## Challenge 1: Getting started
 
 ### Introduction
 
@@ -85,7 +85,7 @@ Finally create a BigQuery dataset in the same region, which will be used to stor
 - [Pub/Sub subscriptions](https://cloud.google.com/pubsub/docs/create-subscription)
 - [Creating BQ Datasets](https://cloud.google.com/bigquery/docs/datasets)
 
-## Challenge 1: Replicating Oracle Data Using Datastream
+## Challenge 2: Replicating Oracle Data Using Datastream
 
 ### Introduction
 
@@ -95,11 +95,9 @@ In this challenge, we'll configure Datastream to load the Oracle FastFresh schem
 
 ### Description
 
-Configure Datastream to replicate data from the *ORDERS* table in the Oracle database into the bucket created in the previous challenge in *JSON* format using the *datastream* user, validate it, but **don't start** it yet.
+Configure Datastream to replicate data from the *ORDERS* table in the Oracle database into the bucket created in the previous challenge in *JSON* format using the *datastream* user, validate it, but **don't start** it yet. Make sure to include existing records in the stream as well.
 
-> **Note** Make sure to include existing records in the stream as well.
-
-> **Note** We have fulfilled The Oracle source and Cloud Storage destination prerequisites during setup, so you can ignore that section.
+> **Note** We have fulfilled the Oracle source and Cloud Storage destination prerequisites during setup, so you can ignore that section (and ignore the potential validation error for Cloud Storage permissions at the end).
 
 ### Success Criteria
 
@@ -117,7 +115,7 @@ Configure Datastream to replicate data from the *ORDERS* table in the Oracle dat
 - [Creating a new Connection Profile](https://cloud.google.com/datastream/docs/create-connection-profiles)
 - [Firewall rules](https://cloud.google.com/vpc/docs/using-firewalls)
 
-## Challenge 2 - Creating a Dataflow Job using the Datastream to BigQuery Template
+## Challenge 3: Creating a Dataflow Job using the Datastream to BigQuery Template
 
 ### Introduction
 
@@ -160,7 +158,7 @@ Start the Dataflow job and once it's running, then start the Datastream job.
 - [Getting Started with BigQuery](https://cloud.google.com/bigquery/docs/quickstarts/query-public-dataset-console)
 - [Preview BigQuery Data](https://cloud.google.com/bigquery/docs/quickstarts/load-data-console#preview_table_data)
 
-## Challenge 3: Building a Demand Forecast
+## Challenge 4: Building a Demand Forecast
 
 ### Introduction
 
@@ -187,7 +185,7 @@ Once the model is ready use it to forecast the sales for all the products for th
 - [Creating ARIMA_PLUS Model](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-create-time-series)
 
 
-## Challenge 4: Visualizing the results
+## Challenge 5: Visualizing the results
 
 ### Introduction
 

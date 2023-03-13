@@ -15,7 +15,7 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 ### Data & AI
 - [MLOps on GCP](./hacks/mlops-on-gcp/README.md)
   > We will be implementing the full lifecycle of an ML project. We’ll provide you with a sample code base and you’ll work on automating continuous integration (CI), continuous delivery (CD), and continuous training (CT) for a machine learning (ML) system. 
-- [Data Analytics for Retail](./hacks/retail-analytics/README.md)
+- [Real-time analytics with CDC](./hacks/retail-analytics/README.md)
   > We will be going through replicating and processing operational data from an Oracle database into Google Cloud in real time. You'll also figure out how to forecast future demand, and how to visualize this forecast data as it arrives.
 - [Demand Forecasting](./hacks/demand-forecasting/README.md)
   > We will be implementing a state of the art deep learning forecasting model in just a few hours thanks to Vertex AI AutoML. We’ll provide you with a sample notebook and you’ll work on extending that notebook to train a model, run inference and see results. 

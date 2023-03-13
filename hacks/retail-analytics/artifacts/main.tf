@@ -3,7 +3,6 @@ locals {
   network_tag     = "orcl-db"
   datastream_user = "datastream"
   oracle_sid      = "XE"
-  datastream_sa   = "service-${data.google_project.project.number}@gcp-sa-datastream.iam.gserviceaccount.com"
 }
 
 data "google_project" "project" {}
@@ -35,15 +34,6 @@ resource "google_project_iam_member" "default_editor" {
   project = var.gcp_project_id
   role    = "roles/editor"
   member  = "serviceAccount:${data.google_compute_default_service_account.default.email}"
-}
-
-resource "google_project_iam_member" "datastream_storage" {
-  project = var.gcp_project_id
-  role = "roles/storage.admin"
-  member = "serviceAccount:${local.datastream_sa}"
-  depends_on = [
-    google_project_service.datastream_api
-  ]
 }
 
 resource "google_compute_network" "vpc_sample" {

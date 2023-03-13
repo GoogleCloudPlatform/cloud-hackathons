@@ -58,6 +58,16 @@ environment:
   student_visible_outputs:
   - label: Open Console
     reference: project.console_url
+  - label: Project ID
+    reference: project.project_id
+  - label: Oracle Host IP Address
+    reference: project_0.startup_script.orcl_db_ip
+  - label: Oracle SID
+    reference: project_0.startup_script.orcl_db_sid
+  - label: Oracle Datastream User
+    reference: project_0.startup_script.orcl_datastream_usr
+  - label: Oracle Datastream Password
+    reference: project_0.startup_script.orcl_datastream_pwd    
   - label: Username 1
     reference: user_1.username
   - label: Password 1
@@ -78,5 +88,3 @@ environment:
     reference: user_5.username
   - label: Password 5
     reference: user_5.password
-  - label: Project ID
-    reference: project.project_id

@@ -4,6 +4,9 @@ if [ -f /etc/config_complete ]; then
     exit 0
 fi
 
+# Suppressing some warnings
+echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
 # Installing OS dependencies
 apt-get update -y
 apt-get install -y \
@@ -21,7 +24,7 @@ apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Creating Docker group and assigning the group to $USER
 groupadd -f docker
-usermod -aG docker $USER
+usermod -aG docker `whoami`
 newgrp docker
 
 # Pull and Run Image (https://hub.docker.com/r/wnameless/oracle-xe-11g-r2)

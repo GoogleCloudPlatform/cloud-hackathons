@@ -8,18 +8,18 @@ Remember that this hack includes a [lecture presentation](resources/lectures.pdf
 
 ## Coach's Guides
 
-- Challenge 0: Installing Prerequisites and Preparing Your Environment
+- Challenge 1: Getting started
    - Get yourself ready to develop our FastFresh solution
-- Challenge 1: Replicating Oracle Data Using Datastream
+- Challenge 2: Replicating Oracle Data Using Datastream
    - Backfill the Oracle FastFresh schema and replicate updates to Cloud Storage in real time.
-- Challenge 2: Creating a Dataflow Job using the Datastream to BigQuery Template
+- Challenge 3: Creating a Dataflow Job using the Datastream to BigQuery Template
    - Now it’s time to create a Dataflow job which will read from GCS and update BigQuery. You will deploy the pre-built Datastream to BigQuery Dataflow streaming template to capture these changes and replicate them into BigQuery.
-- Challenge 3: Building a Demand Forecast
+- Challenge 4: Building a Demand Forecast
    - In this challenge you will use BigQuery ML to build a model to forecast the demand for products in store.
-- Challenge 4: Visualizing the results
+- Challenge 5: Visualizing the results
    - In this challenge you will use your favourite visualization tool to display the predictions from the previous challenge
 
-## Challenge 0: Installing Prerequisites and Preparing Your Environment
+## Challenge 1: Getting started
 
 ### Notes & Guidance
 
@@ -47,7 +47,7 @@ Create a BigQuery dataset named `retail`:
 bq mk --location ${REGION} --dataset ${PROJECT_ID}:retail
 ```
 
-## Challenge 1: Replicating Oracle Data Using Datastream - Coach's Guide
+## Challenge 2: Replicating Oracle Data Using Datastream - Coach's Guide
 
 ### Notes & Guidance
 
@@ -72,12 +72,13 @@ Choose the connectivity method **IP allowlisting**, and then click **Continue**.
 You'll need to update the firewall for the network in which the VM is created. You could do that either through the UI, or using the following command:
 
 ```shell
+IPS="34.71.242.81,34.72.28.29,34.67.6.157,34.67.234.134,34.72.239.218"  # these are for us-central1
 gcloud compute firewall-rules create fwr-ingress-allow-datastream \
-   --action=allow \ 
+   --action=allow \
    --network=vpc-retail \
    --direction=ingress \
    --target-tags=orcl-db \
-   --source-ranges=[datastream IP addresses] \
+   --source-ranges="$IPS" \
    --rules=tcp:1521
 ```
 
@@ -98,13 +99,14 @@ Leave the Stream path prefix blank and select **JSON** for **Output format**. Cl
 
 Click **Run Validation** and, assuming no issues were found, click **Create**.
 
-## Challenge 2: Creating a Dataflow Job using the Datastream to BigQuery Template - Coach's Guide
+## Challenge 3: Creating a Dataflow Job using the Datastream to BigQuery Template - Coach's Guide
 
 ### Notes & Guidance
 
 Create a new bucket to hold additional stuff and copy the transformation logic there
 
 ```shell
+wget https://raw.githubusercontent.com/caugusto/datastream-bqml-looker-tutorial/main/udf/retail_transform.js
 gsutil mb -l ${REGION} gs://${PROJECT_ID}-other
 gsutil cp retail_transform.js gs://${PROJECT_ID}-other/js/
 ```
@@ -183,7 +185,7 @@ SELECT count(*) FROM `retail.ORDERS`;
 
 > **Note** With the backfill completed, this statement will return the number `520217`. Please wait until the backfill is done before closing this challenge.
 
-## Challenge 3: Building a Demand Forecast - Coach's Guide
+## Challenge 4: Building a Demand Forecast - Coach's Guide
 
 ### Notes & Guidance
 
@@ -259,7 +261,7 @@ Because the training data is hourly, the horizon value will use the same unit of
 > **Note** Since this is a small sample dataset, further investigation into the accuracy of the model is out of scope for this tutorial.
 
 
-## Challenge 4: Visualizing the results - Coach's Guide
+## Challenge 5: Visualizing the results - Coach's Guide
 
 ### Notes & Guidance
 
