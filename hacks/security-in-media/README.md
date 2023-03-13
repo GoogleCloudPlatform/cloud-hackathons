@@ -140,7 +140,7 @@ Keep the following things in mind:
     ```bash
     #! /bin/bash
     sudo apt-get update
-    sudo apt-get install apache2 -y
+    sudo apt-get install apache2 unzip -y
     sudo a2ensite default-ssl
     sudo a2enmod ssl
     export vm_hostname="$(hostname)"
@@ -260,21 +260,21 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
     - Use the **score** integration type. Other options are **checkbox** and **invisible**.
     - Use a **testing score** of `0.5`.
         - This will validate that the bot management policies we create with Cloud Armor are working as intended. Replicating bot traffic is not easy and hence, this is a good way to test the feature.
-    - Make note of the output of your gcloud command, it will output the key that you'll need later in this gHack.
+    - Make note of the output of your `gcloud` command, it will output the key that you'll need later in this gHack.
 
 - Use `gcloud` to also create the reCAPTCHA WAF challenge-page site key and enable the WAF feature for the key. You can use the reCAPTCHA challenge page feature to redirect incoming requests to reCAPTCHA Enterprise to determine whether each request is potentially fraudulent or legitimate. We will later associate this key with the Cloud Armor security policy to enable the manual challenge. We will refer to this key as **CHALLENGE-PAGE-KEY** in the later steps.
     - You must set the WAF service to Cloud Armor to enable the Cloud Armor integration.
     - Key type is **challenge-page**
     - Use the **invisible** integration type.
-    - Make note of the output of your gcloud command, it will output the key that you'll need later in this gHack.
+    - Make note of the output of your `gcloud` command, it will output the key that you'll need later in this gHack.
 
 - Navigate to the reCAPTCHA Enterprise screen in the Google Cloud Console. Go to the **KEYS** tab and confirm that both of the keys you created are there.
 
 #### Setup the gHacks+ Website
 We've provided all the files for the gHacks streaming service's website. Now we need to upload these files to the VM.
 
-- In the console, locate the VM in your instance group and get its IP address
-- Use `scp` command to copy the `student-resources.zip` file in your Cloud Shell up to the VM
+- In the console, locate the VM in your instance group and get its name and zone.
+- Use `gcloud compute scp` command to copy the `student-resources.zip` file in your Cloud Shell up to the VM
 - SSH into the VM and unzip `student-resources.zip` into the root of the apache server's html folder.
     > **Tip** You'll have to do this as root
 
@@ -283,7 +283,7 @@ Edit `index.html` for the gHacks+ site and embed the reCAPTCHA session token sit
 > **Tip** The session token site key is added to the ```HEAD``` section of the HTML page.
 
 Validate that you are able to access all the movies available on the gHacks+ site. You'll need to find the load balancer's IP for this and go to `index.html` in a browser.
-> **Note** You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the page:
+> **Note** You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the index page:
     
 ![Protect Logo](images/recaptcha-protect-logo.png)
 
@@ -324,7 +324,7 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
 - Add a bot management rule to the policy to **redirect** traffic to Google reCAPTCHA if the url path matches `median-score.html` and has a score equal to 0.5.
 
-- Attach this reCAPTCHA security policy to the backend service of your Load Balancer. Make sure it is available globally.
+- Attach this reCAPTCHA security policy to the backend service of your Load Balancer. **Make sure it is available globally.**
 
 #### Validate Bot Management with Cloud Armor
 
@@ -346,10 +346,10 @@ Explore the security policy logs to validate bot management worked as expected.
 
 - In the Console, navigate to the logs for the reCAPTCHA policy you created.
 
-- Use the below MQL (Monitoring Query Language) query to view the request logs 
+- You should see the following MQL (Monitoring Query Language) query get pre-populated:
 
     ```sql
-    resource.type:(http_load_balancer) AND jsonPayload.enforcedSecurityPolicy.name:(recaptcha-policy)
+    resource.type:(http_load_balancer) AND jsonPayload.enforcedSecurityPolicy.name:({YOUR_POLICY_NAME})
     ```
 
 - Verify a log entry exists in Query results where the request is for each rule (good, bad and median)
