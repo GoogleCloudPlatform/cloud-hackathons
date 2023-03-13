@@ -1,7 +1,12 @@
 locals {
-  suffix      = "retail"
-  network_tag = "orcl-db"
+  suffix          = "retail"
+  network_tag     = "orcl-db"
+  datastream_user = "datastream"
+  oracle_sid      = "XE"
+  datastream_sa   = "service-${data.google_project.project.number}@gcp-sa-datastream.iam.gserviceaccount.com"
 }
+
+data "google_project" "project" {}
 
 resource "google_project_service" "compute_api" {
   service                    = "compute.googleapis.com"
@@ -30,6 +35,15 @@ resource "google_project_iam_member" "default_editor" {
   project = var.gcp_project_id
   role    = "roles/editor"
   member  = "serviceAccount:${data.google_compute_default_service_account.default.email}"
+}
+
+resource "google_project_iam_member" "datastream_storage" {
+  project = var.gcp_project_id
+  role = "roles/storage.admin"
+  member = "serviceAccount:${local.datastream_sa}"
+  depends_on = [
+    google_project_service.datastream_api
+  ]
 }
 
 resource "google_compute_network" "vpc_sample" {
@@ -112,6 +126,8 @@ resource "google_compute_instance" "oracle_vm" {
   }
 
   metadata_startup_script = templatefile("${path.module}/setup.tftpl", {
+    datastream_user          = local.datastream_user,
     datastream_user_password = random_string.datastream_user_password.result
+    oracle_sid               = local.oracle_sid
   })
 }

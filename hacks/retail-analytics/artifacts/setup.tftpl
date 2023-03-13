@@ -40,7 +40,7 @@ ps -ef|grep LISTENER
 
 export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
 export PATH=$ORACLE_HOME/bin:$PATH
-export ORACLE_SID=XE
+export ORACLE_SID=${oracle_sid}
 
 until echo "SELECT STATUS FROM V\$INSTANCE;" | sqlplus / as sysdba | grep 'OPEN' > /dev/null; do
     sleep 5
@@ -66,12 +66,12 @@ EOF
 docker exec -i -e USER=oracle -u oracle $DOCKER_ID bash << 'EOF'
 export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
 export PATH=$ORACLE_HOME/bin:$PATH
-export ORACLE_SID=XE
+export ORACLE_SID=${oracle_sid}
 # Create FASTFRESH SCHEMA and ORDERS TABLE
 sqlplus / as sysdba << EOFSQL
 SET ECHO ON
 SET FEEDBACK ON
-ALTER DATABASE DATAFILE '/u01/app/oracle/oradata/XE/users.dbf' AUTOEXTEND ON MAXSIZE UNLIMITED;
+ALTER DATABASE DATAFILE '/u01/app/oracle/oradata/${oracle_sid}/users.dbf' AUTOEXTEND ON MAXSIZE UNLIMITED;
 CREATE USER "FASTFRESH" IDENTIFIED BY tutorial_fastfresh
       DEFAULT TABLESPACE "USERS"
       TEMPORARY TABLESPACE "TEMP";
@@ -103,23 +103,23 @@ EOF
 docker exec -i -e USER=oracle -u oracle $DOCKER_ID bash << 'EOF'
 export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
 export PATH=$ORACLE_HOME/bin:$PATH
-export ORACLE_SID=XE
+export ORACLE_SID=${oracle_sid}
 # Create datastream user
 sqlplus / as sysdba << 'EOFSQL'
 SET ECHO ON
 SET FEEDBACK ON
-CREATE USER datastream IDENTIFIED BY ${datastream_user_password};
-GRANT EXECUTE_CATALOG_ROLE TO datastream;
-GRANT CONNECT TO datastream;
-GRANT CREATE SESSION TO datastream;
-GRANT SELECT ON SYS.V_$DATABASE TO datastream;
-GRANT SELECT ON SYS.V_$ARCHIVED_LOG TO datastream;
-GRANT SELECT ON SYS.V_$LOGMNR_CONTENTS TO datastream;
-GRANT SELECT ON SYS.V_$LOGMNR_LOGS TO datastream;
-GRANT EXECUTE ON DBMS_LOGMNR TO datastream;
-GRANT EXECUTE ON DBMS_LOGMNR_D TO datastream;
-GRANT SELECT ANY TRANSACTION TO datastream;
-GRANT SELECT ANY TABLE TO datastream;
+CREATE USER ${datastream_user} IDENTIFIED BY ${datastream_user_password};
+GRANT EXECUTE_CATALOG_ROLE TO ${datastream_user};
+GRANT CONNECT TO ${datastream_user};
+GRANT CREATE SESSION TO ${datastream_user};
+GRANT SELECT ON SYS.V_$DATABASE TO ${datastream_user};
+GRANT SELECT ON SYS.V_$ARCHIVED_LOG TO ${datastream_user};
+GRANT SELECT ON SYS.V_$LOGMNR_CONTENTS TO ${datastream_user};
+GRANT SELECT ON SYS.V_$LOGMNR_LOGS TO ${datastream_user};
+GRANT EXECUTE ON DBMS_LOGMNR TO ${datastream_user};
+GRANT EXECUTE ON DBMS_LOGMNR_D TO ${datastream_user};
+GRANT SELECT ANY TRANSACTION TO ${datastream_user};
+GRANT SELECT ANY TABLE TO ${datastream_user};
 exit;
 EOFSQL
 # Enable archivelog ... Required by Datastream

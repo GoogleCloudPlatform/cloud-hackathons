@@ -99,6 +99,8 @@ Configure Datastream to replicate data from the *ORDERS* table in the Oracle dat
 
 > **Note** Make sure to include existing records in the stream as well.
 
+> **Note** We have fulfilled The Oracle source and Cloud Storage destination prerequisites during setup, so you can ignore that section.
+
 ### Success Criteria
 
 1. You've created a new Datastream stream
@@ -129,7 +131,9 @@ You can also extend the functionality of this template by including User Defined
 
 We've already prepared a some transformation logic that masks a column in the data, you can download it from [here](https://raw.githubusercontent.com/caugusto/datastream-bqml-looker-tutorial/main/udf/retail_transform.js).
 
-Configure a Dataflow job that reads from the Pub/Sub notifications using the pre-built Datastream template with the target as the BQ dataset that's been created in the very first challenge. Use the provided UDF to process the data before it's stored in BQ.
+Configure a Dataflow job that reads from the Pub/Sub notifications using the pre-built Datastream template with the target as the BQ dataset that's been created in the very first challenge. Use the provided UDF to process the data before it's stored in BQ. 
+
+Use the `sub-retail` subnet in the `vpc-retail` network and limit the maximum number of workers to `5`.
 
 Start the Dataflow job and once it's running, then start the Datastream job.
 
@@ -140,7 +144,8 @@ Start the Dataflow job and once it's running, then start the Datastream job.
 ### Tips
 
 - Create a new bucket to hold the transformation logic and other data
-- Some of the settings needed to complete this challenge are in the *Optional Parameters* section
+- Some of the settings needed to complete this challenge (such as the UDF, max number of workers and networking related ones) are in the *Optional Parameters* section
+- Pay attention to how you specify the [subnet](https://cloud.google.com/dataflow/docs/guides/specifying-networks#example_network_and_subnetwork_specifications)
 
 ### Success Criteria
 

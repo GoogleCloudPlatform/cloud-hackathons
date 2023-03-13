@@ -61,20 +61,31 @@ In Cloud Console, navigate to Datastream and click **Create Stream**. A form is 
 In the **Define & Test Source** section, select **Create new connection profile**. A form is generated. Populate the form as follows:
    - **Connection profile name**: `oracle-src`
    - **Connection profile ID**: `oracle-src`
-   - **Hostname**: `Use the external IP of the VM`
+   - **Hostname**: `See TF outputs, IP of the VM`
    - **Port**: `1521`
-   - **Username**: `datastream`
-   - **Password**: `tutorial_datastream`
-   - **System Identifier (SID)**: `XE`
+   - **Username**: `See TF outputs`
+   - **Password**: `See TF outputs`
+   - **System Identifier (SID)**: `See TF outputs`
 
 Choose the connectivity method **IP allowlisting**, and then click **Continue**.
 
+You'll need to update the firewall for the network in which the VM is created. You could do that either through the UI, or using the following command:
+
+```shell
+gcloud compute firewall-rules create fwr-ingress-allow-datastream \
+   --action=allow \ 
+   --network=vpc-retail \
+   --direction=ingress \
+   --target-tags=orcl-db \
+   --source-ranges=[datastream IP addresses] \
+   --rules=tcp:1521
+```
+
 Click **Run Test** to validate the connection to the Oracle database, and then click **Create & Continue**.
 
-The **Select Objects to Include** defines the objects to replicate, specific schemas, tables and columns and be included or excluded.
-Select the `FASTFRESH > ORDERS` table:
+The **Select Objects to Include** defines the objects to replicate, specific schemas, tables and columns and be included or excluded. Select the `FASTFRESH > ORDERS` table:
 
-    ![Select Objects](images/select-objects-to-include.png)
+![Select Objects](images/select-objects-to-include.png)
 
 To load existing records, set the **Backfill mode** to Automatic,  and then click **Continue**.
 
@@ -98,20 +109,35 @@ gsutil mb -l ${REGION} gs://${PROJECT_ID}-other
 gsutil cp retail_transform.js gs://${PROJECT_ID}-other/js/
 ```
 
-In the Google Cloud Console, find the Dataflow service and verify that a new streaming job has started.
+The subnet needs to be in format `regions/${REGION}/subnetworks/${subnet}`
 
-> **Note** Look at the **Use the Dataflow Monitoring Interface** documentation in the Learning Resources section of the challenge.
+Required parameters for the template *Datastream to BigQuery*
 
-Go back to the Cloud Shell. **Run** this command to start your Datastream stream:
+| Parameter | Value |
+| ---       | ---   |
+| File location for Datastream file output in Cloud Storage | gs://${PROJECT_ID} |
+| The Pub/Sub subscription on the Cloud Storage bucket | projects/${PROJECT_ID}/subscriptions/cdc_sub |
+| Datastream output file format (avro/json) | json |
+| Name or template for the dataset to contain staging tables | retail |
+| Template for the dataset to contain replica table | retail |
+| Dead letter queue directory | gs://${PROJECT_ID}-other/dlq
+
+The following optional parameters must be set too.
+
+| Parameter | Value |
+| ---       | ---   |
+| Cloud Storage location of your Javascript UDF | gs://${PROJECT_ID}-other/js/retail_transform.js |
+| The name of the JavaScript function you wish to call as your UDF | process |
+| Max workers | 5 |
+| Network | vpc-retail |
+| Subnetwork | regions/${REGION}/subnetworks/sub-retail |
+
+And then hit *Run Job*.
+
+You can start the Datastream job either through the UI or using the following command line:
 
 ```shell
-gcloud datastream streams update oracle-cdc --location=us-central1 --state=RUNNING --update-mask=state
-```
-
-**Run** the following command to list your stream status. After about 30 seconds, the oracle-cdc stream status should change to `RUNNING`:
-
-```shell
-gcloud datastream streams list --location=${REGION}
+gcloud datastream streams update oracle-cdc --location=${REGION} --state=RUNNING --update-mask=state
 ```
 
 Return to the Datastream console to validate the progress of the `ORDERS` table backfill as shown here:
@@ -119,8 +145,6 @@ Return to the Datastream console to validate the progress of the `ORDERS` table 
 ![Datastream Console](images/datastream-console.png)
 
 Because this task is an initial load, Datastream reads from the `ORDERS` object. It writes all records to the JSON files located in the Cloud Storage bucket that you specified during the stream creation. It will take about 10 minutes for the backfill task to complete.
-
-> **Note** Look at the **Monitor a Stream** documentation in the Learning Resources section of the challenge.
 
 After a few minutes, your backfilled data replicates into BigQuery. Any new incoming data streams into your datasets in (near) real-time. Each record  is processed by the UDF logic that you defined as part of the Dataflow template.
 
@@ -154,10 +178,10 @@ The output should be similar to the following:
 In BigQuery, execute the following SQL statements to query the number of rows on both the `ORDERS` and `ORDERS_log` tables:
 
 ```sql
-SELECT count(*) FROM `hackfast.retail.ORDERS`;
+SELECT count(*) FROM `retail.ORDERS`;
 ```
 
-> **Note** With the backfill completed, both statements return the number `520217`. Please wait until the backfill is done before closing this challenge.
+> **Note** With the backfill completed, this statement will return the number `520217`. Please wait until the backfill is done before closing this challenge.
 
 ## Challenge 3: Building a Demand Forecast - Coach's Guide
 
