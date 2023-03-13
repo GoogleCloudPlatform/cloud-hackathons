@@ -318,9 +318,9 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
     
 > **Tip** For the bot management policies, you'll need expressions that use `request.path.matches()` and `token.recaptcha_session.score` values to match on.
 
-- Add a bot management rule to the policy to **allow** traffic if the url path matches `good-score.html` and has a score greater than 0.4.
+- Add a bot management rule to the policy to **allow** traffic if the url path matches `good-score.html` and has a score greater than 0.5.
 
-- Add a bot management rule to the policy to **deny** traffic with a 403 if the url path matches `bad-score.html` and has a score less than 0.6.
+- Add a bot management rule to the policy to **deny** traffic with a 403 if the url path matches `bad-score.html` and has a score less than 0.5.
 
 - Add a bot management rule to the policy to **redirect** traffic to Google reCAPTCHA if the url path matches `median-score.html` and has a score equal to 0.5.
 
