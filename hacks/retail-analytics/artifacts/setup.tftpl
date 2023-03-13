@@ -108,7 +108,7 @@ export ORACLE_SID=XE
 sqlplus / as sysdba << 'EOFSQL'
 SET ECHO ON
 SET FEEDBACK ON
-CREATE USER datastream IDENTIFIED BY tutorial_datastream;
+CREATE USER datastream IDENTIFIED BY ${datastream_user_password};
 GRANT EXECUTE_CATALOG_ROLE TO datastream;
 GRANT CONNECT TO datastream;
 GRANT CREATE SESSION TO datastream;

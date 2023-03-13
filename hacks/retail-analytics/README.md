@@ -95,24 +95,25 @@ In this challenge, we'll configure Datastream to load the Oracle FastFresh schem
 
 ### Description
 
-Configure Datastream to replicate data from the **ORDERS** table in the Oracle database into the bucket created in the previous challenge in **JSON** format, validate it, but **don't start** it yet.
+Configure Datastream to replicate data from the *ORDERS* table in the Oracle database into the bucket created in the previous challenge in *JSON* format using the *datastream* user, validate it, but **don't start** it yet.
 
 > **Note** Make sure to include existing records in the stream as well.
 
 ### Success Criteria
 
 1. You've created a new Datastream stream
-2. The stream is setup to replicate the **ORDERS** table into the bucket in **JSON** format
+2. The stream is setup to replicate the *ORDERS* table into the bucket in *JSON* format
 
 ### Tips
 
-- The `IP Allowlisting` is probably the easiest method for the connectivity
+- The `IP Allowlisting` option is the easiest method for the connectivity, however don't forget to update the firewall rules :)
 
 ### Learning Resources
 
 - [Datastream Overview](https://cloud.google.com/datastream/docs/overview)
 - [Creating a new Stream](https://cloud.google.com/datastream/docs/create-a-stream)
 - [Creating a new Connection Profile](https://cloud.google.com/datastream/docs/create-connection-profiles)
+- [Firewall rules](https://cloud.google.com/vpc/docs/using-firewalls)
 
 ## Challenge 2 - Creating a Dataflow Job using the Datastream to BigQuery Template
 

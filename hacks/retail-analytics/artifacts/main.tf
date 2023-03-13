@@ -1,18 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "4.51.0"
-    }
-  }
-}
-
-provider "google" {
-  project = var.gcp_project_id
-  region  = var.gcp_region
-  zone    = var.gcp_zone
-}
-
 locals {
   suffix      = "retail"
   network_tag = "orcl-db"
@@ -90,17 +75,6 @@ resource "google_compute_firewall" "allow_iap" {
   }
 }
 
-resource "google_compute_firewall" "allow_oracle" {
-  name          = "fwr-ingress-allow-oracle"
-  network       = google_compute_network.vpc_sample.self_link
-  source_ranges = ["0.0.0.0/0"]
-  target_tags   = [local.network_tag]
-  allow {
-    protocol = "tcp"
-    ports    = ["1521"]
-  }
-}
-
 resource "google_compute_address" "oracle_vm_eip" {
   name = "eip-orcl-vm"
 
@@ -109,8 +83,9 @@ resource "google_compute_address" "oracle_vm_eip" {
   ]
 }
 
-data "template_file" "startup_script" {
-  template = file("${path.module}/setup.sh")
+resource "random_string" "datastream_user_password" {
+  length  = 12
+  special = false
 }
 
 resource "google_compute_instance" "oracle_vm" {
@@ -136,5 +111,7 @@ resource "google_compute_instance" "oracle_vm" {
     }
   }
 
-  metadata_startup_script = data.template_file.startup_script.rendered
+  metadata_startup_script = templatefile("${path.module}/setup.tftpl", {
+    datastream_user_password = random_string.datastream_user_password.result
+  })
 }
