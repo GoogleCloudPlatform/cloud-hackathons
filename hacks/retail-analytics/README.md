@@ -155,9 +155,6 @@ Start the Dataflow job and once it's running, then start the Datastream job.
 ### Learning Resources
 
 - [Pre-built Dataflow templates](https://cloud.google.com/dataflow/docs/guides/templates/provided-streaming)
-- [Configuring Firewall Rules](https://cloud.google.com/sdk/gcloud/reference/compute/firewall-rules)
-- [Starting Dataflow Jobs](https://cloud.google.com/sdk/gcloud/reference/dataflow/jobs/run)
-- [Datastream Stream Update](https://cloud.google.com/sdk/gcloud/reference/datastream/streams/update)
 - [Use the Dataflow Monitoring Interface](https://cloud.google.com/dataflow/docs/guides/using-monitoring-intf)
 - [Monitor a Stream](https://cloud.google.com/datastream/docs/monitor-a-stream)
 - [Getting Started with BigQuery](https://cloud.google.com/bigquery/docs/quickstarts/query-public-dataset-console)
