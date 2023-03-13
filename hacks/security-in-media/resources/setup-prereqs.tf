@@ -24,11 +24,11 @@ resource "google_project_service" "compute_api" {
 }
 
 resource "google_project_service" "logging_api" {
-  service = "notebooks.googleapis.com"
+  service = "logging.googleapis.com"
 }
 
 resource "google_project_service" "monitoring_api" {
-  service = "aiplatform.googleapis.com"
+  service = "monitoring.googleapis.com"
 }
 
 resource "google_project_service" "recaptcha_api" {
