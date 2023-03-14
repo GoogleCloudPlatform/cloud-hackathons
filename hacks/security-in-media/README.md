@@ -25,6 +25,7 @@ In this lab, you configure an HTTP Load Balancer with a backend, as shown in the
 ## Challenges
 - Challenge 0: Setup & Requirements
    - Before we can hack, you will need to set up a few things.
+   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 - Challenge 1: Create Managed Instance Groups
    - Use managed instance groups to create an HTTP Load Balancer backend.
 - Challenge 2: Setup Your HTTP Load Balancer
@@ -35,7 +36,7 @@ In this lab, you configure an HTTP Load Balancer with a backend, as shown in the
    - Use Cloud Armor bot management rules to allow, deny and redirect requests based on the reCAPTCHA score.
 
 ## Prerequisites
-- A new GCP project and your user having the Owner IAM role.
+- A new GCP project and a user having the Owner IAM role.
 - Basic Networking and HTTP knowledge
 - Basic Unix/Linux command line knowledge
 
