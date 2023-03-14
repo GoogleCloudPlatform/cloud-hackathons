@@ -1,7 +1,7 @@
-# Security in Media & Entertainment
+# Security with reCAPTCHA and Cloud Armor
 
 ## Introduction
-Welcome to the coach's guide for the Security in Media & Entertainment gHack. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for the Security with reCAPTCHA and Cloud Armor gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
 ## Coach's Guides
 - Challenge 0: Setup & Requirements
@@ -19,7 +19,12 @@ Welcome to the coach's guide for the Security in Media & Entertainment gHack. He
 
 ### Notes & Guidance
 
-If you are running this hack in an Argolis environment there are a few important things to keep in mind:
+**IMPORTANT:** This hack includes student resources that need to be made available to participants. When you create the Google Space you'll also have to do the following:
+
+- Create a zip file of the `resources` folder in this gHack. The HTML files need to be at the root of the zip, do not include the resources folder itself in the zip.
+- Upload this zip file to the **"Files"** tab in the Google Space
+
+If you are running this hack in an Argolis environment there are a few extra important things to keep in mind:
 
 - The `default` network isn't automatically created. Students will be instructed to create a default network with auto-subnet creation turned on at the start of the hack.
 - There are some default Argolis policies that will need to be changed to allow traffic through to the load balancer. Run the `argolis-fix-policy-defaults.sh` script in [this repository](https://github.com/gfilicetti/gcp-scripts) to set all the proper defaults.
@@ -59,14 +64,13 @@ Students will creating managed instance groups here, so there are a few things t
     ```bash
     #! /bin/bash
     sudo apt-get update
-    sudo apt-get install apache2 -y
+    sudo apt-get install apache2 unzip -y
     sudo a2ensite default-ssl
     sudo a2enmod ssl
     export vm_hostname="$(hostname)"
     sudo echo "Page served from: $vm_hostname" | \
     sudo tee /var/www/html/index.html
     ```
-
 
 1. Click **Create**.
 1. Wait for the instance template to be created.
@@ -81,11 +85,11 @@ Students will creating managed instance groups here, so there are a few things t
 
     |Property|Value|
     |--|--|
-    |Name|lb-backend-example|
+    |Name|lb-backend-instance-group|
     |Location|Single zone|
     |Region|us-east1|
     |Zone|us-east1-b|
-    |Instance template|lb-backend-example|
+    |Instance template|lb-backend-instance-group|
     |Autoscaling|Don't autoscale|
     |Number of instances|1|
 
@@ -95,7 +99,7 @@ Students will creating managed instance groups here, so there are a few things t
 1. For your instance group, use this command to define an HTTP service and map a port name to the relevant port. The load balancing service forwards traffic to the named port.
 
     ```bash
-    gcloud compute instance-groups set-named-ports lb-backend-example \
+    gcloud compute instance-groups set-named-ports lb-backend-instance-group \
         --named-ports http:80 \
         --zone us-east1-b
     ```
@@ -125,10 +129,10 @@ Backend services direct incoming traffic to one or more attached backends. Each 
 
     |Property|Value|
     |--|--|
-    |Name|http-backend|
+    |Name|lb-backend|
     |Protocol|HTTP|
     |Named Port|http|
-    |Instance Group|lb-backend-example|
+    |Instance Group|lb-backend-instance-group|
     |Port Numbers|80|
 
 1. Click **Done**.
@@ -239,36 +243,19 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
     sudo su
     ```
 
-1. Update the landing index.html page and embed the reCAPTCHA session token site key. The session token site key is set in the head section of your landing page as below: 
+1. Use `scp` from the Cloud Shell and upload `student-resources.zip` (from the Google Space's Files tab) to the VM.
+
+    ```bash
+    scp student-resources.zip user@32.43.54.1:~
+    ```
+
+1. Move the contents of the zip into the root html folder, overwriting `index.html`
+
+1. Update `index.html` and embed the reCAPTCHA session token site key. The session token site key is set in the head section of your landing page as below: 
 
     ```html
     <script src="https://www.google.com/recaptcha/enterprise.js?render=<REPLACE_TOKEN_HERE>&waf=session" async defer></script>
     ```
-
-Remember to replace the token before updating the index.html file as indicated below
-
-```bash
-echo '<!doctype html><html><head><title>ReCAPTCHA Session Token</title><script src="https://www.google.com/recaptcha/enterprise.js?render=<REPLACE_TOKEN_HERE>&waf=session" async defer></script></head><body><h1>Main Page</h1><p><a href="/good-score.html">Visit allowed link</a></p><p><a href="/bad-score.html">Visit blocked link</a></p><p><a href="/median-score.html">Visit redirect link</a></p></body></html>' > index.html
-```
-
-4. Create three other sample pages to test out the bot management policies: 
-    - **good-score.html**
-
-        ```bash
-        echo '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body><h1>Congrats! You have a good score!!</h1></body></html>' > good-score.html
-        ```
-
-    - **bad-score.html**
-
-        ```bash
-        echo '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body><h1>Sorry, You have a bad score!</h1></body></html>' > bad-score.html
-        ```
-
-    - **median-score.html**
-
-        ```bash
-        echo '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body><h1>You have a median score that we need a second verification.</h1></body></html>' > median-score.html
-        ```
 
 1. Validate that you are able to access all the webpages by opening them in your browser. Make sure to replace **[LB_IP_v4]** with the IPv4 address of the load balancer.
     - Open ***http://[LB_IP_v4]/index.html***. You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the page:
@@ -281,7 +268,10 @@ echo '<!doctype html><html><head><title>ReCAPTCHA Session Token</title><script s
 
     - Validate you are able to access all the pages.
 
-        ![Congrats](images/recaptcha-site-goodscore.png)
+        ![Good](images/recaptcha-site-goodscore.png)
+        ![Median](images/recaptcha-site-medianscore.png)
+        ![Bad](images/recaptcha-site-badscore.png)
+
 ## Challenge 4: Configure Bot Management
 
 ### Notes & Guidance
@@ -333,10 +323,10 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
         --redirect-type google-recaptcha
     ```
 
-1. Attach the security policy to the backend service http-backend:
+1. Attach the security policy to the backend service lb-backend:
 
     ```bash
-    gcloud compute backend-services update http-backend \
+    gcloud compute backend-services update lb-backend \
         --security-policy=recaptcha-policy –-global
     ```
 
@@ -350,7 +340,7 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
 1. Open up a browser and enter the url ***http://[LB_IP_v4]/index.html***. Navigate to **"Visit allow link"**. You should be allowed through:
 
-    ![armor good score](images/armor-good-score.png)
+    ![armor good score](images/recaptcha-site-goodscore.png)
 
 1. Open a new window in Incognito mode to ensure we have a new session. Enter the url ***http://[LB_IP_v4]/index.html*** and navigate to **"Visit blocked link"**. You should receive a HTTP 403 error
 

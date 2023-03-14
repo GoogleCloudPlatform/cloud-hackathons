@@ -1,5 +1,12 @@
-# Security in Media & Entertainment
+# Security with reCAPTCHA and Cloud Armor
 ## Introduction
+Welcome to gHacks+, a new and exciting streaming platform for all manner of Google Cloud related technology and skills.
+
+At gHacks+ they're seeing an increase in malicious bot attacks and user impersonation attempts against their platform. They have turned to Google Cloud to solve their security concerns using our reCAPTCHA and Cloud Armor security offerings.
+
+It will be your job to ensure a successful deployment on their platform and save them from further attack.
+
+## Description
 Google Cloud HTTP(S) load balancing is deployed at the edge of Google's network in Google points of presence (POP) around the world. User traffic directed to an HTTP(S) load balancer enters the POP closest to the user and is then load balanced over Google's global network to the closest backend that has sufficient capacity available.
 
 Cloud Armor is Google's distributed denial of service and web application firewall (WAF) detection system. Cloud Armor is tightly coupled with the Google Cloud HTTP Load Balancer and safeguards applications of Google Cloud customers from attacks from the internet. reCAPTCHA Enterprise is a service that protects your site from spam and abuse, building on the existing reCAPTCHA API which uses advanced risk analysis techniques to tell humans and bots apart. Cloud Armor Bot Management provides an end-to-end solution integrating reCAPTCHA Enterprise bot detection and scoring with enforcement by Cloud Armor at the edge of the network to protect downstream applications.
@@ -7,7 +14,7 @@ Cloud Armor is Google's distributed denial of service and web application firewa
 ![Security Architecture](images/security-architecture.png)
 
 ## Learning Objectives
-In this lab, you configure an HTTP Load Balancer with a backend, as shown in the diagram below. Then, you'll learn to set up a reCAPTCHA session token site key and embed it in your website. You will also learn to set up redirection to reCAPTCHA Enterprise manual challenge. We will then configure a Cloud Armor bot management policy to showcase how bot detection protects your application from malicious bot traffic.
+In this lab, you configure an HTTP Load Balancer with a backend, as shown in the diagram above. Then, you'll learn to set up a reCAPTCHA session token site key and embed it in the gHacks+ website. You will also learn how to set up redirection to reCAPTCHA Enterprise manual challenge. We will then configure a Cloud Armor bot management policy to showcase how bot detection protects your application from malicious bot traffic.
 
 1. How to set up a HTTP Load Balancer with appropriate health checks.
 1. How to create a reCAPTCHA WAF challenge-page site key and associated it with Cloud Armor security policy.
@@ -28,7 +35,7 @@ In this lab, you configure an HTTP Load Balancer with a backend, as shown in the
    - Use Cloud Armor bot management rules to allow, deny and redirect requests based on the reCAPTCHA score.
 
 ## Prerequisites
-- The ability to create your own GCP projects with Owner IAM role.
+- A new GCP project and your user having the Owner IAM role.
 - Basic Networking and HTTP knowledge
 - Basic Unix/Linux command line knowledge
 
@@ -40,28 +47,12 @@ In this lab, you configure an HTTP Load Balancer with a backend, as shown in the
 
 ### Introduction
 
-Thank you for participating in the Security in Media & Entertainment gHack. Before you can hack, you will need to set up a few prerequisites.
+Thank you for participating in the Security with reCAPTCHA and Cloud Armor gHack. Before you can hack, you will need to set up a few prerequisites.
 
 ### Description
 
-#### Setup Your Project
-1. Sign-in to the [Google Cloud Console](http://console.cloud.google.com/) and create a new project or reuse an existing one. If you don't already have a Gmail or Google Workspace account, you must [create one](https://accounts.google.com/SignUp).
-
-    ![Select a project](images/select-project.png)
-    ![New project button](images/new-project-button.png)
-    ![New project](images/new-project.png)
-
-- The **Project name** is the display name for this project's participants. It is a character string not used by Google APIs, and you can update it at any time.
-
-- The **Project ID** must be unique across all Google Cloud projects and is immutable (cannot be changed after it has been set). The Cloud Console auto-generates a unique string; usually you don't care what it is. You'll need to reference the Project ID (and it is typically identified as `PROJECT_ID`), so if you don't like it, generate another random one, or, you can try your own and see if it's available. Then it's "frozen" after the project is created.
-
-- There is a third value, a Project Number which some APIs use. Learn more about all three of these values in the [documentation](https://cloud.google.com/resource-manager/docs/creating-managing-projects#before_you_begin).
-
-    > **Caution:** A project ID must be globally unique and cannot be used by anyone else after you've selected it. You are the only user of that ID. If a project is deleted, that ID can never be used again.
-
-    > **Note** If you're using a Gmail account, you can leave the default location set to **No organization**. If you're using a Google Workspace account, then choose a location that makes sense for your organization.
-
-2. Next, you'll need to [enable billing](https://console.cloud.google.com/billing) in the Cloud Console in order to use Cloud resources/APIs. Running through this gHack shouldn't cost much, if anything at all. To shut down resources so you don't incur billing beyond this tutorial, follow any "clean-up" instructions found at the end of this gHack. New users of Google Cloud are eligible for the [$300 USD Free Trial program](http://cloud.google.com/free).
+#### Confirm Your Project Is Good to Go
+1. Sign-in to the [Google Cloud Console](http://console.cloud.google.com/) and select the project that was assigned to you. Alternately, if you have permissions, create a new project for this hack.
 
 #### Start the Cloud Shell
 While Google Cloud can be operated remotely from your laptop, in this gHack you will be using the Google Cloud Shell, a command line environment running in the Cloud.
@@ -76,81 +67,52 @@ While Google Cloud can be operated remotely from your laptop, in this gHack you 
 
 - This virtual machine is loaded with all the development tools you'll need. It offers a persistent 5GB home directory, and runs on Google Cloud, greatly enhancing network performance and authentication. All of your work in this gHack can be done completely in the browser.
 
-#### Setup Cloud Shell
-- Inside Cloud Shell, make sure that your project id is set up:
+#### Upload and Unzip All Student Files
+You've been given a set of files that you will need through-out this gHack.
 
-    ```bash
-    gcloud config list project
-    gcloud config set project [YOUR-PROJECT-NAME]
-    PROJECT_ID=[YOUR-PROJECT-NAME]
-    echo $PROJECT_ID
-    ```
-#### Enable APIs
-- Enable all necessary service APIs
+In the Google Space for this gHack Event, go to the **Files** tab and download `student-files.zip` to your computer. 
 
-    ```bash
-    gcloud services enable compute.googleapis.com
-    gcloud services enable logging.googleapis.com
-    gcloud services enable monitoring.googleapis.com
-    gcloud services enable recaptchaenterprise.googleapis.com
-    ```
+Now go to the Cloud Shell, click the 3 vertical dots and select **Upload**.
 
-#### Create the `default` VPC Network
-> **Note** Normally you should already have a `default` network defined with auto-subnet creation turned on. 
+![Cloud Shell Upload](images/cloud-shell-upload.png)
 
-If it does not already exist in your project, you can create one using this command:
+Find the `student-files.zip` file and upload it to the Cloud Shell.
+
+Finally, unzip it with this command:
 
 ```bash
-gcloud compute networks create default \
-    --subnet-mode=auto \
-    --bgp-routing-mode=global 
+unzip student-files.zip
 ```
 
-#### Configure Firewall Rules
-Configure firewall rules to allow HTTP traffic to the backends from the Google Cloud health checks and the Load Balancer. Also, configure a firewall rule to allow SSH into the instances.
+Leave the unzipped files where they are, we will be using them in subsequent challenges.
 
-We will be using the ***default*** VPC network created in your project. Create a firewall rule to allow HTTP traffic to the backends. Health checks determine which instances of a load balancer can receive new connections. For HTTP load balancing, the health check probes to your load balanced instances come from addresses in the ranges **130.211.0.0/22** and **35.191.0.0/16**. Your VPC firewall rules must allow these connections. Also, the load balancers talk to the backend on the same IP range.
+#### Run Terraform to Provision Needed Resources
+There are some resources that need to be created before starting our hack. We have consolidated these into a Terraform script that provisions everything for us. It will do the following:
 
-1. In the Cloud Console, navigate to Navigation at the top left and go to: **VPC network > Firewall**.
+- Enable the Google Cloud services we'll be using.
+- Create the `ghack` VPC Network.
 
-    ![Networking menu](images/networking-menu.png)
+Now run these commands to get Terraform to provision all of our pre-requisites:
 
-1. Notice the existing ICMP, internal, RDP, and SSH firewall rules.Each Google Cloud project starts with the default network and these firewall rules.
+```bash
+terraform init
+terraform apply --auto-approve --var gcp_project_id=${GOOGLE_CLOUD_PROJECT}
+```
 
-1. Click Create Firewall Rule.
+You should see output similar to this:
 
-1. Set the following values, leave all other values at their defaults:
-
-    |Property|Value|
-    |--|--|
-    |Name|default-allow-health-check|
-    |Network|default|
-    |Targets|Specified target tags|
-    |Target tags|allow-health-check|
-    |Source filter|IP Ranges|
-    |Source IP ranges|130.211.0.0/22, 35.191.0.0/16|
-    |Protocols and ports|Specified protocols and ports, and then *check* tcp. Type **80** for port number|
-
-    > Make sure to enter the two **Source IP ranges** one-by-one and press SPACE in between them.
-
-1. Click Create
-
-- Alternatively, if you want to use the Cloud Shell, this is the command to run:
-    ```bash
-    gcloud compute firewall-rules create default-allow-health-check --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=130.211.0.0/22,35.191.0.0/16 --target-tags=allow-health-check
-    ```
-
-- Similarly, create a Firewall rule to allow SSH-ing into the instances via the Console like above or with this command:
-    ```bash
-    gcloud compute firewall-rules create allow-ssh --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:22 --source-ranges=0.0.0.0/0 --target-tags=allow-health-check
-    ```
+![Terraform Output](images/cloud-shell-terraform.png)
 
 ### Success Criteria
 
-- You've created a new project for your hacking
+- You have a project for your hacking
 - You've confirmed that Cloud Shell is working for you
-- You've enabled the specified APIs needed for this gHack
-- You've created firewall rules to allow health checks and SSH traffic through
+- You've run the Terraform script to install all needed pre-requisites
+
+### Learning Resources
+- [Creating and Managing Projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects#before_you_begin)
+- [VIDEO: Running Terraform in Cloud Shell](https://youtu.be/flNnefErtL0)
+- [Terraform Documentation](https://developer.hashicorp.com/terraform/docs)
 
 ## Challenge 1: Create Managed Instance Groups
 
@@ -161,42 +123,37 @@ A managed instance group uses an instance template to create a group of identica
 ### Description
 
 #### Create Instance Template
-- Create an instance template with the following configuration: 
-    - **Name**: lb-backend-template
-    - **Series**: N1
-    - **Networking**:
-        - Use the default Network and Subnet(us-east1) 
-        - Add a network tag named **allow-health-check**  
+We need to create an instance template that will be using with a load balancer in the next challenge. 
 
-            > **Note** The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
+Keep the following things in mind:
+- Choose something reasonable for the VM series such as `N1`
+- Keep note of the subnet you use for networking and make sure everything you create in this gHack uses the same subnet
+- Add a network tag: `allow-health-check`
+    > **Note** The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
 
-            > **Note** Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
+    > **Note** Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
 
-    - **Startup Script**: 
-        ```bash
-        #! /bin/bash
-        sudo apt-get update
-        sudo apt-get install apache2 -y
-        sudo a2ensite default-ssl
-        sudo a2enmod ssl
-        export vm_hostname="$(hostname)"
-        sudo echo "Page served from: $vm_hostname" | \
-        sudo tee /var/www/html/index.html
-        ```
+- We need to use a start up script to install some things on a new VM. Just cut and paste this code into the **Startup Script** field.
+
+    ```bash
+    #! /bin/bash
+    sudo apt-get update
+    sudo apt-get install apache2 unzip -y
+    sudo a2ensite default-ssl
+    sudo a2enmod ssl
+    export vm_hostname="$(hostname)"
+    sudo echo "Page served from: $vm_hostname" | \
+    sudo tee /var/www/html/index.html
+    ```
 
 #### Create Managed Instance Group
+Now that we have an instance template we can create an instance group that uses it. An instance group is just a grouping of virtual machines. In this case we're specifying that they should all be created from the same template.
 
-- Create a new stateless managed instance group with the following configuration: 
-    - **Name:** lb-backend-example
-    - **Location:** Single zone
-    - **Region:** us-east1
-    - **Zone:** us-east1-b
-    - **Instance template:** lb-backend-example
-    - **Autoscaling:** Don't autoscale
-    - **Number of instances:** 1
-
-#### Add A Named Port 
-For your instance group, set port 80 as a "named port" port. This allows the load balancing service to forward traffic to the named port.
+Keep the following things in mind:
+- Your managed instance group needs to be stateless
+- It should be Single zone and in the same region you've been using up to now
+- Keep the instances to 1
+- Set port 80 as a "named port" port. This allows the load balancing service to forward traffic to the named port.
 
 ### Success Criteria
 
@@ -215,134 +172,126 @@ For your instance group, set port 80 as a "named port" port. This allows the loa
 ## Challenge 2: Setup Your HTTP Load Balancer
 
 ### Introduction
-
-Configure the HTTP Load Balancer to send traffic to your backend instance group named: **lb-backend-example** created in Challenge 1.
+Configure the HTTP Load Balancer to send traffic to the backend instance group you created in Challenge 1.
 
 ### Description
+At a high level, in this challenge you will need to:
+- Create a new load balancer.
+- Configure its backend services.
+- Configure a health check.
+- Configure its frontend services.
+
+#### Open the VPC Firewall 
+Before we start, we need to make sure that HTTP traffic can flow within our network and that we can access our backend VMs
+
+To achieve this, we will need to open up the `ghack` network's firewall to allow HTTP connections (for the load balancer's health-check) and SSH connections (for us to ssh into VMs).
+
+You need to create 2 inbound firewall rules:
+
+1. Open up HTTP for the load balancer's health-checks
+    - Source ranges must be: `130.211.0.0/22` and `35.191.0.0/16`
+    - Use a target tag of: `allow-health-check`
+2. Open up SSH for us to log into VMs
+    - Source must be all of the internet
+    - Use a target tag of: `allow-health-check`
 
 #### Start the configuration
-- Create a classic HTTPS load balancer to send traffic from the Internet to your VMs named: `http-lb`
+- Create a "classic" HTTPS load balancer to send traffic from the Internet to the VMs in your instance group.
 
 #### Configure the backend
 Backend services direct incoming traffic to one or more attached backends. Each backend is composed of an instance group and additional serving capacity metadata.
 
-Configure the backend with the following configuration:
+Configure the backend making sure to:
 
- - **Name**: http-backend
- - **Protocol**: HTTP
- - **Named Port**: http
- - **Instance Group**: lb-backend-example
- - **Port Numbers**: 80
+ - Use the instance group you created in Challenge 1
+ - Make it an HTTP backend
 
-Configure the Health Check with the following configuration: 
+Configure the Health Check making sure to:
 
-- **Name**: http-health-check
-- **Protocol**: TCP
-- **Port**: 80
-- **Logging**: enabled
-- **Sample Rate**: 1
+- Use the same port as the backend just created
+- Enable logging
 
-> **Note** Health checks determine which instances receive new connections. This HTTP health check polls instances every 5 seconds, waits up to 5 seconds for a response and treats 2 successful or 2 failed attempts as healthy or unhealthy, respectively.
+> **Note** Health checks determine which instances receive new connections. Your HTTP health check should poll instances every 5 seconds, waits up to 5 seconds for a response and treats 2 successful or 2 failed attempts as healthy or unhealthy, respectively.
 
 #### Configure the frontend
-The host and path rules determine how your traffic will be directed. For example, you could direct video traffic to one backend and static traffic to another backend. However, you are not configuring the Host and path rules in this hack.
+The host and path rules determine how your traffic will be directed. For example, you could direct video traffic to one backend and static traffic to another backend. However, you are not configuring the Host and path rules in this gHack.
 
-Configure the frontend with the following configuration: 
-
-- **Protocol**: HTTP
-- **IP Version**: IPv4
-- **IP Address**: Ephemeral
-- **Port**: 80
+Configure the frontend as HTTP with an Ephemeral IP.
 
 #### Test the HTTP Load Balancer
-Now that you created the HTTP Load Balancer for your backends, verify that traffic is forwarded to the backend service. To test IPv4 access to the HTTP Load Balancer.
+Now that you created the HTTP Load Balancer for your backends, verify that traffic is forwarded to the backend service. You should see simple webpage saying:
+
+```
+Page served from: { name of your VM }
+```
 
 > **Note** It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
 
 ### Success Criteria
 
+- Your VPC firewall allows HTTP and SSH connections
 - You've created an HTTP load balancer 
 - Traffic is forwarded by the load balancer to the backend created in Challenge 1
+- Health-check shows healthy connection to a backend VM
 - The load balancer has a working IPv4 address 
 
 ### Learning Resources
 
+- [Configuring VPC Firewall Rules](https://cloud.google.com/vpc/docs/using-firewalls)
 - [External HTTP(S) Load Balancing](https://cloud.google.com/load-balancing/docs/https)
+- [Load Balancer Health Checks](https://cloud.google.com/load-balancing/docs/https#health-checks)
 
 ## Challenge 3: Deploy a reCAPTCHA Token and Challenge Page
 
 ### Introduction 
 
-reCAPTCHA Enterprise for WAF and Google Cloud Armor integration offers the following features: reCAPTCHA challenge page, reCAPTCHA action-tokens, and reCAPTCHA session-tokens. In this code lab, we will be implementing the reCATCHA session token site key and reCAPTCHA WAF challenge-page site.
+reCAPTCHA Enterprise for WAF and Google Cloud Armor integration offers the following operating modes: reCAPTCHA challenge page, reCAPTCHA action-tokens, and reCAPTCHA session-tokens. In this gHack, we will be implementing the reCAPTCHA session token site key and reCAPTCHA WAF challenge-page site.
 
 ### Description
 
 #### Create reCAPTCHA session token and WAF challenge-page site key
 The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-user's browser after the assessment. The end-user's browser attaches the cookie and refreshes the cookie as long as the reCAPTCHA JavaScript remains active.
 
-> **Note** Before beginning make sure you've enabled the reCAPTCHA Enterprise API as specified in Challenge 0.
-
-- Use gcloud to create the reCAPTCHA session token site key and enable the WAF feature for the key. 
+- In the Cloud Shell, use `gcloud` to create the reCAPTCHA session token site key and enable the WAF feature for the key. 
     - You must set the WAF service to Cloud Armor to enable the Cloud Armor integration.
     - Key type is **session-token**
     - Use the **score** integration type. Other options are **checkbox** and **invisible**.
     - Use a **testing score** of `0.5`.
         - This will validate that the bot management policies we create with Cloud Armor are working as intended. Replicating bot traffic is not easy and hence, this is a good way to test the feature.
-    - Make note of the output of your gcloud command, it will output the key that you'll need later in this hack.
+    - Make note of the output of your `gcloud` command, it will output the key that you'll need later in this gHack.
 
-- Use gcloud to create the reCAPTCHA WAF challenge-page site key and enable the WAF feature for the key. You can use the reCAPTCHA challenge page feature to redirect incoming requests to reCAPTCHA Enterprise to determine whether each request is potentially fraudulent or legitimate. We will later associate this key with the Cloud Armor security policy to enable the manual challenge. We will refer to this key as **CHALLENGE-PAGE-KEY** in the later steps.
+- Use `gcloud` to also create the reCAPTCHA WAF challenge-page site key and enable the WAF feature for the key. You can use the reCAPTCHA challenge page feature to redirect incoming requests to reCAPTCHA Enterprise to determine whether each request is potentially fraudulent or legitimate. We will later associate this key with the Cloud Armor security policy to enable the manual challenge. We will refer to this key as **CHALLENGE-PAGE-KEY** in the later steps.
     - You must set the WAF service to Cloud Armor to enable the Cloud Armor integration.
     - Key type is **challenge-page**
     - Use the **invisible** integration type.
-    - Make note of the output of your gcloud command, it will output the key that you'll need later in this hack.
+    - Make note of the output of your `gcloud` command, it will output the key that you'll need later in this gHack.
 
 - Navigate to the reCAPTCHA Enterprise screen in the Google Cloud Console. Go to the **KEYS** tab and confirm that both of the keys you created are there.
 
+#### Setup the gHacks+ Website
+We've provided all the files for the gHacks streaming service's website. Now we need to upload these files to the VM.
+
+- In the console, locate the VM in your instance group and get its name and zone.
+- Use `gcloud compute scp` command to copy the `student-resources.zip` file in your Cloud Shell up to the VM
+- SSH into the VM and unzip `student-resources.zip` into the root of the apache server's html folder.
+    > **Tip** You'll have to do this as root
+
 #### Implement reCAPTCHA session token site key
-- In the console, locate the VM in your instance group and SSH to it.
+Edit `index.html` for the gHacks+ site and embed the reCAPTCHA session token site key. 
+> **Tip** The session token site key is added to the ```HEAD``` section of the HTML page.
 
-- Go to the nginx webserver root directory and sudo to root.
-
-- Edit `index.html` and embed the reCAPTCHA session token site key. 
-    > **Note** The session token site key is added to the ```HEAD``` section of the HTML page.
-    - Change `index.html` to have 3 links on it pointing to pages we will create next:
-
-        |Link Text|Link href|
-        |--|--|
-        |Visit allowed|`/good-score.html`|
-        |Visit blocked|`/bad-score.html`|
-        |Visit redirected|`/median-score.html`|
+Validate that you are able to access all the movies available on the gHacks+ site. You'll need to find the load balancer's IP for this and go to `index.html` in a browser.
+> **Note** You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the index page:
     
-- Create three other HTML pages to test out the bot management policies and scores. Name them:
-    - **good-score.html**
-    - **bad-score.html**
-    - **median-score.html**
-
-> **Note** These pages only need to contain some title text to tell you which score it is for, like so:
-
-![Congrats](images/recaptcha-site-goodscore.png)
-
-- Validate that you are able to access all the webpages by opening them in your browser.
-    - Open ```http://{LoadBalance_IP_Here}/index.html```. You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the page:
-        
-        ![Protect Logo](images/recaptcha-protect-logo.png)
-
-    - Click into each of the links:
-
-        ![Main Page](images/recaptcha-site-mainpage.png)
-
-    - Validate that you see the correct behaviour for each page:
-        - ```good-score.html```: You see the page perfectly.
-        - ```bad-score.html```: You are blocked from the page.
-        - ```median-score.html```: You are challenged with a puzzle.
+![Protect Logo](images/recaptcha-protect-logo.png)
 
 ### Success Criteria
 
 - You've enabled the reCAPTCHA API 
 - You've created a Cloud Armor WAF enabled reCAPTCHA session token key with integration type score
 - You've created a Cloud Armor WAF enabled reCAPTCHA challenge page key with integration type invisible
-- Your webserver's landing page is updated to include the reCAPTCHA session token site key and 3 links and shows the "protected by reCAPTCHA" image.
-- You can validate access to each page.
+- The gHacks+ index page is updated to include the reCAPTCHA session token site key and 3 links and shows the "protected by reCAPTCHA" image.
+- You can access each movie.
 
 ### Learning Resources
 
@@ -351,6 +300,7 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
 - [reCAPTCHA: Install score-based site keys (no challenge) on websites](https://cloud.google.com/recaptcha-enterprise/docs/instrument-web-pages)
 - [reCAPTCHA: Create an assessment](https://cloud.google.com/recaptcha-enterprise/docs/create-assessment)
 - [Compute Engine: Connect to Linux VMs using Google tools](https://cloud.google.com/compute/docs/instances/connecting-to-instance#console)
+- [scp Man Page](https://www.commandlinux.com/man-page/man1/scp.1.html)
 
 ## Challenge 4: Configure Bot Management
 
@@ -359,49 +309,32 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
 #### Create Cloud Armor security policy rules for Bot Management
 In this section, you will use Cloud Armor bot management rules to allow, deny and redirect requests based on the reCAPTCHA score. Remember that when you created the session token site key, you set a testing score of 0.5.
 
-- In Cloud Shell, create a recaptcha security policy via gcloud with the description "policy for bot management"
-
+- In Cloud Shell, use `gcloud` to create a reCAPTCHA security policy.
 
 - Update the security policy to use a reCAPTCHA Enterprise manual challenge to distinguish between human and automated clients.
-    - Associate the reCAPTCHA WAF challenge site key created for manual challenge with the security policy using the tag 
+    - You will need your challenge-page site key created earlier.
     
-        recaptcha-redirect: `site-key`
+> **Tip** For the bot management policies, you'll need expressions that use `request.path.matches()` and `token.recaptcha_session.score` values to match on.
 
-- Add a bot management rule to the policy to allow traffic if the url path matches good-score.html and has a score greater than 0.4 using the following tags: 
+- Add a bot management rule to the policy to **allow** traffic if the url path matches `good-score.html` and has a score greater than 0.5.
 
-    - expression: `"request.path.matches('good-score.html') &&    token.recaptcha_session.score > 0.4" `
-    - action: `allow` 
+- Add a bot management rule to the policy to **deny** traffic with a 403 if the url path matches `bad-score.html` and has a score less than 0.5.
 
-- Add a bot management rule to the policy to deny traffic if the url path matches bad-score.html and has a score less than 0.6 using the following tags: 
+- Add a bot management rule to the policy to **redirect** traffic to Google reCAPTCHA if the url path matches `median-score.html` and has a score equal to 0.5.
 
-    - expression: ` "request.path.matches('bad-score.html') && token.recaptcha_session.score < 0.6"`
-    - action: `deny-403`
-
-- Add a bot management rule to the policy to redirect traffic to Google reCAPTCHA if the url path matches median-score.html and has a score equal to 0.5 using the following tags:
-
-    - expression: ` "request.path.matches('median-score.html') && token.recaptcha_session.`
-    - action: `redirect`
-    - redirect-type: `google-recaptcha`
-
-- Attach the security policy to the backend service http-backend using the following tags: 
-    - security-policy: `recaptcha-policy` 
-    - global
-
-- In the Console, verify your policy resembles the following:
-
-    ![recaptcha rules](images/armor-rules.png)
+- Attach this reCAPTCHA security policy to the backend service of your Load Balancer. **Make sure it is available globally.**
 
 #### Validate Bot Management with Cloud Armor
 
-- Open up a browser and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on **"Visit allow link"**. Verify you are allowed through.
+- Open up a browser and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on the movie "Brooklyn Dreams". Verify you are allowed through.
 
-    ![armor good score](images/armor-good-score.png)
+    ![armor good score](images/recaptcha-site-goodscore.png)
 
-- Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on **"Visit blocked link"**. Verify you receive a HTTP 403 error.
+- Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on the movie "Thorned". Verify you receive a HTTP 403 error.
 
     ![armor bad score](images/armor-bad-score.png)
 
-- Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on **"Visit redirect link"**. Verify you see the redirection to Google reCAPTCHA and the manual challenge page.
+- Open another new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on the movie "La Cucina in Crisis". Verify you see the redirection to Google reCAPTCHA and the manual challenge page.
 
     ![armor recaptcha click check](images/armor-click-check.png)
 
@@ -409,15 +342,16 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
 Explore the security policy logs to validate bot management worked as expected.
 
-- In the Console, navigate to the logs for the recaptcha policy you created.
+- In the Console, navigate to the logs for the reCAPTCHA policy you created.
 
-- Use the below MQL (Monitoring Query Language) query to view the request logs 
+- You should see the following MQL (Monitoring Query Language) query get pre-populated:
 
     ```sql
-    resource.type:(http_load_balancer) AND jsonPayload.enforcedSecurityPolicy.name:(recaptcha-policy)
+    resource.type:(http_load_balancer) AND jsonPayload.enforcedSecurityPolicy.name:({YOUR_POLICY_NAME})
     ```
 
-- Verify a log entry exists in Query results where the request is for each rule (good, bad, median)
+- Verify a log entry exists in Query results where the request is for each rule (good, bad and median)
+
 - Verify that the configuredAction is set to **ALLOW, DENY or GOOGLE_RECAPTCHA** with the name **recaptcha-policy**.
 
     ![armor good results](images/armor-good-results.png)
@@ -426,7 +360,7 @@ Explore the security policy logs to validate bot management worked as expected.
 
     ![armor median results](images/armor-median-results.png)
 
-> NOTE: Cloud Armor security policies create logs that can be explored to determine when traffic is denied and when it is allowed, along with the source of the traffic.
+> **Note** Cloud Armor security policies create logs that can be explored to determine when traffic is denied and when it is allowed, along with the source of the traffic.
 
 ### Success Criteria
 
@@ -435,11 +369,11 @@ Explore the security policy logs to validate bot management worked as expected.
 - Users with a good score are allowed through 
 - Users with a median score are redirected to the reCAPTCHA manual challenge 
 - Users with a bad score are not allowed through 
-- A score is recorded in the Cloud Armor logs when a user attempts to access the landing page links 
+- A score is recorded in the Cloud Armor logs when a user attempts to access movies in the gHacks+ streaming site.
 
 ### Learning Resources
 
-- [Overview of reCAPTCHA Enterprise for WAF and Google Cloud Armor integration](https://cloud.google.com/recaptcha-enterprise/docs/integration-overview)
-- [Implement the reCAPTCHA Enterprise for WAF and Google Cloud Armor integration](https://cloud.google.com/recaptcha-enterprise/docs/implement-tokens)
 - [Google Cloud Armor bot management overview](https://cloud.google.com/armor/docs/bot-management)
 - [Configure Google Cloud Armor security policies](https://cloud.google.com/armor/docs/configure-security-policies#bot-management)
+- [Overview of reCAPTCHA Enterprise for WAF and Google Cloud Armor integration](https://cloud.google.com/recaptcha-enterprise/docs/integration-overview)
+- [Implement the reCAPTCHA Enterprise for WAF and Google Cloud Armor integration](https://cloud.google.com/recaptcha-enterprise/docs/implement-tokens)

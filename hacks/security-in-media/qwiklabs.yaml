@@ -1,10 +1,10 @@
 schema_version: 2
 default_locale: en
-title: "[gHacks] Security in Media & Entertainment"
-description: "In this lab, you configure an HTTP Load Balancer with a backend, as shown in the diagram below. 
+title: "[gHacks] Security with reCAPTCHA and Cloud Armor"
+description: "In this lab, you learn how to configure an HTTP Load Balancer with a backend and open firewall access to it.
   Then, you'll learn to set up a reCAPTCHA session token site key and embed it in your website. 
   You will also learn to set up redirection to reCAPTCHA Enterprise manual challenge. 
-  We will then configure a Cloud Armor bot management policy to showcase how bot detection 
+  You will then configure a Cloud Armor bot management policy to showcase how bot detection 
   protects your application from malicious bot traffic"
 instruction:
   type: md

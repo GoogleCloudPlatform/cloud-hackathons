@@ -1,3 +1,4 @@
 .vscode/
 _site/
 dist/
+*.zip
