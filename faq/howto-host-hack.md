@@ -116,7 +116,7 @@ In our Google Space, we will have the following:
 
 - **Add Students** - The lead coach will click on `Add people & apps` and enter the email addresses of all the participants and coaches for this event
 - **Student Guide** - The lead coach will paste a link to the student guide as the first entry in the chat.
-- **Files** - The lead coach will click on `Share a file` and upload all files from the hack's `resources` folder to make them available to the students. Also if there is a Lectures PDF or other needed files they should be uploaded as well.
+- **Files** - The lead coach will click on `Share a file` and upload all files for the students for this hack. See [Making Resources Available](#making-resources-available) below for information on creating the necessary files.
 - **Chat** - Make sure to turn on History so that the chats are persisted between days.
 
 ![New Space Config](images/host-new-space.png)
@@ -132,6 +132,43 @@ In our Google Space, we will have the following:
 ![Create Breakouts](images/host-breakouts-3.png)
 
 - **Coaches ONLY Chat** - The lead coach will create a multi-person chat for all the coaches to discuss things in private, away from student eyes. Here you can put a direct link to the `solutions` folder for this hack from the github repo so coaches can easily look at solution files if they exist.
+
+### Making Resources Available
+
+There are files that need to be made available to students. We do this through our Google Space's Files area. These files include:
+- **ghack-setup.zip**: This contains Terraform scripts the students will use to set up their environment.
+- **student-resources.zip**: This contains all files in the `/resources` subfolder (if it exists).
+- **lectures.pdf**: This is a PDF slide deck for lectures that will be presented during the hack (if it exists).
+
+First we will create the needed zip files:
+
+- Check if you have `make` installed on your computer
+	- Open the **Terminal** program to get to a unix prompt.
+	- Type `make --version` 
+	- Say yes if prompted to install command line developer tools
+	- You should get the version number of make running the above command
+- Run make to create a `ghack-setup.zip` file.
+	- Run these commands:
+		```bash
+		cd ./artifacts
+		make
+		```
+	- A new file called `ghack-setup.zip` will be created in the `/artifacts` folder of this hack
+- Run make to create a `student-resources.zip` file.
+	- Run these commands:
+		```bash
+		cd ./resources
+		make
+		```
+	- A new file called `student-resources.zip` will be created in the `/resources` folder of this hack
+- ***ALTERNATE***: If you can't get make to work, you can create the zip files by hand, just make sure the `resources` or `artifacts` folders are not included in the zip file. 
+
+Now we'll make everything available to the students:
+
+- Go to the new Google Space for your event and click on the **Files** tab and click on the **Add file** button.
+- Upload `ghack-setup.zip`, `student-resources.zip` and `lectures.pdf` (if they exist).
+
+	![Uploading resources](images/host-space-files.png)
 
 ### Getting People To Your Event
 
