@@ -90,7 +90,7 @@ Leave the unzipped files where they are, we will be using them in subsequent cha
 There are some resources that need to be created before starting our hack. We have consolidated these into a Terraform script that provisions everything for us. It will do the following:
 
 - Enable the Google Cloud services we'll be using.
-- Create the `default` VPC Network (if it does not already exist).
+- Create the `ghack` VPC Network.
 
 Now run these commands to get Terraform to provision all of our pre-requisites:
 
@@ -98,8 +98,6 @@ Now run these commands to get Terraform to provision all of our pre-requisites:
 terraform init
 terraform apply --auto-approve --var gcp_project_id=${GOOGLE_CLOUD_PROJECT}
 ```
-
-> **Note** You can safely ignore any errors about the `default` network already existing if encountered.
 
 You should see output similar to this:
 
@@ -186,7 +184,7 @@ At a high level, in this challenge you will need to:
 #### Open the VPC Firewall 
 Before we start, we need to make sure that HTTP traffic can flow within our network and that we can access our backend VMs
 
-To achieve this, we will need to open up the `default` network's firewall to allow HTTP connections (for the load balancer's health-check) and SSH connections (for us to ssh into VMs).
+To achieve this, we will need to open up the `ghack` network's firewall to allow HTTP connections (for the load balancer's health-check) and SSH connections (for us to ssh into VMs).
 
 You need to create 2 inbound firewall rules:
 

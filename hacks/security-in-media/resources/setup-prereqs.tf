@@ -37,6 +37,6 @@ resource "google_project_service" "recaptcha_api" {
 
 // Create the "default" VPC with auto subnets enabled
 resource "google_compute_network" "vpc_network" {
-  name = "default"
+  name = "ghack"
   auto_create_subnetworks = true
 }
