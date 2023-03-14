@@ -93,6 +93,8 @@ Datastream supports the synchronization of data to Google Cloud databases and st
 
 In this challenge, we'll configure Datastream to load the Oracle FastFresh schema and replicate updates from the Oracle database to Cloud Storage in real time.
 
+> **Note** Keep in mind that it is possible to directly stream data from Oracle to BigQuery with Datastream and do transformations within BigQuery. However, for the sake of including Dataflow jobs in the next challenges we'll stage the data in Cloud Storage first in this challenge and transform it with Dataflow before loading it in BigQuery in the next one.
+
 ### Description
 
 Configure Datastream to replicate data from the *ORDERS* table in the Oracle database into the bucket created in the previous challenge in *JSON* format using the *datastream* user, validate it, but **don't start** it yet. Make sure to include existing records in the stream as well.
