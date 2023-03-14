@@ -1,21 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "4.27.0"
-    }
-  }
-}
-
-variable "gcp_project_id" {
-  type        = string
-  description = "The GCP project ID"
-}
-
-provider "google" {
-  project = var.gcp_project_id
-}
-
 data "google_project" "project" {}
 
 // Enable the APIs we need: computer, logging, monitoring and recaptcha
