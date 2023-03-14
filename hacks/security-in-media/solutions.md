@@ -64,7 +64,7 @@ Students will creating managed instance groups here, so there are a few things t
     ```bash
     #! /bin/bash
     sudo apt-get update
-    sudo apt-get install apache2 -y
+    sudo apt-get install apache2 unzip -y
     sudo a2ensite default-ssl
     sudo a2enmod ssl
     export vm_hostname="$(hostname)"
