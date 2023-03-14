@@ -133,7 +133,7 @@ Keep the following things in mind:
 
     > **Note** Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
 
-- We need to use a start up script to install some things on a new VM. Just cut and paste this code into the **Startup Script** field.
+- We need to use a start up script to install some things on a new VM. Paste this code into the **Startup Script** field:
 
     ```bash
     #! /bin/bash
@@ -316,13 +316,15 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
     
 > **Tip** For the bot management policies, you'll need expressions that use `request.path.matches()` and `token.recaptcha_session.score` values to match on.
 
-- Add a bot management rule to the policy to **allow** traffic if the url path matches `good-score.html` and has a score greater than 0.5.
+- Add a bot management rule to the policy to **allow** traffic if the url path matches `good-score.html` and has a score greater than 0.4.
 
-- Add a bot management rule to the policy to **deny** traffic with a 403 if the url path matches `bad-score.html` and has a score less than 0.5.
+- Add a bot management rule to the policy to **deny** traffic with a 403 if the url path matches `bad-score.html` and has a score less than 0.6.
 
 - Add a bot management rule to the policy to **redirect** traffic to Google reCAPTCHA if the url path matches `median-score.html` and has a score equal to 0.5.
 
 - Attach this reCAPTCHA security policy to the backend service of your Load Balancer. **Make sure it is available globally.**
+
+> **Note** Remember that since we're in testing mode, our score is fixed to 0.5. So we have to explicitly make sure we fail when going to `bad-score.html` and pass when going to `good-score.html`
 
 #### Validate Bot Management with Cloud Armor
 
