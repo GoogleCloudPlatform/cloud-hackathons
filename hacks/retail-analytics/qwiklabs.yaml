@@ -1,6 +1,6 @@
 schema_version: 2
 default_locale: en
-title: "[gHacks] Real-time Analytics with CDC"
+title: "[gHacks] Real-time Analytics with Change Data Capture (CDC)"
 description: "This hack will take you through replicating and processing operational data from 
   an Oracle database into Google Cloud in real time using Change Data Capture (CDC)"
 instruction:
