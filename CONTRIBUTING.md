@@ -1,8 +1,8 @@
 # How to Contribute
 
-We would love to accept your patches and contributions to this project.
+We would love to accept your new gHack! Please see our [gHacks Authoring Guide](faq/howto-author-hack.md) for detailed instructions on creating a new gHack.
 
-## Before you begin
+## Before You Begin
 
 ### Sign our Contributor License Agreement
 
@@ -16,7 +16,7 @@ Visit <https://cla.developers.google.com/> to see your current agreements or to 
 
 This project follows [Google's Open Source Community Guidelines](https://opensource.google/conduct/).
 
-## Contribution process
+## Contribution Process
 
 ### The gHacks Author's Guide
 
