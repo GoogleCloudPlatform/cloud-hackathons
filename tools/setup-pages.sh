@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 TARGET=dist
 
 mkdir -p ${TARGET}/hacks
