@@ -1,4 +1,4 @@
-# gHacks - How to Setup Your Environment
+# How to Setup Your Environment
 
 Before we can get started hacking, we need to set up our environment using a script provided by your gHack to provision all the needed resources.
 

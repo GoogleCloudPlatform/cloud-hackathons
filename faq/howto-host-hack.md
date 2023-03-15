@@ -1,4 +1,4 @@
-# gHacks - How to Host a gHack
+# How to Host a gHack
 
 In a post-covid world, virtual events will be the way of the future for some time. Participating in a team-based hands-on event virtually may be a new concept for many. However, we have found that virtual gHacks events are often more collaborative than a traditional in-person event.
 

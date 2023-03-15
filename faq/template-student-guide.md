@@ -28,15 +28,16 @@ In this hack you will be solving the common business problem that companies in t
 
 ## Challenges
 
-1. Challenge 0: Prepare your workstation for IoT development
-   - Get yourself ready to develop your IoT solution
-2. Challenge 1: Provision an IoT environment
+- Setting Up the Environment
+   - Before we can hack, you will need to set up a few things.
+   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
+-  Challenge 1: Provision an IoT environment
    - Create an IoT Hub and run tests to ensure it can ingest telemetry
-3. Challenge 2: Your First Device
+- Challenge 2: Your First Device
    - Make the connection to your Edge device and see that it is properly provisioned.
-4. Challenge 3: Connecting the World
+- Challenge 3: Connecting the World
    - Connect your device and make sure it can see all other devices in your team.
-5. Challenge 4: Scalable Monitoring of Telemetry
+- Challenge 4: Scalable Monitoring of Telemetry
    - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
 
 ## Prerequisites

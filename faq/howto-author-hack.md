@@ -1,4 +1,4 @@
-# gHacks - How to Author a gHack
+# How to Author a gHack
 
 Developing a new gHack is a great way to get your content out to the world. Chances are if you've done workshops, PoCs or pilots in the past, you already have the material on which to build a gHack.
 
