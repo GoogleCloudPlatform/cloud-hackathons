@@ -67,7 +67,7 @@ We need to run these commands to invoke the Terraform script and provision all o
 ```bash
 cd ~/ghack-setup
 terraform init
-terraform apply --auto-approve --var gcp_project_id=${GOOGLE_CLOUD_PROJECT}
+terraform apply --auto-approve --var gcp_project_id=${GOOGLE_CLOUD_PROJECT} --var gcp_region=us-central1 --var gcp_zone=us-central1-a
 ```
 
 You should see output similar to this:
