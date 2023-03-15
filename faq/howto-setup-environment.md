@@ -2,18 +2,18 @@
 
 Before we can get started hacking, we need to set up our environment using a script provided by your gHack to provision all the needed resources.
 
-This document has the following sections:
-- [Project](#confirm-your-project-is-ready)
-- [Cloud Shell](#start-the-cloud-shell)
-- [Student Files](#upload-and-unzip-all-student-files)
-- [Provision Resources](#run-terraform-to-provision-needed-resources)
+This document has two sections, pick the one that corresponds to where you're running this gHack:
+- [My Own Environment](#setting-up-your-own-environment)
+- [A Qwiklabs Environment](#setting-up-a-qwiklabs-environment)
+
+## Setting Up Your Own Environment
 
 > **Note** If you're using an Argolis environment, there are some default org policies that will need to be changed to allow traffic through to the load balancer. Run the `argolis-fix-policy-defaults.sh` script in [this repository](https://github.com/gfilicetti/gcp-scripts) to set all the proper defaults.
 
-## Confirm Your Project Is Ready
+### Confirm Your Project Is Ready
 Sign-in to the [Google Cloud Console](http://console.cloud.google.com/) and select the project that was assigned to you. Alternately, if you have permissions, you can create a new project for this hack.
 
-## Start the Cloud Shell
+### Start the Cloud Shell
 Although you can use the Google Cloud command line interface locally on your machine, in this gHack you will be using the Google Cloud Shell instead to make it easier.
 
 - From the GCP Console click the Cloud Shell icon on the top right toolbar:
@@ -26,7 +26,7 @@ Although you can use the Google Cloud command line interface locally on your mac
 
 - This virtual machine is loaded with all the development tools you'll need. It offers a persistent 5GB home directory, and runs on Google Cloud, greatly enhancing network performance and authentication. All of your work in this gHack can be done completely in the browser.
 
-## Upload and Unzip All Student Files
+### Upload and Unzip All Student Files
 You've been given a set of files that you will need through-out this gHack. We need to copy them into the right places.
 
 - In the Google Space for this gHack Event, go to the **Files** tab and download **ALL** available files to your computer. 
@@ -54,7 +54,7 @@ You've been given a set of files that you will need through-out this gHack. We n
 
 - Leave the unzipped student files where they are, we will be using them in various challenges throughout this gHack.
 
-## Run Terraform to Provision Needed Resources
+### Run Terraform to Provision Needed Resources
 There are some resources that need to be created before starting our hack. We have consolidated these into a Terraform script that provisions everything for us. Each gHack will need to do something different in its script to get the environment ready, some examples are:
 
 - Enabling the Google Cloud services we'll be using.
@@ -73,6 +73,10 @@ terraform apply --auto-approve --var gcp_project_id=${GOOGLE_CLOUD_PROJECT} --va
 You should see output similar to this:
 
 ![Terraform Output](images/setup-terraform.png)
+
+## Setting Up A Qwiklabs Environment
+
+PLACEHOLDER FOR QL C0 INSTRUCTIONS
 
 ## Success Criteria
 
