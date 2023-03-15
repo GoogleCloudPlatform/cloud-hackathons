@@ -2,6 +2,9 @@ name: Validation
 
 on: 
   pull_request:
+    branches:
+    - main
+
 jobs:
   pages:
     runs-on: ubuntu-latest
