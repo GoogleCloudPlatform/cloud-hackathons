@@ -15,6 +15,17 @@ def format_bq(prefix: str, header: str, suffix: str) -> str:
     return f"{prefix}> <span class=\"{clazz}\">{{% octicon {clazz} %}} {header}</span>{suffix}\n"
 
 
+def navigation_bar(f: TextIO, challenges: list[str], idx: int, home_file: str):
+    prv = get_file_name(challenges[idx - 1]) if idx > 0 else None
+    nxt = get_file_name(challenges[idx + 1]) if idx < (len(challenges) - 1) else None
+    if prv:
+        write(f, f"[< Previous Challenge]({prv}) - ")
+    write(f, f"**[Home]({home_file})**")
+    if nxt:
+        write(f, f" - [Next Challenge >]({nxt})")
+    write(f, "\n")
+
+
 def write(f: TextIO, line: str) -> str:
     regex = r"(\s*)> \*\*(Note|Warning)\*\*(.*)"
     matches = re.match(regex, line)
@@ -60,15 +71,8 @@ def process(filename: str, output_dir: str, student: bool):
         for idx, challenge in enumerate(challenges):
             with open(challenge, "w") as f:
                 write(f, f"{curr_line[1:]}\n")  # ## Challenge X: becoming # Challenge X
-                # navigation
-                prv = get_file_name(challenges[idx - 1]) if idx > 0 else None
-                nxt = get_file_name(challenges[idx + 1]) if idx < (len(challenges) - 1) else None
-                if prv:
-                    write(f, f"[< Previous Challenge]({prv}) - ")
-                write(f, f"**[Home]({home_file})**")
-                if nxt:
-                    write(f, f" - [Next Challenge >]({nxt})")
-                write(f, "\n")
+                # navigation top
+                navigation_bar(f, challenges, idx, home_file)
                 curr_line = next(contents)
                 next_challenge_found = False
                 while curr_line is not None and not next_challenge_found:
@@ -80,6 +84,8 @@ def process(filename: str, output_dir: str, student: bool):
                     else:
                         write(f, curr_line)
                     curr_line = next(contents, None)
+                # navigation bottom
+                navigation_bar(f, challenges, idx, home_file)
 
 
 if __name__ == "__main__":
