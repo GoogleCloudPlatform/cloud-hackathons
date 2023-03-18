@@ -166,13 +166,16 @@ The provided project has a `pipeline.py` file that can generate a pipeline defin
 
 ### Introduction
 
-Having a model is only the first step, we can now using that model make predictions. This is typically called inferencing (or scoring) and can be done in an online fashion with an HTTP endpoint that can generate predictions for incoming data in real-time, or in batch by running the model on a large set of files or a database table. 
+Having a model is only the first step, we can now make predictions using that model. This is typically called inferencing (or scoring) and can be done 
+
+- in an **online** fashion with an HTTP endpoint that can generate predictions for incoming data in real-time, 
+- or in **batch** by running the model on a large set of files or a database table. 
 
 From this challenge onwards you'll have the option to either do online inferencing or batch. If you choose to accept the online inferencing path, read on, otherwise please skip to the [batch inferencing](#batch-inferencing) section.
 
 ### Description
 
-So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI has what we need, Vertex AI Endpoints provide a managed service for serving predictions. 
+So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI has exatly what we need, Vertex AI Endpoints provide a managed service for serving predictions. 
 
 Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest instance size but make sure that it can scale to more than 1 instance. 
 
@@ -197,11 +200,11 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 - Documentation on [Vertex AI Endpoints](https://cloud.google.com/vertex-ai/docs/predictions/overview)
 - More info on the [request data format](https://cloud.google.com/vertex-ai/docs/predictions/get-predictions#request-body-details)
 
-### Batch inferencing
+## Batch inferencing
 
 ### Description
 
-So, you've chosen for batch inferencing. 
+TODO So, you've chosen for batch inferencing. 
 
 > **Note**  
 > The batch inferencing will take roughly ~25 minutes, most of that is the overhead of starting the clusters, so increasing the number of instances won't help.
