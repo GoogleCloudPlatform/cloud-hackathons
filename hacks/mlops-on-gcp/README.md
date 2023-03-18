@@ -166,9 +166,13 @@ The provided project has a `pipeline.py` file that can generate a pipeline defin
 
 ### Introduction
 
-Having a model is only the first step, in order to use the model it has to be deployed to an endpoint. Vertex AI Endpoints provide a managed service for serving predictions.
+Having a model is only the first step, we can now using that model make predictions. This is typically called inferencing (or scoring) and can be done in an online fashion with an HTTP endpoint that can generate predictions for incoming data in real-time, or in batch by running the model on a large set of files or a database table. 
+
+From this challenge onwards you'll have the option to either do online inferencing or batch. If you choose to accept the online inferencing path, read on, otherwise please skip to the [batch inferencing](#batch-inferencing) section.
 
 ### Description
+
+So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI has what we need, Vertex AI Endpoints provide a managed service for serving predictions. 
 
 Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest instance size but make sure that it can scale to more than 1 instance. 
 
@@ -193,15 +197,38 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 - Documentation on [Vertex AI Endpoints](https://cloud.google.com/vertex-ai/docs/predictions/overview)
 - More info on the [request data format](https://cloud.google.com/vertex-ai/docs/predictions/get-predictions#request-body-details)
 
+### Batch inferencing
+
+### Description
+
+So, you've chosen for batch inferencing. 
+
+> **Note**  
+> The batch inferencing will take roughly ~25 minutes, most of that is the overhead of starting the clusters, so increasing the number of instances won't help.
+
+### Success Criteria
+
+1. TODO
+
+### Tips
+
+- TODO
+
+### Learning Resources
+
+-  TODO
+
 ## Challenge 6: Monitor your models
 
 ### Introduction
 
-There are times when the training data becomes not representative anymore because of changing demographics, trends etc. To catch any skew or drift in feature distributions or even in predictions, it is necessary to monitor your model performance continuously. Luckily Vertex AI Endpoints have Model Monitoring capabilities that you can use for that purpose.
+There are times when the training data becomes not representative anymore because of changing demographics, trends etc. To catch any skew or drift in feature distributions or even in predictions, it is necessary to monitor your model performance continuously. 
+
+If you've chosen the online inferencing path, read on, otherwise please skip to the [batch monitoring](#batch-monitoring) section.
 
 ### Description
 
-Turn on Training-serving skew detection for your model, use an hourly granularity to get alerts. Send at least 10K prediction requests to collect monitoring data.
+Vertex AI Endpoints provide Model Monitoring capabilities which needs to be turned on for this challenge. Turn on Training-serving skew detection for your model, use an hourly granularity to get alerts. Send at least 10K prediction requests to collect monitoring data.
 
 ### Success Criteria
 
@@ -217,11 +244,32 @@ Turn on Training-serving skew detection for your model, use an hourly granularit
 
 Introduction to [Vertex AI Model Monitoring](https://cloud.google.com/vertex-ai/docs/model-monitoring/overview)
 
+### Batch monitoring
+
+### Description
+
+Vertex AI Batch prediction jobs provide Model Monitoring capabilities as well.
+
+### Success Criteria
+
+1. 
+
+### Tips
+
+- You can use the sample.csv file from challenge 1 as the baseline training data
+- You can use the same data you’ve used for the previous challenge to run the batch predictions, make sure to include some data that has a different distribution than the training data
+
+### Learning Resources
+
+TODO
+
 ## Challenge 7: Close the loop
 
 ### Introduction
 
 If you’ve completed all of the previous challenges, you’re now ready to bring it all together. This task is all about automating the whole process, so that when Model Monitoring raises an alert, a new model is trained and deployed. 
+
+Just like the previous challenges, if you've chosen the online inferencing path, read on, otherwise please skip to the [batch loop](#batch-loop) section.
 
 ### Description
 
@@ -240,6 +288,30 @@ Use the provided build pipeline (`clouddeploy.yaml`) to create a new build confi
 
 - Cloud Build supports inline yaml as well
 - You can create/update a Monitoring Job with the `gcloud` cli which has more configuration options than the UI
+
+### Learning Resources
+
+- [Log based alerts](https://cloud.google.com/logging/docs/alerting/log-based-alerts) for Cloud Logging
+- [Webhook notifications](https://cloud.google.com/monitoring/support/notification-options#webhooks) for Cloud Logging
+- [Log based alerts](https://cloud.google.com/vertex-ai/docs/model-monitoring/using-model-monitoring#set-up-alerts) for Vertex AI Model Monitoring feature anomaly detection
+- [Triggering Cloud Build with webhooks](https://cloud.google.com/build/docs/automate-builds-webhook-events)
+
+### Batch loop
+
+### Description
+
+TODO 
+Use the provided build pipeline (`clouddeploy.yaml`) to create a new build configuration. Make sure that it’s only triggered when a webhook is called. Also provide the necessary variables, such as the model training code version, endpoint name etc. Configure Log based alerts for Model Monitoring, and use webhooks as a notification channel to trigger the build.
+
+### Success Criteria
+
+1. There’s a correctly configured build pipeline that can be triggered through webhooks only
+2. Model Monitoring alerts can trigger the mentioned build through Log based alerts.
+3. There’s at least one successful build
+
+### Tips
+
+- Cloud Build supports inline yaml as well
 
 ### Learning Resources
 
