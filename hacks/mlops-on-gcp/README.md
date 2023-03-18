@@ -168,10 +168,15 @@ The provided project has a `pipeline.py` file that can generate a pipeline defin
 
 Having a model is only the first step, we can now make predictions using that model. This is typically called inferencing (or scoring) and can be done 
 
-- in an **online** fashion with an HTTP endpoint that can generate predictions for incoming data in real-time, 
-- or in **batch** by running the model on a large set of files or a database table. 
+- In an **online** fashion with an HTTP endpoint that can generate predictions for incoming data in real-time, 
+- Or in **batch** by running the model on a large set of files or a database table. 
 
-From this challenge onwards you'll have the option to either do online inferencing or batch. If you choose to accept the online inferencing path, read on, otherwise please skip to the [batch inferencing](#batch-inferencing) section.
+From this challenge onwards you'll have the option to either do online inferencing or batch inferencing. Please choose your path:
+
+- [Online Inferencing](#online-inferencing)
+- [Batch Inferencing](#batch-inferencing)
+
+### Online Inferencing
 
 ### Description
 
@@ -200,7 +205,7 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 - Documentation on [Vertex AI Endpoints](https://cloud.google.com/vertex-ai/docs/predictions/overview)
 - More info on the [request data format](https://cloud.google.com/vertex-ai/docs/predictions/get-predictions#request-body-details)
 
-### Batch inferencing
+### Batch Inferencing
 
 ### Description
 
