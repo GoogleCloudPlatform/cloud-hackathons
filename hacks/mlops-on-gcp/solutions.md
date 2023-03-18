@@ -169,6 +169,27 @@ ab -n 30000 -c 100 -p request.json -T "application/json" -H "Authorization: Bear
 
 This exercise can be completed either on the notebook terminal or Cloud Shell.
 
+#### Batch inferencing
+
+```sql
+CREATE OR REPLACE TABLE 
+    taxi_batch.sample1K AS 
+SELECT
+    EXTRACT(MONTH from pickup_datetime) as trip_month,
+    EXTRACT(DAY from pickup_datetime) as trip_day,
+    EXTRACT(DAYOFWEEK from pickup_datetime) as trip_day_of_week,
+    EXTRACT(HOUR from pickup_datetime) as trip_hour,
+    TIMESTAMP_DIFF(dropoff_datetime, pickup_datetime, SECOND) as trip_duration,
+    trip_distance,
+    payment_type,
+    pickup_location_id as pickup_zone,
+    pickup_location_id as dropoff_zone
+FROM 
+    bigquery-public-data.new_york_taxi_trips.tlc_yellow_trips_2017 TABLESAMPLE SYSTEM (1 PERCENT) 
+LIMIT 
+    10000
+```
+
 ## Challenge 6: Monitor your models
 
 ### Notes & Guidance
@@ -227,3 +248,5 @@ resource.labels.model_deployment_monitoring_job={JOB_ID}
 > **Note** At the time of this writing the docs contain an error, `logName` reference `...aiplatform.googleapis.com%2FFmodel_monitoring_anomaly...` in the provided example has one `F` too many, it should be `...aiplatform.googleapis.com%2Fmodel_monitoring_anomaly...`
 
 > **Note** Completing this might take a few hours as monitoring jobs only run once every hour. It's sufficient to see if things are configured properly than the full trigger of the pipeline.
+
+> **Note** In case a non global region is chosen for the Cloud Build pipeline, the displayed webhook URL might not be correct. If you run into 404s while calling that webhook, you can try `https://cloudbuild.googleapis.com/v1/projects/${PROJECT_ID}/locations/${REGION}/triggers/${TRIGGER_NAME}:webhook?key=${API_KEY}&secret=${SECRET_VALUE}&trigger=${TRIGGER_NAME}&projectId=${PROJECT_ID}"` as described in the [docs](https://cloud.google.com/build/docs/automate-builds-webhook-events#creating_webhook_triggers). Also, if you run it with cURL don't forget to set the _Content-Type_ to _application/json_. 

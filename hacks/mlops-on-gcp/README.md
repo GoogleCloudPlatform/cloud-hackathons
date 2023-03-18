@@ -204,22 +204,25 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 
 ### Description
 
-TODO So, you've chosen for batch inferencing. 
+So, you've chosen for the batch inferencing path. We're going to use Vertex AI Batch Predictions to get predictions for data in a BigQuery table. First, go ahead and create a new table with at most 10K rows that's going to be used for generating the predictions. Once the table is created, create a new Batch Prediction job with that table as the input and another BigQuery table as the output, using the previously created model. Choose a small machine type and 2 compute nodes, don't turn on Model Monitoring yet as that's for the next challenge.
 
 > **Note**  
-> The batch inferencing will take roughly ~25 minutes, most of that is the overhead of starting the clusters, so increasing the number of instances won't help.
+> The batch inferencing will take roughly ~25 minutes, most of that is the overhead of starting the clusters, so increasing the number of instances won't help with the small table we're using.
 
 ### Success Criteria
 
-1. TODO
+1. There's a properly structured input table in BigQuery with 10K rows
+2. There's a succesful Batch Prediction job
+3. There are predictions in a new BigQuery table
 
 ### Tips
 
-- TODO
+- The pipeline that we've used in the previous challenge contains a task to prepare the data using BigQuery, have a look at that for inspiration
 
 ### Learning Resources
 
--  TODO
+- Creating BigQuery tables
+- Vertex AI Batch Predictions
 
 ## Challenge 6: Monitor your models
 
