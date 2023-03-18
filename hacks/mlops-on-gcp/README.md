@@ -200,7 +200,7 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 - Documentation on [Vertex AI Endpoints](https://cloud.google.com/vertex-ai/docs/predictions/overview)
 - More info on the [request data format](https://cloud.google.com/vertex-ai/docs/predictions/get-predictions#request-body-details)
 
-## Batch inferencing
+### Batch inferencing
 
 ### Description
 
