@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this hack, you’ll implement the full lifecycle of an ML project. We’ll provide you with a sample code base and you’ll work on automating continuous integration (CI), continuous delivery (CD), and continuous training (CT) for a machine learning (ML) system. 
+In this hack, you'll implement the full lifecycle of an ML project. We'll provide you with a sample code base and you'll work on automating continuous integration (CI), continuous delivery (CD), and continuous training (CT) for a machine learning (ML) system. 
 
 | ![MLOps Overview](https://cloud.google.com/static/architecture/images/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning-4-ml-automation-ci-cd.svg) |
 | :--: |
@@ -26,8 +26,8 @@ This hack will help you explore the following tasks:
 
 ## Challenges
 
-- Challenge 1: Let’s start exploring!
-- Challenge 2: If it isn’t in version control, it doesn’t exist
+- Challenge 1: Let's start exploring!
+- Challenge 2: If it isn't in version control, it doesn't exist
 - Challenge 3: You break the build, you buy cake
 - Challenge 4: Automagic training with pipelines
 - Challenge 5: Make it work and make it scale
@@ -45,7 +45,7 @@ This hack will help you explore the following tasks:
 
 - Murat Eken
 
-## Challenge 1: Let’s start exploring!
+## Challenge 1: Let's start exploring!
 
 ### Introduction
 
@@ -57,11 +57,11 @@ Create a User-Managed Notebook on Vertex AI. Pick a region close to you, create 
 
 It's a good practice to have isolated virtual environments for experiments, so create a new virtual environment and install that as a kernel. See this [gist](https://gist.github.com/meken/e6c7430997de9b3f2cf7721f8ecffc04) for the instructions. 
 
-We’ve prepared a [sample project on Github](https://github.com/meken/gcp-mlops-demo/archive/refs/heads/main.zip), navigate there and download the project as a **zip** file and extract the contents of the zip file into your notebook environment. Open the notebook `01-tip-toe-vertex-ai.ipynb`, make sure that you've selected the newly created kernel. You should now be able to run the first notebook and get familiar with some of the Vertex AI concepts.
+We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-demo/archive/refs/heads/main.zip), navigate there and download the project as a **zip** file and extract the contents of the zip file into your notebook environment. Open the notebook `01-tip-toe-vertex-ai.ipynb`, make sure that you've selected the newly created kernel. You should now be able to run the first notebook and get familiar with some of the Vertex AI concepts.
 
 ### Success Criteria
 
-1. There’s a new User-Managed Notebook
+1. There's a new User-Managed Notebook
 2. The sample notebook `01-tip-toe-vertex-ai.ipynb` is successfully run and a model file is generated/stored in Google Cloud Storage
 3. No code changes are needed for this challenge
 
@@ -75,7 +75,7 @@ We’ve prepared a [sample project on Github](https://github.com/meken/gcp-mlops
 
 - Documentation on [Vertex AI Workbench](https://cloud.google.com/vertex-ai/docs/workbench/user-managed/introduction)
 
-## Challenge 2: If it isn’t in version control, it doesn’t exist
+## Challenge 2: If it isn't in version control, it doesn't exist
 
 ### Introduction
 
@@ -83,7 +83,7 @@ The objective of this challenge is to create and configure a Git repository so t
 
 ### Description
 
-If you have completed the previous challenge, you should have the source code already unpacked on your User-Managed Notebook. But you’re free to complete this challenge on another environment such as Cloud Shell or your local machine.
+If you have completed the previous challenge, you should have the source code already unpacked on your User-Managed Notebook. But you're free to complete this challenge on another environment such as Cloud Shell or your local machine.
 
 Create a Cloud Source Repository, configure access through **SSH**.
 
@@ -91,14 +91,14 @@ Make sure that the source code is pushed to the freshly created repository and c
 
 ### Success Criteria
 
-1. There’s a new Cloud Source Repository 
+1. There's a new Cloud Source Repository 
 2. The code base is pushed to Cloud Source Repository
 3. At least one team member can access the repository from the command line
 4. No code changes are needed for this challenge
 
 ### Tips
 
-- You already have a terminal available on the notebook that you’ve created as part of the previous challenge. That terminal has all the tools you need to complete this challenge.
+- You already have a terminal available on the notebook that you've created as part of the previous challenge. That terminal has all the tools you need to complete this challenge.
 
 ### Learning Resources
 
@@ -112,14 +112,14 @@ This task is all about automating things using Cloud Build.
 
 ### Description
 
-Once things look fine locally, set up a Cloud Build that’s triggered when code is pushed to the repository. The code base already includes a build configuration (`cloudbuild.yaml`), have a look at it to understand what it does. Make sure that the trigger uses that build configuration. 
+Once things look fine locally, set up a Cloud Build that's triggered when code is pushed to the repository. The code base already includes a build configuration (`cloudbuild.yaml`), have a look at it to understand what it does. Make sure that the trigger uses that build configuration. 
 
 ### Success Criteria
 
-1. There’s a new Cloud Build push trigger
+1. There's a new Cloud Build push trigger
 2. The trigger is connected to the repository created in the previous task
 3. The trigger uses the provided (fully configured) build configuration from the repository
-4. And there’s at least one successful build 
+4. And there's at least one successful build 
 
 ### Tips
 
@@ -137,7 +137,7 @@ The previous challenge introduced the concept of build pipelines. But there are 
 
 ### Description
 
-If you’ve successfully completed the previous challenge, your training code has been packaged and can be run from a pipeline.
+If you've successfully completed the previous challenge, your training code has been packaged and can be run from a pipeline.
 
 The provided project has a `pipeline.py` file that can generate a pipeline definition. Run that to generate a pipeline definition file (JSON). Use the generated pipeline definition file to create a new Pipeline Run through the GCP Console. You'll need to fill in some parameters (you can look up the Python package location). Do not set/override the endpoint and monitoring_job parameters (keep the default values).
 
@@ -146,7 +146,7 @@ The provided project has a `pipeline.py` file that can generate a pipeline defin
 
 ### Success Criteria
 
-1. There’s at least one successful Vertex AI pipeline run that has generated a Managed Model in the Model Registry
+1. There's at least one successful Vertex AI pipeline run that has generated a Managed Model in the Model Registry
 2. No code change is needed for this challenge
 
 ### Tips
@@ -180,7 +180,7 @@ From this challenge onwards you'll have the option to either do online inferenci
 
 ### Description
 
-So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI has exatly what we need, Vertex AI Endpoints provide a managed service for serving predictions. 
+So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI has exactly what we need, Vertex AI Endpoints provide a managed service for serving predictions. 
 
 Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest instance size but make sure that it can scale to more than 1 instance. 
 
@@ -209,10 +209,10 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 
 ### Description
 
-So, you've chosen for the batch inferencing path. We're going to use Vertex AI Batch Predictions to get predictions for data in a BigQuery table. First, go ahead and create a new table with at most 10K rows that's going to be used for generating the predictions. Once the table is created, create a new Batch Prediction job with that table as the input and another BigQuery table as the output, using the previously created model. Choose a small machine type and 2 compute nodes, don't turn on Model Monitoring yet as that's for the next challenge.
+So, you've chosen for the batch inferencing path. We're going to use Vertex AI Batch Predictions to get predictions for data in a BigQuery table. First, go ahead and create a new table with at most 10K rows that's going to be used for generating the predictions. Once the table is created, create a new Batch Prediction job with that table as the input and another BigQuery table as the output, using the previously created model. Choose a small machine type and 2 compute nodes. Don't turn on Model Monitoring yet as that's for the next challenge.
 
 > **Note**  
-> The batch inferencing will take roughly ~25 minutes, most of that is the overhead of starting the clusters, so increasing the number of instances won't help with the small table we're using.
+> The batch inferencing will take roughly ~25 minutes, most of that is the overhead of starting the cluster, so increasing the number of instances won't help with the small table we're using.
 
 ### Success Criteria
 
@@ -225,9 +225,10 @@ So, you've chosen for the batch inferencing path. We're going to use Vertex AI B
 - The pipeline that we've used in the previous challenge contains a task to prepare the data using BigQuery, have a look at that for inspiration
 
 ### Learning Resources
-
-- Creating BigQuery tables
-- Vertex AI Batch Predictions
+- Creating BigQuery [datasets](https://cloud.google.com/bigquery/docs/datasets)
+- Creating BigQuery [tables](https://cloud.google.com/bigquery/docs/tables#sql)
+- BigQuery [public datasets](https://console.cloud.google.com/marketplace/details/city-of-new-york/nyc-tlc-trips)
+- Vertex AI [Batch Predictions](https://cloud.google.com/vertex-ai/docs/tabular-data/classification-regression/get-batch-predictions)
 
 ## Challenge 6: Monitor your models
 
@@ -235,7 +236,9 @@ So, you've chosen for the batch inferencing path. We're going to use Vertex AI B
 
 There are times when the training data becomes not representative anymore because of changing demographics, trends etc. To catch any skew or drift in feature distributions or even in predictions, it is necessary to monitor your model performance continuously. 
 
-If you've chosen the online inferencing path, read on, otherwise please skip to the [batch monitoring](#batch-monitoring) section.
+If you've chosen the online inferencing path, continue with [Online Monitoring](#online-monitoring), otherwise please skip to the [Batch Monitoring](#batch-monitoring) section.
+
+### Online Monitoring
 
 ### Description
 
@@ -243,57 +246,60 @@ Vertex AI Endpoints provide Model Monitoring capabilities which needs to be turn
 
 ### Success Criteria
 
-1. Show that the Model Monitoring is running successfully for the endpoint that’s created in the previous challenge
+1. Show that the Model Monitoring is running successfully for the endpoint that's created in the previous challenge
 2. By default Model Monitoring keeps request/response data in a BigQuery dataset, find and show that data
 
 ### Tips
 
-- You can use the sample.csv file from challenge 1 as the baseline data
-- You can use the same tool you’ve used for the previous challenge to generate the requests, make sure to include some data that has a different distribution than the training data
+- You can use the `sample.csv` file from challenge 1 as the baseline data
+- You can use the same tool you've used for the previous challenge to generate the requests, make sure to include some data that has a different distribution than the training data
 
 ### Learning Resources
 
 Introduction to [Vertex AI Model Monitoring](https://cloud.google.com/vertex-ai/docs/model-monitoring/overview)
 
-### Batch monitoring
+### Batch Monitoring
 
 ### Description
 
-Vertex AI Batch prediction jobs provide Model Monitoring capabilities as well.
+Vertex AI Batch prediction jobs provide Model Monitoring capabilities as well. Create a new Batch Predition job with monitoring turned on with BigQuery input and ouput tables, use default values for the alert thresholds.
 
 ### Success Criteria
 
-1. 
+1. There's a new Batch Prediction job with monitoring turned on
+2. As batch inferencing will take roughly ~25 minutes again, it's sufficient to show the properly configured job configuration
 
 ### Tips
 
-- You can use the sample.csv file from challenge 1 as the baseline training data
-- You can use the same data you’ve used for the previous challenge to run the batch predictions, make sure to include some data that has a different distribution than the training data
+- You can use the `sample.csv` file from challenge 1 as the baseline training data
+- You can use the same data you've used for the previous challenge to run the batch predictions, make sure to include some data that has a different distribution than the training data
 
 ### Learning Resources
 
-TODO
+- [Model monitoring](https://cloud.google.com/vertex-ai/docs/model-monitoring/model-monitoring-batch-predictions) for Batch Predictions
 
 ## Challenge 7: Close the loop
 
 ### Introduction
 
-If you’ve completed all of the previous challenges, you’re now ready to bring it all together. This task is all about automating the whole process, so that when Model Monitoring raises an alert, a new model is trained and deployed. 
+If you've completed all of the previous challenges, you're now ready to bring it all together. This task is all about automating the whole process, so that when Model Monitoring raises an alert, a new model is trained and deployed. 
 
-Just like the previous challenges, if you've chosen the online inferencing path, read on, otherwise please skip to the [batch loop](#batch-loop) section.
+Just like the previous challenges, if you've chosen the online inferencing path, continue to [Online Loop](#online-loop), otherwise please skip to the [Batch Loop](#batch-loop) section.
+
+> **Note**  
+> For this challenge we'll keep things simple, we'll reuse the original training data to retrain and won't do anything if the model is not better, but in real world you'd be using a combination of existing data with the new data, and take manual actions if automatic retraining doesn't yield better results.
+
+### Online Loop
 
 ### Description
 
-> **Note**  
-> For this challenge we’ll keep things simple, we’ll re-use the original training data to re-train and won’t do anything if the model is not better, but in real world you’d be using a combination of existing data with the new data, and take manual actions if automatic re-training doesn’t yield better results. Note also that Vertex AI Endpoints allow deploying multiple versions of a model to enable blue-green style deployments, but we’ll ignore that too, the latest version will get all the traffic for this task.
-
-Use the provided build pipeline (`clouddeploy.yaml`) to create a new build configuration. Make sure that it’s only triggered when a webhook is called. Also provide the necessary variables, such as the model training code version, endpoint name etc. Configure Log based alerts for Model Monitoring, and use webhooks as a notification channel to trigger the build.
+Use the provided build pipeline (`clouddeploy.yaml`) to create a new build configuration. Make sure that it's only triggered when a webhook is called. Also provide the necessary variables, such as the model training code version, endpoint name etc. Configure Log based alerts for Model Monitoring, and use webhooks as a notification channel to trigger the build.
 
 ### Success Criteria
 
-1. There’s a correctly configured build pipeline that can be triggered through webhooks only
+1. There's a correctly configured build pipeline that can be triggered through webhooks only
 2. Model Monitoring alerts can trigger the mentioned build through Log based alerts.
-3. There’s at least one successful build
+3. There's at least one successful build
 
 ### Tips
 
@@ -307,18 +313,22 @@ Use the provided build pipeline (`clouddeploy.yaml`) to create a new build confi
 - [Log based alerts](https://cloud.google.com/vertex-ai/docs/model-monitoring/using-model-monitoring#set-up-alerts) for Vertex AI Model Monitoring feature anomaly detection
 - [Triggering Cloud Build with webhooks](https://cloud.google.com/build/docs/automate-builds-webhook-events)
 
-### Batch loop
+### Batch Loop
 
 ### Description
 
-TODO 
-Use the provided build pipeline (`clouddeploy.yaml`) to create a new build configuration. Make sure that it’s only triggered when a webhook is called. Also provide the necessary variables, such as the model training code version, endpoint name etc. Configure Log based alerts for Model Monitoring, and use webhooks as a notification channel to trigger the build.
+Typically Batch Predictions are asynchronous and are scheduled to run periodically (daily/weekly etc). You can trigger batch jobs using different methods, for this challenge we'll use Cloud Build pipelines. Create a new Cloud Build trigger using the provided `batchdeploy.yaml` file, don't forget to set the required variables. Make sure that this build pipeline is triggered through webhook events. Create a new Cloud Scheduler job that runs every Sunday at 3:30 and uses the webhook event URL as the execution method.
+
+Running the batch predictions periodically will only get us half way. We need to monitor any Model Monitoring alerts and act on that. There's another Cloud Build pipeline definition provided by `clouddeploy.yaml`, configure that in a new Cloud Build trigger, set the required variables (remember to set _ENDPOINT_ to `[none]`, the others should be familiar, when in doubt have a look at the yaml file) and use webhook events.
+
+We're almost there, the `batchdeploy.yaml` build turns on Model Monitoring and enables Log based alerts. Create Log Alerts and use webhooks as a notification channel to trigger the build defined by `clouddeploy.yaml` to start re-training.
 
 ### Success Criteria
 
-1. There’s a correctly configured build pipeline that can be triggered through webhooks only
-2. Model Monitoring alerts can trigger the mentioned build through Log based alerts.
-3. There’s at least one successful build
+1. There's a correctly configured build pipeline for _batch predictions_ that can be triggered webhooks only
+2. There's a Cloud Scheduler job that is configured to run every Sunday at 3.30 triggering the batch predictions build pipeline
+3. There's a correctly configured build pipeline for _retraining_ that can be triggered through webhooks only
+4. Log based alerts are configured correctly to trigger the retraining when Model Monitoring yields any alerts
 
 ### Tips
 
@@ -326,7 +336,8 @@ Use the provided build pipeline (`clouddeploy.yaml`) to create a new build confi
 
 ### Learning Resources
 
+- [Cloud Scheduler](https://cloud.google.com/scheduler/docs/schedule-run-cron-job)
 - [Log based alerts](https://cloud.google.com/logging/docs/alerting/log-based-alerts) for Cloud Logging
 - [Webhook notifications](https://cloud.google.com/monitoring/support/notification-options#webhooks) for Cloud Logging
-- [Log based alerts](https://cloud.google.com/vertex-ai/docs/model-monitoring/using-model-monitoring#set-up-alerts) for Vertex AI Model Monitoring feature anomaly detection
+- [Log based alerts](https://cloud.google.com/vertex-ai/docs/model-monitoring/using-model-monitoring#cloud-logging-alerts) for Vertex AI Model Monitoring feature anomaly detection
 - [Triggering Cloud Build with webhooks](https://cloud.google.com/build/docs/automate-builds-webhook-events)

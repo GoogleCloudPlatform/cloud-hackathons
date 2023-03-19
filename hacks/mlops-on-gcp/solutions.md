@@ -132,6 +132,8 @@ The `python_pkg` parameter can also be the full path to the package, and also wo
 
 ### Notes & Guidance
 
+#### Online Inferencing
+
 During model deployment the smallest instance size (`n1-standard-2`) should be chosen, with the minimum number of instances set to 1 and the maximum number of instances set to >1 for autoscaling to work.
 
 Once the model is deployed the following request payload can be used to verify things. Sample data contains valid values but participants need to make sure that they don't copy the target column.
@@ -169,11 +171,11 @@ ab -n 30000 -c 100 -p request.json -T "application/json" -H "Authorization: Bear
 
 This exercise can be completed either on the notebook terminal or Cloud Shell.
 
-#### Batch inferencing
+#### Batch Inferencing
 
 ```sql
 CREATE OR REPLACE TABLE 
-    taxi_batch.sample1K AS 
+    taxi_batch.sample10K AS 
 SELECT
     EXTRACT(MONTH from pickup_datetime) as trip_month,
     EXTRACT(DAY from pickup_datetime) as trip_day,
@@ -194,6 +196,8 @@ LIMIT
 
 ### Notes & Guidance
 
+#### Online Monitoring
+
 Once the Endpoint is up and running, it's possible to edit it from the UI and turn on Monitoring. Alternatively the following `gcloud` command can be used (this command also enables Cloud Logging alerts which is at the moment not possible through the UI).
 
 ```shell
@@ -213,9 +217,15 @@ gcloud ai model-monitoring-jobs create --region=$REGION \
     --feature-thresholds=trip_month,trip_day,trip_day_of_week,trip_hour,trip_duration,trip_distance,payment_type,pickup_zone,dropoff_zone 
 ```
 
+#### Batch Monitoring
+
+Setting this up through the UI should be trivial, the training sample data uri should be `gs://${PROJECT_ID}/data/sample/sample.csv`
+
 ## Challenge 7: Close the loop
 
 ### Notes & Guidance
+
+#### Online Loop
 
 There's a few things that require additional attention at the time of this writing.
 
@@ -250,3 +260,29 @@ resource.labels.model_deployment_monitoring_job={JOB_ID}
 > **Note** Completing this might take a few hours as monitoring jobs only run once every hour. It's sufficient to see if things are configured properly than the full trigger of the pipeline.
 
 > **Note** In case a non global region is chosen for the Cloud Build pipeline, the displayed webhook URL might not be correct. If you run into 404s while calling that webhook, you can try `https://cloudbuild.googleapis.com/v1/projects/${PROJECT_ID}/locations/${REGION}/triggers/${TRIGGER_NAME}:webhook?key=${API_KEY}&secret=${SECRET_VALUE}&trigger=${TRIGGER_NAME}&projectId=${PROJECT_ID}"` as described in the [docs](https://cloud.google.com/build/docs/automate-builds-webhook-events#creating_webhook_triggers). Also, if you run it with cURL don't forget to set the _Content-Type_ to _application/json_. 
+
+#### Batch Loop
+
+The main challenge is to configure the build pipelines properly. You'll need the following variables for the _batch predictions_ pipeline.
+
+| Variable                  | Value |
+| ---                       | ---   |
+| \_PYTHON\_PKG             | `gcp-mlops-demo-0.8.0.dev0` |
+| \_MODEL\_NAME             | `taxi-tips`   |
+| \_SOURCE\_TABLE\_URI      | `bq://{PROJECT_ID}.{DATASET}.{TABLE}` |
+| \_TRAINING\_SAMPLE\_URI   | `gs://{PROJECT_ID}/data/sample/sample.csv`|
+| \_LOCATION                | `us-central1` |
+
+The Cloud Scheduler cron job configuration should be: `30 3 * * 7` with HTTP target type and webhook URL from the previous build configuration, using the POST method (see the note around the webhook URL in [Online Loop](#online-loop) section if you get 404s). One thing to remember is to set the _Content-Type_ header to _application/json_ otherwise the execution will fail.
+
+You can verify the Cloud Scheduler job by a _Force run_.
+
+Similarly the _retraining_ build pipeline requires the following variables to be set.
+
+| Variable                  | Value |
+| ---                       | ---   |
+| \_PYTHON\_PKG             | `gcp-mlops-demo-0.8.0.dev0` |
+| \_ENDPOINT                | `[none]`   |
+| \_LOCATION                | `us-central1` |
+
+Regarding the Cloud Logging Alerts, refer to the [Online Loop](#online-loop) section.
