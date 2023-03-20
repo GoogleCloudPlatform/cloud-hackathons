@@ -1,10 +1,10 @@
-# Real-time analytics with CDC
+# Real-time analytics with Change Data Capture
 
 ## Introduction
 
 This gHack will take you through replicating and processing operational data from an Oracle database into Google Cloud in real time. You'll also figure out how to forecast future demand, and how to visualize this forecast data as it arrives.
 
-This tutorial uses a fictitious retail store named FastFresh to help demonstrate the concepts we'll be dealing with. FastFresh specializes in selling fresh produce, and wants to minimize food waste and optimize stock levels across all stores. You will use fictitious sales transactions from FastFresh as the operational data in this tutorial.
+We will be using a fictitious retail store named FastFresh to help demonstrate the concepts we'll be dealing with. FastFresh specializes in selling fresh produce, and wants to minimize food waste and optimize stock levels across all stores. You will use fictitious sales transactions from FastFresh as the operational data in this tutorial.
 
 ![Architecture](images/arch-diagram.png)
 
@@ -49,9 +49,9 @@ You'll be using a variety of Google Cloud offerings to achieve this including:
 
 ## Contributors
 
+- Murat Eken
 - Carlos Augusto
 - Gino Filicetti
-- Murat Eken
 
 ## Challenge 1: Getting started
 
@@ -61,7 +61,7 @@ Throughout this hack, you will be using a number of different tools and products
 
 ### Description
 
-We'll need to stage the CDC stream from the Oracle database into a Google Cloud Storage bucket. Create a new bucket that minimizes egress costs. 
+We'll need to stage the Cloud Data Capture (CDC) stream from the Oracle database into a Google Cloud Storage bucket. Create a new bucket that minimizes egress costs. 
 
 In order to trigger Dataflow processing we'll use Pub/Sub notifications for Cloud Storage, so go ahead and turn on Pub/Sub notifications for the newly created bucket. Once the topic is ready, add a subscription to it.
 
