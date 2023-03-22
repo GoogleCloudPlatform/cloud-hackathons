@@ -61,7 +61,7 @@ Throughout this hack, you will be using a number of different tools and products
 
 ### Description
 
-We'll need to stage the Cloud Data Capture (CDC) stream from the Oracle database into a Google Cloud Storage bucket. Create a new bucket that minimizes egress costs. 
+We'll need to stage the Change Data Capture (CDC) stream from the Oracle database into a Google Cloud Storage bucket. Create a new bucket that minimizes egress costs. 
 
 In order to trigger Dataflow processing we'll use Pub/Sub notifications for Cloud Storage, so go ahead and turn on Pub/Sub notifications for the newly created bucket. Once the topic is ready, add a subscription to it.
 
