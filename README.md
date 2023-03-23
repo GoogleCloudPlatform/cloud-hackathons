@@ -15,13 +15,13 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 ### Data & AI
 - [MLOps on GCP](./hacks/mlops-on-gcp/README.md)
   > We will be implementing the full lifecycle of an ML project. We’ll provide you with a sample code base and you’ll work on automating continuous integration (CI), continuous delivery (CD), and continuous training (CT) for a machine learning (ML) system. 
-- [Real-time analytics with Change Data Capture (CDC)](./hacks/retail-analytics/README.md)
+- [Real-time analytics with Change Data Capture (CDC)](./hacks/realtime-analytics/README.md)
   > We will be going through replicating and processing operational data from an Oracle database into Google Cloud in real time. You'll also figure out how to forecast future demand, and how to visualize this forecast data as it arrives.
 - [Demand Forecasting](./hacks/demand-forecasting/README.md)
   > We will be implementing a state of the art deep learning forecasting model in just a few hours thanks to Vertex AI AutoML. We’ll provide you with a sample notebook and you’ll work on extending that notebook to train a model, run inference and see results. 
 
 ### Infrastructure
-- [Security with reCAPTCHA and Cloud Armor](./hacks/security-in-media/README.md)
+- [Security with reCAPTCHA and Cloud Armor](./hacks/recaptcha-cloudarmor-security/README.md)
   > We will be setting up gHacks+, the hottest new streaming site. We will configure an HTTP Load Balancer in front of the site and then you'll learn how to set up a reCAPTCHA session token site key and embed it the site. You will also learn how to set up redirection to reCAPTCHA Enterprise manual challenge. We will then configure a Cloud Armor bot management policy to showcase how bot detection can protect gHacks+ from malicious bot traffic.
 
 ### Application Development
