@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LONG="hack:,author:,title:,description:"
+LONG="hack:,author:,title:"
 
 OPTS=$(getopt -o '' --longoptions ${LONG} -- "$@")
 
@@ -10,18 +10,24 @@ while :; do
     case "${1}" in
         --hack        ) HACK="${2}"        ;;
         --author      ) AUTHOR="${2}"      ;;
-	--title       ) TITLE="${2}"       ;;
-	--description ) DESCRIPTION="${2}" ;;
+	      --title       ) TITLE="${2}"       ;;
         --            ) shift; break       ;;
     esac
     shift
 done
 
-# TODO check for no spaces, valid email address etc.
 
-if [ -z "${HACK}" ] || [ -z "${AUTHOR}" ] ||
-	[ -z "${TITLE}" ] || [ -z "${DESCRIPTION}" ]; then
-    echo "Usage: ${0} --hack=<string> --author=<string> --title=<string> --description=<string>" 1>&2; exit 1
+
+if [[ ! "$HACK" =~ ^[a-z0-9\-]+$ ]]; then
+    echo "$HACK should be all snake case, all lower case"
+fi
+
+if [[ ! "$AUTHOR" =~ ^.+@.+\..+$ ]]; then
+    echo "$AUTHOR is a not a valid email address"
+fi
+
+if [ -z "${HACK}" ] || [ -z "${AUTHOR}" ] || [ -z "${TITLE}" ]; then
+    echo "Usage: ${0} --hack=<string> --author=<string> --title=<string>" 1>&2; exit 1
 fi
 
 if [ ! -d hacks ]; then
@@ -161,7 +167,7 @@ $LICENSE
 schema_version: 2
 default_locale: en
 title: "[gHacks] $TITLE"
-description: "$DESCRIPTION"
+description: ""
 instruction:
   type: md
   uri: instructions/en.md

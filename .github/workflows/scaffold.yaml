@@ -1,0 +1,34 @@
+on:
+  workflow_dispatch:
+    inputs:
+      hackId:
+        description: The id of the hack, this is used as folder name, short, sweet and all lower/snake case, e.g. mlops-on-gcp
+        required: true
+      hackTitle:
+        description: The title of the hack, mainly used as lab title for Qwiklabs, e.g IoT hack of the Century
+        required: true
+      hackAuthor:
+        description: The email address of the author, used in QL_OWNER, you can add more later, e.g. user@example.com
+        required: true
+jobs:
+  scaffold:
+    runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: ${{ github.event.inputs.hackId }}
+      HACK: ${{ github.event.inputs.hackId }}
+      AUTHOR: ${{ github.event.inputs.hackAuthor }}
+      TITLE: ${{ github.event.inputs.hackTitle }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create new branch
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          git checkout -b ${{ env.BRANCH_NAME }}
+      - name: Generate the required structure
+        run: tools/setup-newhack.sh --hack="${{ env.HACK }}" --title="${{ env.TITLE }}" --author="${{ env.AUTHOR }}"
+      - name: Push branch
+        run: |
+          git add .
+          git commit -m "Inital commit for the hack ${{ env.HACK }}"
+          git push -u origin ${{ env.BRANCH_NAME }}
