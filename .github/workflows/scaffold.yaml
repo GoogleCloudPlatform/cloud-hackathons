@@ -1,3 +1,5 @@
+name: Create a new gHack
+
 on:
   workflow_dispatch:
     inputs:
