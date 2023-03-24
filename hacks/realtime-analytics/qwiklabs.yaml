@@ -25,6 +25,9 @@ environment:
   resources:
   - type: gcp_project
     id: project
+    startup_script:
+      type: qwiklabs
+      path: artifacts
   - type: gcp_user
     id: user_1
     permissions:
