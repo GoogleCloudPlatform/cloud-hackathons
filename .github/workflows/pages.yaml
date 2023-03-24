@@ -9,6 +9,7 @@ on:
 jobs:
   pages:
     runs-on: ubuntu-latest
+    if: github.repository == 'gfilicetti/gHacks'
     steps:
     - name: Checkout
       uses: actions/checkout@v3
