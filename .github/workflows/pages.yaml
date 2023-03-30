@@ -9,7 +9,7 @@ on:
 jobs:
   pages:
     runs-on: ubuntu-latest
-    if: github.repository == 'gfilicetti/gHacks'
+    if: github.repository == 'GoogleCloudPlatform/cloud-hackathons'
     steps:
     - name: Checkout
       uses: actions/checkout@v3
