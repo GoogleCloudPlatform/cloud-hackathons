@@ -1,4 +1,4 @@
-name: Validation
+name: Validate formatting
 
 on: 
   pull_request:

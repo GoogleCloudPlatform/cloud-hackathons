@@ -1,4 +1,4 @@
-name: Website
+name: Publish to website
 
 on: 
   workflow_dispatch:
