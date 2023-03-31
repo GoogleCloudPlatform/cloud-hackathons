@@ -38,17 +38,18 @@ First we create a fork of the main gHacks repo and then clone it to disk and cre
    - Navigate to the gHacks git repo at: <https://github.com/GoogleCloudPlatform/cloud-hackathons>
    - Click the Fork button at the top right of the page and then choose the account you want to create the fork in. 
 2. Clone your new fork to your local machine
-   - `git clone https://github.com/myname/cloud-hackathons.git`
-   - `cd cloud-hackathons`
+   - `git clone https://github.com/myname/cloud-hackathons.git ./gHacks`
+   - `cd gHacks`
 3. Create a new branch for your work. It is a best practice to never work directly on the main branch
    - `git checkout -b my-branch`
 4. From the root folder, run 
-   - `tools/setup-newhack.sh --hack=<name of your hack> --author=<your email address> --title=<title of your hack>`
-5. A new folder will be created in the `hacks` folder with the name of your hack, make sure that you're using snake-case for that
+   - `tools/setup-newhack.sh --hack=<name-of-your-hack> --author=<your email address> --title=<title of your hack>`
+5. A new folder will be created in the `hacks` folder with the name of your hack
+   > **Note** Make sure to use "snake-case" for your hack name, ie: use dashes between words
 
 ### Files and Folders
 
-Now that you've created the directory structure above, here is what each of them will contain:
+Now that you've run the `setup-newhack.sh` script above, this is the directory structure it creates and the template files within:
 
 ```
 hacks
