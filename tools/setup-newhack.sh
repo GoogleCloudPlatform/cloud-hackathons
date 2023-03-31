@@ -46,6 +46,7 @@ touch $BASEDIR/images/.gitkeep
 
 cp faq/template-student-guide.md $BASEDIR/README.md
 cp faq/template-coach-guide.md $BASEDIR/solutions.md
+cp faq/template-lectures.pdf $BASEDIR/resources/
 
 echo $AUTHOR > $BASEDIR/QL_OWNER
 
@@ -126,7 +127,7 @@ EOF
 
 cat <<EOF > $BASEDIR/resources/Makefile
 $LICENSE
-TARGET=student-resources.zip
+TARGET=student-files.zip
 OBJS=*.*
 
 \$(TARGET): \$(OBJS)

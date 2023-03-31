@@ -33,18 +33,18 @@ If you create things in this order, you will be able to quickly flesh out a new 
 
 Okay, ready to get started creating your own gHack?
 
-First we create a fork of the main gHack repo and then clone it to disk and create a branch to work in. The instructions below assume you have the git command line on your machine. If you're more comfortable in a GUI git client, you can use that too (we recommend SourceTree).
-1. Create a fork of the gHack repo
-   - Navigate to the gHack git repo at: <http://github.com/gfilicetti/gHacks>
+First we create a fork of the main gHacks repo and then clone it to disk and create a branch to work in. The instructions below assume you have the git command line on your machine. If you're more comfortable in a GUI git client, you can use that too (we recommend SourceTree).
+1. Create a fork of the gHacks repo
+   - Navigate to the gHacks git repo at: <https://github.com/GoogleCloudPlatform/cloud-hackathons>
    - Click the Fork button at the top right of the page and then choose the account you want to create the fork in. 
 2. Clone your new fork to your local machine
-   - `git clone https://github.com/myname/gHacks.git`
-   - `cd gHacks`
+   - `git clone https://github.com/myname/cloud-hackathons.git`
+   - `cd cloud-hackathons`
 3. Create a new branch for your work. It is a best practice to never work directly on the main branch
    - `git checkout -b my-branch`
-4. Add a new folder to the top-level `hacks` root folder. Name your hack something distinctive using snake-case. Eg:
-   - `mkdir hacks/century-of-iot`
-5. Within your new folder, you'll need at least two files `README.md` and `solutions.md`. If you have additional assets such as images for the descriptions, you can put those in an `images` folder. If you choose to associate a Qwiklabs lab with the hack, you'll need to provide a `QL_OWNER` file (which includes the email addresses of the lab owners), a `qwiklabs.yaml` file (which configures the lab and its resources). Additionally if you need to do any setup for the lab you can use Terraform scripts for that which need to be in the `artifacts` directory accompanied by a `runtime.yaml`.   
+4. From the root folder, run 
+   - `tools/setup-newhack.sh --hack=<name of your hack> --author=<your email address> --title=<title of your hack>`
+5. A new folder will be created in the `hacks` folder with the name of your hack, make sure that you're using snake-case for that
 
 ### Files and Folders
 
@@ -53,14 +53,18 @@ Now that you've created the directory structure above, here is what each of them
 ```
 hacks
 ├── century-of-iot
-│   ├── artifacts  # (Optional) Terraform setup for Qwiklabs
-│   │   ├── main.tf
+│   ├── artifacts  # (Optional) Terraform setup 
+│   │   ├── Makefile
 │   │   ├── runtime.yaml
+│   │   ├── main.tf
+│   │   ├── providers.tf
+│   │   ├── outputs.tf
 │   │   └── variables.tf
 │   ├── images  # (Optional) Images used for hack description and/or solutions 
 │   │   ├── architecture.png
 │   │   └── results.png
 │   ├── resources # (Optional) Lecture presentations, supporting files, etc. Will be supplied to students
+│   │   ├── Makefile
 │   │   ├── lectures.pdf
 │   │   ├── kube-deploy.yaml
 │   │   └── testing.html
