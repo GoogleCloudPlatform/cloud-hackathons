@@ -26,7 +26,7 @@ This hack will help you explore the following tasks:
 
 ## Challenges
 
-- Setting Up the Environment
+- Setting up the environment
    - Before we can hack, you will need to set up a few things.
    - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 - Challenge 1: Let's start exploring!
