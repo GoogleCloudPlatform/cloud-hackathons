@@ -317,27 +317,26 @@ Use the provided build pipeline (`clouddeploy.yaml`) to create a new build confi
 
 ### Description
 
-Typically Batch Predictions are asynchronous and are scheduled to run periodically (daily/weekly etc). You can trigger batch jobs using different methods, for this challenge we'll use Cloud Build pipelines. Create a new Cloud Build trigger using the provided `batchdeploy.yaml` file, don't forget to set the required variables. Make sure that this build pipeline is triggered through webhook events. Create a new Cloud Scheduler job that runs every Sunday at 3:30 and uses the webhook event URL as the execution method.
+Typically Batch Predictions are asynchronous and are scheduled to run periodically (daily/weekly etc). You can trigger batch jobs using different methods, for this challenge we'll use Cloud Build pipelines in combination with Vertex AI pipelines. Create a new Cloud Build trigger using the provided `batchdeploy.yaml` file, don't forget to set the required variables. Make sure that this build pipeline is triggered through webhook events. Create a new Cloud Scheduler job that runs every Sunday at 3:30 and uses the webhook event URL as the execution method.
 
-Running the batch predictions periodically will only get us half way. We need to monitor any Model Monitoring alerts and act on that. There's another Cloud Build pipeline definition provided by `clouddeploy.yaml`, configure that in a new Cloud Build trigger, set the required variables (remember to set _ENDPOINT_ to `[none]`, the others should be familiar, when in doubt have a look at the yaml file) and use webhook events.
+Running the batch predictions periodically will only get us half way. We need to monitor any Model Monitoring alerts and act on that. There's another Cloud Build pipeline definition provided by `clouddeploy.yaml` that's responsible for retraining. Configure that in a new Cloud Build trigger, set the required variables (remember to set _ENDPOINT_ to `[none]`, the others should be familiar, when in doubt have a look at the yaml file). Use Pub/Sub messages as the trigger event and pick the `batch-monitoring` topic.
 
-We're almost there, the `batchdeploy.yaml` build turns on Model Monitoring and enables Log based alerts. Create Log Alerts and use webhooks as a notification channel to trigger the build defined by `clouddeploy.yaml` to start re-training.
+> **Note**  
+> At the time of this writing the batch monitoring results are written to Cloud Storage, but there's no additional events or logs triggered when there are monitoring alerts. This project includes some custom services that we prepared to periodically poll for batch monitoring results and then put a message in Pub/Sub if there's a new batch that has created any alerts.
 
 ### Success Criteria
 
-1. There's a correctly configured build pipeline for _batch predictions_ that can be triggered webhooks only
+1. There's a correctly configured build pipeline for _batch predictions_ that can be triggered with webhooks
 2. There's a Cloud Scheduler job that is configured to run every Sunday at 3.30 triggering the batch predictions build pipeline
-3. There's a correctly configured build pipeline for _retraining_ that can be triggered through webhooks only
-4. Log based alerts are configured correctly to trigger the retraining when Model Monitoring yields any alerts
+3. There's a correctly configured build pipeline for _retraining_ that can be triggered with Pub/Sub messages
+4. Show that all the components have run at least once
 
 ### Tips
 
 - Cloud Build supports inline yaml as well
+- You can _force run_ a Cloud Scheduler job
 
 ### Learning Resources
 
 - [Cloud Scheduler](https://cloud.google.com/scheduler/docs/schedule-run-cron-job)
-- [Log based alerts](https://cloud.google.com/logging/docs/alerting/log-based-alerts) for Cloud Logging
-- [Webhook notifications](https://cloud.google.com/monitoring/support/notification-options#webhooks) for Cloud Logging
-- [Log based alerts](https://cloud.google.com/vertex-ai/docs/model-monitoring/using-model-monitoring#cloud-logging-alerts) for Vertex AI Model Monitoring feature anomaly detection
-- [Triggering Cloud Build with webhooks](https://cloud.google.com/build/docs/automate-builds-webhook-events)
+- [Triggering Cloud Build with Pub/Sub events](https://cloud.google.com/build/docs/automate-builds-pubsub-events)
