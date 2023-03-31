@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SRC_DIR=gHacks
+SRC_DIR=cloud-hackathons
 DST_DIR=gcp-ce-content
 
 LONG="hack:,slug:"
