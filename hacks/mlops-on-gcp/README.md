@@ -26,6 +26,9 @@ This hack will help you explore the following tasks:
 
 ## Challenges
 
+- Setting Up the Environment
+   - Before we can hack, you will need to set up a few things.
+   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 - Challenge 1: Let's start exploring!
 - Challenge 2: If it isn't in version control, it doesn't exist
 - Challenge 3: You break the build, you buy cake
