@@ -10,11 +10,6 @@ def get_file_name(path: str) -> str:
     return path[idx+1:]
 
 
-def format_bq(prefix: str, header: str, suffix: str) -> str:
-    clazz = "alert" if header == "Warning" else "info"
-    return f"{prefix}> <span class=\"{clazz}\">{{% octicon {clazz} %}} {header}</span>{suffix}\n"
-
-
 def navigation_bar(f: TextIO, challenges: list[str], idx: int, home_file: str):
     prv = get_file_name(challenges[idx - 1]) if idx > 0 else None
     nxt = get_file_name(challenges[idx + 1]) if idx < (len(challenges) - 1) else None
@@ -27,10 +22,6 @@ def navigation_bar(f: TextIO, challenges: list[str], idx: int, home_file: str):
 
 
 def write(f: TextIO, line: str) -> str:
-    regex = r"(\s*)> \*\*(Note|Warning)\*\*(.*)"
-    matches = re.match(regex, line)
-    if matches:
-        line = format_bq(matches.group(1), matches.group(2), matches.group(3))
     f.write(line)
 
 
