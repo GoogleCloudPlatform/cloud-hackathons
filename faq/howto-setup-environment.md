@@ -125,10 +125,10 @@ And choose the project that starts with _qwiklabs-gcp_
 
 ![GCP Project](images/setup-qwiklabs-ql-project.png)
 
-If your gHack requires you to set up student resources, you'll be provided a `student-files.zip`. In that case follow the instructions in [this](#upload-and-unzip-all-student-files) section to complete the setup. 
+If your gHack requires you to set up student resources, you'll be provided a `student-files.zip`. In that case follow the instructions in [this](#upload-and-unzip-all-student-files) section to complete the setup. In Qwiklabs mode you can ignore the `ghacks-setup.zip` as that has been executed automatically for you.
 
 > **Note**  
-> In Qwiklabs mode you can ignore the `ghacks-setup.zip` as that has been executed automatically for you.
+Since every team member will have access to the same Google Cloud Project, we recommend assigning a different _driver_ for each challenge so that everybody gets to participate hands-on. The _driver_ can share their screen so that the rest can see what's going on.
 
 > **Warning**
 > Although the Qwiklabs lab will include the instructions for the hack, we recommend you to follow the instructions on the [gHacks website](https://ghacks.dev) as those are accessible to **all** students (only the Team Lead will be logged into the Qwiklabs instance) and have a better layout.
