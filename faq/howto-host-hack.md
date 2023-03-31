@@ -384,7 +384,6 @@ The lead coach should close out the gHacks event with a final stand-up that acts
 - Attendees should be encouraged to share their parting thoughts and key learnings.
 - Attendee feedback should be solicited for a final time and notes collected by the lead coach
 - Thank the attendees for their time and dedication during the hack
-- Finally, share the content by directing the attendees to visit the gHacks repo on Github: <http://github.com/gfilicetti/gHacks>
 
 ### Tips for In Person
 
