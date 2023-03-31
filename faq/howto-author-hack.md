@@ -44,9 +44,8 @@ First we create a fork of the main gHacks repo and then clone it to disk and cre
    - `git checkout -b my-branch`
 4. From the root folder, run 
    - `tools/setup-newhack.sh --hack=<name-of-your-hack> --author=<your email address> --title=<title of your hack>`
-   > **Note** The title of your hack is the _visible_ title, and should be human readable, it will be used to link to your hack from the front page (the catalog)
+   > **Note** The title of your hack is the _visible_ title, and should be human readable, it will be used to link to your hack from the front page (the catalog). Also make sure to use "snake-case" for your hack name, ie: use dashes between words
 5. A new folder will be created in the `hacks` folder with the name of your hack
-   > **Note** Make sure to use "snake-case" for your hack name, ie: use dashes between words
 
 ### Files and Folders
 
