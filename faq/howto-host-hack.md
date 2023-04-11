@@ -31,6 +31,8 @@ During a gHacks event, attendees work together in teams of 3 to 5 people to solv
 
 At an in-person event, each team will be sitting at the same table. During a virtual event, everyone will be sitting at home in their pajamas. The main difference is that during a virtual event, attendees will need to join the Meet call in the event's Chat Space for the duration of the event. Most other aspects of the event are the same.
 
+> **Note** To access a Google Chat Space, the attendees will need a Google account. This can be their work account if the company runs Google Workspace, or it can be a Gmail account. If an attendee doesn't have a Google account, please have them create one **AHEAD OF TIME** for this event: [Click here to create a new Gmail account](https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=US&flowEntry=SignUp&flowName=GlifWebSignIn)
+
 ### People 
 
 Finally, you need people to hack. There are a few different roles that will need to be played at your gHacks event. They include:
@@ -188,13 +190,17 @@ If you are hosting a virtual event, the event location <u>***IS***</u> the event
 
 Whether you used a Google Form or worked with an external organization stakeholder, you should gather the list of registered attendees and add them to the Google Space a couple of days before the event.
 
+> **Note** To add an attendee to a Google Space, they will need a Google account. This can be their work account if the company runs Google Workspace or it can be a Gmail account. If an attendee doesn't have a Google account, please have them create one **AHEAD OF TIME** for this event: [Click here to create a new Gmail account](https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=US&flowEntry=SignUp&flowName=GlifWebSignIn)
+
 **Example of adding attendees to a Google Space:**
 
 ![Adding people to a space](images/host-add-people.png)
 
 When someone is added to a Space, they will be emailed to accept the invite and join the Space. 
 
-> **Warning** The user will need to "activate" Google Chat if they've never used it before. Be aware of this.
+> **Warning** The user will need to "activate" Google Chat if they've never used it before. Be aware of this, the link will be in the invite email.
+
+> **Note** If the Space doesn't open up automatically for the user, they may need to click the '+' sign and select *Browse Spaces* and select the Space they were invited to.
 
 #### Calendar Invite
 
