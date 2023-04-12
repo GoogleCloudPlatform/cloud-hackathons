@@ -2,7 +2,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "4.60.0"
+      version = "4.57.0"
     }
   }
 }
@@ -92,7 +92,13 @@ resource "google_service_account_iam_member" "gce_default_account_user_iam" {
   member             = "serviceAccount:${local.build_default_sa}"
 }
 
-# - BEGIN Further config needed for Batch Monitoring Alerts workaround
+# --- # - BEGIN Further config needed for Batch Monitoring Alerts workaround
+
+resource "time_sleep" "wait_60_seconds" {
+  depends_on      = [google_project_service.functions_api]
+  create_duration = "60s"
+}
+
 resource "google_pubsub_topic" "pubsub_topic" {
   name = "batch-monitoring"
 
@@ -115,7 +121,7 @@ resource "google_firestore_database" "database" {
 
 data "archive_file" "source" {
   type        = "zip"
-  source_dir  = "python"
+  source_dir  = "${path.module}/python"
   output_path = "function.zip"
 }
 
@@ -156,6 +162,7 @@ resource "google_cloudfunctions_function" "function" {
   }
 
   depends_on = [
+    time_sleep.wait_60_seconds, # wait for IAM permissions to propagate for service agent
     google_project_service.functions_api,
     google_firestore_database.database
   ]
