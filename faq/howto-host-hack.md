@@ -112,11 +112,14 @@ For example: `"gHack - Acme Corp - MLOps on GCP"`
 
 > **Note** Turn off conversation view as it will only get in the way and make things harder to read.
 
+> **Note** To access this new Google Space, the attendees will need a Google account. This can be their work account if the company runs Google Workspace, or it can be a Gmail account. If an attendee doesn't have a Google account, please have them create one **AHEAD OF TIME** for this event: [Click here to create a new Gmail account](https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=US&flowEntry=SignUp&flowName=GlifWebSignIn)
+
 ### Space Structure
 
 In our Google Space, we will have the following:
 
-- **Add Students** - The lead coach will click on `Add people & apps` and enter the email addresses of all the participants and coaches for this event
+- **Add Students** - The lead coach will click on `Add people & apps` and enter the email addresses of all the participants and coaches for this event. 
+	- > **Note** See above, email addresses must be Google Workspace accounts or Gmail accounts to be able to join the Google Space.
 - **Student Guide** - The lead coach will paste a link to the student guide as the first entry in the chat.
 - **Files** - The lead coach will click on `Share a file` and upload all files for the students for this hack. See [Making Resources Available](#making-resources-available) below for information on creating the necessary files.
 - **Chat** - Make sure to turn on History so that the chats are persisted between days.
@@ -132,6 +135,10 @@ In our Google Space, we will have the following:
 ![Create Breakouts](images/host-breakouts-1.png)
 ![Create Breakouts](images/host-breakouts-2.png)
 ![Create Breakouts](images/host-breakouts-3.png)
+
+- **Make All Coaches Co-Hosts** - The lead coach will change the status of all coaches in the Google Meet and make them "co-hosts". This gives them the ability to float between breakout rooms as needed. Go to the **People** panel in Google Meet and click the 3 dots menu for each coach to make them co-hosts.
+
+![Add Co-Hosts](images/host-add-cohost.png)
 
 - **Coaches ONLY Chat** - The lead coach will create a multi-person chat for all the coaches to discuss things in private, away from student eyes. Here you can put a direct link to the `solutions` folder for this hack from the github repo so coaches can easily look at solution files if they exist.
 
