@@ -2,7 +2,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "4.57.0"
+      version = "4.60.0"
     }
   }
 }
@@ -39,6 +39,7 @@ resource "google_project_service" "source_repository_api" {
   service = "sourcerepo.googleapis.com"
 }
 
+# - BEGIN APIs needed for Batch Monitoring Alerts workaround
 resource "google_project_service" "scheduler_api" {
   service = "cloudscheduler.googleapis.com"
 }
@@ -47,23 +48,15 @@ resource "google_project_service" "functions_api" {
   service = "cloudfunctions.googleapis.com"
 }
 
-resource "google_project_service" "cloudrun_api" {
-  service = "run.googleapis.com"
-}
-
 resource "google_project_service" "firestore_api" {
   service = "firestore.googleapis.com"
-}
-
-resource "google_project_service" "registry_api" {
-  service = "artifactregistry.googleapis.com"
 }
 
 resource "google_project_service" "pubsub_api" {
   service                    = "pubsub.googleapis.com"
   disable_dependent_services = true
 }
-
+# - END APIs needed for Batch Monitoring Alerts workaround
 
 data "google_compute_default_service_account" "gce_default" {
   depends_on = [
@@ -77,8 +70,8 @@ resource "google_project_iam_member" "gce_default_iam" {
     "roles/aiplatform.admin",
     "roles/bigquery.admin",
     "roles/storage.objectAdmin",
-    "roles/run.invoker",
-    "roles/datastore.user"
+    "roles/cloudfunctions.invoker",  # Batch Monitoring Alerts workaround
+    "roles/datastore.user"           # Batch Monitoring Alerts workaround
   ])
   role   = each.key
   member = "serviceAccount:${data.google_compute_default_service_account.gce_default.email}"
@@ -99,13 +92,7 @@ resource "google_service_account_iam_member" "gce_default_account_user_iam" {
   member             = "serviceAccount:${local.build_default_sa}"
 }
 
-# --- 
-
-resource "time_sleep" "wait_60_seconds" {
-  depends_on      = [google_project_service.functions_api]
-  create_duration = "60s"
-}
-
+# - BEGIN Further config needed for Batch Monitoring Alerts workaround
 resource "google_pubsub_topic" "pubsub_topic" {
   name = "batch-monitoring"
 
@@ -117,9 +104,9 @@ resource "google_pubsub_topic" "pubsub_topic" {
 resource "google_firestore_database" "database" {
   name                        = "(default)"
 
-  project                     = var.gcp_project_id
-  location_id                 = "nam5"  # or eur3 for europe
-  type                        = "DATASTORE_MODE"
+  project     = var.gcp_project_id
+  location_id = length(regexall("^europe-", var.gcp_region)) > 0 ? "eur3" : "nam5" 
+  type        = "DATASTORE_MODE"
 
   depends_on = [
     google_project_service.firestore_api
@@ -148,38 +135,28 @@ resource "google_storage_bucket_object" "zip" {
   bucket = google_storage_bucket.bucket.name
 }
 
-resource "google_cloudfunctions2_function" "function" {
-  name     = "scan-batch-monitoring"
-  location = var.gcp_region
+resource "google_cloudfunctions_function" "function" {
+  name    = "scan-batch-monitoring"
+  runtime = "python311"
 
-  build_config {
-    runtime     = "python310"
-    entry_point = "scan_batch_predictions"
-    source {
-      storage_source {
-        bucket = google_storage_bucket.bucket.name
-        object = google_storage_bucket_object.zip.name
-      }
-    }
-  }
+  trigger_http          = true
+  entry_point           = "scan_batch_predictions"
+  timeout               = "300"
+  source_archive_bucket = google_storage_bucket.bucket.name
+  source_archive_object = google_storage_bucket_object.zip.name
+  ingress_settings      = "ALLOW_ALL"
+  max_instances         = 1
 
-  service_config {
-    max_instance_count = 1
-    ingress_settings   = "ALLOW_ALL"
-    available_memory   = "256M"
-    timeout_seconds    = "300"
-    environment_variables = {
-      GCP_REGION      = var.gcp_region
-      GCP_PROJECT_ID  = var.gcp_project_id
-      PUBSUB_TOPIC_ID = google_pubsub_topic.pubsub_topic.name
-    }
+  service_account_email = data.google_compute_default_service_account.gce_default.email
+
+  environment_variables = {
+    GCP_REGION      = var.gcp_region
+    GCP_PROJECT_ID  = var.gcp_project_id
+    PUBSUB_TOPIC_ID = google_pubsub_topic.pubsub_topic.name
   }
 
   depends_on = [
-    time_sleep.wait_60_seconds,  # wait for IAM permissions to propagate for service agent
     google_project_service.functions_api,
-    google_project_service.cloudrun_api,
-    google_project_service.registry_api,
     google_firestore_database.database
   ]
 }
@@ -191,7 +168,7 @@ resource "google_cloud_scheduler_job" "batch_monitoring_poll" {
 
   http_target {
     http_method = "GET"
-    uri         = google_cloudfunctions2_function.function.service_config[0].uri
+    uri         = google_cloudfunctions_function.function.https_trigger_url
     oidc_token {
       service_account_email = data.google_compute_default_service_account.gce_default.email
     }
@@ -201,4 +178,4 @@ resource "google_cloud_scheduler_job" "batch_monitoring_poll" {
     google_project_service.scheduler_api
   ]
 }
-
+# - END Further config needed for Batch Monitoring Alerts workaround
