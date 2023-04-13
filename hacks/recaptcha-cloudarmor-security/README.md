@@ -150,7 +150,7 @@ The host and path rules determine how your traffic will be directed. For example
 Configure the frontend as HTTP with an Ephemeral IP.
 
 #### Test the HTTP Load Balancer
-Now that you created the HTTP Load Balancer for your backends, verify that traffic is forwarded to the backend service. You should see simple webpage saying:
+Now that you created the HTTP Load Balancer for your backends, verify that traffic is forwarded to the backend service. You should see a simple webpage saying:
 
 ```
 Page served from: { name of your VM }
@@ -200,7 +200,7 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
 - Navigate to the reCAPTCHA Enterprise screen in the Google Cloud Console. Go to the **KEYS** tab and confirm that both of the keys you created are there.
 
 #### Setup the gHacks+ Website
-We've provided all the files for the gHacks streaming service's website. Now we need to upload these files to the VM.
+We've provided all the files for the gHacks+ streaming service's website. Now we need to upload these files to the VM.
 
 - In the console, locate the VM in your instance group and get its name and zone.
 - Use `gcloud compute scp` command to copy the `student-resources.zip` file in your Cloud Shell up to the VM
@@ -209,7 +209,7 @@ We've provided all the files for the gHacks streaming service's website. Now we 
 
 #### Implement reCAPTCHA session token site key
 Edit `index.html` for the gHacks+ site and embed the reCAPTCHA session token site key. 
-> **Tip** The session token site key is added to the ```HEAD``` section of the HTML page.
+> **Tip** The session token site key is added to the `HEAD` section of the HTML page.
 
 Validate that you are able to access all the movies available on the gHacks+ site. You'll need to find the load balancer's IP for this and go to `index.html` in a browser.
 > **Note** You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the index page:
