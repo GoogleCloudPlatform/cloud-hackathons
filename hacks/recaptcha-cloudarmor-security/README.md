@@ -203,8 +203,8 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
 We've provided all the files for the gHacks+ streaming service's website. Now we need to upload these files to the VM.
 
 - In the console, locate the VM in your instance group and get its name and zone.
-- Use `gcloud compute scp` command to copy the `student-resources.zip` file in your Cloud Shell up to the VM
-- SSH into the VM and unzip `student-resources.zip` into the root of the apache server's html folder.
+- Use `gcloud compute scp` command to copy the `student-files.zip` file in your Cloud Shell up to the VM
+- SSH into the VM and unzip `student-files.zip` into the root of the apache server's html folder.
     > **Tip** You'll have to do this as root
 
 #### Implement reCAPTCHA session token site key

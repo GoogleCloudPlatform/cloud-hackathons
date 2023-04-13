@@ -226,10 +226,10 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
 
     ![Enterprise Keys](images/recaptcha-vm-login.png)
 
-1. Use `gcloud compute scp` from the Cloud Shell and upload `student-resources.zip` (it should've already been uploaded to the Cloud Shell from the Google Space's Files tab) to the VM.
+1. Use `gcloud compute scp` from the Cloud Shell and upload `student-files.zip` (it should've already been uploaded to the Cloud Shell from the Google Space's Files tab) to the VM.
 
     ```bash
-    gcloud compute scp student-resources.zip lb-backend-instance-group-f6z7:~ --zone us-central1-a
+    gcloud compute scp student-files.zip lb-backend-instance-group-f6z7:~ --zone us-central1-a
     ```
 
 1. SSH to the VM and unzip the file into the root html folder:
@@ -238,7 +238,7 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
     gcloud compute ssh lb-backend-instance-group-f6z7 --zone us-central1-a
     ```
     ```bash
-    sudo unzip -o -d /var/www/html student-resources.zip 
+    sudo unzip -o -d /var/www/html student-files.zip 
     ```
 
 1. Update `index.html` and embed the reCAPTCHA session token site key. The session token site key is set in the `HEAD` section of your landing page as below: 

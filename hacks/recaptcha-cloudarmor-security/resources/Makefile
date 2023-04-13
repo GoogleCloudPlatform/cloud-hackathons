@@ -1,4 +1,4 @@
-TARGET=student-resources.zip
+TARGET=student-files.zip
 OBJS=*
 
 $(TARGET): $(OBJS)
