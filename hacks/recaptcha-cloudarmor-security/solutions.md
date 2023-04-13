@@ -4,6 +4,9 @@
 Welcome to the coach's guide for the Security with reCAPTCHA and Cloud Armor gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
 ## Coach's Guides
+- Setting Up the Environment
+   - Before starting to hack, students will need to set up a few things.
+   - They will run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 - Challenge 1: Create Managed Instance Groups
    - Use managed instance groups to create an HTTP Load Balancer backend.
 - Challenge 2: Setup Your HTTP Load Balancer
@@ -18,7 +21,7 @@ Welcome to the coach's guide for the Security with reCAPTCHA and Cloud Armor gHa
 ### Notes & Guidance
 Students will creating managed instance groups here, so there are a few things to keep an eye on:
 
-- They might not know that the script has to be copy and pasted verbatim.
+- They might not know that the Startup script has to be copy and pasted verbatim.
 
 ### Step By Step Walk-through
 
@@ -26,17 +29,17 @@ Students will creating managed instance groups here, so there are a few things t
 1. In the Cloud Console, navigate to **Navigation menu > Compute Engine > Instance templates**, and then click **Create instance template**.
 1. For **Name**, type **lb-backend-template**.
 1. For **Series**, select **N1**.
-1. Click **Networking, Disks, Security, Management, Sole-Tenancy**.
+1. Click on the **Advanced options** section to open it.
 
     ![MIG Startup Script](images/mig-startup-script.png)
 
-1. Click on the **Networking** tab, add the network tags: **allow-health-check**
+1. Click on the **Networking** section, add the network tags: **allow-health-check** (and press tab or enter)
 1. Set the following values and leave all other values at their defaults:
 
     |Property|Value|
     |--|--|
-    |Network|default|
-    |Subnet|default (us-east1)|
+    |Network|ghack|
+    |Subnet|ghack (us-central1)|
     |Network tags|allow-health-check|
     
     > The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
@@ -71,9 +74,9 @@ Students will creating managed instance groups here, so there are a few things t
     |--|--|
     |Name|lb-backend-instance-group|
     |Location|Single zone|
-    |Region|us-east1|
-    |Zone|us-east1-b|
-    |Instance template|lb-backend-instance-group|
+    |Region|us-central1|
+    |Zone|us-central1-a|
+    |Instance template|lb-backend-template|
     |Autoscaling|Don't autoscale|
     |Number of instances|1|
 
@@ -85,7 +88,7 @@ Students will creating managed instance groups here, so there are a few things t
     ```bash
     gcloud compute instance-groups set-named-ports lb-backend-instance-group \
         --named-ports http:80 \
-        --zone us-east1-b
+        --zone us-central1-a
     ```
 
 ## Challenge 2: Setup Your HTTP Load Balancer
@@ -101,8 +104,23 @@ Students will creating managed instance groups here, so there are a few things t
 
     ![Start Configuration](images/lb-start-config.png)
 
-1. Select **From Internet to my VMs, Classic HTTP(S) Load Balancer** and click **Continue**.
-1. Set the **Name** to *http-lb*.
+1. Select **From Internet to my VMs** and select **Global HTTP(S) Load Balancer (classic)** then click **Continue**.
+1. Set the **Load Balancer name** to *http-lb*.
+
+#### Configure the frontend
+The host and path rules determine how your traffic will be directed. For example, you could direct video traffic to one backend and static traffic to another backend. However, you are not configuring the Host and path rules in this hack.
+
+1. Click on **Frontend configuration**.
+1. Specify the following, leaving all other values at their defaults:
+
+    |Property|Value|
+    |--|--|
+    |Protocol|HTTP|
+    |IP Version|IPv4|
+    |IP Address|Ephemeral|
+    |Port|80|
+
+1. Click **Done**.
 
 #### Configure the backend
 Backend services direct incoming traffic to one or more attached backends. Each backend is composed of an instance group and additional serving capacity metadata.
@@ -120,7 +138,6 @@ Backend services direct incoming traffic to one or more attached backends. Each 
     |Port Numbers|80|
 
 1. Click **Done**.
-1. Click **Add Backend**.
 1. For **Health Check**, select **Create a health check**.
 
     ![Create a Health Check](images/lb-create-health-check.png)
@@ -147,21 +164,6 @@ Backend services direct incoming traffic to one or more attached backends. Each 
 
     ![Create Backend](images/lb-create-backend.png)
 
-#### Configure the frontend
-The host and path rules determine how your traffic will be directed. For example, you could direct video traffic to one backend and static traffic to another backend. However, you are not configuring the Host and path rules in this hack.
-
-1. Click on **Frontend configuration**.
-1. Specify the following, leaving all other values at their defaults:
-
-    |Property|Value|
-    |--|--|
-    |Protocol|HTTP|
-    |IP Version|IPv4|
-    |IP Address|Ephemeral|
-    |Port|80|
-
-1. Click **Done**.
-
 #### Review and create the HTTP Load Balancer
 1. Click on **Review and finalize**.
 
@@ -176,7 +178,13 @@ The host and path rules determine how your traffic will be directed. For example
 #### Test the HTTP Load Balancer
 Now that you created the HTTP Load Balancer for your backends, verify that traffic is forwarded to the backend service. To test IPv4 access to the HTTP Load Balancer, open a new tab in your browser and navigate to **http://[LB_IP_v4]**. Make sure to replace **[LB_IP_v4]** with the IPv4 address of the load balancer.
 
-> It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
+You should see a simple webpage saying:
+
+```
+Page served from: { name of your VM }
+```
+
+> **Note** It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
 
 ## Challenge 3: Deploy a reCAPTCHA Token and Challenge Page
 
@@ -186,8 +194,6 @@ Now that you created the HTTP Load Balancer for your backends, verify that traff
 
 ### Step By Step Walk-through
 #### Create reCAPTCHA session token and WAF challenge-page site key
-Before creating the session token site key and challenge page site key, double check that you have enabled the reCAPTCHA Enterprise API as indicated in the "Enable API" section at the beginning.
-
 The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-user's browser after the assessment. The end-user's browser attaches the cookie and refreshes the cookie as long as the reCAPTCHA JavaScript remains active.
 
 1. Create the reCAPTCHA session token site key and enable the WAF feature for the key. We will also be setting the WAF service to Cloud Armor to enable the Cloud Armor integration.
@@ -200,7 +206,7 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
 
     > **Note** We are using the integration type **score** which will be leveraged in the Cloud Armor policy. You can alternatively use **checkbox** and **invisible**.
 
-    > We are also setting a **testing score** when creating the key to validate that the bot management policies we create with Cloud Armor are working as intended. Replicating bot traffic is not easy and hence, this is a good way to test the feature.
+    > **Note** We are also setting a **testing score** when creating the key to validate that the bot management policies we create with Cloud Armor are working as intended. Replicating bot traffic is not easy and hence, this is a good way to test the feature.
 
 1. Output of the above command, gives you the key created. Make a note of it as we will add it to your web site in the next step.
 1. Create the reCAPTCHA WAF challenge-page site key and enable the WAF feature for the key. You can use the reCAPTCHA challenge page feature to redirect incoming requests to reCAPTCHA Enterprise to determine whether each request is potentially fraudulent or legitimate. We will later associate this key with the Cloud Armor security policy to enable the manual challenge. We will refer to this key as **CHALLENGE-PAGE-KEY** in the later steps.
@@ -216,26 +222,26 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
     ![Enterprise Keys](images/recaptcha-main.png)
 
 #### Implement reCAPTCHA session token site key
-1. Navigate to **Navigation menu > Compute Engine > VM Instances**. Locate the VM in your instance group and SSH to it.
+1. Navigate to **Navigation menu > Compute Engine > VM Instances**. Locate the VM in your instance group and make note of its name, eg: `lb-backend-instance-group-f6z7`
 
-    ![Enterprise Keys](images/recaptcha-main.png)
+    ![Enterprise Keys](images/recaptcha-vm-login.png)
 
-1. Go to the webserver root directory and and change user to root
-
-    ```bash
-    cd /var/www/html/
-    sudo su
-    ```
-
-1. Use `scp` from the Cloud Shell and upload `student-resources.zip` (from the Google Space's Files tab) to the VM.
+1. Use `gcloud compute scp` from the Cloud Shell and upload `student-resources.zip` (it should've already been uploaded to the Cloud Shell from the Google Space's Files tab) to the VM.
 
     ```bash
-    scp student-resources.zip user@32.43.54.1:~
+    gcloud compute scp student-resources.zip lb-backend-instance-group-f6z7:~ --zone us-central1-a
     ```
 
-1. Move the contents of the zip into the root html folder, overwriting `index.html`
+1. SSH to the VM and unzip the file into the root html folder:
+    
+    ```bash
+    gcloud compute ssh lb-backend-instance-group-f6z7 --zone us-central1-a
+    ```
+    ```bash
+    sudo unzip -o -d /var/www/html student-resources.zip 
+    ```
 
-1. Update `index.html` and embed the reCAPTCHA session token site key. The session token site key is set in the head section of your landing page as below: 
+1. Update `index.html` and embed the reCAPTCHA session token site key. The session token site key is set in the `HEAD` section of your landing page as below: 
 
     ```html
     <script src="https://www.google.com/recaptcha/enterprise.js?render=<REPLACE_TOKEN_HERE>&waf=session" async defer></script>
