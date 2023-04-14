@@ -119,7 +119,7 @@ TARGET=ghacks-setup.zip
 OBJS=*.tf runtime.yaml
 
 \$(TARGET): \$(OBJS)
-${TAB}zip \$(TARGET) \$(OBJS)
+${TAB}zip -r \$(TARGET) \$(OBJS)
 
 clean:
 ${TAB}rm -f \$(TARGET)
@@ -131,7 +131,7 @@ TARGET=student-files.zip
 OBJS=*.*
 
 \$(TARGET): \$(OBJS)
-${TAB}zip \$(TARGET) \$(OBJS)
+${TAB}zip -r \$(TARGET) \$(OBJS)
 
 clean:
 ${TAB}rm -f \$(TARGET)
