@@ -259,15 +259,15 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
 #### Validate Bot Management with Cloud Armor
 
-- Open up a browser and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on the movie "Brooklyn Dreams". Verify you are allowed through.
+- Open up a browser and go to ```http://{LoadBalancer_IP_Here}/index.html```. Click on the movie ***Brooklyn Dreams***. Verify you are allowed through.
 
     ![armor good score](images/recaptcha-site-goodscore.png)
 
-- Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on the movie "Thorned". Verify you receive a HTTP 403 error.
+- Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalancer_IP_Here}/index.html```. Click on the movie ***Thorned***. Verify you receive a HTTP 403 error.
 
     ![armor bad score](images/armor-bad-score.png)
 
-- Open another new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on the movie "La Cucina in Crisis". Verify you see the redirection to Google reCAPTCHA and the manual challenge page.
+- Open another new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalancer_IP_Here}/index.html```. Click on the movie ***La Cucina in Crisis***. Verify you see the redirection to Google reCAPTCHA and the manual challenge page.
 
     ![armor recaptcha click check](images/armor-click-check.png)
 

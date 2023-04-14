@@ -272,7 +272,7 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
 #### Create Cloud Armor security policy rules for Bot Management
 In this section, you will use Cloud Armor bot management rules to allow, deny and redirect requests based on the reCAPTCHA score. Remember that when you created the session token site key, you set a testing score of 0.5.
 
-1. In Cloud Shell, create security policy via gcloud:
+1. In Cloud Shell, create a security policy via gcloud:
 
     ```bash
     gcloud compute security-policies create recaptcha-policy \
@@ -290,7 +290,7 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
     ```bash
     gcloud compute security-policies rules create 2000 \
         --security-policy recaptcha-policy \
-        --expression "request.path.matches('good-score.html') &&    token.recaptcha_session.score > 0.4" \
+        --expression "request.path.matches('good-score.html') && token.recaptcha_session.score > 0.4" \
         --action allow
     ```
 
@@ -317,7 +317,7 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
     ```bash
     gcloud compute backend-services update lb-backend \
-        --security-policy=recaptcha-policy –-global
+        --global --security-policy=recaptcha-policy 
     ```
 
 1. In the Console, navigate to **Navigation menu > Network Security > Cloud Armor**.
@@ -328,15 +328,17 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
 #### Validate Bot Management with Cloud Armor
 
-1. Open up a browser and enter the url ***http://[LB_IP_v4]/index.html***. Navigate to **"Visit allow link"**. You should be allowed through:
+1. Open up a browser and go to ```http://{LoadBalancer_IP_Here}/index.html```. Click on the movie ***Brooklyn Dreams***. Verify you are allowed through.
 
     ![armor good score](images/recaptcha-site-goodscore.png)
 
-1. Open a new window in Incognito mode to ensure we have a new session. Enter the url ***http://[LB_IP_v4]/index.html*** and navigate to **"Visit blocked link"**. You should receive a HTTP 403 error
+1. Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalancer_IP_Here}/index.html```. Click on the movie ***Thorned***. Verify you receive a HTTP 403 error.
 
     ![armor bad score](images/armor-bad-score.png)
 
-1. Open a new window in Incognito mode to ensure we have a new session. Enter the url ***http://[LB_IP_v4]/index.html*** and navigate to **"Visit redirect link"**. You should see the redirection to Google reCAPTCHA and the manual challenge page as below
+1. Open another new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalancer_IP_Here}/index.html```. Click on the movie ***La Cucina in Crisis***. Verify you see the redirection to Google reCAPTCHA and the manual challenge page.
+
+    > **Note** Depending on your Internet usage, reCAPTCHA might already think you're trusted and will not display the manual challenge.
 
     ![armor recaptcha click check](images/armor-click-check.png)
 
@@ -362,11 +364,11 @@ Explore the security policy logs to validate bot management worked as expected.
 
 1. Now click Run Query.
 
-1. Look for a log entry in Query results where the request is for ***http://[LB_IP_v4]/good-score.html***. Expand jsonPayload. Expand enforcedSecurityPolicy.
+1. Look for a log entry in Query results where the request is for ```http://{LoadBalancer_IP_Here}/good-score.html```. Expand jsonPayload. Expand enforcedSecurityPolicy.
 
     ![armor good results](images/armor-good-results.png)
 
-1. Repeat the same for ***http://[LB_IP_v4]/bad-score.html*** and ***http://[LB_IP_v4]/median-score.html***
+1. Repeat the same for ```http://{LoadBalancer_IP_Here}/bad-score.html``` and ```http://{LoadBalancer_IP_Here}/median-score.html```
 
     ![armor bad results](images/armor-bad-results.png)
 
@@ -374,4 +376,4 @@ Explore the security policy logs to validate bot management worked as expected.
 
 Notice that the configuredAction is set to **ALLOW, DENY or GOOGLE_RECAPTCHA** with the name **recaptcha-policy**.
 
-> Cloud Armor security policies create logs that can be explored to determine when traffic is denied and when it is allowed, along with the source of the traffic.
+> **Note** Cloud Armor security policies create logs that can be explored to determine when traffic is denied and when it is allowed, along with the source of the traffic.
