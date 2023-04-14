@@ -150,7 +150,7 @@ The host and path rules determine how your traffic will be directed. For example
 Configure the frontend as HTTP with an Ephemeral IP.
 
 #### Test the HTTP Load Balancer
-Now that you created the HTTP Load Balancer for your backends, verify that traffic is forwarded to the backend service. You should see simple webpage saying:
+Now that you created the HTTP Load Balancer for your backends, verify that traffic is forwarded to the backend service. You should see a simple webpage saying:
 
 ```
 Page served from: { name of your VM }
@@ -200,16 +200,16 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
 - Navigate to the reCAPTCHA Enterprise screen in the Google Cloud Console. Go to the **KEYS** tab and confirm that both of the keys you created are there.
 
 #### Setup the gHacks+ Website
-We've provided all the files for the gHacks streaming service's website. Now we need to upload these files to the VM.
+We've provided all the files for the gHacks+ streaming service's website. Now we need to upload these files to the VM.
 
 - In the console, locate the VM in your instance group and get its name and zone.
-- Use `gcloud compute scp` command to copy the `student-resources.zip` file in your Cloud Shell up to the VM
-- SSH into the VM and unzip `student-resources.zip` into the root of the apache server's html folder.
+- Use `gcloud compute scp` command to copy the `student-files.zip` file in your Cloud Shell up to the VM
+- SSH into the VM and unzip `student-files.zip` into the root of the apache server's html folder.
     > **Tip** You'll have to do this as root
 
 #### Implement reCAPTCHA session token site key
 Edit `index.html` for the gHacks+ site and embed the reCAPTCHA session token site key. 
-> **Tip** The session token site key is added to the ```HEAD``` section of the HTML page.
+> **Tip** The session token site key is added to the `HEAD` section of the HTML page.
 
 Validate that you are able to access all the movies available on the gHacks+ site. You'll need to find the load balancer's IP for this and go to `index.html` in a browser.
 > **Note** You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the index page:
@@ -259,15 +259,15 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
 #### Validate Bot Management with Cloud Armor
 
-- Open up a browser and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on the movie "Brooklyn Dreams". Verify you are allowed through.
+- Open up a browser and go to ```http://{LoadBalancer_IP_Here}/index.html```. Click on the movie ***Brooklyn Dreams***. Verify you are allowed through.
 
     ![armor good score](images/recaptcha-site-goodscore.png)
 
-- Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on the movie "Thorned". Verify you receive a HTTP 403 error.
+- Open a new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalancer_IP_Here}/index.html```. Click on the movie ***Thorned***. Verify you receive a HTTP 403 error.
 
     ![armor bad score](images/armor-bad-score.png)
 
-- Open another new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalance_IP_Here}/index.html```. Click on the movie "La Cucina in Crisis". Verify you see the redirection to Google reCAPTCHA and the manual challenge page.
+- Open another new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalancer_IP_Here}/index.html```. Click on the movie ***La Cucina in Crisis***. Verify you see the redirection to Google reCAPTCHA and the manual challenge page.
 
     ![armor recaptcha click check](images/armor-click-check.png)
 
