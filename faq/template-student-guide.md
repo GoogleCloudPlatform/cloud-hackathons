@@ -1,4 +1,4 @@
-# [ INSERT TITLE HERE ]
+# [TITLE]
 
 ## Introduction
 
