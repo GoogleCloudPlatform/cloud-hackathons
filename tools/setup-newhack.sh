@@ -19,11 +19,11 @@ done
 
 
 if [[ ! "$HACK" =~ ^[a-z0-9\-]+$ ]]; then
-    echo "$HACK should be all snake case, all lower case"
+    echo "Hack name '$HACK' should be all snake case, all lower case"
 fi
 
 if [[ ! "$AUTHOR" =~ ^.+@.+\..+$ ]]; then
-    echo "$AUTHOR is a not a valid email address"
+    echo "Author '$AUTHOR' is a not a valid email address"
 fi
 
 if [ -z "${HACK}" ] || [ -z "${AUTHOR}" ] || [ -z "${TITLE}" ]; then
@@ -47,6 +47,9 @@ touch $BASEDIR/images/.gitkeep
 cp faq/template-student-guide.md $BASEDIR/README.md
 cp faq/template-coach-guide.md $BASEDIR/solutions.md
 cp faq/template-lectures.pdf $BASEDIR/resources/
+
+sed -i -e "s|^# \[TITLE\]|# ${TITLE}|" $BASEDIR/README.md
+sed -i -e "s|^# \[TITLE\]|# ${TITLE}|" $BASEDIR/solutions.md
 
 echo $AUTHOR > $BASEDIR/QL_OWNER
 
