@@ -1,11 +1,4 @@
-# gHacks - Hack Coach Guide Template
-
-*The following is an example of what the coach's guide should look like for a fictional hack*.
-
-*This file must be named `solutions.md`*.
-
-*-------- DELETE EVERYTHING ABOVE THIS LINE --------* 
-# IoT Hack of the Century
+# [TITLE]
 
 ## Introduction
 
@@ -17,15 +10,13 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 
 ## Coach's Guides
 
-- Challenge 0: Prepare Your Workstation
-   - Get yourself ready to develop your IoT solution
-- Challenge 1: Hub To Start
+- Challenge 1: Provision an IoT environment
    - Create an IoT Hub and run tests to ensure it can ingest telemetry
-- Challenge 2: Get To That Edge
+- Challenge 2: Your First Device
    - Make the connection to your Edge device and see that it is properly provisioned.
-- Challenge 3: Konnection is Key
+- Challenge 3: Connecting the World
    - Connect your device and make sure it can see all other devices in your team.
-- Challenge 4: Scale FTW
+- Challenge 4: Scalable Monitoring of Telemetry
    - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
 
 ## Coach Prerequisites
@@ -90,7 +81,7 @@ _The default files & folders are listed below. You may add to this if you want t
 - `./images`
   - Images and screenshots used in the Student or Coach's Guide
 
-## Challenge \#: \<Challenge Name> - Coach's Guide
+## Challenge 1: Provision an IoT environment
 
 ### Notes & Guidance
 

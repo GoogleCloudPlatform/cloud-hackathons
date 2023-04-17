@@ -1,11 +1,4 @@
-# gHacks - Hack Description Template
-
-*The following is a quick example of what the root of a gHack should look like for a fictional hack.*
-
-*This file must be named `README.md`*.
-
-*-------- DELETE EVERYTHING ABOVE THIS LINE --------* 
-# IoT Hack of the Century
+# [TITLE]
 
 ## Introduction
 
@@ -24,7 +17,7 @@ In this hack you will be solving the common business problem that companies in t
 - Setting Up the Environment
    - Before we can hack, you will need to set up a few things.
    - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
--  Challenge 1: Provision an IoT environment
+- Challenge 1: Provision an IoT environment
    - Create an IoT Hub and run tests to ensure it can ingest telemetry
 - Challenge 2: Your First Device
    - Make the connection to your Edge device and see that it is properly provisioned.
@@ -47,7 +40,7 @@ In this hack you will be solving the common business problem that companies in t
 - Jane Q. Public
 - Joe T. Muppet
 
-## Challenge \#: \<Challenge Name>
+## Challenge 1: Provision an IoT environment
 
 ***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section.  You should remove all italicized & sample text and replace with your content.***
 
