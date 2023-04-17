@@ -13,6 +13,7 @@ def get_file_name(path: str) -> str:
 def navigation_bar(f: TextIO, challenges: list[str], idx: int, home_file: str):
     prv = get_file_name(challenges[idx - 1]) if idx > 0 else None
     nxt = get_file_name(challenges[idx + 1]) if idx < (len(challenges) - 1) else None
+    write(f, "\n")
     if prv:
         write(f, f"[< Previous Challenge]({prv}) - ")
     write(f, f"**[Home]({home_file})**")
@@ -31,7 +32,8 @@ def process(filename: str, output_dir: str, student: bool):
     
     curr_line = next(contents)
     challenges_found = False
-    challenges = []
+    challenge_files = []
+    challenge_titles = []
     os.makedirs(output_dir, exist_ok=True)
 
     index_file = f"{output_dir}/README.md" if student else f"{output_dir}/solutions.md"
@@ -48,23 +50,25 @@ def process(filename: str, output_dir: str, student: bool):
             if curr_line.startswith("## Challenge "):
                 first_challenge_found = True
             else: 
-                matches = re.match(r"- Challenge (\d+): (.+)$", curr_line)
+                matches = re.match(r"-\s+Challenge (\d+): (.+)$", curr_line)
                 if matches:
                     prefix = f"challenge-" if student else "solution-" 
                     challenge_no = int(matches.group(1))
                     challenge_file = f"{prefix}{challenge_no:02d}.md"
-                    challenges.append(f"{output_dir}/{challenge_file}")
-                    write(f, f"- Challenge {challenge_no}: **[{matches.group(2)}]({challenge_file})**\n")
+                    challenge_title = matches.group(2)
+                    challenge_files.append(f"{output_dir}/{challenge_file}")
+                    challenge_titles.append(f"# Challenge {challenge_no}: {challenge_title}")
+                    write(f, f"- Challenge {challenge_no}: **[{challenge_title}]({challenge_file})**\n")
                 else:
                     write(f, curr_line)
                 curr_line = next(contents)
         home_file = "README.md" if student else "solutions.md"
-        for idx, challenge in enumerate(challenges):
+        for idx, challenge in enumerate(challenge_files):
             with open(challenge, "w") as f:
-                write(f, f"{curr_line[1:]}\n")  # ## Challenge X: becoming # Challenge X
+                write(f, f"{challenge_titles[idx]}\n")
                 # navigation top
-                navigation_bar(f, challenges, idx, home_file)
-                curr_line = next(contents)
+                navigation_bar(f, challenge_files, idx, home_file)
+                curr_line = next(contents, None)
                 next_challenge_found = False
                 while curr_line is not None and not next_challenge_found:
                     if curr_line.startswith("## Challenge "):
@@ -76,7 +80,7 @@ def process(filename: str, output_dir: str, student: bool):
                         write(f, curr_line)
                     curr_line = next(contents, None)
                 # navigation bottom
-                navigation_bar(f, challenges, idx, home_file)
+                navigation_bar(f, challenge_files, idx, home_file)
 
 
 if __name__ == "__main__":
