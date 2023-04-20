@@ -263,7 +263,7 @@ resource.labels.model_deployment_monitoring_job={JOB_ID}
 
 #### Batch Loop
 
-The main challenge is to configure the build pipelines properly. You'll need the following variables for the _batch predictions_ (`batchdeploy.yaml`) pipeline.
+The main challenge is to configure the build pipelines properly. You'll need the following variables for the _batch predictions_ (`batchdeploy.yaml`) pipeline. This pipeline must have a _webhook event_ trigger.
 
 | Variable                  | Value |
 | ---                       | ---   |
@@ -284,4 +284,6 @@ Similarly the _retraining_ (`clouddeploy.yaml`) build pipeline requires the foll
 | \_PYTHON\_PKG             | `gcp-mlops-demo-0.8.0.dev0` |
 | \_ENDPOINT                | `[none]`   |
 | \_LOCATION                | `us-central1` |
+
+The _retraining_ pipeline must respond to a _Pub/Sub message_ using the subscription `projects/{PROJECT_ID}/topics/batch-monitoring`.
 
