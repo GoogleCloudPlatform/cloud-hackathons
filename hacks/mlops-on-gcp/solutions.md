@@ -263,7 +263,7 @@ resource.labels.model_deployment_monitoring_job={JOB_ID}
 
 #### Batch Loop
 
-The main challenge is to configure the build pipelines properly. You'll need the following variables for the _batch predictions_ pipeline.
+The main challenge is to configure the build pipelines properly. You'll need the following variables for the _batch predictions_ (`batchdeploy.yaml`) pipeline.
 
 | Variable                  | Value |
 | ---                       | ---   |
@@ -277,7 +277,7 @@ The Cloud Scheduler cron job configuration should be: `30 3 * * 7` with HTTP tar
 
 You can verify the Cloud Scheduler job by a _Force run_.
 
-Similarly the _retraining_ build pipeline requires the following variables to be set.
+Similarly the _retraining_ (`clouddeploy.yaml`) build pipeline requires the following variables to be set.
 
 | Variable                  | Value |
 | ---                       | ---   |
@@ -285,4 +285,3 @@ Similarly the _retraining_ build pipeline requires the following variables to be
 | \_ENDPOINT                | `[none]`   |
 | \_LOCATION                | `us-central1` |
 
-Regarding the Cloud Logging Alerts, refer to the [Online Loop](#online-loop) section.
