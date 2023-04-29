@@ -1,3 +1,0 @@
-google-cloud-aiplatform
-google-cloud-datastore
-google-cloud-pubsub

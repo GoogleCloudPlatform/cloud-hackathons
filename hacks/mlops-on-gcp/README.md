@@ -187,7 +187,7 @@ From this challenge onwards you'll have the option to either do online inferenci
 
 ### Description
 
-So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI has exactly what we need, Vertex AI Endpoints provide a managed service for serving predictions. 
+So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI provides exactly what we need, a managed service for serving predictions, called Online Prediction. 
 
 Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest instance size but make sure that it can scale to more than 1 instance. 
 
@@ -219,13 +219,14 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 So, you've chosen for the batch inferencing path. We're going to use Vertex AI Batch Predictions to get predictions for data in a BigQuery table. First, go ahead and create a new table with at most 10K rows that's going to be used for generating the predictions. Once the table is created, create a new Batch Prediction job with that table as the input and another BigQuery table as the output, using the previously created model. Choose a small machine type and 2 compute nodes. Don't turn on Model Monitoring yet as that's for the next challenge.
 
 > **Note**  
-> The batch inferencing will take roughly ~25 minutes, most of that is the overhead of starting the cluster, so increasing the number of instances won't help with the small table we're using.
+> The batch inferencing will take roughly ~15 minutes, most of that is the overhead of starting the cluster, so increasing the number of instances won't help with the small table we're using.
 
 ### Success Criteria
 
 1. There's a properly structured input table in BigQuery with 10K rows
 2. There's a succesful Batch Prediction job
 3. There are predictions in a new BigQuery table
+4. No code change is needed for this challenge
 
 ### Tips
 
@@ -250,12 +251,16 @@ If you've chosen the online inferencing path, continue with [Online Monitoring](
 
 ### Description
 
-Vertex AI Endpoints provide Model Monitoring capabilities which needs to be turned on for this challenge. Turn on Training-serving skew detection for your model, use an hourly granularity to get alerts. Send at least 10K prediction requests to collect monitoring data.
+Vertex AI Endpoints provide Model Monitoring capabilities which will be configured for this challenge. Turn on Training-serving skew detection for your model and use an hourly granularity to get alerts. Create a new notification channel that uses Pub/Sub messages and configure it to use a new Pub/Sub topic.
+
+Send at least 10K prediction requests to collect monitoring data.
 
 ### Success Criteria
 
 1. Show that the Model Monitoring is running successfully for the endpoint that's created in the previous challenge
-2. By default Model Monitoring keeps request/response data in a BigQuery dataset, find and show that data
+2. Show that there's new Pub/Sub topic and a Pub/Sub notification channel for the Model Monitoring job
+3. By default Model Monitoring keeps request/response data in a BigQuery dataset, find and show that data
+4. No code change is needed for this challenge
 
 ### Tips
 
@@ -264,18 +269,23 @@ Vertex AI Endpoints provide Model Monitoring capabilities which needs to be turn
 
 ### Learning Resources
 
-Introduction to [Vertex AI Model Monitoring](https://cloud.google.com/vertex-ai/docs/model-monitoring/overview)
+- Introduction to [Vertex AI Model Monitoring](https://cloud.google.com/vertex-ai/docs/model-monitoring/overview)
+- Creating a [Pub/Sub topic](https://cloud.google.com/pubsub/docs/create-topic)
+- Creating a [notification channel](https://cloud.google.com/monitoring/support/notification-options#pubsub)
+
 
 ### Batch Monitoring
 
 ### Description
 
-Vertex AI Batch prediction jobs provide Model Monitoring capabilities as well. Create a new Batch Predition job with monitoring turned on with BigQuery input and ouput tables, use default values for the alert thresholds.
+Vertex AI Batch prediction jobs provide Model Monitoring capabilities as well. Create a new Batch Predition job with monitoring turned on with BigQuery input and ouput tables, use default values for the alert thresholds. Create a new notification channel that uses Pub/Sub messages and configure it to use a new Pub/Sub topic.
 
 ### Success Criteria
 
 1. There's a new Batch Prediction job with monitoring turned on
-2. As batch inferencing will take roughly ~25 minutes again, it's sufficient to show the properly configured job configuration
+2. Show that there's new Pub/Sub topic and a Pub/Sub notification channel for the Model Monitoring job
+3. As batch inferencing will take roughly ~15 minutes again, it's sufficient to show the properly configured job configuration
+4. No code change is needed for this challenge
 
 ### Tips
 
@@ -285,6 +295,8 @@ Vertex AI Batch prediction jobs provide Model Monitoring capabilities as well. C
 ### Learning Resources
 
 - [Model monitoring](https://cloud.google.com/vertex-ai/docs/model-monitoring/model-monitoring-batch-predictions) for Batch Predictions
+- Creating a [Pub/Sub topic](https://cloud.google.com/pubsub/docs/create-topic)
+- Creating a [notification channel](https://cloud.google.com/monitoring/support/notification-options#pubsub)
 
 ## Challenge 7: Close the loop
 
@@ -301,27 +313,22 @@ Just like the previous challenges, if you've chosen the online inferencing path,
 
 ### Description
 
-Use the provided build pipeline (`clouddeploy.yaml`) to create a new build configuration. Make sure that it's only triggered when a webhook is called. Also provide the necessary variables, such as the model training code version, endpoint name etc. Name this trigger `CT-CD` (or `continous-training-and-delivery`).
-
-Configure Log based alerts for Model Monitoring, and use webhooks as a notification channel to trigger the build.
+Use the provided build pipeline (`clouddeploy.yaml`) to create a new build configuration. Configure it to be triggered in response to the messages received in the Pub/Sub topic that's used to configure the Model Monitoring notifications. Also provide the necessary variables, such as the model training code version, endpoint name etc. Name this trigger `CT-CD` (or `continous-training-and-delivery`).
 
 ### Success Criteria
 
-1. There's a correctly configured build pipeline that can be triggered through webhooks only, named `CT-CD` (or `continous-training-and-delivery`).
-2. Model Monitoring alerts can trigger the mentioned build through Log based alerts.
+1. There's a correctly configured build pipeline that can be triggered through Pub/Sub messages, named `CT-CD` (or `continous-training-and-delivery`).
+2. Model Monitoring alerts can trigger the mentioned build through Pub/Sub notification channel.
 3. There's at least one successful build
+4. No code change is needed for this challenge
 
 ### Tips
 
 - Cloud Build supports inline yaml as well
-- You can create/update a Monitoring Job with the `gcloud` cli which has more configuration options than the UI
 
 ### Learning Resources
 
-- [Log based alerts](https://cloud.google.com/logging/docs/alerting/log-based-alerts) for Cloud Logging
-- [Webhook notifications](https://cloud.google.com/monitoring/support/notification-options#webhooks) for Cloud Logging
-- [Log based alerts](https://cloud.google.com/vertex-ai/docs/model-monitoring/using-model-monitoring#set-up-alerts) for Vertex AI Model Monitoring feature anomaly detection
-- [Triggering Cloud Build with webhooks](https://cloud.google.com/build/docs/automate-builds-webhook-events)
+- [Triggering Cloud Build with Pub/Sub events](https://cloud.google.com/build/docs/automate-builds-pubsub-events)
 
 ### Batch Loop
 
@@ -329,10 +336,8 @@ Configure Log based alerts for Model Monitoring, and use webhooks as a notificat
 
 Typically Batch Predictions are asynchronous and are scheduled to run periodically (daily/weekly etc). You can trigger batch jobs using different methods, for this challenge we'll use Cloud Build pipelines in combination with Vertex AI pipelines. Create a new Cloud Build trigger using the provided `batchdeploy.yaml` file, don't forget to set the required variables. Call this trigger `CD` (or `continous-delivery`) and make sure that this build pipeline is triggered through webhook events. Create a new Cloud Scheduler job that runs every Sunday at 3:30 and uses the webhook event URL as the execution method.
 
-Running the batch predictions periodically will only get us half way. We need to monitor any Model Monitoring alerts and act on that. There's another Cloud Build pipeline definition provided by `clouddeploy.yaml` that's responsible for retraining. Configure that in a new Cloud Build trigger, call it `CT` (or `continous-training`) set the required variables (remember to set _ENDPOINT_ to `[none]`, the others should be familiar, when in doubt have a look at the yaml file). Use Pub/Sub messages as the trigger event and pick the `batch-monitoring` topic.
+Running the batch predictions periodically will only get us half way. We need to monitor any Model Monitoring alerts and act on that. There's another Cloud Build pipeline definition provided by `clouddeploy.yaml` that's responsible for retraining. Configure that in a new Cloud Build trigger, call it `CT` (or `continous-training`) set the required variables (remember to set _ENDPOINT_ to `[none]`, the others should be familiar, when in doubt have a look at the yaml file). Use Pub/Sub messages as the trigger event and pick the topic that's configured for Model Monitoring Pub/Sub notification channel.
 
-> **Note**  
-> At the time of this writing the batch monitoring results are written to Cloud Storage, but there's no additional events or logs triggered when there are monitoring alerts. This project includes some custom services that we prepared to periodically poll for batch monitoring results and then put a message in Pub/Sub if there's a new batch that has created any alerts.
 
 ### Success Criteria
 
@@ -340,6 +345,7 @@ Running the batch predictions periodically will only get us half way. We need to
 2. There's a Cloud Scheduler job that is configured to run every Sunday at 3.30 triggering the batch predictions build pipeline
 3. There's a correctly configured build pipeline for _retraining_ that can be triggered with Pub/Sub messages, called `CT` (or `continous-training`)
 4. Show that all the components have run at least once
+5. No code change is needed for this challenge
 
 ### Tips
 
@@ -349,4 +355,5 @@ Running the batch predictions periodically will only get us half way. We need to
 ### Learning Resources
 
 - [Cloud Scheduler](https://cloud.google.com/scheduler/docs/schedule-run-cron-job)
+- [Triggering Cloud Build with webhook events](https://cloud.google.com/build/docs/automate-builds-webhook-events)
 - [Triggering Cloud Build with Pub/Sub events](https://cloud.google.com/build/docs/automate-builds-pubsub-events)

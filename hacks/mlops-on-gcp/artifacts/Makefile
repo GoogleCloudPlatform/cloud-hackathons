@@ -1,6 +1,6 @@
 
 TARGET=ghacks-setup.zip
-OBJS=runtime.yaml *.tf python/**
+OBJS=runtime.yaml *.tf
 
 $(TARGET): $(OBJS)
 	zip $(TARGET) $(OBJS)
