@@ -1,8 +1,9 @@
 locals {
-  suffix          = "retail"
-  network_tag     = "orcl-db"
-  datastream_user = "datastream"
-  oracle_sid      = "XE"
+  suffix                   = "retail"
+  network_tag              = "orcl-db"
+  datastream_user          = "datastream"
+  datastream_user_password = "z9${random_string.password.result}"
+  oracle_sid               = "XE"
 }
 
 data "google_project" "project" {}
@@ -87,7 +88,7 @@ resource "google_compute_address" "oracle_vm_eip" {
   ]
 }
 
-resource "random_string" "datastream_user_password" {
+resource "random_string" "password" {
   length  = 12
   special = false
 }
@@ -117,7 +118,7 @@ resource "google_compute_instance" "oracle_vm" {
 
   metadata_startup_script = templatefile("${path.module}/setup.tftpl", {
     datastream_user          = local.datastream_user,
-    datastream_user_password = random_string.datastream_user_password.result
+    datastream_user_password = local.datastream_user_password,
     oracle_sid               = local.oracle_sid
   })
 }

@@ -1,5 +1,5 @@
 
-TARGET=archive.zip
+TARGET=ghacks-setup.zip
 OBJS=*.tf runtime.yaml setup.tftpl
 
 $(TARGET): $(OBJS)
