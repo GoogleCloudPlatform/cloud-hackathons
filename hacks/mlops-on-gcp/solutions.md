@@ -132,6 +132,8 @@ The `python_pkg` parameter can also be the full path to the package, and also wo
 
 ### Notes & Guidance
 
+#### Online Inferencing
+
 During model deployment the smallest instance size (`n1-standard-2`) should be chosen, with the minimum number of instances set to 1 and the maximum number of instances set to >1 for autoscaling to work.
 
 Once the model is deployed the following request payload can be used to verify things. Sample data contains valid values but participants need to make sure that they don't copy the target column.
@@ -169,61 +171,89 @@ ab -n 30000 -c 100 -p request.json -T "application/json" -H "Authorization: Bear
 
 This exercise can be completed either on the notebook terminal or Cloud Shell.
 
+#### Batch Inferencing
+
+```sql
+CREATE OR REPLACE TABLE 
+    taxi_batch.sample10K AS 
+SELECT
+    EXTRACT(MONTH from pickup_datetime) as trip_month,
+    EXTRACT(DAY from pickup_datetime) as trip_day,
+    EXTRACT(DAYOFWEEK from pickup_datetime) as trip_day_of_week,
+    EXTRACT(HOUR from pickup_datetime) as trip_hour,
+    TIMESTAMP_DIFF(dropoff_datetime, pickup_datetime, SECOND) as trip_duration,
+    trip_distance,
+    payment_type,
+    pickup_location_id as pickup_zone,
+    pickup_location_id as dropoff_zone
+FROM 
+    bigquery-public-data.new_york_taxi_trips.tlc_yellow_trips_2017 TABLESAMPLE SYSTEM (1 PERCENT) 
+LIMIT 
+    10000
+```
+
+Make sure that the target column (`tip_bin`) is not included as a column, as the model uses all the columns from the table and any additional column will raise an error. 
+
+The output table should be a _new_ table, so you should either just give the name of the dataset or the URI of a table that doesn't exist yet.
+
 ## Challenge 6: Monitor your models
 
 ### Notes & Guidance
 
-Once the Endpoint is up and running, it's possible to edit it from the UI and turn on Monitoring. Alternatively the following `gcloud` command can be used (this command also enables Cloud Logging alerts which is at the moment not possible through the UI).
+#### Online Monitoring
 
-```shell
-REGION=...
-PROJECT_ID=...
-ENDPOINT_ID=...
-gcloud ai model-monitoring-jobs create --region=$REGION \
-    --display-name=monitor_this \
-    --endpoint=$ENDPOINT_ID \
-    --prediction-sampling-rate=0.2 \
-    --target-field=tip_bin \
-    --data-format=csv \
-    --gcs-uris=gs://$PROJECT_ID/data/sample/sample.csv \
-    --anomaly-cloud-logging \
-    --monitoring-frequency=1 \
-    --emails=student@qwiklabs.net \
-    --feature-thresholds=trip_month,trip_day,trip_day_of_week,trip_hour,trip_duration,trip_distance,payment_type,pickup_zone,dropoff_zone 
-```
+Once the Endpoint is up and running, it's possible to edit it from the UI and turn on Monitoring. The sample data is in `gs://$PROJECT_ID/data/sample/sample.csv`. Stick to the defaults for the things that are not in the instructions. Creating the notification channel and the Pub/Sub topic should be trivial from the UI.
+
+#### Batch Monitoring
+
+Setting this up through the UI should be trivial, the training sample data uri should be `gs://${PROJECT_ID}/data/sample/sample.csv`. Creating the notification channel and the Pub/Sub topic should be trivial from the UI.
 
 ## Challenge 7: Close the loop
 
 ### Notes & Guidance
 
-There's a few things that require additional attention at the time of this writing.
-
-Currently it's not possible to set the Model Monitoring Cloud Logging alerts through the UI, so participants will need to use the CLI for that purpose.
-
-The following `gcloud` command turns on the option (assuming there's already a monitoring job).
-
-```shell
-JOB_ID=`gcloud ai model-monitoring-jobs list --region=$REGION --format="value(name)"`
-gcloud ai model-monitoring-jobs update $JOB_ID --region=$REGION --anomaly-cloud-logging
-
-```
+#### Online Loop
 
 > **Warning**  
-> Updating a monitoring job is only possible when the job is running, which might take some time, so if the job status is `PENDING` the command will fail with an error message indicating that. Typically this would only happen if the participants are very quick with the challenges, in that case they could consider deleting the monitoring job and recreate it with the command line, enabling the anomaly-cloud-logging option.
-
-You can verify that the option is enabled by using this command (search for `enableLogging: true` in the `modelMonitoringAlertConfig` section).
-
-```shell
-gcloud ai model-monitoring-jobs describe $JOB_ID --region=$REGION | grep enableLogging
-```
-
-When configuring the Cloud Logging the following conditions are needed to filter the logs for alerting. 
-
-```text
-logName="projects/{PROJECT_ID}/logs/aiplatform.googleapis.com%2Fmodel_monitoring_anomaly"
-resource.labels.model_deployment_monitoring_job={JOB_ID}
-```
-
-> **Note** At the time of this writing the docs contain an error, `logName` reference `...aiplatform.googleapis.com%2FFmodel_monitoring_anomaly...` in the provided example has one `F` too many, it should be `...aiplatform.googleapis.com%2Fmodel_monitoring_anomaly...`
+> Updating a monitoring job is only possible when the job is running, which might take some time, so if the job status is `PENDING` you might not be able to update it. Typically this would only happen if the participants are very quick with the challenges, in that case they could consider deleting the monitoring job and recreate it with the proper configuration.
 
 > **Note** Completing this might take a few hours as monitoring jobs only run once every hour. It's sufficient to see if things are configured properly than the full trigger of the pipeline.
+
+> **Note** In case a non global region is chosen for the Cloud Build pipeline, the displayed webhook URL might not be correct. If you run into 404s while calling that webhook, you can try `https://cloudbuild.googleapis.com/v1/projects/${PROJECT_ID}/locations/${REGION}/triggers/${TRIGGER_NAME}:webhook?key=${API_KEY}&secret=${SECRET_VALUE}&trigger=${TRIGGER_NAME}&projectId=${PROJECT_ID}"` as described in the [docs](https://cloud.google.com/build/docs/automate-builds-webhook-events#creating_webhook_triggers). Also, if you run it with cURL don't forget to set the _Content-Type_ to _application/json_. 
+
+The _retraining_ (`clouddeploy.yaml`) build pipeline requires the following variables to be set.
+
+| Variable                  | Value |
+| ---                       | ---   |
+| \_PYTHON\_PKG             | `gcp-mlops-demo-0.8.0.dev0` |
+| \_ENDPOINT                | `ep-taxi-tips` |
+| \_LOCATION                | `us-central1` |
+
+The _retraining_ pipeline must respond to a _Pub/Sub message_ using the topic created for the notification channel.
+
+#### Batch Loop
+
+The main challenge is to configure the build pipelines properly. You'll need the following variables for the _batch predictions_ (`batchdeploy.yaml`) pipeline. This pipeline must have a _webhook event_ trigger.
+
+| Variable                  | Value |
+| ---                       | ---   |
+| \_PYTHON\_PKG             | `gcp-mlops-demo-0.8.0.dev0` |
+| \_MODEL\_NAME             | `taxi-tips`   |
+| \_SOURCE\_TABLE\_URI      | `bq://{PROJECT_ID}.{DATASET}.{TABLE}` |
+| \_TRAINING\_SAMPLE\_URI   | `gs://{PROJECT_ID}/data/sample/sample.csv`|
+| \_LOCATION                | `us-central1` |
+
+The Cloud Scheduler cron job configuration should be: `30 3 * * 7` with HTTP target type and webhook URL from the previous build configuration, using the POST method (see the note around the webhook URL in [Online Loop](#online-loop) section if you get 404s). One thing to remember is to set the _Content-Type_ header to _application/json_ otherwise the execution will fail.
+
+You can verify the Cloud Scheduler job by a _Force run_.
+
+Similarly the _retraining_ (`clouddeploy.yaml`) build pipeline requires the following variables to be set.
+
+| Variable                  | Value |
+| ---                       | ---   |
+| \_PYTHON\_PKG             | `gcp-mlops-demo-0.8.0.dev0` |
+| \_ENDPOINT                | `[none]` |
+| \_LOCATION                | `us-central1` |
+
+The _retraining_ pipeline must respond to a _Pub/Sub message_ using the topic created for the notification channel.
+
