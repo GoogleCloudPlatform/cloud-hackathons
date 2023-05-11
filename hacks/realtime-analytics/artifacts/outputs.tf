@@ -11,5 +11,5 @@ output "orcl_datastream_usr" {
 }
 
 output "orcl_datastream_pwd" {
-  value = random_string.datastream_user_password.result
+  value = local.datastream_user_password
 }
