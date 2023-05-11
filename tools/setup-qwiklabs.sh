@@ -38,7 +38,7 @@ fi
 LAB_DIR="${DST_DIR}/labs/${SLUG}"
 mkdir -p ${LAB_DIR}
 
-rsync -av --delete --exclude=solutions.md ${HACK_DIR}/ ${LAB_DIR}/
+rsync -av --delete --exclude=solutions.md --exclude=Makefile ${HACK_DIR}/ ${LAB_DIR}/
 
 INST_DIR="${LAB_DIR}/instructions"
 mkdir -p ${INST_DIR}
