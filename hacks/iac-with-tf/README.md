@@ -78,7 +78,7 @@ We'll need to create a VM in one of the next challenges, and you need to have a 
 
 ### Description
 
-Create a new network through Terraform with a single subnet in a region that's close to you using the CIDR block `10.0.10.0/24`. Make sure that the project and the CIDR block are variables.
+Create a new network through Terraform with a single subnet in a region that's close to you using the CIDR block `10.0.10.0/24`. Make sure that the project and the CIDR block are variables named `gcp_project` and `cidr_block`.
 
 ### Success Criteria
 
@@ -110,7 +110,7 @@ Now we're done with the prerequisites we can now roll out a VM with an HTTP serv
 
 ### Description
 
-Create a Linux VM and make sure that NGINX is installed and configured to server HTTP requests.
+Create a new Linux VM and make sure that NGINX is installed and configured to serve HTTP requests.
 
 ### Success Criteria
 

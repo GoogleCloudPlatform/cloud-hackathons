@@ -1,0 +1,26 @@
+steps:
+  - id: 'check variables'
+    name: 'bash'
+    env:
+      - 'GCP_PROJECT=$_GCP_PROJECT'
+      - 'CIDR_BLOCK=$_CIDR_BLOCK'
+    script: |
+      if [[ -z "$GCP_PROJECT" ]] || [[ -z "$CIDR_BLOCK" ]]; then
+        echo "set GCP_PROJECT and CIDR_BLOCK please"
+        exit 1
+      fi
+  - id: 'tf init'
+    name: 'hashicorp/terraform:1.4.6'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - 'terraform init'
+  - id: 'tf apply'
+    name: 'hashicorp/terraform:1.4.6'
+    entrypoint: 'sh'
+    env:
+      - "GCP_PROJECT=$_GCP_PROJECT"
+      - "CIDR_BLOCK=$_CIDR_BLOCK"
+    args:
+      - '-c'
+      - 'terraform apply --auto-approve --var="gcp_project=$GCP_PROJECT" --var="cidr_block=$CIDR_BLOCK"'
