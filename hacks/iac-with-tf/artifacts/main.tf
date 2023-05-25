@@ -12,5 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 resource "google_project_service" "compute_api" {
-  service = "compute.googleapis.com"
+  service             = "compute.googleapis.com"
+  disable_on_destroy  =  false
+}
+
+resource "google_project_service" "source_repository_api" {
+  service = "sourcerepo.googleapis.com"
+}
+
+resource "google_sourcerepo_repository" "repo" {
+  name = "iac-with-tf"
+
+  depends_on = [ google_project_service.source_repository_api ]
 }

@@ -49,7 +49,7 @@ In this challenge we'll set up a few prerequisites for the hack. Since we'll be 
 
 ### Description
 
-For this challenge you could use any external Git repository (Github/Bitbucket/Gitlab etc.), however the easiest option is to use a Cloud Source Repository on GCP. We've already created a Cloud Source Repository with the same name as the project name. Create an SSH key and register that with your Cloud Source Repository (everyone on the team should that).
+For this challenge you could use any external Git repository (Github/Bitbucket/Gitlab etc.), however the easiest option is to use a Cloud Source Repository on GCP. We've already created a Cloud Source Repository with the name `iac-with-tf` in *your project*. Create an SSH key and register that with your Cloud Source Repository (everyone on the team should complete this task).
 
 We've prepared a [sample project](#) for you, download it and extract the contents. Make sure that code is pushed to the external repository.
 

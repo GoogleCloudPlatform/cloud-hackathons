@@ -48,7 +48,7 @@ git config --global user.email "MY_NAME@example.com"
 
 If users miss this step, they'll be prompted the first time they want to do a commit and they can complete it by that time.
 
-After that a local git repository in the root of the extracted archive needs to be created, cd to `gcp-mlops-demo-main` (if the archive is downloaded as a zip file and extracted with default options) and run the following commands.
+After that a local git repository in the root of the extracted archive needs to be created, cd to `gcp-iac-with-tf-template` (if the archive is downloaded as a zip file and extracted with default options) and run the following commands.
 
 ```shell
 git init .
@@ -61,7 +61,7 @@ git commit -m "initial commit"
 
 If users ignored the instructions and cloned the repo, they can skip the local Git repo creation, but they'll have to do the following steps.
 
-Creating a Cloud Source Repository should be trivial, it should be created in the lab project when Qwiklabs is used. And then an SSH key should be added (see the vertical ellipsis on the right side of the top bar for Cloud Source Repositories).
+In order to add the SSH key see the vertical ellipsis on the right side of the top bar for Cloud Source Repositories.
 
 The following command will generate an SSH key pair and show the contents of the public key to be copied to the Cloud Source Repositories.
 
@@ -73,7 +73,7 @@ cat ~/.ssh/id_rsa.pub
 Then users need to add the Cloud Source Repository as a remote. This is all documented on the landing page of the newly created repository if users choose the _Push code from a local Git repository_ option.
 
 ```shell
-git remote add google ssh://STUDENT...@ORGANIZATION...@source.developers.google.com:2022/p/PROJECT/r/gcp-mlops-demo
+git remote add google ssh://STUDENT...@ORGANIZATION...@source.developers.google.com:2022/p/PROJECT/r/iac-with-tf
 ```
 
 And finally push the changes.
@@ -168,7 +168,7 @@ resource "google_compute_address" "web_vm_eip" {
   ]
 }
 
-resource "google_compute_instance" "oracle_vm" {
+resource "google_compute_instance" "web_vm" {
   name         = "gce-lnx-web-001"
   machine_type = "e2-standard-2"
   tags         = ["http"]
