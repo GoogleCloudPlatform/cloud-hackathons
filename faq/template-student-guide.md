@@ -101,7 +101,7 @@ Please configure the thingamajig with the following specifications:
 - Verify that the thingamajig can connect to the mothership.
 - Demonstrate that the thingamajig will not connect to the IoTProxyShip
 
-## Learning Resources
+### Learning Resources
 
 *This is a list of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
 
@@ -115,7 +115,7 @@ Please configure the thingamajig with the following specifications:
 - [10 Tips for Never Forgetting Your Thingamajig](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 - [IoT & Thingamajigs: Together Forever](https://www.youtube.com/watch?v=yPYZpwSpKmA)
 
-## Tips
+### Tips
 
 *This section is optional and may be omitted.*
 
@@ -124,7 +124,7 @@ Please configure the thingamajig with the following specifications:
 - IoTDevices can fail from a broken heart if they are not together with their thingamajig. Your device will display a broken heart emoji on its screen if this happens.
 - An IoTDevice can have one or more thingamajigs attached which allow them to connect to multiple networks.
 
-## Advanced Challenges (Optional)
+### Advanced Challenges (Optional)
 
 *If you want, you may provide additional goals to this challenge for folks who are eager.*
 
