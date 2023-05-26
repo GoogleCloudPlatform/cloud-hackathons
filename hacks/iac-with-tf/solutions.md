@@ -1,4 +1,4 @@
-# Provisioning resources with Terraform
+# Infrastructure as Code with Terraform
 
 ## Introduction
 
