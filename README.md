@@ -23,7 +23,7 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 ### Infrastructure
 - [Security with reCAPTCHA and Cloud Armor](./hacks/recaptcha-cloudarmor-security/README.md)
   > We will be setting up gHacks+, the hottest new streaming site. We will configure an HTTP Load Balancer in front of the site and then you'll learn how to set up a reCAPTCHA session token site key and embed it the site. You will also learn how to set up redirection to reCAPTCHA Enterprise manual challenge. We will then configure a Cloud Armor bot management policy to showcase how bot detection can protect gHacks+ from malicious bot traffic.
-- [Infrastructure provisioning with Terraform](./hacks/iac-with-tf/README.md)
+- [Infrastructure as Code with Terraform](./hacks/iac-with-tf/README.md)
   > This hack is intended as an introduction to provisioning GCP resources using Terraform. We'll start with the basics of Infrastructure as Code (IaC) and help you automate the process of infrastructure provisioning.
 
 ### Application Development
