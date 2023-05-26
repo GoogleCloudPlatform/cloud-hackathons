@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 TARGET=student-files.zip
-OBJS=*.*
+OBJS=sample-iac-with-tf
 
 $(TARGET): $(OBJS)
 	zip -r $(TARGET) $(OBJS)

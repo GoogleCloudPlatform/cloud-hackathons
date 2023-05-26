@@ -24,8 +24,9 @@ Creating the bucket to hold the Terraform state should be trivial, just make sur
 ```shell
 REGION=...
 PROJECT_ID=...
-gsutil mb -l $REGION gs://$PROJECT_ID-tf
-gsutil versioning set on gs://$PROJECT_ID-tf
+BUCKET="gs://$PROJECT_ID-tf"
+gsutil mb -l $REGION $BUCKET
+gsutil versioning set on $BUCKET
 ```
 
 Terraform backend config should look like this:
@@ -97,7 +98,6 @@ resource "google_compute_network" "sample" {
 resource "google_compute_subnetwork" "subnet" {
   name          = "sub-sample"
   network       = google_compute_network.sample.self_link
-  region        = "us-central1"  # or whatever region that's close     
   ip_cidr_range = var.cidr_block
 }
 ```
@@ -114,8 +114,12 @@ terraform {
   }
 }
 
+# this block sets some of the variables for the resources
 provider "google" {
   project = var.gcp_project
+  region  = "us-central1" 
+  zone    = "us-central1-a" 
+
 }
 ```
 
@@ -149,7 +153,8 @@ resource "google_compute_firewall" "allow_http" {
     ports     = ["80", "443"]
   }
 
-  target_tags = ["http"]
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["http"]
 }
 ```
 
@@ -203,4 +208,11 @@ output "vm_db_ip" {
 
 ### Notes & Guidance
 
-This should be trivial, make sure that the path to the `cloudbuild.yaml` is correct and the variables are set properly.
+This should be trivial, make sure that the path to the `cloudbuild.yaml` is correct and the variables are set properly. Also important to know is the service account that's used. The service account used (either the Cloud Build service agent, Compute Engine Default or a custom one) must have sufficient priviliges to create resources. 
+
+In addition, if any service account other than Cloud Buid service agent is used, the logging configuration must be set, for example:
+
+```yaml
+options:
+  logging: CLOUD_LOGGING_ONLY
+```

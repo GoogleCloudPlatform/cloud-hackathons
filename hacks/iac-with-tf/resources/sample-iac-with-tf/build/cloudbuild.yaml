@@ -18,9 +18,6 @@ steps:
   - id: 'tf apply'
     name: 'hashicorp/terraform:1.4.6'
     entrypoint: 'sh'
-    env:
-      - "GCP_PROJECT=$_GCP_PROJECT"
-      - "CIDR_BLOCK=$_CIDR_BLOCK"
     args:
       - '-c'
-      - 'terraform apply --auto-approve --var="gcp_project=$GCP_PROJECT" --var="cidr_block=$CIDR_BLOCK"'
+      - 'terraform apply --auto-approve --var="gcp_project=$_GCP_PROJECT" --var="cidr_block=$_CIDR_BLOCK"'
