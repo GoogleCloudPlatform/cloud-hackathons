@@ -14,7 +14,9 @@
 schema_version: 2
 default_locale: en
 title: "[gHacks] Provisioning resources with Terraform"
-description: ""
+description: "This hack is intended as an introduction to provisioning GCP resources 
+  using Terraform. We'll start with the basics of Infrastructure as Code (IaC) and 
+  help you automate the process of infrastructure provisioning."
 instruction:
   type: md
   uri: instructions/en.md

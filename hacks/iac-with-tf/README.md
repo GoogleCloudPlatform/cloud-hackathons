@@ -24,7 +24,7 @@ In this hack you will be exploring the following tasks
    - Let's start with networking
 - Challenge 3: Open the gates!
    - Opening the Firewall ports
-- Challenge 4: Roll out an HTTP server on a VM
+- Challenge 4: Hello HTTP server
    - NGINX on a Linux VM
 - Challenge 5: Automation
    - Enable GitOps by running Terraform through Cloud Build 
@@ -51,7 +51,7 @@ In this challenge we'll set up a few prerequisites for the hack. Since we'll be 
 
 For this challenge you could use any external Git repository (Github/Bitbucket/Gitlab etc.), however the easiest option is to use a Cloud Source Repository on GCP. We've already created a Cloud Source Repository with the name `iac-with-tf` in *your project*. Create an SSH key and register that with your Cloud Source Repository (everyone on the team should complete this task).
 
-We've prepared a [sample project](#) for you, download it and extract the contents. Make sure that code is pushed to the external repository.
+We've prepared a [sample project](https://github.com/meken/gcp-iac-with-tf/archive/refs/heads/main.zip) for you, download it and extract the contents. Make sure that code is pushed to the external repository.
 
 Create a new bucket to hold the Terraform state using best practices and configure Terraform to use that as the backend. 
 
@@ -105,11 +105,11 @@ Configure a firewall rule for allowing HTTP/HTTPS requests for all VMs having th
 1. All of this configuration is in the Cloud Source Repository
 
 
-## Challenge 4: Roll out an HTTP server on a VM
+## Challenge 4: Hello HTTP server
 
 ### Introduction
 
-Now we're done with the prerequisites we can now roll out a VM with an HTTP server.
+Now we're done with the prerequisites we can finally roll out a VM as an HTTP server.
 
 ### Description
 
@@ -132,7 +132,10 @@ We can run the Terraform commands locally but ideally they should be executed in
 
 ### Description
 
-Create a new Cloud Build push trigger using the `cloudbuild.yaml` in the provided sample project. Make sure that the variables for the build are configured properly.
+Create a new Cloud Build push trigger using the `cloudbuild.yaml` in the provided sample project. Make sure that the variables for the build are configured properly. Note that you might need to edit this file to get a successful build.
+
+> **Warning**  
+> For the sake of simplicity stick to the default Cloud Build Service Account to run the build, otherwise you'll have to do additional modifications to the build file to configure logging.
 
 ### Success Criteria
 

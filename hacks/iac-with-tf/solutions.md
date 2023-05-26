@@ -11,7 +11,7 @@ Welcome to the coach's guide for the Infrastructure as Code with Terraform. Here
 - Challenge 1: Bootstrapping
 - Challenge 2: Your very first provisioning
 - Challenge 3: Open the gates!
-- Challenge 4: Roll out an HTTP server on a VM
+- Challenge 4: Hello HTTP server
 - Challenge 5: Automation
 
 
@@ -49,7 +49,7 @@ git config --global user.email "MY_NAME@example.com"
 
 If users miss this step, they'll be prompted the first time they want to do a commit and they can complete it by that time.
 
-After that a local git repository in the root of the extracted archive needs to be created, cd to `gcp-iac-with-tf-template` (if the archive is downloaded as a zip file and extracted with default options) and run the following commands.
+After that a local git repository in the root of the extracted archive needs to be created, cd to `gcp-iac-with-tf-main` (if the archive is downloaded as a zip file and extracted with default options) and run the following commands.
 
 ```shell
 git init .
@@ -158,7 +158,7 @@ resource "google_compute_firewall" "allow_http" {
 }
 ```
 
-## Challenge 4: Roll out an HTTP server on a VM
+## Challenge 4: Hello HTTP server
 
 ### Notes & Guidance
 
@@ -208,7 +208,18 @@ output "vm_db_ip" {
 
 ### Notes & Guidance
 
-This should be trivial, make sure that the path to the `cloudbuild.yaml` is correct and the variables are set properly. Also important to know is the service account that's used. The service account used (either the Cloud Build service agent, Compute Engine Default or a custom one) must have sufficient priviliges to create resources. 
+This should be trivial, make sure that the path to the `cloudbuild.yaml` is correct and the variables are set properly. The build file is missing the variable configuration for `gcp_project`, that needs to be modified.
+
+```yaml
+ - id: 'tf apply'
+    name: 'hashicorp/terraform:1.4.6'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - 'terraform apply --auto-approve --var="gcp_project=$_TARGET_PROJECT" --var="cidr_block=$_CIDR_BLOCK"'
+```
+
+Also important to know is the service account that's used. The service account used (either the Cloud Build service agent, Compute Engine Default or a custom one) must have sufficient priviliges to create resources. 
 
 In addition, if any service account other than Cloud Buid service agent is used, the logging configuration must be set, for example:
 
