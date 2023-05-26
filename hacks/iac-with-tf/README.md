@@ -53,12 +53,15 @@ For this challenge you could use any external Git repository (Github/Bitbucket/G
 
 We've prepared a [sample project](#) for you, download it and extract the contents. Make sure that code is pushed to the external repository.
 
-Create a new bucket for the Terraform state using best practices and configure Terraform to use that as the backend. 
+Create a new bucket to hold the Terraform state using best practices and configure Terraform to use that as the backend. 
+
+> **Note**  
+> For the sake of simplicity we'll stick to a single environment for this challenge. But in real world you'll probably have to deal with multiple environments (dev/test/acc/prod) and might need to track the state for these environments separately.
 
 ### Success Criteria
 
 1. There's a new bucket for the Terraform state following best practices
-1. Terraform is configured use that bucket as the backend
+1. Terraform is configured to use that bucket as the backend
 1. All of this configuration is in the Cloud Source Repository
 
 ### Learning Resources
@@ -74,7 +77,7 @@ Create a new bucket for the Terraform state using best practices and configure T
 
 ### Introduction
 
-We'll need to create a VM in one of the next challenges, and you need to have a network & subnet for that.
+We'll need to create a VM in one of the next challenges, and that requires a network & subnet.
 
 ### Description
 
@@ -83,7 +86,7 @@ Create a new network through Terraform with a single subnet in a region that's c
 ### Success Criteria
 
 1. There's a single subnet with the provided CIDR block in a new network, created by Terraform
-1. Project and CIDR block information is passed through as variables
+1. Both the project and CIDR block are passed through as variables
 1. All of this configuration is in the Cloud Source Repository
 
 ## Challenge 3: Open the gates!
@@ -99,7 +102,7 @@ Configure a firewall rule for allowing HTTP/HTTPS requests for all VMs having th
 ### Success Criteria
 
 1. There's a new firewall rule that allows HTTP/HTTPS communication for the tag `http`, created by Terraform
-1. All of this configuration in the Cloud Source Repository
+1. All of this configuration is in the Cloud Source Repository
 
 
 ## Challenge 4: Roll out an HTTP server on a VM
@@ -112,11 +115,14 @@ Now we're done with the prerequisites we can now roll out a VM with an HTTP serv
 
 Create a new Linux VM and make sure that NGINX is installed and configured to serve HTTP requests.
 
+> **Note**  
+> For this challenge we'll be using Terraform to handle NGINX installation, but keep in mind that there are alternatives, such as Ansible, Chef/Puppet etc. that can be used to augment Terraform capabilities.
+
 ### Success Criteria
 
 1. There's a new Linux VM with NGINX serving public HTTP requests, created by Terraform
 1. The external IP of the VM is output when the Terraform command is run
-1. All of this configuration in the Cloud Source Repository
+1. All of this configuration is in the Cloud Source Repository
 
 ## Challenge 5: Automation
 
@@ -134,3 +140,7 @@ Create a new Cloud Build push trigger using the `cloudbuild.yaml` in the provide
 2. The trigger is connected to the Cloud Source Repository created in the first challenge
 3. The trigger uses the provided (fully configured) build configuration from the repository
 4. And there's at least one successful build
+
+### Tips
+
+- Did you consider the permissions?
