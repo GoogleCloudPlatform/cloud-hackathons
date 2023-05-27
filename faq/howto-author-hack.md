@@ -6,7 +6,7 @@ Developing a new gHack is a great way to get your content out to the world. Chan
 
 In essence a gHack needs to satisfy the following criteria.
 
-1. A gHack consists of **multiple cumulative challenges** building on top of each other
+1. A gHack consists of **multiple, cumulative, hands-on challenges** building on top of each other
    > Think of a story consisting of multiple steps, starting with simple tasks and getting more advanced/detailed as the challenges progress. A gHack should provide value even if the participants don't get to solve all challenges.
 1. Challenges are small puzzles to be solved by participants **without step-by-step instructions, screenshots or any other copy/paste** content provided
    > Solving the challenges means satisfying the *Success Criteria* described for the challenge. Remember there's no single golden path to solve these challenges, participants are free to come up with their own solutions as long as success criteria are met. The challenges shouldn't be trick questions as we don't want to frustrate participants. And finally, try to stay away with *coding from scratch* challenges, those are time consuming and don't provide too much value. Stick to configuring services (either through CLI, console) or incomplete configuration/code sources (fix a trivial issue, add a single line to a file etc.)
@@ -53,6 +53,9 @@ We're ready to create a new gHack, you can create one from scratch, copy an exis
 cd YOUR_FORK  # typically cloud-hackathons
 tools/setup-newhack.sh --hack=century-of-iot --author=me@google.com --title="IoT hack of the century"
 ```
+
+> **Note**  
+> The title of your hack is the _visible_ title, and should be human readable, it will be used to link to your hack from the front page (the catalog). Also make sure to use "snake-case" for your hack name, ie: use dashes between words
 
 This command will create a new folder in the `hacks` directory with placeholders for the content. You can then start editing those.
 
@@ -149,61 +152,25 @@ You can't use Argolis projects for customers (unless you're doing an internal ev
 
 ## Qwiklabs Support
 
-By default when a gHack is included in the official repository a new Qwiklabs lab is created in the special Qwiklabs instance. In order to use that you'll need Authoring permissions on that Qwiklabs instance. Please follow the instructions on [go/ceqwiklabstraining](go/ceqwiklabstraining) to become an author. 
+By default when a gHack is included in the official repository a new Qwiklabs lab is created in the special Qwiklabs instance. In order to use that you'll need Authoring permissions on that Qwiklabs instance. Please follow the instructions on [go/ceqwiklabstraining](go/ceqwiklabstraining) to become an author. You'll have to be an author to organize Qwiklabs based events.
 
-Once you're an author, you'll have to create a _Classroom Template_ that includes your gHack.
+In principle if you don't need anything special the default Qwiklabs lab configuration `qwiklabs.yaml` provided by the scaffolding tool should be sufficient. If you need to edit that file, make sure that you've read the document available on [go/ql-scripts](go/ql-scripts).
+
+### Organizing an Event
+
+You'll first have to create a _Classroom Template_ that includes your gHack, this is a one time only action. Once the template is ready, you can use that for all your events.
 
 ![Screenshot for Classroom Template](#)
 
-And then you can create _Classroom_ instances for every event you need to do. A _Classroom_ has a start and end date, includes _Classroom Template_ which determines the lab. You'll need to add the Team Lead of every team as a student to a _Classroom_ so that they can see the lab when they log into the Qwiklabs instance.
+You need to create _Classroom_ instances for every event you want to organize. A _Classroom_ has a start and an end date, references the _Classroom Template_ which determines the lab. You'll need to add the Team Lead of every team as a student to a _Classroom_ so that they can see the lab when they log into the Qwiklabs instance.
 
 ![Screenshot for Classroom](#)
 
+The process of synchronizing of your changes to the special Qwiklabs instance is done automatically but might take some time. Keep that in mind if you're in a rush.
 
-## Why gHack?
+It's also possible to create labs directly in the special Qwiklabs instance to try out things, you can then import the `README.md` as the instructions, and add the `ghacks-setup.zip` to the project instance in the Lab Resources section. You can create the zip file by navigating to your hack's artifacts directory and running `make`.
 
-The gHack "challenge" format is perfect for a team-based, hands-on learning experience.
-
-gHacks are all about being "for the people, by the people". Here are our core principles:
-- Anyone can contribute a gHack.
-- Anyone can use gHacks content to host their own event.
-- Anyone can modify the content as needed.
-  - Submitting a pull request for modified/improved content is encouraged.
-- The content can be shared with attendees AFTER the event for continuity purposes.
-
-## What Does It Take To Create a gHack?
-
-When you design a gHack, these are the steps you will run through:
-
-- [Preparing Your Environment](#preparing-your-environment)
-- [Student Guide](#student-guide)
-- [Challenge Design](#challenge-design)
-- [Student Resources Folder](#student-resources-folder)
-- [Presentation Lectures](#presentation-lectures) (optional)
-- [Coach's Guide](#coachs-guide)
-- [Coach Solutions Folder](#coach-solutions-folder)
-
-If you create things in this order, you will be able to quickly flesh out a new hack. 
-
-> **Note** The Coach's guide is the most detail oriented & time consuming item to produce however, here's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
-
-## Preparing Your Environment
-
-Okay, ready to get started creating your own gHack?
-
-First we create a fork of the main gHacks repo and then clone it to disk and create a branch to work in. The instructions below assume you have the git command line on your machine. If you're more comfortable in a GUI git client, you can use that too (we recommend SourceTree).
-1. Create a fork of the gHacks repo
-   - Navigate to the gHacks git repo at: <https://github.com/GoogleCloudPlatform/cloud-hackathons>
-   - Click the Fork button at the top right of the page and then choose the account you want to create the fork in. 
-2. Clone your new fork to your local machine
-   - `git clone https://github.com/myname/cloud-hackathons.git ./gHacks`
-   - `cd gHacks`
-3. Create a new branch for your work. It is a best practice to never work directly on the main branch
-   - `git checkout -b my-branch`
-4. From the root folder, run 
-   - `tools/setup-newhack.sh --hack=<name-of-your-hack> --author=<your email address> --title=<title of your hack>`
-   > **Note** The title of your hack is the _visible_ title, and should be human readable, it will be used to link to your hack from the front page (the catalog). Also make sure to use "snake-case" for your hack name, ie: use dashes between words
-5. A new folder will be created in the `hacks` folder with the name of your hack
+## The Anatomy of a gHack
 
 ### Files and Folders
 
@@ -371,6 +338,8 @@ The Coach's guide should include the following:
 - Suggested time a coach should wait before helping out if a team is not progressing past known blockers
 
 The Coach's guide should be updated during & post event with key learnings, such as all the gotchas, snags, and other unexpected blockers that your attendees hit.
+
+> **Note** The Coach's guide is the most detail oriented & time consuming item to produce however, here's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
 
 ### Coach's Guide Template
 
