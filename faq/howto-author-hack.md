@@ -7,13 +7,13 @@ Developing a new gHack is a great way to get your content out to the world. Chan
 In essence a gHack needs to satisfy the following criteria.
 
 1. A gHack consists of **multiple cumulative challenges** building on top of each other
-  > Think of a story consisting of multiple steps, starting with simple tasks and getting more advanced/detailed as the challenges progress. A gHack should provide value even if the participants don't get to solve all challenges.
+   > Think of a story consisting of multiple steps, starting with simple tasks and getting more advanced/detailed as the challenges progress. A gHack should provide value even if the participants don't get to solve all challenges.
 1. Challenges are small puzzles to be solved by participants **without step-by-step instructions, screenshots or any other copy/paste** content provided
-  > Solving the challenges means satisfying the *Success Criteria* described for the challenge. Remember there's no single golden path to solve these challenges, participants are free to come up with their own solutions as long as success criteria are met. The challenges shouldn't be trick questions as we don't want to frustrate participants. And finally, try to stay away with *coding from scratch* challenges, those are time consuming and don't provide too much value. Stick to configuring services (either through CLI, console) or incomplete configuration/code sources (fix a trivial issue, add a single line to a file etc.)
+   > Solving the challenges means satisfying the *Success Criteria* described for the challenge. Remember there's no single golden path to solve these challenges, participants are free to come up with their own solutions as long as success criteria are met. The challenges shouldn't be trick questions as we don't want to frustrate participants. And finally, try to stay away with *coding from scratch* challenges, those are time consuming and don't provide too much value. Stick to configuring services (either through CLI, console) or incomplete configuration/code sources (fix a trivial issue, add a single line to a file etc.)
 1. The gHack concept is **designed for teams**, the idea is solve the challenges as a team
-  > Although it's technically possible to do a gHack individually, we think that running those as teams provides the most value as the challenges require diverse set of skills so that people can also learn from each other. Make sure that during the event every participant gets to *drive* at least once.
+   > Although it's technically possible to do a gHack individually, we think that running those as teams provides the most value as the challenges require diverse set of skills so that people can also learn from each other. Make sure that during the event every participant gets to *drive* at least once.
 1. Every team needs to be **accompanied by a coach during the event**
-  > Sometimes teams might struggle to find the right solution; at those moments it's quite important to have someone who's done it before to give some hints, not the solution, but a direction, to prevent people from getting frustrated.
+   > Sometimes teams might struggle to find the right solution; at those moments it's quite important to have someone who's done it before to give some hints, not the solution, but a direction, to prevent people from getting frustrated.
 
 ## Getting Started
 
