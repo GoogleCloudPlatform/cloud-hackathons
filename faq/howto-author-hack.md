@@ -115,7 +115,9 @@ git push -f
 
 Now you can create a PR through the Github UI. Navigate to your repository and click on the button to create a new PR.
 
-![Screenshot for creating the PR](#)
+![Screenshot for creating the PR](images/author-pull-request.png)
+
+If you have recent changes, there will be a yellow box at the top with a *Compare & pull request* button, otherwise, you can click on *Contribute* and click on the *Open pull request* button.
 
 Once the maintainers validate the new hack, it'll be merged and visible on the official website. You can then remove your branch if you want to keep things clean.
 
@@ -137,11 +139,11 @@ git reset --hard origin/new-iot-hack  # or any other branch that you want to syn
 
 ## GCP Project Setup
 
-Some hacks will need certain resources to be created before the hack starts. These could be enabling APIs, assigning permissions, creating buckets, databases etc. We expect these things to be automated through Terraform. By default the scaffolding process creates empty placeholders for the Terraform configuration. You can edit those anyway you want to create the things required for your hack. 
+Some hacks will need certain resources to be created in GCP projects, before the hack starts. These could be enabling APIs, assigning permissions, creating buckets, databases etc. We expect these things to be automated through **Terraform**. By default the scaffolding process creates empty placeholders for the Terraform configuration. You can edit those anyway you want to create the things required for your hack. 
 
 ### Qwiklabs
 
-In principle we'd like gHacks to be executed in customer environments. That way the resources created can stay behind and people can carry on even after the event. However we're aware of the challenges of getting sandboxes available at customers, so gHacks are supported on a special Qwiklabs instance.
+In principle we'd like gHacks to be executed in customer environments. That way the resources created can stay behind and people can carry on even after the event. However, we're aware of the challenges of getting sandboxes available at customers, so gHacks are supported on a special Qwiklabs instance.
 
 > **Warning**  
 > At the moment Qwiklabs only support Terraform **1.0.1**, so make sure that your Terraform configuration only uses capabilities available for that version. Note that you can still use the latest version of the GCP providers, this only applies to the Terraform version used.
@@ -158,27 +160,71 @@ Another thing to keep in mind is that all Qwiklabs projects come with a default 
 
 ### Argolis
 
-You can't use Argolis projects for customers (unless you're doing an internal event) but you can test your Terraform configuration in an Argolis project. We recommend to test things in a new project to make sure that things are reproducable. As you probably already know Argolis comes with a lot of restrictive organization policies, you might want to disable some of those before running your scripts.
+You can't use Argolis projects for customers (unless you're doing an internal event and everybody uses their own Argolis organization) but you can certainly test your Terraform configuration in an Argolis project. We recommend to test things in a new project to make sure that things are reproducable. As you probably already know Argolis comes with a lot of restrictive organization policies, you might need to disable some of those before running your scripts.
 
 ## Qwiklabs Support
 
-By default when a gHack is included in the official repository a new Qwiklabs lab is created in the special Qwiklabs instance. In order to use that you'll need Authoring permissions on that Qwiklabs instance. Please follow the instructions on [go/ceqwiklabstraining](go/ceqwiklabstraining) to become an author. You'll have to be an author to organize Qwiklabs based events.
+By default when a gHack is included in the official repository a new Qwiklabs lab is created in the special Qwiklabs instance. In order to use that you'll need *Authoring* permissions on that Qwiklabs instance. Please follow the instructions on [go/ceqwiklabstraining](go/ceqwiklabstraining) to become an author. You'll have to be an author to organize Qwiklabs based events.
 
-In principle if you don't need anything special the default Qwiklabs lab configuration `qwiklabs.yaml` provided by the scaffolding tool should be sufficient. If you need to edit that file, make sure that you've read the document available on [go/ql-scripts](go/ql-scripts).
+If you don't need anything special the default Qwiklabs lab configuration `qwiklabs.yaml`, provided by the scaffolding tool, should be sufficient. If you need to edit that file, make sure that you've read the document available on [go/ql-scripts](go/ql-scripts).
 
 ### Organizing an Event
 
-You'll first have to create a _Classroom Template_ that includes your gHack, this is a one time only action. Once the template is ready, you can use that for all your events.
+#### Classroom Templates - One Time Only 
 
-![Screenshot for Classroom Template](#)
+You'll first have to create a _Classroom Template_ that includes your gHack, this is a one time only action. Once the template is ready, you can use that for all your events. In order to create a new template navigate to the [_Classroom Templates_ section of the special Qwiklabs instance](https://ce.qwiklabs.com/authoring/classroom_templates)
 
-You need to create _Classroom_ instances for every event you want to organize. A _Classroom_ has a start and an end date, references the _Classroom Template_ which determines the lab. You'll need to add the Team Lead of every team as a student to a _Classroom_ so that they can see the lab when they log into the Qwiklabs instance.
+![Screenshot for Classroom Template](images/author-ql-classroom-templates.png)
 
-![Screenshot for Classroom](#)
+Click on the **+** button on the top right to create a new *Classroom Template*. Fill in the *Name* and *Description* and keep things the default other than the following:
+
+1. *Type* needs to be set to *Bootcamp/Workshop*
+1. *Enabled* is checked
+1. And you've selected the right *Lab* (the Qwiklabs lab that has been created for you automatically, it will start with the prefix *\[gHacks\]*). 
+
+After filling those details you can click on the button *Create Classroom template* and your template will be ready.
+
+#### Classrooms - Every Event Instance
+
+You need to create _Classroom_ instances for every event you want to organize. A _Classroom_ has a start and an end date, references the _Classroom Template_ which determines the lab. You'll need to add the Team Lead of every team as a student to a _Classroom_ so that they can see the lab when they log into the Qwiklabs instance. 
+
+Navigate to the [_Classrooms_ section of the special Qwiklabs instance](https://ce.qwiklabs.com/classrooms)
+
+![Screenshot for Classrooms](images/author-ql-classrooms.png)
+
+Click on the **+** button on the top right to create a new _Classroom_. First step is to choose the _Classroom Template_, as there's many of those, enter *ghack* in the *Classroom template name* field and click on *Filter* button. Choose the right template from the filtered list.
+
+![Screenshot for Classroom Template filter](images/author-ql-new-classroom-01.png)
+
+Untick the *Virtual Classroom* option, add the trainer(s) and most importantly set the *start and end date* for the event. *Location* is required, but not as important as the *Timezone*. 
+
+![Screenshot for Location/Timezone for Classroom](images/author-ql-new-classroom-02.png).
+
+> **Warning**  
+> The *Timezone* you select is the one that applies to the *Start and End dates*, so pick the right one.
+
+You can add tags to keep things discoverable for yourself. Once you're done with the configuration, click on the *Create Classroom* button.
+
+You'll be forwarded to the next page to configure the subdomains, make sure to choose only * as the subdomain, which will then make your _Classroom_ available at different URLs (ce.qwiklabs.com, explore.qwiklabs.com, taw.qwiklabs.com etc). 
+
+![Screenshot for the new subdomain](images/author-ql-new-classroom-03.png)
+
+After clicking on *Done* you'll see the new _Classroom_.
+
+![Screenshot for the new Classroom](images/author-ql-new-classroom-04.png)
+
+> **Warning**  
+> The lab in the _Classroom_ is not activated, make sure that you activate it before the event by clicking on the *Activate Lab* button.
+
+Next step is to add the students. Typically you'll only need to add the *Team Leads* but you could add the complete list of students here. If a student has created an account on the special Qwiklabs instance, their status will show *Enrolled*, otherwise it'll say *Registered, No Qwiklabs Account*. Keep in mind that you can add/remove students at any time, even when the _Classroom_ is in progress.
+
+![Screenshot for the students](images/author-ql-new-classroom-05.png)
+
+### Updating Qwiklabs
 
 The process of synchronizing of your changes to the special Qwiklabs instance is done automatically but might take some time. Keep that in mind if you're in a rush.
 
-It's also possible to create labs directly in the special Qwiklabs instance to try out things, you can then import the `README.md` as the instructions, and add the `ghacks-setup.zip` to the project instance in the Lab Resources section. You can create the zip file by navigating to your hack's artifacts directory and running `make`.
+It's also possible to create labs directly in the special Qwiklabs instance to try out things, you can then import the `README.md` as the instructions, and add the `ghacks-setup.zip` to the project instance in the Lab Resources section. You can create the zip file by navigating to your hack's artifacts directory and running `make`. But beware that image references etc. will not work in that case.
 
 ## The Anatomy of a gHack
 
