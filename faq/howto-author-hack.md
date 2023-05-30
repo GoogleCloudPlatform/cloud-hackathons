@@ -76,11 +76,13 @@ git push --set-upstream origin new-iot-hack
 
 ### Verifying the Rendering
 
-Once a hack is wrapped up, it will end up in the original repository and will be rendered on the gHacks [website](ghacks.dev). But, if there's something wrong with the content things can get horribly wrong. In order to prevent surprises, you can render it yourself using Github Pages. First step is to enable Github Pages in your fork through Github Actions.
+Once a hack is wrapped up, it will end up in the original repository and will be rendered on the gHacks [website](https://ghacks.dev). But, if there's something wrong with the content things can get horribly wrong. In order to prevent surprises, you can render it yourself using Github Pages. First step is to enable Github Pages in your fork through Github Actions.
 
 ![Screenshot for the Pages settings through Actions](images/author-pages-settings.png)
 
-The default configuration for Github Pages only works with the *main* branch, go ahead to remove that protection if you're planning to use branches for development go to the *Environments* settings and click on *github-pages*
+#### Branch Protections
+
+The default configuration for Github Pages only works with the *main* branch. If you're planning to use branches for development you need to modify the protection rules. Go to the *Environments* settings and click on *github-pages* 
 
 ![Screenshot for environments](images/author-pages-settings.png)
 
@@ -88,7 +90,9 @@ Now you can just either remove the protections, add specific branches or enable 
 
 ![Screenshot for branch protection](images/author-pages-branch-protection.png)
 
-Final step is to run the Action to generate the rendered website. Navigate to the Actions tab for your repository and click on the *Publish to Github Pages* workflow, and choose your branch if you have one.
+#### Running the Action
+
+Final step is to run the Github Action to generate the rendered website. Navigate to the Actions tab for your repository and click on the *Publish to Github Pages* workflow, and choose your branch if you have one.
 
 ![Screenshot for triggering action](images/author-pages-actions.png)
 
@@ -97,7 +101,7 @@ Now you can navigate to `https://YOUR_USERNAME.github.io/YOUR_FORK/` to see the 
 > **Note**  
 > This approach also makes it possible for you to make quick changes to your content for specific events, without depending on the maintainers of this repo to validate and merge your PRs.
 
-### Creating a PR
+### Creating a Pull Request
 
 Once everything is fine with your hack and you want to contribute to the original repository to be included in the official catalog, you need to create a *Pull Request*. As maintainers of the repository we're trying to keep the history clean in a semi-linear fashion. This requires you to rebase your branch/fork before we can merge it. You could do that through many different methods, but see below for the command line instructions.
 
