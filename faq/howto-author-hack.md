@@ -9,7 +9,7 @@ In essence a gHack needs to satisfy the following criteria.
 1. A gHack consists of **multiple, cumulative, hands-on challenges** building on top of each other
    > Think of a story consisting of multiple steps, starting with simple tasks and getting more advanced/detailed as the challenges progress. A gHack should provide value even if the participants don't get to solve all challenges.
 1. Challenges are small puzzles to be solved by participants **without step-by-step instructions, screenshots or any other copy/paste** content provided
-   > Solving the challenges means satisfying the *Success Criteria* described for the challenge. Remember there's no single golden path to solve these challenges, participants are free to come up with their own solutions as long as success criteria are met. The challenges shouldn't be trick questions as we don't want to frustrate participants. And finally, try to stay away with *coding from scratch* challenges, those are time consuming and don't provide too much value. Stick to configuring services (either through CLI, console) or incomplete configuration/code sources (fix a trivial issue, add a single line to a file etc.)
+   > Solving the challenges means satisfying the *Success Criteria* described for the challenge. Remember there's no single golden path to solve these challenges, participants are free to come up with their own solutions as long as success criteria are met. The challenges shouldn't be trick questions as we don't want to frustrate participants. And finally, try to stay away from *coding from scratch* challenges, those are time consuming and don't provide too much value. Stick to configuring services (either through CLI, console) or incomplete configuration/code sources (fix a trivial issue, add a single line to a file etc.)
 1. The gHack concept is **designed for teams**, the idea is solve the challenges as a team
    > Although it's technically possible to do a gHack individually, we think that running those as teams provides the most value as the challenges require diverse set of skills so that people can also learn from each other. Make sure that during the event every participant gets to *drive* at least once.
 1. Every team needs to be **accompanied by a coach during the event**
@@ -17,17 +17,21 @@ In essence a gHack needs to satisfy the following criteria.
 
 ## Getting Started
 
-Alright, you decided to author a new gHack, welcome to the club! The first thing is to fork this repository on Github.
+Alright, you decided to author a new gHack, welcome to the club! The first thing is to fork this repository on Github. Navigate to [this repository](https://github.com/GoogleCloudPlatform/cloud-hackathons) on Github, and click on the *Fork* button on the top right.
 
-![Screenshot for the fork button](#)
+![Screenshot for the fork button](images/author-create-new-fork.png)
 
-Now you've got the fork, let's configure things properly so you can start developing your hack. First thing that you need to do is to clone your fork to your development environment.
+You'll be prompted with a screen to give the fork a name, you can keep the same name (*cloud-hackathons*) or provide a custom one.
+
+![Screenshot for naming the fork](images/author-name-new-fork.png)
+
+Now you've got the fork, let's configure things properly so you can start developing your hack. First thing that you need to do is to clone your fork to your development environment (the prefix is either `git@` if you're using SSH authentication or `https://` if you're using PATs/credentials, we're assuming that you've configured your local authentication, otherwise see the Github [docs](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#authenticating-with-the-command-line)).
 
 ```shell
-git clone git@github.com:[your Github username]/[your fork name].git
+git clone [git@|https://]github.com:YOUR_USERNAME/YOUR_FORK.git
 ```
 
-This will create a local clone on your machine with *origin* set to your fork on Github. In order to make sure that you also can keep track of the original *cloud-hackathons* repository, you need to add another remote and call that *upstream* (could be called anything, but this name is conventional).
+This will create a local clone on your machine with *origin* set to your fork on Github. In order to make sure that you also can keep track of the original *cloud-hackathons* repository, you need to add another remote and call that *upstream* (could be called anything, but *upstream* is the convention). Note that this remote will be typically read-only for you, the only way to contribute your changes to that remote is through Pull Requests, which is described in later sections.
 
 ```shell
 git remote add upstream https://github.com/GoogleCloudPlatform/cloud-hackathons.git
@@ -49,6 +53,8 @@ We're ready to create a new gHack, you can create one from scratch, copy an exis
 
 ### Scaffolding on the Command Line
 
+The repository includes a shell script, `setup-newhack.sh` to create a new hack with all the necessary files in place, with placeholders in them.
+
 ```shell
 cd YOUR_FORK  # typically cloud-hackathons
 tools/setup-newhack.sh --hack=century-of-iot --author=me@google.com --title="IoT hack of the century"
@@ -57,7 +63,7 @@ tools/setup-newhack.sh --hack=century-of-iot --author=me@google.com --title="IoT
 > **Note**  
 > The title of your hack is the _visible_ title, and should be human readable, it will be used to link to your hack from the front page (the catalog). Also make sure to use "snake-case" for your hack name, ie: use dashes between words
 
-This command will create a new folder in the `hacks` directory with placeholders for the content. You can then start editing those.
+This command will create a new folder in the `hacks` directory with placeholders for the content. You can then start editing those. In principle, the most important and the only file to edit is the `README.md` in your new hack folder. But if you need any setup or additional capabilities you'll need to edit other files as well. See for an overview the [Anatomy of a gHack section](#the-anatomy-of-a-ghack).
 
 Once you're done with (the first version of) your content you can commit your changes. You can either choose to create a branch (recommended) or do it on your main branch.
 
@@ -70,17 +76,21 @@ git push --set-upstream origin new-iot-hack
 
 ### Verifying the Rendering
 
-Once a hack is wrapped up, it will end up in the original repository and will be rendered on the gHacks [website](ghacks.dev). But, if there's something wrong with the content things can get horribly wrong. In order to prevent surprises, you can render it yourself using Github Pages. First step is to enable Github Pages in your fork.
+Once a hack is wrapped up, it will end up in the original repository and will be rendered on the gHacks [website](ghacks.dev). But, if there's something wrong with the content things can get horribly wrong. In order to prevent surprises, you can render it yourself using Github Pages. First step is to enable Github Pages in your fork through Github Actions.
 
-![Screenshot for the Pages settings through Actions](#)
+![Screenshot for the Pages settings through Actions](images/author-pages-settings.png)
 
-The default configuration for Github Pages only works with the *main* branch, go ahead and remove that protection if you're planning to use branches for development.
+The default configuration for Github Pages only works with the *main* branch, go ahead to remove that protection if you're planning to use branches for development go to the *Environments* settings and click on *github-pages*
 
-![Screenshot for environments](#)
+![Screenshot for environments](images/author-pages-settings.png)
+
+Now you can just either remove the protections, add specific branches or enable *Pages* for all branches.
+
+![Screenshot for branch protection](images/author-pages-branch-protection.png)
 
 Final step is to run the Action to generate the rendered website. Navigate to the Actions tab for your repository and click on the *Publish to Github Pages* workflow, and choose your branch if you have one.
 
-![Screenshot for triggering action](#)
+![Screenshot for triggering action](images/author-pages-actions.png)
 
 Now you can navigate to `https://YOUR_USERNAME.github.io/YOUR_FORK/` to see the rendered website including your hack.
 
@@ -97,7 +107,7 @@ git switch new-iot-hack  # or main if you're not using branches
 git rebase upstream/main
 ```
 
-If you get any conflicts you'll need to resolve those and commit your changes. Then you can push your changes to your origin. Since rebasing changes the Git history, you might need to force push your changes.
+If you get any conflicts you'll need to resolve those and commit your changes. Then you can push your changes to your origin. Since rebasing changes the Git history, you will need to force push your changes. But be careful, this will overwrite the commits in your origin.
 
 ```shell
 git push -f 
