@@ -84,7 +84,7 @@ Once a hack is wrapped up, it will end up in the original repository and will be
 
 The default configuration for Github Pages only works with the *main* branch. If you're planning to use branches for development you need to modify the protection rules. Go to the *Environments* settings and click on *github-pages* 
 
-![Screenshot for environments](images/author-pages-settings.png)
+![Screenshot for environments](images/author-pages-branch-protection.png.png)
 
 Now you can just either remove the protections, add specific branches or enable *Pages* for all branches.
 
