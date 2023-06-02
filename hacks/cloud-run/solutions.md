@@ -77,9 +77,56 @@ You should see something like this:
 
 ### Notes & Guidance
 
+Creating the Artifact Registry should be straight forward, make sure to ignore the one created by Cloud Run in the first challenge.
+
+Using the `Setup Instructions` from the Artifact Registry you can run the following command to authenticate.
+
+```shell
+gcloud auth configure-docker us-central1-docker.pkg.dev
+```
+
+Building the docker image locally should also be trivial, assuming that you're in the `service` directory, run the following command:
+
+```shell
+docker build -t my-first-app:v1 .
+```
+
+You can then run the local container:
+
+```shell
+docker run -p 8080:8080 my-first-app:v1
+```
+
+Once everything is up and running, push the local image to the new Artifact Registry
+
+```shell
+REPOSITORY_NAME=...
+docker tag my-first-app:v1 us-central1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/my-first-app:v1
+docker push us-central1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/my-first-app:v1
+```
+
+Now you can update the Cloud Run deployment to use the new image (stick to the same region).
+
+```shell
+gcloud run deploy my-first-app --region us-central1 --image us-central1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/my-first-app:v1
+```
+
 ## Challenge 3: Logging and Monitoring
 
 ### Notes & Guidance
+
+Just uncomment the log statements in `service/routes/logging.js`. After fixing it, you need to create a new version and do a redeployment.
+
+```shell
+IMAGE_TAG="my-first-app:v2"
+IMAGE_FULL="us-central1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/$IMAGE_TAG"
+
+docker build -t $IMAGE_TAG .
+docker tag $IMAGE_TAG $IMAGE_FULL
+docker push $IMAGE_FULL
+
+gcloud run deploy my-first-app --region us-central1 --image $IMAGE_FULL
+```
 
 ## Challenge 4: Firestore
 

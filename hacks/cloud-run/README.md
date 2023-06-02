@@ -52,7 +52,9 @@ The first step is to get the code for the web service and run it locally, before
 
 We've prepared a [sample project on Github](https://github.com/meken/speedrun/archive/refs/heads/main.zip), navigate there and download the project to your environment. Unpack it and install the dependencies before starting it. Edit the service to show your Team Name in the welcome page.
 
-Once the service is running locally, deploy it to Cloud Run *from source code* using *the command line*.
+Once the service is running locally, deploy it to Cloud Run *from source code* using *the command line*. Pick `us-central1` as the region, allow unauthenticated invocations, and stick to the defaults for the rest.
+
+> **Note** The deployment might take a few minutes to complete.
 
 ### Success Criteria
 
@@ -80,7 +82,7 @@ Waiting for a slow deployment is stressful. Some might argue that it is just as 
 
 ### Description
 
-Create a new standard Artifact Registry. Build the container locally and push it to the newly created Artifact Registry. Make sure that the Cloud Run is using the latest image.
+Create a new standard Artifact Registry in `us-central1`. Build the container locally (using the provided Dockerfile) and push it to the newly created Artifact Registry. Make sure that the Cloud Run is using the latest image.
 
 ### Success Criteria
 
@@ -92,6 +94,7 @@ Create a new standard Artifact Registry. Build the container locally and push it
 ### Learning Resources
 
 - Docker repository on [Artifact Registry](https://cloud.google.com/artifact-registry/docs/repositories/create-repos#docker)
+- [Pushing/Pulling images](https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling)
 
 ### Tips
 
@@ -108,7 +111,7 @@ If you use structured logging (that's writing a JSON-formatted message), you can
 
 ### Description
 
-Browse to `/logging` on your deployed service. Fix the issue by editing `service/routes/logging.js`
+Browse to `/logging` on your deployed service. This should be generating some logs, visible in *Logs* section of Cloud Run UI. However it's not working at the moment, fix the issue by editing `service/routes/logging.js`
 
 ### Success Criteria
 
