@@ -129,10 +129,22 @@ Cloud Firestore is a flexible, scalable database for mobile, web, and server dev
 
 Similar to the previous challenge, browse to `/firestore` and fix the issue.
 
+> **Warning**  
+> The mode you select is permanent for the project and cannot be changed, so choose wisely.
+
 ### Success Criteria
 
 - The tests in `firestore.test.js` are all passing
-- The code changes are only in the `....js` file
+- No code change is needed for this challenge
+
+### Learning Resources
+
+- Different [modes](https://cloud.google.com/datastore/docs/firestore-or-datastore) for Firestore
+
+### Tips
+
+- When in doubt, check the source code.
+- Make sure that the service account used by Cloud Run has the right role to access Firestore.
 
 ## Challenge 5: Cloud SQL
 
@@ -162,6 +174,7 @@ We've already deployed a Cloud SQL instance for you. If you browse to `/sql`, yo
 ### Tips
 
 - You can find the instance name of the Cloud SQL instance on the Cloud SQL instances page in the Google Cloud console.
+- Make sure that the service account used by Cloud Run has the `Cloud SQL Client` role.
 
 ## Challenge 6: Keeping secrets safe
 

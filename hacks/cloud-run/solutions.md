@@ -132,9 +132,38 @@ gcloud run deploy my-first-app --region us-central1 --image $IMAGE_FULL
 
 ### Notes & Guidance
 
+First step is to create the default database in the *Firestore* mode. All you have to do is to browse to Firestore and you'll be prompted to make the choice.
+
+> **Warning**  
+> The mode you select is permanent for the project, so make sure that you're choosing the right one.
+
+Once the default database is there, click on **+Start collection** button to create a new collection called *cities* and add *Amsterdam* as the document with a sample field, for example `country` and set its value to `NL`. 
+
 ## Challenge 5: Cloud SQL
 
 ### Notes & Guidance
+
+Before you start configuring access to Cloud SQL, make sure that the Cloud Run service account has the *Cloud SQL Client* role as well.
+
+Get the connection name, either from the console, or command line:
+
+```shell
+CONNECTION_NAME=`gcloud sql instances list --format=json | jq -r '.[0].connectionName'`
+```
+
+Make sure that Cloud Run can connect to the Cloud SQL instance:
+
+```shell
+gcloud run services update my-first-app --region=us-central1 --add-cloudsql-instances=$CONNECTION_NAME
+```
+
+
+Now set the following as environment variables:
+
+```shell
+gcloud run services update my-first-app --region=us-central1 \
+    --update-env-vars SQL_USER="app",SQL_PASSWORD="my-precious",SQL_DATABASE="database",SQL_INSTANCE_NAME="$CONNECTION_NAME"
+```
 
 ## Challenge 6: Keeping secrets safe
 

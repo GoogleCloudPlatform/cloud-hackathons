@@ -13,6 +13,11 @@
 # limitations under the License.
 data "google_project" "project" {}
 
+resource "google_project_service" "compute" {
+  service            = "compute.googleapis.com"
+  disable_on_destroy = false
+}
+
 # Artifact Registry API
 resource "google_project_service" "artifactregistry" {
   service = "artifactregistry.googleapis.com"
