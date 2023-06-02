@@ -2,54 +2,209 @@
 
 Developing a new gHack is a great way to get your content out to the world. Chances are if you've done workshops, PoCs or pilots in the past, you already have the material on which to build a gHack.
 
-## Why gHack?
+## The Quick Summary
 
-The gHack "challenge" format is perfect for a team-based, hands-on learning experience.
+In essence a gHack needs to satisfy the following criteria.
 
-gHacks are all about being "for the people, by the people". Here are our core principles:
-- Anyone can contribute a gHack.
-- Anyone can use gHacks content to host their own event.
-- Anyone can modify the content as needed.
-  - Submitting a pull request for modified/improved content is encouraged.
-- The content can be shared with attendees AFTER the event for continuity purposes.
+1. A gHack consists of **multiple, cumulative, hands-on challenges** building on top of each other
+   > Think of a story consisting of multiple steps, starting with simple tasks and getting more advanced/detailed as the challenges progress. A gHack should provide value even if the participants don't get to solve all challenges.
+1. Challenges are small puzzles to be solved by participants **without step-by-step instructions, screenshots or any other copy/paste** content provided
+   > Solving the challenges means satisfying the *Success Criteria* described for the challenge. Remember there's no single golden path to solve these challenges, participants are free to come up with their own solutions as long as success criteria are met. The challenges shouldn't be trick questions as we don't want to frustrate participants. And finally, try to stay away from *coding from scratch* challenges, those are time consuming and don't provide much value. Stick to configuring services (either through the CLI, console, config files) or incomplete configuration/code sources (e.g. fix a trivial issue, add a single line to a file etc.)
+1. The gHack concept is **designed for teams**, the idea is solve the challenges together, as a team
+   > Although it's technically possible to do a gHack individually, we think that running those as teams provides the most value as the challenges require a diverse set of skills so that people can also learn from each other. Make sure that during the event every participant gets to *drive* at least once.
+1. Every team will be **accompanied by a coach** during the event
+   > Sometimes teams might struggle to find the right solution; at those moments it's quite important to have someone who's done it before to give some hints, not the solution, but a direction, to prevent people from getting frustrated.
 
-## What Does It Take To Create a gHack?
+## Getting Started
 
-When you design a gHack, these are the steps you will run through:
+Alright, you decided to author a new gHack, welcome to the club! The first thing you need to do is to fork this repository on Github. 
 
-- [Preparing Your Environment](#preparing-your-environment)
-- [Student Guide](#student-guide)
-- [Challenge Design](#challenge-design)
-- [Student Resources Folder](#student-resources-folder)
-- [Presentation Lectures](#presentation-lectures) (optional)
-- [Coach's Guide](#coachs-guide)
-- [Coach Solutions Folder](#coach-solutions-folder)
+Navigate to [this repository](https://github.com/GoogleCloudPlatform/cloud-hackathons) on Github, and click on the *Fork* button on the top right. 
 
-If you create things in this order, you will be able to quickly flesh out a new hack. 
+![Screenshot for the fork button](images/author-create-new-fork.png)
 
-> **Note** The Coach's guide is the most detail oriented & time consuming item to produce however, here's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
+You'll be prompted with a screen to give the fork a name, you can keep the same name (*cloud-hackathons*) or provide a custom one.
 
-## Preparing Your Environment
+![Screenshot for naming the fork](images/author-name-new-fork.png)
 
-Okay, ready to get started creating your own gHack?
+Now you've got the fork, let's configure things properly so you can start developing your hack. First thing that you need to do is to clone your fork to your development environment (the prefix is either `git@` if you're using SSH authentication or `https://` if you're using PATs/credentials, we're assuming that you've configured your local authentication, otherwise see the Github [docs](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#authenticating-with-the-command-line)). You can also get this URL by going to your fork, click on the *Code* button and copy the URL.
 
-First we create a fork of the main gHacks repo and then clone it to disk and create a branch to work in. The instructions below assume you have the git command line on your machine. If you're more comfortable in a GUI git client, you can use that too (we recommend SourceTree).
-1. Create a fork of the gHacks repo
-   - Navigate to the gHacks git repo at: <https://github.com/GoogleCloudPlatform/cloud-hackathons>
-   - Click the Fork button at the top right of the page and then choose the account you want to create the fork in. 
-2. Clone your new fork to your local machine
-   - `git clone https://github.com/myname/cloud-hackathons.git ./gHacks`
-   - `cd gHacks`
-3. Create a new branch for your work. It is a best practice to never work directly on the main branch
-   - `git checkout -b my-branch`
-4. From the root folder, run 
-   - `tools/setup-newhack.sh --hack=<name-of-your-hack> --author=<your email address> --title=<title of your hack>`
-   > **Note** The title of your hack is the _visible_ title, and should be human readable, it will be used to link to your hack from the front page (the catalog). Also make sure to use "snake-case" for your hack name, ie: use dashes between words
-5. A new folder will be created in the `hacks` folder with the name of your hack
+```shell
+git clone [git@|https://]github.com:YOUR_USERNAME/YOUR_FORK.git
+```
+
+This will create a local clone on your machine with *origin* set to your fork on Github. In order to make sure that you also can keep track of the original *cloud-hackathons* repository, you need to add another remote and call that *upstream* (could be called anything, but *upstream* is the convention). Note that this remote will be typically read-only for you, the only way to contribute your changes to that remote is through Pull Requests, which is described in later sections.
+
+```shell
+git remote add upstream https://github.com/GoogleCloudPlatform/cloud-hackathons.git
+```
+
+If you list the remotes, you should see something like this (https or git based on whether you're using access tokens or ssh):
+
+```shell
+$ git remote -v
+> origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)
+> origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)
+> upstream  https://github.com/GoogleCloudPlatform/cloud-hackathons.git (fetch)
+> upstream  https://github.com/GoogleCloudPlatform/cloud-hackathons.git (push)
+```
+
+If you want to know more about how to work with forks, see the Github [docs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/about-forks)
+
+We're now ready to create a new gHack! You can create one from scratch, copy an existing one to modify, or run our scaffolding tool, either through Github Actions, or the command line.
+
+### Scaffolding on the Command Line
+
+The repository includes a shell script, `setup-newhack.sh` to create a new hack with all the necessary files in place, with placeholders in them. Make sure you're running it from the top level directory.
+
+```shell
+cd YOUR_FORK  # typically cloud-hackathons
+tools/setup-newhack.sh --hack=century-of-iot --author=me@google.com --title="IoT hack of the century"
+```
+
+> **Note**  
+> The title of your hack is the _visible_ title, and should be human readable, it will be used to link to your hack from the front page (the catalog). Also make sure to use "snake-case" for your hack name, ie: use dashes between words
+
+This command will create a new folder in the `hacks` directory with placeholders for the content. You can then start editing those. In principle, the most important and possibly the only file to edit is the `README.md` in your new hack folder. But if you need any setup or additional capabilities you'll need to edit other files as well. See for an overview the [Anatomy of a gHack section](#the-anatomy-of-a-ghack).
+
+Once you're done with (the first version of) your content you can commit your changes. You can either choose to create a branch (recommended) or do it on your main branch.
+
+```shell
+git checkout -b new-iot-hack  # if you go for a branch
+git add .
+git commit -m "initial version of the IoT hack..."
+git push --set-upstream origin new-iot-hack
+```
+
+### Verifying the Rendering
+
+Once a hack is wrapped up, it will end up in the original repository and will be rendered on the gHacks [website](https://ghacks.dev). But, if there's something wrong with the content, things can get horribly wrong. In order to prevent surprises, you can render it yourself using _Github Pages_. First step is to enable _Github Pages_ in your fork and choose for *Source* the _Github Actions_ option in the _Build and deployment_ section.
+
+![Screenshot for the Pages settings through Actions](images/author-pages-settings.png)
+
+#### Branch Protections
+
+The default configuration for Github Pages only works with the *main* branch. If you're planning to use branches for development you need to modify the protection rules. Go to the *Environments* settings and click on *github-pages* 
+
+![Screenshot for environments](images/author-pages-environments.png)
+
+In the 'Deployment Branches' section, click the *Selected branches* dropdown and choose: *All branches*
+
+![Screenshot for branch protection](images/author-pages-branch-protection.png)
+
+#### Running the Action
+
+Final step is to run the Github Action to generate the rendered website. Navigate to the Actions tab for your repository and click on the *Publish to Github Pages* workflow, and choose your branch if you have one.
+
+![Screenshot for triggering action](images/author-pages-actions.png)
+
+The rendered website will be available on `https://YOUR_USERNAME.github.io/YOUR_FORK/`.
+
+> **Note**  
+> This approach also makes it possible for you to make quick changes to your content for specific events, without depending on the maintainers of this repo to validate and merge your PRs.
+
+### Creating a Pull Request
+
+Once everything is fine with your hack and you want to contribute to the original repository to be included in the official catalog, you need to create a *Pull Request*. As maintainers of the repository we're trying to keep the history clean in a semi-linear fashion. This requires you to rebase your branch/fork before we can merge it. You could do that through many different methods, but see below for the command line instructions.
+
+```shell
+git fetch upstream
+git switch new-iot-hack  # or main if you're not using branches
+git rebase upstream main
+```
+
+If you get any conflicts you'll need to resolve those and commit your changes. Then you can push your changes to your origin. Since rebasing changes the Git history, you will need to force push your changes. 
+
+```shell
+git push -f 
+```
+
+> **Warning**  
+> Please beware that force pushing your local will overwrite the commits in your *origin*. If you're collaborating with anyone else, they'll have to reset their local by doing a hard reset (and losing any work that they might not have committed/pushed).
+
+Now you can create a PR through the Github UI. Navigate to your repository and click on the button to create a new PR.
+
+![Screenshot for creating the PR](images/author-pull-request.png)
+
+If you have recent changes, there will be a yellow box at the top with a *Compare & pull request* button, otherwise, you can click on *Contribute* and click on the *Open pull request* button.
+
+Once the maintainers validate the new hack, it'll be merged and visible on the official website. You can then remove your branch if you want to keep things clean.
+
+If you want to create another hack, you can start from scratch and create another fork, or update your existing one. In that case (assuming that you've been following the instructions), make sure that your main branch is up to date with the upstream.
+
+```shell
+git switch main
+git pull --ff-only --prune upstream main
+```
+
+If something goes wrong with rebasing (getting warnings about divergent set of commits), and you're confident that the remote is correct you can always reset to that. This typically happens if you've rebased things on the Github website, but your local doesn't have the rebased commits, you'll see that you're *n* commits behind and *m* commits ahead, and a message about the divergent set of commits. In that case try the following command
+
+```shell
+git reset --hard origin new-iot-hack  # or any other branch that you want to sync to
+```
+
+> **Warning**  
+> Here be dragons! Resetting your branch this way will remove all commits that you have locally on that branch, and will get whatever is in the remote branch. As long as that's what you want or need, resetting is fine.
+
+## GCP Project Setup
+
+Some hacks will need certain resources to be created in GCP projects, before the hack starts. These could be enabling APIs, assigning permissions, creating buckets, databases etc. We expect these things to be automated through **Terraform**. 
+
+By default the scaffolding process creates empty placeholders for the Terraform configuration. You can edit those anyway you want to create the things required for your hack.
+
+For the participants, we've documented how to use these Terraform scripts in [How to Setup Your Environment](howto-setup-environment.md) as that's part of the event.
+
+### Customer Sandboxes
+
+Our preferred option for hosting gHacks is through sandbox projects provided by the customers. Every team should have their own dedicated sandbox project, with `Owner` permissions for every team member (3-5 users). Ideally, these projects should be set up ahead of the event, and *Terraform* scripts should've been run. In addition, having a default network, with standard firewall rules to allow communication within the subnets would make sure that things are consistent with other environments.
+
+See [Event Preparation](howto-host-hack.md#event-preparation) details to ensure that the everything is aligned with the stakeholders in a timely fashion.
+
+### Qwiklabs
+
+As mentioned in the previous section we'd like gHacks to be executed in customer environments. That way the resources created can stay behind and people can carry on even after the event. However, we're aware of the challenges of getting sandboxes available at customers, so gHacks are supported on a **special Qwiklabs instance** available on [go/ceqwiklabs](http://go/ceqwiklabs), where we can create our own labs and host events.
+
+By default when a gHack is included in the official repository a new Qwiklabs lab is created in this special Qwiklabs instance. 
+
+If you don't need anything special, the default Qwiklabs lab configuration `qwiklabs.yaml`, provided by the scaffolding tool, should be sufficient. If you need to edit that file, make sure that you've read the document available on [go/ql-scripts](http://go/ql-scripts).
+
+#### Qwiklabs and Terraform
+
+The Terraform scripts in the `artifacts` directory of your hack will be automatically executed when the labs start.
+
+> **Warning**  
+> At the moment Qwiklabs only support Terraform **1.0.1**, so make sure that your Terraform configuration only uses capabilities available for that version. Note that you can still use the latest version of the GCP providers, this only applies to the Terraform version used.
+
+The Terraform configuration when used by Qwiklabs has some pre-requisites. You'll need to make sure that your configuration includes the following variables, even if you don't use them!
+
+- `gcp_project_id`
+- `gcp_region`
+- `gcp_zone`
+
+If you've used the scaffolding tool, this is done for you automatically. 
+
+Another thing to keep in mind is that all Qwiklabs projects come with a default network including a subnet for all regions. If you want your hacks to be available outside of Qwiklabs environments, make sure that either those environments have a default network configured as well, or just use a different specific network created and managed by your configuration.
+
+#### Updating Qwiklabs
+
+The process of synchronizing of your changes to the special Qwiklabs instance is done automatically but might take some time. Keep that in mind if you're in a rush.
+
+It's also possible to create labs directly in the special Qwiklabs instance to try out things, you can then import the `README.md` as the instructions, and add the `ghacks-setup.zip` to the project instance in the Lab Resources section. You can create the zip file by navigating to your hack's artifacts directory and running `make`. But beware that image references etc. will not work in that case.
+
+### Argolis
+
+Using Argolis is a great choice when running an internal gHack for Google employees that have access to their own Argolis environment.
+
+In addition using your own Argolis environment is a great way to test your Terraform configuration during development. We recommend testing in a fresh Argolis project to make sure everything in your Terraform script gets created as expected.
+
+> **Note**  
+> Remember that Argolis projects by default use a lot of restrictive Org Policies. You might need to disable some of them before running your scripts. You can use the scripts from [this repository](https://github.com/gfilicetti/gcp-scripts) for that.
+
+## The Anatomy of a gHack
 
 ### Files and Folders
 
-Now that you've run the `setup-newhack.sh` script above, this is the directory structure it creates and the template files within:
+Once you've run the `setup-newhack.sh` scaffolding script as mentioned previously, it will create this directory structure and template files within:
 
 ```
 hacks
@@ -213,6 +368,8 @@ The Coach's guide should include the following:
 - Suggested time a coach should wait before helping out if a team is not progressing past known blockers
 
 The Coach's guide should be updated during & post event with key learnings, such as all the gotchas, snags, and other unexpected blockers that your attendees hit.
+
+> **Note** The Coach's guide is the most detail oriented & time consuming item to produce however, here's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
 
 ### Coach's Guide Template
 
