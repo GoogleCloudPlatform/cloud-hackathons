@@ -53,7 +53,9 @@ The *Team Name* in the welcome message can be configured in `service/routes/inde
 In order to deploy the app to Cloud Run, use the following command, while still in `service` directory (you can omit the `--source` flag as it's the default).
 
 ```shell
-gcloud run deploy my-first-app --source .
+REGION=us-central1
+APP_NAME=my-first-app
+gcloud run deploy $APP_NAME --region=$REGION --source=.
 ```
 
 In order to run the tests change directory to the top level `test` directory and install the dependencies there first.
@@ -82,33 +84,33 @@ Creating the Artifact Registry should be straight forward, make sure to ignore t
 Using the `Setup Instructions` from the Artifact Registry you can run the following command to authenticate.
 
 ```shell
-gcloud auth configure-docker us-central1-docker.pkg.dev
+gcloud auth configure-docker $REGION-docker.pkg.dev
 ```
 
 Building the docker image locally should also be trivial, assuming that you're in the `service` directory, run the following command:
 
 ```shell
-docker build -t my-first-app:v1 .
+docker build -t $APP_NAME:v1 .
 ```
 
 You can then run the local container:
 
 ```shell
-docker run -p 8080:8080 my-first-app:v1
+docker run -p 8080:8080 $APP_NAME:v1
 ```
 
 Once everything is up and running, push the local image to the new Artifact Registry
 
 ```shell
 REPOSITORY_NAME=...
-docker tag my-first-app:v1 us-central1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/my-first-app:v1
-docker push us-central1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/my-first-app:v1
+docker tag $APP_NAME:v1 $REGION-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/$APP_NAME:v1
+docker push $REGION-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/$APP_NAME:v1
 ```
 
 Now you can update the Cloud Run deployment to use the new image (stick to the same region).
 
 ```shell
-gcloud run deploy my-first-app --region us-central1 --image us-central1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/my-first-app:v1
+gcloud run deploy $APP_NAME --region=$REGION --image=$REGION-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/$APP_NAME:v1
 ```
 
 ## Challenge 3: Logging and Monitoring
@@ -118,14 +120,14 @@ gcloud run deploy my-first-app --region us-central1 --image us-central1-docker.p
 Just uncomment the log statements in `service/routes/logging.js`. After fixing it, you need to create a new version and do a redeployment.
 
 ```shell
-IMAGE_TAG="my-first-app:v2"
-IMAGE_FULL="us-central1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/$IMAGE_TAG"
+IMAGE_TAG="$APP_NAME:v2"
+IMAGE_FULL="$REGION-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/$REPOSITORY_NAME/$IMAGE_TAG"
 
 docker build -t $IMAGE_TAG .
 docker tag $IMAGE_TAG $IMAGE_FULL
 docker push $IMAGE_FULL
 
-gcloud run deploy my-first-app --region us-central1 --image $IMAGE_FULL
+gcloud run deploy $APP_NAME --region=$REGION --image=$IMAGE_FULL
 ```
 
 ## Challenge 4: Firestore
@@ -154,14 +156,14 @@ CONNECTION_NAME=`gcloud sql instances list --format=json | jq -r '.[0].connectio
 Make sure that Cloud Run can connect to the Cloud SQL instance:
 
 ```shell
-gcloud run services update my-first-app --region=us-central1 --add-cloudsql-instances=$CONNECTION_NAME
+gcloud run services update $APP_NAME --region=$REGION --add-cloudsql-instances=$CONNECTION_NAME
 ```
 
 
 Now set the following as environment variables:
 
 ```shell
-gcloud run services update my-first-app --region=us-central1 \
+gcloud run services update $APP_NAME --region=$REGION \
     --update-env-vars SQL_USER="app",SQL_PASSWORD="my-precious",SQL_DATABASE="database",SQL_INSTANCE_NAME="$CONNECTION_NAME"
 ```
 
@@ -179,8 +181,8 @@ echo -n "my-precious" | gcloud secrets versions add sql-password --data-file=-  
 After creating the secret, first remove the plain text environment variable and then update the app.
 
 ```shell
-gcloud run services update my-first-app --region=us-central1 --remove-env-vars="SQL_PASSWORD"
-gcloud run services update my-first-app --region=us-central1 --set-secrets="SQL_PASSWORD=sql-password:latest"
+gcloud run services update $APP_NAME --region=$REGION --remove-env-vars="SQL_PASSWORD"
+gcloud run services update $APP_NAME --region=$REGION --set-secrets="SQL_PASSWORD=sql-password:latest"
 ```
 
 The service account will need to have the `Secret Manager Secret Accessor` role.
@@ -192,14 +194,14 @@ The service account will need to have the `Secret Manager Secret Accessor` role.
 Create subnet with the following CIDR: `10.8.0.0/28` and call it `subnet-redis`
 
 ```shell
-NETWORK_NAME=`basename $(gcloud redis instances describe redis --region us-central1 --format "value(authorizedNetwork)")`
+NETWORK_NAME=`basename $(gcloud redis instances describe redis --region=$REGION --format="value(authorizedNetwork)")`
 SUBNET_NAME="subnet-redis"
 CIDR="10.8.0.0/28"
 
 gcloud compute networks subnets create $SUBNET_NAME \
     --network=$NETWORK_NAME \
-    --range "$CIDR" \
-    --region us-central1
+    --range="$CIDR" \
+    --region=$REGION
 ```
 
 Now create the vpc-access connector.
@@ -207,15 +209,16 @@ Now create the vpc-access connector.
 ```shell
 VPC_CONNECTOR_NAME="redis-vpc-connector"
 gcloud compute networks vpc-access connectors create $VPC_CONNECTOR_NAME \
-    --subnet $SUBNET_NAME \
-    --region us-central1
+    --subnet=$SUBNET_NAME \
+    --region=$REGION
 ```
 
-And make sure to update the REDISHOST with the IP of the Memorystore. Bware of the vpc-connector flag.
+And make sure to update the `REDISHOST` with the IP of the Memorystore. Bware of the vpc-connector flag.
 
 ```shell
-REDIS_IP=`gcloud redis instances describe redis --region us-central1 --format "value(host)"`
-gcloud run services update my-first-app --region=us-central1 \
+REDIS_IP=`gcloud redis instances describe redis --region=$REGION --format="value(host)"`
+gcloud run services update $APP_NAME \
+    --region=$REGION \
     --vpc-connector $VPC_CONNECTOR_NAME \
     --update-env-vars REDISHOST=$REDIS_IP
 
