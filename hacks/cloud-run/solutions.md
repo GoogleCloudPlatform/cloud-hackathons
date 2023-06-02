@@ -173,7 +173,7 @@ Create a new secret `sql-password` and set its value to `my-precious`.
 
 ```shell
 gcloud secrets create sql-password  --replication-policy="automatic"
-echo -n "my-precious" | gcloud secrets versions add sql-password --data-file=-  # not a very secure method though
+echo -n "my-precious" | gcloud secrets versions add sql-password --data-file=-  # not a very secure method thoughcl
 ```
 
 After creating the secret, first remove the plain text environment variable and then update the app.
@@ -189,3 +189,34 @@ The service account will need to have the `Secret Manager Secret Accessor` role.
 
 ### Notes & Guidance
 
+Create subnet with the following CIDR: `10.8.0.0/28` and call it `subnet-redis`
+
+```shell
+NETWORK_NAME=`basename $(gcloud redis instances describe redis --region us-central1 --format "value(authorizedNetwork)")`
+SUBNET_NAME="subnet-redis"
+CIDR="10.8.0.0/28"
+
+gcloud compute networks subnets create $SUBNET_NAME \
+    --network=$NETWORK_NAME \
+    --range "$CIDR" \
+    --region us-central1
+```
+
+Now create the vpc-access connector.
+
+```shell
+VPC_CONNECTOR_NAME="redis-vpc-connector"
+gcloud compute networks vpc-access connectors create $VPC_CONNECTOR_NAME \
+    --subnet $SUBNET_NAME \
+    --region us-central1
+```
+
+And make sure to update the REDISHOST with the IP of the Memorystore. Bware of the vpc-connector flag.
+
+```shell
+REDIS_IP=`gcloud redis instances describe redis --region us-central1 --format "value(host)"`
+gcloud run services update my-first-app --region=us-central1 \
+    --vpc-connector $VPC_CONNECTOR_NAME \
+    --update-env-vars REDISHOST=$REDIS_IP
+
+```

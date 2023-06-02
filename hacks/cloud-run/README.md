@@ -222,10 +222,8 @@ We've already deployed a Memorystore instance in your project. Open the endpoint
 
 ### Learning Resources
 
-- [Direct Memorystore integration with Cloud Run](https://cloud.google.com/run/docs/integrate/redis-memorystore)
 - [Serverless VPC Access for Memorystore](https://cloud.google.com/memorystore/docs/redis/connect-redis-instance-cloud-run)
 
 ### Tips
 
-- Direct Memorystore is in preview atm, but it's the much easier option
 - Don't forget to configure the IP of the Memorystore instance in Cloud Run (environment variables!)
