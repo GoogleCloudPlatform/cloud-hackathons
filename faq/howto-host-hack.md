@@ -86,7 +86,7 @@ It will require at least one person from the team to sign up for the gHacks Qwik
 
 > **Note** Even though the QwikLab will contain the same instructions, it's better to ignore that and use the gHacks [website](https://ghacks.dev) like the rest of the team (they won't have access to the lab, only to the GCP project, using the credentials shared by the person who signed up).
 
-In order to organize a gHack event with Qwiklabs, you'll need a _Classroom Template_ and a _Classroom_. You'll need *Authoring* permissions on the special Qwiklabs instance to creat those. Please follow the instructions on [go/ceqwiklabstraining](http://go/ceqwiklabstraining) to become an author. 
+In order to organize a gHack event with Qwiklabs, you'll need a _Classroom Template_ and a _Classroom_. You'll need *Authoring* permissions on the special Qwiklabs instance to create those. Please follow the instructions on [go/ceqwiklabstraining](http://go/ceqwiklabstraining) to become an author. 
 
 ##### Classroom Templates - One Time Only 
 

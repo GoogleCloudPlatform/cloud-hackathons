@@ -88,7 +88,7 @@ terraform output
 
 Qwiklabs provide isolated sandbox environments to run gHacks. In principle a sandbox environment will include a single Google Cloud Project configured for 5 users (students). The *Terraform* scripts from the *artifacts* directory are executed automatically when the lab is started, so the participants don't have to do that themselves.
 
-In order to get access to these environments, each team needs to pick **one** participant as the Team Lead to create an account on the special [Qwiklabs instance for gHacks](https://explore.qwiklabs.com), and provide the email address that's used to create that account to the Lead Coach, so that the account can be added to a _Classroom_. 
+In order to get access to these environments, each team will pick **one** participant as the _Team Lead_. The Team Lead will create an account on the special [Qwiklabs instance for gHacks](https://explore.qwiklabs.com). Once this is set up, the Lead Coach will add the Team Lead's email account to the created _Classroom_.
 
 ### Qwiklabs Instance
 

@@ -9,10 +9,10 @@ In essence a gHack needs to satisfy the following criteria.
 1. A gHack consists of **multiple, cumulative, hands-on challenges** building on top of each other
    > Think of a story consisting of multiple steps, starting with simple tasks and getting more advanced/detailed as the challenges progress. A gHack should provide value even if the participants don't get to solve all challenges.
 1. Challenges are small puzzles to be solved by participants **without step-by-step instructions, screenshots or any other copy/paste** content provided
-   > Solving the challenges means satisfying the *Success Criteria* described for the challenge. Remember there's no single golden path to solve these challenges, participants are free to come up with their own solutions as long as success criteria are met. The challenges shouldn't be trick questions as we don't want to frustrate participants. And finally, try to stay away from *coding from scratch* challenges, those are time consuming and don't provide too much value. Stick to configuring services (either through CLI, console, config files) or incomplete configuration/code sources (fix a trivial issue, add a single line to a file etc.)
-1. The gHack concept is **designed for teams**, the idea is solve the challenges as a team
-   > Although it's technically possible to do a gHack individually, we think that running those as teams provides the most value as the challenges require diverse set of skills so that people can also learn from each other. Make sure that during the event every participant gets to *drive* at least once.
-1. Every team needs to be **accompanied by a coach during the event**
+   > Solving the challenges means satisfying the *Success Criteria* described for the challenge. Remember there's no single golden path to solve these challenges, participants are free to come up with their own solutions as long as success criteria are met. The challenges shouldn't be trick questions as we don't want to frustrate participants. And finally, try to stay away from *coding from scratch* challenges, those are time consuming and don't provide much value. Stick to configuring services (either through the CLI, console, config files) or incomplete configuration/code sources (e.g. fix a trivial issue, add a single line to a file etc.)
+1. The gHack concept is **designed for teams**, the idea is solve the challenges together, as a team
+   > Although it's technically possible to do a gHack individually, we think that running those as teams provides the most value as the challenges require a diverse set of skills so that people can also learn from each other. Make sure that during the event every participant gets to *drive* at least once.
+1. Every team will be **accompanied by a coach** during the event
    > Sometimes teams might struggle to find the right solution; at those moments it's quite important to have someone who's done it before to give some hints, not the solution, but a direction, to prevent people from getting frustrated.
 
 ## Getting Started
@@ -88,7 +88,7 @@ The default configuration for Github Pages only works with the *main* branch. If
 
 ![Screenshot for environments](images/author-pages-environments.png)
 
-Now you can just either remove the protections, add specific branches or enable *Pages* for _All branches_.
+In the 'Deployment Branches' section, click the *Selected branches* dropdown and choose: *All branches*
 
 ![Screenshot for branch protection](images/author-pages-branch-protection.png)
 
@@ -110,7 +110,7 @@ Once everything is fine with your hack and you want to contribute to the origina
 ```shell
 git fetch upstream
 git switch new-iot-hack  # or main if you're not using branches
-git rebase upstream/main
+git rebase upstream main
 ```
 
 If you get any conflicts you'll need to resolve those and commit your changes. Then you can push your changes to your origin. Since rebasing changes the Git history, you will need to force push your changes. 
@@ -140,11 +140,11 @@ git pull --ff-only --prune upstream main
 If something goes wrong with rebasing (getting warnings about divergent set of commits), and you're confident that the remote is correct you can always reset to that. This typically happens if you've rebased things on the Github website, but your local doesn't have the rebased commits, you'll see that you're *n* commits behind and *m* commits ahead, and a message about the divergent set of commits. In that case try the following command
 
 ```shell
-git reset --hard origin/new-iot-hack  # or any other branch that you want to sync to
+git reset --hard origin new-iot-hack  # or any other branch that you want to sync to
 ```
 
 > **Warning**  
-> Here be dragons! Resetting your branch this way will remove all commits that you have locally on that branch, and will get whatever is in the remote branch. If that's the leading then fine, otherwise, you'll have to fix things first.
+> Here be dragons! Resetting your branch this way will remove all commits that you have locally on that branch, and will get whatever is in the remote branch. As long as that's what you want or need, resetting is fine.
 
 ## GCP Project Setup
 
@@ -152,17 +152,19 @@ Some hacks will need certain resources to be created in GCP projects, before the
 
 By default the scaffolding process creates empty placeholders for the Terraform configuration. You can edit those anyway you want to create the things required for your hack.
 
-We've documented how to use these Terraform scripts in [How to Setup Your Environment](howto-setup-environment.md).
+For the participants, we've documented how to use these Terraform scripts in [How to Setup Your Environment](howto-setup-environment.md) as that's part of the event.
 
 ### Customer Sandboxes
 
 Our preferred option for hosting gHacks is through sandbox projects provided by the customers. Every team should have their own dedicated sandbox project, with `Owner` permissions for every team member (3-5 users). Ideally, these projects should be set up ahead of the event, and *Terraform* scripts should've been run. In addition, having a default network, with standard firewall rules to allow communication within the subnets would make sure that things are consistent with other environments.
 
+See [Event Preparation](howto-host-hack.md#event-preparation) details to ensure that the everything is aligned with the stakeholders in a timely fashion.
+
 ### Qwiklabs
 
-As mentioned in the previous section we'd like gHacks to be executed in customer environments. That way the resources created can stay behind and people can carry on even after the event. However, we're aware of the challenges of getting sandboxes available at customers, so gHacks are supported on a special Qwiklabs instance.
+As mentioned in the previous section we'd like gHacks to be executed in customer environments. That way the resources created can stay behind and people can carry on even after the event. However, we're aware of the challenges of getting sandboxes available at customers, so gHacks are supported on a **special Qwiklabs instance** available on [go/ceqwiklabs](http://go/ceqwiklabs), where we can create our own labs and host events.
 
-By default when a gHack is included in the official repository a new Qwiklabs lab is created in the special Qwiklabs instance. 
+By default when a gHack is included in the official repository a new Qwiklabs lab is created in this special Qwiklabs instance. 
 
 If you don't need anything special, the default Qwiklabs lab configuration `qwiklabs.yaml`, provided by the scaffolding tool, should be sufficient. If you need to edit that file, make sure that you've read the document available on [go/ql-scripts](http://go/ql-scripts).
 
@@ -170,7 +172,8 @@ If you don't need anything special, the default Qwiklabs lab configuration `qwik
 
 The Terraform scripts in the `artifacts` directory of your hack will be automatically executed when the labs start.
 
-At the moment Qwiklabs only support Terraform **1.0.1**, so make sure that your Terraform configuration only uses capabilities available for that version. Note that you can still use the latest version of the GCP providers, this only applies to the Terraform version used.
+> **Warning**  
+> At the moment Qwiklabs only support Terraform **1.0.1**, so make sure that your Terraform configuration only uses capabilities available for that version. Note that you can still use the latest version of the GCP providers, this only applies to the Terraform version used.
 
 The Terraform configuration when used by Qwiklabs has some pre-requisites. You'll need to make sure that your configuration includes the following variables, even if you don't use them!
 
@@ -190,13 +193,18 @@ It's also possible to create labs directly in the special Qwiklabs instance to t
 
 ### Argolis
 
-You can't use Argolis projects for customers (unless you're doing an internal event and everybody uses their own Argolis organization) but you can certainly test your Terraform configuration in an Argolis project. We recommend to test things in a new project to make sure that things are reproducable. As you probably already know Argolis comes with a lot of restrictive organization policies, you might need to disable some of those before running your scripts.
+Using Argolis is a great choice when running an internal gHack for Google employees that have access to their own Argolis environment.
+
+In addition using your own Argolis environment is a great way to test your Terraform configuration during development. We recommend testing in a fresh Argolis project to make sure everything in your Terraform script gets created as expected.
+
+> **Note**  
+> Remember that Argolis projects by default use a lot of restrictive Org Policies. You might need to disable some of them before running your scripts. You can use the scripts from [this repository](https://github.com/gfilicetti/gcp-scripts) for that.
 
 ## The Anatomy of a gHack
 
 ### Files and Folders
 
-Now that you've run the `setup-newhack.sh` script above, this is the directory structure it creates and the template files within:
+Once you've run the `setup-newhack.sh` scaffolding script as mentioned previously, it will create this directory structure and template files within:
 
 ```
 hacks
