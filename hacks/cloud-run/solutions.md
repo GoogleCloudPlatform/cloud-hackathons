@@ -169,6 +169,22 @@ gcloud run services update my-first-app --region=us-central1 \
 
 ### Notes & Guidance
 
+Create a new secret `sql-password` and set its value to `my-precious`.
+
+```shell
+gcloud secrets create sql-password  --replication-policy="automatic"
+echo -n "my-precious" | gcloud secrets versions add sql-password --data-file=-  # not a very secure method though
+```
+
+After creating the secret, first remove the plain text environment variable and then update the app.
+
+```shell
+gcloud run services update my-first-app --region=us-central1 --remove-env-vars="SQL_PASSWORD"
+gcloud run services update my-first-app --region=us-central1 --set-secrets="SQL_PASSWORD=sql-password:latest"
+```
+
+The service account will need to have the `Secret Manager Secret Accessor` role.
+
 ## Challenge 7: Memorystore
 
 ### Notes & Guidance

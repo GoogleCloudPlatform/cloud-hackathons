@@ -144,7 +144,7 @@ Similar to the previous challenge, browse to `/firestore` and fix the issue.
 ### Tips
 
 - When in doubt, check the source code.
-- Make sure that the service account used by Cloud Run has the right role to access Firestore.
+- Make sure that the service account used by Cloud Run has the `Datastore User` role.
 
 ## Challenge 5: Cloud SQL
 
@@ -198,6 +198,10 @@ Add the database password to the Secret Manager, expose the secret as environmen
 ### Learning Resources
 
 - [Using secrets in Cloud Run](https://cloud.google.com/run/docs/configuring/secrets)
+
+### Tips
+
+- Make sure that the service account used by Cloud Run has the `Secret Manager Secret Accessor` role.
 
 ## Challenge 7: Memorystore
 
