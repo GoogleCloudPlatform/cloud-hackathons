@@ -204,10 +204,10 @@ Create subnet with the following CIDR: `10.8.0.0/28` and call it `subnet-redis`
 
 ```shell
 REDIS_INSTANCE_NAME="redis"
-NETWORK_FQDN=`gcloud redis instances describe $REDIS_INSTANCE_NAME \
+NETWORK_FQN=`gcloud redis instances describe $REDIS_INSTANCE_NAME \
     --region=$REGION \
     --format="value(authorizedNetwork)"`
-NETWORK_NAME=`basename $NETWORK_FDQN`
+NETWORK_NAME=`basename $NETWORK_FQN`
 SUBNET_NAME="subnet-redis"
 CIDR="10.8.0.0/28"
 
