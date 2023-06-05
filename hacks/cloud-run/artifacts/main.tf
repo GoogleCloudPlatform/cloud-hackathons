@@ -104,7 +104,7 @@ resource "google_project_service" "clouddeploy" {
 # Permissions for the default service account
 data "google_compute_default_service_account" "gce_default" {
   depends_on = [
-    google_project_service.compute_api
+    google_project_service.compute
   ]
 }
 
