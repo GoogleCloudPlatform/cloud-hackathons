@@ -134,18 +134,23 @@ gcloud run deploy $APP_NAME --region=$REGION --image=$IMAGE_FULL
 
 ### Notes & Guidance
 
-First step is to create the default database in the *Firestore* mode. All you have to do is to browse to Firestore and you'll be prompted to make the choice.
+First step is to create the default database in the *Native* mode. All you have to do is to browse to Firestore and you'll be prompted to make the choice.
 
 > **Warning**  
 > The mode you select is permanent for the project, so make sure that you're choosing the right one.
 
 Once the default database is there, click on **+Start collection** button to create a new collection called *cities* and add *Amsterdam* as the document with a sample field, for example `country` and set its value to `NL`. 
 
+The Cloud Run service account needs to have the `Cloud Datastore User` role to be able to access the database.
+
+> **Note**  
+> The Compute Engine default service account, used by Cloud Run by default, has the `Editor` role in Qwiklabs, so if you're running this hack on Qwiklabs, there's no need to update the IAM policy.
+
 ## Challenge 5: Cloud SQL
 
 ### Notes & Guidance
 
-Before you start configuring access to Cloud SQL, make sure that the Cloud Run service account has the *Cloud SQL Client* role as well.
+Before you start configuring access to Cloud SQL, make sure that the Cloud Run service account has the `Cloud SQL Client` role as well.
 
 Get the connection name, either from the console, or command line:
 
@@ -159,8 +164,15 @@ Make sure that Cloud Run can connect to the Cloud SQL instance:
 gcloud run services update $APP_NAME --region=$REGION --add-cloudsql-instances=$CONNECTION_NAME
 ```
 
-
 Now set the following as environment variables:
+
+| Name              | Value              |
+| ---               | ---                |
+| SQL_USER          | `app`              |
+| SQL_PASSWORD      | `my-precious`      |
+| SQL_DATABASE      | `database`         |
+| SQL_INSTANCE_NAME | `$CONNECTION_NAME` |
+
 
 ```shell
 gcloud run services update $APP_NAME --region=$REGION \
@@ -175,7 +187,7 @@ Create a new secret `sql-password` and set its value to `my-precious`.
 
 ```shell
 gcloud secrets create sql-password  --replication-policy="automatic"
-echo -n "my-precious" | gcloud secrets versions add sql-password --data-file=-  # not a very secure method thoughcl
+echo -n "my-precious" | gcloud secrets versions add sql-password --data-file=-  # not a very secure method though
 ```
 
 After creating the secret, first remove the plain text environment variable and then update the app.
@@ -194,7 +206,11 @@ The service account will need to have the `Secret Manager Secret Accessor` role.
 Create subnet with the following CIDR: `10.8.0.0/28` and call it `subnet-redis`
 
 ```shell
-NETWORK_NAME=`basename $(gcloud redis instances describe redis --region=$REGION --format="value(authorizedNetwork)")`
+REDIS_INSTANCE_NAME="redis"
+NETWORK_FQDN=`gcloud redis instances describe $REDIS_INSTANCE_NAME \
+    --region=$REGION \
+    --format="value(authorizedNetwork)"`
+NETWORK_NAME=`basename $NETWORK_FDQN`
 SUBNET_NAME="subnet-redis"
 CIDR="10.8.0.0/28"
 
@@ -208,6 +224,7 @@ Now create the vpc-access connector.
 
 ```shell
 VPC_CONNECTOR_NAME="redis-vpc-connector"
+
 gcloud compute networks vpc-access connectors create $VPC_CONNECTOR_NAME \
     --subnet=$SUBNET_NAME \
     --region=$REGION
@@ -216,10 +233,12 @@ gcloud compute networks vpc-access connectors create $VPC_CONNECTOR_NAME \
 And make sure to update the `REDISHOST` with the IP of the Memorystore. Bware of the vpc-connector flag.
 
 ```shell
-REDIS_IP=`gcloud redis instances describe redis --region=$REGION --format="value(host)"`
+REDIS_IP=`gcloud redis instances describe $REDIS_INSTANCE_NAME \
+    --region=$REGION \
+    --format="value(host)"`
+
 gcloud run services update $APP_NAME \
     --region=$REGION \
     --vpc-connector $VPC_CONNECTOR_NAME \
     --update-env-vars REDISHOST=$REDIS_IP
-
 ```

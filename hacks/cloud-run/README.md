@@ -36,6 +36,7 @@ This is going to be an introduction to running apps on Cloud Run. We'll dive int
   - docker (>= 20.10.22)
   - an editor
   - **Note** Cloud Shell has all of these pre-installed
+- Basic knowledge of GCP
 - Knowledge of docker, nodejs/npm and Javascript
 
 ## Contributors
@@ -50,7 +51,7 @@ Before we can deploy the app, we need its source code. So, the first step is to 
 
 ### Description
 
-We've prepared a [sample project on Github](https://github.com/meken/speedrun/archive/refs/heads/main.zip), navigate there and download the project to your environment. Unpack it, install the dependencies and start it. Edit the service to show your *Team Name* in the welcome page.
+We've prepared a [sample project on Github](https://github.com/meken/speedrun/archive/refs/heads/main.zip), navigate there and download the project to your environment. Unpack it, install the dependencies and start it (without using containers). Edit the service to show your *Team Name* in the welcome page.
 
 Once the service is running locally, deploy it to Cloud Run *from source code* using *the command line*. Pick `us-central1` as the *region*, allow *unauthenticated invocations*, and stick to the defaults for the rest.
 
@@ -58,7 +59,7 @@ Once the service is running locally, deploy it to Cloud Run *from source code* u
 
 ### Success Criteria
 
-- The app can run locally 
+- The app can run locally (without containers)
 - The app is successfully deployed to Cloud Run
 - The tests in `run.test.js` are all passing
 - The only code change made is to show the *Team Name* in the welcome message
@@ -82,7 +83,7 @@ Waiting for a slow deployment is stressful. Some might argue that it is just as 
 
 ### Description
 
-Although the previous step already created a temporary repository, we want our own to control its various aspects. Create a new standard Artifact Registry in `us-central1`. Build the container locally (using the provided `Dockerfile`) and push it to the newly created Artifact Registry. Make sure that the Cloud Run is using the latest image.
+Although the previous step already created a container registry managed by Cloud Run, we want our own to control its various aspects. Create a new standard Artifact Registry in `us-central1`. Build the image locally (using the provided `Dockerfile`), run it locally to verify that everything works as expected, and push it to the newly created Artifact Registry. Make sure that the Cloud Run is using the latest image.
 
 ### Success Criteria
 
@@ -143,7 +144,7 @@ Similar to the previous challenge, browse to `/firestore` and fix the issue.
 
 ### Tips
 
-- When in doubt, check the source cod
+- When in doubt, check the source code
 - Make sure that the service account used by Cloud Run has the `Datastore User` role
 
 ## Challenge 5: Cloud SQL
