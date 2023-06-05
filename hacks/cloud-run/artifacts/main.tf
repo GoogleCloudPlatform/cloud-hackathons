@@ -169,6 +169,8 @@ resource "google_sql_database_instance" "instance" {
       ipv4_enabled = true
     }
 
+    deletion_protection_enabled = false
+
     pricing_plan = "PER_USE"
     tier         = "db-f1-micro"
   }
