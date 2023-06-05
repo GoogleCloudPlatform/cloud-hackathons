@@ -20,12 +20,14 @@ resource "google_project_service" "compute" {
 
 # Artifact Registry API
 resource "google_project_service" "artifactregistry" {
-  service = "artifactregistry.googleapis.com"
+  service            = "artifactregistry.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Cloud Build API
 resource "google_project_service" "cloudbuild" {
-  service = "cloudbuild.googleapis.com"
+  service            = "cloudbuild.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Cloud Resource Manager API
@@ -60,7 +62,8 @@ resource "google_project_service" "pubsub" {
 
 # Google Cloud Memorystore for Redis API
 resource "google_project_service" "redis" {
-  service = "redis.googleapis.com"
+  service            = "redis.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Cloud Run Admin API
@@ -71,7 +74,8 @@ resource "google_project_service" "run" {
 
 # Secret Manager API
 resource "google_project_service" "secretmanager" {
-  service = "secretmanager.googleapis.com"
+  service            = "secretmanager.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Service Management API
@@ -88,17 +92,20 @@ resource "google_project_service" "serviceusage" {
 
 # Cloud SQL Admin API
 resource "google_project_service" "sqladmin" {
-  service = "sqladmin.googleapis.com"
+  service            = "sqladmin.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Serverless VPC Access API
 resource "google_project_service" "vpcaccess" {
-  service = "vpcaccess.googleapis.com"
+  service            = "vpcaccess.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Cloud Deploy API
 resource "google_project_service" "clouddeploy" {
-  service = "clouddeploy.googleapis.com"
+  service            = "clouddeploy.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Permissions for the default service account
