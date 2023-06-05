@@ -27,7 +27,8 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
   > This hack is intended as an introduction to provisioning GCP resources using Terraform. We'll start with the basics of Infrastructure as Code (IaC) and help you automate the process of infrastructure provisioning.
 
 ### Application Development
-- Coming soon...
+- [Ready, Steady, Cloud Run!](./hacks/cloud-run/README.md)
+  > We'll be using Cloud Run to quickly configure, deploy and troubleshoot a web service. During the process we'll introduce different ways to store data for the web service and learn about how to discover and fix issues. 
 
 ### Operations
 - Coming soon...
