@@ -30,27 +30,32 @@ resource "google_project_service" "cloudbuild" {
 
 # Cloud Resource Manager API
 resource "google_project_service" "cloudresourcemanager" {
-  service = "cloudresourcemanager.googleapis.com"
+  service            = "cloudresourcemanager.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Cloud Datastore API
 resource "google_project_service" "datastore" {
-  service = "datastore.googleapis.com"
+  service            = "datastore.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Identity and Access Management (IAM) API
 resource "google_project_service" "iam" {
-  service = "iam.googleapis.com"
+  service            = "iam.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Cloud Monitoring API
 resource "google_project_service" "monitoring" {
-  service = "monitoring.googleapis.com"
+  service            = "monitoring.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Cloud Pub/Sub API
 resource "google_project_service" "pubsub" {
-  service = "pubsub.googleapis.com"
+  service            = "pubsub.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Google Cloud Memorystore for Redis API
@@ -60,7 +65,8 @@ resource "google_project_service" "redis" {
 
 # Cloud Run Admin API
 resource "google_project_service" "run" {
-  service = "run.googleapis.com"
+  service            = "run.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Secret Manager API
@@ -70,12 +76,14 @@ resource "google_project_service" "secretmanager" {
 
 # Service Management API
 resource "google_project_service" "servicemanagement" {
-  service = "servicemanagement.googleapis.com"
+  service            = "servicemanagement.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Service Usage API
 resource "google_project_service" "serviceusage" {
-  service = "serviceusage.googleapis.com"
+  service            = "serviceusage.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Cloud SQL Admin API
@@ -91,6 +99,24 @@ resource "google_project_service" "vpcaccess" {
 # Cloud Deploy API
 resource "google_project_service" "clouddeploy" {
   service = "clouddeploy.googleapis.com"
+}
+
+# Permissions for the default service account
+data "google_compute_default_service_account" "gce_default" {
+  depends_on = [
+    google_project_service.compute_api
+  ]
+}
+
+resource "google_project_iam_member" "gce_default_iam" {
+  project = var.gcp_project_id
+  for_each = toset([
+    "roles/datastore.user",
+    "roles/cloudsql.client",
+    "roles/secretmanager.secretAccessor"
+  ])
+  role   = each.key
+  member = "serviceAccount:${data.google_compute_default_service_account.gce_default.email}"
 }
 
 # MemoryStore instance

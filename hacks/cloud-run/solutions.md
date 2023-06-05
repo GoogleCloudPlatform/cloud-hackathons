@@ -1,4 +1,4 @@
-# Cloud Run in a Speed Run
+# Ready, Steady, Cloud Run!
 
 ## Introduction
 
@@ -141,10 +141,7 @@ First step is to create the default database in the *Native* mode. All you have 
 
 Once the default database is there, click on **+Start collection** button to create a new collection called *cities* and add *Amsterdam* as the document with a sample field, for example `country` and set its value to `NL`. 
 
-The Cloud Run service account needs to have the `Cloud Datastore User` role to be able to access the database.
-
-> **Note**  
-> The Compute Engine default service account, used by Cloud Run by default, has the `Editor` role in Qwiklabs, so if you're running this hack on Qwiklabs, there's no need to update the IAM policy.
+The Cloud Run service account needs to have the `Cloud Datastore User` role to be able to access the database (only relevant if people choose any other service account than the Compute Engine default service account, which has been initialized with the proper roles through Terraform scripts for this hack).
 
 ## Challenge 5: Cloud SQL
 

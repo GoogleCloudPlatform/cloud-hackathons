@@ -13,9 +13,10 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "[gHacks] Cloud Run in a Speed Run"
-description: "We'll be using Cloud Run to quickly deploy and troubleshoot a web service. 
-  During the process we'll introduce different ways to store data for the web service."
+title: "[gHacks] Ready, Steady, Cloud Run!"
+description: "We'll be using Cloud Run to quickly configure, deploy and troubleshoot a 
+  web service. During the process we'll introduce different ways to store data for the 
+  web service."
 instruction:
   type: md
   uri: instructions/en.md

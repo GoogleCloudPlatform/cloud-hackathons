@@ -1,8 +1,8 @@
-# Cloud Run in a Speed Run
+# Ready, Steady, Cloud Run!
 
 ## Introduction
 
-We'll be using Cloud Run to quickly deploy and troubleshoot a web service. During the process we'll introduce different ways to store data for the web service and learn about how to discover and fix issues. 
+We'll be using Cloud Run to quickly configure, deploy and troubleshoot a web service. During the process we'll introduce different ways to store data for the web service and learn about how to discover and fix issues. 
 
 ## Learning Objectives
 
@@ -51,7 +51,7 @@ Before we can deploy the app, we need its source code. So, the first step is to 
 
 ### Description
 
-We've prepared a [sample project on Github](https://github.com/meken/speedrun/archive/refs/heads/main.zip), navigate there and download the project to your environment. Unpack it, install the dependencies and start it (without using containers). Edit the service to show your *Team Name* in the welcome page.
+We've prepared a [sample project](https://github.com/meken/speedrun/archive/refs/heads/main.zip), navigate there and download the project to your environment. Unpack it, install the dependencies and start it (without using containers). Edit the service to show your *Team Name* in the welcome page.
 
 Once the service is running locally, deploy it to Cloud Run *from source code* using *the command line*. Pick `us-central1` as the *region*, allow *unauthenticated invocations*, and stick to the defaults for the rest.
 
@@ -133,6 +133,9 @@ Similar to the previous challenge, browse to `/firestore` and fix the issue.
 > **Warning**  
 > The mode you select is permanent for the project and cannot be changed, so choose wisely.
 
+> **Note**  
+> The Compute Engine default service account has been assigned the right roles to access Firestore. If you choose any other service account for your Cloud Run app, you'll have to make sure that it has the right permissions.
+
 ### Success Criteria
 
 - The tests in `firestore.test.js` are all passing
@@ -145,7 +148,6 @@ Similar to the previous challenge, browse to `/firestore` and fix the issue.
 ### Tips
 
 - When in doubt, check the source code
-- Make sure that the service account used by Cloud Run has the `Datastore User` role
 
 ## Challenge 5: Cloud SQL
 
@@ -160,6 +162,9 @@ When it comes to querying data, relational databases are hard to beat. Who doesn
 ### Description
 
 We've already deployed a Cloud SQL instance for you. If you browse to `/sql`, you'll see that things are not working properly yet. You need to make sure that Cloud Run can connect to it. Pass the database name (`database`), database user name (`app`) and the database user password (`my-precious`) as environment variables in plain text (don't worry we'll fix that later) to the Cloud Run instance.
+
+> **Note**  
+> The Compute Engine default service account has been assigned the right roles to access the SQL database. If you choose any other service account for your Cloud Run app, you'll have to make sure that it has the right permissions.
 
 ### Success Criteria
 
@@ -176,7 +181,6 @@ We've already deployed a Cloud SQL instance for you. If you browse to `/sql`, yo
 ### Tips
 
 - You can find the instance name of the Cloud SQL instance on the Cloud SQL instances page in the Google Cloud console
-- Make sure that the service account used by Cloud Run has the `Cloud SQL Client` role
 
 ## Challenge 6: Keeping secrets safe
 
@@ -189,6 +193,9 @@ Secret Manager provides a central place and single source of truth to manage, ac
 ### Description
 
 Add the database password to the Secret Manager, and configure Cloud Run to refer to that secret for the database password.
+
+> **Note**  
+> The Compute Engine default service account has been assigned the right roles to access Secret Manager. If you choose any other service account for your Cloud Run app, you'll have to make sure that it has the right permissions.
 
 ### Success Criteria
 
@@ -204,7 +211,6 @@ Add the database password to the Secret Manager, and configure Cloud Run to refe
 ### Tips
 
 - You can't have an environment variable in plain text and as a secret with the same name, so you might need to delete the plain text version
-- Make sure that the service account used by Cloud Run has the `Secret Manager Secret Accessor` role
 
 ## Challenge 7: Memorystore
 
