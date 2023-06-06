@@ -15,6 +15,16 @@ In essence a gHack needs to satisfy the following criteria.
 1. Every team will be **accompanied by a coach** during the event
    > Sometimes teams might struggle to find the right solution; at those moments it's quite important to have someone who's done it before to give some hints, not the solution, but a direction, to prevent people from getting frustrated.
 
+## TL;DR: A Quick Outline of Authoring a New gHack
+x
+x
+x
+x
+
+
+
+
+
 ## Getting Started
 
 Alright, you decided to author a new gHack, welcome to the club! The first thing you need to do is to fork this repository on Github. 
