@@ -155,7 +155,7 @@ For example: `"gHack - Acme Corp - MLOps on GCP"`
 In our Google Space, we will have the following:
 
 - **Add Students** - The lead coach will click on `Add people & apps` and enter the email addresses of all the participants and coaches for this event. 
-	- > **Note** See above, email addresses must be Google Workspace accounts or Gmail accounts to be able to join the Google Space.
+	> **Note** See above, email addresses must be Google Workspace accounts or Gmail accounts to be able to join the Google Space. If an email is **NOT** a Google account it will turn **red**.
 - **Student Guide** - The lead coach will paste a link to the student guide as the first entry in the chat.
 - **Files** - The lead coach will click on `Share a file` and upload all files for the students for this hack. See [Making Resources Available](#making-resources-available) below for information on creating the necessary files.
 - **Chat** - Make sure to turn on History so that the chats are persisted between days.
