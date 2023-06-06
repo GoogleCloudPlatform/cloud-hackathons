@@ -86,35 +86,21 @@ It will require at least one person from the team to sign up for the gHacks Qwik
 
 > **Note** Even though the QwikLab will contain the same instructions, it's better to ignore that and use the gHacks [website](https://ghacks.dev) like the rest of the team (they won't have access to the lab, only to the GCP project, using the credentials shared by the person who signed up).
 
-In order to organize a gHack event with Qwiklabs, you'll need a _Classroom Template_ and a _Classroom_. You'll need *Authoring* permissions on the special Qwiklabs instance to create those. Please follow the instructions on [go/ceqwiklabstraining](http://go/ceqwiklabstraining) to become an author. 
+In order to organize a gHack event with Qwiklabs, you'll need to use a _Classroom Template_ to create a _Classroom_. You'll need *Authoring* permissions on the special Qwiklabs instance to create the _Classroom_. Please follow the instructions on [go/ceqwiklabstraining](http://go/ceqwiklabstraining) to become an author. 
 
-##### Classroom Templates - One Time Only 
+##### Creating a Classroom
 
-You'll first have to create a _Classroom Template_ that includes your gHack, this is a one time only action. Once the template is ready, you can use that for all your events. In order to create a new template navigate to the [_Classroom Templates_ section of the special Qwiklabs instance](https://ce.qwiklabs.com/authoring/classroom_templates)
-
-![Screenshot for Classroom Template](images/author-ql-classroom-templates.png)
-
-Click on the **+** button on the top right to create a new *Classroom Template*. Fill in the *Name* and *Description* and keep things the default other than the following:
-
-1. *Type* needs to be set to *Bootcamp/Workshop*
-1. *Enabled* is checked
-1. And you've selected the right *Lab* (the Qwiklabs lab that has been created for you automatically, it will start with the prefix *\[gHacks\]*). 
-
-After filling those details you can click on the button *Create Classroom template* and your template will be ready.
-
-##### Classrooms - Every Event Instance
-
-You need to create _Classroom_ instances for every event you want to organize. A _Classroom_ has a start and an end date, references the _Classroom Template_ which determines the lab. You'll need to add the Team Lead of every team as a student to a _Classroom_ so that they can see the lab when they log into the Qwiklabs instance. 
+You need to create _Classroom_ instances for every event you want to organize. A _Classroom_ has a start and an end date and references a _Classroom Template_ which determines the lab used. You'll need to add the Team Lead of every team as a student to a _Classroom_ so that they can see the lab when they log into the Qwiklabs instance. 
 
 Navigate to the [_Classrooms_ section of the special Qwiklabs instance](https://ce.qwiklabs.com/classrooms)
 
 ![Screenshot for Classrooms](images/author-ql-classrooms.png)
 
-Click on the **+** button on the top right to create a new _Classroom_. First step is to choose the _Classroom Template_, as there's many of those, enter *ghack* in the *Classroom template name* field and click on *Filter* button. Choose the right template from the filtered list.
+Click on the **+** button on the top right to create a new _Classroom_. First step is to choose the _Classroom Template_, as there's many of those, type `ghack` in the *Classroom template name* field and click on *Filter* button. Choose the right template from the filtered list.
 
 ![Screenshot for Classroom Template filter](images/author-ql-new-classroom-01.png)
 
-Untick the *Virtual Classroom* option, add the trainer(s) and most importantly set the *start and end date* for the event. *Location* is required, but not as important as the *Timezone*. 
+Untick the *Virtual Classroom* option, add the Lead Coach as a trainer and most importantly set the *start and end date* for the event. *Location* is required, but not as important as the *Timezone*. 
 
 ![Screenshot for Location/Timezone for Classroom](images/author-ql-new-classroom-02.png).
 
@@ -132,9 +118,9 @@ After clicking on *Done* you'll see the new _Classroom_.
 ![Screenshot for the new Classroom](images/author-ql-new-classroom-04.png)
 
 > **Warning**  
-> The lab in the _Classroom_ is not activated, make sure that you activate it before the event by clicking on the *Activate Lab* button.
+> The lab in the _Classroom_ is not activated automatically, make sure that you activate it before the event by clicking on the *Activate Lab* button.
 
-Next step is to add the students. Typically you'll only need to add the *Team Leads* but you could add the complete list of students here. If a student has created an account on the special Qwiklabs instance, their status will show *Enrolled*, otherwise it'll say *Registered, No Qwiklabs Account*. Keep in mind that you can add/remove students at any time, even when the _Classroom_ is in progress.
+The next step is to add the students. You'll only need to add the *Team Leads* here. If a student has created an account on the special Qwiklabs instance, their status will show *Enrolled*, otherwise it'll say *Registered, No Qwiklabs Account*. Keep in mind that you can add/remove students at any time, even when the _Classroom_ is in progress.
 
 ![Screenshot for the students](images/author-ql-new-classroom-05.png)
 
@@ -161,8 +147,6 @@ For example: `"gHack - Acme Corp - MLOps on GCP"`
 ![Create Google Space](images/host-create-space.png)
 
 > **Note** Make sure that you check off the book to allow external users otherwise your customers won't be able to join.
-
-> **Note** Turn off conversation view as it will only get in the way and make things harder to read.
 
 > **Note** To access this new Google Space, the attendees will need a Google account. This can be their work account if the company runs Google Workspace, or it can be a Gmail account. If an attendee doesn't have a Google account, please have them create one **AHEAD OF TIME** for this event: [Click here to create a new Gmail account](https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=US&flowEntry=SignUp&flowName=GlifWebSignIn)
 
