@@ -1,8 +1,27 @@
 # How to Author a gHack
 
-Developing a new gHack is a great way to get your content out to the world. Chances are if you've done workshops, PoCs or pilots in the past, you already have the material on which to build a gHack.
+Developing a new gHack is a great way to get your content out to the world. Chances are that if you've done workshops, PoCs or pilots in the past, you already have the material on which to build a gHack.
 
-## The Quick Summary
+## Quick Start
+The following checklist summarizes all the steps required to author a new gHack with links to the relevant sections in this guide.
+
+> **Note** This is the general order you will work on things, but a lot of these items can be done in parallel.
+
+1. Understand the [concept of a gHack](#the-anatomy-of-a-ghack), they are not your run of the mill training material.
+1. [Make a fork of the gHack repository](#getting-started) in your Github account and set it up for contributing to the main gHacks repository.
+1. Run the [scaffolding](#scaffolding-on-the-command-line) tool to create a skeleton of your gHack. It will create and put all the right files in [all the right locations](#files-and-folders).
+1. [*Optional*] [Set up Github Actions](#verifying-the-rendering) so you can preview your work.
+1. [*Optional*] [Create a Terraform script](#gcp-project-setup) to set up the GCP project that students of your gHack will use.
+1. [*Optional*] If using a custom Terraform script, make the necessary changes in the [default Qwiklabs configuration](#qwiklabs) produced by the scaffolding tool.
+1. Work on the [Student Guide](#student-guide) for your gHack following the style and recommendations we outline.
+1. [Learn how to design](#challenge-design) well crafted challenges for your gHack.
+1. [*Optional*] [Add any files students will need](#student-resources-folder) to the `resources` folder. This is where you can put any starter/template/incomplete files to get students started.
+1. [*Optional*] Create a [set of *"mini lectures"*](#presentation-lectures) that a lead coach will deliver to introduce high level concepts to students before they start a challenge.
+1. Work on the [Coach's Guide](#coachs-guide) for your gHack following the style and recommendations we outline.
+1. [*Optional*] [Add any files coaches will need](#coach-solutions-folder) to the `solutions` folder. This is where you can put any completed scripts/templates/code files for the coach's reference.
+1. [Create a Pull Request](#creating-a-pull-request) to submit your new gHack for review with the maintainers.
+
+## The Anatomy of a gHack
 
 In essence a gHack needs to satisfy the following criteria.
 
@@ -14,16 +33,6 @@ In essence a gHack needs to satisfy the following criteria.
    > Although it's technically possible to do a gHack individually, we think that running those as teams provides the most value as the challenges require a diverse set of skills so that people can also learn from each other. Make sure that during the event every participant gets to *drive* at least once.
 1. Every team will be **accompanied by a coach** during the event
    > Sometimes teams might struggle to find the right solution; at those moments it's quite important to have someone who's done it before to give some hints, not the solution, but a direction, to prevent people from getting frustrated.
-
-## TL;DR: A Quick Outline of Authoring a New gHack
-x
-x
-x
-x
-
-
-
-
 
 ## Getting Started
 
@@ -210,7 +219,7 @@ In addition using your own Argolis environment is a great way to test your Terra
 > **Note**  
 > Remember that Argolis projects by default use a lot of restrictive Org Policies. You might need to disable some of them before running your scripts. You can use the scripts from [this repository](https://github.com/gfilicetti/gcp-scripts) for that.
 
-## The Anatomy of a gHack
+## The Details of a gHack
 
 ### Files and Folders
 
