@@ -129,7 +129,7 @@ Once everything is fine with your hack and you want to contribute to the origina
 ```shell
 git fetch upstream
 git switch new-iot-hack  # or main if you're not using branches
-git rebase upstream main
+git rebase upstream/main
 ```
 
 If you get any conflicts you'll need to resolve those and commit your changes. Then you can push your changes to your origin. Since rebasing changes the Git history, you will need to force push your changes. 
@@ -159,7 +159,7 @@ git pull --ff-only --prune upstream main
 If something goes wrong with rebasing (getting warnings about divergent set of commits), and you're confident that the remote is correct you can always reset to that. This typically happens if you've rebased things on the Github website, but your local doesn't have the rebased commits, you'll see that you're *n* commits behind and *m* commits ahead, and a message about the divergent set of commits. In that case try the following command
 
 ```shell
-git reset --hard origin new-iot-hack  # or any other branch that you want to sync to
+git reset --hard origin/new-iot-hack  # or any other branch that you want to sync to
 ```
 
 > **Warning**  
