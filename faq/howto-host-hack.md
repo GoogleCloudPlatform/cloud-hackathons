@@ -86,11 +86,25 @@ It will require at least one person from the team to sign up for the gHacks Qwik
 
 > **Note** Even though the QwikLab will contain the same instructions, it's better to ignore that and use the gHacks [website](https://ghacks.dev) like the rest of the team (they won't have access to the lab, only to the GCP project, using the credentials shared by the person who signed up).
 
-In order to organize a gHack event with Qwiklabs, you'll need to use a _Classroom Template_ to create a _Classroom_. You'll need *Authoring* permissions on the special Qwiklabs instance to create the _Classroom_. Please follow the instructions on [go/ceqwiklabstraining](http://go/ceqwiklabstraining) to become an author. 
+In order to organize a gHack event with Qwiklabs, you'll need a _Classroom Template_ and a _Classroom_. You'll need *Authoring* permissions on the special Qwiklabs instance to create those. Please follow the instructions on [go/ceqwiklabstraining](http://go/ceqwiklabstraining) to become an author. 
 
-##### Creating a Classroom
+##### Classroom Templates - One Time Only 
 
-You need to create _Classroom_ instances for every event you want to organize. A _Classroom_ has a start and an end date and references a _Classroom Template_ which determines the lab used. You'll need to add the Team Lead of every team as a student to a _Classroom_ so that they can see the lab when they log into the Qwiklabs instance. 
+You'll first have to create a _Classroom Template_ that includes your gHack, this is a one time only action. Once the template is ready, you can use that for all your events. In order to create a new template navigate to the [_Classroom Templates_ section of the special Qwiklabs instance](https://ce.qwiklabs.com/authoring/classroom_templates)
+
+![Screenshot for Classroom Template](images/author-ql-classroom-templates.png)
+
+Click on the **+** button on the top right to create a new *Classroom Template*. Fill in the *Name* and *Description* and keep things the default other than the following:
+
+1. *Type* needs to be set to *Bootcamp/Workshop*
+1. *Enabled* is checked
+1. And you've selected the right *Lab* (the Qwiklabs lab that has been created for you automatically, it will start with the prefix *\[gHacks\]*). 
+
+After filling those details you can click on the button *Create Classroom template* and your template will be ready.
+
+##### Classrooms - Every Event Instance
+
+You need to create _Classroom_ instances for every event you want to organize. A _Classroom_ has a start and an end date, references the _Classroom Template_ which determines the lab. You'll need to add the Team Lead of every team as a student to a _Classroom_ so that they can see the lab when they log into the Qwiklabs instance. 
 
 Navigate to the [_Classrooms_ section of the special Qwiklabs instance](https://ce.qwiklabs.com/classrooms)
 
