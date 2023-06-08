@@ -21,7 +21,7 @@ The following checklist summarizes all the steps required to author a new gHack 
 1. [*Optional*] [Add any files coaches will need](#coach-solutions-folder) to the `solutions` folder. This is where you can put any completed scripts/templates/code files for the coach's reference.
 1. [Create a Pull Request](#creating-a-pull-request) to submit your new gHack for review with the maintainers.
 
-## The Anatomy of a gHack
+## The Concept of gHacks
 
 In essence a gHack needs to satisfy the following criteria.
 
