@@ -95,9 +95,40 @@ Students will creating managed instance groups here, so there are a few things t
 
 ### Notes & Guidance
 - Remember that the HTTP Load Balancer can take up to 15 minutes to provision, make sure the students are patient.
-- Sometimes students get hung up on setting up the health checks properly.
+    - It's a good idea to take a 15 minute bio-break at the end of this challenge.
+- Sometimes students get hung up on setting up the health checks properly. This is a good learning opportunity, let them struggle a bit.
 
 ### Step By Step Walk-through
+
+#### Opening the VPC Firewall
+The first thing you need to do is open up the firewall for health checks and SSH traffic. Run these commands to create the needed firewall rules:
+
+> **Note**: We're assuming that you're using the `ghack` VPC, if not just substitute your VPC name below
+
+- Open the firewall for health checks
+    ```shell
+    gcloud compute firewall-rules create ghack-allow-healthcheck \
+        --direction=INGRESS \
+        --priority=1000 \
+        --network=ghack \
+        --action=ALLOW \
+        --rules=tcp:80 \
+        --source-ranges=130.211.0.0/22,35.191.0.0/16 \
+        --target-tags=allow-health-check
+    ```
+
+- Open the firewall for SSH access to VMs
+    ```shell
+    gcloud compute firewall-rules create ghack-allow-ssh \
+        --direction=INGRESS \
+        --priority=1000 \
+        --network=ghack \
+        --action=ALLOW \
+        --rules=tcp:22 \
+        --source-ranges=0.0.0.0/0 \
+        --target-tags=allow-health-check
+    ```
+
 #### Start the configuration
 1. In the Cloud Console, click **Navigation menu** > click **Network Services** > **Load balancing**, and then click **Create load balancer**.
 1. Under **HTTP(S) Load Balancing**, click on **Start configuration**.
