@@ -61,7 +61,7 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 
 ### Success Criteria
 
-1. There's a new Python3 single-user User-Managed Notebook.
+1. There's a new Python3, single-user User-Managed Notebook.
 2. The sample notebook `01-tip-toe-vertex-ai.ipynb` is successfully run and a model file is generated/stored in Google Cloud Storage.
 3. No code changes are needed for this challenge.
 
