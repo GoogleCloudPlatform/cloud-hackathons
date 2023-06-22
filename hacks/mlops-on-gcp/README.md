@@ -61,9 +61,9 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 
 ### Success Criteria
 
-1. There's a new User-Managed Notebook
-2. The sample notebook `01-tip-toe-vertex-ai.ipynb` is successfully run and a model file is generated/stored in Google Cloud Storage
-3. No code changes are needed for this challenge
+1. There's a new Python3, single-user User-Managed Notebook.
+2. The sample notebook `01-tip-toe-vertex-ai.ipynb` is successfully run and a model file is generated/stored in Google Cloud Storage.
+3. No code changes are needed for this challenge.
 
 ### Tips
 
@@ -71,7 +71,7 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 - If there's nothing mentioned in the instructions about a parameter, stick to the defaults (this applies to all of the challenges).
 - You can download the zip file to your local machine and then upload it to the Notebook, but you can also get the zip URL and use the `wget` (or `curl`) command from the notebook environment.
 - Not using a dedicated and isolated environment/kernel might cause dependency conflicts as _User-Managed Notebook_ instances come pre-installed with some versions of the required libraries.
-- The notebook createas a bucket in a specific region, take note of that as you'll need that information in the next challenges.
+- The notebook creates a bucket in a specific region, take note of that as you'll need that information in the next challenges.
 
 ### Learning Resources
 
@@ -85,7 +85,7 @@ The objective of this challenge is to create and configure a Git repository so t
 
 ### Description
 
-If you have completed the previous challenge, you should have the source code already unpacked on your User-Managed Notebook. But you're free to complete this challenge on another environment such as Cloud Shell or your local machine.
+If you have completed the previous challenge, you should have the source code already unpacked on your User-Managed Notebook (if another user is driving this challenge, see the tips). But you're free to complete this challenge on another environment such as Cloud Shell or your local machine.
 
 Create a Cloud Source Repository, configure access through **SSH**.
 
@@ -93,10 +93,10 @@ Make sure that the source code is pushed to the freshly created repository and c
 
 ### Success Criteria
 
-1. There's a new Cloud Source Repository 
-2. The code base is pushed to Cloud Source Repository
-3. At least one team member can access the repository from the command line
-4. No code changes are needed for this challenge
+1. There's a new Cloud Source Repository.
+2. The code base is pushed to Cloud Source Repository.
+3. At least one team member can access the repository from the command line.
+4. No code changes are needed for this challenge.
 
 ### Tips
 
@@ -119,10 +119,10 @@ Once things look fine locally, set up a Cloud Build that's triggered when code i
 
 ### Success Criteria
 
-1. There's a new Cloud Build push trigger called `CI` (or `continous-integration`)
-2. The trigger is connected to the Cloud Source Repository created in the previous challenge
-3. The trigger uses the provided (fully configured) build configuration from the repository
-4. And there's at least one successful build 
+1. There's a new Cloud Build push trigger called `CI` (or `continous-integration`).
+2. The trigger is connected to the Cloud Source Repository created in the previous challenge.
+3. The trigger uses the provided (fully configured) build configuration from the repository.
+4. And there's at least one successful build.
 
 ### Tips
 
@@ -150,15 +150,15 @@ The provided project has a `pipeline.py` file that can generate a pipeline defin
 
 ### Success Criteria
 
-1. There's at least one successful Vertex AI pipeline run that has generated a Managed Model in the Model Registry
-2. No code change is needed for this challenge
+1. There's at least one successful Vertex AI pipeline run that has generated a Managed Model in the Model Registry.
+2. No code change is needed for this challenge.
 
 ### Tips
 
-- Make sure that you're running the module `trainer.pipeline` in the virtual environment you have created as part of the first challenge
-- You can either upload the pipeline definition from a local machine, or put it on GCS and refer to its location
-- You have already created a bucket, you can use that as the pipeline root (optionally add `pipelines` folder in it)
-- For the parameters *location* and *python_pkg* check the Cloud Build pipeline to find out where and how the created package is stored
+- Make sure that you're running the module `trainer.pipeline` in the virtual environment you have created as part of the first challenge.
+- You can either upload the pipeline definition from a local machine, or put it on GCS and refer to its location.
+- You have already created a bucket, you can use that as the pipeline root (optionally add `pipelines` folder in it).
+- For the parameters *location* and *python_pkg* check the Cloud Build pipeline to find out where and how the created Python package is stored.
 - If you're in doubt about the parameters, remember to _Use the Force and read the Source_ ;)
 
 ### Learning Resources
@@ -196,12 +196,13 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 
 ### Success Criteria
 
-1. The model has been deployed to an endpoint and can serve requests
-2. Show that the Endpoint has scaled to more than 1 instance under load
-3. No code change is needed for this challenge
+1. The model has been deployed to an endpoint and can serve requests.
+2. Show that the Endpoint has scaled to more than 1 instance under load.
+3. No code change is needed for this challenge.
 
 ### Tips
 
+- Verify first that you're getting predictions from the endpoint before generating load (for example using cURL)
 - In order to generate load you can use any tool you want, but the easiest approach would be to install [apache-bench](https://httpd.apache.org/docs/2.4/programs/ab.html) on Cloud Shell or your notebook environment.
 
 ### Learning Resources
@@ -216,18 +217,18 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 So, you've chosen for the batch inferencing path. We're going to use Vertex AI Batch Predictions to get predictions for data in a BigQuery table. First, go ahead and create a new table with at most 10K rows that's going to be used for generating the predictions. Once the table is created, create a new Batch Prediction job with that table as the input and another BigQuery table as the output, using the previously created model. Choose a small machine type and 2 compute nodes. Don't turn on Model Monitoring yet as that's for the next challenge.
 
 > **Note**  
-> The batch inferencing will take roughly ~15 minutes, most of that is the overhead of starting the cluster, so increasing the number of instances won't help with the small table we're using.
+> The batch inferencing will take roughly ~10 minutes, most of that is the overhead of starting the cluster, so increasing the number of instances won't help with the small table we're using.
 
 ### Success Criteria
 
-1. There's a properly structured input table in BigQuery with 10K rows
-2. There's a succesful Batch Prediction job
-3. There are predictions in a new BigQuery table
-4. No code change is needed for this challenge
+1. There's a properly structured input table in BigQuery with 10K rows.
+2. There's a succesful Batch Prediction job.
+3. There are predictions in a new BigQuery table.
+4. No code change is needed for this challenge.
 
 ### Tips
 
-- The pipeline that we've used in the previous challenge contains a task to prepare the data using BigQuery, have a look at that for inspiration
+- The pipeline that we've used in the previous challenge contains a task to prepare the data using BigQuery, have a look at that for inspiration.
 - Make sure that the input table has the exact same number of input columns as required by the model.
 
 ### Learning Resources
@@ -254,22 +255,21 @@ Send at least 10K prediction requests to collect monitoring data.
 
 ### Success Criteria
 
-1. Show that the Model Monitoring is running successfully for the endpoint that's created in the previous challenge
-2. Show that there's new Pub/Sub topic and a Pub/Sub notification channel for the Model Monitoring job
-3. By default Model Monitoring keeps request/response data in a BigQuery dataset, find and show that data
-4. No code change is needed for this challenge
+1. Show that the Model Monitoring is running successfully for the endpoint that's created in the previous challenge.
+2. Show that there's new Pub/Sub topic and a Pub/Sub notification channel for the Model Monitoring job.
+3. By default Model Monitoring keeps request/response data in a BigQuery dataset, find and show that data.
+4. No code change is needed for this challenge.
 
 ### Tips
 
-- You can use the `sample.csv` file from challenge 1 as the baseline data
-- You can use the same tool you've used for the previous challenge to generate the requests, make sure to include some data that has a different distribution than the training data
+- You can use the `sample.csv` file from Challenge 1 as the baseline data.
+- You can use the same tool you've used for the previous challenge to generate the requests, make sure to include some data that has a different distribution than the training data.
 
 ### Learning Resources
 
 - Introduction to [Vertex AI Model Monitoring](https://cloud.google.com/vertex-ai/docs/model-monitoring/overview)
 - Creating a [Pub/Sub topic](https://cloud.google.com/pubsub/docs/create-topic)
 - Creating a [notification channel](https://cloud.google.com/monitoring/support/notification-options#pubsub)
-
 
 ### Batch Monitoring
 
@@ -279,15 +279,15 @@ Vertex AI Batch prediction jobs provide Model Monitoring capabilities as well. C
 
 ### Success Criteria
 
-1. There's a new Batch Prediction job with monitoring turned on
-2. Show that there's new Pub/Sub topic and a Pub/Sub notification channel for the Model Monitoring job
-3. As batch inferencing will take roughly ~15 minutes again, it's sufficient to show the properly configured job configuration
-4. No code change is needed for this challenge
+1. There's a new Batch Prediction job with monitoring turned on.
+2. Show that there's new Pub/Sub topic and a Pub/Sub notification channel for the Model Monitoring job.
+3. As batch inferencing will take roughly ~10 minutes again, it's sufficient to show the properly configured job configuration.
+4. No code change is needed for this challenge.
 
 ### Tips
 
-- You can use the `sample.csv` file from challenge 1 as the baseline training data
-- You can use the same data you've used for the previous challenge to run the batch predictions, make sure to include some data that has a different distribution than the training data
+- You can use the `sample.csv` file from Challenge 1 as the baseline training data.
+- You can use the same data you've used for the previous challenge to run the batch predictions, make sure to include some data that has a different distribution than the training data.
 
 ### Learning Resources
 
@@ -316,12 +316,12 @@ Use the provided build pipeline (`clouddeploy.yaml`) to create a new build confi
 
 1. There's a correctly configured build pipeline that can be triggered through Pub/Sub messages, named `CT-CD` (or `continous-training-and-delivery`).
 2. Model Monitoring alerts can trigger the mentioned build through Pub/Sub notification channel.
-3. There's at least one successful build
-4. No code change is needed for this challenge
+3. There's at least one successful build.
+4. No code change is needed for this challenge.
 
 ### Tips
 
-- Cloud Build supports inline yaml as well
+- Cloud Build supports inline yaml as well.
 
 ### Learning Resources
 
@@ -338,16 +338,16 @@ Running the batch predictions periodically will only get us half way. We need to
 
 ### Success Criteria
 
-1. There's a correctly configured build pipeline for _batch predictions_ that can be triggered with webhooks, called `CD` (or `continous-delivery`)
-2. There's a Cloud Scheduler job that is configured to run every Sunday at 3.30 triggering the batch predictions build pipeline
-3. There's a correctly configured build pipeline for _retraining_ that can be triggered with Pub/Sub messages, called `CT` (or `continous-training`)
-4. Show that all the components have run at least once
-5. No code change is needed for this challenge
+1. There's a correctly configured build pipeline for _batch predictions_ that can be triggered with webhooks, called `CD` (or `continous-delivery`).
+2. There's a Cloud Scheduler job that is configured to run every Sunday at 3.30 triggering the batch predictions build pipeline.
+3. There's a correctly configured build pipeline for _retraining_ that can be triggered with Pub/Sub messages, called `CT` (or `continous-training`).
+4. Show that all the components have run at least once.
+5. No code change is needed for this challenge.
 
 ### Tips
 
-- Cloud Build supports inline yaml as well
-- You can _force run_ a Cloud Scheduler job
+- Cloud Build supports inline yaml as well.
+- You can _force run_ a Cloud Scheduler job.
 
 ### Learning Resources
 
