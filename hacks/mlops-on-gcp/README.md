@@ -61,7 +61,7 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 
 ### Success Criteria
 
-1. There's a new User-Managed Notebook
+1. There's a new Python3 single-user User-Managed Notebook
 2. The sample notebook `01-tip-toe-vertex-ai.ipynb` is successfully run and a model file is generated/stored in Google Cloud Storage
 3. No code changes are needed for this challenge
 
@@ -71,7 +71,7 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 - If there's nothing mentioned in the instructions about a parameter, stick to the defaults (this applies to all of the challenges).
 - You can download the zip file to your local machine and then upload it to the Notebook, but you can also get the zip URL and use the `wget` (or `curl`) command from the notebook environment.
 - Not using a dedicated and isolated environment/kernel might cause dependency conflicts as _User-Managed Notebook_ instances come pre-installed with some versions of the required libraries.
-- The notebook createas a bucket in a specific region, take note of that as you'll need that information in the next challenges.
+- The notebook creates a bucket in a specific region, take note of that as you'll need that information in the next challenges.
 
 ### Learning Resources
 
@@ -158,7 +158,7 @@ The provided project has a `pipeline.py` file that can generate a pipeline defin
 - Make sure that you're running the module `trainer.pipeline` in the virtual environment you have created as part of the first challenge
 - You can either upload the pipeline definition from a local machine, or put it on GCS and refer to its location
 - You have already created a bucket, you can use that as the pipeline root (optionally add `pipelines` folder in it)
-- For the parameters *location* and *python_pkg* check the Cloud Build pipeline to find out where and how the created package is stored
+- For the parameters *location* and *python_pkg* check the Cloud Build pipeline to find out where and how the created Python package is stored
 - If you're in doubt about the parameters, remember to _Use the Force and read the Source_ ;)
 
 ### Learning Resources
@@ -216,7 +216,7 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 So, you've chosen for the batch inferencing path. We're going to use Vertex AI Batch Predictions to get predictions for data in a BigQuery table. First, go ahead and create a new table with at most 10K rows that's going to be used for generating the predictions. Once the table is created, create a new Batch Prediction job with that table as the input and another BigQuery table as the output, using the previously created model. Choose a small machine type and 2 compute nodes. Don't turn on Model Monitoring yet as that's for the next challenge.
 
 > **Note**  
-> The batch inferencing will take roughly ~15 minutes, most of that is the overhead of starting the cluster, so increasing the number of instances won't help with the small table we're using.
+> The batch inferencing will take roughly ~10 minutes, most of that is the overhead of starting the cluster, so increasing the number of instances won't help with the small table we're using.
 
 ### Success Criteria
 
@@ -281,7 +281,7 @@ Vertex AI Batch prediction jobs provide Model Monitoring capabilities as well. C
 
 1. There's a new Batch Prediction job with monitoring turned on
 2. Show that there's new Pub/Sub topic and a Pub/Sub notification channel for the Model Monitoring job
-3. As batch inferencing will take roughly ~15 minutes again, it's sufficient to show the properly configured job configuration
+3. As batch inferencing will take roughly ~10 minutes again, it's sufficient to show the properly configured job configuration
 4. No code change is needed for this challenge
 
 ### Tips
