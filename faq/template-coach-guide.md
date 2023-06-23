@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to the coach's guide for the IoT Hack of the Century gHack. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for the [TITLE] gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
 Remember that this hack includes a optional [lecture presentation](resources/lecture.pdf) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
 
@@ -21,7 +21,7 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 
 ## Coach Prerequisites
 
-This hack has pre-reqs that a coach is responsible for understanding and/or setting up BEFORE hosting an event. Please review the [gHacks Hosting Guide](https://ghacks.dev/faq/howto-host-hack.html) for information on how to host a hack event.
+This hack has prerequisites that a coach is responsible for understanding and/or setting up BEFORE hosting an event. Please review the [gHacks Hosting Guide](https://ghacks.dev/faq/howto-host-hack.html) for information on how to host a hack event.
 
 The guide covers the common preparation steps a coach needs to do before any gHacks event, including how to properly setup Google Meet and Chat Spaces.
 
@@ -30,13 +30,13 @@ The guide covers the common preparation steps a coach needs to do before any gHa
 Before the hack, it is the Coach's responsibility create and make available needed resources including: 
 - Files for students
 - Lecture presentation
-- Terraform scripts for setup
+- Terraform scripts for setup (if running in the customer's own environment)
 
 Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available) to create the zip files needed and upload them to your gHack's Google Space's Files area. 
 
 Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
 
-**NOTE:** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
+> **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
 
 ### Additional Coach Prerequisites (Optional)
 
