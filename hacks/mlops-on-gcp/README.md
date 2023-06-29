@@ -8,6 +8,25 @@ In this hack, you'll implement the full lifecycle of an ML project. We'll provid
 | :--: |
 | _Picture is from [this article](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning)_ |
 
+There's no coding involved, we've already prepared the code to train a simple *scikit-learn* model; this could've been any other framework too, the model code has no dependencies on any Google Services or libraries.
+
+We're using the New York Taxi dataset to build a *RandomForestClassifier* to predict whether 
+the tip for the trip is going to be more than 20% of the fare.
+
+First step is all about exploration and running that code in an interactive environment for development and experimentation purposes.
+
+Then we'll store that code in a version control system so the whole team has access to it and we can keep track of all changes.
+
+After that we'll automate continuous integration and building of packages through build pipelines in Challenge 3.
+
+Challenge 4 is all about data-to-model pipelines, orchestrating data extraction, validation, preparation, model training, evaluation and validation.
+
+Once the model has been trained, in Challenge 5 we'll deploy that model to an API endpoint for real-time inferencing, or choose for the batch option and run batch inferencing.
+
+Challenge 6 is all about monitoring that endpoint/batch predictions and detecting any drift/skew between training data and inferencing data.
+
+And finally in Challenge 7 we'll bring all these things together by tapping into model monitoring and triggering re-training when the model starts to behave off.
+
 ## Learning Objectives
 
 This hack will help you explore the following tasks:
@@ -57,12 +76,14 @@ Create a User-Managed Notebook on Vertex AI. Pick a region close to you, create 
 
 It's a good practice to have isolated virtual environments for experiments, so create a new virtual environment and install that as a kernel. See this [gist](https://gist.github.com/meken/e6c7430997de9b3f2cf7721f8ecffc04) for the instructions. 
 
+> **Warning** Not using a dedicated and isolated environment/kernel might cause dependency conflicts as _User-Managed Notebook_ instances come pre-installed with some versions of the required libraries.
+
 We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-demo/archive/refs/heads/main.zip), navigate there and download the project as a **zip** file and extract the contents of the zip file into your notebook environment. Open the notebook `01-tip-toe-vertex-ai.ipynb`, make sure that you've selected the newly created kernel. You should now be able to run the first notebook and get familiar with some of the Vertex AI concepts.
 
 ### Success Criteria
 
 1. There's a new Python3, single-user User-Managed Notebook.
-2. The sample notebook `01-tip-toe-vertex-ai.ipynb` is successfully run and a model file is generated/stored in Google Cloud Storage.
+2. The sample notebook `01-tip-toe-vertex-ai.ipynb` is successfully run (using the newly generated kernel) and a model file is generated/stored in Google Cloud Storage.
 3. No code changes are needed for this challenge.
 
 ### Tips
@@ -70,7 +91,6 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 - Some of the required settings can be found in the _Advanced Settings_ section when you're creating a new _User-Managed Notebook_.
 - If there's nothing mentioned in the instructions about a parameter, stick to the defaults (this applies to all of the challenges).
 - You can download the zip file to your local machine and then upload it to the Notebook, but you can also get the zip URL and use the `wget` (or `curl`) command from the notebook environment.
-- Not using a dedicated and isolated environment/kernel might cause dependency conflicts as _User-Managed Notebook_ instances come pre-installed with some versions of the required libraries.
 - The notebook creates a bucket in a specific region, take note of that as you'll need that information in the next challenges.
 
 ### Learning Resources
@@ -102,6 +122,7 @@ Make sure that the source code is pushed to the freshly created repository and c
 
 - The previous challenge required you to use single-user notebooks, so if you want to complete this challenge in a notebook as a different user, you'll have to create a new notebook. In that case create another single-user notebook for the new user and download the repository. You don't need to run the notebook or create the virtual environment for this challenge.
 - Alternatively you could use the Cloud Shell to complete this challenge.
+- Both User-Managed Notebooks and Cloud Shell have OpenSSH already installed
 
 ### Learning Resources
 
@@ -111,7 +132,7 @@ Make sure that the source code is pushed to the freshly created repository and c
 
 ### Introduction
 
-This task is all about automating things using Cloud Build.
+This task is all about automating things using Cloud Build. When multiple people work on the same project and contribute to the same repository it's good to have a _Continuous Integration_ pipeline that can lint, test and package the source code everytime new commits are pushed.
 
 ### Description
 
@@ -158,7 +179,7 @@ The provided project has a `pipeline.py` file that can generate a pipeline defin
 - Make sure that you're running the module `trainer.pipeline` in the virtual environment you have created as part of the first challenge.
 - You can either upload the pipeline definition from a local machine, or put it on GCS and refer to its location.
 - You have already created a bucket, you can use that as the pipeline root (optionally add `pipelines` folder in it).
-- For the parameters *location* and *python_pkg* check the Cloud Build pipeline to find out where and how the created Python package is stored.
+- For the parameters *location* and *python_pkg* check the Cloud Build pipeline to find out where the created Python package is stored and browse to that location to get the name of the package.
 - If you're in doubt about the parameters, remember to _Use the Force and read the Source_ ;)
 
 ### Learning Resources
@@ -229,7 +250,7 @@ So, you've chosen for the batch inferencing path. We're going to use Vertex AI B
 ### Tips
 
 - The pipeline that we've used in the previous challenge contains a task to prepare the data using BigQuery, have a look at that for inspiration.
-- Make sure that the input table has the exact same number of input columns as required by the model.
+- Make sure that the input table has the exact same number of input columns as required by the model (for training extra data is needed which is not an input for the model at inferencing time).
 
 ### Learning Resources
 - Creating BigQuery [datasets](https://cloud.google.com/bigquery/docs/datasets)
@@ -321,7 +342,7 @@ Use the provided build pipeline (`clouddeploy.yaml`) to create a new build confi
 
 ### Tips
 
-- Cloud Build supports inline yaml as well.
+- If you create the topic before you create the notification channel you can copy its fully qualified name and paste when configuring the notification channel.
 
 ### Learning Resources
 
@@ -346,8 +367,9 @@ Running the batch predictions periodically will only get us half way. We need to
 
 ### Tips
 
-- Cloud Build supports inline yaml as well.
-- You can _force run_ a Cloud Scheduler job.
+- If you create the topic before you create the notification channel you can copy its name and paste when configuring the notification channel.
+- The webhook URL configuration in Cloud Scheduler requires the header `Content-Type` to be set to `application/json` otherwise the things won't work.
+- You can _force run_ a Cloud Scheduler job, no need to wait until Sunday :).
 
 ### Learning Resources
 
