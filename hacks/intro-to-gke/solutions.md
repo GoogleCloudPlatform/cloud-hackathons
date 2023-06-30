@@ -79,7 +79,7 @@ Congratulations! You created your first cluster!
 >
 > `gcloud container clusters get-credentials fancy-cluster`
 >
-> If you already created a cluster with the gcloud container clusters create command listed above, then you do not need to complete this step.
+> If you already created a cluster with the `gcloud container clusters create` command listed above, then you do not need to complete this step.
 
 ## Challenge 2: Containerizing your Application
 
