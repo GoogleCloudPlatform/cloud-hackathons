@@ -176,7 +176,7 @@ This exercise can be completed either on the notebook terminal or Cloud Shell.
 Creating a BQ dataset is trivial, you could either do that from the console, or just run the following command on the notebook terminal or Cloud Shell.
 
 ```shell
-bq mk -d US taxi_batch
+bq mk --location=US taxi_batch
 ```
 
 Note that this dataset has to be created in US as the public `new_york_taxi_trips` dataset is also in US, otherwise you'll get an error message indicating `Not found: Dataset $PROJECT_ID:taxi_batch was not found in location US` when trying to create the table
