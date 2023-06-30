@@ -136,11 +136,11 @@ This task is all about automating things using Cloud Build. When multiple people
 
 ### Description
 
-Once things look fine locally, set up a Cloud Build that's triggered when code is pushed to the repository. The code base already includes a build configuration (`cloudbuild.yaml`), have a look at it to understand what it does. Make sure that the trigger uses that build configuration. Name the trigger `CI` (or `continous-integration`)
+Once things look fine locally, set up a Cloud Build that's triggered when code is pushed to the repository. The code base already includes a build configuration (`cloudbuild.yaml`), have a look at it to understand what it does. Make sure that the trigger uses that build configuration. Name the trigger `CI` (or `continuous-integration`)
 
 ### Success Criteria
 
-1. There's a new Cloud Build push trigger called `CI` (or `continous-integration`).
+1. There's a new Cloud Build push trigger called `CI` (or `continuous-integration`).
 2. The trigger is connected to the Cloud Source Repository created in the previous challenge.
 3. The trigger uses the provided (fully configured) build configuration from the repository.
 4. And there's at least one successful build.
@@ -158,7 +158,7 @@ How-to guides for [Cloud Build](https://cloud.google.com/build/docs/how-to)
 
 ### Introduction
 
-The previous challenge introduced the concept of build pipelines. But there are different types of pipelines, and this task is getting started with Vertex AI pipelines for continuous training. In our example the continous training pipeline will extract data from BigQuery, validate it, prepare it, train a model with it, evaluate that model and register it in Vertex AI Model Registry.
+The previous challenge introduced the concept of build pipelines. But there are different types of pipelines, and this task is getting started with Vertex AI pipelines for continuous training. In our example the continuous training pipeline will extract data from BigQuery, validate it, prepare it, train a model with it, evaluate that model and register it in Vertex AI Model Registry.
 
 ### Description
 
@@ -331,11 +331,11 @@ Just like the previous challenges, if you've chosen the online inferencing path,
 
 ### Description
 
-Use the provided build pipeline (`clouddeploy.yaml`) to create a new build configuration. Configure it to be triggered in response to the messages received in the Pub/Sub topic that's used to configure the Model Monitoring notifications. Also provide the necessary variables, such as the model training code version, endpoint name etc. Name this trigger `CT-CD` (or `continous-training-and-delivery`).
+Use the provided build pipeline (`clouddeploy.yaml`) to create a new build configuration. Configure it to be triggered in response to the messages received in the Pub/Sub topic that's used to configure the Model Monitoring notifications. Also provide the necessary variables, such as the model training code version, endpoint name etc. Name this trigger `CT-CD` (or `continuous-training-and-delivery`).
 
 ### Success Criteria
 
-1. There's a correctly configured build pipeline that can be triggered through Pub/Sub messages, named `CT-CD` (or `continous-training-and-delivery`).
+1. There's a correctly configured build pipeline that can be triggered through Pub/Sub messages, named `CT-CD` (or `continuous-training-and-delivery`).
 2. Model Monitoring alerts can trigger the mentioned build through Pub/Sub notification channel.
 3. There's at least one successful build.
 4. No code was modified.
@@ -352,16 +352,16 @@ Use the provided build pipeline (`clouddeploy.yaml`) to create a new build confi
 
 ### Description
 
-Typically Batch Predictions are asynchronous and are scheduled to run periodically (daily/weekly etc). You can trigger batch jobs using different methods, for this challenge we'll use Cloud Build pipelines in combination with Vertex AI pipelines. Create a new Cloud Build trigger using the provided `batchdeploy.yaml` file, don't forget to set the required variables. Call this trigger `CD` (or `continous-delivery`) and make sure that this build pipeline is triggered through webhook events. Create a new Cloud Scheduler job that runs every Sunday at 3:30 and uses the webhook event URL as the execution method.
+Typically Batch Predictions are asynchronous and are scheduled to run periodically (daily/weekly etc). You can trigger batch jobs using different methods, for this challenge we'll use Cloud Build pipelines in combination with Vertex AI pipelines. Create a new Cloud Build trigger using the provided `batchdeploy.yaml` file, don't forget to set the required variables. Call this trigger `CD` (or `continuous-delivery`) and make sure that this build pipeline is triggered through webhook events. Create a new Cloud Scheduler job that runs every Sunday at 3:30 and uses the webhook event URL as the execution method.
 
-Running the batch predictions periodically will only get us half way. We need to monitor any Model Monitoring alerts and act on that. There's another Cloud Build pipeline definition provided by `clouddeploy.yaml` that's responsible for retraining. Configure that in a new Cloud Build trigger, call it `CT` (or `continous-training`) set the required variables (remember to set _ENDPOINT_ to `[none]`, the others should be familiar, when in doubt have a look at the yaml file). Use Pub/Sub messages as the trigger event and pick the topic that's configured for Model Monitoring Pub/Sub notification channel.
+Running the batch predictions periodically will only get us half way. We need to monitor any Model Monitoring alerts and act on that. There's another Cloud Build pipeline definition provided by `clouddeploy.yaml` that's responsible for retraining. Configure that in a new Cloud Build trigger, call it `CT` (or `continuous-training`) set the required variables (remember to set _ENDPOINT_ to `[none]`, the others should be familiar, when in doubt have a look at the yaml file). Use Pub/Sub messages as the trigger event and pick the topic that's configured for Model Monitoring Pub/Sub notification channel.
 
 
 ### Success Criteria
 
-1. There's a correctly configured build pipeline for _batch predictions_ that can be triggered with webhooks, called `CD` (or `continous-delivery`).
+1. There's a correctly configured build pipeline for _batch predictions_ that can be triggered with webhooks, called `CD` (or `continuous-delivery`).
 2. There's a Cloud Scheduler job that is configured to run every Sunday at 3.30 triggering the batch predictions build pipeline.
-3. There's a correctly configured build pipeline for _retraining_ that can be triggered with Pub/Sub messages, called `CT` (or `continous-training`).
+3. There's a correctly configured build pipeline for _retraining_ that can be triggered with Pub/Sub messages, called `CT` (or `continuous-training`).
 4. Show that all the components have run at least once.
 5. No code was modified.
 
