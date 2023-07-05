@@ -61,11 +61,30 @@ gcloud compute instances list
 
 **Output:**
 
-```bash
-NAME                                          ZONE        MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
-gke-fancy-cluster-default-pool-ad92506d-1ng3  us-east4-a  n1-standard-1               10.150.0.7   XX.XX.XX.XX    RUNNING
-gke-fancy-cluster-default-pool-ad92506d-4fvq  us-east4-a  n1-standard-1               10.150.0.5   XX.XX.XX.XX    RUNNING
-gke-fancy-cluster-default-pool-ad92506d-4zs3  us-east4-a  n1-standard-1               10.150.0.6   XX.XX.XX.XX    RUNNING
+```
+NAME: gke-fancy-cluster-default-pool-ca5667e3-89zl
+ZONE: us-central1-c
+MACHINE_TYPE: e2-medium
+PREEMPTIBLE: 
+INTERNAL_IP: 10.128.0.12
+EXTERNAL_IP: 34.29.34.51
+STATUS: RUNNING
+
+NAME: gke-fancy-cluster-default-pool-ca5667e3-htkm
+ZONE: us-central1-c
+MACHINE_TYPE: e2-medium
+PREEMPTIBLE: 
+INTERNAL_IP: 10.128.0.11
+EXTERNAL_IP: 34.29.157.176
+STATUS: RUNNING
+
+NAME: gke-fancy-cluster-default-pool-ca5667e3-w63z
+ZONE: us-central1-c
+MACHINE_TYPE: e2-medium
+PREEMPTIBLE: 
+INTERNAL_IP: 10.128.0.10
+EXTERNAL_IP: 104.198.63.85
+STATUS: RUNNING
 ```
 
 You can also view your cluster and related information in the Cloud Console. Click the menu button in the top-left corner, scroll down to Kubernetes Engine and click Clusters. You should see your cluster named `fancy-cluster`.
@@ -97,7 +116,7 @@ Run the following commands to clone the source repository to your Cloud Shell in
 
 ```bash
 cd ~
-git clone https://github.com/googlecodelabs/monolith-to-microservices.git
+git clone https://github.com/gfilicetti/monolith-to-microservices.git
 cd ~/monolith-to-microservices
 ./setup.sh
 ```
@@ -129,31 +148,48 @@ You can close that window after viewing the website. Press `Control+C` (Windows 
 
 Now that your source files are ready to go, it's time to Dockerize your application.
 
-Normally, you would have to take a two-step approach that entails building a Docker container and pushing it to a registry to store the image that GKE pulls from. However, you can make life easier by using Cloud Build to create the Docker container and put the image in the Container Registry with a single command. (To view the manual process of creating a docker file and pushing it, see [Quickstart for Container Registry](https://cloud.google.com/container-registry/docs/quickstart).)
+Normally, you would have to take a two-step approach that entails building a Docker container and pushing it to a registry to store the image that GKE pulls from. However, you can make life easier by using Cloud Build to create the Docker container and put the image in an Artifact Registry with a single command. (To view the manual process of creating a docker file and pushing it, see [Quickstart for Artifact Registry](https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images).)
 
-Cloud Build compresses the files from the directory and moves them to a Cloud Storage bucket. The build process then takes the files from the bucket and uses the Dockerfile to run the Docker build process. Because you specified the `--tag` flag with the host as `gcr.io` for the Docker image, the resulting Docker image gets pushed to the Container Registry.
+The first step is to create a new Docker repository in Artifact Registry that we'll use for storing our docker containers:
+
+```bash
+gcloud artifacts repositories create dev \
+    --repository-format=docker \
+    --location=us-central1 \
+    --description="Fancy Containers"
+```
+
+This will create a repository for docker containers named `dev` with a path of `us-central1-docker.pkg.dev/codelab-gke-1/dev`.
+
+> **Note** The url used for the repository corresponds to the region you used when creating it as well as the project name in which it lives.
+
+Now that we have a docker repository ready, we can run Cloud Build to containerize our application. Cloud Build compresses the application files and moves them to a Cloud Storage bucket. The build process then takes the files from the bucket and uses the Dockerfile to run the Docker build process. Because you specified the `--tag` flag and are using our new Artifact Registry repository path above for the Docker image, the resulting Docker image gets pushed to that docker repository.
 
 Run the following command in Cloud Shell to start the build process:
 
 ```bash
 cd ~/monolith-to-microservices/monolith
-gcloud builds submit --tag gcr.io/${GOOGLE_CLOUD_PROJECT}/monolith:1.0.0 .
+gcloud builds submit --tag us-central1-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/dev/monolith:1.0.0 .
 ```
 
-That process takes a few minutes, but after it's completed, you can see the following output in the terminal:
+This process takes a few minutes, but after it's completed, you can see the following output in the terminal:
 
 ```
-ID                                    CREATE_TIME                DURATION  SOURCE                                                                                  IMAGES                              STATUS
-1ae295d9-63cb-482c-959b-bc52e9644d53  2019-08-29T01:56:35+00:00  33S       gs://<PROJECT_ID>_cloudbuild/source/1567043793.94-abfd382011724422bf49af1558b894aa.tgz  gcr.io/<PROJECT_ID>/monolith:1.0.0  SUCCESS
+ID: 24d512cb-dbeb-40d2-8e45-21fa7a129137
+CREATE_TIME: 2023-07-05T13:27:13+00:00
+DURATION: 1M21S
+SOURCE: gs://codelab-gke-1_cloudbuild/source/1688563633.072438-5dd05860306845bd896733db27082f53.tgz
+IMAGES: us-central1-docker.pkg.dev/codelab-gke-1/dev/monolith:1.0.0
+STATUS: SUCCESS
 ```
 
-To view your build history or watch the process in real time, you can go to the Cloud Console. Click the menu button in the top-left corner, scroll down to CI/CD, then click Cloud Build, and finally click History. There, you can see a list of your previous builds, but there should only be the one that you created.
+To view your build history or watch the process in real time, you can go to the Cloud Console. Click the menu button in the top-left corner, scroll down to CI/CD, then click Cloud Build, and finally click History. There, you can see a list of your previous builds, but there should only be the one that you created:
 
 ![Build History](images/build-history.png)
 
 If you click on Build id, then you can see all the details for that build, including the log output.
 
-On the build details page, you can view the container image that was created by clicking on the Image name in the build information section.
+On the build details page, you can see the tarball that was created and moved to Cloud Storage and used during the build:
 
 ![Build Details](images/build-details.png)
 
@@ -169,7 +205,7 @@ Students will be doing XXX here, there are a few things to keep an eye on:
 
 ### Step By Step Walk-through
 
-Now that you containerized your website and pushed the container to the Container Registry, you can deploy it to Kubernetes.
+Now that you containerized your website and pushed the container to your docker repository in Artifact Registry, you can deploy it to Kubernetes.
 
 To deploy and manage applications on a GKE cluster, you must communicate with the Kubernetes cluster-management system. You typically do that by using the `kubectl` command-line tool.
 
@@ -177,15 +213,41 @@ Kubernetes represents applications as [Pods](https://kubernetes.io/docs/concepts
 
 To deploy your application, you need to create a [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/).  A Deployment manages multiple copies of your application—called replicas—and schedules them to run on the individual nodes in your cluster. In this case, the Deployment will run only one Pod of your application. Deployments ensure that by creating a [ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/).  The ReplicaSet is responsible for making sure that the number of replicas specified are always running.
 
-The `kubectl create deployment` command causes Kubernetes to create a Deployment named **monolith** on your cluster with **1** replica.
+Resources in Kubernetes are created using files in yaml format that describe the items and state that you want to deploy to the cluster. This is called **declarative instantiation**, where we describe **WHAT** we want to see, not procedural steps in a script for **EXPLICITLY** creating what we want to see.
 
-Run the following command to deploy your application:
+The following yaml file instructs Kubernetes to create a Deployment named **monolith-deployment** on our cluster with **1** replica.
 
-```bash
-kubectl create deployment monolith --image=gcr.io/${GOOGLE_CLOUD_PROJECT}/monolith:1.0.0
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monolith-deployment
+  labels:
+    app: monolith
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monolith
+  template:
+    metadata:
+      labels:
+        app: monolith
+    spec:
+      containers:
+      - name: monolith
+        image: us-central1-docker.pkg.dev/my-project/dev/monolith:1.0.0
+        ports:
+        - containerPort: 80
 ```
 
-> **Note** As a best practice, you should use YAML files and a source control system, such as GitHub or Cloud Source Repositories, to store those changes. For more information, see [Deployments](https://kubernetes.io/docs/concepts/services-networking/service/).
+> **Note** Make sure that you replace the image path with the exact one from your Artifact Registry docker repository.
+
+Save this to a file named `monolith-deploy.yaml` and run the following command to apply the yaml and deploy your application:
+
+```bash
+kubectl apply -f monolith-deploy.yaml
+```
 
 #### Verify deployment
 
@@ -197,29 +259,29 @@ kubectl get all
 
 **Output:**
 
-```bash
+```
 NAME                            READY   STATUS    RESTARTS   AGE
-pod/monolith-7d8bc7bf68-htm7z   1/1     Running   0          6m21s
+pod/monolith-675bff5d7b-d46zv   1/1     Running   0          12m
 
-NAME                 TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.27.240.1   <none>        443/TCP   24h
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.68.0.1    <none>        443/TCP   5h13m
 
-NAME                       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/monolith   1         1         1            1           20m
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/monolith   1/1     1            1           12m
 
 NAME                                  DESIRED   CURRENT   READY   AGE
-replicaset.apps/monolith-7d8bc7bf68   1         1         1       20m
+replicaset.apps/monolith-675bff5d7b   1         1         1       12m
 ```
 
-That output shows you several things. You can see your Deployment, which is current; your ReplicaSet, with a desired Pod count of one; and your Pod, which is running. Looks like you successfully created everything!
+This output shows us several things. You can see your Deployment, which is current; your ReplicaSet, with a desired Pod count of one; and your Pod, which is running. Looks like you successfully created everything!
 
-> **Note** You can also view your Kubernetes deployments via the Cloud Console. Navigate to the top-left menu, then click **Kubernetes Engine &gt; Workloads**.
+> **Note** You can also view your Kubernetes deployments via the Cloud Console. Navigate to the top-left menu, then click **Kubernetes Engine**.
 
 > **Note** If you see unexpected errors or statuses, then you can debug your resources by using the following commands to see detailed information about them:
 >
 > `kubectl describe pod monolith`
 >
-> `kubectl describe pod/monolith-7d8bc7bf68-2bxts`
+> `kubectl describe pod/monolith-675bff5d7b-d46zv`
 >
 > `kubectl describe deployment monolith`
 >
@@ -245,7 +307,7 @@ kubectl get pods,deployments
 
 To see the full benefit of Kubernetes, you can simulate a server crash, delete the Pod, and see what happens.
 
-Copy your pod name from the previous command and run the following command to delete it:
+Copy your pod name (including the unique identifier suffix) from the previous command and run the following command to delete it:
 
 ```bash
 kubectl delete pod/<POD_NAME>
@@ -259,37 +321,50 @@ kubectl get all
 
 **Output:**
 
-```bash
+```
 NAME                            READY   STATUS        RESTARTS   AGE
-pod/monolith-7d8bc7bf68-2bxts   1/1     Running       0          4s
-pod/monolith-7d8bc7bf68-htm7z   1/1     Terminating   0          9m35s
+pod/monolith-675bff5d7b-qqw4t   1/1     Running       0          2s
+pod/monolith-675bff5d7b-w5zgf   1/1     Terminating   0          71s
 
-NAME                 TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
-service/kubernetes   ClusterIP   10.27.240.1   <none>        443/TCP   24h
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.68.0.1    <none>        443/TCP   5h17m
 
-NAME                       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/monolith   1         1         1            1           24m
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/monolith   1/1     1            1           16m
 
 NAME                                  DESIRED   CURRENT   READY   AGE
-replicaset.apps/monolith-7d8bc7bf68   1         1         1       24m
+replicaset.apps/monolith-675bff5d7b   1         1         1       16m
 ```
 
 Why did that happen? The ReplicaSet saw that the pod was terminating and triggered a new pod to keep up the desired replica count. Later on, you'll see how to scale to ensure that you have several instances running so that if one goes down, your users won't see any downtime!
 
-#### Expose GKE deployment
+#### Expose the GKE deployment with a Service
 
 You deployed your application to GKE, but you don't have a way of accessing it outside of the cluster. By default, the containers you run on GKE are not accessible from the internet because they do not have external IP addresses.  You must explicitly expose your application to traffic from the internet via a [Service](https://kubernetes.io/docs/concepts/services-networking/service/) resource. A Service provides networking and IP support for your app's Pods. GKE creates an external IP and a load balancer ([subject to billing](https://cloud.google.com/compute/all-pricing#lb)) for your app.
 
-Run the following command to expose your website to the internet:
+As with the Deployment, we will create a yaml file to describe the Service we want to create, which pods it corresponds to and if we want it exposed publicly.
 
-```bash
-kubectl expose deployment monolith --type=LoadBalancer --port 80 --target-port 8080
+The following yaml file instructs Kubernetes to create an externally exposed service (ie: type LoadBalancer) on port 80 which will redirect to port 8080 on the containers in pods with the selector `app: monolith`:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: monolith-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: monolith
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
 ```
 
-**Output:**
+Save this to a file named `monolith-service.yaml` and run the following command to apply the yaml and create the service for your application:
 
 ```bash
-service/monolith exposed
+kubectl apply -f monolith-service.yaml
 ```
 
 #### Accessing the service
@@ -311,7 +386,7 @@ After you determine the external IP address for your app, copy it. Point your br
 
 ![Fancy Store](images/fancy-store-original.png)
 
-You should see the same website that you tested earlier. Congratulations! Your website fully runs on Kubernetes.
+You should see the same website that you tested earlier. Congratulations! Your website is now fully running on Kubernetes!
 
 ## Challenge 4: Scale the Application to Handle Increased Traffic
 
@@ -324,7 +399,7 @@ Students will be doing XXX here, there are a few things to keep an eye on:
 
 ### Step By Step Walk-through
 
-Now that you have a running instance of your app in GKE and exposed it to the internet, your website has become extremely popular. You need a way to scale your app to multiple instances so that you can handle the traffic. Learn to scale your application to up to three replicas.
+Now that you have a running instance of your app in GKE and exposed it to the internet, your website has become extremely popular. You need a way to scale your app to multiple instances so that you can handle the traffic. In this challenge we'll learn to scale your application to up to three replicas to meet that demand.
 
 Run the following command to scale your deployment up to three replicas:
 
@@ -366,6 +441,61 @@ replicaset.apps/monolith-7d8bc7bf68   3         3         3       61m
 ```
 
 You should see three instances of your Pod running. Also, note that your Deployment and ReplicaSet now have a desired count of three.
+
+#### Scaling Declaratively
+Although we can issue `kubectl` commands like the above to scale our deployment, it is better practice to do this declaratively. We will update our Deployment yaml file and change it to the new desired number of replicas that we want and then feed it into Kubernetes so that it can make the necessary changes.
+
+In this case we will increase the number of replicas again, from 3 to 5 by editing our `monolith-deploy.yaml` yaml file and increasing the `replicas` to `5`:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monolith-deployment
+  labels:
+    app: monolith
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: monolith
+  template:
+    metadata:
+      labels:
+        app: monolith
+    spec:
+      containers:
+      - name: monolith
+        image: us-central1-docker.pkg.dev/my-project/dev/monolith:1.0.0
+        ports:
+        - containerPort: 80
+```
+
+Save the file and run the following command to apply the yaml:
+
+```bash
+kubectl apply -f monolith-deploy.yaml
+```
+
+To verify that the Deployment was scaled successfully again, run the following command:
+
+```bash
+kubectl get pods
+```
+
+**Output:**
+
+```
+NAME                        READY   STATUS              RESTARTS   AGE
+monolith-675bff5d7b-9qtlk   0/1     ContainerCreating   0          13s
+monolith-675bff5d7b-gxmxg   1/1     Running             0          13s
+monolith-675bff5d7b-qqw4t   1/1     Running             0          35m
+monolith-675bff5d7b-sxdqk   1/1     Running             0          13s
+monolith-675bff5d7b-wjv2c   0/1     ContainerCreating   0          13s
+```
+
+Once all the containers start then you'll see `STATUS: Running` for all the pods.
+
 
 ## Challenge 5: Update and Release with Zero Downtime
 
@@ -448,36 +578,51 @@ cd ~/monolith-to-microservices/react-app
 npm run build:monolith
 ```
 
-Now that your code is updated, you need to rebuild your Docker container and publish it to the Container Registry. You can use the same command as earlier, except this time, you'll update the version label!
+Now that your code is updated, you need to rebuild your Docker container and publish it to the Container Registry. You can use the same command as earlier, except this time, you'll update the version label.
 
 Run the following command to trigger a new Cloud Build with an updated image version of 2.0.0:
 
 ```bash
 cd ~/monolith-to-microservices/monolith
-
-#Feel free to test your application
-npm start
-
-gcloud builds submit --tag gcr.io/${GOOGLE_CLOUD_PROJECT}/monolith:2.0.0 .
+gcloud builds submit --tag us-central1-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/dev/monolith:2.0.0 .
 ```
-
-Press `Control+C` (Windows or Mac) in the terminal window to stop the web server
-process.
 
 The changes are completed and the marketing team is happy with your updates. It's time to update the website without interruption to the users. Follow the instructions below to update your website.
 
-GKE's rolling updates ensure that your application remains up and available even when the system replaces instances of your old container image with your new one across all the running replicas.
+Kubernetes' rolling updates feature ensures that your application remains up and available even when the system replaces instances of your old container image with your new one across all the running replicas.
 
-From the command line, you can tell Kubernetes that you want to update the image for your Deployment to a new version with the following command:
+Although we can use `kubectl` to directly tell the deployment to update to a new version, as before the best practice is to update your Deployment yaml file and re-apply it. 
 
-```bash
-kubectl set image deployment/monolith monolith=gcr.io/${GOOGLE_CLOUD_PROJECT}/monolith:2.0.0
+In this case we will change the `image` line to point to the new version tag of our container in the docker repository: `monolith:2.0.0`:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monolith-deployment
+  labels:
+    app: monolith
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: monolith
+  template:
+    metadata:
+      labels:
+        app: monolith
+    spec:
+      containers:
+      - name: monolith
+        image: us-central1-docker.pkg.dev/my-project/dev/monolith:2.0.0
+        ports:
+        - containerPort: 80
 ```
 
-**Output:**
+Save the file and run the following command to apply the yaml:
 
 ```bash
-deployment.apps/monolith image updated
+kubectl apply -f monolith-deploy.yaml
 ```
 
 #### Verify Deployment
@@ -490,17 +635,21 @@ kubectl get pods
 
 Output:
 
-```bash
-NAME                        READY   STATUS              RESTARTS   AGE
-monolith-584fbc994b-4hj68   1/1     Terminating         0          60m
-monolith-584fbc994b-fpwdw   1/1     Running             0          60m
-monolith-584fbc994b-xsk8s   1/1     Terminating         0          60m
-monolith-75f4cf58d5-24cq8   1/1     Running             0          3s
-monolith-75f4cf58d5-rfj8r   1/1     Running             0          5s
-monolith-75f4cf58d5-xm44v   0/1     ContainerCreating   0          1s
+```
+NAME                        READY   STATUS        RESTARTS   AGE
+monolith-675bff5d7b-9qtlk   1/1     Terminating   0          21m
+monolith-675bff5d7b-gxmxg   1/1     Terminating   0          21m
+monolith-675bff5d7b-qqw4t   1/1     Terminating   0          56m
+monolith-675bff5d7b-sxdqk   1/1     Terminating   0          21m
+monolith-675bff5d7b-wjv2c   1/1     Terminating   0          21m
+monolith-799b4bf977-4s684   1/1     Running       0          4s
+monolith-799b4bf977-cd5dm   1/1     Running       0          6s
+monolith-799b4bf977-fv2qq   1/1     Running       0          6s
+monolith-799b4bf977-pdpb5   1/1     Running       0          4s
+monolith-799b4bf977-smhft   1/1     Running       0          6s
 ```
 
-You see three new Pods being created and your old pods being shut down. You can tell by the ages which are new and which are old. Eventually, you will only see three Pods again, which will be your three updated Pods.
+You see five new Pods being created and your old pods being shut down. You can tell by the ages which are new and which are old. Eventually, you will only see five Pods again, which will be your five updated Pods.
 
 To verify your changes, navigate to the external IP of the load balancer again and notice that your app has been updated.
 
