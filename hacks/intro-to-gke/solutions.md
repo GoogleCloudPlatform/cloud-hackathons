@@ -41,10 +41,9 @@ Always refer students to the [gHacks website](https://ghacks.dev) for the studen
 
 ### Notes & Guidance
 
-Students will be doing XXX here, there are a few things to keep an eye on:
+This is a pretty simple challenge, students just need to create a 3 node cluster, nothing special on top of it.
 
-- Thing 1
-- Thing 2
+You might want to suggest that they try to use the `gcloud` CLI to get a taste of how it would be done for real. 
 
 ### Step By Step Walk-through
 Follow the steps below to create a cluster named **fancy-cluster** with **3** nodes:
@@ -104,10 +103,11 @@ Congratulations! You created your first cluster!
 
 ### Notes & Guidance
 
-Students will be doing XXX here, there are a few things to keep an eye on:
+Knowing/learning the ins and outs of node.js isn't the purpose of this challenge. Don't let them struggle for too long with the `npm` commands.
 
-- Thing 1
-- Thing 2
+It might be worth explaining to the students why the Artifact Registry has superseded Container Registry.
+
+> **Note** In the terraform scripts that were run, the GKE Service Account was given Artifact Registry Reader IAM permissions. If there are issues with getting Pods to start, begin your debugging here.
 
 ### Step By Step Walk-through
 Because this is an existing website, you only need to clone the source from the repository so that you can focus on creating Docker images and deploying to GKE.
@@ -198,10 +198,9 @@ On the build details page, you can see the tarball that was created and moved to
 
 ### Notes & Guidance
 
-Students will be doing XXX here, there are a few things to keep an eye on:
+You'll need to gauge if your students are Kubernetes experts or completely new to it. There will be some minimal text about Pods and Deployments and Services but you should think about supplementing this with even more explanation about how K8S works. 
 
-- Thing 1
-- Thing 2
+Encourage students to use the Learning Resources. This is where they will find examples for all YAML files needed.
 
 ### Step By Step Walk-through
 
@@ -392,10 +391,9 @@ You should see the same website that you tested earlier. Congratulations! Your w
 
 ### Notes & Guidance
 
-Students will be doing XXX here, there are a few things to keep an eye on:
+This is a short challenge.
 
-- Thing 1
-- Thing 2
+Reiterate with the students that even though we wanted them to figure out the command to scale replicas, it's the yaml file that should be the source of truth and can be applied over and over again to update the desired state.
 
 ### Step By Step Walk-through
 
@@ -501,10 +499,9 @@ Once all the containers start then you'll see `STATUS: Running` for all the pods
 
 ### Notes & Guidance
 
-Students will be doing XXX here, there are a few things to keep an eye on:
+Another pretty easy challenge here. Once they figure out where to make the update.
 
-- Thing 1
-- Thing 2
+Be clear WHY a rolling update means you'll have zero downtime. Explain how selectors work, how Kubernetes only routes traffic once a new container is ready to service traffic, etc.
 
 ### Step By Step Walk-through
 
