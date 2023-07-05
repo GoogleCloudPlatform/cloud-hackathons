@@ -68,7 +68,7 @@ This hack will help you explore the following tasks:
 
 ### Introduction
 
-As depicted in the overview diagram, the first step of any ML project is data analysis and maybe some experimentation. Jupyter notebooks are great for interactive exploration. We can run those locally, but Vertex AI provides managed environments where you get to run Jupyter with the right security controls.
+As depicted in the overview diagram, the first step of any ML project is data analysis and maybe some experimentation. Jupyter notebooks are great for interactive exploration. We can run those locally, but Vertex AI provides managed environments where you get to run Jupyter with the right security controls and flexible hardware options.
 
 ### Description 
 
@@ -101,7 +101,7 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 
 ### Introduction
 
-The objective of this challenge is to create and configure a Git repository so that the code can be version controlled. You could use any external Git repository (Github/BitBucket/Gitlab etc) but the easiest way for this challenge is to use a Cloud Source Repository on GCP.
+The objective of this challenge is to create and configure a Git repository so that the code can be version controlled. In principle, you can use any external Git repository (Github/BitBucket/Gitlab etc), but for this challenge we'll use a _Cloud Source Repository_ on GCP.
 
 ### Description
 
@@ -132,7 +132,7 @@ Make sure that the source code is pushed to the freshly created repository and c
 
 ### Introduction
 
-This task is all about automating things using Cloud Build. When multiple people work on the same project and contribute to the same repository it's good to have a _Continuous Integration_ pipeline that can lint, test and package the source code everytime new commits are pushed. In this challenge we'll use the provided build pipeline to automate this process. It will generate and store the newest version of the Python package, that contains the training code, when there's a new commit.
+This task is all about automating things using Cloud Build. When multiple people work on the same project and contribute to the same repository it's good to have a _Continuous Integration_ pipeline that can lint, test and package the source code everytime new commits are pushed. In this challenge we'll use the provided build pipeline to automate this process. It will generate and store the newest version of the Python package, which contains the training code, when there's a new commit.
 
 ### Description
 
