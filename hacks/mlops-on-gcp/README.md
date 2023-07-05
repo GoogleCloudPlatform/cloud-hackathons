@@ -132,7 +132,7 @@ Make sure that the source code is pushed to the freshly created repository and c
 
 ### Introduction
 
-This task is all about automating things using Cloud Build. When multiple people work on the same project and contribute to the same repository it's good to have a _Continuous Integration_ pipeline that can lint, test and package the source code everytime new commits are pushed.
+This task is all about automating things using Cloud Build. When multiple people work on the same project and contribute to the same repository it's good to have a _Continuous Integration_ pipeline that can lint, test and package the source code everytime new commits are pushed. In this challenge we'll use the provided build pipeline to automate this process. It will generate and store the newest version of the Python package, that contains the training code, when there's a new commit.
 
 ### Description
 
@@ -158,13 +158,13 @@ How-to guides for [Cloud Build](https://cloud.google.com/build/docs/how-to)
 
 ### Introduction
 
-The previous challenge introduced the concept of build pipelines. But there are different types of pipelines, and this task is getting started with Vertex AI pipelines for continuous training. In our example the continuous training pipeline will extract data from BigQuery, validate it, prepare it, train a model with it, evaluate that model and register it in Vertex AI Model Registry.
+The previous challenge introduced the concept of build pipelines. But there are different types of pipelines, and this task is getting started with Vertex AI pipelines for _Continuous Training_. In our example the continuous training pipeline will extract data from BigQuery, validate it, prepare it, train a model with it (using the Python package that's built during the previous challenge), evaluate that model and register it in Vertex AI Model Registry.
 
 ### Description
 
-If you've successfully completed the previous challenge, your training code has been packaged and can be run from a pipeline.
+If you've successfully completed the previous challenge, your training code has been packaged and can be run from a Vertex AI pipeline.
 
-The provided project has a `pipeline.py` file that can generate a pipeline definition. Run that to generate a pipeline definition file (JSON). Use the generated pipeline definition file to create a new Pipeline Run through the GCP Console. You'll need to fill in some parameters (you can look up the Python package location). Do not set/override the endpoint and monitoring_job parameters (keep the default values).
+The provided project has a `pipeline.py` file that can generate a pipeline definition. Run that to generate a pipeline definition file (JSON). Use the generated pipeline definition file to create a new Pipeline Run through the GCP Console. You'll need to fill in some parameters (you can look up the Python package location). Do not set/override the `endpoint` and `monitoring_job` parameters (keep the default values).
 
 > **Note**  
 > Once the pipeline is triggered, it will take ~10 minutes to complete.
@@ -207,7 +207,7 @@ From this challenge onwards you'll have the option to either do online inferenci
 
 So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI provides exactly what we need, a managed service for serving predictions, called Online Prediction. 
 
-Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest instance size but make sure that it can scale to more than 1 instance. 
+Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest instance size but make sure that it can scale to more than 1 instance under load.
 
 > **Note**  
 > The deployment of the model will take ~10 minutes to complete.
@@ -250,7 +250,7 @@ So, you've chosen for the batch inferencing path. We're going to use Vertex AI B
 ### Tips
 
 - The pipeline that we've used in the previous challenge contains a task to prepare the data using BigQuery, have a look at that for inspiration.
-- Make sure that the input table has the exact same number of input columns as required by the model (for training extra data is needed which is not an input for the model at inferencing time).
+- Make sure that the input table has the exact same number of input columns as required by the model. Remember, for training extra data is needed which is not an input for the model at inferencing time ;)
 
 ### Learning Resources
 - Creating BigQuery [datasets](https://cloud.google.com/bigquery/docs/datasets)
