@@ -46,10 +46,10 @@ This is a pretty simple challenge, students just need to create a 3 node cluster
 You might want to suggest that they try to use the `gcloud` CLI to get a taste of how it would be done for real. 
 
 ### Step By Step Walk-through
-Follow the steps below to create a cluster named **fancy-cluster** with **3** nodes:
+Follow the steps below to create a cluster named **fancy-cluster** with **3** nodes of VM type: `n1-standard-2`:
 
 ```bash
-gcloud container clusters create fancy-cluster --num-nodes 3 --zone us-central1-c
+gcloud container clusters create fancy-cluster --num-nodes 3 --machine-type n1-standard-2 --zone us-central1-c
 ```
 
 It may take several minutes for the cluster to be created. Afterward, run the following command and see the cluster's three worker virtual machine (VM) instances:
@@ -300,7 +300,7 @@ kubectl get deployments
 # Show replica sets
 kubectl get rs
 
-#You can also combine them
+# You can also combine them
 kubectl get pods,deployments
 ```
 
@@ -397,7 +397,7 @@ Reiterate with the students that even though we wanted them to figure out the co
 
 ### Step By Step Walk-through
 
-Now that you have a running instance of your app in GKE and exposed it to the internet, your website has become extremely popular. You need a way to scale your app to multiple instances so that you can handle the traffic. In this challenge we'll learn to scale your application to up to three replicas to meet that demand.
+Now that you have a running instance of your app in GKE and exposed it to the internet, your website has become extremely popular. You need a way to scale your app to multiple instances so that you can handle the traffic. In this challenge we'll learn how to scale your application to up to three replicas to meet that demand.
 
 Run the following command to scale your deployment up to three replicas:
 
