@@ -25,7 +25,7 @@ jobs:
       - name: Create new branch
         run: |
           git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
+          git config user.email "${{ env.AUTHOR }}"
           git checkout -b ${{ env.BRANCH_NAME }}
       - name: Generate the required structure
         run: tools/setup-newhack.sh --hack="${{ env.HACK }}" --title="${{ env.TITLE }}" --author="${{ env.AUTHOR }}"
