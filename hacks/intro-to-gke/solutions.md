@@ -112,21 +112,20 @@ It might be worth explaining to the students why the Artifact Registry has super
 ### Step By Step Walk-through
 Because this is an existing website, you only need to clone the source from the repository so that you can focus on creating Docker images and deploying to GKE.
 
-Run the following commands to clone the source repository to your Cloud Shell instance and change it to the appropriate directory. You will also install the Node.js dependencies so that you can test your application before deploying it.
+Run the following commands to download the application to your home directory and unzip it and run the setup script to install the Node.js dependencies so that you can test your application before deploying it. It may take a few minutes for the setup script to run.
 
 ```bash
 cd ~
-git clone https://github.com/gfilicetti/monolith-to-microservices.git
-cd ~/monolith-to-microservices
+wget https://github.com/gfilicetti/monolith-to-microservices/archive/refs/heads/master.zip -O monolith.zip
+unzip monolith.zip
+cd ~/monolith-to-microservices-master
 ./setup.sh
 ```
-
-That clones the repository, changes the directory, and installs the dependencies needed to locally run your application. It may take a few minutes for that script to run.
 
 Do your due diligence and test your application. Run the following command to start your web server:
 
 ```bash
-cd ~/monolith-to-microservices/monolith
+cd ~/monolith-to-microservices-master/monolith
 npm start
 ```
 
@@ -168,7 +167,7 @@ Now that we have a docker repository ready, we can run Cloud Build to containeri
 Run the following command in Cloud Shell to start the build process:
 
 ```bash
-cd ~/monolith-to-microservices/monolith
+cd ~/monolith-to-microservices-master/monolith
 gcloud builds submit --tag us-central1-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/dev/monolith:1.0.0 .
 ```
 
@@ -510,9 +509,9 @@ Your marketing team asked you to change your website's homepage. They think that
 Run the following commands, copy the updated file to the correct file name, and print its contents to verify the changes:
 
 ```bash
-cd ~/monolith-to-microservices/react-app/src/pages/Home
+cd ~/monolith-to-microservices-master/react-app/src/pages/Home
 mv index.js.new index.js
-cat ~/monolith-to-microservices/react-app/src/pages/Home/index.js
+cat ~/monolith-to-microservices-master/react-app/src/pages/Home/index.js
 ```
 
 The resulting code should look like this:
@@ -571,7 +570,7 @@ export default function Home() {
 You updated the React components, but you need to build the React app to generate the static files. Run the following command to build the React app and copy it into the monolith public directory:
 
 ```bash
-cd ~/monolith-to-microservices/react-app
+cd ~/monolith-to-microservices-master/react-app
 npm run build:monolith
 ```
 
@@ -580,7 +579,7 @@ Now that your code is updated, you need to rebuild your Docker container and pub
 Run the following command to trigger a new Cloud Build with an updated image version of 2.0.0:
 
 ```bash
-cd ~/monolith-to-microservices/monolith
+cd ~/monolith-to-microservices-master/monolith
 gcloud builds submit --tag us-central1-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/dev/monolith:2.0.0 .
 ```
 

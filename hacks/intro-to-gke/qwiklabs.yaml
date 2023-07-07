@@ -14,7 +14,7 @@
 schema_version: 2
 default_locale: en
 title: "[gHacks] Intro to GKE: Deploy, Scale and Update"
-description: ""
+description: "We will experience what a cloud developer needs to go through to successfully deploy an application to Google Kubernetes Engine. You will learn how to containerize a monolithic application; create a cluster; deploy, run and scale the application and then update the application and rollout the new version with zero downtime."
 instruction:
   type: md
   uri: instructions/en.md

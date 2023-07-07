@@ -40,8 +40,13 @@ In this gHack you will experience what a cloud developer needs to go through to 
 
 ## Prerequisites
 
+- Your own GCP project with Owner IAM role
 - A basic understanding of Docker and Kubernetes 
    - If you lack a basic understanding, you can review [Docker](https://docs.docker.com/) and [Kubernetes](https://kubernetes.io/docs/home/) now.
+- Access to an environment with the following 
+  - gcloud (>= 410.0.0)
+  - node.js (>= v19.1.0)
+  - **Note** Cloud Shell has these pre-installed
 
 ## Contributors
 
@@ -82,15 +87,11 @@ Now that our cluster is ready for action, we need to work on our monolithic appl
 
 ### Description
 
-In this challenge, you will begin by cloning the application's git repository and making sure it works standalone first, before starting any work on it.
+In this challenge, you will begin by installing the application and making sure it works standalone first, before starting any work on it.
 
-You will need to clone its git repository with this command:
+We've made the application available on github as a [zip file at this link](https://github.com/gfilicetti/monolith-to-microservices/archive/refs/heads/master.zip). Download the zip and extract its contents into your Cloud Shell (or local dev) environment. 
 
-```bash
-git clone https://github.com/gfilicetti/monolith-to-microservices.git
-```
-
-To set up required libraries in a fresh download, run the `setup.sh` script. Afterwards, you need to start the node.js application in the `monolith` folder and pull up the home page of your app to make sure it is working.
+To set up required node.js libraries in a fresh download, run the `setup.sh` script. Afterwards, you need to start the node.js application in the `monolith` folder and pull up the home page of your app to make sure it is working.
 
 Now that we've confirmed it is working, we need to containerize the application and deploy it to a Docker repository.
 
