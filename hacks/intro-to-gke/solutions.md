@@ -401,7 +401,7 @@ Now that you have a running instance of your app in GKE and exposed it to the in
 Run the following command to scale your deployment up to three replicas:
 
 ```bash
-kubectl scale deployment monolith --replicas=3
+kubectl scale deployment monolith-deployment --replicas=3
 ```
 
 **Output:**
