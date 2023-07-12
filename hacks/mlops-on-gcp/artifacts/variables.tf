@@ -18,3 +18,10 @@ variable "gcp_zone" {
   type        = string
   description = "Zone to create resources in."
 }
+
+# Relevant when running on Argolis and/or no default network exists yet
+variable "create_default_network" {
+  type        = bool
+  default     = false
+  description = "Whether to create a default network with subnets for all regions"
+}
