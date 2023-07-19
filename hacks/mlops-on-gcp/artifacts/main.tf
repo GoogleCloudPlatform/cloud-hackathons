@@ -82,7 +82,8 @@ data "google_compute_default_service_account" "gce_default" {
   ]
 }
 
-resource "google_compute_network" "default_network" {
+# In case a default network is not present in the project the variable `create_default_network` needs to be set.
+resource "google_compute_network" "default_network_created" {
   name                    = "default"
   auto_create_subnetworks = true
   count                   = var.create_default_network ? 1 : 0
@@ -91,14 +92,23 @@ resource "google_compute_network" "default_network" {
   ]
 }
 
-resource "google_compute_firewall" "default_allow_custom" {
+resource "google_compute_firewall" "default_allow_custom_created" {
   name          = "default-allow-custom"
-  network       = google_compute_network.default_network[0].self_link
+  network       = google_compute_network.default_network_created[0].self_link
   count         = var.create_default_network ? 1 : 0
   source_ranges = ["10.128.0.0/9"]
   allow {
     protocol = "all"
   }
+}
+
+# This piece of code makes it possible to deal with the default network the same way, regardless of how it has
+# been created. Make sure to refer to the default network through this resource when needed.
+data "google_compute_network" "default_network" {
+  name       = "default"
+  depends_on = [
+    google_compute_network.default_network_created
+  ]
 }
 
 resource "google_project_iam_member" "gce_default_iam" {
