@@ -95,7 +95,7 @@ Congratulations! You created your first cluster!
 
 > **Note** If you're using an existing GKE cluster or if you created a cluster through Cloud Console, then you need to run the following command to retrieve the cluster's credentials and configure the kubectl command-line tool with them:
 >
-> `gcloud container clusters get-credentials fancy-cluster`
+> `gcloud container clusters get-credentials fancy-cluster --zone us-central1-c`
 >
 > If you already created a cluster with the `gcloud container clusters create` command listed above, then you do not need to complete this step.
 
@@ -401,7 +401,7 @@ Now that you have a running instance of your app in GKE and exposed it to the in
 Run the following command to scale your deployment up to three replicas:
 
 ```bash
-kubectl scale deployment monolith --replicas=3
+kubectl scale deployment monolith-deployment --replicas=3
 ```
 
 **Output:**
