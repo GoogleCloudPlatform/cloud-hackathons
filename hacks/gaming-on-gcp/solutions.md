@@ -1,4 +1,4 @@
-# Gaming in GCP: Have Fun!
+# Gaming on GCP: Have Fun!
 
 ## Introduction
 
