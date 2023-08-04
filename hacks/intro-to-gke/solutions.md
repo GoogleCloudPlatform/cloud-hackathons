@@ -45,6 +45,8 @@ This is a pretty simple challenge, students just need to create a 3 node cluster
 
 You might want to suggest that they try to use the `gcloud` CLI to get a taste of how it would be done for real. 
 
+> **Warning** We have seen capacity issues creating clusters or kicking off Cloud Builds in this gHack. It seemed to affect certain regions so if you run into issues, try different regions. Also if SSD disks were used in creating the clusters, this will probably fail. Finally, make sure students don't create more than 3 nodes.
+
 ### Step By Step Walk-through
 Follow the steps below to create a cluster named **fancy-cluster** with **3** nodes of VM type: `n1-standard-2`:
 
@@ -108,6 +110,8 @@ Knowing/learning the ins and outs of node.js isn't the purpose of this challenge
 It might be worth explaining to the students why the Artifact Registry has superseded Container Registry.
 
 > **Note** In the terraform scripts that were run, the GKE Service Account was given Artifact Registry Reader IAM permissions. If there are issues with getting Pods to start, begin your debugging here.
+
+> **Note** The docs for Cloud Build will have an example where a specific region is specified in the command. This can be problematic because we don't have quota in some regions. If it causes an error, have them change the region.
 
 ### Step By Step Walk-through
 Because this is an existing website, you only need to clone the source from the repository so that you can focus on creating Docker images and deploying to GKE.
