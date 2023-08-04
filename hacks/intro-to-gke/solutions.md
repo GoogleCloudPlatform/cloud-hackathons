@@ -172,8 +172,10 @@ Run the following command in Cloud Shell to start the build process:
 
 ```bash
 cd ~/monolith-to-microservices-master/monolith
-gcloud builds submit --tag us-central1-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/dev/monolith:1.0.0 .
+gcloud builds submit --region global --tag us-central1-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/dev/monolith:1.0.0 .
 ```
+
+> **Note** The student guide explicitly states that "the global region" should be used for the build. That means the above command needs to be issued without a region specified or with `--region global`
 
 This process takes a few minutes, but after it's completed, you can see the following output in the terminal:
 
