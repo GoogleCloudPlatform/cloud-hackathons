@@ -187,6 +187,8 @@ By default when a gHack is included in the official repository a new Qwiklabs la
 
 If you don't need anything special, the default Qwiklabs lab configuration `qwiklabs.yaml`, provided by the scaffolding tool, should be sufficient. If you need to edit that file, make sure that you've read the document available on [go/ql-scripts](http://go/ql-scripts).
 
+The auto-generated `QL_OWNER` file contains the names of the maintainers of this repo, in principle you won't need to edit it. But if you want to add your email address, please make sure that the email address is registered in the special Qwiklabs instance as an *author*.
+
 #### Qwiklabs and Terraform
 
 The Terraform scripts in the `artifacts` directory of your hack will be automatically executed when the labs start.

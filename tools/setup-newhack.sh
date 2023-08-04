@@ -51,7 +51,11 @@ cp faq/template-lectures.pdf $BASEDIR/resources/
 sed -i -e "s|^# \[TITLE\]|# ${TITLE}|" $BASEDIR/README.md
 sed -i -e "s|^# \[TITLE\]|# ${TITLE}|" $BASEDIR/solutions.md
 
-echo $AUTHOR > $BASEDIR/QL_OWNER
+cat <<EOF > $BASEDIR/QL_OWNER
+meken@google.com
+# Collaborators
+ginof@google.com
+EOF
 
 LICENSE=`cat tools/header.txt`
 
@@ -105,7 +109,8 @@ EOF
 cat <<EOF > $BASEDIR/artifacts/main.tf
 $LICENSE
 resource "google_project_service" "compute_api" {
-  service = "compute.googleapis.com"
+  service            = "compute.googleapis.com"
+  disable_on_destroy = false  
 }
 EOF
 
