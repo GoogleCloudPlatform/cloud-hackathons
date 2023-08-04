@@ -51,7 +51,11 @@ cp faq/template-lectures.pdf $BASEDIR/resources/
 sed -i -e "s|^# \[TITLE\]|# ${TITLE}|" $BASEDIR/README.md
 sed -i -e "s|^# \[TITLE\]|# ${TITLE}|" $BASEDIR/solutions.md
 
-echo $AUTHOR > $BASEDIR/QL_OWNER
+cat <<EOF > $BASEDIR/QL_OWNER
+meken@google.com
+# Collaborators
+ginof@google.com
+EOF
 
 LICENSE=`cat tools/header.txt`
 
