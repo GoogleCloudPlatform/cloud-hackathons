@@ -109,7 +109,8 @@ EOF
 cat <<EOF > $BASEDIR/artifacts/main.tf
 $LICENSE
 resource "google_project_service" "compute_api" {
-  service = "compute.googleapis.com"
+  service            = "compute.googleapis.com"
+  disable_on_destroy = false  
 }
 EOF
 
