@@ -64,23 +64,23 @@ In this challenge, you will learn how to deploy Agones, an open-source, multipla
 
 ### Description
 
-Your task is to deploy Agones on a Kubernetes cluster in Google Cloud. Follow the steps below:
+Your task is to deploy an Agones game server in Google Cloud, that will include the following:
 
-- Set up a Google Kubernetes Engine (GKE) cluster. You can use the Google Cloud Console or command-line tools to create the cluster.
+- Install Agones on a freshly provisioned Google Kubernetes Engine (GKE) cluster.
 
-- Install Agones on the Kubernetes cluster. Use the provided Agones documentation to install the required components and configure Agones.
+- Create a game server deployment by configuring Agones parameters, eg: image, ports, etc.
 
-- Create a simple game server deployment. Define a basic game server deployment using the Agones configuration. This will include specifying the game server image, ports, and other necessary parameters.
-
-- Test the deployment. Validate that the game server deployment is successful by checking the status of the pods and services created by Agones. Ensure that the game server is running and accessible.
+- Test the deployment by ensuring that the game server is running and accessible.
 
 > **Note** Although you can create this cluster using the Google Cloud Console UI, we encourage you to explore and figure out how to create clusters using the `gcloud` CLI tool.
 
 ### Success Criteria
 
-- Agones is successfully installed on the Kubernetes cluster.
-- A game server deployment is created and running without errors.
+- A GKE cluster has been provisioned.
+- Agones is successfully installed on the GKE cluster.
+- A game server deployment is created and running without errors. 
 - The game server is accessible and functioning as expected.
+- Show your coach that the GKE console shows the Agones pods and services are healthy and running.
 
 ### Tips
 
@@ -128,6 +128,7 @@ In this challenge, you will integrate Open Match into your game server infrastru
 - The matchmaking system successfully matches players based on the defined rules and criteria.
 - Players are assigned to matches that provide fair and balanced gameplay experiences.
 - The matchmaking system scales effectively with increasing player traffic.
+- Open Match is integrated with your game server.
 
 ### Tips
 

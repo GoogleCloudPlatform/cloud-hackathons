@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to the coach's guide for Gaming in GCP. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for Gaming on GCP. Here you will find links to specific guidance for coaches for each of the challenges.
 
 > **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
@@ -22,16 +22,6 @@ Welcome to the coach's guide for Gaming in GCP. Here you will find links to spec
 This hack has pre-reqs that a coach is responsible for understanding and/or setting up BEFORE hosting an event. Please review the [gHacks Hosting Guide](https://ghacks.dev/faq/howto-host-hack.html) for information on how to host a hack event.
 
 The guide covers the common preparation steps a coach needs to do before any gHacks event, including how to properly setup Google Meet and Chat Spaces.
-
-### Student Resources
-
-Before the hack, it is the Coach's responsibility create and make available needed resources including: 
-- Files for students
-- Terraform scripts for setup (if running this gHack in a customer's environment)
-
-Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available) to create the zip files needed and upload them to your gHack's Google Space's Files area. 
-
-Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
 
 > **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
 
