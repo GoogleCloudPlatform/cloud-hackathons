@@ -32,6 +32,10 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 - [Ready, Steady, Cloud Run!](./hacks/cloud-run/README.md)
   > We'll be using Cloud Run to quickly configure, deploy and troubleshoot a web service. During the process we'll introduce different ways to store data for the web service and learn about how to discover and fix issues. 
 
+### Industry Solutions
+- [Gaming on Google Cloud](./hacks/gaming-on-gcp/README.md)
+  > This hack will showcase the power of Google Cloud's gaming services and help you create innovative gaming solutions using technologies like the Agones Game Server, Open Match, Cloud Spanner, and BigQuery.
+
 ### Operations
 - Coming soon...
 
