@@ -2,15 +2,15 @@
 
 ## Introduction
 
-Welcome to the Gaming Hackathon on Google Cloud! This hackathon is designed to showcase the power of Google Cloud's gaming services and help you create innovative gaming solutions using technologies like Game Server, Open Match, Spanner, and BigQuery.
+Welcome to the Gaming on Google Cloud gHack! This hackathon is designed to showcase the power of Google Cloud's gaming services and help you create innovative gaming solutions using technologies like the Agones Game Server, Open Match, Cloud Spanner, and BigQuery.
 
 In this hackathon, you will have the opportunity to explore and utilize the advanced features and capabilities offered by Google Cloud to develop and deploy gaming applications. You will leverage services such as:
 
-- Game Server: Build scalable and reliable game server infrastructure using Game Server, which provides managed Kubernetes clusters specifically designed for game hosting.
+- Agones Game Server: Build scalable and reliable game server infrastructure using the Agones Game Server, which provides managed Kubernetes clusters specifically designed for game hosting.
 
 - Open Match: Create matchmaking systems with Open Match, an open-source matchmaking framework that enables flexible and customizable matchmaking logic to ensure fair and enjoyable multiplayer experiences.
 
-- Spanner: Utilize Spanner, a globally distributed and strongly consistent database service, to store game-related data with low latency and high availability.
+- Cloud Spanner: Utilize Spanner, a globally distributed and strongly consistent database service, to store game-related data with low latency and high availability.
 
 - BigQuery: Leverage BigQuery, a fully-managed analytics data warehouse, to gain valuable insights from game telemetry data and perform real-time analytics.
 
@@ -20,11 +20,11 @@ In this hackathon, you will have the opportunity to explore and utilize the adva
 
 The objectives of this hackathon are:
 
-- Create a Multiplayer Game Infrastructure: Build a scalable and reliable game infrastructure using Game Server, allowing players to connect and interact in a multiplayer gaming environment.
+- Create a Multiplayer Game Infrastructure: Build a scalable and reliable game infrastructure using the Agones Game Server, allowing players to connect and interact in a multiplayer gaming environment.
 
 - Implement Matchmaking Logic: Develop a custom matchmaking system using Open Match to create fair and balanced matches for players based on their skill levels, preferences, or other criteria.
 
-- Store and Analyze Game Telemetry: Utilize Spanner and BigQuery to store and analyze game telemetry data, enabling real-time analytics, player behavior analysis, and performance optimization.
+- Store and Analyze Game Telemetry: Utilize CloudSpanner and BigQuery to store and analyze game telemetry data, enabling real-time analytics, player behavior analysis, and performance optimization.
 
 - Innovate and Showcase Your Gaming Solution: Demonstrate your creativity and innovation by developing unique features, gameplay mechanics, or integration with other Google Cloud services to enhance the gaming experience.
 
@@ -37,8 +37,8 @@ The objectives of this hackathon are:
    - Deploy Agones, an open-source, multiplayer, dedicated game-server built on Kubernetes in the Google Cloud environment.
 - Challenge 2: Dynamic Game Matching with Open Match
    - Implement dynamic game matching using Open Match in the Google Cloud environment.
-- Challenge 3: Game State and Activity Management with Spanner
-   - leverage Google Cloud Spanner as the game state and activity store in the Google Cloud environment.
+- Challenge 3: Game State and Activity Management with Cloud Spanner
+   - Leverage Google Cloud Spanner as the game state and activity store in the Google Cloud environment.
 - Challenge 4: Player Churn Prediction with BigQuery ML
    - Leverage Google BigQuery to predict player churn in your multiplayer gaming platform in the Google Cloud environment.
 
@@ -144,7 +144,7 @@ In this challenge, you will integrate Open Match into your game server infrastru
 - [Open Match Tutorials](https://open-match.dev/site/docs/tutorials/matchmaker101/)
 - [Open Match Guides](https://open-match.dev/site/docs/guides/matchmaker/)
 
-## Challenge 3: Game State and Activity Management with Spanner
+## Challenge 3: Game State and Activity Management with Cloud Spanner
 
 ### Introduction
 
@@ -154,33 +154,33 @@ In the previous challenges, you built a game server infrastructure and implement
 
 In this challenge, you will integrate Google Cloud Spanner into your game server infrastructure to manage the game state and player activity. Cloud Spanner is a fully managed, globally distributed relational database service that provides strong consistency and horizontal scalability.
 
-- Start by familiarizing yourself with the **Spanner Gaming Sample repository**. This repository contains code and resources to help you get started with using Spanner for game state and activity management.
+- Start by familiarizing yourself with the **Cloud Spanner Gaming Sample repository**. This repository contains code and resources to help you get started with using Cloud Spanner for game state and activity management.
 
-- Understand the data model used in the Spanner Gaming Sample and evaluate how it aligns with your game's requirements. Identify any modifications or extensions needed to store the specific game state and activity data relevant to your game.
+- Understand the data model used in the Cloud Spanner Gaming Sample and evaluate how it aligns with your game's requirements. Identify any modifications or extensions needed to store the specific game state and activity data relevant to your game.
 
 - Set up a Cloud Spanner instance and database by following the instructions in the repository's documentation. Ensure that the necessary schema and tables are created to store the game state and player activity.
 
-- Modify your game server code to interact with the Spanner database. Implement functionality to read and update the game state and player activity data in Spanner. This may involve integrating Spanner client libraries and writing database queries.
+- Modify your game server code to interact with the CloudSpanner database. Implement functionality to read and update the game state and player activity data in Cloud Spanner. This may involve integrating Cloud Spanner client libraries and writing database queries.
 
-- Test the integration by simulating gameplay scenarios and verifying that the game state and player activity are accurately stored and retrieved from Spanner. Ensure that concurrent updates and consistency constraints are handled correctly.
+- Test the integration by simulating gameplay scenarios and verifying that the game state and player activity are accurately stored and retrieved from Cloud Spanner. Ensure that concurrent updates and consistency constraints are handled correctly.
 
 ### Success Criteria
 
 - The game server successfully connects to the Cloud Spanner instance and can read/write the game state and player activity data.
-- The game state is consistently stored and retrieved from Spanner, reflecting the current state of the game.
-- Player activity data, such as player scores, achievements, and progress, is accurately recorded and updated in Spanner.
-- The Spanner database scales effectively to handle increasing player activity and game state updates.
+- The game state is consistently stored and retrieved from Cloud Spanner, reflecting the current state of the game.
+- Player activity data, such as player scores, achievements, and progress, is accurately recorded and updated in Cloud Spanner.
+- The Cloud Spanner database scales effectively to handle increasing player activity and game state updates.
 
 ### Tips
-- Refer to the Spanner Gaming Sample repository's documentation for detailed instructions and best practices.
-- Utilize Spanner's distributed transactions and strong consistency guarantees to ensure data integrity and synchronization across game servers.
-- Consider partitioning and sharding techniques to distribute the game state and activity data across Spanner nodes for optimal performance.
-- Monitor and analyze the performance of your Spanner instance using Cloud Spanner-specific tools and metrics.
+- Refer to the Cloud Spanner Gaming Sample repository's documentation for detailed instructions and best practices.
+- Utilize Cloud Spanner's distributed transactions and strong consistency guarantees to ensure data integrity and synchronization across game servers.
+- Consider partitioning and sharding techniques to distribute the game state and activity data across Cloud Spanner nodes for optimal performance.
+- Monitor and analyze the performance of your Cloud Spanner instance using Cloud Spanner-specific tools and metrics.
 
 ### Learning Resources
 
 - [Google Cloud Spanner](https://cloud.google.com/spanner/docs)
-- [Spanner Gaming Sample](https://github.com/cloudspannerecosystem/spanner-gaming-sample)
+- [Cloud Spanner Gaming Sample](https://github.com/cloudspannerecosystem/spanner-gaming-sample)
 - [Global Multiplayer Sample](https://github.com/googleforgames/global-multiplayer-demo)
 
 ## Challenge 4: Player Churn Prediction with BigQuery ML
