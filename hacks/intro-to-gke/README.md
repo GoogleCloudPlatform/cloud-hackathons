@@ -98,12 +98,13 @@ Now that we've confirmed it is working, we need to containerize the application 
 You'll need to do the following:
 - Create a new standard Artifact Registry to store docker containers (choose a region near you)
 - Using Google Cloud Build, issue a single `gcloud` command that will build a container and push it up to your new Artifact Registry.
+   - **NOTE:** You will need to run this command in the global region
 
 ### Success Criteria
 
 - You successfully started the application and were able to navigate to its home page on port 8080
 - You have a new Artifact Registry docker repository provisioned in a region near you
-- With one command, you built the container and pushed it to your new Artifact Registry using Cloud Build.
+- With one command, you built the container and pushed it to your new Artifact Registry using Cloud Build in the global region.
 
 ### Learning Resources
 
