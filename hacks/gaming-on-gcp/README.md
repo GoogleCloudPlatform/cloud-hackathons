@@ -1,4 +1,4 @@
-# Gaming on GCP: Have Fun!
+# Gaming on Google Cloud
 
 ## Introduction
 
