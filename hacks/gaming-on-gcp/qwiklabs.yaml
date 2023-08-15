@@ -13,7 +13,7 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "[gHacks] Gaming with Google Cloud"
+title: "[gHacks] Gaming on Google Cloud"
 description: ""
 instruction:
   type: md
