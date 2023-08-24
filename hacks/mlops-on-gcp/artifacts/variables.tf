@@ -19,7 +19,7 @@ variable "gcp_zone" {
   description = "Zone to create resources in."
 }
 
-# Relevant when running on Argolis and/or no default network exists yet
+# Relevant when running on a system where no default network exists yet
 variable "create_default_network" {
   type        = bool
   default     = false

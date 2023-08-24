@@ -8,8 +8,6 @@ This document has two sections, pick the one that corresponds to where you're ru
 
 ## Setting Up Your Own Environment
 
-> **Note** If you're using an Argolis environment, there are some default org policies that will need to be changed. Run the `argolis-fix-policy-defaults.sh` script in [this repository](https://github.com/gfilicetti/gcp-scripts) to set all the proper defaults. Also for the sake of consistency (with Qwiklabs environments) you can create a default network and open a few ports using scripts from the same repository.
-
 ### Confirm Your Project Is Ready
 
 Sign-in to the [Google Cloud Console](http://console.cloud.google.com/) and select the project that was assigned to you. Alternately, if you have permissions, you can create a new project for this hack.
