@@ -212,15 +212,6 @@ The process of synchronizing of your changes to the special Qwiklabs instance is
 
 It's also possible to create labs directly in the special Qwiklabs instance to try out things, you can then import the `README.md` as the instructions, and add the `ghacks-setup.zip` to the project instance in the Lab Resources section. You can create the zip file by navigating to your hack's artifacts directory and running `make`. But beware that image references etc. will not work in that case.
 
-### Argolis
-
-Using Argolis is a great choice when running an internal gHack for Google employees that have access to their own Argolis environment.
-
-In addition using your own Argolis environment is a great way to test your Terraform configuration during development. We recommend testing in a fresh Argolis project to make sure everything in your Terraform script gets created as expected.
-
-> **Note**  
-> Remember that Argolis projects by default use a lot of restrictive Org Policies. You might need to disable some of them before running your scripts. You can use the scripts from [this repository](https://github.com/gfilicetti/gcp-scripts) for that.
-
 ## The Details of a gHack
 
 ### Files and Folders
