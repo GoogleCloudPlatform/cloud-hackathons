@@ -72,13 +72,15 @@ As depicted in the overview diagram, the first step of any ML project is data an
 
 ### Description 
 
-Create a User-Managed Notebook on Vertex AI. Pick a region close to you, create a simple vanilla **Python3** notebook instance (with no GPUs) and make sure that you've selected the **single user only** option.
+Create a User-Managed Notebook instance on Vertex AI. Pick a region close to you, create a simple vanilla **Python3** Notebook instance (with no GPUs) and make sure that you've selected the **single user only** option.
 
 It's a good practice to have isolated virtual environments for experiments, so create a new virtual environment and install that as a kernel. See this [gist](https://gist.github.com/meken/e6c7430997de9b3f2cf7721f8ecffc04) for the instructions. 
 
 > **Warning** Not using a dedicated and isolated environment/kernel might cause dependency conflicts as _User-Managed Notebook_ instances come pre-installed with some versions of the required libraries.
 
-We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-demo/archive/refs/heads/main.zip), navigate there and download the project as a **zip** file and extract the contents of the zip file into your notebook environment. Open the notebook `01-tip-toe-vertex-ai.ipynb`, make sure that you've selected the newly created kernel. You should now be able to run the first notebook and get familiar with some of the Vertex AI concepts.
+We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-demo/archive/refs/heads/main.zip), navigate there and download the project as a **zip** file and extract the contents of the zip file onto your Notebook instance. Open the notebook `01-tip-toe-vertex-ai.ipynb`, make sure that you've selected the newly created kernel. You should now be able to run the first notebook and get familiar with some of the Vertex AI concepts.
+
+> **Note** As we're installing packages in the first cell of the sample notebook and restarting the kernel in one of the following cells, _Run All_ will not work. Run the cells one-by-one also to understand what's going on in every cell.
 
 ### Success Criteria
 
@@ -90,8 +92,8 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 
 - Some of the required settings can be found in the _Advanced Settings_ section when you're creating a new _User-Managed Notebook_.
 - If there's nothing mentioned in the instructions about a parameter, stick to the defaults (this applies to all of the challenges).
-- You can download the zip file to your local machine and then upload it to the Notebook, but you can also get the zip URL and use the `wget` (or `curl`) command from the notebook environment.
-- The notebook creates a bucket in a specific region, take note of that as you'll need that information in the next challenges.
+- You can download the zip file to your local machine and then upload it to the Notebook instance, but you can also get the zip URL and use the `wget` (or `curl`) command from a terminal on the Notebook instance.
+- The sample notebook creates a bucket in a specific region, take note of that as you'll need that information in the next challenges.
 
 ### Learning Resources
 
@@ -105,7 +107,7 @@ The objective of this challenge is to create and configure a Git repository so t
 
 ### Description
 
-If you have completed the previous challenge, you should have the source code already unpacked on your User-Managed Notebook (if another user is driving this challenge, see the tips). But you're free to complete this challenge on another environment such as Cloud Shell or your local machine.
+If you have completed the previous challenge, you should have the source code already unpacked on your User-Managed Notebook (if another user is driving this challenge, see the tips). But you're free to complete this challenge on another environment such as Cloud Shell or even on your local machine.
 
 Create a Cloud Source Repository, configure access through **SSH**.
 
@@ -120,7 +122,7 @@ Make sure that the source code is pushed to the freshly created repository and c
 
 ### Tips
 
-- The previous challenge required you to use single-user notebooks, so if you want to complete this challenge in a notebook as a different user, you'll have to create a new notebook. In that case create another single-user notebook for the new user and download the repository. You don't need to run the notebook or create the virtual environment for this challenge.
+- The previous challenge required you to use a single-user Notebook instance, so if you want to complete this challenge in a Notebook instance as a different user, you'll have to create a new Notebook instance. In that case create another single-user Notebook instance for the new user and download the repository (zip file). You don't need to run the provided sample notebook or create the virtual environment for this challenge.
 - Alternatively you could use the Cloud Shell to complete this challenge.
 - Both User-Managed Notebooks and Cloud Shell have OpenSSH already installed
 
@@ -207,7 +209,7 @@ From this challenge onwards you'll have the option to either do online inferenci
 
 So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI provides exactly what we need, a managed service for serving predictions, called Online Prediction. 
 
-Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest instance size but make sure that it can scale to more than 1 instance under load.
+Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest machine type but make sure that it can scale to more than 1 node by configuring _autoscaling_.
 
 > **Note**  
 > The deployment of the model will take ~10 minutes to complete.
@@ -224,12 +226,12 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 ### Tips
 
 - Verify first that you're getting predictions from the endpoint before generating load (for example using cURL)
-- In order to generate load you can use any tool you want, but the easiest approach would be to install [apache-bench](https://httpd.apache.org/docs/2.4/programs/ab.html) on Cloud Shell or your notebook environment.
+- In order to generate load you can use any tool you want, but the easiest approach would be to install [apache-bench](https://httpd.apache.org/docs/2.4/programs/ab.html) on Cloud Shell or your notebook environment. Google it, if you don't know how to use it :)
 
 ### Learning Resources
 
-- Documentation on [Vertex AI Endpoints](https://cloud.google.com/vertex-ai/docs/predictions/overview)
-- More info on the [request data format](https://cloud.google.com/vertex-ai/docs/predictions/get-predictions#request-body-details)
+- Documentation on [Online Predictions deployment](https://cloud.google.com/vertex-ai/docs/general/deployment)
+- More info on the [request data format](https://cloud.google.com/vertex-ai/docs/predictions/get-online-predictions). Remember that we've used the `scikit-learn` framework to train our model.
 
 ### Batch Inferencing
 
