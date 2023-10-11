@@ -300,6 +300,10 @@ The lead coach should start the kick off meeting in the Google Space 15-20 mins 
 
 ![Start a Google Meet](images/host-create-meet.png)
 
+> **Note** To make things easier for external folks, you can make the meeting open to join without needing permission. Once you're in the meet, click on the **Host Controls** button, the lock icon at the very bottom right. Change **Meeting access type** to **Open**.
+
+![Change meeting access type](images/host-change-meet-permissions.png)
+
 To join the kick off meeting, participants will first open up Google Chat and go to the event's Google Space. In there, they will find the icon to join the Google Meet that the lead coach created.
 
 #### Welcomes & Intros
