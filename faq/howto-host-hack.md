@@ -88,23 +88,13 @@ It will require at least one person from the team to sign up for the gHacks Qwik
 
 In order to organize a gHack event with Qwiklabs, you'll need a _Classroom Template_ and a _Classroom_. You'll need *Authoring* permissions on the special Qwiklabs instance to create those. Please follow the instructions on [go/ceqwiklabstraining](http://go/ceqwiklabstraining) to become an author. 
 
-##### Classroom Templates - One Time Only 
+##### Classrooms
 
-You'll first have to create a _Classroom Template_ that includes your gHack, this is a one time only action. Once the template is ready, you can use that for all your events. In order to create a new template navigate to the [_Classroom Templates_ section of the special Qwiklabs instance](https://ce.qwiklabs.com/authoring/classroom_templates)
+You need to create _Classroom_ instances for every event you want to organize (including any dry-runs you want to do with coaches before the real event). A _Classroom_ has a start and an end date and references the _Classroom Template_ which determines which lab is used. 
 
-![Screenshot for Classroom Template](images/author-ql-classroom-templates.png)
+You'll need to add the coach for each team as a _student_ to the classroom so that they can see the lab when they log into the Qwiklabs instance. 
 
-Click on the **+** button on the top right to create a new *Classroom Template*. Fill in the *Name* and *Description* and keep things the default other than the following:
-
-1. *Type* needs to be set to *Bootcamp/Workshop*
-1. *Enabled* is checked
-1. And you've selected the right *Lab* (the Qwiklabs lab that has been created for you automatically, it will start with the prefix *\[gHacks\]*). 
-
-After filling those details you can click on the button *Create Classroom template* and your template will be ready.
-
-##### Classrooms - Every Event Instance
-
-You need to create _Classroom_ instances for every event you want to organize. A _Classroom_ has a start and an end date, references the _Classroom Template_ which determines the lab. You'll need to add the Team Lead of every team as a student to a _Classroom_ so that they can see the lab when they log into the Qwiklabs instance. 
+> **Note** The coaches for each team will be starting the Qwiklab and collecting the username/passwords to hand out to the team. There is no need for the students to be aware of the Qwiklab environment at all.
 
 Navigate to the [_Classrooms_ section of the special Qwiklabs instance](https://ce.qwiklabs.com/classrooms)
 
@@ -115,6 +105,9 @@ Click on the **+** button on the top right to create a new _Classroom_. First st
 ![Screenshot for Classroom Template filter](images/author-ql-new-classroom-01.png)
 
 Untick the *Virtual Classroom* option, add the Lead Coach as a trainer and most importantly set the *start and end date* for the event. *Location* is required, but not as important as the *Timezone*. 
+
+> **Warning**
+> Labs have a maximum duration and that value is set by the author of the gHack. If you try to set a start and end date longer than this duration, the classroom will default back to the maximum duration. If you need an instance longer than the default for the lab, get in contact with the gHack's author ASAP.
 
 ![Screenshot for Location/Timezone for Classroom](images/author-ql-new-classroom-02.png).
 
@@ -133,8 +126,6 @@ After clicking on *Done* you'll see the new _Classroom_.
 
 > **Warning**  
 > The lab in the _Classroom_ is not activated automatically, make sure that you activate it before the event by clicking on the *Activate Lab* button.
-
-The next step is to add "students" to the Qwiklab. You will add **only** the *Team Leads* here. If the team lead has created an account on the special Qwiklabs instance, their status will show *Enrolled*, otherwise it'll say *Registered, No Qwiklabs Account*. Keep in mind that you can add/remove Qwiklab students at any time, even when the _Classroom_ is in progress.
 
 ![Screenshot for the students](images/author-ql-new-classroom-05.png)
 
