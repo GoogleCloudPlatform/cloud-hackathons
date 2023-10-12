@@ -96,6 +96,8 @@ You'll need to add the coach for each team as a _student_ to the classroom so th
 
 > **Note** The coaches for each team will be starting the Qwiklab and collecting the username/passwords to hand out to the team. There is no need for the students to be aware of the Qwiklab environment at all.
 
+> **Warning** If there are more teams than coaches, you will have to recruit a "Team Lead" student to start the Qwiklab from teams without a dedicated coach. Please guide the Team Lead through this process.
+
 Navigate to the [_Classrooms_ section of the special Qwiklabs instance](https://ce.qwiklabs.com/classrooms)
 
 ![Screenshot for Classrooms](images/author-ql-classrooms.png)
