@@ -1,0 +1,4 @@
+google-cloud-aiplatform
+google-cloud-storage
+google-cloud-vision
+google-cloud-bigquery
