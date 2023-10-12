@@ -146,7 +146,7 @@ resource "google_cloudfunctions_function" "function" {
   }
 
   event_trigger {
-    event_type = "google.cloud.pubsub.topic.v1.messagePublished"
+    event_type = "providers/cloud.pubsub/eventTypes/topic.publish"
     resource   = google_pubsub_topic.pubsub_topic.id
   }
 
