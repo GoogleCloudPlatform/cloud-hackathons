@@ -35,6 +35,21 @@ gcloud storage buckets notifications create --event-types=OBJECT_FINALIZE --topi
 
 ### Notes & Guidance
 
+```python
+prompt = """
+    Extract the title from the following text delimited by triple backquotes.
+
+    ```{text}```
+
+    TITLE:
+"""
+```
+
+And make sure to truncate the text:
+
+```python
+
+```
 
 ## Challenge 3:
 

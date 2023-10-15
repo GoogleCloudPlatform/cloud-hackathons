@@ -39,22 +39,22 @@ This challenge is all about configuring the pre-requisites for the system we're 
 
 Create two Cloud Storage Buckets, one for uploading documents and another for staging. You can choose any name for the first bucket, but call the staging bucket `{YOUR PROJECT ID}-staging`.
 
-We'll trigger the summary generation automatically when a new document is uploaded to the first Cloud Storage Bucket. We've already provided you with a(n incomplete) Cloud Function, make sure that this function is triggered whenever a new document is uploaded to that Cloud Storage Bucket.
+We'll trigger the summary generation automatically when a new document is uploaded to the first Cloud Storage Bucket. We've already provided you with a(n incomplete) Cloud Function, make sure that this function is triggered whenever a new document is uploaded to the Cloud Storage Bucket.
 
 ### Success Criteria
 
-- There are two Cloud Storage Buckets (names?)
-- Provided Cloud Function is triggered when a new file is uploaded
+- There are two Cloud Storage Buckets, one for uploading the documents and another one for staging with the required name.
+- Provided Cloud Function is triggered (only) when a new file is uploaded.
+- No code was modified.
 
 ### Learning Resources
 
 - Cloud Storage Buckets
 - Cloud Storage Notifications
-- BQ Create dataset 
 
 ### Tips
 
-- Check the Cloud Function to see how it's being triggered
+- Check the provided Cloud Function to see how it's being triggered
 
 ## Challenge 2: First steps into the LLM realm
 
@@ -64,7 +64,7 @@ The first step in our process is to extract text data from PDF documents, we've 
 
 ### Description
 
-For this challenge we'll use PaLM (`text-bison`) to determine what the title of the uploaded document is. We've already provided the skeleton of the function `extract_title_from_text`, all you need to do is come up with the correct prompt and update the `mappings` to pass the contents to your prompt.
+For this challenge we'll use PaLM (`text-bison`) to determine what the title of the uploaded document is. We've already provided the skeleton of the function `extract_title_from_text`, all you need to do is come up with the correct prompt and update the `mapping` to pass the contents to your prompt.
 
 ### Success Criteria
 
@@ -73,6 +73,7 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title of 
 ### Learning Resources
 
 - Python string.Template
+- Prompt Engineering
 
 ### Tips
 
@@ -81,9 +82,15 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title of 
 
 ## Challenge 3: Getting summaries from a document
 
-### Introduction 
+### Introduction
+
+The objective of this challenge is to try to get a summary of the complete paper. You've already seen that there are limitations when it comes to the number of input tokens for an LLM. For the title it's okay to just look at a part of the document, but generating a summary for the complete document requires an alternative approach.
 
 ### Description
+
+There's stuffing map reduce
+
+Implement the prompts.
 
 ### Success Criteria
 
@@ -93,9 +100,13 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title of 
 
 ## Challenge 4: BigQuery &#10084; LLMs
 
-### Introduction 
+### Introduction
+
+So far we've used the PaLM APIs from the Vertex AI Python SDK. It's also possible to use those through BigQuery, this challenge is all about using BigQuery in combination with LLMs.
 
 ### Description
+
+Before we start using the LLMs you'll need to store the outputs of the Cloud Function in BigQuery. We've already provided the code, just uncomment the call to `store_results_in_bq` in the Cloud Function code.
 
 ### Success Criteria
 

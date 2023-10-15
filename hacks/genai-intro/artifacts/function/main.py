@@ -4,7 +4,6 @@ import os
 import string
 
 from itertools import islice
-from typing import Sequence
 
 import vertexai
 
@@ -137,11 +136,11 @@ def extract_summary_from_text(text: str) -> str:
     return model.predict(prompt).text   
 
 
-def store_results_in_bq(dataset: str, table: str, **kwargs) -> Sequence:
+def store_results_in_bq(dataset: str, table: str, columns: dict[str, str]) -> bool:
     client = bigquery.Client(project=PROJECT_ID)
     table_uri = f"{dataset}.{table}"
 
-    rows_to_insert = [kwargs]
+    rows_to_insert = [columns]
 
     errors = client.insert_rows_json(
         table_uri, rows_to_insert, row_ids=bigquery.AutoRowIDs.GENERATE_UUID
@@ -149,8 +148,8 @@ def store_results_in_bq(dataset: str, table: str, **kwargs) -> Sequence:
 
     if errors:
         print("Errors while storing data in BQ:", errors)
-
-    return errors
+    
+    return not errors
 
 
 def on_document_added(event, context):
@@ -172,11 +171,6 @@ def on_document_added(event, context):
     summary = extract_summary_from_text(complete_text)
     print("Summary:", summary)
 
-    # TODO uncomment this for the last challenge
-    # store_results_in_bq(
-    #         dataset=BQ_DATASET,
-    #         table=BQ_TABLE,
-    #         uri=f"gs://{src_bucket}/{src_fname}", 
-    #         name=src_fname, 
-    #         title=title, 
-    #         summary=summary)
+    # TODO uncomment the next two lines for the last challenge
+    # columns = {"uri": f"gs://{src_bucket}/{src_fname}", "name": src_fname, "title": title, "summary": summary}
+    # store_results_in_bq(dataset=BQ_DATASET, table=BQ_TABLE, columns=columns)
