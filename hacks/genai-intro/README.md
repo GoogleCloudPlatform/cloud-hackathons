@@ -2,137 +2,103 @@
 
 ## Introduction
 
-The IoT Hack of the Century will take you on a whirlwind tour in the world of IoT and how it is being used in the modern world of mineral extraction in exotic locations like the Arctic and the wilds of South Africa.
+Practical GenAI will challenge you to build a system that is going to summarize scientific papers (in PDF format) when they're added to a Cloud Storage bucket, and will put the results in BQ for further analysis. We'll use a Cloud Function to orchestrate the whole process. The function will extract text from the document, create a summary from the extracted text, and store the summary in a database for you to view, search and further process.
 
 ## Learning Objectives
 
-In this hack you will be solving the common business problem that companies in the mineral extraction industry face and how IoT solutions from Google are brought to bear.
+This hack will help you explore the following tasks:
 
-1. Provision an IoT Hub
-1. Set up an IoT Edge device
-1. Bring Edge Computing to your solution for scale and resiliency 
+- Using Vertex AI Foundational models for text understanding
+- Prompt engineering 
+- Using BigQuery to run LLMs
 
 ## Challenges
 
-- Setting Up the Environment
-   - Before we can hack, you will need to set up a few things.
-   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
-- Challenge 1: Provision an IoT environment
-   - Create an IoT Hub and run tests to ensure it can ingest telemetry
-- Challenge 2: Your First Device
-   - Make the connection to your Edge device and see that it is properly provisioned.
-- Challenge 3: Connecting the World
-   - Connect your device and make sure it can see all other devices in your team.
-- Challenge 4: Scalable Monitoring of Telemetry
-   - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
+- Challenge 1: Automatic triggers
+- Challenge 2: First steps into the LLM realm
+- Challenge 3: Getting summaries from a document
+- Challenge 4: BigQuery &#10084; LLMs
 
 ## Prerequisites
 
-- Your own GCP project with Owner IAM role.
-- An AVNET X231 device
-- gCloud CLI
-- Visual Studio Code
+- Knowledge of Python
+- Basic knowledge of GCP
+- Access to a GCP environment
 
 ## Contributors
 
-- Gino Filicetti
 - Murat Eken
-- Jane Q. Public
-- Joe T. Muppet
 
-## Challenge 1: Provision an IoT environment
+## Challenge 1: Automatic triggers
 
-***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section.  You should remove all italicized & sample text and replace with your content.***
+### Introduction 
 
-_You can use these two specific blockquote styles to emphasize your text as needed and they will be specially rendered to be more noticeable_
-> **Note**  
-> Sample informational blockquote
-
-> **Warning**  
-> Sample warning blockquote
-
-### Pre-requisites (Optional)
-
-*Include any technical pre-requisites needed for this challenge specifically.  Typically, it is completion of one or more of the previous challenges if there is a dependency. This section is optional and may be omitted.*
-
-### Introduction (Optional)
-
-*This section should provide an overview of the technologies or tasks that will be needed to complete the this challenge.  This includes the technical context for the challenge, as well as any new "lessons" the attendees should learn before completing the challenge.*
-
-*Optionally, the coach or event host is encouraged to present a mini-lesson (with the provided lectures presentation or maybe a video) to set up the context and introduction to each challenge. A summary of the content of that mini-lesson is a good candidate for this Introduction section*
-
-*For example:*
-
-When setting up an IoT device, it is important to understand how 'thingamajigs' work. Thingamajigs are a key part of every IoT device and ensure they are able to communicate properly with edge servers. Thingamajigs require IP addresses to be assigned to them by a server and thus must have unique MAC addresses. In this challenge, you will get hands on with a thingamajig and learn how one is configured.
+This challenge is all about configuring the pre-requisites for the system we're building.
 
 ### Description
-*This section should clearly state the goals of the challenge and any high-level instructions you want the students to follow. You may provide a list of specifications required to meet the goals. If this is more than 2-3 paragraphs, it is likely you are not doing it right.*
 
-> **Note** *Do NOT use ordered lists as that is an indicator of 'step-by-step' instructions. Instead, use bullet lists to list out goals and/or specifications.*
+Create two Cloud Storage Buckets, one for uploading documents and another for staging. You can choose any name for the first bucket, but call the staging bucket `{YOUR PROJECT ID}-staging`.
 
-> **Note** *You may use Markdown sub-headers to organize key sections of your challenge description.*
-
-*Optionally, you may provide resource files such as a sample application, code snippets, or templates as learning aids for the students. These files are stored in the hack's `resources` sub-folder. It is the coach's responsibility to package these resources and provide them to students in the Google Space's Files section as per [the instructions provided](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available).*
-
-> **Note** *Do NOT provide direct links to files or folders in the gHacks Github repository from the student guide. Instead, you should refer to the "resources in the Google Space Files section".*
-
-*Here is some sample challenge text for the IoT Hack Of The Century:*
-
-In this challenge, you will properly configure the thingamajig for your IoT device so that it can communicate with the mother ship.
-
-You can find a sample `thingamajig.config` file in the Files section of this hack's Google Space provided by your coach. This is a good starting reference, but you will need to discover how to set exact settings.
-
-Please configure the thingamajig with the following specifications:
-- Use dynamic IP addresses
-- Only trust the following whitelisted servers: "mothership", "IoTQueenBee" 
-- Deny access to "IoTProxyShip"
+We'll trigger the summary generation automatically when a new document is uploaded to the first Cloud Storage Bucket. We've already provided you with a(n incomplete) Cloud Function, make sure that this function is triggered whenever a new document is uploaded to that Cloud Storage Bucket.
 
 ### Success Criteria
 
-*Success criteria go here. The success criteria should be a list of checks so a student knows they have completed the challenge successfully. These should be things that can be demonstrated to a coach.* 
-
-*The success criteria should not be a list of instructions.*
-
-*Success criteria should always start with language like: "Validate XXX..." or "Verify YYY..." or "Show ZZZ..." or "Demonstrate VVV..."*
-
-*Sample success criteria for the IoT sample challenge:*
-
-- Verify that the IoT device boots properly after its thingamajig is configured.
-- Verify that the thingamajig can connect to the mothership.
-- Demonstrate that the thingamajig will not connect to the IoTProxyShip
+- There are two Cloud Storage Buckets (names?)
+- Provided Cloud Function is triggered when a new file is uploaded
 
 ### Learning Resources
 
-*This is a list of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
-
-*Think of this list as giving the students a head start on some easy Internet searches. However, try not to include documentation links that are the literal step-by-step answer of the challenge's scenario.*
-
-> **Note** *Use descriptive text for each link instead of just URLs.*
-
-*Sample IoT resource links:*
-
-- [What is a Thingamajig?](https://www.google.com/search?q=what+is+a+thingamajig)
-- [10 Tips for Never Forgetting Your Thingamajig](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
-- [IoT & Thingamajigs: Together Forever](https://www.youtube.com/watch?v=yPYZpwSpKmA)
+- Cloud Storage Buckets
+- Cloud Storage Notifications
+- BQ Create dataset 
 
 ### Tips
 
-*This section is optional and may be omitted.*
+- Check the Cloud Function to see how it's being triggered
 
-*Add tips and hints here to give students food for thought. Sample IoT tips:*
+## Challenge 2: First steps into the LLM realm
 
-- IoTDevices can fail from a broken heart if they are not together with their thingamajig. Your device will display a broken heart emoji on its screen if this happens.
-- An IoTDevice can have one or more thingamajigs attached which allow them to connect to multiple networks.
+### Introduction
 
-### Advanced Challenges (Optional)
+The first step in our process is to extract text data from PDF documents, we've already implemented that functionality for you using Cloud Vision APIs. Go ahead and have a look at the `extract_text_from_document` to understand where and how the results are stored. Cloud Function main.py...
 
-*If you want, you may provide additional goals to this challenge for folks who are eager.*
+### Description
 
-*This section is optional and may be omitted.*
+For this challenge we'll use PaLM (`text-bison`) to determine what the title of the uploaded document is. We've already provided the skeleton of the function `extract_title_from_text`, all you need to do is come up with the correct prompt and update the `mappings` to pass the contents to your prompt.
 
-*Sample IoT advanced challenges:*
+### Success Criteria
 
-Too comfortable?  Eager to do more?  Try these additional challenges!
+- Running the Cloud Function on the following [paper](https://arxiv.org/pdf/2309.00102) generates the following title: _The LOFAR Two-Metre Sky Survey (LOTSS) VI. Optical identifications for the second data release*_
 
-- Observe what happens if your IoTDevice is separated from its thingamajig.
-- Configure your IoTDevice to connect to BOTH the mothership and IoTQueenBee at the same time.
+### Learning Resources
+
+- Python string.Template
+
+### Tips
+
+- gsutil cat & jq Cloud Shell
+- Generative AI Studio
+
+## Challenge 3: Getting summaries from a document
+
+### Introduction 
+
+### Description
+
+### Success Criteria
+
+### Learning Resources
+
+### Tips
+
+## Challenge 4: BigQuery &#10084; LLMs
+
+### Introduction 
+
+### Description
+
+### Success Criteria
+
+### Learning Resources
+
+### Tips

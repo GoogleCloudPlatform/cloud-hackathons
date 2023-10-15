@@ -83,6 +83,10 @@ data "google_compute_default_service_account" "gce_default" {
   ]
 }
 
+data "google_storage_project_service_account" "gcs_default" {
+
+}
+
 resource "google_pubsub_topic" "pubsub_topic" {
   name = "documents"
 
@@ -103,6 +107,12 @@ resource "google_project_iam_member" "gce_default_iam" {
   depends_on = [
     google_project_service.iam_api
   ]
+}
+
+resource "google_pubsub_topic_iam_binding" "gcs_topic_binding" {
+  topic   = google_pubsub_topic.pubsub_topic.name
+  role    = "roles/pubsub.publisher"
+  members = ["serviceAccount:${data.google_storage_project_service_account.gcs_default.email_address}"]
 }
 
 data "archive_file" "source" {

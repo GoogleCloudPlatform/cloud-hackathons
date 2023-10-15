@@ -1,6 +1,7 @@
 import base64
 import json
 import os
+import string
 
 from itertools import islice
 from typing import Sequence
@@ -66,26 +67,23 @@ def collate_pages(bucket: str, folder: str) -> str:
 
 
 def get_prompt_for_title_extraction() -> str:
-    # TODO provide the prompt, you can use $ references for substitution
+    # TODO provide the prompt, you can use $ references for substitution, don't forget to configure the mapping
     # See https://docs.python.org/3/library/string.html#template-strings
-    return ""  
+    return """
+        Extract the title from the following text delimited by triple backquotes.
+
+        ```$text```
+
+        TITLE:
+    """
 
 
 def extract_title_from_text(text: str) -> str:
     vertexai.init(project=PROJECT_ID, location="us-central1")  # PaLM only available in us for now
     model = TextGenerationModel.from_pretrained("text-bison@latest")
-    # Give away the full code, externalize prompt, and let people edit the prompt file and enter the mapping
-    # prompt = string.Template(get_prompt_for_title_extraction()).safe_substitute(mapping={})
-    # Maybe add some tips on how to do this with Google Cloud Console Language Studio so that people can experiment 
-    # there with the content? 
-    prompt = """
-        Extract the title from the following text delimited by triple backquotes.
+    prompt = string.Template(get_prompt_for_title_extraction())
 
-        ```{text}```
-
-        TITLE:
-    """
-    response = model.predict(prompt.format(text=text[:10000]))
+    response = model.predict(prompt.safe_substitute(mapping={"text": text[:10000]}))
     return response.text
 
 
@@ -95,37 +93,47 @@ def pages(text: str, batch_size: int) -> str:
         yield "".join(batch)
 
 
-def extract_summary_from_text(text: str) -> str:
-    model = TextGenerationModel.from_pretrained("text-bison@latest")
-    # Similar to extract title, let people fill in the prompts & mapping only? Or do we let them come up with
-    # this split of initial vs final prompt?
-    final_prompt_template = """
-        Write a concise summary of the following text delimited by triple backquotes.
-
-        ```{text}```
-
-        SUMMARY:
-    """
-    initial_prompt_template = """
+def get_prompt_for_summary_1() -> str:
+    # TODO provide the prompt, you can use $ references for substitution, don't forget to configure the mapping
+    # See https://docs.python.org/3/library/string.html#template-strings
+    return """
         Taking the following context delimited by triple backquotes into consideration:
 
-        ```{context}```
+        ```$context```
 
         Write a concise summary of the following text delimited by triple backquotes.
 
-        ```{text}```
+        ```$text```
 
         CONCISE SUMMARY:
     """
-    summaries = ""
+
+
+def get_prompt_for_summary_2() -> str:
+    # TODO provide the prompt, you can use $ references for substitution, don't forget to configure the mapping
+    # See https://docs.python.org/3/library/string.html#template-strings
+    return """
+        Write a concise summary of the following text delimited by triple backquotes.
+
+        ```$text```
+
+        SUMMARY:
+    """
+
+
+def extract_summary_from_text(text: str) -> str:
+    model = TextGenerationModel.from_pretrained("text-bison@latest")
+    rolling_prompt_template = string.Template(get_prompt_for_summary_1())
+    final_prompt_template = string.Template(get_prompt_for_summary_2())
+
     context = ""
+    summaries = ""
     for page in pages(text, 16000):
-        prompt = initial_prompt_template.format(context=context, text=page)
-        print("Sub prompt length:", len(prompt))
+        prompt = rolling_prompt_template.safe_substitute(mapping={"context": context, "text": page})
         context = model.predict(prompt).text
         summaries += f"\n{context}"
-    prompt = final_prompt_template.format(text=summaries)
-    print("Final prompt length:", len(prompt))
+    
+    prompt = final_prompt_template.safe_substitute(mapping={"text": summaries})
     return model.predict(prompt).text   
 
 
@@ -138,6 +146,10 @@ def store_results_in_bq(dataset: str, table: str, **kwargs) -> Sequence:
     errors = client.insert_rows_json(
         table_uri, rows_to_insert, row_ids=bigquery.AutoRowIDs.GENERATE_UUID
     )
+
+    if errors:
+        print("Errors while storing data in BQ:", errors)
+
     return errors
 
 
@@ -145,7 +157,7 @@ def on_document_added(event, context):
     pubsub_message = json.loads(base64.b64decode(event["data"]).decode("utf-8"))
     src_bucket = pubsub_message["bucket"]
     src_fname = pubsub_message["name"]
-    print("File:", src_fname)
+    print("Processing file:", src_fname)
 
     dst_bucket = STAGING_BUCKET
     dst_folder = extract_text_from_document(src_bucket, src_fname, dst_bucket)
@@ -160,13 +172,11 @@ def on_document_added(event, context):
     summary = extract_summary_from_text(complete_text)
     print("Summary:", summary)
 
-    if title and summary:
-        errors = store_results_in_bq(
-            dataset=BQ_DATASET,
-            table=BQ_TABLE,
-            uri=f"gs://{src_bucket}/{src_fname}", 
-            name=src_fname, 
-            title=title, 
-            summary=summary)
-        if errors:
-            print("Errors:", errors)
+    # TODO uncomment this for the last challenge
+    # store_results_in_bq(
+    #         dataset=BQ_DATASET,
+    #         table=BQ_TABLE,
+    #         uri=f"gs://{src_bucket}/{src_fname}", 
+    #         name=src_fname, 
+    #         title=title, 
+    #         summary=summary)
