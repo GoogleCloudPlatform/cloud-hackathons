@@ -106,7 +106,11 @@ So far we've used the PaLM APIs from the Vertex AI Python SDK. It's also possibl
 
 ### Description
 
-Before we start using the LLMs you'll need to store the outputs of the Cloud Function in BigQuery. We've already provided the code, just uncomment the call to `store_results_in_bq` in the Cloud Function code.
+Before we start using the LLMs you'll need to store the outputs of the Cloud Function in BigQuery. The first step is to create a BigQuery dataset called `articles` and a table `summaries` with the following columns, `uri`, `name`, `title` and `summary`.
+
+We've already provided the code in the Cloud Function to store the results in the newly created table, just uncomment the call to `store_results_in_bq`.
+
+Once the table is there, configure BigQuery to use an LLM and run a query that categorizes each paper that's in the `articles.summaries` table into one of the following `Astrophysics`, `Mathematics`, `Computer Science` and `Quantitative Biology` categories using the configured LLM, together with its title.
 
 ### Success Criteria
 
