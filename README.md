@@ -19,7 +19,7 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
   > We will be going through replicating and processing operational data from an Oracle database into Google Cloud in real time. You'll also figure out how to forecast future demand, and how to visualize this forecast data as it arrives.
 - [Demand Forecasting](./hacks/demand-forecasting/README.md)
   > We will be implementing a state of the art deep learning forecasting model in just a few hours thanks to Vertex AI AutoML. We'll provide you with a sample notebook and you’ll work on extending that notebook to train a model, run inference and see results. 
-- [Introduction to GenAI](.hacks/genai-intro/README.md)
+- [Introduction to GenAI](./hacks/genai-intro/README.md)
   > A gentle introduction to GenAI & LLMs. We'll build a system that summarizes scientific papers when they're added to a Cloud Storage bucket, and will put the results in BQ for further processing.
 
 ### Infrastructure
