@@ -413,7 +413,7 @@ At an in-person event, the lead coach calls everyone's attention to the front of
 
 Alternatively, if the teams are progressing at vastly different paces, the coaches may deliver the lecture for each challenge to the individual team in their own team meetings.
 
-#### Hack teams
+#### Hack Teams
 
 Now it's time to get down to the business of solving the challenges as a team. If you are hosting an in-person hack, participants will start talking to each other and working together at their team tables to solve the challenges.
 
