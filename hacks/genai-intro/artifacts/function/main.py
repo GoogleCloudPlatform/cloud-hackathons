@@ -172,5 +172,5 @@ def on_document_added(event, context):
     print("Summary:", summary)
 
     # TODO uncomment the next two lines for the last challenge
-    # columns = {"uri": f"gs://{src_bucket}/{src_fname}", "name": src_fname, "title": title, "summary": summary}
-    # store_results_in_bq(dataset=BQ_DATASET, table=BQ_TABLE, columns=columns)
+    columns = {"uri": f"gs://{src_bucket}/{src_fname}", "name": src_fname, "title": title, "summary": summary}
+    store_results_in_bq(dataset=BQ_DATASET, table=BQ_TABLE, columns=columns)

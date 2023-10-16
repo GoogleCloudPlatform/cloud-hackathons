@@ -5,12 +5,12 @@
 
 ## Coach's Guides
 
-- Challenge 1: 
-- Challenge 2: 
-- Challenge 3: 
-- Challenge 4: 
+- Challenge 1: Automatic triggers
+- Challenge 2: First steps into the LLM realm
+- Challenge 3: Getting summaries from a document
+- Challenge 4: BigQuery &#10084; LLMs
 
-## Challenge 1:
+## Challenge 1: Automatic triggers
 
 ### Notes & Guidance
 
@@ -30,7 +30,7 @@ TOPIC=documents
 gcloud storage buckets notifications create --event-types=OBJECT_FINALIZE --topic=$TOPIC $BUCKET
 ```
 
-## Challenge 2:
+## Challenge 2: First steps into the LLM realm
 
 ### Notes & Guidance
 
@@ -51,9 +51,13 @@ And make sure to truncate the text:
 response = model.predict(prompt.safe_substitute(mapping={"text": text[:10000]}))
 ```
 
+If you want to use gsutil & jq to get the contents, see:
 
+```shell
+gsutil cat $STAGING/2309.00031.pdf/output-1-to-2.json | jq -r .responses[].fullTextAnnotation.text
+```
 
-## Challenge 3:
+## Challenge 3: Summarizig a large document using chaining
 
 ### Notes & Guidance
 
@@ -98,7 +102,7 @@ def extract_summary_from_text(text: str) -> str:
     return model.predict(prompt).text   
 ```
 
-## Challenge 4:
+## Challenge 4: BigQuery &#10084; LLMs
 
 ### Notes & Guidance
 
@@ -134,13 +138,15 @@ OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_LARGE_LANGUAGE_MODEL_V1');
 
 ```sql
 SELECT
+  title,
   json_value(ml_generate_text_result['predictions'][0]['content']) AS generated_text
 FROM
   ML.GENERATE_TEXT( 
     MODEL `articles.llm`,
     (
       SELECT
-        CONCAT('Multi-choice problem: Define the category of the text?\nCategories:\n- Astrophysics\n- Mathematics\n- Computer Science\n- Quantitative Biology\nText:', summary) AS prompt
+        title,
+        CONCAT('Multi-choice problem: Define the category of the text?\nCategories:\n- Astrophysics\n- Mathematics\n- Computer Science\n- Quantitative Biology\n- Economics\nText:', summary) AS prompt
       FROM
         `articles.summaries` 
     ),

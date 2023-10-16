@@ -99,6 +99,8 @@ resource "google_project_iam_member" "gce_default_iam" {
   project = var.gcp_project_id
   for_each = toset([
     "roles/aiplatform.user",
+    "roles/bigquery.dataEditor",
+    "roles/bigquery.user",
     "roles/storage.objectAdmin",
     "roles/storage.insightsCollectorService"
   ])
@@ -142,6 +144,7 @@ resource "google_cloudfunctions_function" "function" {
   runtime = "python311"
 
   entry_point           = "on_document_added"
+  available_memory_mb   = "512"
   timeout               = "300"
   source_archive_bucket = google_storage_bucket.bucket.name
   source_archive_object = google_storage_bucket_object.zip.name
