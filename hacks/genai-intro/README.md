@@ -122,7 +122,7 @@ So far we've used the PaLM APIs from the Vertex AI Python SDK. It's also possibl
 
 ### Description
 
-Before we start using the LLMs you'll need to store the outputs of the Cloud Function in BigQuery. The first step is to create a BigQuery dataset called `articles` and a table `summaries` with the following columns, `uri`, `name`, `title` and `summary`.
+Before we start using the LLMs you'll need to store the outputs of the Cloud Function in BigQuery. The first step is to create a BigQuery dataset called `articles` (in US) and a table `summaries` with the following columns, `uri`, `name`, `title` and `summary`.
 
 We've already provided the code in the Cloud Function to store the results in the newly created table, just uncomment the call to `store_results_in_bq`.
 
