@@ -4,6 +4,8 @@
 
 Introduction to GenAI will challenge you to build a system that summarizes scientific papers (in PDF format) when they're added to a Cloud Storage bucket, and will put the results in BQ for further analysis. We'll use a Cloud Function to orchestrate the whole process. The function will extract text from the document, determine the document's title, create a summary from the extracted text, and store the summary in a database for you to view, search and further process, all of this using Large Language Models (LLMs).
 
+![Architecture of the system](./images/genai-intro-arch.png)
+
 ## Learning Objectives
 
 This hack will help you explore the following tasks:
