@@ -57,7 +57,7 @@ If you want to use gsutil & jq to get the contents, see:
 gsutil cat $STAGING/2309.00031.pdf/output-1-to-2.json | jq -r .responses[].fullTextAnnotation.text
 ```
 
-## Challenge 3: Summarizig a large document using chaining
+## Challenge 3: Summarizing a large document using chaining
 
 ### Notes & Guidance
 

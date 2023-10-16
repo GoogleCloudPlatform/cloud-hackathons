@@ -18,7 +18,7 @@ This hack will help you explore the following tasks:
 
 - Challenge 1: Automatic triggers
 - Challenge 2: First steps into the LLM realm
-- Challenge 3: Summarizig a large document using chaining
+- Challenge 3: Summarizing a large document using chaining
 - Challenge 4: BigQuery &#10084; LLMs
 
 ## Prerequisites
@@ -87,7 +87,7 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title (in
 - You can test your prompts using [Generative AI Studio](https://cloud.google.com/vertex-ai/docs/generative-ai/text/test-text-prompts#generative-ai-test-text-prompt-console)
 - You could get the content from PDF files either by copy-paste or using `gsutil cat` & `jq` commands from Cloud Shell by accessing the JSON files in the staging bucket
 
-## Challenge 3: Summarizig a large document using chaining
+## Challenge 3: Summarizing a large document using chaining
 
 ### Introduction
 
