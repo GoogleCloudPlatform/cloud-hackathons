@@ -69,6 +69,7 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title (in
 ### Success Criteria
 
 - The following papers should yield the corresponding titles, you can see those in the `Logs` section of the Cloud Function:
+
   | Paper                                           | Title |
   | ---                                             | ---   |
   | [LOFAR paper](https://arxiv.org/pdf/2309.00102) | _The LOFAR Two-Metre Sky Survey (LOTSS) VI. Optical identifications for the second data release*_|
@@ -145,6 +146,7 @@ Upload the following papers to Cloud Storage Bucket and run your SQL query in Bi
 ### Success Criteria
 
 - Running the SQL query yields the following results
+
   | Title | Category |
   | ---   | ---      |
   | From particles to orbits: precise dark matter density profiles using dynamical information | Astrophysics |
