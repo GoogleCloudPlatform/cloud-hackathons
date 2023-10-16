@@ -151,5 +151,6 @@ FROM
         `articles.summaries` 
     ),
     STRUCT( 0.2 AS temperature, 64 AS max_output_tokens)
-  );
+  )
+ORDER BY 2
 ```
