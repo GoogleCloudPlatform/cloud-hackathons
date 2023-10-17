@@ -56,7 +56,7 @@ We'll trigger the summary generation automatically when a document is uploaded t
 
 ### Tips
 
-- Check the provided Cloud Function configuration to see the details on how it's being triggered
+- Check the provided Cloud Function's configuration to see the details on how it's being triggered
 
 ## Challenge 2: First steps into the LLM realm
 
