@@ -51,7 +51,7 @@ And make sure to truncate the text:
 response = model.predict(prompt.format(text=text[:10000]))
 ```
 
-If you want to use gsutil & jq to get the contents, see:
+If you want to use gsutil & jq to get the contents, this is the command to use:
 
 ```shell
 gsutil cat $STAGING/2309.00031.pdf/output-1-to-2.json | jq -r .responses[].fullTextAnnotation.text
@@ -60,6 +60,8 @@ gsutil cat $STAGING/2309.00031.pdf/output-1-to-2.json | jq -r .responses[].fullT
 ## Challenge 3: Summarizing a large document using chaining
 
 ### Notes & Guidance
+
+See below for the complete code, although there could be slight deviations, there should be two prompts first one using the rolling context and the current page and the second one just the final rolling context. The `extract_summary_from_text` function only needs to be updated for passing the `context`, `page` and `summaries` variables to the `format` function.
 
 ```python
 def get_prompt_for_summary_1() -> str:
@@ -97,17 +99,19 @@ def extract_summary_from_text(text: str) -> str:
     context = ""
     summaries = ""
     for page in pages(text, 16000):
-        prompt = rolling_prompt_template.format(context=context, text=page)
+        prompt = rolling_prompt_template.format(context=context, text=page)  # <-- updated format
         context = model.predict(prompt).text
         summaries += f"\n{context}"
     
-    prompt = final_prompt_template.format(text=summaries)
+    prompt = final_prompt_template.format(text=summaries)  # <-- updated format
     return model.predict(prompt).text   
 ```
 
 ## Challenge 4: BigQuery &#10084; LLMs
 
 ### Notes & Guidance
+
+First step is to craet the dataset and the table with the right set of columns.
 
 ```shell
 BQ_DATASET=articles
@@ -118,6 +122,8 @@ bq mk --location=$REGION -d $BQ_DATASET
 BQ_TABLE=summaries
 bq mk -t "$BQ_DATASET.$BQ_TABLE" uri:STRING,name:STRING,title:STRING,summary:STRING
 ```
+
+Now, we can create the connection to Vertex AI to call the API and make sure that the corresponding service account (that's created after the creation of the connection) has the correct role.
 
 ```shell
 CONN_ID=conn-llm
@@ -130,11 +136,15 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAc
 
 ```
 
+This is the SQL statement to create a link to the LLM.
+
 ```sql
 CREATE OR REPLACE MODEL
   articles.llm REMOTE
 WITH CONNECTION `us.conn-llm` OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_LARGE_LANGUAGE_MODEL_V1')
 ```
+
+Finally, we can use the linked model to make predictions.
 
 ```sql
 SELECT

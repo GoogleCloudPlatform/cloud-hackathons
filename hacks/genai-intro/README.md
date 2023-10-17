@@ -23,8 +23,8 @@ This hack will help you explore the following tasks:
 
 ## Prerequisites
 
-- Knowledge of Python
 - Basic knowledge of GCP
+- Basic knowledge of Python
 - Access to a GCP environment
 
 ## Contributors
@@ -46,13 +46,13 @@ We'll trigger the summary generation automatically when a document is uploaded t
 ### Success Criteria
 
 - There are two Cloud Storage Buckets, one for uploading the documents and another one for staging with the required name.
-- Provided Cloud Function is triggered (only) when a file is uploaded.
+- The provided Cloud Function is triggered (only) when a file is uploaded.
 - No code was modified.
 
 ### Learning Resources
 
-- Creating new [Cloud Storage Buckets](https://cloud.google.com/storage/docs/creating-buckets)
-- Cloud Storage [Notifications](https://cloud.google.com/storage/docs/pubsub-notifications)
+- [Creating new Cloud Storage Buckets](https://cloud.google.com/storage/docs/creating-buckets)
+- [Pub/Sub notifications for Cloud Storage Notifications](https://cloud.google.com/storage/docs/pubsub-notifications)
 
 ### Tips
 
@@ -62,7 +62,7 @@ We'll trigger the summary generation automatically when a document is uploaded t
 
 ### Introduction
 
-Let's get started with a simple objective; we're going to _extract_ the title of a document using LLMs. In order to work with LLMs we need textual data, so the first step in our process is to extract text data from PDF documents. We've already implemented that functionality for you using Cloud Vision APIs in the provided Cloud Function. Go ahead and have a look at the `extract_text_from_document` to understand where and how the results are stored. Now, with those results we can look into extracting the title from the text content of the document.
+Let's get started with a simple objective; we're going to _extract_ the title of a document using LLMs. In order to work with LLMs we need textual data, so the first step in our process is to extract text data from PDF documents. We've already implemented that functionality for you using Cloud Vision APIs in the provided Cloud Function. Go ahead and have a look at the `extract_text_from_document` function to understand where and how the results are stored. Now, with those results we can look into extracting the title from the text content of the document.
 
 ### Description
 
@@ -106,6 +106,7 @@ In order to get the summaries, we'll implement the _Refine_ approach for this ch
 ### Success Criteria
 
 - For this [paper](https://arxiv.org/pdf/2310.01473) we expect a summary like this:
+
   ```
   The author argues that the standard cosmological model is incorrect and that there is no dark matter. The author provides several arguments for this, including:
 
@@ -170,4 +171,4 @@ Upload the following papers to Cloud Storage Bucket and run your SQL query in Bi
 
 ### Tips
 
-- You could download and upload the papers manually, but you can also consider `wget` and `gsutil` from Cloud Shell.
+- You could download and upload the papers manually, but you can also consider  using `wget` and `gsutil` from Cloud Shell.
