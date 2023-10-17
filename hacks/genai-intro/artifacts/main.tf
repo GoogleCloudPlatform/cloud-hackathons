@@ -111,12 +111,6 @@ resource "google_project_iam_member" "gce_default_iam" {
   ]
 }
 
-resource "google_pubsub_topic_iam_binding" "gcs_topic_binding" {
-  topic   = google_pubsub_topic.pubsub_topic.name
-  role    = "roles/pubsub.publisher"
-  members = ["serviceAccount:${data.google_storage_project_service_account.gcs_default.email_address}"]
-}
-
 data "archive_file" "source" {
   type        = "zip"
   source_dir  = "function"
@@ -149,7 +143,7 @@ resource "google_cloudfunctions_function" "function" {
   source_archive_bucket = google_storage_bucket.bucket.name
   source_archive_object = google_storage_bucket_object.zip.name
   ingress_settings      = "ALLOW_INTERNAL_AND_GCLB"
-  max_instances         = 2
+  max_instances         = 4
 
   service_account_email = data.google_compute_default_service_account.gce_default.email
 

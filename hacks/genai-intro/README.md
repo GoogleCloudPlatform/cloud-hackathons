@@ -74,8 +74,8 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title (in
 
   | Paper                                           | Title |
   | ---                                             | ---   |
-  | [LOFAR paper](https://arxiv.org/pdf/2309.00102) | _The LOFAR Two-Metre Sky Survey (LOTSS) VI. Optical identifications for the second data release*_|
-  | [PEARL paper](https://arxiv.org/pdf/2309.00031) | _PEARLS: Near Infrared Photometry in the JWST North Ecliptic Pole Time Domain Field*_ |
+  | [LOFAR paper](https://arxiv.org/pdf/2309.00102) | _The LOFAR Two-Metre Sky Survey (LOTSS) VI. Optical identifications for the second data release_|
+  | [PEARL paper](https://arxiv.org/pdf/2309.00031) | _PEARLS: Near Infrared Photometry in the JWST North Ecliptic Pole Time Domain Field_ |
 
 ### Learning Resources
 

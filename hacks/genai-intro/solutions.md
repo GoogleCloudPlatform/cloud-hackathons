@@ -127,16 +127,13 @@ SA_CONN=`bq show --connection --format=json $REGION.$CONN_ID | jq -r .cloudResou
 
 gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAccount:$SA_CONN" \
     --role="roles/aiplatform.user" --condition=None
-gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAccount:$SA_CONN" \
-    --role="roles/bigquery.connectionUser" --condition=None  ## needed?
 
 ```
 
 ```sql
 CREATE OR REPLACE MODEL
-articles.llm
-REMOTE WITH CONNECTION `us.conn-llm`
-OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_LARGE_LANGUAGE_MODEL_V1');
+  articles.llm REMOTE
+WITH CONNECTION `us.conn-llm` OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_LARGE_LANGUAGE_MODEL_V1')
 ```
 
 ```sql

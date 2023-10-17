@@ -113,11 +113,11 @@ def extract_summary_from_text(text: str) -> str:
     summaries = ""
     for page in pages(text, 16000):
         prompt = rolling_prompt_template.format()  # TODO pass references to format
-        context = model.predict(prompt).text
+        context = model.predict(prompt, max_output_tokens=256).text
         summaries += f"\n{context}"
     
     prompt = final_prompt_template.format()  # TODO pass references to format
-    return model.predict(prompt).text   
+    return model.predict(prompt, max_output_tokens=256).text
 
 
 def store_results_in_bq(dataset: str, table: str, columns: dict[str, str]) -> bool:
