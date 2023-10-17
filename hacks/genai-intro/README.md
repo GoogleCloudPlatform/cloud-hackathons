@@ -79,7 +79,7 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title (in
 
 ### Learning Resources
 
-- Using Python [string.Template](https://docs.python.org/3/library/string.html#template-strings)
+- Using Python [str.format](https://docs.python.org/3/library/stdtypes.html#str.format)
 - [Prompt Engineering](https://cloud.google.com/vertex-ai/docs/generative-ai/text/text-prompts)
 
 ### Tips
@@ -115,6 +115,7 @@ In order to get the summaries, we'll implement the _Refine_ approach for this ch
 
   The author concludes that understanding galaxies purely as baryonic, self-gravitating systems becomes simple and predictive.
   ```
+  > **Note** By their nature, LLM results can vary, this is something to expect so your exact text may not match the above, but the intent should be the same.
 
 ## Challenge 4: BigQuery &#10084; LLMs
 
@@ -124,7 +125,7 @@ So far we've used the PaLM APIs from the Vertex AI Python SDK. It's also possibl
 
 ### Description
 
-Before we start using the LLMs you'll need to store the outputs of the Cloud Function in BigQuery. The first step is to create a BigQuery dataset called `articles` (in US) and a table `summaries` with the following columns, `uri`, `name`, `title` and `summary`.
+Before we start using the LLMs you'll need to store the outputs of the Cloud Function in BigQuery. The first step is to create a BigQuery dataset called `articles` (in multi-region US) and a table `summaries` with the following columns, `uri`, `name`, `title` and `summary`.
 
 We've already provided the code in the Cloud Function to store the results in the newly created table, just uncomment the call to `store_results_in_bq`.
 

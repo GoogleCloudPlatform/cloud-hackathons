@@ -66,17 +66,20 @@ def collate_pages(bucket: str, folder: str) -> str:
 
 
 def get_prompt_for_title_extraction() -> str:
-    # TODO provide the prompt, you can use $ references for substitution, don't forget to configure the mapping
-    # See https://docs.python.org/3/library/string.html#template-strings
+    # TODO provide the prompt, you can use {} references for substitution, don't forget to configure the mapping
+    # See https://docs.python.org/3/library/stdtypes.html#str.format
     return ""
 
 
 def extract_title_from_text(text: str) -> str:
     vertexai.init(project=PROJECT_ID, location="us-central1")  # PaLM only available in us for now
-    model = TextGenerationModel.from_pretrained("text-bison@001")
-    prompt = string.Template(get_prompt_for_title_extraction())
+    model = TextGenerationModel.from_pretrained("text-bison@latest")
+    prompt = get_prompt_for_title_extraction()
 
-    response = model.predict(prompt.safe_substitute(mapping={}))  # TODO mapping
+    if not prompt:
+        return ""  # return empty title for empty prompt
+
+    response = model.predict(prompt.format())  # TODO pass references to format
     return response.text
 
 
@@ -87,30 +90,33 @@ def pages(text: str, batch_size: int) -> str:
 
 
 def get_prompt_for_summary_1() -> str:
-    # TODO provide the prompt, you can use $ references for substitution, don't forget to configure the mapping
-    # See https://docs.python.org/3/library/string.html#template-strings
+    # TODO provide the prompt, you can use {} references for substitution, don't forget to configure the mapping
+    # See https://docs.python.org/3/library/stdtypes.html#str.format
     return ""
 
 
 def get_prompt_for_summary_2() -> str:
-    # TODO provide the prompt, you can use $ references for substitution, don't forget to configure the mapping
-    # See https://docs.python.org/3/library/string.html#template-strings
+    # TODO provide the prompt, you can use {} references for substitution, don't forget to configure the mapping
+    # See https://docs.python.org/3/library/stdtypes.html#str.format
     return ""
 
 
 def extract_summary_from_text(text: str) -> str:
-    model = TextGenerationModel.from_pretrained("text-bison@001")
-    rolling_prompt_template = string.Template(get_prompt_for_summary_1())
-    final_prompt_template = string.Template(get_prompt_for_summary_2())
+    model = TextGenerationModel.from_pretrained("text-bison@latest")
+    rolling_prompt_template = get_prompt_for_summary_1()
+    final_prompt_template = get_prompt_for_summary_2()
+
+    if not rolling_prompt_template or not final_prompt_template:
+        return ""  # return empty summary for empty prompts
 
     context = ""
     summaries = ""
     for page in pages(text, 16000):
-        prompt = rolling_prompt_template.safe_substitute(mapping={})  # TODO mapping
+        prompt = rolling_prompt_template.format()  # TODO pass references to format
         context = model.predict(prompt).text
         summaries += f"\n{context}"
     
-    prompt = final_prompt_template.safe_substitute(mapping={})  # TODO mapping
+    prompt = final_prompt_template.format()  # TODO pass references to format
     return model.predict(prompt).text   
 
 

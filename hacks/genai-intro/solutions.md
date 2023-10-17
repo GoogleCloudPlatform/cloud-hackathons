@@ -39,7 +39,7 @@ def get_prompt_for_title_extraction() -> str:
     return """
         Extract the title from the following text delimited by triple backquotes.
 
-        ```$text```
+        ```{text}```
 
         TITLE:
     """
@@ -48,7 +48,7 @@ def get_prompt_for_title_extraction() -> str:
 And make sure to truncate the text:
 
 ```python
-response = model.predict(prompt.safe_substitute(mapping={"text": text[:10000]}))
+response = model.predict(prompt.format(text=text[:10000]))
 ```
 
 If you want to use gsutil & jq to get the contents, see:
@@ -66,11 +66,11 @@ def get_prompt_for_summary_1() -> str:
     return """
         Taking the following context delimited by triple backquotes into consideration:
 
-        ```$context```
+        ```{context}```
 
         Write a concise summary of the following text delimited by triple backquotes.
 
-        ```$text```
+        ```{text}```
 
         CONCISE SUMMARY:
     """
@@ -80,7 +80,7 @@ def get_prompt_for_summary_2() -> str:
     return """
         Write a concise summary of the following text delimited by triple backquotes.
 
-        ```$text```
+        ```{text}```
 
         SUMMARY:
     """
@@ -88,17 +88,20 @@ def get_prompt_for_summary_2() -> str:
 
 def extract_summary_from_text(text: str) -> str:
     model = TextGenerationModel.from_pretrained("text-bison@latest")
-    rolling_prompt_template = string.Template(get_prompt_for_summary_1())
-    final_prompt_template = string.Template(get_prompt_for_summary_2())
+    rolling_prompt_template = get_prompt_for_summary_1()
+    final_prompt_template = get_prompt_for_summary_2()
+
+    if not rolling_prompt_template or not final_prompt_template:
+        return ""  # return empty summary for empty prompts
 
     context = ""
     summaries = ""
     for page in pages(text, 16000):
-        prompt = rolling_prompt_template.safe_substitute(mapping={"context": context, "text": page})
+        prompt = rolling_prompt_template.format(context=context, text=page)
         context = model.predict(prompt).text
         summaries += f"\n{context}"
     
-    prompt = final_prompt_template.safe_substitute(mapping={"text": summaries})
+    prompt = final_prompt_template.format(text=summaries)
     return model.predict(prompt).text   
 ```
 
