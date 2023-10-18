@@ -191,7 +191,7 @@ CREATE OR REPLACE TABLE articles.summary_embeddings AS (
 )
 ```
 
-And finally here's the SQL query to get the results, although any variation (temp tables etc. for the query) is also fine.
+And finally here's the SQL query to get the results, although any variation (temp tables etc. for the query) is also fine. Emphasize that none of the words from the query occurs in the summary, so it's a far better search than a keyword search.
 
 ```sql
 WITH query_embeddings AS (

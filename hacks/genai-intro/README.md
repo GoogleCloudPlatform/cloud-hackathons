@@ -178,9 +178,9 @@ Upload the following papers to Cloud Storage Bucket and run your SQL query in Bi
 
 ### Introduction
 
-Embeddings are a way of representing data as points in space where the locations of those points in space are semantically meaningful. Data could be a word, a piece of text, an image, a video etc. The idea is once these entities are converted _embedding vectors_ the entities that are similar (for instance in meaning) end up closer to each other in vector space.
+Embeddings are a way of representing data as points in space where the locations of those points in space are semantically meaningful. Data could be a word, a piece of text, an image, a video etc. The idea is once these entities are converted to _embedding vectors_, the entities that are similar (for instance in meaning), end up closer to each other in that vector space.
 
-The objective of this challenge is to build a search system that goes beyond keyword search. We'll convert our summaries to text embeddings and then run a query, a natural language sentence, to search withing the summaries to find the paper that comes the closest. And all of that is possible within BigQuery.
+The objective of this challenge is to build a search system that goes beyond keyword search. We'll convert our summaries to text embeddings and then run a query, a natural language sentence, to search within the summaries to find the paper that comes the closest. And all of that is possible within BigQuery.
 
 ### Description
 
