@@ -9,6 +9,7 @@
 - Challenge 2: First steps into the LLM realm
 - Challenge 3: Getting summaries from a document
 - Challenge 4: BigQuery &#10084; LLMs
+- Challenge 5: Simple semantic search
 
 ## Challenge 1: Automatic triggers
 
@@ -111,7 +112,7 @@ def extract_summary_from_text(text: str) -> str:
 
 ### Notes & Guidance
 
-First step is to craet the dataset and the table with the right set of columns.
+First step is to create the dataset and the table with the right set of columns.
 
 ```shell
 BQ_DATASET=articles
@@ -163,4 +164,55 @@ FROM
     STRUCT( 0.2 AS temperature, 64 AS max_output_tokens)
   )
 ORDER BY 2
+```
+
+## Challenge 5: Simple semantic search
+
+### Notes & Guidance
+
+We don't need to create another connection, we can reuse the existing one. Run the following command to create the model.
+
+```sql
+CREATE OR REPLACE MODEL
+  articles.embeddings REMOTE
+WITH CONNECTION `us.conn-llm` OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_TEXT_EMBEDDING_MODEL_V1')
+```
+
+Next step is to apply that model to get the embeddings for every summary.
+
+```sql
+CREATE OR REPLACE TABLE articles.summary_embeddings AS (
+  SELECT uri, title, content as summary, text_embedding
+    FROM ML.GENERATE_TEXT_EMBEDDING(
+      MODEL articles.embeddings,
+      (SELECT uri, title, summary as content FROM articles.summaries),
+      STRUCT(TRUE AS flatten_json_output)
+    )
+)
+```
+
+And finally here's the SQL query to get the results, although any variation (temp tables etc. for the query) is also fine.
+
+```sql
+WITH query_embeddings AS (
+  SELECT text_embedding FROM
+  ML.GENERATE_TEXT_EMBEDDING(MODEL articles.embeddings,
+      (SELECT "Which paper is about characteristics of living organisms in alien worlds?" AS content),
+      STRUCT(TRUE AS flatten_json_output)
+    )
+)
+SELECT 
+  uri,
+  summary,
+  title, 
+  ML.DISTANCE(
+    s.text_embedding,
+    q.text_embedding,
+    'COSINE') AS distance
+FROM
+  articles.summary_embeddings s,
+  query_embeddings q
+ORDER BY
+  distance ASC
+LIMIT 1;
 ```

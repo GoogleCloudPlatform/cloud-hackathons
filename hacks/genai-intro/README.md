@@ -20,6 +20,7 @@ This hack will help you explore the following tasks:
 - Challenge 2: First steps into the LLM realm
 - Challenge 3: Summarizing a large document using chaining
 - Challenge 4: BigQuery &#10084; LLMs
+- Challenge 5: Simple semantic search
 
 ## Prerequisites
 
@@ -172,3 +173,31 @@ Upload the following papers to Cloud Storage Bucket and run your SQL query in Bi
 ### Tips
 
 - You could download and upload the papers manually, but you can also consider  using `wget` and `gsutil` from Cloud Shell.
+
+## Challenge 5: Simple semantic search
+
+### Introduction
+
+Embeddings are a way of representing data as points in space where the locations of those points in space are semantically meaningful. Data could be a word, a piece of text, an image, a video etc. The idea is once these entities are converted _embedding vectors_ the entities that are similar (for instance in meaning) end up closer to each other in vector space.
+
+The objective of this challenge is to build a search system that goes beyond keyword search. We'll convert our summaries to text embeddings and then run a query, a natural language sentence, to search withing the summaries to find the paper that comes the closest. And all of that is possible within BigQuery.
+
+### Description
+
+Similarly to the previous challenge, create a remote model in BigQuery for text embeddings. Run that model on the `summaries` table and store the results in a new table with the following columns: `uri`, `title`, `summary`, `text_embedding`.
+
+Once the table is there, do a SQL search by `COSINE` distance for every row of the newly generated table and the query _Which paper is about characteristics of living organisms in alien worlds?_ and show only the row with the closest distance.
+
+> **Note**  This is a very naive approach, we're comparing the query embeddings with every summary embedding row one-by-one, which wouldn't scale with larger amounts of data. Typically an approximate nearest neighbors approach is utilized to address the scalabilty, which is a service that's provided through _Vertex AI Vector Search_ but that's beyond the scope of this challenge.
+
+### Success Criteria
+
+- Running the SQL query for the provided query returns the following paper: _Solvent constraints for biopolymer folding and evolution in extraterrestrial environments_
+
+### Learning Resources
+
+- BigQuery [text embedding support](https://cloud.google.com/bigquery/docs/text-embedding-semantic-search)
+- BigQuery documentation on [ML.GENERATE_TEXT_EMBEDDING](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-text-embedding) and [ML.DISTANCE](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-distance)
+
+
+
