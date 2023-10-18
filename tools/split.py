@@ -13,12 +13,15 @@ def get_file_name(path: str) -> str:
 def navigation_bar(f: TextIO, challenges: list[str], idx: int, home_file: str):
     prv = get_file_name(challenges[idx - 1]) if idx > 0 else None
     nxt = get_file_name(challenges[idx + 1]) if idx < (len(challenges) - 1) else None
+    oct_start = """<span class="navigation">{% octicon """
+    oct_end = " height:24 %}</span>"
+    dot = """<span class="navigation">{% octicon dot-fill %}</span>"""
     write(f, "\n")
     if prv:
-        write(f, f"[< Previous Challenge]({prv}) - ")
-    write(f, f"**[Home]({home_file})**")
+        write(f, f"[{oct_start}chevron-left{oct_end}Previous Challenge]({prv}) {dot} ")
+    write(f, f"**[{oct_start}home{oct_end}]({home_file})**")
     if nxt:
-        write(f, f" - [Next Challenge >]({nxt})")
+        write(f, f" {dot} [Next Challenge {oct_start}chevron-right{oct_end}]({nxt})")
     write(f, "\n")
 
 

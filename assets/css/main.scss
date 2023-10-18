@@ -23,3 +23,8 @@ section.page__content h1 {
   fill: $info-color;
 }
 
+.navigation svg {
+  color: $link-color;
+  fill: $link-color;
+  vertical-align: text-bottom;
+}
