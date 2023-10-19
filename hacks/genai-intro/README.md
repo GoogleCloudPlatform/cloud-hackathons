@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Introduction to GenAI will challenge you to build a system that summarizes scientific papers (in PDF format) when they're added to a Cloud Storage bucket, and will put the results in BQ for further analysis. We'll use a Cloud Function to orchestrate the whole process. The function will extract text from the document, determine the document's title, create a summary from the extracted text, and store the summary in a database for you to view, search and further process, all of this using Large Language Models (LLMs).
+Introduction to GenAI will challenge you to build a system that catalogues scientific papers. Whenever a new paper is uploaded to a specific Cloud Storage Bucket, a Cloud Function will be triggered to do OCR, then extract the title and summary of the paper using an LLM and store all that information in BigQuery. Then we'll run an LLM from BigQuery to classify the papers into distinct categories. Next we'll add semantic search capabilities in BigQuery using text embeddings and finally, implement a more scalable version of that using Vector Search.
 
 ![Architecture of the system](./images/genai-intro-arch.png)
 
@@ -13,6 +13,8 @@ This hack will help you explore the following tasks:
 - Using Vertex AI Foundational models for text understanding
 - Prompt engineering 
 - Using BigQuery to run LLMs
+- How to use text embbedings for semantic search in BigQuery
+- Vertex AI Vector Search for storing and searching text embeddings
 
 ## Challenges
 
@@ -21,11 +23,13 @@ This hack will help you explore the following tasks:
 - Challenge 3: Summarizing a large document using chaining
 - Challenge 4: BigQuery &#10084; LLMs
 - Challenge 5: Simple semantic search
+- Challange 6: Vector Search for scale
 
 ## Prerequisites
 
 - Basic knowledge of GCP
 - Basic knowledge of Python
+- Basic knowledge of SQL
 - Access to a GCP environment
 
 ## Contributors
@@ -117,6 +121,7 @@ In order to get the summaries, we'll implement the _Refine_ approach for this ch
 
   The author concludes that understanding galaxies purely as baryonic, self-gravitating systems becomes simple and predictive.
   ```
+  
   > **Note** By their nature, LLM results can vary, this is something to expect so your exact text may not match the above, but the intent should be the same.
 
 ## Challenge 4: BigQuery &#10084; LLMs
@@ -173,6 +178,7 @@ Upload the following papers to Cloud Storage Bucket and run your SQL query in Bi
 ### Tips
 
 - You could download and upload the papers manually, but you can also consider  using `wget` and `gsutil` from Cloud Shell.
+- If you get errors when using `wget`, change its user-agent parameter.
 
 ## Challenge 5: Simple semantic search
 
@@ -188,7 +194,7 @@ Similarly to the previous challenge, create a remote model in BigQuery for text 
 
 Once the table is there, do a SQL search by `COSINE` distance for every row of the newly generated table and the query _Which paper is about characteristics of living organisms in alien worlds?_ and show only the row with the closest distance.
 
-> **Note**  This is a very naive approach, we're comparing the query embeddings with every summary embedding row one-by-one, which wouldn't scale with larger amounts of data. Typically an approximate nearest neighbors approach is utilized to address the scalabilty, which is a service that's provided through _Vertex AI Vector Search_ but that's beyond the scope of this challenge.
+> **Note**  This is a very naive approach, we're comparing the query embeddings with every summary embedding row one-by-one, which wouldn't scale with larger amounts of data. Typically an approximate nearest neighbors approach is utilized to address the scalabilty, which is a service that's provided through _Vertex AI Vector Search_ and that will be the topic of the next challenge.
 
 ### Success Criteria
 
@@ -199,5 +205,37 @@ Once the table is there, do a SQL search by `COSINE` distance for every row of t
 - BigQuery [text embedding support](https://cloud.google.com/bigquery/docs/text-embedding-semantic-search)
 - BigQuery documentation on [ML.GENERATE_TEXT_EMBEDDING](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-text-embedding) and [ML.DISTANCE](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-distance)
 
+## Challenge 6: Vector Search for scale
 
+### Introduction
 
+The previous challenge used a naive method for searching through embbeddings. As mentioned in that challenge the approach of scanning every row for every query is not very scalable. The better alternative is to index the embeddings intelligently to be able to do approximate nearest neighbor lookups. This process typically involves 3 steps
+
+1. Creating the embeddings; we've already done that through BigQuery.
+2. Importing the embbeddings and creating an index for efficient lookup.
+3. Deploying that index to an endpoint to serve requests.
+
+This challenge is all about implementing the 2nd & 3rd step of this process to build a scalable and fast semantic search system.
+
+### Description
+
+Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON(L) format. Once the embbeddings have been exported, create a new Vector Search index. Choose **small** as the _Shard size_, and **5** as the _Approximate neighbours count_, find out the right number of _Dimensions_ to set it, and stick to the defaults for the rest of the parameters.
+
+Once the index is ready (should take ~5 minutes), create a new endpoint and deploy the index to that endpoint (stick to the defaults). The last step will take ~10 minutes.
+
+Now run the same query as the previous challenge, _Which paper is about characteristics of living organisms in alien worlds?_ through the REST API. You should get the `uri` of the corresponding paper.
+
+### Success Criteria
+
+- Running the query returns the `uri` of the paper with the title _Solvent constraints for biopolymer folding and evolution in extraterrestrial environments_ (the document name should be _2310.00067.pdf_) as the _datapointId_.
+
+### Learning Resources
+
+- [BQ Exporting Data](https://cloud.google.com/bigquery/docs/exporting-data#sql)
+- [Vector Search index data requirements](https://cloud.google.com/vertex-ai/docs/vector-search/setup/format-structure)
+- [Vector Search overview](https://cloud.google.com/vertex-ai/docs/vector-search/overview)
+- [Running a REST query against a public index endpoint](https://cloud.google.com/vertex-ai/docs/vector-search/query-index-public-endpoint)
+
+### Tips
+
+- Just as the previous challenge you'll need to convert the query to text embeddings before you can query the endpoint. You can use the same methods as the previous challenge to do that.
