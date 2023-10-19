@@ -23,7 +23,7 @@ This hack will help you explore the following tasks:
 - Challenge 3: Summarizing a large document using chaining
 - Challenge 4: BigQuery &#10084; LLMs
 - Challenge 5: Simple semantic search
-- Challange 6: Vector Search for scale
+- Challenge 6: Vector Search for scale
 
 ## Prerequisites
 
@@ -121,7 +121,7 @@ In order to get the summaries, we'll implement the _Refine_ approach for this ch
 
   The author concludes that understanding galaxies purely as baryonic, self-gravitating systems becomes simple and predictive.
   ```
-  
+
   > **Note** By their nature, LLM results can vary, this is something to expect so your exact text may not match the above, but the intent should be the same.
 
 ## Challenge 4: BigQuery &#10084; LLMs
