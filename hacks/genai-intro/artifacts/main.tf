@@ -54,6 +54,8 @@ resource "google_project_service" "logging_api" {
 resource "google_project_service" "vision_api" {
   service            = "vision.googleapis.com"
   disable_on_destroy = false
+
+  depends_on = [ google_project_service.resource_manager_api ]
 }
 
 resource "google_project_service" "vertex_api" {
