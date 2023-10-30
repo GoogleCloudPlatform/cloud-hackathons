@@ -7,6 +7,43 @@ This document has the following sections:
 - [gHacks Event Preparation](#event-preparation)
 - [gHacks Event Day](#event-day)
 
+## Quick Start
+The following checklist summarizes all the steps required to host a gHack with links to the relevant sections in this guide.
+
+> **Note** This is the general order you will work on things, but a lot of these items can be done in parallel.
+
+### Before the gHack
+1. Identify the participants and a stakeholder/point of contact from the customer and collect all email addresses.
+	1. The [stakeholder](#know-your-audience) will help with, the [GCP Environment](#gcp-subscription), [Workstation security](#workstation-security) and [registration and invites](#registration-and-invites).
+	1. **NOTE:** If you're hosting a multi-customer gHack, it could be difficult to get a lot of information about your attendees ahead of time. This is to be expected and since you'll be running in a Qwiklabs environment, there won't be GCP and Security issues.
+1. Pick a gHack to run [from the catalog](https://ghacks.dev/#the-ghacks-collection) and review it with the stakeholder.
+1. [Recruit enough coaches](#hack-coaches) as early as possible. 5 students (or 1 team) to 1 coach; 10 students (or 2 teams) to 1 coach if you're in a pinch.
+1. Work with the stakeholder (**AT LEAST** 2 weeks prior) to see if running the gHack in the customer's environment is possible.
+1. Based on testing and the customer's ability, decide if you're using the [customer's environment](#gcp-subscription) or a [Qwiklabs environment](#qwiklabs).
+1. Choose whether to host in-person or remotely.
+	1. [In person event](#tips-for-in-person) issues to think about and tips.
+	1. [Virtual event](#tips-for-virtual) issues to think about and tips.
+1. Create the [Google Space](#google-space-creation).
+	1. **NOTE:** Make sure all emails can be invited, otherwise a Space can not be used.
+1. Create the [Google Meet](#space-structure) link in the Space.
+1. Create a [Calendar invite](#calendar-invite) using the same Meet link just created.
+1. (Optional): [Create resource zip files](#making-resources-available) and upload them to the Space.
+1. (If using Qwiklabs): Familiarize yourself with the [Qwiklabs Environment](#qwiklabs) and create the [Classroom instance](#classrooms).
+1. Create a [kick off presentation](#event-kick-off-presentation-templates) from the templates.
+1. If possible create preliminary teams ahead of time and include a team break-down slide in your kick-off presentation. Be prepare to shuffle teams around if needed.
+	1. **NOTE:** For large, multi-customer events this will be impossible. Instead include a slide about *HOW* teams will be formed, eg: Randomly, Round Robin, etc.
+
+### Day of the gHack
+1. Join the meet early, change [meeting access type](#getting-there-virtual-event) and make all coaches co-hosts.
+1. Start the day with the [kick off presentation](#kick-off-meeting) once everyone arrives.
+1. Let students decide if they want to [form new teams](#team-formation) or keep the preliminary ones.
+1. (Optional) [Deliver lectures](#hack-presentation-lectures-optional) before every challenge.
+1. Teams will [hack](#hack-teams).
+1. Coaches will [coach](#hack-coaches).
+1. Event tips for [in person](#tips-for-in-person) or [virtual](#tips-for-virtual).
+1. (Optional) Teams can have [stand ups](#stand-ups) to serve as checkpoints as desired.
+1. Ask repeatedly to fill the feedback form: https://forms.gle/otpMEfRPexHtvcnA9. Participant feedback is CRUCIAL!
+
 
 ## What do you need to host a gHacks event?
 
@@ -378,7 +415,7 @@ At an in-person event, the lead coach calls everyone's attention to the front of
 
 Alternatively, if the teams are progressing at vastly different paces, the coaches may deliver the lecture for each challenge to the individual team in their own team meetings.
 
-#### Hack teams
+#### Hack Teams
 
 Now it's time to get down to the business of solving the challenges as a team. If you are hosting an in-person hack, participants will start talking to each other and working together at their team tables to solve the challenges.
 
