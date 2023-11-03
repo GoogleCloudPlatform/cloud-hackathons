@@ -218,6 +218,8 @@ ORDER BY
 LIMIT 1;
 ```
 
+Just keep in mind that participants might miss the fact that you need to generate a single embedding for the prompt first. And although using an intermediate table to hold the query embedding is fine, the inner SELECT is a better approach and could be pointed out if they miss it.
+
 ## Challenge 6: Vector Search for scale
 
 ### Notes & Guidance
