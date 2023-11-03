@@ -71,7 +71,7 @@ Let's get started with a simple objective; we're going to _extract_ the title of
 
 ### Description
 
-For this challenge we'll use PaLM (`text-bison`) to determine what the title (including any subtitle) of the uploaded document is. We've already provided the skeleton of the function `extract_title_from_text`, all you need to do is come up with the correct prompt and update the `mapping` to pass the document content to your prompt. Once you've made your changes re-deploy the Cloud Function.
+For this challenge we'll use PaLM (`text-bison`) to determine what the title (including any subtitle) of the uploaded document is. We've already provided the skeleton of the function `extract_title_from_text`, all you need to do is come up with the correct prompt and set the right values for the placeholder (in the `format` function) to pass the document content to your prompt. Once you've made your changes re-deploy the Cloud Function.
 
 ### Success Criteria
 
@@ -89,8 +89,9 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title (in
 
 ### Tips
 
-- You can test your prompts using [Generative AI Studio](https://cloud.google.com/vertex-ai/docs/generative-ai/text/test-text-prompts#generative-ai-test-text-prompt-console)
-- You could get the content from PDF files either by copy-paste or using `gsutil cat` & `jq` commands from Cloud Shell by accessing the JSON files in the staging bucket
+- You can edit and redeploy the Cloud Function from the Console.
+- You can test your prompts using [Generative AI Studio](https://cloud.google.com/vertex-ai/docs/generative-ai/text/test-text-prompts#generative-ai-test-text-prompt-console).
+- You could get the content from PDF files either by copy-paste or using `gsutil cat` & `jq` commands from Cloud Shell by accessing the JSON files in the staging bucket.
 
 ## Challenge 3: Summarizing a large document using chaining
 
@@ -106,7 +107,7 @@ The _Refine_ chain approach also makes multiple calls to an LLM, but it does tha
 
 ### Description
 
-In order to get the summaries, we'll implement the _Refine_ approach for this challenge. Most of the code is already provided in the `extract_summary_from_text` method in Cloud Function. Similar to the previous challenge, you're expected to design the prompts and provide the right mapping.
+In order to get the summaries, we'll implement the _Refine_ approach for this challenge. Most of the code is already provided in the `extract_summary_from_text` method in Cloud Function. Similar to the previous challenge, you're expected to design the prompts and provide the right values to the placeholders.
 
 ### Success Criteria
 

@@ -67,7 +67,7 @@ def collate_pages(bucket: str, folder: str) -> str:
 
 def get_prompt_for_title_extraction() -> str:
     # TODO provide the prompt, you can use {} references for substitution, don't forget to configure the mapping
-    # See https://docs.python.org/3/library/stdtypes.html#str.format
+    # See https://www.w3schools.com/python/ref_string_format.asp
     return ""
 
 
@@ -79,7 +79,7 @@ def extract_title_from_text(text: str) -> str:
     if not prompt:
         return ""  # return empty title for empty prompt
 
-    response = model.predict(prompt.format())  # TODO pass references to format
+    response = model.predict(prompt.format())  # TODO set placeholder values in format
     return response.text
 
 
@@ -90,14 +90,14 @@ def pages(text: str, batch_size: int) -> str:
 
 
 def get_prompt_for_summary_1() -> str:
-    # TODO provide the prompt, you can use {} references for substitution, don't forget to configure the mapping
-    # See https://docs.python.org/3/library/stdtypes.html#str.format
+    # TODO provide the prompt, you can use {} references for substitution
+    # See https://www.w3schools.com/python/ref_string_format.asp
     return ""
 
 
 def get_prompt_for_summary_2() -> str:
-    # TODO provide the prompt, you can use {} references for substitution, don't forget to configure the mapping
-    # See https://docs.python.org/3/library/stdtypes.html#str.format
+    # TODO provide the prompt, you can use {} references for substitution
+    # See https://www.w3schools.com/python/ref_string_format.asp
     return ""
 
 
@@ -112,11 +112,11 @@ def extract_summary_from_text(text: str) -> str:
     context = ""
     summaries = ""
     for page in pages(text, 16000):
-        prompt = rolling_prompt_template.format()  # TODO pass references to format
+        prompt = rolling_prompt_template.format()  # TODO set placeholder values in format
         context = model.predict(prompt, max_output_tokens=256).text
         summaries += f"\n{context}"
     
-    prompt = final_prompt_template.format()  # TODO pass references to format
+    prompt = final_prompt_template.format()  # TODO set placeholder values in format
     return model.predict(prompt, max_output_tokens=256).text
 
 
@@ -155,6 +155,6 @@ def on_document_added(event, context):
     summary = extract_summary_from_text(complete_text)
     print("Summary:", summary)
 
-    # TODO uncomment the next two lines for the last challenge
+    # TODO uncomment the next two lines for Challenge 4
     # columns = {"uri": f"gs://{src_bucket}/{src_fname}", "name": src_fname, "title": title, "summary": summary}
     # store_results_in_bq(dataset=BQ_DATASET, table=BQ_TABLE, columns=columns)
