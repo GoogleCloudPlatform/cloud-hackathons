@@ -10,6 +10,7 @@
 - Challenge 3: Getting summaries from a document
 - Challenge 4: BigQuery &#10084; LLMs
 - Challenge 5: Simple semantic search
+- Challenge 6: Vector Search for scale
 
 ## Challenge 1: Automatic triggers
 
@@ -215,4 +216,89 @@ FROM
 ORDER BY
   distance ASC
 LIMIT 1;
+```
+
+Just keep in mind that participants might miss the fact that you need to generate a single embedding for the prompt first. And although using an intermediate table to hold the query embedding is fine, the inner SELECT is a better approach and could be pointed out if they miss it.
+
+## Challenge 6: Vector Search for scale
+
+### Notes & Guidance
+
+Create a new bucket to hold the embeddings.
+
+```shell
+EMBEDDINGS="gs://$GOOGLE_CLOUD_PROJECT-embeddings"
+gsutil mb -l $REGION $EMBEDDINGS
+```
+
+Export data in JSON format from BQ, make sure that column names are id & embedding [BQ Exporting Data](https://cloud.google.com/bigquery/docs/exporting-data#sql)
+
+```sql
+EXPORT DATA
+  OPTIONS( 
+    uri='gs://$GOOGLE_CLOUD_PROJECT-embeddings/raw/*.json',
+    format='JSON',
+    overwrite=TRUE) AS
+SELECT
+  uri AS id,
+  text_embedding AS embedding
+FROM
+  articles.summary_embeddings
+```
+
+In case data is exported in JSON array format instead of JSONL, use the following `jq` command for the conversion.
+
+```shell
+jq -c '.[]' exported.json > jsonl-formatted.json
+```
+
+Assuming that files were written to the bucket, you can also do something like this:
+
+```shell
+for FILE in `gsutil ls $EMBEDDINGS/raw/`
+do 
+    DST_NAME=`basename $FILE`
+    gsutil cat $FILE | jq -c '.[]' | gsutil cp - "$EMBEDDINGS/jsonl/${DST_NAME}"
+done
+```
+
+Creating the index & the endpoint and the deployment from the console should be trivial. In order to run the query, first get the embeddings for the query:
+
+```sql
+EXPORT DATA
+  OPTIONS( 
+    uri='gs://$GOOGLE_CLOUD_PROJECT-embeddings/query/*.json',
+    format='JSON',
+    overwrite=TRUE) AS
+SELECT text_embedding FROM
+  ML.GENERATE_TEXT_EMBEDDING(MODEL articles.embeddings,
+      (SELECT "Which paper is about characteristics of living organisms in alien worlds?" AS content),
+      STRUCT(TRUE AS flatten_json_output)
+    )
+```
+
+```shell
+TOKEN=`gcloud auth print-access-token`
+EP_DOMAIN=`gcloud ai index-endpoints list --region=$REGION --format=json | jq -r '.[0].publicEndpointDomainName'`
+EP_PATH=`gcloud ai index-endpoints list --region=$REGION --format=json | jq -r '.[0].name'`
+INDEX_ID=`gcloud ai index-endpoints list --region=$REGION --format=json | jq -r '.[0].deployedIndexes[0].id'`
+URL="https://$EP_DOMAIN/v1/$EP_PATH:findNeighbors"
+
+FEATURES=`gsutil cat gs://$GOOGLE_CLOUD_PROJECT-embeddings/query/000000000000.json | jq -r '.text_embedding' | tr -d "\n"`
+
+cat <<EOF >query.json
+{
+  "deployed_index_id": "$INDEX_ID",
+  "queries": [{
+    "datapoint": {
+      "datapoint_id": "0",
+      "feature_vector": $FEATURES
+    },
+    "neighbor_count": 1
+  }]
+}
+EOF
+
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN"  $URL -d @query.json
+
 ```
