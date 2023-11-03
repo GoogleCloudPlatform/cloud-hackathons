@@ -20,7 +20,7 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 - [Demand Forecasting](./hacks/demand-forecasting/README.md)
   > We will be implementing a state of the art deep learning forecasting model in just a few hours thanks to Vertex AI AutoML. We'll provide you with a sample notebook and you’ll work on extending that notebook to train a model, run inference and see results. 
 - [Introduction to GenAI](./hacks/genai-intro/README.md)
-  > A gentle introduction to GenAI & LLMs. We'll build a system that summarizes scientific papers when they're added to a Cloud Storage bucket, and will put the results in BQ for further processing.
+  > We will build a system to catalog scientific papers. Whenever new papers are uploaded to Cloud Storage a Cloud Function will be triggered and use Vertex AI Foundation Model LLM to extract the title and summarize the paper. We'll store this data in BigQuery and use an LLM directly from BigQuery to classify the papers into distinct categories and then implement semantic search using text embeddings and finally we'll use Vector Search as a scalable solution.
 
 ### Infrastructure
 - [Security with reCAPTCHA and Cloud Armor](./hacks/recaptcha-cloudarmor-security/README.md)
