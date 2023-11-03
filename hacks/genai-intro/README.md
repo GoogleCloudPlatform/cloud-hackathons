@@ -226,7 +226,7 @@ This challenge is all about implementing the 2nd & 3rd step of this process to b
 
 Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON(L) format. Once the embeddings have been exported, create a new Vector Search index. Choose **small** as the _Shard size_, and **5** as the _Approximate neighbours count_, find out the right number of _Dimensions_ to set it, and stick to the defaults for the rest of the parameters.
 
-Once the index is ready (should take less than a minute, refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). The last step will take ~10 minutes.
+Once the index is ready (should take less than a minute, refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). The last step will take ~15 minutes.
 
 Now run the same query as the previous challenge, _Which paper is about characteristics of living organisms in alien worlds?_ through the REST API. You should get the `uri` of the corresponding paper.
 
