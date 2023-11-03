@@ -13,7 +13,7 @@ This hack will help you explore the following tasks:
 - Using Vertex AI Foundational models for text understanding
 - Prompt engineering 
 - Using BigQuery to run LLMs
-- How to use text embbedings for semantic search in BigQuery
+- How to use text embeddings for semantic search in BigQuery
 - Vertex AI Vector Search for storing and searching text embeddings
 
 ## Challenges
@@ -84,7 +84,7 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title (in
 
 ### Learning Resources
 
-- Using Python [str.format](https://docs.python.org/3/library/stdtypes.html#str.format)
+- Using Python [str.format](https://www.w3schools.com/python/ref_string_format.asp)
 - [Prompt Engineering](https://cloud.google.com/vertex-ai/docs/generative-ai/text/text-prompts)
 
 ### Tips
@@ -123,6 +123,11 @@ In order to get the summaries, we'll implement the _Refine_ approach for this ch
   ```
 
   > **Note** By their nature, LLM results can vary, this is something to expect so your exact text may not match the above, but the intent should be the same.
+
+### Learning Resources
+
+- Using Python [str.format](https://www.w3schools.com/python/ref_string_format.asp)
+- [Prompt Engineering](https://cloud.google.com/vertex-ai/docs/generative-ai/text/text-prompts)
 
 ## Challenge 4: BigQuery &#10084; LLMs
 
@@ -178,7 +183,7 @@ Upload the following papers to Cloud Storage Bucket and run your SQL query in Bi
 ### Tips
 
 - You could download and upload the papers manually, but you can also consider  using `wget` and `gsutil` from Cloud Shell.
-- If you get errors when using `wget`, change its user-agent parameter.
+- If you get errors when using `wget`, change its _user-agent_ parameter.
 
 ## Challenge 5: Simple semantic search
 
@@ -209,19 +214,19 @@ Once the table is there, do a SQL search by `COSINE` distance for every row of t
 
 ### Introduction
 
-The previous challenge used a naive method for searching through embbeddings. As mentioned in that challenge the approach of scanning every row for every query is not very scalable. The better alternative is to index the embeddings intelligently to be able to do approximate nearest neighbor lookups. This process typically involves 3 steps
+The previous challenge used a naive method for searching through embeddings. As mentioned in that challenge the approach of scanning every row for every query is not very scalable. The better alternative is to index the embeddings intelligently to be able to do approximate nearest neighbor lookups. This process typically involves 3 steps
 
 1. Creating the embeddings; we've already done that through BigQuery.
-2. Importing the embbeddings and creating an index for efficient lookup.
+2. Importing the embeddings and creating an index for efficient lookup.
 3. Deploying that index to an endpoint to serve requests.
 
 This challenge is all about implementing the 2nd & 3rd step of this process to build a scalable and fast semantic search system.
 
 ### Description
 
-Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON(L) format. Once the embbeddings have been exported, create a new Vector Search index. Choose **small** as the _Shard size_, and **5** as the _Approximate neighbours count_, find out the right number of _Dimensions_ to set it, and stick to the defaults for the rest of the parameters.
+Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON(L) format. Once the embeddings have been exported, create a new Vector Search index. Choose **small** as the _Shard size_, and **5** as the _Approximate neighbours count_, find out the right number of _Dimensions_ to set it, and stick to the defaults for the rest of the parameters.
 
-Once the index is ready (should take ~5 minutes), create a new endpoint and deploy the index to that endpoint (stick to the defaults). The last step will take ~10 minutes.
+Once the index is ready (should take less than a minute, refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). The last step will take ~10 minutes.
 
 Now run the same query as the previous challenge, _Which paper is about characteristics of living organisms in alien worlds?_ through the REST API. You should get the `uri` of the corresponding paper.
 
