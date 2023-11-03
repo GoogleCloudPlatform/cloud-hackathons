@@ -66,7 +66,7 @@ def collate_pages(bucket: str, folder: str) -> str:
 
 
 def get_prompt_for_title_extraction() -> str:
-    # TODO provide the prompt, you can use {} references for substitution, don't forget to configure the mapping
+    # TODO provide the prompt, you can use {} references for substitution
     # See https://www.w3schools.com/python/ref_string_format.asp
     return ""
 
