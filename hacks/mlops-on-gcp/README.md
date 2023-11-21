@@ -93,7 +93,7 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 - Some of the required settings can be found in the _Advanced Settings_ section when you're creating a new _User-Managed Notebook_.
 - If there's nothing mentioned in the instructions about a parameter, stick to the defaults (this applies to all of the challenges).
 - You can download the zip file to your local machine and then upload it to the Notebook instance, but you can also get the zip URL and use the `wget` (or `curl`) command from a terminal on the Notebook instance.
-- The sample notebook creates a bucket in a specific region, take note of that as you'll need that information in the next challenges.
+- The sample notebook creates a bucket in a specific *region*, take note of that as you'll need that information in the next challenges.
 
 ### Learning Resources
 
@@ -138,7 +138,10 @@ This task is all about automating things using Cloud Build. When multiple people
 
 ### Description
 
-Once things look fine locally, set up a Cloud Build that's triggered when code is pushed to the repository. The code base already includes a build configuration (`cloudbuild.yaml`), have a look at it to understand what it does. Make sure that the trigger uses that build configuration. Name the trigger `CI` (or `continuous-integration`)
+Once things look fine locally, set up a Cloud Build that's triggered when code is pushed to the repository. The code base already includes a build configuration (`cloudbuild.yaml`), have a look at it to understand what it does. Make sure that the trigger uses that build configuration. Name the trigger `CI` (or `continuous-integration`).
+
+> **Warning**  
+> The qwiklabs environment only has quota in the _global_ region, make sure that you pick that when you're creating the trigger.
 
 ### Success Criteria
 
@@ -150,11 +153,10 @@ Once things look fine locally, set up a Cloud Build that's triggered when code i
 ### Tips
 
 - You will need to make some minor changes to the Python code base to have a successful run.
-- The qwiklabs environment only has quota in the _global_ region, make sure that you pick that when you're creating the trigger.
 
 ### Learning Resources
 
-How-to guides for [Cloud Build](https://cloud.google.com/build/docs/how-to)
+- How-to guides for [Cloud Build](https://cloud.google.com/build/docs/how-to)
 
 ## Challenge 4: Automagic training with pipelines
 
@@ -178,15 +180,15 @@ The provided project has a `pipeline.py` file that can generate a pipeline defin
 
 ### Tips
 
-- Make sure that you're running the module `trainer.pipeline` in the virtual environment you have created as part of the first challenge.
+- Read the `pipeline.py` to understand what it does.
 - You can either upload the pipeline definition from a local machine, or put it on GCS and refer to its location.
 - You have already created a bucket, you can use that as the pipeline root (optionally add `pipelines` folder in it).
-- For the parameters *location* and *python_pkg* check the Cloud Build pipeline to find out where the created Python package is stored and browse to that location to get the name of the package.
+- For the parameter *location* look up the *region* of the storage bucket created in the first challenge.
+- And for the *python_pkg* parameter check the Cloud Build pipeline to find out where the created Python package is stored and browse to that location to get the name of the package.
 - If you're in doubt about the parameters, remember to _Use the Force and read the Source_ ;)
 
 ### Learning Resources
 
-- Running [Python modules from the command line](https://docs.python.org/3/using/cmdline.html#cmdoption-m)
 - Running [Vertex AI Pipelines](https://cloud.google.com/vertex-ai/docs/pipelines/run-pipeline#console) on the console
 
 ## Challenge 5: Make it work and make it scale

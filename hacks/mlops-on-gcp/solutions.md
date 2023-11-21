@@ -39,7 +39,7 @@ curl -JLO https://github.com/meken/gcp-mlops-demo/archive/refs/heads/main.zip
 
 Once the archive is extracted, the notebook should be opened and the cells must be executed one by one. Note that restarting the kernel takes a few moments, users need to wait for it before continuing with the next steps. 
 
-No changes are needed for the notebook, the GCS bucket is created by default in the selected region `us-central1`. No need to change that. But if users change that, they need to make sure that the new region is also used in other challenges.
+**No changes are allowed in the notebook**, the GCS bucket is created by default in the selected region `us-central1`. If users change that, they need to make sure that the new region is also used in other challenges, which is not trivial.
 
 ## Challenge 2: If it isn’t in version control, it doesn’t exist
 
@@ -114,6 +114,8 @@ The `pipeline` module can be used to generate the pipeline definition. Assuming 
 python -m trainer.pipeline
 ```
 
+Alternatively they could also run `python src/trainer/pipeline.py` as the module has no internal dependencies.
+
 The generated json file can be copied to the default GCS bucket (created as part of the first challenge) or downloaded locally.
 
 The parameters for the Vertex AI Pipeline Job:
@@ -127,6 +129,8 @@ The parameters for the Vertex AI Pipeline Job:
 | python\_pkg          | `gcp-mlops-demo-0.8.0.dev0.tar.gz`|
 
 The `python_pkg` parameter can also be the full path to the package, and also works without the `tar.gz` extension. `GCS output directory` could also be any folder in the bucket (no trailing `/` characters though).
+
+People get confused by the _location_ parameter, it's actually the _region_ of the GCS bucket set in the notebook from the first challenge.
 
 ## Challenge 5: Make it work and make it scale
 
@@ -210,9 +214,12 @@ The output table should be a _new_ table, so you should either just give the nam
 
 ### Notes & Guidance
 
+> **Warning** 
+> Sometimes creating the notification channel from the monitoring configuration dialog hangs, in that case, participants should just go to the Notification Channels (in Cloud Monitoring) to create the channel there and pick that in the monitoring configuration.
+
 #### Online Monitoring
 
-Once the Endpoint is up and running, it's possible to edit it from the UI and turn on Monitoring. The sample data is in `gs://$PROJECT_ID/data/sample/sample.csv`. Stick to the defaults for the things that are not in the instructions. Creating the notification channel and the Pub/Sub topic should be trivial from the UI.
+Once the Endpoint is up and running, it's possible to edit it from the UI and turn on Monitoring. The sample data is in `gs://$PROJECT_ID/data/sample/sample.csv`. Stick to the defaults for the things that are not in the instructions. Creating the notification channel and the Pub/Sub topic should be trivial from the UI. 
 
 #### Batch Monitoring
 
