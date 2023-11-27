@@ -81,6 +81,12 @@ _The default files & folders are listed below. You may add to this if you want t
 - `./images`
   - Images and screenshots used in the Student or Coach's Guide
 
+## Environment
+
+- Setting Up the Environment (if not on Qwiklabs)
+   - Before we can hack, you will need to set up a few things.
+   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
+
 ## Challenge 1: Provision an IoT environment
 
 ### Notes & Guidance

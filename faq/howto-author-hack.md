@@ -7,7 +7,7 @@ The following checklist summarizes all the steps required to author a new gHack 
 
 > **Note** This is the general order you will work on things, but a lot of these items can be done in parallel.
 
-1. Understand the [concept of a gHack](#the-anatomy-of-a-ghack), they are not your run of the mill training material.
+1. Understand the [concept of a gHack](#the-concept-of-ghacks), they are not your run of the mill training material.
 1. [Make a fork of the gHack repository](#getting-started) in your Github account and set it up for contributing to the main gHacks repository.
 1. Run the [scaffolding](#scaffolding-on-the-command-line) tool to create a skeleton of your gHack. It will create and put all the right files in [all the right locations](#files-and-folders).
 1. [*Optional*] [Set up Github Actions](#verifying-the-rendering) so you can preview your work.
@@ -107,7 +107,7 @@ The default configuration for Github Pages only works with the *main* branch. If
 
 ![Screenshot for environments](images/author-pages-environments.png)
 
-In the 'Deployment Branches' section, click the *Selected branches* dropdown and choose: *All branches*
+In the 'Deployment Branches' section, click the *Selected branches* dropdown and choose: *No restriction*
 
 ![Screenshot for branch protection](images/author-pages-branch-protection.png)
 
