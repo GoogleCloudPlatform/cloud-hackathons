@@ -14,9 +14,6 @@ In this hack you will be solving the common business problem that companies in t
 
 ## Challenges
 
-- Setting Up the Environment
-   - Before we can hack, you will need to set up a few things.
-   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 - Challenge 1: Provision an IoT environment
    - Create an IoT Hub and run tests to ensure it can ingest telemetry
 - Challenge 2: Your First Device
@@ -101,6 +98,15 @@ Please configure the thingamajig with the following specifications:
 - Verify that the thingamajig can connect to the mothership.
 - Demonstrate that the thingamajig will not connect to the IoTProxyShip
 
+### Tips
+
+*This section is optional and may be omitted.*
+
+*Add tips and hints here to give students food for thought. Sample IoT tips:*
+
+- IoTDevices can fail from a broken heart if they are not together with their thingamajig. Your device will display a broken heart emoji on its screen if this happens.
+- An IoTDevice can have one or more thingamajigs attached which allow them to connect to multiple networks.
+
 ### Learning Resources
 
 *This is a list of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
@@ -114,15 +120,6 @@ Please configure the thingamajig with the following specifications:
 - [What is a Thingamajig?](https://www.google.com/search?q=what+is+a+thingamajig)
 - [10 Tips for Never Forgetting Your Thingamajig](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 - [IoT & Thingamajigs: Together Forever](https://www.youtube.com/watch?v=yPYZpwSpKmA)
-
-### Tips
-
-*This section is optional and may be omitted.*
-
-*Add tips and hints here to give students food for thought. Sample IoT tips:*
-
-- IoTDevices can fail from a broken heart if they are not together with their thingamajig. Your device will display a broken heart emoji on its screen if this happens.
-- An IoTDevice can have one or more thingamajigs attached which allow them to connect to multiple networks.
 
 ### Advanced Challenges (Optional)
 
