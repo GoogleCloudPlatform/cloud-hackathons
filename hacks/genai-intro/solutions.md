@@ -224,6 +224,8 @@ Just keep in mind that participants might miss the fact that you need to generat
 
 ### Notes & Guidance
 
+> **Note** Students might get hung up on the JSONL file format as our docs don't do a good job of explaining it. The student guide contains an explanation, so point that out if they missed it.
+
 Create a new bucket to hold the embeddings.
 
 ```shell
@@ -302,3 +304,4 @@ EOF
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN"  $URL -d @query.json
 
 ```
+
