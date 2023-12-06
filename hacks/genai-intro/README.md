@@ -227,7 +227,9 @@ This challenge is all about implementing the 2nd & 3rd step of this process to b
 
 Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON(L) format. Once the embeddings have been exported, create a new Vector Search index. Choose **small** as the _Shard size_, and **5** as the _Approximate neighbours count_, find out the right number of _Dimensions_ to set it, and stick to the defaults for the rest of the parameters.
 
-Once the index is ready (should take less than a minute, refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). The last step will take ~15 minutes.
+> **Note** JSONL format still uses the .json file extension but it contains a separate JSON document per line in the file. This means it can't be parsed by a normal JSON parser but for everything we're doing in this challenge, Vector Search will expect files to be in JSONL format.
+
+Once the index is ready (should take less than a minute or sometimes up to 10 minutes. Refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). Deploying the index to the endpoint will take about 15 minutes.
 
 Now run the same query as the previous challenge, _Which paper is about characteristics of living organisms in alien worlds?_ through the REST API. You should get the `uri` of the corresponding paper.
 
@@ -238,9 +240,10 @@ Now run the same query as the previous challenge, _Which paper is about characte
 ### Learning Resources
 
 - [BQ Exporting Data](https://cloud.google.com/bigquery/docs/exporting-data#sql)
-- [Vector Search index data requirements](https://cloud.google.com/vertex-ai/docs/vector-search/setup/format-structure)
 - [Vector Search overview](https://cloud.google.com/vertex-ai/docs/vector-search/overview)
+- [Vector Search index data requirements](https://cloud.google.com/vertex-ai/docs/vector-search/setup/format-structure)
 - [Running a REST query against a public index endpoint](https://cloud.google.com/vertex-ai/docs/vector-search/query-index-public-endpoint)
+- [Quickstart: Build a Python program to query a public index endpoint](https://cloud.google.com/vertex-ai/docs/vector-search/quickstart#run-query)
 
 ### Tips
 
