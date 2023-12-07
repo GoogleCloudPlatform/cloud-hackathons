@@ -145,16 +145,16 @@ We've already provided the code in the Cloud Function to store the results in th
 Once the table is there, configure BigQuery to use an LLM and run a query that categorizes each paper that's in the `articles.summaries` table using their `summary`. Make sure that the LLM generates one of the following categories: `Astrophysics`, `Mathematics`, `Computer Science`, `Economics` and `Quantitative Biology`. 
 
 Upload the following papers to Cloud Storage Bucket and run your SQL query in BigQuery to show the title and category of each paper
-- [Astrophysics 1](https://arxiv.org/pdf/2310.00044)
-- [Astrophysics 2](https://arxiv.org/pdf/2310.01062)
-- [Computer Science 1](https://arxiv.org/pdf/2310.08243)
-- [Computer Science 2](https://arxiv.org/pdf/2310.09196)
-- [Economics 1](https://arxiv.org/pdf/2310.00446)
-- [Economics 2](https://arxiv.org/pdf/2310.02081)
-- [Mathematics 1](https://arxiv.org/pdf/2310.00245)
-- [Mathematics 2](https://arxiv.org/pdf/2310.01303)
-- [Quantitative Biology 1](https://arxiv.org/pdf/2310.00067)
-- [Quantitative Biology 2](https://arxiv.org/pdf/2310.02553)
+- [Astrophysics](https://arxiv.org/pdf/2310.00044)
+- [Astrophysics](https://arxiv.org/pdf/2310.01062)
+- [Computer Science](https://arxiv.org/pdf/2310.08243)
+- [Computer Science](https://arxiv.org/pdf/2310.09196)
+- [Economics](https://arxiv.org/pdf/2310.00446)
+- [Economics](https://arxiv.org/pdf/2310.02081)
+- [Mathematics](https://arxiv.org/pdf/2310.00245)
+- [Mathematics](https://arxiv.org/pdf/2310.01303)
+- [Quantitative Biology](https://arxiv.org/pdf/2310.00067)
+- [Quantitative Biology](https://arxiv.org/pdf/2310.02553)
 
 > **Warning**  
 > Currently PaLM has a rate limit of 60 calls per minute, since every page from the documents is a single call, if you process more than 60 pages you might run into this limit. None of the provided examples has more than 60 pages, but if you add them all at the same time you'll get to that limit.
@@ -225,11 +225,11 @@ This challenge is all about implementing the 2nd & 3rd step of this process to b
 
 ### Description
 
-Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON(L) format. Once the embeddings have been exported, create a new Vector Search index. Choose **small** as the _Shard size_, and **5** as the _Approximate neighbours count_, find out the right number of _Dimensions_ to set it, and stick to the defaults for the rest of the parameters.
+Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON Lines format. Once the embeddings have been exported, create a new Vector Search index. Choose **small** as the _Shard size_, and **5** as the _Approximate neighbours count_, find out the right number of _Dimensions_ to set it, and stick to the defaults for the rest of the parameters.
 
-> **Note** JSONL format still uses the .json file extension but it contains a separate JSON document per line in the file. This means it can't be parsed by a normal JSON parser but for everything we're doing in this challenge, Vector Search will expect files to be in JSONL format.
+> **Note** JSON Lines is a text format that stores JSON objects, one per line, with each line terminated by a newline character. Typically the `.jsonl` extension is used to denote these files, but both BigQuery and Vector Search use and expect the `.json` extension.
 
-Once the index is ready (should take less than a minute or sometimes up to 10 minutes. Refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). Deploying the index to the endpoint will take about 15 minutes.
+Once the index is ready (should take less than a minute; refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). Deploying the index to the endpoint will take about 15 minutes.
 
 Now run the same query as the previous challenge, _Which paper is about characteristics of living organisms in alien worlds?_ through the REST API. You should get the `uri` of the corresponding paper.
 
