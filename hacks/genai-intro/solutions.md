@@ -19,7 +19,7 @@
 Create the buckets, on Cloud Shell the variable `$GOOGLE_CLOUD_PROJECT` contains the project id.
 
 ```shell
-REGION="us"  # LLMs only available in US, although buckets could be anywhere
+REGION="us-central1"  # LLMs only available in US, although buckets could be anywhere
 BUCKET="gs://$GOOGLE_CLOUD_PROJECT-documents"
 STAGING="gs://$GOOGLE_CLOUD_PROJECT-staging"
 
@@ -30,6 +30,12 @@ gsutil mb -l $REGION $STAGING
 ```shell
 TOPIC=documents
 gcloud storage buckets notifications create --event-types=OBJECT_FINALIZE --topic=$TOPIC $BUCKET
+```
+
+If the participants miss the `OBJECT_FINALIZE` event type when they configure the notifications, things will fail when files are deleted from the bucket. Also, it's possible to have multiple triggers, so if they've made a mistake, the best course for action would be to delete all notification configurations and recreate it properly (as indicated above).
+
+```shell
+gcloud storage buckets notifications delete $BUCKET  # delete all notification configurations
 ```
 
 ## Challenge 2: First steps into the LLM realm
@@ -53,11 +59,19 @@ And make sure to truncate the text:
 response = model.predict(prompt.format(text=text[:10000]))
 ```
 
+Note that when the input token limit is exceeded (when the contents are not truncated), there have been cases that there was no error but empty/non-sense responses both through the API as the console. You might need to give some hints if that happens.
+
+Some participants might want to use string concatenation (instead of `prompt.format`, something like `prompt + text`) which could work, but that's less elegant and limits things (text can only be put at the end). Since for the next challenge the `format` function is going to be more important, it's good to stick to that for this challenge. The linked documentation for `str.format` is quite helpful.
+
 If you want to use gsutil & jq to get the contents, this is the command to use:
 
 ```shell
 gsutil cat $STAGING/2309.00031.pdf/output-1-to-2.json | jq -r .responses[].fullTextAnnotation.text
 ```
+
+But, for non-technical people, or even for technical people who don't have much `jq` experience, the easier option is to open the PDF file in a viewer and copy paste from there.
+
+The prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should be (only) the title of the paper as it is in the paper.
 
 ## Challenge 3: Summarizing a large document using chaining
 
@@ -109,6 +123,8 @@ def extract_summary_from_text(text: str) -> str:
     return model.predict(prompt).text   
 ```
 
+The prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should in this case reflect the main points from the summary in _Success Criteria_.
+
 ## Challenge 4: BigQuery &#10084; LLMs
 
 ### Notes & Guidance
@@ -138,12 +154,12 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAc
 
 ```
 
-This is the SQL statement to create a link to the LLM.
+This is the SQL statement to create a link to the LLM (you need to replace `$REGION` with the correct value).
 
 ```sql
 CREATE OR REPLACE MODEL
   articles.llm REMOTE
-WITH CONNECTION `us.conn-llm` OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_LARGE_LANGUAGE_MODEL_V1')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_LARGE_LANGUAGE_MODEL_V1')
 ```
 
 Finally, we can use the linked model to make predictions.
@@ -167,16 +183,18 @@ FROM
 ORDER BY 2
 ```
 
+The prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should be the corresponding category from the _Success Criteria_ for each paper.
+
 ## Challenge 5: Simple semantic search
 
 ### Notes & Guidance
 
-We don't need to create another connection, we can reuse the existing one. Run the following command to create the model.
+We don't need to create another connection, we can reuse the existing one. Run the following command to create the model (you need to replace `$REGION` with the correct value).
 
 ```sql
 CREATE OR REPLACE MODEL
   articles.embeddings REMOTE
-WITH CONNECTION `us.conn-llm` OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_TEXT_EMBEDDING_MODEL_V1')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_TEXT_EMBEDDING_MODEL_V1')
 ```
 
 Next step is to apply that model to get the embeddings for every summary.
@@ -224,7 +242,7 @@ Just keep in mind that participants might miss the fact that you need to generat
 
 ### Notes & Guidance
 
-> **Note** Students might get hung up on the JSONL file format as our docs don't do a good job of explaining it. The student guide contains an explanation, so point that out if they missed it.
+> **Note** Students might get hung up on the JSON Lines file format as our docs don't do a good job of explaining it. The student guide contains an explanation, so point that out if they missed it.
 
 Create a new bucket to hold the embeddings.
 
@@ -248,6 +266,8 @@ FROM
   articles.summary_embeddings
 ```
 
+> **Warning**  Vector Search only supports single regions, and expects the `.json` data to be in a bucket in the same region. So if the bucket for the embeddings is in a multi region, participants will have to recreate it in a single region and re-export the embeddings.
+
 In case data is exported in JSON array format instead of JSONL, use the following `jq` command for the conversion.
 
 ```shell
@@ -264,7 +284,7 @@ do
 done
 ```
 
-Creating the index & the endpoint and the deployment from the console should be trivial. In order to run the query, first get the embeddings for the query:
+Creating the index & the endpoint and the deployment from the console should be trivial. In order to run the query, first get the embeddings for the query (you need to replace `$GOOGLE_CLOUD_PROJECT` with the correct value):
 
 ```sql
 EXPORT DATA
@@ -302,6 +322,4 @@ cat <<EOF >query.json
 EOF
 
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN"  $URL -d @query.json
-
 ```
-
