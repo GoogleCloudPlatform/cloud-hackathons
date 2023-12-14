@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to the coach's guide for The IoT Hack of the Century gHack. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for the Modernizing Monoliths gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
 Remember that this hack includes a optional [lecture presentation](resources/lecture.pdf) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
 
@@ -10,14 +10,12 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 
 ## Coach's Guides
 
-- Challenge 1: Provision an IoT environment
-   - Create an IoT Hub and run tests to ensure it can ingest telemetry
-- Challenge 2: Your First Device
-   - Make the connection to your Edge device and see that it is properly provisioned.
-- Challenge 3: Connecting the World
-   - Connect your device and make sure it can see all other devices in your team.
-- Challenge 4: Scalable Monitoring of Telemetry
-   - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
+- Challenge 1: Containerize the web application
+   - Write a Dockerfile to create your container and then push it to Artifact Registry.
+- Challenge 2: Deploying on GKE
+   - Create a cluster and deploy the containerized web application on it. Fine tune your pod and node sizes, and play test the game to make sure everything is working!
+- Challenge 3: Speedrun - containerize and deploy the load testing application
+   - Use what you learned from challenges 1 and 2 to containerize the test client application and scale it up on GKE to test your servers
 
 ## Coach Prerequisites
 
@@ -38,37 +36,20 @@ Always refer students to the [gHacks website](https://ghacks.dev) for the studen
 
 > **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
 
-### Additional Coach Prerequisites (Optional)
-
-_Please list any additional pre-event setup steps a coach would be required to set up such as, creating or hosting a shared dataset, or preparing external resources._
-
 ## Google Cloud Requirements
 
 This hack requires students to have access to Google Cloud project where they can create and consume Google Cloud resources. These requirements should be shared with a stakeholder in the organization that will be providing the Google Cloud project that will be used by the students.
 
-_Please list Google Cloud project requirements._
+- Participants will need the Owner role on their respective projects
 
-_For example:_
+## Suggested Hack Agenda
 
-- Google Cloud resources that will be consumed by a student implementing the hack's challenges
-- Google Cloud permissions required by a student to complete the hack's challenges.
-
-## Suggested Hack Agenda (Optional)
-
-_This section is optional. You may wish to provide an estimate of how long each challenge should take for an average squad of students to complete and/or a proposal of how many challenges a coach should structure each session for a multi-session hack event. For example:_
-
-- Sample Day 1
-  - Challenge 1 (1 hour)
-  - Challenge 2 (30 mins)
-  - Challenge 3 (2 hours)
-- Sample Day 2
-  - Challenge 4 (45 mins)
-  - Challenge 5 (1 hour)
-  - Challenge 6 (45 mins)
+- Day 1
+  - Challenge 1 (~3 hours)
+  - Challenge 2 (~3 hours)
+  - Challenge 3 (~2 hours)
 
 ## Repository Contents
-
-_The default files & folders are listed below. You may add to this if you want to specify what is in additional sub-folders you may add._
 
 - `README.md`
   - Student's Challenge Guide
@@ -81,19 +62,53 @@ _The default files & folders are listed below. You may add to this if you want t
 - `./images`
   - Images and screenshots used in the Student or Coach's Guide
 
-## Challenge 1: Provision an IoT environment
+## Challenge 1: Containerize the web application
 
 ### Notes & Guidance
 
-This is the only section you need to include.
+- Participant will need to download the [crawl repository](https://github.com/TheLanceLord/crawl) to their working environment and create their Dockerfile in the root folder of the repository
+- [Normal challenge Dockerfile](https://github.com/TheLanceLord/modernizing-monoliths-solutions/blob/main/challenge-1/recommended_dockerfile) given time constraints. Requires the student to compile the code manually
+- [Advanced challenge Dockerfile](https://github.com/TheLanceLord/modernizing-monoliths-solutions/blob/main/challenge-1/optimal_dockerfile), as this compiles the code from github
+- Useful Docker commands (may need to use `sudo`):
+  - `docker build .` creates the image
+  - `docker tag <IMAGE_ID> <NAMESPACE>/<REPOSITORY>:<TAG>` tags the image for pushing
+  - `docker push <NAMESPACE>/<REPOSITORY>:<TAG>` pushes the image to dockerhub unless otherwise specified
+  - `docker run -d <IMAGE_ID>` runs your container in detached mode
+  - `docker exec -it <CONTAINER_NAME> /bin/bash` SSH into your running container
 
-Use general non-bulleted text for the beginning of a solution area for this challenge
-- Then move into bullets
-    - And sub-bullets and even
-        - sub-sub-bullets
+## Challenge 2: Deploying on GKE
 
-Break things apart with more than one bullet list
-- Like this 
-- One
-- Right
-- Here
+### Notes & Guidance
+
+- [Solution .yaml for game server Deployment](https://github.com/TheLanceLord/modernizing-monoliths-solutions/blob/main/challenge-2/game_server_deployment.yaml)
+- [Solution .yaml for the Service](https://github.com/TheLanceLord/modernizing-monoliths-solutions/blob/main/challenge-2/service.yaml)
+- Cloud Console commands:
+  - Create the cluster `gcloud container clusters create opensource-games --zone us-central1-a`
+  - Create the node pool `gcloud container node-pools create dcss-gameservers --cluster opensource-games --zone us-central1-a --machine-type e2-standard-2 --num-nodes 3`
+  - Create the deployment and service using the `kubectl apply -f <FILENAME>` command for each file
+  - Check on the deployment with `kubectl get deployments --namespace=<NAMESPACE>`
+  - Check on the service with `kubectl get services --namespace=<NAMESPACE>`
+
+## Challenge 3: Speedrun - containerize and deploy the load testing application
+
+### Notes & Guidance
+
+- Participants will want the [synthetic_player.py](https://github.com/TheLanceLord/crawl/blob/master/load-testing/synthetic_player.py), a Dockerfile, and the requirements.txt file in the same folder
+  - requirements.txt
+    ```
+    selenium==4.11.2
+    webdriver-manager==4.0.0
+    ```
+- [Test client Dockerfile](https://github.com/TheLanceLord/modernizing-monoliths-solutions/tree/main/challenge-3)
+- Useful Docker commands (may need to use `sudo`):
+  - `docker build .` creates the image
+  - `docker tag <IMAGE_ID> <NAMESPACE>/<REPOSITORY>:<TAG>` tags the image for pushing
+  - `docker push <NAMESPACE>/<REPOSITORY>:<TAG>` pushes the image to dockerhub unless otherwise specified
+  - `docker run -d <IMAGE_ID>` runs your container in detached mode
+  - `docker exec -it <CONTAINER_NAME> /bin/bash` SSH into your running container
+- [Test client .yaml](https://github.com/TheLanceLord/modernizing-monoliths-solutions/blob/main/challenge-3/test_client_e2.yaml)
+- Cloud Console commands:
+  - Create the node pool `gcloud container node-pools create dcss-n2-clients --cluster opensource-games --zone us-central1-a --machine-type e2-standard-2 --enable-autoscaling --total-min-nodes=0 --total-max-nodes=8 --max-pods-per-node=20`
+  - Create the deployment `kubectl apply -f <FILENAME>`
+  - Check on the deployment with `kubectl get deployments --namespace=<NAMESPACE>`
+  - Check on the pods with `kubectl get pods --namespace=<NAMESPACE>`

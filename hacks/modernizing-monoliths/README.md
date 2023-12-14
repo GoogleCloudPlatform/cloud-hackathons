@@ -1,138 +1,223 @@
-# “Modernizing
+# Modernizing Monoliths
 
 ## Introduction
 
-The IoT Hack of the Century will take you on a whirlwind tour in the world of IoT and how it is being used in the modern world of mineral extraction in exotic locations like the Arctic and the wilds of South Africa.
+Modernizing Monoliths is a hands-on experience helping you learn how to quickly move your applications as they exist today into container and on to Google Kubernetes Engine (GKE).
 
 ## Learning Objectives
 
-In this hack you will be solving the common business problem that companies in the mineral extraction industry face and how IoT solutions from Google are brought to bear.
+In this hack you will be taking on the role of a DevOps engineer tasked with containerizing a monolithic web game and deploying, testing, and debugging it on GKE. You will learn:
 
-1. Provision an IoT Hub
-1. Set up an IoT Edge device
-1. Bring Edge Computing to your solution for scale and resiliency 
+- **Containers**
+   - Creating a Dockerfile
+      - Using multi-stage builds
+   - Building images
+   - Running containers with Docker
+   - SSH’ing into Docker containers
+   - Pushing and Pulling Docker images
+- **GKE**
+   - Creating a cluster
+   - Creating and resizing node pools
+   - Creating services
+      - Creating an ingress
+   - Deploying your application
+   - Creating deployments
+   - SSH’ing into pods
+   - Implementing Vertical Pod Autoscaling
+   - Implementing Horizontal Pod Autoscaling
+   - Creating a kubeconfig file
+   - Troubleshooting
 
 ## Challenges
 
-- Setting Up the Environment
-   - Before we can hack, you will need to set up a few things.
-   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
-- Challenge 1: Provision an IoT environment
-   - Create an IoT Hub and run tests to ensure it can ingest telemetry
-- Challenge 2: Your First Device
-   - Make the connection to your Edge device and see that it is properly provisioned.
-- Challenge 3: Connecting the World
-   - Connect your device and make sure it can see all other devices in your team.
-- Challenge 4: Scalable Monitoring of Telemetry
-   - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
+- Challenge 1: Containerize the web application
+   - Write a Dockerfile to create your container and then push it to Artifact Registry.
+- Challenge 2: Deploying on GKE
+   - Create a cluster and deploy the containerized web application on it. Fine tune your pod and node sizes, and play test the game to make sure everything is working!
+- Challenge 3: Speedrun - containerize and deploy the load testing application
+   - Use what you learned from challenges 1 and 2 to containerize the test client application and scale it up on GKE to test your servers
+- Challenge 4: Troubleshooting
+   - Learn how to troubleshoot issues with your workload and implement fixes
 
 ## Prerequisites
 
 - Your own GCP project with Owner IAM role.
-- An AVNET X231 device
-- gCloud CLI
-- Visual Studio Code
+- Exemption for your project to any security policy that would prevent you from creating and using external IPs
+- A [dockerhub](https://hub.docker.com/) account and repository
+- Basic understanding of x (add to coach's guide as well)
 
 ## Contributors
 
-- Gino Filicetti
-- Murat Eken
-- Jane Q. Public
-- Joe T. Muppet
+- Damian Lance
 
-## Challenge 1: Provision an IoT environment
+## Challenge 1: Containerize the web application
 
-***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section.  You should remove all italicized & sample text and replace with your content.***
+### Introduction
 
-_You can use these two specific blockquote styles to emphasize your text as needed and they will be specially rendered to be more noticeable_
-> **Note**  
-> Sample informational blockquote
+You’ve just started working as a DevOps Engineer for a company that hosts servers for different games. The company has been running game servers in Google Compute Engine across different Managed Instance Groups which has been working great so far, but occasionally the Testing team fails to setup their local environments correctly and end up approving bad code. The teams have been learning about containers, and are excited to start using them so they no longer have to deal with environment issues. 
 
-> **Warning**  
-> Sample warning blockquote
+You have been assigned the *Dungeon Crawl Stone Soup* workload. Your team is looking to you to containerize the latest version of the game with Docker, verify that it plays, and host it in Artifact Registry.
 
-### Pre-requisites (Optional)
+Here are some helpful terms to know for this section:
+- *Image* - prepackaged files, code, and commands for running an application. And images are reusable, so once you've got it you can take it wherever you want to!
+- *Container* - an active, running image
+- *Dockerfile* - the set of instructions to build your image
 
-*Include any technical pre-requisites needed for this challenge specifically.  Typically, it is completion of one or more of the previous challenges if there is a dependency. This section is optional and may be omitted.*
-
-### Introduction (Optional)
-
-*This section should provide an overview of the technologies or tasks that will be needed to complete the this challenge.  This includes the technical context for the challenge, as well as any new "lessons" the attendees should learn before completing the challenge.*
-
-*Optionally, the coach or event host is encouraged to present a mini-lesson (with the provided lectures presentation or maybe a video) to set up the context and introduction to each challenge. A summary of the content of that mini-lesson is a good candidate for this Introduction section*
-
-*For example:*
-
-When setting up an IoT device, it is important to understand how 'thingamajigs' work. Thingamajigs are a key part of every IoT device and ensure they are able to communicate properly with edge servers. Thingamajigs require IP addresses to be assigned to them by a server and thus must have unique MAC addresses. In this challenge, you will get hands on with a thingamajig and learn how one is configured.
+You can read more about these terms by folowing the *What is a container?* and *What is a Dockerfile?* links in the Learning Resources section below.
 
 ### Description
-*This section should clearly state the goals of the challenge and any high-level instructions you want the students to follow. You may provide a list of specifications required to meet the goals. If this is more than 2-3 paragraphs, it is likely you are not doing it right.*
 
-> **Note** *Do NOT use ordered lists as that is an indicator of 'step-by-step' instructions. Instead, use bullet lists to list out goals and/or specifications.*
+In this challenge, you will write a Dockerfile to create an image for the web game, *Dungeon Crawl Stone Soup* and after creating and testing the image, push it to Artifact Registry.
 
-> **Note** *You may use Markdown sub-headers to organize key sections of your challenge description.*
+You can find an excellent sample Dockerfile by following the *Multi-Stage Dockerfiles* link in the Learning Resources section below.
 
-*Optionally, you may provide resource files such as a sample application, code snippets, or templates as learning aids for the students. These files are stored in the hack's `resources` sub-folder. It is the coach's responsibility to package these resources and provide them to students in the Google Space's Files section as per [the instructions provided](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available).*
-
-> **Note** *Do NOT provide direct links to files or folders in the gHacks Github repository from the student guide. Instead, you should refer to the "resources in the Google Space Files section".*
-
-*Here is some sample challenge text for the IoT Hack Of The Century:*
-
-In this challenge, you will properly configure the thingamajig for your IoT device so that it can communicate with the mother ship.
-
-You can find a sample `thingamajig.config` file in the Files section of this hack's Google Space provided by your coach. This is a good starting reference, but you will need to discover how to set exact settings.
-
-Please configure the thingamajig with the following specifications:
-- Use dynamic IP addresses
-- Only trust the following whitelisted servers: "mothership", "IoTQueenBee" 
-- Deny access to "IoTProxyShip"
+To help you be successful, here are some reminders of things you will need to do:
+- Download the application code
+- Create a Dockerfile in the same directory as the application that will do selects a base image, install needed packages and files, and start the application
+- Run a Docker build to build a container image
+- Create and test a local container before pushing to Artifact Registry or dockerhub
 
 ### Success Criteria
 
-*Success criteria go here. The success criteria should be a list of checks so a student knows they have completed the challenge successfully. These should be things that can be demonstrated to a coach.* 
-
-*The success criteria should not be a list of instructions.*
-
-*Success criteria should always start with language like: "Validate XXX..." or "Verify YYY..." or "Show ZZZ..." or "Demonstrate VVV..."*
-
-*Sample success criteria for the IoT sample challenge:*
-
-- Verify that the IoT device boots properly after its thingamajig is configured.
-- Verify that the thingamajig can connect to the mothership.
-- Demonstrate that the thingamajig will not connect to the IoTProxyShip
+- Verify your Docker image is smaller than 600MB
+- Demonstrate you can play the game on a container created from your image
+- SSH into your running container
+- Verify your container image is in Artifact Registry
 
 ### Learning Resources
 
-*This is a list of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
-
-*Think of this list as giving the students a head start on some easy Internet searches. However, try not to include documentation links that are the literal step-by-step answer of the challenge's scenario.*
-
-> **Note** *Use descriptive text for each link instead of just URLs.*
-
-*Sample IoT resource links:*
-
-- [What is a Thingamajig?](https://www.google.com/search?q=what+is+a+thingamajig)
-- [10 Tips for Never Forgetting Your Thingamajig](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
-- [IoT & Thingamajigs: Together Forever](https://www.youtube.com/watch?v=yPYZpwSpKmA)
+* [Install Docker Engine](https://docs.docker.com/engine/install/)
+* [Install Git](https://github.com/git-guides/install-git)
+* [What is a container?](https://www.docker.com/resources/what-container/)
+* [What is a Dockerfile?](https://www.cloudbees.com/blog/what-is-a-dockerfile)
+* [Reference for building a Dockerfile](https://docs.docker.com/engine/reference/builder/)
+* [Multi-Stage Dockerfiles](https://pmac.io/2019/02/multi-stage-dockerfile-and-python-virtualenv/)
+* [Code for the web game, Dungeon Crawl Stone Soup](https://github.com/TheLanceLord/crawl)
+* [Webgame prerequisites](https://github.com/TheLanceLord/crawl/tree/master/crawl-ref/source/webserver#prerequisites)
+* [Webgame install instructions](https://github.com/TheLanceLord/crawl/tree/master/crawl-ref/INSTALL.md)
 
 ### Tips
 
-*This section is optional and may be omitted.*
+- **Compiling DCSS with `make WEBTILES=y` command can take 25+ minutes**. Compile the code on your host machine and create your image from the compiled code to save time on your builds.
+- Multi-Stage Dockerfiles are important for keeping your image size down. You can always write your Dockerfile as a single stage, and then break it up once you've got the containerized application working.
 
-*Add tips and hints here to give students food for thought. Sample IoT tips:*
-
-- IoTDevices can fail from a broken heart if they are not together with their thingamajig. Your device will display a broken heart emoji on its screen if this happens.
-- An IoTDevice can have one or more thingamajigs attached which allow them to connect to multiple networks.
-
-### Advanced Challenges (Optional)
-
-*If you want, you may provide additional goals to this challenge for folks who are eager.*
-
-*This section is optional and may be omitted.*
-
-*Sample IoT advanced challenges:*
+### Advanced Challenges
 
 Too comfortable?  Eager to do more?  Try these additional challenges!
 
-- Observe what happens if your IoTDevice is separated from its thingamajig.
-- Configure your IoTDevice to connect to BOTH the mothership and IoTQueenBee at the same time.
+- Re-write your Dockerfile to compile the code
+
+## Challenge 2: Deploy with GKE
+
+### Pre-requisites
+
+- Complete Challenge 1
+
+### Introduction
+
+With your Docker image ready and tested, you are ready to get it running on GKE so players can start enjoying this retro-style rogue-like. Your manager asks that you try to keep the node sizes small to keep costs down, and that for now you limit the number of nodes to 3.
+
+Here are some helpful terms to know for this section:
+- *Kubernetes* - an open-source system for automating deployment, scaling, and management of containerized applications
+- *Node* - worker machines that run your containerized applications and other workloads
+- *Cluster* - a group of nodes that run containerized applications. Every cluster has at least one worker node 
+- *Node pool* - a group of nodes within a cluster that all have the same configuration
+- *Pod* - the most basic deployable unit within a Kubernetes cluster, capable of running one or more containers
+- *Namespace* - an abstraction used by Kubernetes to organize objects in a cluster and provide a way to divide cluster resources
+- *Deployment* - an API object that manages a replicated application
+- *Service* - a method for exposing a network application that is running as one or more Pods in your cluster
+- *K8s* - an abbreviation for Kubernetes
+
+### Description
+
+In this challenge, you will create a GKE cluster and use it to host playable *Dungeon Crawl Stone Soup* game server pods.
+
+To help you be successful, here are some reminders of things you will need to do:
+- Create a cluster and node pool
+- Create a deployment for your application and a service to direct traffic to it. Don't forget the liveness and readiness probes!
+- Create a namespace to help keep things organized
+
+### Success Criteria
+
+- A cluster with three nodes in a node pool
+- Default node pool deleted
+- Liveness and readiness probes implemented on the game server deployment
+- Demonstrate you can play the game by connecting to your service's IP address
+
+### Learning Resources
+
+* [Kubernetes resources under the hood — Part 1](https://medium.com/directeam/kubernetes-resources-under-the-hood-part-1-4f2400b6bb96)
+* [Kubernetes resources under the hood — Part 2](https://medium.com/directeam/kubernetes-resources-under-the-hood-part-2-6eeb50197c44)
+* [Kubernetes resources under the hood — Part 3](https://medium.com/directeam/kubernetes-resources-under-the-hood-part-3-6ee7d6015965)
+* [Stop using CPU limits](https://home.robusta.dev/blog/stop-using-cpu-limits)
+* [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+* [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
+* [Namespaces Walkthrough](https://kubernetes.io/docs/tasks/administer-cluster/namespaces-walkthrough/)
+* [Kubernetes Glossary](https://kubernetes.io/docs/reference/glossary/?fundamental=true)
+
+### Tips
+
+- Use e2-standard-2 nodes in your node pool as they will be the most cost effective. Don't worry about performance for this gHack!
+- The general GKE best practices are (note: there are always exceptions!):
+   - Don't set CPU limits
+   - Set memory limit equal to memory request
+
+## Challenge 3: Load testing
+
+### Pre-requisites
+
+- Complete Challenges 1 & 2
+
+### Introduction
+
+The testing team is putting their finishing touches on their load testing application, and they will need your help containerizing the code so that it can be scaled up in GKE. Your aim is to conduct a 100 player test against your game servers.
+
+### Description
+
+In this challenge, you will containerize the load testing application for your Dungeon Crawl Stone Soup game servers, and deploy a 100 pod test using GKE.
+
+Here is the test application code [synthetic_player.py](https://github.com/TheLanceLord/crawl/blob/master/load-testing/synthetic_player.py)
+
+The install instructions:
+```
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb; \
+dpkg -i google-chrome-stable_current_amd64.deb; \
+apt-get -y --fix-broken install; \
+dpkg -i google-chrome-stable_current_amd64.deb; \
+pip3 install -r requirements.txt; \
+```
+
+requirements.txt:
+```
+selenium==4.11.2
+webdriver-manager==4.0.0
+```
+
+To help you be successful, here are some reminders of things you will need to do:
+- Create a node pool
+- Create a deployment for your application and a service to direct traffic to it. Don't forget the liveness and readiness probes!
+- Create a namespace to help keep things organized
+
+### Success Criteria
+
+- 100 test client pods spun up in a running state
+- See bots logged into your game server and watch their session to see them playing the game
+
+### Learning Resources
+
+* [Kubernetes resources under the hood — Part 1](https://medium.com/directeam/kubernetes-resources-under-the-hood-part-1-4f2400b6bb96)
+* [Kubernetes resources under the hood — Part 2](https://medium.com/directeam/kubernetes-resources-under-the-hood-part-2-6eeb50197c44)
+* [Kubernetes resources under the hood — Part 3](https://medium.com/directeam/kubernetes-resources-under-the-hood-part-3-6ee7d6015965)
+* [Stop using CPU limits](https://home.robusta.dev/blog/stop-using-cpu-limits)
+* [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+* [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
+* [Namespaces Walkthrough](https://kubernetes.io/docs/tasks/administer-cluster/namespaces-walkthrough/)
+* [Kubernetes Glossary](https://kubernetes.io/docs/reference/glossary/?fundamental=true)
+
+### Tips
+
+- Use e2-standard-2 nodes in your node pool as they will be the most cost effective, and if you run out of E2, use N2. Don't worry about performance for this gHack!
+- The general GKE best practices are (note: there are always exceptions!):
+   - Don't set CPU limits
+   - Set memory limit equal to memory request
+- The load testing clients sometimes have connection issues, don't be concerned if GKE shows you have 100 pods running, but your application only shows a handful
