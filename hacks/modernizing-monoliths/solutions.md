@@ -88,7 +88,8 @@ This hack requires students to have access to Google Cloud project where they ca
   - Create the deployment and service using the `kubectl apply -f <FILENAME>` command for each file
   - Check on the deployment with `kubectl get deployments --namespace=<NAMESPACE>`
   - Check on the service with `kubectl get services --namespace=<NAMESPACE>`
-
+  - Check on the pods with `kubectl get pods --namespace=<NAMESPACE>`
+  - SSH into a container with `kubectl exec -it <POD NAME> -c <CONTAINER NAME> -- bash`. The container name is the name the participants give the container when they declare it in their Deployment .yaml
 ## Challenge 3: Speedrun - containerize and deploy the load testing application
 
 ### Notes & Guidance

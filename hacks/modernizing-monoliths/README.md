@@ -142,6 +142,7 @@ To help you be successful, here are some reminders of things you will need to do
 - A cluster with three nodes in a node pool
 - Default node pool deleted
 - Liveness and readiness probes implemented on the game server deployment
+- SSH into a game server container and check the files
 - Demonstrate you can play the game by connecting to your service's IP address
 
 ### Learning Resources
