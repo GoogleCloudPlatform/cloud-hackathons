@@ -29,6 +29,8 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 ### Application Development
 - [Intro to Google Kubernetes Engine](./hacks/intro-to-gke/README.md)
   > We will experience what a cloud developer needs to go through to successfully deploy an application to Google Kubernetes Engine. You will learn how to containerize a monolithic application; create a cluster; deploy, run and scale the application and then update the application and rollout the new version with zero downtime.
+- [Modernizing Monoliths](./hacks/modernizing-monoliths/README.md)
+  > Learn Docker and GKE with a web application that you can play! You will compose your own Dockerfile to containerize an existing web application and get practice in creating a cluster, creating node pools, and running deployments and services.
 - [Ready, Steady, Cloud Run!](./hacks/cloud-run/README.md)
   > We'll be using Cloud Run to quickly configure, deploy and troubleshoot a web service. During the process we'll introduce different ways to store data for the web service and learn about how to discover and fix issues. 
 
