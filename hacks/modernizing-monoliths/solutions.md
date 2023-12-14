@@ -34,7 +34,7 @@ Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-r
 
 Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
 
-> **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
+> **Note** Students should **NOT** be given a link to the gHacks GitHub repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
 
 ## Google Cloud Requirements
 
@@ -67,8 +67,8 @@ This hack requires students to have access to Google Cloud project where they ca
 ### Notes & Guidance
 
 - Participant will need to download the [crawl repository](https://github.com/TheLanceLord/crawl) to their working environment and create their Dockerfile in the root folder of the repository
-- [Normal challenge Dockerfile](https://github.com/TheLanceLord/modernizing-monoliths-solutions/blob/main/challenge-1/recommended_dockerfile) given time constraints. Requires the student to compile the code manually
-- [Advanced challenge Dockerfile](https://github.com/TheLanceLord/modernizing-monoliths-solutions/blob/main/challenge-1/optimal_dockerfile), as this compiles the code from github
+- [Normal challenge Dockerfile](./solutions/challenge-1/Dockerfile.normal) given time constraints. Requires the student to compile the code manually
+- [Advanced challenge Dockerfile](./solutions/challenge-1/Dockerfile.advanced), compiles the code from GitHub
 - Useful Docker commands (may need to use `sudo`):
   - `docker build .` creates the image
   - `docker tag <IMAGE_ID> <NAMESPACE>/<REPOSITORY>:<TAG>` tags the image for pushing
@@ -80,8 +80,8 @@ This hack requires students to have access to Google Cloud project where they ca
 
 ### Notes & Guidance
 
-- [Solution .yaml for game server Deployment](https://github.com/TheLanceLord/modernizing-monoliths-solutions/blob/main/challenge-2/game_server_deployment.yaml)
-- [Solution .yaml for the Service](https://github.com/TheLanceLord/modernizing-monoliths-solutions/blob/main/challenge-2/service.yaml)
+- [Solution .yaml for game server Deployment](./solutions/challenge-2/game_server_deployment.yaml)
+- [Solution .yaml for the Service](./solutions/challenge-2/service.yaml)
 - Cloud Console commands:
   - Create the cluster `gcloud container clusters create opensource-games --zone us-central1-a`
   - Create the node pool `gcloud container node-pools create dcss-gameservers --cluster opensource-games --zone us-central1-a --machine-type e2-standard-2 --num-nodes 3`
@@ -99,14 +99,14 @@ This hack requires students to have access to Google Cloud project where they ca
     selenium==4.11.2
     webdriver-manager==4.0.0
     ```
-- [Test client Dockerfile](https://github.com/TheLanceLord/modernizing-monoliths-solutions/tree/main/challenge-3)
+- [Test client Dockerfile](./solutions/challenge-3/Dockerfile)
 - Useful Docker commands (may need to use `sudo`):
   - `docker build .` creates the image
   - `docker tag <IMAGE_ID> <NAMESPACE>/<REPOSITORY>:<TAG>` tags the image for pushing
   - `docker push <NAMESPACE>/<REPOSITORY>:<TAG>` pushes the image to dockerhub unless otherwise specified
   - `docker run -d <IMAGE_ID>` runs your container in detached mode
   - `docker exec -it <CONTAINER_NAME> /bin/bash` SSH into your running container
-- [Test client .yaml](https://github.com/TheLanceLord/modernizing-monoliths-solutions/blob/main/challenge-3/test_client_e2.yaml)
+- [Test client .yaml](./solutions/challenge-3/test_client_e2.yaml)
 - Cloud Console commands:
   - Create the node pool `gcloud container node-pools create dcss-n2-clients --cluster opensource-games --zone us-central1-a --machine-type e2-standard-2 --enable-autoscaling --total-min-nodes=0 --total-max-nodes=8 --max-pods-per-node=20`
   - Create the deployment `kubectl apply -f <FILENAME>`

@@ -1,0 +1,28 @@
+FROM    python:3.7-slim AS builder
+LABEL   author="<AUTHOR>"
+LABEL   created="<DATE>"
+LABEL   last_updated="<DATE>"
+
+ENV     PATH="/venv/bin:$PATH"
+RUN     python -m venv /venv
+
+COPY    /crawl/crawl-ref/source/webserver/requirements/base.py3.txt ./
+
+RUN     pip3 install -r base.py3.txt 
+
+# Build the app
+FROM    python:3.7-slim AS app
+
+ENV     PATH="/venv/bin:$PATH"
+
+COPY    --from=builder /venv /venv
+COPY    /crawl/crawl-ref /crawl/crawl-ref
+
+WORKDIR "/crawl/crawl-ref/source"
+
+RUN     apt update; \
+        apt -y install liblua5.1-0-dev;
+
+EXPOSE  8080
+
+ENTRYPOINT      ["python3","webserver/server.py"]
