@@ -35,11 +35,11 @@ In this hack you will be taking on the role of a DevOps engineer tasked with con
 - Challenge 2: Deploying on GKE
    - Create a cluster and deploy the containerized web application on it. Fine tune your pod and node sizes, and play test the game to make sure everything is working!
 - Challenge 3: Speedrun - containerize and deploy the load testing application
-   - Use what you learned from challenges 1 and 2 to containerize the test client application and scale it up on GKE to test your servers
+   - Use what you learned from challenges 1 and 2 to containerize the test client application and scale it up on GKE to test your servers.
 
 ## Prerequisites
 
-- Your own GCP project with Owner IAM role.
+- Your own GCP project with Owner IAM role
 - Exemption for your project to any security policy that would prevent you from creating and using external IPs
 - A [dockerhub](https://hub.docker.com/) account and repository
 
