@@ -36,8 +36,6 @@ In this hack you will be taking on the role of a DevOps engineer tasked with con
    - Create a cluster and deploy the containerized web application on it. Fine tune your pod and node sizes, and play test the game to make sure everything is working!
 - Challenge 3: Speedrun - containerize and deploy the load testing application
    - Use what you learned from challenges 1 and 2 to containerize the test client application and scale it up on GKE to test your servers
-- Challenge 4: Troubleshooting
-   - Learn how to troubleshoot issues with your workload and implement fixes
 
 ## Prerequisites
 
@@ -158,7 +156,7 @@ To help you be successful, here are some reminders of things you will need to do
 
 ### Tips
 
-- Use e2-standard-2 nodes in your node pool as they will be the most cost effective. Don't worry about performance for this gHack!
+- Use `e2-standard-2` nodes in your node pool as they will be the most cost effective. Don't worry about performance for this gHack!
 - The general GKE best practices are (note: there are always exceptions!):
    - Don't set CPU limits
    - Set memory limit equal to memory request
@@ -217,7 +215,7 @@ To help you be successful, here are some reminders of things you will need to do
 
 ### Tips
 
-- Use e2-standard-2 nodes in your node pool as they will be the most cost effective, and if you run out of E2, use N2. Don't worry about performance for this gHack!
+- Use `e2-standard-2` nodes in your node pool as they will be the most cost effective, and if you run out of E2, use N2. Don't worry about performance for this gHack!
 - The general GKE best practices are (note: there are always exceptions!):
    - Don't set CPU limits
    - Set memory limit equal to memory request
