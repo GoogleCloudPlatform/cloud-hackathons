@@ -42,7 +42,6 @@ In this hack you will be taking on the role of a DevOps engineer tasked with con
 - Your own GCP project with Owner IAM role.
 - Exemption for your project to any security policy that would prevent you from creating and using external IPs
 - A [dockerhub](https://hub.docker.com/) account and repository
-- Basic understanding of x (add to coach's guide as well)
 
 ## Contributors
 
