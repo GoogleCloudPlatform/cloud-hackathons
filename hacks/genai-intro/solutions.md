@@ -1,4 +1,4 @@
-# Practical GenAI
+# Introduction to GenAI
 
 ## Introduction
 
