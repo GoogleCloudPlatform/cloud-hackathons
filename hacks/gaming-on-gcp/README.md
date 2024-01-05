@@ -30,9 +30,6 @@ The objectives of this hackathon are:
 
 ## Challenges
 
-- Setting Up the Environment
-   - Before we can hack, you will need to set up a few things.
-   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 - Challenge 1: Agones Game Servers on Kubernetes
    - Deploy Agones, an open-source, multiplayer, dedicated game-server built on Kubernetes in the Google Cloud environment.
 - Challenge 2: Dynamic Game Matching with Open Match

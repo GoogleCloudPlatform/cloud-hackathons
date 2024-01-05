@@ -4,9 +4,6 @@
 Welcome to the coach's guide for the Security with reCAPTCHA and Cloud Armor gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
 ## Coach's Guides
-- Setting Up the Environment
-   - Before starting to hack, students will need to set up a few things.
-   - They will run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 - Challenge 1: Create Managed Instance Groups
    - Use managed instance groups to create an HTTP Load Balancer backend.
 - Challenge 2: Setup Your HTTP Load Balancer
