@@ -15,9 +15,6 @@ In this hack you will be exploring the following tasks
 
 ## Challenges
 
-- Setting Up the Environment
-   - Before we can hack, you will need to set up a few things.
-   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 - Challenge 1: Bootstrapping
    - Terraform backend & version control
 - Challenge 2: Your very first provisioning

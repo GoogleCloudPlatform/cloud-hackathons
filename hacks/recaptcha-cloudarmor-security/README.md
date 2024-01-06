@@ -24,9 +24,6 @@ In this lab, you configure an HTTP Load Balancer with a backend, as shown in the
 
 ## Challenges
 
-- Setting Up the Environment
-   - Before we can hack, you will need to set up a few things.
-   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 - Challenge 1: Create Managed Instance Groups
    - Use managed instance groups to create an HTTP Load Balancer backend.
 - Challenge 2: Setup Your HTTP Load Balancer

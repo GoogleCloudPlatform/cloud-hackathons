@@ -24,9 +24,6 @@ In this gHack you will experience what a cloud developer needs to go through to 
 
 ## Challenges
 
-- Setting Up the Environment
-   - Before we can hack, you will need to set up a few things.
-   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 - Challenge 1: Provision a GKE Cluster
    - Create a new GKE cluster that you'll use to deploy, scale and update your application
 - Challenge 2: Containerizing your Application
