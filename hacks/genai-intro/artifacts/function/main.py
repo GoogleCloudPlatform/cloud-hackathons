@@ -1,7 +1,6 @@
 import base64
 import json
 import os
-import string
 
 from itertools import islice
 
@@ -73,7 +72,7 @@ def get_prompt_for_title_extraction() -> str:
 
 def extract_title_from_text(text: str) -> str:
     vertexai.init(project=PROJECT_ID, location="us-central1")  # PaLM only available in us for now
-    model = TextGenerationModel.from_pretrained("text-bison@latest")
+    model = TextGenerationModel.from_pretrained("text-bison")
     prompt = get_prompt_for_title_extraction()
 
     if not prompt:
@@ -102,7 +101,7 @@ def get_prompt_for_summary_2() -> str:
 
 
 def extract_summary_from_text(text: str) -> str:
-    model = TextGenerationModel.from_pretrained("text-bison@latest")
+    model = TextGenerationModel.from_pretrained("text-bison")
     rolling_prompt_template = get_prompt_for_summary_1()
     final_prompt_template = get_prompt_for_summary_2()
 

@@ -15,10 +15,6 @@ This is going to be an introduction to running apps on Cloud Run. We'll dive int
 
 ## Challenges
 
-- Setting Up the Environment
-   - Before we can hack, you will need to set up a few things.
-   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
-   - **Warning** The project setup (mainly the Cloud SQL instance creation) takes roughly ~20 minutes, make sure to run the scripts ahead of time or use *hot labs* for Qwiklabs
 - Challenge 1: Building and deploying a web service
 - Challenge 2: A faster feedback loop
 - Challenge 3: Logging and Monitoring
