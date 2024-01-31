@@ -1,4 +1,4 @@
-# “Modernizing
+# Modernizing Monoliths
 
 ## Introduction
 
