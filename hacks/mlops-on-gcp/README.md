@@ -72,7 +72,7 @@ As depicted in the overview diagram, the first step of any ML project is data an
 
 ### Description 
 
-Create a _Vertex AI Workbench Instance_ on Vertex AI. Pick a region close to you and choose the **single user only** option.
+Create a _Vertex AI Workbench Instance_. Pick a region close to you and choose the **single user only** option.
 
 It's a good practice to have isolated virtual environments for experiments, so create a new virtual environment and install that as a kernel. See this [gist](https://gist.github.com/meken/e6c7430997de9b3f2cf7721f8ecffc04) for the instructions. 
 
