@@ -29,6 +29,9 @@ resource "google_project_service" "iam_api" {
 resource "google_project_service" "pubsub_api" {
   service            = "pubsub.googleapis.com"
   disable_on_destroy = false
+  depends_on = [
+    google_project_service.resource_manager_api
+  ]
 }
 
 resource "google_project_service" "build_api" {
