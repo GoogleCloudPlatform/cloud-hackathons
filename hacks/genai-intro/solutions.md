@@ -323,3 +323,5 @@ EOF
 
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN"  $URL -d @query.json
 ```
+
+In case students use different methods to generate the text embeddings for the summaries and the query, they should be aware that they should be using the same version of the model.

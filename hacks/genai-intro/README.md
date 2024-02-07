@@ -90,7 +90,7 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title (in
 ### Tips
 
 - You can edit and redeploy the Cloud Function from the Console.
-- You can test your prompts using [Generative AI Studio](https://cloud.google.com/vertex-ai/docs/generative-ai/text/test-text-prompts#generative-ai-test-text-prompt-console).
+- You can test your prompts using [Vertex AI Studio](https://cloud.google.com/vertex-ai/docs/generative-ai/text/test-text-prompts#generative-ai-test-text-prompt-console).
 - You could get the content from PDF files either by copy-paste or using `gsutil cat` & `jq` commands from Cloud Shell by accessing the JSON files in the staging bucket.
 
 ## Challenge 3: Summarizing a large document using chaining
