@@ -11,6 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+resource "google_project_service" "serviceusage_api" {
+  service            = "serviceusage.googleapis.com"
+  disable_on_destroy = false
+}
+
 resource "google_project_service" "compute_api" {
   service            = "compute.googleapis.com"
   disable_on_destroy = false
@@ -29,6 +34,9 @@ resource "google_project_service" "iam_api" {
 resource "google_project_service" "pubsub_api" {
   service            = "pubsub.googleapis.com"
   disable_on_destroy = false
+  depends_on = [
+    google_project_service.resource_manager_api
+  ]
 }
 
 resource "google_project_service" "build_api" {
