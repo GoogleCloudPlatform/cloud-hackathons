@@ -325,3 +325,29 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKE
 ```
 
 In case students use different methods to generate the text embeddings for the summaries and the query, they should be aware that they should be using the same version of the model.
+
+See below a Python version of the same code:
+```python
+from google.cloud import aiplatform
+from vertexai.language_models import TextEmbeddingModel
+
+# retrieve index endpoint (assuming that there's only one)
+index_endpoint_name = aiplatform.MatchingEngineIndexEndpoint.list()[0].name
+index_endpoint = aiplatform.MatchingEngineIndexEndpoint(index_endpoint_name=index_endpoint_name)
+
+# embed the query
+model = TextEmbeddingModel.from_pretrained("textembedding-gecko@001")  # make sure that the version matches
+query = "Which paper is about characteristics of living organisms in alien worlds?"
+query_embeddings = model.get_embeddings([query])[0]
+
+# query the index endpoint for the nearest neighbors.
+resp = index_endpoint.find_neighbors(
+    deployed_index_id=index_endpoint.deployed_indexes[0].id,  # assuming that there's only one deployed index
+    queries=[query_embeddings.values],
+    num_neighbors=1,
+)
+
+print(resp[0][0].id)
+```
+
+Note that _Deployed index info_ page on the console gives examples of `curl` as well as `Python` code.
