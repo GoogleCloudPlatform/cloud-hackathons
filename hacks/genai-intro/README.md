@@ -51,7 +51,7 @@ We'll trigger the summary generation automatically when a document is uploaded t
 ### Success Criteria
 
 - There are two Cloud Storage Buckets, one for uploading the documents and another one for staging with the required name.
-- The provided Cloud Function is triggered (only) when a file is uploaded.
+- The provided Cloud Function is triggered **only** when a file is uploaded.
 - No code was modified.
 
 ### Learning Resources
@@ -200,7 +200,7 @@ Similarly to the previous challenge, create a remote model in BigQuery for text 
 
 Once the table is there, do a SQL search by `COSINE` distance for every row of the newly generated table and the query _Which paper is about characteristics of living organisms in alien worlds?_ and show only the row with the closest distance.
 
-> **Note**  This is a very naive approach, we're comparing the query embeddings with every summary embedding row one-by-one, which wouldn't scale with larger amounts of data. Typically an approximate nearest neighbors approach is utilized to address the scalabilty, which is a service that's provided through _Vertex AI Vector Search_ and that will be the topic of the next challenge.
+> **Note**  BigQuery has recently introduced _vector search_ and _vector indexes_ to make these type of searches more efficient. We'll keep to the naive approach for this challenge (as the next challenge will introduce the concepts of vector search and indexes), so **do not** create _vector indexes_ and stick to `ML.DISTANCE` for the search.
 
 ### Success Criteria
 
@@ -229,7 +229,7 @@ Create a new Cloud Storage bucket and export the embeddings created in previous 
 
 > **Note** JSON Lines is a text format that stores JSON objects, one per line, with each line terminated by a newline character. Typically the `.jsonl` extension is used to denote these files, but both BigQuery and Vector Search use and expect the `.json` extension.
 
-Once the index is ready (should take less than a minute; refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). Deploying the index to the endpoint will take about 15 minutes.
+Once the index is ready (should take less than a minute; refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). Deploying the index to the endpoint will take about 15 minutes (start working on how to use the endpoint while the index is being deployed).
 
 Now run the same query as the previous challenge, _Which paper is about characteristics of living organisms in alien worlds?_ through the REST API. You should get the `uri` of the corresponding paper.
 
