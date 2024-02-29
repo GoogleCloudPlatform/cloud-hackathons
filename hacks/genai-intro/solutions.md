@@ -123,13 +123,13 @@ def extract_summary_from_text(text: str) -> str:
     return model.predict(prompt).text   
 ```
 
-The prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should in this case reflect the main points from the summary in _Success Criteria_.
+The prompts listed here are just examples, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should in this case reflect the main points from the summary in _Success Criteria_.
 
 ## Challenge 4: BigQuery &#10084; LLMs
 
 ### Notes & Guidance
 
-First step is to create the dataset and the table with the right set of columns.
+First step is to create the dataset and the table with the right set of columns before uncommenting the snippet to write to BQ from Cloud Function.
 
 ```shell
 BQ_DATASET=articles
@@ -139,6 +139,22 @@ bq mk --location=$REGION -d $BQ_DATASET
 ```shell
 BQ_TABLE=summaries
 bq mk -t "$BQ_DATASET.$BQ_TABLE" uri:STRING,name:STRING,title:STRING,summary:STRING
+```
+
+You could download and upload the papers one by one, or use the following to automate that:
+
+```shell
+URLS="https://arxiv.org/pdf/2310.00044 https://arxiv.org/pdf/2310.01062 https://arxiv.org/pdf/2310.08243 https://arxiv.org/pdf/2310.09196 https://arxiv.org/pdf/2310.00446 https://arxiv.org/pdf/2310.02081 https://arxiv.org/pdf/2310.00245 https://arxiv.org/pdf/2310.01303 https://arxiv.org/pdf/2310.00067 https://arxiv.org/pd
+f/2310.02553"
+
+for URL in $URLS; do
+    wget --user-agent="Mozzilla" -O "${URL##*/}.pdf" $URL
+done
+
+for PDF in *.pdf; do
+   gsutil cp $PDF $BUCKET
+   sleep 10
+done
 ```
 
 Now, we can create the connection to Vertex AI to call the API and make sure that the corresponding service account (that's created after the creation of the connection) has the correct role.
@@ -151,7 +167,6 @@ SA_CONN=`bq show --connection --format=json $REGION.$CONN_ID | jq -r .cloudResou
 
 gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAccount:$SA_CONN" \
     --role="roles/aiplatform.user" --condition=None
-
 ```
 
 This is the SQL statement to create a link to the LLM (you need to replace `$REGION` with the correct value).
@@ -159,7 +174,7 @@ This is the SQL statement to create a link to the LLM (you need to replace `$REG
 ```sql
 CREATE OR REPLACE MODEL
   articles.llm REMOTE
-WITH CONNECTION `$REGION.conn-llm` OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_LARGE_LANGUAGE_MODEL_V1')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'text-bison')
 ```
 
 Finally, we can use the linked model to make predictions.
@@ -174,7 +189,7 @@ FROM
     (
       SELECT
         title,
-        CONCAT('Multi-choice problem: Define the category of the text?\nCategories:\n- Astrophysics\n- Mathematics\n- Computer Science\n- Quantitative Biology\n- Economics\nText:', summary) AS prompt
+        CONCAT('Multi-choice problem: Define the category of the text?\nCategories:\n- Astrophysics\n- Mathematics\n- Computer Science\n- Quantitative Biology\n- Economics\nText:', summary, '\nCategory:') AS prompt
       FROM
         `articles.summaries` 
     ),
@@ -194,7 +209,7 @@ We don't need to create another connection, we can reuse the existing one. Run t
 ```sql
 CREATE OR REPLACE MODEL
   articles.embeddings REMOTE
-WITH CONNECTION `$REGION.conn-llm` OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_TEXT_EMBEDDING_MODEL_V1')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'textembedding-gecko@latest')
 ```
 
 Next step is to apply that model to get the embeddings for every summary.
