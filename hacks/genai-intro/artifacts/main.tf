@@ -118,7 +118,7 @@ resource "google_project_iam_member" "functions_default_iam" {
 }
 
 resource "time_sleep" "wait_until_functions_sa_ready" {
-  create_duration = "60s"
+  create_duration = "90s"
   depends_on = [
     google_project_iam_member.functions_default_iam
   ]
