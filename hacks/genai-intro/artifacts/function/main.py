@@ -1,3 +1,16 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 import base64
 import json
 import os
@@ -21,6 +34,21 @@ BQ_TABLE="summaries"
 
 
 def extract_text_from_document(src_bucket: str, file_name: str, dst_bucket: str) -> str:
+    """Extracts the contents of the PDF document and stores the results in a folder in GCS.
+
+    In order to extract the contents of the PDF document OCR is applied and the results, 
+    consisting of JSON files, are stored in the destination bucket in a folder that has 
+    the same name as the source file name.
+
+    Args:
+        src_bucket: source bucket without the gs prefix, e.g. my-uploaded-docs-bucket
+        file_name: source file name, e.g. my-file.pdf
+        dst_bucket: destination bucket without the gs prefix, e.g. my-staging-bucket
+
+    Returns:
+        destination folder, name of the folder in the staging bucket where the JSON 
+        files are stored for the PDF document
+    """
     src_uri = f"gs://{src_bucket}/{file_name}"
     dst_uri = f"gs://{dst_bucket}/{file_name}/"
     mime_type = "application/pdf"
@@ -50,6 +78,16 @@ def extract_text_from_document(src_bucket: str, file_name: str, dst_bucket: str)
 
 
 def collate_pages(bucket: str, folder: str) -> str:
+    """Collates all pages, stored as JSON files in the provided bucket & folder, 
+    parses them, extracts the relevant parts and concatenates them into a single string.
+
+    Args:
+        bucket: bucket without the gs prefix, e.g. my-staging-bucket
+        folder: folder name, e.g. my-file/
+
+    Returns:
+        complete text of the PDF document as a single string in regular text format
+    """
     storage_client = storage.Client(project=PROJECT_ID)
     bucket = storage_client.get_bucket(bucket)
     blob_list = [blob for blob in list(bucket.list_blobs(prefix=folder))]
@@ -65,12 +103,27 @@ def collate_pages(bucket: str, folder: str) -> str:
 
 
 def get_prompt_for_title_extraction() -> str:
+    """Returns a prompt for title extraction. 
+    
+    To be modified for Challenge 2.
+
+    Returns:
+        prompt for title extraction, with placeholders for substitution
+    """
     # TODO provide the prompt, you can use {} references for substitution
     # See https://www.w3schools.com/python/ref_string_format.asp
     return ""
 
 
 def extract_title_from_text(text: str) -> str:
+    """Given the full text of the PDF document, extracts the title.
+
+    Args:
+        text: full text of the PDF document
+
+    Returns:
+        title of the PDF document
+    """
     vertexai.init(project=PROJECT_ID, location="us-central1")  # PaLM only available in us for now
     model = TextGenerationModel.from_pretrained("text-bison")
     prompt = get_prompt_for_title_extraction()
@@ -78,32 +131,65 @@ def extract_title_from_text(text: str) -> str:
     if not prompt:
         return ""  # return empty title for empty prompt
 
-    response = model.predict(prompt.format())  # TODO set placeholder values in format
+    response = model.predict(prompt.format())  # TODO Challenge 2, set placeholder values in format
     return response.text
 
 
 def pages(text: str, batch_size: int) -> str:
+    """Yield successive n-sized chunks from text.
+
+    Args:
+        text: full text of the PDF document
+        batch_size: size of the chunks
+
+    Yields:
+        successive n-sized chunks of text
+    """
     it = iter(text)
     while batch := tuple(islice(it, batch_size)):
         yield "".join(batch)
 
 
-def get_prompt_for_summary_1() -> str:
+def get_prompt_for_page_summary_with_context() -> str:
+    """Returns a prompt for the page summary with context. 
+    
+    To be modified for Challenge 3.
+
+    Returns:
+        prompt for page summary with context, with placeholders for substitution
+    """
     # TODO provide the prompt, you can use {} references for substitution
     # See https://www.w3schools.com/python/ref_string_format.asp
     return ""
 
 
-def get_prompt_for_summary_2() -> str:
+def get_prompt_for_summary_of_summaries() -> str:
+    """Returns a prompt for the summary of summaries. 
+    
+    To be modified for Challenge 3.
+
+    Returns:
+        prompt for summary of summaries, with placeholders for substitution
+    """
     # TODO provide the prompt, you can use {} references for substitution
     # See https://www.w3schools.com/python/ref_string_format.asp
     return ""
 
 
 def extract_summary_from_text(text: str) -> str:
+    """Given the full text of the PDF document, extracts the summary.
+
+    To be modified for Challenge 3.
+
+    Args:
+        text: full text of the PDF document
+
+    Returns:
+        summary of the PDF document
+    """
     model = TextGenerationModel.from_pretrained("text-bison")
-    rolling_prompt_template = get_prompt_for_summary_1()
-    final_prompt_template = get_prompt_for_summary_2()
+    rolling_prompt_template = get_prompt_for_page_summary_with_context()
+    final_prompt_template = get_prompt_for_summary_of_summaries()
 
     if not rolling_prompt_template or not final_prompt_template:
         return ""  # return empty summary for empty prompts
@@ -111,15 +197,25 @@ def extract_summary_from_text(text: str) -> str:
     context = ""
     summaries = ""
     for page in pages(text, 16000):
-        prompt = rolling_prompt_template.format()  # TODO set placeholder values in format
+        prompt = rolling_prompt_template.format()  # TODO Challenge 3, set placeholder values in format
         context = model.predict(prompt, max_output_tokens=256).text
         summaries += f"\n{context}"
     
-    prompt = final_prompt_template.format()  # TODO set placeholder values in format
+    prompt = final_prompt_template.format()  # TODO Challenge 3, set placeholder values in format
     return model.predict(prompt, max_output_tokens=256).text
 
 
 def store_results_in_bq(dataset: str, table: str, columns: dict[str, str]) -> bool:
+    """Stores the results of title extraction and summary generation in BigQuery.
+    
+    Args:
+        dataset: the name of the BigQuery dataset
+        table: the name of the BigQuery table where the results will be stored
+        columns: a dictionary of columns and their values
+
+    Returns:
+        True if successful, False otherwise (if there were any errors)
+    """
     client = bigquery.Client(project=PROJECT_ID)
     table_uri = f"{dataset}.{table}"
 
@@ -136,6 +232,12 @@ def store_results_in_bq(dataset: str, table: str, columns: dict[str, str]) -> bo
 
 
 def on_document_added(event, context):
+    """Triggered from a message on a Cloud Pub/Sub topic.
+
+    Args:
+        event: Event payload
+        context: Metadata for the event.
+    """
     pubsub_message = json.loads(base64.b64decode(event["data"]).decode("utf-8"))
     src_bucket = pubsub_message["bucket"]
     src_fname = pubsub_message["name"]

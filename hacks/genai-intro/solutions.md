@@ -80,7 +80,7 @@ The prompt listed here is just an example, there's a great variety when it comes
 See below for the complete code, although there could be slight deviations, there should be two prompts first one using the rolling context and the current page and the second one just the final rolling context. The `extract_summary_from_text` function only needs to be updated for passing the `context`, `page` and `summaries` variables to the `format` function.
 
 ```python
-def get_prompt_for_summary_1() -> str:
+def get_prompt_for_page_summary_with_context() -> str:
     return """
         Taking the following context delimited by triple backquotes into consideration:
 
@@ -94,7 +94,7 @@ def get_prompt_for_summary_1() -> str:
     """
 
 
-def get_prompt_for_summary_2() -> str:
+def get_prompt_for_summary_of_summaries() -> str:
     return """
         Write a concise summary of the following text delimited by triple backquotes.
 
@@ -106,8 +106,8 @@ def get_prompt_for_summary_2() -> str:
 
 def extract_summary_from_text(text: str) -> str:
     model = TextGenerationModel.from_pretrained("text-bison@latest")
-    rolling_prompt_template = get_prompt_for_summary_1()
-    final_prompt_template = get_prompt_for_summary_2()
+    rolling_prompt_template = get_prompt_for_page_summary_with_context()
+    final_prompt_template = get_prompt_for_summary_of_summaries()
 
     if not rolling_prompt_template or not final_prompt_template:
         return ""  # return empty summary for empty prompts
