@@ -235,8 +235,8 @@ def on_document_added(event, context):
     """Triggered from a message on a Cloud Pub/Sub topic.
 
     Args:
-        event: Event payload
-        context: Metadata for the event.
+        event: event payload
+        context: metadata for the event.
     """
     pubsub_message = json.loads(base64.b64decode(event["data"]).decode("utf-8"))
     src_bucket = pubsub_message["bucket"]

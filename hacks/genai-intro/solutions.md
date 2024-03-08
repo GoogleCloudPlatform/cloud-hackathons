@@ -42,6 +42,10 @@ gcloud storage buckets notifications delete $BUCKET  # delete all notification c
 
 ### Notes & Guidance
 
+If students are new to Python, it might be helpful to explain the structure of the code. We've recently added [docstrings](https://peps.python.org/pep-0257/) to each function, make sure that they understand that it is the Pythonic way to document code. They only need to edit the parts where there's a TODO, they shouldn't modify the code in any other way.
+
+Note that these prompts are examples, we're using the latest version of the `text-bison` which is updated regularly, and until we have the `seed` parameter available in the API, we can't have a deterministic prompt that always works, so consider this as a good starting point.
+
 ```python
 def get_prompt_for_title_extraction() -> str:
     return """
@@ -105,7 +109,7 @@ def get_prompt_for_summary_of_summaries() -> str:
 
 
 def extract_summary_from_text(text: str) -> str:
-    model = TextGenerationModel.from_pretrained("text-bison@latest")
+    model = TextGenerationModel.from_pretrained("text-bison")
     rolling_prompt_template = get_prompt_for_page_summary_with_context()
     final_prompt_template = get_prompt_for_summary_of_summaries()
 
@@ -148,7 +152,7 @@ URLS="https://arxiv.org/pdf/2310.00044 https://arxiv.org/pdf/2310.01062 https://
 f/2310.02553"
 
 for URL in $URLS; do
-    wget --user-agent="Mozzilla" -O "${URL##*/}.pdf" $URL
+    wget --user-agent="Mozilla" -O "${URL##*/}.pdf" $URL
 done
 
 for PDF in *.pdf; do
@@ -216,8 +220,8 @@ Next step is to apply that model to get the embeddings for every summary.
 
 ```sql
 CREATE OR REPLACE TABLE articles.summary_embeddings AS (
-  SELECT uri, title, content as summary, text_embedding
-    FROM ML.GENERATE_TEXT_EMBEDDING(
+  SELECT uri, title, content as summary, ml_generate_embedding_result as text_embedding
+    FROM ML.GENERATE_EMBEDDING(
       MODEL articles.embeddings,
       (SELECT uri, title, summary as content FROM articles.summaries),
       STRUCT(TRUE AS flatten_json_output)
@@ -229,8 +233,8 @@ And finally here's the SQL query to get the results, although any variation (tem
 
 ```sql
 WITH query_embeddings AS (
-  SELECT text_embedding FROM
-  ML.GENERATE_TEXT_EMBEDDING(MODEL articles.embeddings,
+  SELECT ml_generate_embedding_result as text_embedding FROM
+  ML.GENERATE_EMBEDDING(MODEL articles.embeddings,
       (SELECT "Which paper is about characteristics of living organisms in alien worlds?" AS content),
       STRUCT(TRUE AS flatten_json_output)
     )
@@ -307,11 +311,11 @@ EXPORT DATA
     uri='gs://$GOOGLE_CLOUD_PROJECT-embeddings/query/*.json',
     format='JSON',
     overwrite=TRUE) AS
-SELECT text_embedding FROM
-  ML.GENERATE_TEXT_EMBEDDING(MODEL articles.embeddings,
+SELECT ml_generate_embedding_result as text_embedding FROM
+  ML.GENERATE_EMBEDDING(MODEL articles.embeddings,
       (SELECT "Which paper is about characteristics of living organisms in alien worlds?" AS content),
       STRUCT(TRUE AS flatten_json_output)
-    )
+  )
 ```
 
 ```shell
