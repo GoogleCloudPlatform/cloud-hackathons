@@ -78,7 +78,7 @@ The repository includes a shell script, `setup-newhack.sh` to create a new hack 
 
 ```shell
 cd YOUR_FORK  # typically cloud-hackathons
-tools/setup-newhack.sh --hack=century-of-iot --author=me@google.com --title="IoT hack of the century"
+tools/setup-newhack.sh -h century-of-iot -a me@google.com -t "IoT hack of the century"
 ```
 
 > **Note**  
