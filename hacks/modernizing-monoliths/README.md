@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Modernizing Monoliths is a hands-on experience helping you learn how to quickly move your applications as they exist today into container and on to Google Kubernetes Engine (GKE).
+Modernizing Monoliths is a hands-on experience helping you learn how to quickly move your applications as they exist today into containers and on to Google Kubernetes Engine (GKE).
 
 ## Learning Objectives
 
@@ -41,7 +41,6 @@ In this hack you will be taking on the role of a DevOps engineer tasked with con
 
 - Your own GCP project with Owner IAM role
 - Exemption for your project to any security policy that would prevent you from creating and using external IPs
-- A [dockerhub](https://hub.docker.com/) account and repository
 
 ## Contributors
 
@@ -78,7 +77,7 @@ To help you be successful, here are some reminders of things you will need to do
 
 - Verify your Docker image is smaller than 600MB
 - Demonstrate you can play the game on a container created from your image
-- SSH into your running container
+- Demonstrate that you can SSH into your running container
 - Verify your container image is in Artifact Registry
 
 ### Learning Resources
@@ -105,10 +104,6 @@ Too comfortable?  Eager to do more?  Try these additional challenges!
 - Re-write your Dockerfile to compile the code
 
 ## Challenge 2: Deploy with GKE
-
-### Pre-requisites
-
-- Complete Challenge 1
 
 ### Introduction
 
@@ -161,10 +156,6 @@ To help you be successful, here are some reminders of things you will need to do
    - Set memory limit equal to memory request
 
 ## Challenge 3: Load testing
-
-### Pre-requisites
-
-- Complete Challenges 1 & 2
 
 ### Introduction
 
