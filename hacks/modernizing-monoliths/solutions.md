@@ -4,7 +4,7 @@
 
 Welcome to the coach's guide for the Modernizing Monoliths gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
-Remember that this hack includes a optional [lecture presentation](resources/lecture.pdf) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
+Remember that this hack includes a [lecture presentation](resources/lecture.pdf) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
 
 > **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
@@ -59,14 +59,12 @@ This hack requires students to have access to Google Cloud project where they ca
   - Resource files, sample code, scripts, etc meant to be provided to students. (Must be packaged up by the coach and provided to students at start of event)
 - `./artifacts`
   - Terraform scripts and other files needed to set up the environment for the gHack
-- `./images`
-  - Images and screenshots used in the Student or Coach's Guide
 
 ## Challenge 1: Containerize the web application
 
 ### Notes & Guidance
 
-- Participant will need to download the [crawl repository](https://github.com/TheLanceLord/crawl) to their working environment and create their Dockerfile in the root folder of the repository
+- Participants will need to download the [crawl repository](https://github.com/TheLanceLord/crawl) to their working environment and create their Dockerfile in the root folder of the repository
 - [Normal challenge Dockerfile](./solutions/challenge-1/Dockerfile.normal) given time constraints. Requires the student to compile the code manually
 - [Advanced challenge Dockerfile](./solutions/challenge-1/Dockerfile.advanced), compiles the code from GitHub
 - Useful Docker commands (may need to use `sudo`):
@@ -90,6 +88,7 @@ This hack requires students to have access to Google Cloud project where they ca
   - Check on the service with `kubectl get services --namespace=<NAMESPACE>`
   - Check on the pods with `kubectl get pods --namespace=<NAMESPACE>`
   - SSH into a container with `kubectl exec -it <POD NAME> -c <CONTAINER NAME> -- bash`. The container name is the name the participants give the container when they declare it in their Deployment .yaml
+
 ## Challenge 3: Speedrun - containerize and deploy the load testing application
 
 ### Notes & Guidance
