@@ -1,8 +1,8 @@
-# Modernizing Monoliths
+# Modernizing the Monolith: Containerizing and Deploying to Kubernetes
 
 ## Introduction
 
-Modernizing Monoliths is a hands-on experience helping you learn how to quickly move your applications as they exist today into containers and on to Google Kubernetes Engine (GKE).
+Modernizing the Monolith is a hands-on experience helping you learn how to quickly move your applications as they exist today into containers and on to Google Kubernetes Engine (GKE).
 
 ## Learning Objectives
 
