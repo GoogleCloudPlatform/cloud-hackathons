@@ -1,4 +1,4 @@
-# Modernizing Monoliths
+# Modernizing the Monolith: Containerizing and Deploying to Kubernetes
 
 ## Introduction
 
