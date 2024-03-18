@@ -95,6 +95,21 @@ git commit -m "initial version of the IoT hack..."
 git push --set-upstream origin new-iot-hack
 ```
 
+### Scaffolding with Github Actions
+
+If the Command Line option doesn't work for you, you can consider using the provided Github Action for creating a new gHack.
+
+Navigate to the Actions tab for your fork and click on *Create a new gHack*, click on the gray *Run workflow* button, stick to *main* as the branch where the action will be run, fill in the other details and click on the green *Run workflow* button to start the action. This will create a new branch with the same as as the hack id, create the scaffolding and commit those changes into the newly created branch.
+
+![Screenshot for triggering the scaffolding action](images/author-create-new-hack.png.png)
+
+Once the action is completed, you can pull from your origin and check out the branch
+
+```shell
+git pull origin
+git checkout new-iot-hack  # the hack id which is used as the remote branch name
+```
+
 ### Verifying the Rendering
 
 Once a hack is wrapped up, it will end up in the original repository and will be rendered on the gHacks [website](https://ghacks.dev). But, if there's something wrong with the content, things can get horribly wrong. In order to prevent surprises, you can render it yourself using _Github Pages_. First step is to enable _Github Pages_ in your fork and choose for *Source* the _Github Actions_ option in the _Build and deployment_ section.
