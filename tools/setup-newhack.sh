@@ -1,22 +1,21 @@
 #!/bin/bash
 
-LONG="hack:,author:,title:"
+usage() {
+    echo "Usage: ${0} -h <hack:string> -a <author:string> -t <title:string>" 1>&2; exit 1
+}
 
-OPTS=$(getopt -o '' --longoptions ${LONG} -- "$@")
-
-eval set -- "${OPTS}"
-
-while :; do
-    case "${1}" in
-        --hack        ) HACK="${2}"        ;;
-        --author      ) AUTHOR="${2}"      ;;
-	      --title       ) TITLE="${2}"       ;;
-        --            ) shift; break       ;;
-    esac
-    shift
+while getopts "h:a:t:" OPT; do
+  case "${OPT}" in
+    h) HACK="${OPTARG}";;
+    a) AUTHOR="${OPTARG}";;
+    t) TITLE="${OPTARG}";;
+#    *) usage;;
+  esac
 done
 
-
+if [ -z "${HACK}" ] || [ -z "${AUTHOR}" ] || [ -z "${TITLE}" ]; then
+    usage
+fi
 
 if [[ ! "$HACK" =~ ^[a-z0-9\-]+$ ]]; then
     echo "Hack name '$HACK' should be all snake case, all lower case"
@@ -26,16 +25,11 @@ if [[ ! "$AUTHOR" =~ ^.+@.+\..+$ ]]; then
     echo "Author '$AUTHOR' is a not a valid email address"
 fi
 
-if [ -z "${HACK}" ] || [ -z "${AUTHOR}" ] || [ -z "${TITLE}" ]; then
-    echo "Usage: ${0} --hack=<string> --author=<string> --title=<string>" 1>&2; exit 1
-fi
-
 if [ ! -d hacks ]; then
     echo "hacks dir is missing, are you in the right directory?" 1>&2; exit 1
 fi
 
 BASEDIR="hacks/$HACK"
-
 
 mkdir -p $BASEDIR
 mkdir -p $BASEDIR/artifacts
