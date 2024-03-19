@@ -78,7 +78,7 @@ The repository includes a shell script, `setup-newhack.sh` to create a new hack 
 
 ```shell
 cd YOUR_FORK  # typically cloud-hackathons
-tools/setup-newhack.sh --hack=century-of-iot --author=me@google.com --title="IoT hack of the century"
+tools/setup-newhack.sh -h century-of-iot -a me@google.com -t "IoT hack of the century"
 ```
 
 > **Note**  
@@ -93,6 +93,21 @@ git checkout -b new-iot-hack  # if you go for a branch
 git add .
 git commit -m "initial version of the IoT hack..."
 git push --set-upstream origin new-iot-hack
+```
+
+### Scaffolding with Github Actions
+
+If the Command Line option doesn't work for you, you can consider using the provided Github Action for creating a new gHack.
+
+Navigate to the Actions tab for your fork and click on *Create a new gHack*, click on the gray *Run workflow* button, stick to *main* as the branch where the action will be run, fill in the other details and click on the green *Run workflow* button to start the action. This will create a new branch with the same as as the hack id, create the scaffolding and commit those changes into the newly created branch.
+
+![Screenshot for triggering the scaffolding action](images/author-create-new-hack.png.png)
+
+Once the action is completed, you can pull from your origin and check out the branch
+
+```shell
+git pull origin
+git checkout new-iot-hack  # the hack id which is used as the remote branch name
 ```
 
 ### Verifying the Rendering
