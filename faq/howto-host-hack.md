@@ -29,6 +29,7 @@ The following checklist summarizes all the steps required to host a gHack with l
 1. Create a [Calendar invite](#calendar-invite) using the same Meet link just created.
 1. (Optional): [Create resource zip files](#making-resources-available) and upload them to the Space.
 1. (If using Qwiklabs): Familiarize yourself with the [Qwiklabs Environment](#qwiklabs) and create the [Classroom instance](#classrooms).
+1. (If using own environment): Follow [these instructions](./howto-setup-environment.md) to manually run Terraform scripts to set up your own environment.
 1. Create a [kick off presentation](#event-kick-off-presentation-templates) from the templates.
 1. If possible create preliminary teams ahead of time and include a team break-down slide in your kick-off presentation. Be prepare to shuffle teams around if needed.
 	1. **NOTE:** For large, multi-customer events this will be impossible. Instead include a slide about *HOW* teams will be formed, eg: Randomly, Round Robin, etc.
