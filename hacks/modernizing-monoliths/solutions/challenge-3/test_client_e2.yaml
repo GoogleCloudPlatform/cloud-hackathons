@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dcss-e2-test
+  namespace: dcss
+spec:
+  replicas: 100
+  selector:
+    matchLabels:
+      run: dcss-e2-test
+  template:
+    metadata:
+      labels:
+        run: dcss-e2-test
+    spec:
+      containers:
+      - name: dcss-e2-test
+        image: us-central1-docker.pkg.dev/djl-gke-bootcamp/dcss/dungeon-crawl-stone-soup:1.0-test
+        resources:
+          requests:
+            memory: 200Mi
+            cpu: 100m
+          limits:
+            memory: 200Mi
+        volumeMounts:
+        - mountPath: /dev/shm
+          name: shared-memory
+        env:
+          - name: LOADBALANCER_IP
+            value: "34.67.99.153"
+      volumes:
+        - name: shared-memory
+          emptyDir: {}
+      nodeSelector:
+        cloud.google.com/gke-nodepool: dcss-e2-clients

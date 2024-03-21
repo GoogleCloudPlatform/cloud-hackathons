@@ -1,0 +1,64 @@
+# Install the python requirements
+FROM    python:3.7-slim AS requirements
+
+ENV     PATH="/venv/bin:$PATH"
+RUN     python -m venv /venv
+
+COPY    /crawl/crawl-ref/source/webserver/requirements/base.py3.txt ./
+
+RUN     pip3 install -r base.py3.txt;
+
+# Run the make command
+FROM    python:3.7-slim AS make
+LABEL   author="<AUTHOR>"
+LABEL   created="<DATE>"
+LABEL   last_updated="<DATE>"
+
+ENV     PATH="/venv/bin:$PATH"
+
+COPY    . ./
+COPY    --from=requirements /venv /venv
+
+WORKDIR "/crawl/crawl-ref/source"
+
+RUN     apt-get update; \
+        apt-get -y install \
+        git \
+        build-essential \
+        libncursesw5-dev \
+        bison \
+        flex \
+        liblua5.1-0-dev \
+        libsqlite3-dev \
+        libz-dev \
+        pkg-config \
+        python3-yaml \
+        binutils-gold \
+        python-is-python3 \
+        libsdl2-image-dev \
+        libsdl2-mixer-dev \
+        libsdl2-dev \
+        libfreetype6-dev \
+        libpng-dev \
+        fonts-dejavu-core \
+        advancecomp \
+        make \
+        pngcrush; \
+        make WEBTILES=y;
+
+# App image
+FROM    python:3.7-slim AS app
+
+ENV     PATH="/venv/bin:$PATH"
+
+RUN     apt-get update; \
+        apt-get -y install liblua5.1-0-dev
+
+COPY    --from=requirements /venv /venv
+COPY    --from=make /crawl/crawl-ref /crawl/crawl-ref
+
+WORKDIR "/crawl/crawl-ref/source"
+
+EXPOSE 8080
+
+ENTRYPOINT ["python3", "webserver/server.py"]

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dungeon-crawl-stone-soup
+  namespace: <NAMESPACE>
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: dungeon-crawl-stone-soup
+  template:
+    metadata:
+      labels:
+        run: dungeon-crawl-stone-soup
+    spec:
+      containers:
+      - name: dungeon-crawl-stone-soup
+        image: <ARTIFACT-REGISTRY-IMAGE-PATH>
+        resources:
+          requests:
+            memory: 2000Mi
+            cpu: 500m
+          limits:
+            memory: 2000Mi
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+      nodeSelector:
+        cloud.google.com/gke-nodepool: <NODEPOOL-NAME>
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: server
+                  operator: In
+                  values:
+                  - games
+              topologyKey: "kubernetes.io/hostname"
