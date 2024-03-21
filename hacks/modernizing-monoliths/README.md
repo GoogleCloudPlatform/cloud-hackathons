@@ -107,7 +107,7 @@ Too comfortable?  Eager to do more?  Try these additional challenges!
 
 ### Introduction
 
-With your Docker image ready and tested, you are ready to get it running on GKE so players can start enjoying this retro-style rogue-like. Your manager asks that you try to keep the node sizes small to keep costs down, and that for now you limit the number of nodes to 3.
+With your Docker image ready and tested, you are ready to get it running on GKE so players can start enjoying this retro-style rogue-like game. Your manager asks that you try to keep the node sizes small to keep costs down, and that for now you limit the number of nodes to 3.
 
 Here are some helpful terms to know for this section:
 - *Kubernetes* - an open-source system for automating deployment, scaling, and management of containerized applications
@@ -129,12 +129,18 @@ To help you be successful, here are some reminders of things you will need to do
 - Create a deployment for your application and a service to direct traffic to it. Don't forget the liveness and readiness probes!
 - Create a namespace to help keep things organized
 
+> **Note**
+- Use `e2-standard-2` nodes in your node pool as they will be the most cost effective. Don't worry about performance for this gHack!
+- The general GKE best practices are (note: there are always exceptions!):
+   - Don't set CPU limits
+   - Set memory limit equal to memory request
+
 ### Success Criteria
 
 - A cluster with three nodes in a node pool
 - Default node pool deleted
 - Liveness and readiness probes implemented on the game server deployment
-- SSH into a game server container and check the files
+- SSH into a game server container and verify the contents match with those of the [crawl-ref](https://github.com/TheLanceLord/crawl/tree/master/crawl-ref/source) folder
 - Demonstrate you can play the game by connecting to your service's IP address
 
 ### Learning Resources
@@ -148,13 +154,6 @@ To help you be successful, here are some reminders of things you will need to do
 * [Namespaces Walkthrough](https://kubernetes.io/docs/tasks/administer-cluster/namespaces-walkthrough/)
 * [Kubernetes Glossary](https://kubernetes.io/docs/reference/glossary/?fundamental=true)
 
-### Tips
-
-- Use `e2-standard-2` nodes in your node pool as they will be the most cost effective. Don't worry about performance for this gHack!
-- The general GKE best practices are (note: there are always exceptions!):
-   - Don't set CPU limits
-   - Set memory limit equal to memory request
-
 ## Challenge 3: Load testing
 
 ### Introduction
@@ -166,6 +165,8 @@ The testing team is putting their finishing touches on their load testing applic
 In this challenge, you will containerize the load testing application for your Dungeon Crawl Stone Soup game servers, and deploy a 100 pod test using GKE.
 
 Here is the test application code [synthetic_player.py](https://github.com/TheLanceLord/crawl/blob/master/load-testing/synthetic_player.py)
+
+This application uses [Selenium](https://www.selenium.dev/) with a Google Chrome webdriver to simulate player connectivity and interactions with the game. (note: at the time of course creation, running the `apt-get -y --fix-broken install;` and repeating the `dpkg -i google-chrome-stable_current_amd64.deb;` command were necessary to get the application to work.)
 
 The install instructions:
 ```
@@ -187,10 +188,17 @@ To help you be successful, here are some reminders of things you will need to do
 - Create a deployment for your application and a service to direct traffic to it. Don't forget the liveness and readiness probes!
 - Create a namespace to help keep things organized
 
+> **Note**
+- Use `e2-standard-2` nodes in your node pool as they will be the most cost effective, and if you run out of E2, use N2. Don't worry about performance for this gHack!
+- The general GKE best practices are (note: there are always exceptions!):
+   - Don't set CPU limits
+   - Set memory limit equal to memory request
+- The load testing clients sometimes have connection issues, don't be concerned if GKE shows you have 100 pods running, but your application only shows a handful
+
 ### Success Criteria
 
 - 100 test client pods spun up in a running state
-- See bots logged into your game server and watch their session to see them playing the game
+- Navigate to the public endpoint of your service and login to see the list of bots playing the game. View one of their in-progress game sessions to see their attempt
 
 ### Learning Resources
 
@@ -203,10 +211,3 @@ To help you be successful, here are some reminders of things you will need to do
 * [Namespaces Walkthrough](https://kubernetes.io/docs/tasks/administer-cluster/namespaces-walkthrough/)
 * [Kubernetes Glossary](https://kubernetes.io/docs/reference/glossary/?fundamental=true)
 
-### Tips
-
-- Use `e2-standard-2` nodes in your node pool as they will be the most cost effective, and if you run out of E2, use N2. Don't worry about performance for this gHack!
-- The general GKE best practices are (note: there are always exceptions!):
-   - Don't set CPU limits
-   - Set memory limit equal to memory request
-- The load testing clients sometimes have connection issues, don't be concerned if GKE shows you have 100 pods running, but your application only shows a handful
