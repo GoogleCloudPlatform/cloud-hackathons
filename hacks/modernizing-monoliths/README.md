@@ -69,6 +69,7 @@ You can find an excellent sample Dockerfile by following the *Multi-Stage Docker
 
 To help you be successful, here are some reminders of things you will need to do:
 - Download the application code
+- **Compiling DCSS with `make WEBTILES=y` command will take 25+ minutes**. Compile the code on your host machine and create your image from the compiled code to save time on your builds. Work on your Dockerfile while this compiles!
 - Create a Dockerfile in the same directory as the application that will do selects a base image, install needed packages and files, and start the application
 - Run a Docker build to build a container image
 - Create and test a local container before pushing to Artifact Registry or dockerhub
@@ -94,7 +95,6 @@ To help you be successful, here are some reminders of things you will need to do
 
 ### Tips
 
-- **Compiling DCSS with `make WEBTILES=y` command can take 25+ minutes**. Compile the code on your host machine and create your image from the compiled code to save time on your builds.
 - Multi-Stage Dockerfiles are important for keeping your image size down. You can always write your Dockerfile as a single stage, and then break it up once you've got the containerized application working.
 
 ### Advanced Challenges
