@@ -179,7 +179,7 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAc
 
 This is the SQL statement to create a link to the LLM (you need to replace `$REGION` with the correct value).
 
-> **Note** Remind the participants that they can also use Gemini BigQuery to get assistance on how to do certain things in SQL.
+> **Note** Remind the participants that they can also use Gemini in BigQuery to get assistance on how to do certain things in SQL.
 
 ```sql
 CREATE OR REPLACE MODEL
