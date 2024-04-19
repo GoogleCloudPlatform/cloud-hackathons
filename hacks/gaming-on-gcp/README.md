@@ -37,7 +37,7 @@ The objectives of this hackathon are:
 - Access to an environment with the following:
   - gcloud (>= 410.0.0)
   - node.js (>= v19.1.0)
-  > **Note** Cloud Shell has these pre-installed
+  > **Note** Cloud Shell has these pre-installed.
 
 ## Contributors
 
@@ -143,8 +143,8 @@ Before we can start playing on a real game server, we are first going to need a 
 
 - Clone the Space Agon repo referenced in the Learning Resources section into your Cloud Shell so you can work with the files contained in that repo.
 `git clone https://github.com/TheLanceLord/space-agon-ghack`
-- Use the UI to create an Artifact Registry repository for Docker images
-- Build a Docker image for the Space Agon web client frontend and push it to your project’s Artifact Registry or Container Registry
+- Use the UI to create an Artifact Registry repository for Docker images.
+- Build a Docker image for the Space Agon web client frontend and push it to your project’s Artifact Registry with the following code:
 ```
 export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
 docker build . -f Frontend.Dockerfile -t $REGISTRY/space-agon-frontend:0.1
@@ -168,12 +168,12 @@ At this point, you don’t have any game servers to connect to, so you still can
 ### Success Criteria
 
 - GKE shows your frontend deployment and service are both running.
-- Demonstrate you can connect to your frontend via your Service’s IP address by using your browser to connect to http://<YOUR-FRONTEND-IP>
+- Demonstrate you can connect to your frontend via your Service’s IP address by using your browser to connect to http://<YOUR-FRONTEND-IP>.
 
 ### Tips
 
-- The skeleton of a frontend.yaml file has been provided in the GitHub repository
-- If you aren’t a fan of command line text editors, such as vi, emacs or nano, click the `Open Editor` button (pencil icon) in the Cloud Shell to get a web-based editor that you can use for the entire gHack
+- The skeleton of a frontend.yaml file has been provided in the GitHub repository.
+- If you aren’t a fan of command line text editors, such as vi, emacs or nano, click the `Open Editor` button (pencil icon) in the Cloud Shell to get a web-based editor that you can use for the entire gHack.
 
 ### Learning Resources
 
@@ -193,7 +193,7 @@ Deploy a dedicated server to your Agones cluster and demonstrate its functionali
 
 Your task is to deploy an Agones GameServer of Space Agon in Google Cloud and play test it with your team. This will require you to do the following:
 
-- Build a Docker image for the Space Agon dedicated server and push it to your project’s Artifact Registry:
+- Build a Docker image for the Space Agon dedicated server and push it to your project’s Artifact Registry with the following code:
 ```
 export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
 docker build . -f Dedicated.Dockerfile -t $REGISTRY/space-agon-dedicated:0.1
@@ -206,7 +206,7 @@ docker push $REGISTRY/space-agon-dedicated:0.1
       - Memory: 200Mi
       - CPU: 500m
 
-> **Note** Dedicated references Dedicated Gaming Server
+> **Note** Dedicated references Dedicated Gaming Server.
 
 ### Success Criteria
 
@@ -216,7 +216,7 @@ docker push $REGISTRY/space-agon-dedicated:0.1
 ### Tips
 
 - A gameserver.yaml is in the Space Agon root directory and has a note on port specifications and compute requests.
-- If the web client is stuck showing the loading message, refreshing it should fix the issue
+- If the web client is stuck showing the loading message, refreshing it should fix the issue.
 
 ### Learning Resources
 
@@ -234,8 +234,8 @@ Deploy a Fleet of GameServers to your Agones cluster and manage it.
 
 Your task is to deploy an Agones Fleet of Space Agon gameservers in Google Cloud and play test it with your team. This will require you to do the following:
 
-- Write and apply a fleet.yaml file for Space Agon to deploy 2 game servers in your cluster
-- Write an allocation.yaml and create the allocator in your Agones cluster
+- Write and apply a fleet.yaml file for Space Agon to deploy 2 game servers in your cluster.
+- Write an allocation.yaml and create the allocator in your Agones cluster.
    > **Note** You must ALWAYS use kubectl create with the allocator.yaml file, kubectl apply will not work.
 
 > **Note** A Fleet is a managed set of Game Servers. Fleets manage Game Servers similar to how Deployments manage Pods.
@@ -276,14 +276,14 @@ Implement OpenMatch and customize your matchmaking function.
 
 So far, the Find Game feature hasn’t been working because your cluster’s matchmaking service isn’t set up to handle it. To get this feature working, you will need to:
 
-- Build a Docker image for the Matchmaking Function and push it to your project’s Artifact Registry or Container Registry with the following code:
+- Build a Docker image for the Matchmaking Function and push it to your project’s Artifact Registry with the following code:
 ```
 export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
 docker build . -f Mmf.Dockerfile -t $REGISTRY/space-agon-mmf:0.1
 docker push $REGISTRY/space-agon-mmf:0.1
 ```
 - Write and apply a mmf.yaml, creating a deployment of your Matchmaking Function and a service to access it.
-- Build a Docker image for the Director and push it to your project’s Artifact Registry:
+- Build a Docker image for the Director and push it to your project’s Artifact Registry with the following code:
 ```
 docker build . -f Director.Dockerfile -t $REGISTRY/space-agon-director:0.1
 docker push $REGISTRY/space-agon-director:0.1
