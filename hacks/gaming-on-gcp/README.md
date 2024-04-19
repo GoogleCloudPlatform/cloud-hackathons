@@ -266,6 +266,8 @@ Implement OpenMatch and customize your matchmaking function.
 
 ![Open Match Architecture](images/match-architecture.png)
 
+![Event Diagram](images/demo-match-sequence.png)
+
 ### Description
 
 So far, the Find Game feature hasn’t been working because your cluster’s matchmaking service isn’t set up to handle it. To get this feature working, you will need to:
