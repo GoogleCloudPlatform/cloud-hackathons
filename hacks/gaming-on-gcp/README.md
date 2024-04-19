@@ -36,7 +36,7 @@ The objectives of this hackathon are:
    - If you lack a basic understanding, you can review [Docker](https://docs.docker.com/) and [Kubernetes](https://kubernetes.io/docs/home/) now.
 - Access to an environment with the following:
   - gcloud (>= 410.0.0)
-  - node.js (>= v19.1.0)
+- node.js (>= v19.1.0)
   > **Note** Cloud Shell has these pre-installed.
 
 ## Contributors
@@ -88,7 +88,10 @@ helm install $OM_NS \
 	--set redis.metrics.enabled=false
 ```
 - Deploy a simple game server to verify your Agones installation.
-- Test the deployment by ensuring that the game server is running and accessible. You will need to install `nc` to your Cloud Shell with `sudo apt-get -y install netcat` to test.
+- Test the deployment by ensuring that the game server is running and accessible. To test, you will need to install `nc` to your Cloud Shell with:
+```
+sudo apt-get -y install netcat
+``` 
 
 > **Note** Although you can create this cluster using the Google Cloud Console UI, we encourage you to explore and figure out how to create clusters using the gcloud CLI tool.
 
@@ -141,8 +144,10 @@ Deploy a web client to connect to your GameServers.
 
 Before we can start playing on a real game server, we are first going to need a frontend to connect through. To do this, you will need to:
 
-- Clone the Space Agon repo referenced in the Learning Resources section into your Cloud Shell so you can work with the files contained in that repo.
-`git clone https://github.com/TheLanceLord/space-agon-ghack`
+- Clone the Space Agon repo referenced in the Learning Resources section into your Cloud Shell so you can work with the files contained in that repo:
+```
+git clone https://github.com/TheLanceLord/space-agon-ghack
+```
 - Use the UI to create an Artifact Registry repository for Docker images.
 - Build a Docker image for the Space Agon web client frontend and push it to your project’s Artifact Registry with the following code:
 ```
