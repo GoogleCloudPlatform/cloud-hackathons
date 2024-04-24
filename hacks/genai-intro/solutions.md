@@ -65,6 +65,8 @@ response = model.predict(prompt.format(text=text[:10000]))
 
 Note that when the input token limit is exceeded (when the contents are not truncated), there have been cases that there was no error but empty/non-sense responses both through the API as the console. You might need to give some hints if that happens.
 
+> **Note**  If participants mention that they could have used Gemini 1.5 with a much larger context window to prevent the token limit issue, remind them that longer windows mean more tokens and become more expensive. The title is typically at the beginning of the article, so even when using Gemini it would make sense to truncate the text.
+
 Some participants might want to use string concatenation (instead of `prompt.format`, something like `prompt + text`) which could work, but that's less elegant and limits things (text can only be put at the end). Since for the next challenge the `format` function is going to be more important, it's good to stick to that for this challenge. The linked documentation for `str.format` is quite helpful.
 
 If you want to use gsutil & jq to get the contents, this is the command to use:
@@ -129,6 +131,8 @@ def extract_summary_from_text(text: str) -> str:
 
 The prompts listed here are just examples, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should in this case reflect the main points from the summary in _Success Criteria_.
 
+> **Note**  If participants mention that they could have used Gemini 1.5 with a much larger context window instead of chaining, remind them that these models sometimes have issues extracting relevant bits when given very large contexts (see for example [Lost in the Middle](https://arxiv.org/pdf/2307.03172.pdf) paper) although better prompt engineering sometimes can help. In addition, chaining might still be more memory efficient (processing chunks individually instead of whole documents) and more flexible (by integrating data from diverse information sources & tools within a single workflow) in some cases. Although the expanding context windows of LLMs are gradually reducing the need for this technique, it remains relevant in specific use cases. The optimal approach depends on the specific requirements of the task and the available resources.
+
 ## Challenge 4: BigQuery &#10084; LLMs
 
 ### Notes & Guidance
@@ -174,6 +178,8 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAc
 ```
 
 This is the SQL statement to create a link to the LLM (you need to replace `$REGION` with the correct value).
+
+> **Note** Remind the participants that they can also use Gemini in BigQuery to get assistance on how to do certain things in SQL.
 
 ```sql
 CREATE OR REPLACE MODEL
