@@ -231,7 +231,8 @@ Your task is to deploy an Agones Fleet of Space Agon gameservers in Google Cloud
 
 - Write and apply a fleet.yaml file for Space Agon to deploy 2 game servers in your cluster.
 - Write an allocation.yaml and create the allocator in your Agones cluster.
-   > **Note** You must ALWAYS use `kubectl create` with the allocator.yaml file, `kubectl apply` will not work.
+
+> **Note** You must ALWAYS use `kubectl create` with the allocator.yaml file, `kubectl apply` will not work.
 
 > **Note** An allocator flags a game server so kubernetes knows not to delete it unless explicitly told to. It is most commonly used to flag that a game server has players on it, and will protect that server from scale down operations.
 
