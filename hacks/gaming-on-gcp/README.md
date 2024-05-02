@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to the Gaming on Google Cloud gHack! In this hackathon, you will have the opportunity to explore and utilize the advanced features and capabilities offered by Google Cloud to develop and deploy gaming applications. You will be learning to implement and leverage:
+Welcome to the Gaming on Google Cloud gHack! In this gHack, you will have the opportunity to explore and utilize the advanced features and capabilities offered by Google Cloud to develop and deploy gaming applications. You will be learning to implement and leverage:
 
 - Agones Game Server: Build scalable and reliable game server infrastructure using the Agones Game Server, which provides managed Kubernetes clusters specifically designed for game hosting.
 - Open Match: Create matchmaking systems with Open Match, an open-source matchmaking framework that enables flexible and customizable matchmaking logic to ensure fair and enjoyable multiplayer experiences.
@@ -11,14 +11,14 @@ Welcome to the Gaming on Google Cloud gHack! In this hackathon, you will have th
 
 ## Learning Objectives
 
-The objectives of this hackathon are:
+The objectives of this gHack are:
 
 - Create a Multiplayer Game Infrastructure: Build a scalable and reliable game infrastructure using the Agones Game Server, allowing players to connect and interact in a multiplayer gaming environment.
 - Implement Matchmaking Logic: Customize and deploy a matchmaking system using Open Match to match up players.
 
 ## Challenges
 
-- Challenge 1: Agones Game Servers on Kubernetes
+- Challenge 1: Deploy the Agones Game Server Deployment Platform on Kubernetes
    - Deploy Agones, a library for hosting, running and scaling dedicated game servers on Kubernetes.
 - Challenge 2: Deploy GameServers - Space Agon
    - Deploy a dedicated server to your Agones cluster and demonstrate its functionality.
@@ -27,7 +27,7 @@ The objectives of this hackathon are:
 - Challenge 4: Deploy your own frontend web client and Service
    - Deploy your own web client to connect to your GameServers.
 - Challenge 5: Matchmaking with Open Match
-   - Implement OpenMatch and customize your matchmaking function.
+   - Implement Open Match and customize your matchmaking function.
 
 ## Prerequisites
 
@@ -36,7 +36,7 @@ The objectives of this hackathon are:
    - If you lack a basic understanding, you can review [Docker](https://docs.docker.com/) and [Kubernetes](https://kubernetes.io/docs/home/) now.
 - Access to an environment with the following:
   - gcloud (>= 410.0.0)
-- node.js (>= v19.1.0)
+  - node.js (>= v19.1.0)
   > **Note** Cloud Shell has these pre-installed.
 
 ## Contributors
@@ -58,7 +58,7 @@ In this challenge, you will learn how to deploy Agones, a library for hosting, r
 
 Your task is to deploy an Agones game server in Google Cloud, that will include the following:
 
-- Install Agones using the Helm instructions on a freshly provisioned Google Kubernetes Engine (GKE) Autopilot cluster using the CLI.
+- Install Agones using Helm on a freshly provisioned Google Kubernetes Engine (GKE) Autopilot cluster using the CLI.
 
 - Install Open Match v1.8.1 to your cluster and apply an evaluator.
 Writing the evaluator customizations doesn’t fit within the time constraints for this challenge, so the code has been provided. You can install Open Match and apply the evaluator with the following command: 
@@ -120,19 +120,12 @@ sudo apt-get -y install netcat
 
 ### Learning Resources
 
-- [Agones documentation](https://agones.dev/site/docs/)
 - [Create a Game Server](https://agones.dev/site/docs/getting-started/create-gameserver/)
 - [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
-- [Kubernetes Overview](https://kubernetes.io/docs/concepts/overview/)
 - [GKE Overview](https://cloud.google.com/kubernetes-engine/docs/concepts/kubernetes-engine-overview)
-- [Zonal Clusters](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-zonal-cluster)
-- [Open-source Game Server](https://cloud.google.com/blog/products/containers-kubernetes/introducing-agones-open-source-multiplayer-dedicated-game-server-hosting-built-on-kubernetes)
-- [Agones documentation](https://agones.dev/)
-- [Agones GitHub Repository](https://github.com/googleforgames/agones)
 - [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
-- [Open Match documentation](https://open-match.dev/site/docs/overview/)
 - [Open Match install](https://open-match.dev/site/docs/installation/)
-- [Understanding Evaluators](https://open-match.dev/site/docs/guides/evaluator/)
+- [Understanding Open Match Evaluators](https://open-match.dev/site/docs/guides/evaluator/)
 
 ## Challenge 2: Deploy a frontend web client and Service
 
@@ -144,11 +137,8 @@ Deploy a web client to connect to your GameServers.
 
 Before we can start playing on a real game server, we are first going to need a frontend to connect through. To do this, you will need to:
 
-- Clone the Space Agon repo referenced in the Learning Resources section into your Cloud Shell so you can work with the files contained in that repo:
-```
-git clone https://github.com/TheLanceLord/space-agon-ghack
-```
-- Use the UI to create an Artifact Registry repository for Docker images.
+- Clone the [Space Agon repo](https://github.com/TheLanceLord/space-agon-ghack) into your Cloud Shell so you can work with the files contained in that repo:
+- Create an Artifact Registry repository for Docker images.
 - Build a Docker image for the Space Agon web client frontend and push it to your project’s Artifact Registry with the following code:
 ```
 export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
@@ -170,10 +160,12 @@ At this point, you don’t have any game servers to connect to, so you still can
 
 > **Note** Epilepsy warning for Mac users. Mac users with non-Intel chips using Chrome or Safari will see a lot of flashing large boxes on the screen. You will need to download and install Firefox and use it as your browser for this gHack.
 
+> **Note** Unfamiliar with Docker and what the build and push commands do? After this gHack, check out [Modernizing the Monolith: Containerizing and Deploying to Kubernetes](https://ghacks.dev/hacks/modernizing-monoliths/) to get hands-on experience with containerizing and deploying applications.
+
 ### Success Criteria
 
 - GKE shows your frontend deployment and service are both running.
-- Demonstrate you can connect to your frontend via your Service’s IP address by using your browser to connect to http://<YOUR-FRONTEND-IP>.
+- Demonstrate you can connect to your frontend via your Service’s IP address by using your browser to connect to `http://<YOUR-FRONTEND-IP>`.
 
 ### Tips
 
@@ -192,7 +184,7 @@ At this point, you don’t have any game servers to connect to, so you still can
 
 ### Introduction
 
-Deploy a dedicated server to your Agones cluster and demonstrate its functionality.
+Deploy a 'Dedicated Gaming Server' to your Agones cluster and demonstrate its functionality.
 
 ### Description
 
@@ -211,12 +203,10 @@ docker push $REGISTRY/space-agon-dedicated:0.1
       - Memory: 200Mi
       - CPU: 500m
 
-> **Note** Dedicated references Dedicated Gaming Server.
-
 ### Success Criteria
 
 - GKE shows a GameServer is deployed.
-- You are able to play a game of SpaceAgon with your team by first connecting to http://<YOUR-FRONTEND-IP> and then clicking `Connect to Server` and providing your GameServers IP address and port.
+- You are able to play a game of SpaceAgon with your team by first connecting to `http://<YOUR-FRONTEND-IP>` and then clicking **Connect to Server** and providing your GameServers IP address and port.
 
 ### Tips
 
@@ -233,7 +223,7 @@ docker push $REGISTRY/space-agon-dedicated:0.1
 
 ### Introduction
 
-Deploy a Fleet of GameServers to your Agones cluster and manage it.
+Deploy a Fleet of GameServers to your Agones cluster and manage it. A Fleet is a managed set of Game Servers; Fleets manage Game Servers similar to how Deployments manage Pods.
 
 ### Description
 
@@ -241,9 +231,7 @@ Your task is to deploy an Agones Fleet of Space Agon gameservers in Google Cloud
 
 - Write and apply a fleet.yaml file for Space Agon to deploy 2 game servers in your cluster.
 - Write an allocation.yaml and create the allocator in your Agones cluster.
-   > **Note** You must ALWAYS use kubectl create with the allocator.yaml file, kubectl apply will not work.
-
-> **Note** A Fleet is a managed set of Game Servers. Fleets manage Game Servers similar to how Deployments manage Pods.
+   > **Note** You must ALWAYS use `kubectl create` with the allocator.yaml file, `kubectl apply` will not work.
 
 > **Note** An allocator flags a game server so kubernetes knows not to delete it unless explicitly told to. It is most commonly used to flag that a game server has players on it, and will protect that server from scale down operations.
 
@@ -252,7 +240,7 @@ Your task is to deploy an Agones Fleet of Space Agon gameservers in Google Cloud
 - GKE shows your Fleet has all game servers running and ready.
 - Demonstrate that you can scale your Fleet to 5 game servers using kubectl commands.
 - GKE shows one of the game servers in your Fleet has been allocated.
-- Demonstrate you can play a game on the allocated server by first connecting to http://<YOUR-FRONTEND-IP> and then clicking `Connect to Server` and providing your GameServers IP address and port. and that that allocation flag disappears in GKE when all players have disconnected.
+- Demonstrate you can play a game on the allocated server by first connecting to `http://<YOUR-FRONTEND-IP>` and then clicking **Connect to Server** and providing your GameServers IP address and port. and that that allocation flag disappears in GKE when all players have disconnected.
 
 ### Tips
 
@@ -271,7 +259,7 @@ Your task is to deploy an Agones Fleet of Space Agon gameservers in Google Cloud
 
 ### Introduction
 
-Implement OpenMatch and customize your matchmaking function.
+Implement Open Match, which allows for automated matching of connecting players to a game server based on logic you define. The matchmaking function for Space Agon is simple, pairing players based on the order of their requests. You will customize this function to allow your entire team to play a match on a single game server.
 
 ![Open Match Architecture](images/match-architecture.png)
 

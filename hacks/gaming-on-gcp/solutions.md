@@ -8,7 +8,7 @@ Welcome to the coach's guide for Gaming on Google Cloud. Here you will find link
 
 ## Coach's Guides
 
-- Challenge 1: Agones Game Servers on Kubernetes
+- Challenge 1: Deploy the Agones Game Server Deployment Platform on Kubernetes
    - Deploy Agones, a library for hosting, running and scaling dedicated game servers on Kubernetes.
 - Challenge 2: Deploy GameServers - Space Agon
    - Deploy a dedicated server to your Agones cluster and demonstrate its functionality.
@@ -19,53 +19,26 @@ Welcome to the coach's guide for Gaming on Google Cloud. Here you will find link
 - Challenge 5: Matchmaking with Open Match
    - Implement OpenMatch and customize your matchmaking function.
 
-## Coach Prerequisites
+## Google Cloud Requirements
 
-This hack has pre-reqs that a coach is responsible for understanding and/or setting up BEFORE hosting an event. Please review the [gHacks Hosting Guide](https://ghacks.dev/faq/howto-host-hack.html) for information on how to host a hack event.
+This hack requires students to have access to Google Cloud project where they can create and consume Google Cloud resources. These requirements should be shared with a stakeholder in the organization that will be providing the Google Cloud project that will be used by the students.
 
-The guide covers the common preparation steps a coach needs to do before any gHacks event, including how to properly setup Google Meet and Chat Spaces.
+- Participants will need the Owner role on their respective projects
 
-> **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
+## Suggested gHack Agenda
+
+- Day 1
+   - Challenge 1 (~1 hour)
+   - Challenge 2 (~2 hours)
+   - Challenge 3 (~1 hour)
+   - Challenge 4 (~1 hour)
+   - Challenge 5 (~2 hours)
 
 ## Challenge 1: Agones Game Servers on Kubernetes
 
 ### Notes & Guidance
 
 In this challenge, participants will learn how to deploy Agones, an open-source, multiplayer, dedicated game server built on Kubernetes, in the Google Cloud environment. They will set up a Kubernetes cluster, install Agones and Open Match, and deploy a simple game server that they can netcat to and send messages to that it will echo back.
-
-### Objectives
-
-- A GKE Autopilot cluster has been provisioned.
-- Agones is successfully installed on the GKE cluster.
-- Open Match is installed and its associated pods are running. Pods being in the `READY` state is not required at this time. 
-- A game server is created and running without errors.
-- The game server is accessible and functioning as expected.
-   - Use the nc commands given in the Agones docs to show the game server working.
-   - Exit the server using nc and use kubectl to show that it is no longer running.
-
-### Prerequisites
-
-- Understanding of Kubernetes concepts and architecture.
-- Familiarity with Google Cloud Platform (GCP) and its console or command-line tools.
-- Basic knowledge of YAML configuration files.
-
-### Materials
-
-- [Agones documentation](https://agones.dev/site/docs/)
-- [Create a Game Server](https://agones.dev/site/docs/getting-started/create-gameserver/)
-- [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
-- [Kubernetes Overview](https://kubernetes.io/docs/concepts/overview/)
-- [GKE Overview](https://cloud.google.com/kubernetes-engine/docs/concepts/kubernetes-engine-overview)
-- [Zonal Clusters](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-zonal-cluster)
-- [Open-source Game Server](https://cloud.google.com/blog/products/containers-kubernetes/introducing-agones-open-source-multiplayer-dedicated-game-server-hosting-built-on-kubernetes)
-- [Agones documentation](https://agones.dev/)
-- [Agones GitHub Repository](https://github.com/googleforgames/agones)
-- [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
-- [Open Match documentation](https://open-match.dev/site/docs/overview/)
-- [Open Match install](https://open-match.dev/site/docs/installation/)
-- [Understanding Evaluators](https://open-match.dev/site/docs/guides/evaluator/)
-
-### Suggested Steps
 
 1. **Create an Autopilot Cluster:** We will need a cluster to run Agones and Open Match. We are using Autopilot because it is both cost efficient and recommended for teams looking to reduce the overhead of cluster maintenance.
 ```
@@ -88,11 +61,12 @@ helm repo update
 helm install my-release --namespace agones-system --create-namespace agones/agones
 ```
 This installs all the required Custom Resource Definitions and the components required for Agones.
+
 4. **Confirming Agones started successfully:** To confirm Agones is up and running, run the following command:
 ```
 kubectl get pods --namespace agones-system
 ```
-It should describe six pods created in the agones-system namespace, with no error messages or status. All this pods should be in a RUNNING state similar to this:
+It should describe six pods created in the agones-system namespace, with no error messages or status. All this pods should be in a **RUNNING** state similar to this:
 ```
 NAME                                 READY   STATUS    RESTARTS        AGE
 agones-allocator-858c55d5f6-226z9    1/1     Running   0               5m41s
@@ -131,9 +105,10 @@ helm install $OM_NS \
 	--set redis.replica.replicaCount=0 \
 	--set redis.metrics.enabled=false
 ```
-You’ll get some warnings and `resource mapping not found` messages, but that won’t be a problem for this exercise
+You’ll get some warnings and `resource mapping not found` messages, but that won’t be a problem for this exercise.
 
-This will install the Open Match core framework, and an evaluator (which we won’t be covering in this workshop). Participants can learn more about evaluators from the linked Learning Resource in the Student's Guide
+This will install the Open Match core framework, and an evaluator (which we won’t be covering in this workshop). Participants can learn more about evaluators from the linked Learning Resource in the Student's Guide.
+
 6. **Confirm Open Match started successfully:** To confirm that the installation was successful, execute this command:
 ```
 kubectl get pods -n open-match
@@ -157,20 +132,13 @@ helm uninstall -n $OM_NS $OM_NS
 kubectl delete namespace $OM_NS
 ```
 
-### Troubleshooting Tips
-
-- Autopilot will need to scale up resources throughout the gHack and will do so automatically. During this scale up time though, it will look like pods are stuck in a pending state and you'll see errors like `couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request`. These issues will fix themselves once the autoscaling is complete, so 
+- Autopilot will need to scale up resources throughout the gHack and will do so automatically. During this scale up time though, it will look like pods are stuck in a pending state and you'll see errors like `couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request`. These issues will fix themselves once the autoscaling is complete.
 - Open Match can take 2 minutes to get into a ready state, or it can take 2 hours. This is a known issue and will sort itself out with time. Don't focus on trying to fix this.
 the participants just need to be patient.
 - For all other errors, refer to the [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/) guide to identify and resolve the issues. `kubectl describe` and `kubectl logs` on the pods that are having issues will help with answering most questions on what is going wrong.
 - Verify that the necessary network configurations, such as firewall rules and load balancers, are correctly set up to allow traffic to reach the game server.
-
-### Recommendations
-
 - Encourage participants to thoroughly read the Agones documentation to understand the installation process and configuration options.
 - Advise participants to capture screenshots or logs of the deployment process and any errors encountered for future reference and troubleshooting.
-
-### Conclusion
 
 Deploying Agones game servers on Kubernetes is an essential skill for building multiplayer game infrastructures in the Google Cloud environment. By successfully completing this challenge, participants have gained hands-on experience with setting up a GKE cluster, installing Agones, and deploying game servers. This experience will enhance their understanding of Kubernetes orchestration and enable them to effectively utilize Agones for managing multiplayer game deployments.
 
@@ -184,29 +152,15 @@ The Game Frontend serves as a layer that transfers players’ matchmaking reques
 - Submits the matchmaking requests to Open Match by creating a Ticket.
 - Communicates the Assignment result back to the Game Client once Open Match found an Assignment for this Ticket.
 
-### Objectives
-
-- Setup a GKE Deployment for the frontend web application (provided in the GitHub code) and show that it is running.
-- Setup a Service that load balances to the GKE Deployment.
-- Demonstrate connectivity to the frontend via the Service’s IP address and port.
-
-### Materials
-
-- [Space Agon repo](https://github.com/TheLanceLord/space-agon-ghack)
-- [Set up an external Application Load Balancer with Ingress](https://cloud.google.com/kubernetes-engine/docs/tutorials/http-balancer)
-- [Types of Kubernetes Services](https://cloud.google.com/kubernetes-engine/docs/concepts/service#types-of-services)
-- [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
-- [Creating and manage cluster and node pool labels](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-managing-labels)
-
-### Suggested Steps
-
 1. **Clone the GitHub Repository:** Participants will be using prebuilt applications for their game servers, frontends, director, and matchmaking. They will work out of this directory for the entirety of the gHack:
 ```
 git clone https://github.com/TheLanceLord/space-agon-ghack
 cd space-agon-ghack
 ```
-   - **Note** Cloud Shell files that one participant creates will not be accessible by the other participants. Participants will want to coordinate the sharing of completed files with each other throught this hack so they don't replicate work they've already done.
+   > **Note** Cloud Shell files that one participant creates will not be accessible by the other participants. Participants will want to coordinate the sharing of completed files with each other throught this hack so they don't replicate work they've already done.
+
 2. **Create an Artifact Registry repository:** Students can do this using the UI. If needed, the gcloud command is `gcloud artifacts repositories create "space-agon-ghack" --location=us-central1 --repository-format=docker`.
+
 3. **Build and push the Docker image for the frontend web application:** This code is provided in the Student Guide.
 ```
 docker build . -f Frontend.Dockerfile -t $REGISTRY/space-agon-frontend:0.1
@@ -261,18 +215,12 @@ spec:
   type: LoadBalancer
 ```
 Apply the frontend.yaml with `kubectl apply -f frontend.yaml`.
-5. **Connect to the frontend application:** After applying the deployment configs, we have to wait a couple of minutes for the service to get an external address. Run the command `watch kubectl get service frontend` and wait for the EXTERNAL-IP to for the address to be allocated to the backing external Load Balancer. When the external IP is ready, connect to it by using your web browser to go to http://<YOUR-FRONTEND-IP>.
 
-### Troubleshooting Tips
+5. **Connect to the frontend application:** After applying the deployment configs, we have to wait a couple of minutes for the service to get an external address. Run the command `watch kubectl get service frontend` and wait for the EXTERNAL-IP to for the address to be allocated to the backing external Load Balancer. When the external IP is ready, connect to it by using your web browser to go to `http://<YOUR-FRONTEND-IP>`.
 
 - When using a browser to view the frontend, it may stall on a loading screen. Refreshing the page will fix the issue.
 - A common issue for participants with less GKE experience is to overlook the image path and use a path from a sample reference rather than the image that they built and pushed to Artifact Registry.
-
-### Recommendations
-
 - Encourage Mac users with non-Intel chips to use Firefox to avoid a known issue with the frontend displaying rapidly flashing white boxes against a dark background.
-
-### Conclusion
 
 By successfully completing this challenge, participants have gained hands-on experience with GKE and set themselves up to learn in the proceeding challenges how Agones works using its own custom resources in conjunction with default Kubernetes resources.
 
@@ -281,19 +229,6 @@ By successfully completing this challenge, participants have gained hands-on exp
 ### Notes & Guidance
 
 Participants will need to build the images for this dedicated game server, and push it up to Artifact Registry (GAR) so that we can host these game servers images in our Kubernetes cluster. We will connect to these game servers via the frontend that was setup in the previous challenge.
-
-### Objectives
-
-- GKE shows a GameServer is deployed.
-- You are able to play a game of SpaceAgon with your team by first connecting to http://<YOUR-FRONTEND-IP> and then clicking the `Connect to Server` button and providing the GameServer's IP address and port.
-
-### Materials
-
-- [GameServer Specification](https://agones.dev/site/docs/reference/gameserver/)
-- [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
-- [Examples for other functioning gameserver.yaml files](https://agones.dev/site/docs/examples/)
-
-### Suggested Steps
 
 1. **Build and push the Docker image for the dedicated game server:** This code is provided in the Student Guide. The dedicated game server code already has the Agones Game Server SDK integrated into it.
 ```
@@ -328,18 +263,15 @@ spec:
 Apply the gameserver.yaml using `kubectl apply -f gameserver.yaml`.
 
 This creates a GameServer record inside Kubernetes, which has also created a backing Pod to run our dedicated game server code in. Running `kubectl get pods` should show two gameserver pods running. This is because Agones injected the SDK sidecar for readiness and health checking of the Game Server.
+
 3. **Update the firewall rule:** Challenge 1 had the participants setup a firewall rule allowing UDP traffic in order to support the simple game server test. Space Agon uses TCP so participants will need to update their firewall rule to allow it:
 ```
 gcloud compute firewall-rules update gke-game-server-firewall \
   --allow tcp:7000-8000,udp:7000-8000
 ```
-4. **Connect to the dedicated game server:** Verify that the game server is ready by running `kubectl get gameserver` or `kubectl get gs` and note the IP address and port. Connect to the game server by navigating to http://<YOUR-FRONTEND-IP>, and then clicking the `Connect to Server` button and providing the GameServer's IP address and port.
-
-### Troubleshooting Tips
+4. **Connect to the dedicated game server:** Verify that the game server is ready by running `kubectl get gameserver` or `kubectl get gs` and note the IP address and port. Connect to the game server by navigating to `http://<YOUR-FRONTEND-IP>`, and then clicking the **Connect to Server** button and providing the GameServer's IP address and port.
 
 - Participants will have most likely missed that they don't have the appropriate firewall rule to allow them to connect to their game server. They will want to enable firewall logging to get more details on what is happening, or they can attempt to ping the ip address and port and see that they fail to get a response.
-
-### Conclusion
 
 By successfully completing this challenge, participants have learned how to deploy a dedicated gaming server using Agones.
 
@@ -348,22 +280,6 @@ By successfully completing this challenge, participants have learned how to depl
 ### Notes & Guidance
 
 In production, you will usually want a warm fleet of Ready GameServers, waiting for players to come play on them -- so let’s set that up with an Agones Fleet!
-
-### Objectives
-
-- GKE shows a Fleet that has all game servers running and ready.
-- Participants demonstrate that they can scale their Fleet to 5 game servers using kubectl commands.
-- GKE shows one of the game servers in the Fleet has been allocated.
-- Play a game on the allocated server by first connecting to http://<YOUR-FRONTEND-IP> and then clicking `Connect to Server` and providing the GameServers IP address and port. Verify that that allocation flag disappears in GKE when all players have disconnected.
-
-### Materials
-
-- [Fleet Specification](https://agones.dev/site/docs/reference/fleet/)
-- [GameServerAllocation Specification](https://agones.dev/site/docs/reference/gameserverallocation/)
-- [Fleet Autoscaler Specification](https://agones.dev/site/docs/reference/fleetautoscaler/)
-- [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
-
-### Suggested Steps
 
 1. **Write and apply the fleet.yaml:** The complete fleet.yaml should look like the following:
 ```
@@ -394,13 +310,16 @@ spec:
                 memory: 200Mi
 ```
 Apply the fleet.yaml using `kubectl apply -f fleet.yaml`.
+
 2. **Check the Fleet status:** Running `kubectl get fleet` should return code similar to the following:
 ```
 NAME         SCHEDULING   DESIRED   CURRENT   ALLOCATED   READY     AGE
 dedicated    Packed       2         2         0           2         9m
 ```
-   - **Note** The participants will likely have named their Fleet something other than "dedicated". This is fine for now, and will be a learning opportunity in the next challenge.
-3. **Scale the Fleet up to 5 replicas:** The Fleet can be scaled up by running `kubectl scale fleet dedicated --replicas=5`. Afterwards run either `kubectl get fleet` or `kubectl get gs` or `kubectl get gameservers` to verify that the new servers are Ready
+   > **Note** The participants will likely have named their Fleet something other than "dedicated". This is fine for now, and will be a learning opportunity in the next challenge.
+
+3. **Scale the Fleet up to 5 replicas:** The Fleet can be scaled up by running `kubectl scale fleet dedicated --replicas=5`. Afterwards run either `kubectl get fleet` or `kubectl get gs` or `kubectl get gameservers` to verify that the new servers are **Ready**.
+
 4. **Write and create the allocation.yaml:** The complete allocation.yaml file should look like the following (the label value may be different if they didn't name their Fleet "dedicated"):
 ```
 apiVersion: "allocation.agones.dev/v1"
@@ -413,6 +332,7 @@ spec:
 and you can create the GameServerAllocation by running `kubectl create -f myallocation.yaml -o yaml`. The `-o yaml` option isn't required, but it does return yaml formatted output that tells us some things. If you look at the status section, the state value will tell if a GameServer was allocated or not. If a GameServer could not be found, this will be set to UnAllocated. If we see that the status.state value was set to Allocated, this means a GameServer has been successfully allocated out of the Fleet and that players can now connect to it.
 
 You can also see various immutable details of the GameServer in the status - the address, ports and the name of the GameServer, in case more details need to be retrieved.
+
 5. **Get the IP address and port of the allocated GameServer and play the game:** You will want to connect to the allocated GameServer. To do this, list of all the current GameServers and their Status.State by using running `kubectl get gameservers`, and select the IP address and port of the server that is in the Allocated state. Example below:
 ```
 NAME                    STATE       ADDRESS   PORT   NODE       AGE
@@ -422,13 +342,9 @@ dedicated-kdgk6-p8wnl   Ready       10.9.8.7  7453   agones     52m
 dedicated-kdgk6-t6bwp   Ready       10.9.8.7  7228   agones     53m
 dedicated-kdgk6-wkb7b   Ready       10.9.8.7  7226   agones     52m
 ```
-Connecting to http://<YOUR-FRONTEND-IP> and then click `Connect to Server` and providing the GameServers IP address and port.
-
-### Troubleshooting Tips
+Connect to `http://<YOUR-FRONTEND-IP>` and then click **Connect to Server** and providing the GameServers IP address and port.
 
 - Participants will have most likely missed that they don't have the appropriate firewall rule to allow them to connect to their game server. They will want to enable firewall logging to get more details on what is happening, or they can attempt to ping the ip address and port and see that they fail to get a response.
-
-### Conclusion
 
 By successfully completing this challenge, participants have learned how to create a Fleet and understand the role of GameServerAllocation.
 
@@ -437,19 +353,6 @@ By successfully completing this challenge, participants have learned how to crea
 ### Notes & Guidance
 
 This challenge is going to be a chance for the participants to demonstrate their lessons learned during the previous challenges, as well as get practice in modifying an existing matchmaking function. Given the time constraints of this training, we can't expect participants to write a matchmaking function from scratch at integrated it with the frontend, which is why all of that has been taken care of for them.
-
-### Objectives
-
-- GKE shows the Matchmaking Function and Director deployments are running.
-- Your team is able to connect and play on a single game server using the Find Game feature.
-
-### Materials
-
-- [Open Match API](https://open-match.dev/site/docs/reference/api/)
-- [Using RBAC Authorization](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
-- [Director example (no RBAC)](https://github.com/googleforgames/open-match/blob/main/tutorials/default_evaluator/director/director.yaml)
-
-### Suggested Steps
 
 1. **Build and push the Docker image for the matchmaking function:** This code is provided in the Student Guide.
 ```
@@ -497,6 +400,7 @@ spec:
           protocol: TCP
 ```
 Apply the mmf.yaml using `kubectl apply -f mmf.yaml`.
+
 3. **Build and push the Docker image for the Director:** This code is provided in the Student Guide.
 ```
 docker build . -f Director.Dockerfile -t $REGISTRY/space-agon-director:0.1
@@ -584,7 +488,9 @@ subjects:
   name: fleet-allocator
 ```
 Apply the director.yaml using `kubectl apply -f director.yaml`.
-8. **Play Space Agon:** Connecting to http://<YOUR-FRONTEND-IP> and then click `Find Server` to verify that the prebuilt matchmaking function is working.
+
+8. **Play Space Agon:** Connect to `http://<YOUR-FRONTEND-IP>` and then click **Find Server** to verify that the prebuilt matchmaking function is working.
+
 9. **Update the Matchmaking Function to support the entire team playing the game at the same time:** Participants will need to navigate in their cloned GitHub repository to mmf > mmf.go. In the mmf.go file, they will need to update lines 103 - 113 to allow the whole team to connect. The below is an example for a team of 5, plus 1 coach (6 total):
 ```
 	for i := 0; i+5 < len(tickets); i += 6 {
@@ -605,9 +511,8 @@ docker build . -f Mmf.Dockerfile -t $REGISTRY/space-agon-mmf:0.2
 docker push $REGISTRY/space-agon-mmf:0.2
 ```
 If the participants created a new tag, then they will need to update the image in their mmf.yaml with it before applying. Otherwise, they will likely need to delete the old Matchmaking Function deployment before running `kubectl apply -f mmf.yaml`.
-11. **Play Space Agon:** Connecting to http://<YOUR-FRONTEND-IP> and then click `Find Server` to verify that the customized matchmaking function is working.
 
-### Troubleshooting Tips
+11. **Play Space Agon:** Connect to `http://<YOUR-FRONTEND-IP>` and then click **Find Server** to verify that the customized matchmaking function is working.
 
 - It is likely the students named their fleet something other than dedicated, which is a problem because the Director has been built to look for a fleet labeled dedicated to allocate servers from. Here is how to help the students troubleshoot the issue:
    1. Participants open 2 browsers to the game, they each hang on the looking for a match screen.
@@ -616,7 +521,5 @@ If the participants created a new tag, then they will need to update the image i
    4. In the middle of all of the lines like "Created and assigned 0 matches" you should see "failed to allocate game server.".
    5. Search for the aforementioned line in the code in the https://github.com/TheLanceLord/space-agon-ghack GitHub and see that on line 114 it's matching to a specific fleet name "dedicated".
    6. Updated the fleet name to dedicated, reapply the fleet.yaml with `kubectl apply -f fleet.yaml`, and verify that the fix worked.
-
-### Conclusion
 
 By successfully completing this challenge, participants have learned the different components in standing up Open Match in their cluster, as well as some basics on customizing the Matchmaking function.
