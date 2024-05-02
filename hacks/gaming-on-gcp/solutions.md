@@ -34,7 +34,7 @@ This hack requires students to have access to Google Cloud project where they ca
    - Challenge 4 (~1 hour)
    - Challenge 5 (~2 hours)
 
-## Challenge 1: Agones Game Servers on Kubernetes
+## Challenge 1: Deploy the Agones Game Server Deployment Platform on Kubernetes
 
 ### Notes & Guidance
 
