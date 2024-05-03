@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Your team is asking you to enhance the existing Book Quotes application by adding new business functionality to retrieve quotes from books, given the book name. As you don’t have any prior experience with the Quotes service, you enlist the help of your trusted developer assistant, Gemini CodeAssist, to understand the service, add the required functionality and write proper tests.
+Your team is asking you to enhance the existing Book Quotes application by adding new business functionality to retrieve quotes from books, given the book name. As you don’t have any prior experience with the Quotes service, you enlist the help of your trusted developer assistant, Gemini Code Assist, to understand the service, add the required functionality and write proper tests.
 
 You choose to follow a test-driven development process, relying on requirements being converted to test cases before the service is fully developed. You track the development by repeatedly testing the service against all test cases, first in your local environment, then in a Serverless environment in GCP. 
 
@@ -13,7 +13,7 @@ In this gHack you will learn how to add business functionality to an existing Ja
 1. Set up the prerequisites
 1. Download and validate the Quotes app codebase
 1. Use Gemini CodeAssist to explain the Quotes app, perform code reviews, translate code
-1. Following **test-driven development** guidelines, use Gemini CodeAssist to add business logic
+1. Following **test-driven development** guidelines, use Gemini Code Assist to add business logic
 1. Build and deploy the updated Quotes app to Cloud Run
 1. Test the application in Cloud Run
 
@@ -21,14 +21,14 @@ In this gHack you will learn how to add business functionality to an existing Ja
 
 ## Challenges
 
-- Challenge 1: Provision an IoT environment
-   - Create an IoT Hub and run tests to ensure it can ingest telemetry
-- Challenge 2: Your First Device
-   - Make the connection to your Edge device and see that it is properly provisioned.
-- Challenge 3: Connecting the World
-   - Connect your device and make sure it can see all other devices in your team.
-- Challenge 4: Scalable Monitoring of Telemetry
-   - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
+- Challenge 1: Clone the Quotes app
+   - Get started with your GCP project and clone the repository to edit within your environment.
+- Challenge 2: Get started with Gemini Code Assist
+   - Experiment with prompt engineering to understand the Gemini Code Assist feature.
+- Challenge 3: Test-Driven Development
+   - Have Gemini help you to add business logic using test-driven development guidelines.
+- Challenge 4: Build, deploy, and test
+   - Build and deploy the updated Quotes app to Cloud Run and test the endpoint.
 
 ## Prerequisites
 
@@ -45,7 +45,7 @@ In this gHack you will learn how to add business functionality to an existing Ja
 - Yanni Peng
 - Daniella Noronha
 
-## Challenge 1: Provision an IoT environment
+## Challenge 1: Clone the Quotes app
 
 ***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section.  You should remove all italicized & sample text and replace with your content.***
 
@@ -58,53 +58,51 @@ _You can use these two specific blockquote styles to emphasize your text as need
 
 ### Pre-requisites (Optional)
 
-*Include any technical pre-requisites needed for this challenge specifically.  Typically, it is completion of one or more of the previous challenges if there is a dependency. This section is optional and may be omitted.*
-
-### Introduction (Optional)
-
-*This section should provide an overview of the technologies or tasks that will be needed to complete the this challenge.  This includes the technical context for the challenge, as well as any new "lessons" the attendees should learn before completing the challenge.*
-
-*Optionally, the coach or event host is encouraged to present a mini-lesson (with the provided lectures presentation or maybe a video) to set up the context and introduction to each challenge. A summary of the content of that mini-lesson is a good candidate for this Introduction section*
-
-*For example:*
-
-When setting up an IoT device, it is important to understand how 'thingamajigs' work. Thingamajigs are a key part of every IoT device and ensure they are able to communicate properly with edge servers. Thingamajigs require IP addresses to be assigned to them by a server and thus must have unique MAC addresses. In this challenge, you will get hands on with a thingamajig and learn how one is configured.
+- Experience with Java and Git 
+- Experience with Spring Boot and Maven
 
 ### Description
-*This section should clearly state the goals of the challenge and any high-level instructions you want the students to follow. You may provide a list of specifications required to meet the goals. If this is more than 2-3 paragraphs, it is likely you are not doing it right.*
 
-> **Note** *Do NOT use ordered lists as that is an indicator of 'step-by-step' instructions. Instead, use bullet lists to list out goals and/or specifications.*
+In this challenge, you will set up the provided repository in your own GCP project so that you can edit in within the Cloud Shell editor and use the Gemini Code Assist plugin and chat, all without leaving GCP. Before cloning your repository, ensure you have Java and OpenJDK installed, and enable the Gemini Code Assist, Cloud Build, Cloud Run, and Cloud Logging APIs within your project. 
 
-> **Note** *You may use Markdown sub-headers to organize key sections of your challenge description.*
-
-*Optionally, you may provide resource files such as a sample application, code snippets, or templates as learning aids for the students. These files are stored in the hack's `resources` sub-folder. It is the coach's responsibility to package these resources and provide them to students in the Google Space's Files section as per [the instructions provided](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available).*
-
-> **Note** *Do NOT provide direct links to files or folders in the gHacks Github repository from the student guide. Instead, you should refer to the "resources in the Google Space Files section".*
-
-*Here is some sample challenge text for the IoT Hack Of The Century:*
-
-In this challenge, you will properly configure the thingamajig for your IoT device so that it can communicate with the mother ship.
-
-You can find a sample `thingamajig.config` file in the Files section of this hack's Google Space provided by your coach. This is a good starting reference, but you will need to discover how to set exact settings.
-
-Please configure the thingamajig with the following specifications:
-- Use dynamic IP addresses
-- Only trust the following whitelisted servers: "mothership", "IoTQueenBee" 
-- Deny access to "IoTProxyShip"
+The Quotes repository is [found on GitHub here](https://github.com/GoogleCloudPlatform/serverless-production-readiness-java-gcp). 
 
 ### Success Criteria
 
-*Success criteria go here. The success criteria should be a list of checks so a student knows they have completed the challenge successfully. These should be things that can be demonstrated to a coach.* 
+- Set up your project prerequisites. 
+- Verify that the Quotes app is cloned within your Google Cloud project. 
+- Demonstrate your understanding of how to call Gemini Code Assist within the Quotes repository. 
 
-*The success criteria should not be a list of instructions.*
+### Learning Resources
 
-*Success criteria should always start with language like: "Validate XXX..." or "Verify YYY..." or "Show ZZZ..." or "Demonstrate VVV..."*
+- [Cloning a repository](https://cloud.google.com/source-repositories/docs/cloning-repositories)
+- [Cloud Shell Editor interface overview](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+- [Code with Gemini Code Assist](https://cloud.google.com/code/docs/shell/write-code-gemini#:~:text=In%20the%20activity%20bar%20of,an%20explanation%20of%20your%20code)
 
-*Sample success criteria for the IoT sample challenge:*
+## Challenge 2: Get started with Gemini Code Assist
 
-- Verify that the IoT device boots properly after its thingamajig is configured.
-- Verify that the thingamajig can connect to the mothership.
-- Demonstrate that the thingamajig will not connect to the IoTProxyShip
+> **Note**  
+> Sample informational blockquote
+
+> **Warning**  
+> Sample warning blockquote
+
+### Pre-requisites 
+
+- Complete Challenge 1
+
+### Introduction 
+
+With a solid starting point for the Quotes app, it is time to build new business functionality using a test-driven development process assisted by Duet AI.
+First, get a good understanding of what the Quotes application is currently doing, as well as a sense of how to prompt Gemini Code Assist. 
+### Description
+In this challenge, you'll seek to get comfortable using Gemini Code Assist. 
+
+
+### Success Criteria
+
+- Demonstrate your understanding of the Quotes application 
+- Show Gemini Code Assist in action and understand how to refine prompts 
 
 ### Tips
 
@@ -117,27 +115,7 @@ Please configure the thingamajig with the following specifications:
 
 ### Learning Resources
 
-*This is a list of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
-
-*Think of this list as giving the students a head start on some easy Internet searches. However, try not to include documentation links that are the literal step-by-step answer of the challenge's scenario.*
-
-> **Note** *Use descriptive text for each link instead of just URLs.*
-
-*Sample IoT resource links:*
-
 - [What is a Thingamajig?](https://www.google.com/search?q=what+is+a+thingamajig)
-- [10 Tips for Never Forgetting Your Thingamajig](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+- [Cloud Shell Editor interface overview](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 - [IoT & Thingamajigs: Together Forever](https://www.youtube.com/watch?v=yPYZpwSpKmA)
 
-### Advanced Challenges (Optional)
-
-*If you want, you may provide additional goals to this challenge for folks who are eager.*
-
-*This section is optional and may be omitted.*
-
-*Sample IoT advanced challenges:*
-
-Too comfortable?  Eager to do more?  Try these additional challenges!
-
-- Observe what happens if your IoTDevice is separated from its thingamajig.
-- Configure your IoTDevice to connect to BOTH the mothership and IoTQueenBee at the same time.
