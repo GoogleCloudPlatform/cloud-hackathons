@@ -1,0 +1,92 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+schema_version: 2
+default_locale: en
+title: "[gHacks] hacking with Gemini CodeAssist"
+description: ""
+instruction:
+  type: md
+  uri: instructions/en.md
+duration: 480
+max_duration: 600
+credits: 0
+level: fundamental
+tags:
+product_tags: 
+role_tags:
+domain_tags:
+environment:
+  resources:
+  - type: gcp_project
+    id: project
+    startup_script:
+      type: qwiklabs
+      path: artifacts
+  - type: gcp_user
+    id: user_1
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+  - type: gcp_user
+    id: user_2
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+  - type: gcp_user
+    id: user_3
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+  - type: gcp_user
+    id: user_4
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+  - type: gcp_user
+    id: user_5
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+
+  student_visible_outputs:
+  - label: Open Console
+    reference: project.console_url
+  - label: Username 1
+    reference: user_1.username
+  - label: Password 1
+    reference: user_1.password
+  - label: Username 2
+    reference: user_2.username
+  - label: Password 2
+    reference: user_2.password
+  - label: Username 3
+    reference: user_3.username
+  - label: Password 3
+    reference: user_3.password
+  - label: Username 4
+    reference: user_4.username
+  - label: Password 4
+    reference: user_4.password
+  - label: Username 5
+    reference: user_5.username
+  - label: Password 5
+    reference: user_5.password
+
+  - label: Project ID
+    reference: project.project_id
