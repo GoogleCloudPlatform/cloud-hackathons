@@ -33,7 +33,7 @@ In this gHack you will learn how to add business functionality to an existing Ja
 ## Prerequisites
 
 - Your own GCP project with Owner IAM role.
-- An AVNET X231 device
+- Experience with Java and Git 
 - gCloud CLI
 - Visual Studio Code
 
@@ -47,16 +47,7 @@ In this gHack you will learn how to add business functionality to an existing Ja
 
 ## Challenge 1: Clone the Quotes app
 
-***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section.  You should remove all italicized & sample text and replace with your content.***
-
-_You can use these two specific blockquote styles to emphasize your text as needed and they will be specially rendered to be more noticeable_
-> **Note**  
-> Sample informational blockquote
-
-> **Warning**  
-> Sample warning blockquote
-
-### Pre-requisites (Optional)
+### Pre-requisites 
 
 - Experience with Java and Git 
 - Experience with Spring Boot and Maven
@@ -81,12 +72,6 @@ The Quotes repository is [found on GitHub here](https://github.com/GoogleCloudPl
 
 ## Challenge 2: Get started with Gemini Code Assist
 
-> **Note**  
-> Sample informational blockquote
-
-> **Warning**  
-> Sample warning blockquote
-
 ### Pre-requisites 
 
 - Complete Challenge 1
@@ -96,7 +81,10 @@ The Quotes repository is [found on GitHub here](https://github.com/GoogleCloudPl
 With a solid starting point for the Quotes app, it is time to build new business functionality using a test-driven development process assisted by Duet AI.
 First, get a good understanding of what the Quotes application is currently doing, as well as a sense of how to prompt Gemini Code Assist. 
 ### Description
-In this challenge, you'll seek to get comfortable using Gemini Code Assist. 
+In this challenge, you'll seek to get comfortable using Gemini Code Assist. Design your prompts to explain the current Quotes application, get a full code review and description, and see if Gemini Code Assist can translate your code into a different language. 
+
+> **Note**  
+> Occasionally, we have to refine the request and account for the fact that GenAI tooling is non-deterministic. If the generated code did not generate the full output you're expecting, you can seek to refine it by asking more specifically for what you want or asking for more details or going step-by-step.
 
 
 ### Success Criteria
@@ -104,18 +92,59 @@ In this challenge, you'll seek to get comfortable using Gemini Code Assist.
 - Demonstrate your understanding of the Quotes application 
 - Show Gemini Code Assist in action and understand how to refine prompts 
 
-### Tips
+### Learning Resources
 
-*This section is optional and may be omitted.*
+- [Write better prompts for Gemini in Google Cloud](https://cloud.google.com/gemini/docs/discover/write-prompts)
 
-*Add tips and hints here to give students food for thought. Sample IoT tips:*
+## Challenge 3: Test-Driven Development
 
-- IoTDevices can fail from a broken heart if they are not together with their thingamajig. Your device will display a broken heart emoji on its screen if this happens.
-- An IoTDevice can have one or more thingamajigs attached which allow them to connect to multiple networks.
+### Pre-requisites 
+
+- Complete Challenge 2
+
+### Introduction 
+
+Now that we understand the existing Quotes application, we'll seek to use test-driven development to add the additional method applying the business logic that your team is requesting. 
+
+### Description
+In this challenge, your team is asking you to enhance the existing Book Quotes application by adding new business functionality to retrieve quotes from books, given the book name. The Quotes app is missing this endpoint to retrieve book information by book name. This endpoint should respond on the “/quotes/book/{book}” path. You are being asked to implement it, with the associated business logic.
+
+To add the quote retrieval by book name functionality, you start writing code in true TDD fashion by adding tests to both the QuotesControllerTest (for the endpoint) and QuotesRepositoryTest (for data retrieval from the database). Once you've used Gemini to help you add these tests, you should run them to demonstrate that your code works as expected.
+
+
+### Success Criteria
+
+- Have the tests for the getbyBook method written within the QuotesControllerTest and the QuotesRepositoryTest class
+- Have the getByBook method written within the QuotesController class, and the findbyBook method for the QuoteRepository class
+- Demonstrate that all existing and new tests pass and that the getByBook method works as expected
+
 
 ### Learning Resources
 
-- [What is a Thingamajig?](https://www.google.com/search?q=what+is+a+thingamajig)
-- [Cloud Shell Editor interface overview](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
-- [IoT & Thingamajigs: Together Forever](https://www.youtube.com/watch?v=yPYZpwSpKmA)
+- [Test-driven development](https://en.wikipedia.org/wiki/Test-driven_development)
+
+## Challenge 4: Build, deploy, and test
+
+### Pre-requisites 
+
+- Complete Challenge 3
+
+### Introduction 
+
+Finally, let's build and deploy the image so that your team can use it. 
+### Description
+In this challenge, you will use Cloud Build to build and deploy your container image to Cloud Run. Cloud Build supports a simple build, tag, push process in a single YAML file. The YAML file is written for you in the repository. You'll need to submit the build to Cloud Build and use Cloud Run to deploy the container image.
+
+
+### Success Criteria
+
+- Have your container image built and pushed to Cloud Build
+- Have your container image deployed to Cloud Run
+- Ensure your tests pass using the new endpoint for your application
+
+### Learning Resources
+
+- [Build and push a Docker image with Cloud Build](https://cloud.google.com/build/docs/build-push-docker-image)
+- [Deploy a container image to Cloud Run](https://cloud.google.com/run/docs/quickstarts/deploy-container)
+
 
