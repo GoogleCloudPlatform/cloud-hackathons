@@ -2,221 +2,305 @@
 
 ## Introduction
 
-Welcome to the Gaming on Google Cloud gHack! This hackathon is designed to showcase the power of Google Cloud's gaming services and help you create innovative gaming solutions using technologies like the Agones Game Server, Open Match, Cloud Spanner, and BigQuery.
-
-In this hackathon, you will have the opportunity to explore and utilize the advanced features and capabilities offered by Google Cloud to develop and deploy gaming applications. You will leverage services such as:
+Welcome to the Gaming on Google Cloud gHack! In this gHack, you will have the opportunity to explore and utilize the advanced features and capabilities offered by Google Cloud to develop and deploy gaming applications. You will be learning to implement and leverage:
 
 - Agones Game Server: Build scalable and reliable game server infrastructure using the Agones Game Server, which provides managed Kubernetes clusters specifically designed for game hosting.
-
 - Open Match: Create matchmaking systems with Open Match, an open-source matchmaking framework that enables flexible and customizable matchmaking logic to ensure fair and enjoyable multiplayer experiences.
-
-- Cloud Spanner: Utilize Spanner, a globally distributed and strongly consistent database service, to store game-related data with low latency and high availability.
-
-- BigQuery: Leverage BigQuery, a fully-managed analytics data warehouse, to gain valuable insights from game telemetry data and perform real-time analytics.
 
 ![Solution Architecture](images/architecture.png)
 
 ## Learning Objectives
 
-The objectives of this hackathon are:
+The objectives of this gHack are:
 
 - Create a Multiplayer Game Infrastructure: Build a scalable and reliable game infrastructure using the Agones Game Server, allowing players to connect and interact in a multiplayer gaming environment.
-
-- Implement Matchmaking Logic: Develop a custom matchmaking system using Open Match to create fair and balanced matches for players based on their skill levels, preferences, or other criteria.
-
-- Store and Analyze Game Telemetry: Utilize CloudSpanner and BigQuery to store and analyze game telemetry data, enabling real-time analytics, player behavior analysis, and performance optimization.
-
-- Innovate and Showcase Your Gaming Solution: Demonstrate your creativity and innovation by developing unique features, gameplay mechanics, or integration with other Google Cloud services to enhance the gaming experience.
+- Implement Matchmaking Logic: Customize and deploy a matchmaking system using Open Match to match up players.
 
 ## Challenges
 
-- Challenge 1: Agones Game Servers on Kubernetes
-   - Deploy Agones, an open-source, multiplayer, dedicated game-server built on Kubernetes in the Google Cloud environment.
-- Challenge 2: Dynamic Game Matching with Open Match
-   - Implement dynamic game matching using Open Match in the Google Cloud environment.
-- Challenge 3: Game State and Activity Management with Cloud Spanner
-   - Leverage Google Cloud Spanner as the game state and activity store in the Google Cloud environment.
-- Challenge 4: Player Churn Prediction with BigQuery ML
-   - Leverage Google BigQuery to predict player churn in your multiplayer gaming platform in the Google Cloud environment.
+- Challenge 1: Deploy the Agones Game Server Deployment Platform on Kubernetes
+   - Deploy Agones, a library for hosting, running and scaling dedicated game servers on Kubernetes.
+- Challenge 2: Deploy GameServers - Space Agon
+   - Deploy a dedicated server to your Agones cluster and demonstrate its functionality.
+- Challenge 3: Deploy and manage a Fleet
+   - Deploy a Fleet of GameServers to your Agones cluster and manage it.
+- Challenge 4: Deploy your own frontend web client and Service
+   - Deploy your own web client to connect to your GameServers.
+- Challenge 5: Matchmaking with Open Match
+   - Implement Open Match and customize your matchmaking function.
 
 ## Prerequisites
 
-- Your own GCP project with Owner IAM role
-- A basic understanding of Docker and Kubernetes 
+- Your own GCP project with Owner IAM role.
+- A basic understanding of Docker and Kubernetes. 
    - If you lack a basic understanding, you can review [Docker](https://docs.docker.com/) and [Kubernetes](https://kubernetes.io/docs/home/) now.
-- Access to an environment with the following 
+- Access to an environment with the following:
   - gcloud (>= 410.0.0)
   - node.js (>= v19.1.0)
-  - **Note** Cloud Shell has these pre-installed
+  > **Note** Cloud Shell has these pre-installed.
 
 ## Contributors
 
+- Damian Lance
+- Gino Filicetti
+- Robert Bailey
+- Mark Mandel
+- Zach Loafman
 - Daniel Wang
 
-## Challenge 1: Deploying Agones Game Servers on Kubernetes
+## Challenge 1: Agones Game Servers on Kubernetes
 
 ### Introduction
 
-In this challenge, you will learn how to deploy Agones, an open-source, multiplayer, dedicated game-server built on Kubernetes, in the Google Cloud environment.
+In this challenge, you will learn how to deploy Agones, a library for hosting, running and scaling dedicated game servers on Kubernetes.
 
 ### Description
 
 Your task is to deploy an Agones game server in Google Cloud, that will include the following:
 
-- Install Agones on a freshly provisioned Google Kubernetes Engine (GKE) cluster.
+- Install Agones using Helm on a freshly provisioned Google Kubernetes Engine (GKE) Autopilot cluster using the CLI.
 
-- Create a game server deployment by configuring Agones parameters, eg: image, ports, etc.
+- Install Open Match v1.8.1 to your cluster and apply an evaluator.
+Writing the evaluator customizations doesn’t fit within the time constraints for this challenge, so the code has been provided. You can install Open Match and apply the evaluator with the following command: 
+```
+export OM_NS=open-match
+export OM_VER=1.8.1
+helm repo add $OM_NS https://open-match.dev/chart/stable
+helm repo update
+helm install $OM_NS \
+	--create-namespace --namespace $OM_NS $OM_NS/open-match \
+	--version $OM_VER \
+	--set open-match-customize.enabled=true \
+	--set open-match-customize.evaluator.enabled=true \
+	--set open-match-customize.evaluator.replicas=1 \
+	--set open-match-override.enabled=true \
+	--set open-match-core.swaggerui.enabled=false \
+	--set global.kubernetes.horizontalPodAutoScaler.frontend.maxReplicas=1 \
+	--set global.kubernetes.horizontalPodAutoScaler.backend.maxReplicas=1 \
+	--set global.kubernetes.horizontalPodAutoScaler.query.minReplicas=1 \
+	--set global.kubernetes.horizontalPodAutoScaler.query.maxReplicas=1 \
+	--set global.kubernetes.horizontalPodAutoScaler.evaluator.maxReplicas=1 \
+	--set query.replicas=1 \
+	--set frontend.replicas=1 \
+	--set backend.replicas=1 \
+	--set redis.master.resources.requests.cpu=0.1 \
+	--set redis.replica.replicaCount=0 \
+	--set redis.metrics.enabled=false
+```
+- Deploy a simple game server to verify your Agones installation.
+- Test the deployment by ensuring that the game server is running and accessible. To test, you will need to install `nc` to your Cloud Shell with:
+```
+sudo apt-get -y install netcat
+``` 
 
-- Test the deployment by ensuring that the game server is running and accessible.
+> **Note** Although you can create this cluster using the Google Cloud Console UI, we encourage you to explore and figure out how to create clusters using the gcloud CLI tool.
 
-> **Note** Although you can create this cluster using the Google Cloud Console UI, we encourage you to explore and figure out how to create clusters using the `gcloud` CLI tool.
+> **Note** The reason we are installing Agones with Helm and not YAML is because this is more representative of a production scenario. The Agones documentation for this type of installation is also more detailed and explanatory.
+
+> **Note** Open Match isn’t used until Challenge 5, and is not a requirement for Agones functionality. Open Match can sometimes take time to enter a ready state which is why we are installing it now. We are installing with Helm because it makes it easy to see the customizations that are being made to the default install.
 
 ### Success Criteria
 
-- A GKE cluster has been provisioned.
+- A GKE Autopilot cluster has been provisioned.
 - Agones is successfully installed on the GKE cluster.
-- A game server deployment is created and running without errors. 
+- Open Match is installed and its associated pods are running. Pods being in the `READY` state is not required at this time. 
+- A game server is created and running without errors.
 - The game server is accessible and functioning as expected.
-- Show your coach that the GKE console shows the Agones pods and services are healthy and running.
+   - Use the nc commands given in the Agones docs to show the game server working.
+   - Exit the server using nc and use kubectl to show that it is no longer running.
 
 ### Tips
 
 - Familiarize yourself with the Agones documentation before starting the deployment.
-- Use the Google Cloud Console, Cloud SDK, or a configuration management tool like Terraform to set up the GKE cluster.
+- Use the Google Cloud Console to set up the GKE cluster.
 - Follow the recommended best practices and configuration options for Agones to ensure a successful deployment.
+- You might want to consider what the best source of documentation for creating your cluster is ... the Google or Agones docs ...
 - Test the game server deployment thoroughly to ensure it meets the success criteria.
+- The nc command interaction is a little misleading. After executing the command, it will move the cursor to a new line. Type anything you want into the new line and hit enter.
 
 ### Learning Resources
 
-- [Kubernetes Overview](https://kubernetes.io/docs/concepts/overview/)
-- [GKE Overview](https://cloud.google.com/kubernetes-engine/docs/concepts/kubernetes-engine-overview)
-- [Zonal Clusters](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-zonal-cluster)
-- [Open-source Game Server](https://cloud.google.com/blog/products/containers-kubernetes/introducing-agones-open-source-multiplayer-dedicated-game-server-hosting-built-on-kubernetes)
-- [Agones documentation](https://agones.dev/)
 - [Create a Game Server](https://agones.dev/site/docs/getting-started/create-gameserver/)
-- [Build a Simple Game Server](https://agones.dev/site/docs/tutorials/simple-gameserver-nodejs/)
-- [List of code examples](https://agones.dev/site/docs/examples/)
-- [Agones GitHub Repository](https://github.com/googleforgames/agones)
+- [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
+- [GKE Overview](https://cloud.google.com/kubernetes-engine/docs/concepts/kubernetes-engine-overview)
+- [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
+- [Open Match install](https://open-match.dev/site/docs/installation/)
+- [Understanding Open Match Evaluators](https://open-match.dev/site/docs/guides/evaluator/)
 
-## Challenge 2: Dynamic Game Matching with Open Match
+## Challenge 2: Deploy a frontend web client and Service
 
 ### Introduction
 
-In the previous challenge, you successfully built a scalable game server infrastructure using Game Server on Google Cloud. Now it's time to enhance the multiplayer gaming experience by implementing dynamic game matching using Open Match.
+Deploy a web client to connect to your GameServers.
+
+### Description
+
+Before we can start playing on a real game server, we are first going to need a frontend to connect through. To do this, you will need to:
+
+- Clone the [Space Agon repo](https://github.com/TheLanceLord/space-agon-ghack) into your Cloud Shell so you can work with the files contained in that repo:
+- Create an Artifact Registry repository for Docker images.
+- Build a Docker image for the Space Agon web client frontend and push it to your project’s Artifact Registry with the following code:
+```
+export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
+docker build . -f Frontend.Dockerfile -t $REGISTRY/space-agon-frontend:0.1
+docker push $REGISTRY/space-agon-frontend:0.1
+```
+- Create and apply a frontend.yaml file for Space Agon containing a Deployment and a Service for the frontend container you build using the following specifications:
+   - Replicas: 2
+   - Container port: 8080
+   - Service type: LoadBalancer
+   - Service port: 80
+   - Set resource requests and limits of:
+      - Memory: 100Mi
+      - CPU: 100m
+
+At this point, you don’t have any game servers to connect to, so you still can’t play anything, but we will fix that in the next challenge.
+
+> **Note** If you’re running an Autopilot cluster and see some errors, it might be because the cluster needs to scale before it can run your container. Be patient and give it some time. 
+
+> **Note** Epilepsy warning for Mac users. Mac users with non-Intel chips using Chrome or Safari will see a lot of flashing large boxes on the screen. You will need to download and install Firefox and use it as your browser for this gHack.
+
+> **Note** Unfamiliar with Docker and what the build and push commands do? After this gHack, check out [Modernizing the Monolith: Containerizing and Deploying to Kubernetes](https://ghacks.dev/hacks/modernizing-monoliths/) to get hands-on experience with containerizing and deploying applications.
+
+### Success Criteria
+
+- GKE shows your frontend deployment and service are both running.
+- Demonstrate you can connect to your frontend via your Service’s IP address by using your browser to connect to `http://<YOUR-FRONTEND-IP>`.
+
+### Tips
+
+- The skeleton of a frontend.yaml file has been provided in the GitHub repository.
+- If you aren’t a fan of command line text editors, such as vi, emacs or nano, click the `Open Editor` button (pencil icon) in the Cloud Shell to get a web-based editor that you can use for the entire gHack.
+
+### Learning Resources
+
+- [Space Agon repo](https://github.com/TheLanceLord/space-agon-ghack)
+- [Set up an external Application Load Balancer with Ingress](https://cloud.google.com/kubernetes-engine/docs/tutorials/http-balancer)
+- [Types of Kubernetes Services](https://cloud.google.com/kubernetes-engine/docs/concepts/service#types-of-services)
+- [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
+- [Creating and manage cluster and node pool labels](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-managing-labels)
+
+## Challenge 3: Deploy Dedicated Servers - Space Agon
+
+### Introduction
+
+Deploy a 'Dedicated Gaming Server' to your Agones cluster and demonstrate its functionality.
+
+### Description
+
+Your task is to deploy an Agones GameServer of Space Agon in Google Cloud and play test it with your team. This will require you to do the following:
+
+- Build a Docker image for the Space Agon dedicated server and push it to your project’s Artifact Registry with the following code:
+```
+export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
+docker build . -f Dedicated.Dockerfile -t $REGISTRY/space-agon-dedicated:0.1
+docker push $REGISTRY/space-agon-dedicated:0.1
+```
+- Write and apply a gameserver.yaml file for Space Agon with the following specifications:
+   - Container Port: 2156
+   - Protocol: TCP
+   - Set resource requests and limits of:
+      - Memory: 200Mi
+      - CPU: 500m
+
+### Success Criteria
+
+- GKE shows a GameServer is deployed.
+- You are able to play a game of SpaceAgon with your team by first connecting to `http://<YOUR-FRONTEND-IP>` and then clicking **Connect to Server** and providing your GameServers IP address and port.
+
+### Tips
+
+- A gameserver.yaml is in the Space Agon root directory and has a note on port specifications and compute requests.
+- If the web client is stuck showing the loading message, refreshing it should fix the issue.
+
+### Learning Resources
+
+- [GameServer Specification](https://agones.dev/site/docs/reference/gameserver/)
+- [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
+- [Examples for other functioning gameserver.yaml files](https://agones.dev/site/docs/examples/)
+
+## Challenge 4: Deploy and manage a Fleet
+
+### Introduction
+
+Deploy a Fleet of GameServers to your Agones cluster and manage it. A Fleet is a managed set of Game Servers; Fleets manage Game Servers similar to how Deployments manage Pods.
+
+### Description
+
+Your task is to deploy an Agones Fleet of Space Agon gameservers in Google Cloud and play test it with your team. This will require you to do the following:
+
+- Write and apply a fleet.yaml file for Space Agon to deploy 2 game servers in your cluster.
+- Write an allocation.yaml and create the allocator in your Agones cluster.
+
+> **Note** You must ALWAYS use `kubectl create` with the allocator.yaml file, `kubectl apply` will not work.
+
+> **Note** An allocator flags a game server so kubernetes knows not to delete it unless explicitly told to. It is most commonly used to flag that a game server has players on it, and will protect that server from scale down operations.
+
+### Success Criteria
+
+- GKE shows your Fleet has all game servers running and ready.
+- Demonstrate that you can scale your Fleet to 5 game servers using kubectl commands.
+- GKE shows one of the game servers in your Fleet has been allocated.
+- Demonstrate you can play a game on the allocated server by first connecting to `http://<YOUR-FRONTEND-IP>` and then clicking **Connect to Server** and providing your GameServers IP address and port. and that that allocation flag disappears in GKE when all players have disconnected.
+
+### Tips
+
+- Skeleton templates for fleet.yaml and allocator.yaml file have been provided in the GitHub repository.
+- Fleet and GameServer yaml files are very similar. Leverage your work from the previous challenge.
+- The default yaml examples in the Agones documentation will NOT work as is. Make sure to connect the dots.
+
+### Learning Resources
+
+- [Fleet Specification](https://agones.dev/site/docs/reference/fleet/)
+- [GameServerAllocation Specification](https://agones.dev/site/docs/reference/gameserverallocation/)
+- [Fleet Autoscaler Specification](https://agones.dev/site/docs/reference/fleetautoscaler/)
+- [Agones Troubleshooting](https://agones.dev/site/docs/guides/troubleshooting/)
+
+## Challenge 5: Matchmaking with Open Match
+
+### Introduction
+
+Implement Open Match, which allows for automated matching of connecting players to a game server based on logic you define. The matchmaking function for Space Agon is simple, pairing players based on the order of their requests. You will customize this function to allow your entire team to play a match on a single game server.
 
 ![Open Match Architecture](images/match-architecture.png)
 
-### Description
-
-In this challenge, you will integrate Open Match into your game server infrastructure to create a dynamic matchmaking system. Open Match allows you to define matchmaking rules and algorithms to ensure fair and balanced matches for players.
-
-- Start by reviewing the Open Match documentation to understand its key concepts and how it can be integrated into your game server environment.
-
-- Identify the matchmaking requirements and criteria for your game. Consider factors such as player skill level, game mode preferences, and geographical location.
-
-- Implement the necessary changes to your game server infrastructure to integrate Open Match. This may involve modifying your game server code, configuring Open Match components, and setting up the required communication channels.
-
-- Define matchmaking rules and algorithms based on your game's requirements. Consider factors like player ranking, skill-based matching, and latency optimization.
-
-- Test the matchmaking system by simulating multiple players joining the game and verifying that they are correctly matched according to the defined rules.
-
-### Success Criteria
-
-- The matchmaking system successfully matches players based on the defined rules and criteria.
-- Players are assigned to matches that provide fair and balanced gameplay experiences.
-- The matchmaking system scales effectively with increasing player traffic.
-- Open Match is integrated with your game server.
-
-### Tips
-
-- Refer to the Open Match documentation and examples to understand the integration process and best practices.
-- Use Open Match SDKs and APIs to communicate with the matchmaking service and implement custom matchmaking logic.
-- Consider leveraging additional Google Cloud services such as Pub/Sub for event-driven communication between game servers and Open Match.
-
-### Learning Resources
-
-- [Open Match Documentation](https://open-match.dev/site/docs/)
-- [Open Match GitHub Repository](https://github.com/googleforgames/open-match)
-- [Open Match Get Started](https://open-match.dev/site/docs/getting-started/)
-- [Open Match Tutorials](https://open-match.dev/site/docs/tutorials/matchmaker101/)
-- [Open Match Guides](https://open-match.dev/site/docs/guides/matchmaker/)
-
-## Challenge 3: Game State and Activity Management with Cloud Spanner
-
-### Introduction
-
-In the previous challenges, you built a game server infrastructure and implemented dynamic game matching. Now, let's take your multiplayer gaming experience to the next level by leveraging Google Cloud Spanner as the game state and activity store.
+![Event Diagram](images/demo-match-sequence.png)
 
 ### Description
 
-In this challenge, you will integrate Google Cloud Spanner into your game server infrastructure to manage the game state and player activity. Cloud Spanner is a fully managed, globally distributed relational database service that provides strong consistency and horizontal scalability.
+So far, the Find Game feature hasn’t been working because your cluster’s matchmaking service isn’t set up to handle it. To get this feature working, you will need to:
 
-- Start by familiarizing yourself with the **Cloud Spanner Gaming Sample repository**. This repository contains code and resources to help you get started with using Cloud Spanner for game state and activity management.
+- Build a Docker image for the Matchmaking Function and push it to your project’s Artifact Registry with the following code:
+```
+export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
+docker build . -f Mmf.Dockerfile -t $REGISTRY/space-agon-mmf:0.1
+docker push $REGISTRY/space-agon-mmf:0.1
+```
+- Write and apply a mmf.yaml, creating a deployment of your Matchmaking Function and a service to access it.
+- Build a Docker image for the Director and push it to your project’s Artifact Registry with the following code:
+```
+docker build . -f Director.Dockerfile -t $REGISTRY/space-agon-director:0.1
+docker push $REGISTRY/space-agon-director:0.1
+```
+- Write and apply a director.yaml which includes RBAC.
+- Modify the Matchmaking Function to support a single game with your entire gHack team(including coach), or at least 4 players.
 
-- Understand the data model used in the Cloud Spanner Gaming Sample and evaluate how it aligns with your game's requirements. Identify any modifications or extensions needed to store the specific game state and activity data relevant to your game.
-
-- Set up a Cloud Spanner instance and database by following the instructions in the repository's documentation. Ensure that the necessary schema and tables are created to store the game state and player activity.
-
-- Modify your game server code to interact with the CloudSpanner database. Implement functionality to read and update the game state and player activity data in Cloud Spanner. This may involve integrating Cloud Spanner client libraries and writing database queries.
-
-- Test the integration by simulating gameplay scenarios and verifying that the game state and player activity are accurately stored and retrieved from Cloud Spanner. Ensure that concurrent updates and consistency constraints are handled correctly.
-
-### Success Criteria
-
-- The game server successfully connects to the Cloud Spanner instance and can read/write the game state and player activity data.
-- The game state is consistently stored and retrieved from Cloud Spanner, reflecting the current state of the game.
-- Player activity data, such as player scores, achievements, and progress, is accurately recorded and updated in Cloud Spanner.
-- The Cloud Spanner database scales effectively to handle increasing player activity and game state updates.
-
-### Tips
-- Refer to the Cloud Spanner Gaming Sample repository's documentation for detailed instructions and best practices.
-- Utilize Cloud Spanner's distributed transactions and strong consistency guarantees to ensure data integrity and synchronization across game servers.
-- Consider partitioning and sharding techniques to distribute the game state and activity data across Cloud Spanner nodes for optimal performance.
-- Monitor and analyze the performance of your Cloud Spanner instance using Cloud Spanner-specific tools and metrics.
-
-### Learning Resources
-
-- [Google Cloud Spanner](https://cloud.google.com/spanner/docs)
-- [Cloud Spanner Gaming Sample](https://github.com/cloudspannerecosystem/spanner-gaming-sample)
-- [Global Multiplayer Sample](https://github.com/googleforgames/global-multiplayer-demo)
-
-## Challenge 4: Player Churn Prediction with BigQuery ML
-
-### Introduction
-
-Retaining players in online games can be challenging, with high churn rates observed shortly after the initial game play. To address this issue, developers can leverage BigQuery ML in combination with Google Analytics 4 data to predict the likelihood of specific players returning to the game. In this challenge, you will explore the process of using BigQuery ML to run propensity models on Google Analytics 4 data from a gaming application and predict user churn.
-
-### Description
-
-In this challenge, you will follow the steps outlined in the provided blog post to predict user churn using BigQuery ML and Google Analytics 4 data. The key steps involved are as follows:
-
-- Data Exploration: Explore the BigQuery export dataset for Google Analytics 4 to understand the structure and content of the data.
-
-- Data Preprocessing: Preprocess the raw event data from Google Analytics 4 to transform it into an appropriate format for training a machine learning model. This includes identifying and extracting relevant features, labeling users as churned or returned based on specific criteria, and processing demographic and behavioral features.
-
-- Model Training: Utilize BigQuery ML to train a classification model, such as logistic regression, using the preprocessed training data. Adjust the model hyperparameters and evaluate its performance using evaluation metrics such as precision, recall, accuracy, and F1-score.
-
-- Prediction Generation: Apply the trained model to new data to make churn predictions for individual users. Obtain the propensity scores indicating the probability of users churning or returning.
+> **Note** The Director is a backend component in the Online Game Service that typically performs the following tasks:
+   - Fetch Matches from Open Match for each MatchProfile.
+   - Fetch game allocations from a DGS (Dedicated Game Server) system.
+   - Establish connections from players to game servers and set Assignments based on connections in Open Match.
 
 ### Success Criteria
 
-- Successfully preprocess the raw event data from Google Analytics 4 using SQL queries in BigQuery.
-- Train a classification model using BigQuery ML, such as logistic regression, and achieve reasonable evaluation metrics (precision, recall, accuracy, F1-score).
-- Generate churn predictions for individual users using the trained model.
-- Document the steps, findings, and insights gained from the churn prediction process.
+- GKE shows your Matchmaking Function and Director deployments are running.
+- Your team, including your coach, are able to connect and play on a single game server using the Find Game feature.
 
 ### Tips
 
-- Familiarize yourself with the structure and content of the Google Analytics 4 data by exploring the provided dataset in BigQuery.
-- Take the time to understand the criteria for labeling users as churned or returned based on the blog post. Adjust these criteria if needed to align with your use case.
-- Utilize SQL queries in BigQuery to preprocess the data, extract relevant features, and calculate behavioral and demographic metrics.
-- Experiment with different classification models supported by BigQuery ML, such as logistic regression, to find the best-performing model for your use case.
-- Evaluate the trained model using appropriate evaluation metrics to assess its performance.
-- Consider the practical applications of churn predictions and think about how they can be utilized to improve user retention in your gaming app.
+- A frontend.yaml file has been provided in your GitHub repository. It includes notes to help you know what sections are needed.
 
 ### Learning Resources
 
-- [BigQuery Sample Dataset for Gaming App](https://developers.google.com/analytics/bigquery/app-gaming-demo-dataset)
-- [Blog post: Player Churn Prediction with BigQuery ML](https://cloud.google.com/blog/topics/developers-practitioners/churn-prediction-game-developers-using-google-analytics-4-ga4-and-bigquery-ml)
-- [BigQuery Documentation](https://cloud.google.com/bigquery/docs)
-- [BigQuery ML Documentation](https://cloud.google.com/bigquery/docs/bqml-introduction)
+- [Open Match API](https://open-match.dev/site/docs/reference/api/)
+- [Using RBAC Authorization](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
+- [Director example (no RBAC)](https://github.com/googleforgames/open-match/blob/main/tutorials/default_evaluator/director/director.yaml)
