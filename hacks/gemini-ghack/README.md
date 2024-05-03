@@ -78,7 +78,7 @@ The Quotes repository is [found on GitHub here](https://github.com/GoogleCloudPl
 
 ### Introduction 
 
-With a solid starting point for the Quotes app, it is time to build new business functionality using a test-driven development process assisted by Duet AI.
+With a solid starting point for the Quotes app, it is time to build new business functionality using a test-driven development process assisted by Gemini.
 First, get a good understanding of what the Quotes application is currently doing, as well as a sense of how to prompt Gemini Code Assist. 
 ### Description
 In this challenge, you'll seek to get comfortable using Gemini Code Assist. Design your prompts to explain the current Quotes application, get a full code review and description, and see if Gemini Code Assist can translate your code into a different language. 
