@@ -20,11 +20,9 @@ We'll be assuming that all necessary services have been enabled and the (default
 
 ### Notes & Guidance
 
-For Qwiklabs users the only option is User-Managed Notebooks as the Managed Notebooks option is not available. 
+The Vertex AI Workbench Instance can run anywhere, but a region close to the participants is preferred. And the _Permissions_&rarr;_Single user only_ option must be chosen, which requires to enter the Advanced Setting section for Vertex AI Workbench Instance.
 
-The Notebook can run anywhere, but a region close to the participants is preferred. For User-Managed Notebooks, a vanilla Python image is faster than the other options, so that should be chosen. And the _Permissions_&rarr;_Single user only_ option must be chosen (which is the default for Managed Notebooks), which requires to enter the Advanced Setting section for User-Managed Notebooks.
-
-Creating a virtual environment is essential otherwise things might break due to dependency conflicts. The instructions point to a gist that works with `pip` and both standard and User-Managed Notebooks have that installed. However, `conda` virtual environments would work fine too (and might give better control of the Python version).
+Creating a virtual environment is essential otherwise things might break due to dependency conflicts. The instructions point to a gist that works with `pip` and Vertex AI Workbench Instances have that installed. However, `conda` virtual environments would work fine too.
 
 ```shell
 python3 -m venv .playground

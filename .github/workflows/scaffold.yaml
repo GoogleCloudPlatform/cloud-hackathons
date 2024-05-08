@@ -28,7 +28,7 @@ jobs:
           git config user.email "${{ env.AUTHOR }}"
           git checkout -b ${{ env.BRANCH_NAME }}
       - name: Generate the required structure
-        run: tools/setup-newhack.sh --hack="${{ env.HACK }}" --title="${{ env.TITLE }}" --author="${{ env.AUTHOR }}"
+        run: tools/setup-newhack.sh -h "${{ env.HACK }}" -t "${{ env.TITLE }}" -a "${{ env.AUTHOR }}"
       - name: Push branch
         run: |
           git add .

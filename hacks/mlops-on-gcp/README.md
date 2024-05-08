@@ -72,11 +72,11 @@ As depicted in the overview diagram, the first step of any ML project is data an
 
 ### Description 
 
-Create a User-Managed Notebook instance on Vertex AI. Pick a region close to you, create a simple vanilla **Python3** Notebook instance (with no GPUs) and make sure that you've selected the **single user only** option.
+Create a _Vertex AI Workbench Instance_. Pick a region close to you and choose the **single user only** option.
 
 It's a good practice to have isolated virtual environments for experiments, so create a new virtual environment and install that as a kernel. See this [gist](https://gist.github.com/meken/e6c7430997de9b3f2cf7721f8ecffc04) for the instructions. 
 
-> **Warning** Not using a dedicated and isolated environment/kernel might cause dependency conflicts as _User-Managed Notebook_ instances come pre-installed with some versions of the required libraries.
+> **Warning** Not using a dedicated and isolated environment/kernel might cause dependency conflicts as Vertex AI Workbench Instances come pre-installed with some versions of the required libraries.
 
 We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-demo/archive/refs/heads/main.zip), navigate there and download the project as a **zip** file and extract the contents of the zip file onto your Notebook instance. Open the notebook `01-tip-toe-vertex-ai.ipynb`, make sure that you've selected the newly created kernel. You should now be able to run the first notebook and get familiar with some of the Vertex AI concepts.
 
@@ -84,20 +84,20 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 
 ### Success Criteria
 
-1. There's a new Python3, single-user User-Managed Notebook.
+1. There's a new single-user Vertex AI Workbench Instance.
 2. The sample notebook `01-tip-toe-vertex-ai.ipynb` is successfully run (using the newly generated kernel) and a model file is generated/stored in Google Cloud Storage.
 3. No code was modified.
 
 ### Tips
 
-- Some of the required settings can be found in the _Advanced Settings_ section when you're creating a new _User-Managed Notebook_.
+- Some of the required settings can be found in the _Advanced Settings_ section when you're creating a new Vertex AI Workbench Instance.
 - If there's nothing mentioned in the instructions about a parameter, stick to the defaults (this applies to all of the challenges).
 - You can download the zip file to your local machine and then upload it to the Notebook instance, but you can also get the zip URL and use the `wget` (or `curl`) command from a terminal on the Notebook instance.
 - The sample notebook creates a bucket in a specific *region*, take note of that as you'll need that information in the next challenges.
 
 ### Learning Resources
 
-- Documentation on [Vertex AI Workbench](https://cloud.google.com/vertex-ai/docs/workbench/user-managed/introduction)
+- Documentation on [Vertex AI Workbench Instances](https://cloud.google.com/vertex-ai/docs/workbench/instances/introduction)
 
 ## Challenge 2: If it isn't in version control, it doesn't exist
 
@@ -107,7 +107,7 @@ The objective of this challenge is to create and configure a Git repository so t
 
 ### Description
 
-If you have completed the previous challenge, you should have the source code already unpacked on your User-Managed Notebook (if another user is driving this challenge, see the tips). But you're free to complete this challenge on another environment such as Cloud Shell or even on your local machine.
+If you have completed the previous challenge, you should have the source code already unpacked on your Vertex AI Workbench Instance (if another user is driving this challenge, see the tips). But you're free to complete this challenge on another environment such as Cloud Shell or even on your local machine.
 
 Create a Cloud Source Repository, configure access through **SSH**.
 
@@ -122,9 +122,9 @@ Make sure that the source code is pushed to the freshly created repository and c
 
 ### Tips
 
-- The previous challenge required you to use a single-user Notebook instance, so if you want to complete this challenge in a Notebook instance as a different user, you'll have to create a new Notebook instance. In that case create another single-user Notebook instance for the new user and download the repository (zip file). You don't need to run the provided sample notebook or create the virtual environment for this challenge.
+- The previous challenge required you to use a single-user Vertex AI Workbench Instance, so if you want to complete this challenge in a Vertex AI Workbench Instance as a different user, you'll have to create a new instance. In that case create another single-user Vertex AI Workbench Instance for the new user and download the repository (zip file). You don't need to run the provided sample notebook or create the virtual environment for this challenge.
 - Alternatively you could use the Cloud Shell to complete this challenge.
-- Both User-Managed Notebooks and Cloud Shell have OpenSSH already installed
+- Both Vertex AI Workbench Instances and Cloud Shell have OpenSSH already installed
 
 ### Learning Resources
 

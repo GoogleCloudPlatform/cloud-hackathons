@@ -24,17 +24,19 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 - [Security with reCAPTCHA and Cloud Armor](./hacks/recaptcha-cloudarmor-security/README.md)
   > We will be setting up gHacks+, the hottest new streaming site. We will configure an HTTP Load Balancer in front of the site and then you'll learn how to set up a reCAPTCHA session token site key and embed it the site. You will also learn how to set up redirection to reCAPTCHA Enterprise manual challenge. We will then configure a Cloud Armor bot management policy to showcase how bot detection can protect gHacks+ from malicious bot traffic.
 - [Infrastructure as Code with Terraform](./hacks/iac-with-tf/README.md)
-  > This hack is intended as an introduction to provisioning GCP resources using Terraform. We'll start with the basics of Infrastructure as Code (IaC) and help you automate the process of infrastructure provisioning.
+  > This gHack is intended as an introduction to provisioning GCP resources using Terraform. We'll start with the basics of Infrastructure as Code (IaC) and help you automate the process of infrastructure provisioning.
 
 ### Application Development
 - [Intro to Google Kubernetes Engine](./hacks/intro-to-gke/README.md)
   > We will experience what a cloud developer needs to go through to successfully deploy an application to Google Kubernetes Engine. You will learn how to containerize a monolithic application; create a cluster; deploy, run and scale the application and then update the application and rollout the new version with zero downtime.
+- [Modernizing the Monolith: Containerizing and Deploying to Kubernetes](./hacks/modernizing-monoliths/README.md)
+  > Learn Docker and GKE with a web application that you can play! You will compose your own Dockerfile to containerize an existing web application and get practice in creating a cluster, creating node pools, and running deployments and services.
 - [Ready, Steady, Cloud Run!](./hacks/cloud-run/README.md)
   > We'll be using Cloud Run to quickly configure, deploy and troubleshoot a web service. During the process we'll introduce different ways to store data for the web service and learn about how to discover and fix issues. 
 
 ### Industry Solutions
 - [Gaming on Google Cloud](./hacks/gaming-on-gcp/README.md)
-  > This hack will showcase the power of Google Cloud's gaming services and help you create innovative gaming solutions using technologies like the Agones Game Server, Open Match, Cloud Spanner, and BigQuery.
+  > Learn how to deploy and manage game servers using Agones. Experience how Open Match integrates with Agones to assign players to game servers and protects servers with players from premature scale down operations.
 
 ### Operations
 - Coming soon...

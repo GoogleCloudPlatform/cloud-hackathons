@@ -51,7 +51,7 @@ We'll trigger the summary generation automatically when a document is uploaded t
 ### Success Criteria
 
 - There are two Cloud Storage Buckets, one for uploading the documents and another one for staging with the required name.
-- The provided Cloud Function is triggered (only) when a file is uploaded.
+- The provided Cloud Function is triggered **only** when a file is uploaded.
 - No code was modified.
 
 ### Learning Resources
@@ -62,6 +62,8 @@ We'll trigger the summary generation automatically when a document is uploaded t
 ### Tips
 
 - Check the provided Cloud Function's configuration to see the details on how it's being triggered
+- You can test things by uploading a [PDF file](https://arxiv.org/pdf/2301.02230.pdf) to the first Cloud Storage Bucket and watching the logs of the Cloud Function
+
 
 ## Challenge 2: First steps into the LLM realm
 
@@ -73,9 +75,11 @@ Let's get started with a simple objective; we're going to _extract_ the title of
 
 For this challenge we'll use PaLM (`text-bison`) to determine what the title (including any subtitle) of the uploaded document is. We've already provided the skeleton of the function `extract_title_from_text`, all you need to do is come up with the correct prompt and set the right values for the placeholder (in the `format` function) to pass the document content to your prompt. Once you've made your changes re-deploy the Cloud Function.
 
+> **Warning**  Beware of some of the quirks of Cloud Function source editor UI! When you click on _Save and redeploy_ button, the editor will show the code for the previous version of the function, which looks like your changes were lost. But that's only temporay, when the function is redeployed, the changes will be shown again. If there were any syntax errors though, the changes will be lost, so make a copy of your changes before you save and redeploy the code. Also, before editing the function make sure that you have the latest version of the code. If you're editing a previous version, the editor won't warn you about that.
+
 ### Success Criteria
 
-- The following papers should yield the corresponding titles, you can see those in the `Logs` section of the Cloud Function:
+- The following papers should yield the corresponding titles, you can see those in the `Logs` section of the Cloud Function. Make sure that only the title is output:
 
   | Paper                                           | Title |
   | ---                                             | ---   |
@@ -90,8 +94,8 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title (in
 ### Tips
 
 - You can edit and redeploy the Cloud Function from the Console.
-- You can test your prompts using [Generative AI Studio](https://cloud.google.com/vertex-ai/docs/generative-ai/text/test-text-prompts#generative-ai-test-text-prompt-console).
-- You could get the content from PDF files either by copy-paste or using `gsutil cat` & `jq` commands from Cloud Shell by accessing the JSON files in the staging bucket.
+- You can test your prompts using [Vertex AI Studio](https://cloud.google.com/vertex-ai/docs/generative-ai/text/test-text-prompts#generative-ai-test-text-prompt-console).
+- You could get the content from PDF files by opening them in PDF reader and copying the text (or if you're very familiar with the CLI and love experimenting with `jq` you can do that by using `gsutil cat` & `jq` commands from Cloud Shell by accessing the JSON files in the staging bucket).
 
 ## Challenge 3: Summarizing a large document using chaining
 
@@ -107,7 +111,7 @@ The _Refine_ chain approach also makes multiple calls to an LLM, but it does tha
 
 ### Description
 
-In order to get the summaries, we'll implement the _Refine_ approach for this challenge. Most of the code is already provided in the `extract_summary_from_text` method in Cloud Function. Similar to the previous challenge, you're expected to design the prompts and provide the right values to the placeholders.
+In order to get the summaries, we'll implement a mixture of _Map-Reduce_ and _Refine_ approaches for this challenge. Most of the code is already provided in the `extract_summary_from_text` method in Cloud Function. Similar to the previous challenge, you're expected to design the prompts and provide the right values to the placeholders.
 
 ### Success Criteria
 
@@ -200,7 +204,7 @@ Similarly to the previous challenge, create a remote model in BigQuery for text 
 
 Once the table is there, do a SQL search by `COSINE` distance for every row of the newly generated table and the query _Which paper is about characteristics of living organisms in alien worlds?_ and show only the row with the closest distance.
 
-> **Note**  This is a very naive approach, we're comparing the query embeddings with every summary embedding row one-by-one, which wouldn't scale with larger amounts of data. Typically an approximate nearest neighbors approach is utilized to address the scalabilty, which is a service that's provided through _Vertex AI Vector Search_ and that will be the topic of the next challenge.
+> **Note**  BigQuery has recently introduced _vector search_ and _vector indexes_ to make these type of searches more efficient. We'll keep to the naive approach for this challenge (as the next challenge will introduce the concepts of vector search and indexes), so **do not** create _vector indexes_ and stick to `ML.DISTANCE` for the search.
 
 ### Success Criteria
 
@@ -209,7 +213,7 @@ Once the table is there, do a SQL search by `COSINE` distance for every row of t
 ### Learning Resources
 
 - BigQuery [text embedding support](https://cloud.google.com/bigquery/docs/text-embedding-semantic-search)
-- BigQuery documentation on [ML.GENERATE_TEXT_EMBEDDING](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-text-embedding) and [ML.DISTANCE](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-distance)
+- BigQuery documentation on [ML.GENERATE_EMBEDDING](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-embedding) and [ML.DISTANCE](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-distance)
 
 ## Challenge 6: Vector Search for scale
 
@@ -229,7 +233,7 @@ Create a new Cloud Storage bucket and export the embeddings created in previous 
 
 > **Note** JSON Lines is a text format that stores JSON objects, one per line, with each line terminated by a newline character. Typically the `.jsonl` extension is used to denote these files, but both BigQuery and Vector Search use and expect the `.json` extension.
 
-Once the index is ready (should take less than a minute; refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). Deploying the index to the endpoint will take about 15 minutes.
+Once the index is ready (should take less than a minute; refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). Deploying the index to the endpoint will take about 15 minutes (start working on how to use the endpoint while the index is being deployed).
 
 Now run the same query as the previous challenge, _Which paper is about characteristics of living organisms in alien worlds?_ through the REST API. You should get the `uri` of the corresponding paper.
 

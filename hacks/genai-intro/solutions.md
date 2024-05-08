@@ -42,6 +42,10 @@ gcloud storage buckets notifications delete $BUCKET  # delete all notification c
 
 ### Notes & Guidance
 
+If students are new to Python, it might be helpful to explain the structure of the code. We've recently added [docstrings](https://peps.python.org/pep-0257/) to each function, make sure that they understand that it is the Pythonic way to document code. They only need to edit the parts where there's a TODO, they shouldn't modify the code in any other way.
+
+Note that these prompts are examples, we're using the latest version of the `text-bison` which is updated regularly, and until we have the `seed` parameter available in the API, we can't have a deterministic prompt that always works, so consider this as a good starting point.
+
 ```python
 def get_prompt_for_title_extraction() -> str:
     return """
@@ -60,6 +64,8 @@ response = model.predict(prompt.format(text=text[:10000]))
 ```
 
 Note that when the input token limit is exceeded (when the contents are not truncated), there have been cases that there was no error but empty/non-sense responses both through the API as the console. You might need to give some hints if that happens.
+
+> **Note**  If participants mention that they could have used Gemini 1.5 with a much larger context window to prevent the token limit issue, remind them that longer windows mean more tokens and become more expensive. The title is typically at the beginning of the article, so even when using Gemini it would make sense to truncate the text.
 
 Some participants might want to use string concatenation (instead of `prompt.format`, something like `prompt + text`) which could work, but that's less elegant and limits things (text can only be put at the end). Since for the next challenge the `format` function is going to be more important, it's good to stick to that for this challenge. The linked documentation for `str.format` is quite helpful.
 
@@ -80,7 +86,7 @@ The prompt listed here is just an example, there's a great variety when it comes
 See below for the complete code, although there could be slight deviations, there should be two prompts first one using the rolling context and the current page and the second one just the final rolling context. The `extract_summary_from_text` function only needs to be updated for passing the `context`, `page` and `summaries` variables to the `format` function.
 
 ```python
-def get_prompt_for_summary_1() -> str:
+def get_prompt_for_page_summary_with_context() -> str:
     return """
         Taking the following context delimited by triple backquotes into consideration:
 
@@ -94,7 +100,7 @@ def get_prompt_for_summary_1() -> str:
     """
 
 
-def get_prompt_for_summary_2() -> str:
+def get_prompt_for_summary_of_summaries() -> str:
     return """
         Write a concise summary of the following text delimited by triple backquotes.
 
@@ -105,9 +111,9 @@ def get_prompt_for_summary_2() -> str:
 
 
 def extract_summary_from_text(text: str) -> str:
-    model = TextGenerationModel.from_pretrained("text-bison@latest")
-    rolling_prompt_template = get_prompt_for_summary_1()
-    final_prompt_template = get_prompt_for_summary_2()
+    model = TextGenerationModel.from_pretrained("text-bison")
+    rolling_prompt_template = get_prompt_for_page_summary_with_context()
+    final_prompt_template = get_prompt_for_summary_of_summaries()
 
     if not rolling_prompt_template or not final_prompt_template:
         return ""  # return empty summary for empty prompts
@@ -123,13 +129,15 @@ def extract_summary_from_text(text: str) -> str:
     return model.predict(prompt).text   
 ```
 
-The prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should in this case reflect the main points from the summary in _Success Criteria_.
+The prompts listed here are just examples, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should in this case reflect the main points from the summary in _Success Criteria_.
+
+> **Note**  If participants mention that they could have used Gemini 1.5 with a much larger context window instead of chaining, remind them that these models sometimes have issues extracting relevant bits when given very large contexts (see for example [Lost in the Middle](https://arxiv.org/pdf/2307.03172.pdf) paper) although better prompt engineering sometimes can help. In addition, chaining might still be more memory efficient (processing chunks individually instead of whole documents) and more flexible (by integrating data from diverse information sources & tools within a single workflow) in some cases. Although the expanding context windows of LLMs are gradually reducing the need for this technique, it remains relevant in specific use cases. The optimal approach depends on the specific requirements of the task and the available resources.
 
 ## Challenge 4: BigQuery &#10084; LLMs
 
 ### Notes & Guidance
 
-First step is to create the dataset and the table with the right set of columns.
+First step is to create the dataset and the table with the right set of columns before uncommenting the snippet to write to BQ from Cloud Function.
 
 ```shell
 BQ_DATASET=articles
@@ -139,6 +147,22 @@ bq mk --location=$REGION -d $BQ_DATASET
 ```shell
 BQ_TABLE=summaries
 bq mk -t "$BQ_DATASET.$BQ_TABLE" uri:STRING,name:STRING,title:STRING,summary:STRING
+```
+
+You could download and upload the papers one by one, or use the following to automate that:
+
+```shell
+URLS="https://arxiv.org/pdf/2310.00044 https://arxiv.org/pdf/2310.01062 https://arxiv.org/pdf/2310.08243 https://arxiv.org/pdf/2310.09196 https://arxiv.org/pdf/2310.00446 https://arxiv.org/pdf/2310.02081 https://arxiv.org/pdf/2310.00245 https://arxiv.org/pdf/2310.01303 https://arxiv.org/pdf/2310.00067 https://arxiv.org/pd
+f/2310.02553"
+
+for URL in $URLS; do
+    wget --user-agent="Mozilla" -O "${URL##*/}.pdf" $URL
+done
+
+for PDF in *.pdf; do
+   gsutil cp $PDF $BUCKET
+   sleep 10
+done
 ```
 
 Now, we can create the connection to Vertex AI to call the API and make sure that the corresponding service account (that's created after the creation of the connection) has the correct role.
@@ -151,15 +175,16 @@ SA_CONN=`bq show --connection --format=json $REGION.$CONN_ID | jq -r .cloudResou
 
 gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAccount:$SA_CONN" \
     --role="roles/aiplatform.user" --condition=None
-
 ```
 
 This is the SQL statement to create a link to the LLM (you need to replace `$REGION` with the correct value).
 
+> **Note** Remind the participants that they can also use Gemini in BigQuery to get assistance on how to do certain things in SQL.
+
 ```sql
 CREATE OR REPLACE MODEL
   articles.llm REMOTE
-WITH CONNECTION `$REGION.conn-llm` OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_LARGE_LANGUAGE_MODEL_V1')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'text-bison')
 ```
 
 Finally, we can use the linked model to make predictions.
@@ -174,7 +199,7 @@ FROM
     (
       SELECT
         title,
-        CONCAT('Multi-choice problem: Define the category of the text?\nCategories:\n- Astrophysics\n- Mathematics\n- Computer Science\n- Quantitative Biology\n- Economics\nText:', summary) AS prompt
+        CONCAT('Multi-choice problem: Define the category of the text?\nCategories:\n- Astrophysics\n- Mathematics\n- Computer Science\n- Quantitative Biology\n- Economics\nText:', summary, '\nCategory:') AS prompt
       FROM
         `articles.summaries` 
     ),
@@ -194,15 +219,15 @@ We don't need to create another connection, we can reuse the existing one. Run t
 ```sql
 CREATE OR REPLACE MODEL
   articles.embeddings REMOTE
-WITH CONNECTION `$REGION.conn-llm` OPTIONS (REMOTE_SERVICE_TYPE = 'CLOUD_AI_TEXT_EMBEDDING_MODEL_V1')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'textembedding-gecko@latest')
 ```
 
 Next step is to apply that model to get the embeddings for every summary.
 
 ```sql
 CREATE OR REPLACE TABLE articles.summary_embeddings AS (
-  SELECT uri, title, content as summary, text_embedding
-    FROM ML.GENERATE_TEXT_EMBEDDING(
+  SELECT uri, title, content as summary, ml_generate_embedding_result as text_embedding
+    FROM ML.GENERATE_EMBEDDING(
       MODEL articles.embeddings,
       (SELECT uri, title, summary as content FROM articles.summaries),
       STRUCT(TRUE AS flatten_json_output)
@@ -214,8 +239,8 @@ And finally here's the SQL query to get the results, although any variation (tem
 
 ```sql
 WITH query_embeddings AS (
-  SELECT text_embedding FROM
-  ML.GENERATE_TEXT_EMBEDDING(MODEL articles.embeddings,
+  SELECT ml_generate_embedding_result as text_embedding FROM
+  ML.GENERATE_EMBEDDING(MODEL articles.embeddings,
       (SELECT "Which paper is about characteristics of living organisms in alien worlds?" AS content),
       STRUCT(TRUE AS flatten_json_output)
     )
@@ -292,11 +317,11 @@ EXPORT DATA
     uri='gs://$GOOGLE_CLOUD_PROJECT-embeddings/query/*.json',
     format='JSON',
     overwrite=TRUE) AS
-SELECT text_embedding FROM
-  ML.GENERATE_TEXT_EMBEDDING(MODEL articles.embeddings,
+SELECT ml_generate_embedding_result as text_embedding FROM
+  ML.GENERATE_EMBEDDING(MODEL articles.embeddings,
       (SELECT "Which paper is about characteristics of living organisms in alien worlds?" AS content),
       STRUCT(TRUE AS flatten_json_output)
-    )
+  )
 ```
 
 ```shell
@@ -323,3 +348,31 @@ EOF
 
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN"  $URL -d @query.json
 ```
+
+In case students use different methods to generate the text embeddings for the summaries and the query, they should be aware that they should be using the same version of the model.
+
+See below a Python version of the same code:
+```python
+from google.cloud import aiplatform
+from vertexai.language_models import TextEmbeddingModel
+
+# retrieve index endpoint (assuming that there's only one)
+index_endpoint_name = aiplatform.MatchingEngineIndexEndpoint.list()[0].name
+index_endpoint = aiplatform.MatchingEngineIndexEndpoint(index_endpoint_name=index_endpoint_name)
+
+# embed the query
+model = TextEmbeddingModel.from_pretrained("textembedding-gecko@001")  # make sure that the version matches
+query = "Which paper is about characteristics of living organisms in alien worlds?"
+query_embeddings = model.get_embeddings([query])[0]
+
+# query the index endpoint for the nearest neighbors.
+resp = index_endpoint.find_neighbors(
+    deployed_index_id=index_endpoint.deployed_indexes[0].id,  # assuming that there's only one deployed index
+    queries=[query_embeddings.values],
+    num_neighbors=1,
+)
+
+print(resp[0][0].id)
+```
+
+Note that _Deployed index info_ page on the console gives examples of `curl` as well as `Python` code.

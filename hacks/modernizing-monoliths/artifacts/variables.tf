@@ -11,27 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "5.18.0"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "5.18.0"
-    }
-  }
+variable "gcp_project_id" {
+  type        = string
+  description = "The GCP project ID to create resources in."
 }
 
-provider "google" {
-  project = var.gcp_project_id
-  region  = var.gcp_region
-  zone    = var.gcp_zone
+# Default value passed in
+variable "gcp_region" {
+  type        = string
+  description = "Region to create resources in."
+  default     = "us-central1"
 }
 
-provider "google-beta" {
-  project = var.gcp_project_id
-  region  = var.gcp_region
-  zone    = var.gcp_zone
+# Default value passed in
+variable "gcp_zone" {
+  type        = string
+  description = "Zone to create resources in."
+  default     = "us-central1-c"
 }
