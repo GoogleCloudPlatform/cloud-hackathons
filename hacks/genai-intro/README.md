@@ -229,7 +229,11 @@ This challenge is all about implementing the 2nd & 3rd step of this process to b
 
 ### Description
 
-Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON Lines format. Once the embeddings have been exported, create a new Vector Search index. Choose **small** as the _Shard size_, and **5** as the _Approximate neighbours count_, find out the right number of _Dimensions_ to set it, and stick to the defaults for the rest of the parameters.
+Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON Lines format. 
+
+> **Note** You'll need to pick an single region for the bucket since Vector Search index needs to be co-located with it and doesn't work with Multi-Region.
+
+Once the embeddings have been exported, create a new Vector Search index. Choose **small** as the _Shard size_, and **5** as the _Approximate neighbours count_, find out the right number of _Dimensions_ to set it, and stick to the defaults for the rest of the parameters.
 
 > **Note** JSON Lines is a text format that stores JSON objects, one per line, with each line terminated by a newline character. Typically the `.jsonl` extension is used to denote these files, but both BigQuery and Vector Search use and expect the `.json` extension.
 
