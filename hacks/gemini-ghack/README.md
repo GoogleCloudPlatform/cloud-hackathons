@@ -36,6 +36,7 @@ In this gHack you will learn how to add business functionality to an existing Ja
 - Experience with Java and Git 
 - gCloud CLI
 - Visual Studio Code
+- MacOS or Windows 
 
 ## Contributors
 
@@ -72,10 +73,6 @@ The Quotes repository is [found on GitHub here](https://github.com/GoogleCloudPl
 
 ## Challenge 2: Get started with Gemini Code Assist
 
-### Pre-requisites 
-
-- Complete Challenge 1
-
 ### Introduction 
 
 With a solid starting point for the Quotes app, it is time to build new business functionality using a test-driven development process assisted by Gemini.
@@ -89,7 +86,8 @@ In this challenge, you'll seek to get comfortable using Gemini Code Assist. Desi
 
 ### Success Criteria
 
-- Demonstrate your understanding of the Quotes application 
+- Be able to give a detailed overview of the Quotes application: what are the use cases? What might be missing or could be improved? Gemini can help you decide
+- Explain the methods within the QuoteController class
 - Show Gemini Code Assist in action and understand how to refine prompts 
 
 ### Learning Resources
@@ -97,10 +95,6 @@ In this challenge, you'll seek to get comfortable using Gemini Code Assist. Desi
 - [Write better prompts for Gemini in Google Cloud](https://cloud.google.com/gemini/docs/discover/write-prompts)
 
 ## Challenge 3: Test-Driven Development
-
-### Pre-requisites 
-
-- Complete Challenge 2
 
 ### Introduction 
 
@@ -124,10 +118,6 @@ To add the quote retrieval by book name functionality, you start writing code in
 - [Test-driven development](https://en.wikipedia.org/wiki/Test-driven_development)
 
 ## Challenge 4: Build, deploy, and test
-
-### Pre-requisites 
-
-- Complete Challenge 3
 
 ### Introduction 
 
