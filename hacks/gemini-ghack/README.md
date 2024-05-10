@@ -57,7 +57,7 @@ In this gHack you will learn how to add business functionality to an existing Ja
 
 In this challenge, you will set up the provided repository in your own GCP project so that you can edit in within the Cloud Shell editor and use the Gemini Code Assist plugin and chat, all without leaving GCP. Before cloning your repository, ensure you have Java and OpenJDK installed, and enable the Gemini Code Assist, Cloud Build, Cloud Run, and Cloud Logging APIs within your project. 
 
-The Quotes repository is [found on GitHub here](https://github.com/GoogleCloudPlatform/serverless-production-readiness-java-gcp). 
+The Quotes repository is [found on GitHub here](https://github.com/ddobrin/quotes-workshop). 
 
 ### Success Criteria
 
