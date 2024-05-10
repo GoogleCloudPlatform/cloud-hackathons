@@ -1,7 +1,11 @@
 name: Publish to Github Pages
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: 
+  push:
+    branches:
+      - daniella
+
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:

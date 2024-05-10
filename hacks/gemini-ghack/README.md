@@ -50,6 +50,8 @@ In this gHack you will learn how to add business functionality to an existing Ja
 
 ### Pre-requisites 
 
+- Java 21
+- Git
 - Experience with Java and Git 
 - Experience with Spring Boot and Maven
 
@@ -64,6 +66,8 @@ The Quotes repository is [found on GitHub here](https://github.com/ddobrin/quote
 - Set up your project prerequisites. 
 - Verify that the Quotes app is cloned within your Google Cloud project. 
 - Demonstrate your understanding of how to call Gemini Code Assist within the Quotes repository. 
+- Run the Quotes app locally. 
+
 
 ### Learning Resources
 
@@ -74,7 +78,11 @@ The Quotes repository is [found on GitHub here](https://github.com/ddobrin/quote
 ## Challenge 2: Get started with Gemini Code Assist
 
 ### Introduction 
+TODO: Code base is poorly documented, add comments here
+Find a bug in the repository
+Write a test 
 
+generate an OpenAPI spec to document the rest APIs for the Quotes app
 With a solid starting point for the Quotes app, it is time to build new business functionality using a test-driven development process assisted by Gemini.
 First, get a good understanding of what the Quotes application is currently doing, as well as a sense of how to prompt Gemini Code Assist. 
 ### Description
@@ -94,10 +102,10 @@ In this challenge, you'll seek to get comfortable using Gemini Code Assist. Desi
 
 - [Write better prompts for Gemini in Google Cloud](https://cloud.google.com/gemini/docs/discover/write-prompts)
 
-## Challenge 3: Test-Driven Development
+## Challenge 4: Test-Driven Development
 
 ### Introduction 
-
+TODO: Make sure it's clear to write the tests first before the code
 Now that we understand the existing Quotes application, we'll seek to use test-driven development to add the additional method applying the business logic that your team is requesting. 
 
 ### Description
@@ -117,7 +125,7 @@ To add the quote retrieval by book name functionality, you start writing code in
 
 - [Test-driven development](https://en.wikipedia.org/wiki/Test-driven_development)
 
-## Challenge 4: Build, deploy, and test
+## Challenge 5: Build, deploy, and test
 
 ### Introduction 
 
@@ -139,3 +147,23 @@ Remember that Gemini Code Assist can always help out if you're unfamiliar with a
 - [Deploy a container image to Cloud Run](https://cloud.google.com/run/docs/quickstarts/deploy-container)
 
 
+## Challenge 6: Enhancing the Quotes app with GenAI
+
+### Introduction 
+
+Finally, let's build and deploy the image so that your team can use it. 
+
+### Description
+In this challenge, you will use Cloud Build to build and deploy your container image to Cloud Run. Cloud Build supports a simple build, tag, push process in a single YAML file. The YAML file is available in the repository. You'll need to fill in the missing methods, and then submit the build to Cloud Build. Finally, you'll need to deploy your container image to Cloud Run.
+
+Remember that Gemini Code Assist can always help out if you're unfamiliar with a file or need some suggestions on how to get started with or improve your code.
+### Success Criteria
+
+- Have your container image built and pushed to Cloud Build
+- Have your container image deployed to Cloud Run
+- Ensure your tests pass using the new endpoint for your application
+
+### Learning Resources
+
+- [Build and push a Docker image with Cloud Build](https://cloud.google.com/build/docs/build-push-docker-image)
+- [Deploy a container image to Cloud Run](https://cloud.google.com/run/docs/quickstarts/deploy-container)
