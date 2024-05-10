@@ -122,10 +122,11 @@ To add the quote retrieval by book name functionality, you start writing code in
 ### Introduction 
 
 Finally, let's build and deploy the image so that your team can use it. 
+
 ### Description
-In this challenge, you will use Cloud Build to build and deploy your container image to Cloud Run. Cloud Build supports a simple build, tag, push process in a single YAML file. The YAML file is written for you in the repository. You'll need to submit the build to Cloud Build and use Cloud Run to deploy the container image.
+In this challenge, you will use Cloud Build to build and deploy your container image to Cloud Run. Cloud Build supports a simple build, tag, push process in a single YAML file. The YAML file is available in the repository. You'll need to fill in the missing methods, and then submit the build to Cloud Build. Finally, you'll need to deploy your container image to Cloud Run.
 
-
+Remember that Gemini Code Assist can always help out if you're unfamiliar with a file or need some suggestions on how to get started with or improve your code.
 ### Success Criteria
 
 - Have your container image built and pushed to Cloud Build
