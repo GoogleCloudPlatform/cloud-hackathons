@@ -16,6 +16,7 @@ In this gHack you will learn how to add business functionality to an existing Ja
 1. Following **test-driven development** guidelines, use Gemini Code Assist to add business logic
 1. Build and deploy the updated Quotes app to Cloud Run
 1. Test the application in Cloud Run
+1. Add functionality using GenAI
 
 
 
@@ -29,6 +30,8 @@ In this gHack you will learn how to add business functionality to an existing Ja
    - Have Gemini help you to add business logic using test-driven development guidelines.
 - Challenge 4: Build, deploy, and test
    - Build and deploy the updated Quotes app to Cloud Run and test the endpoint.
+- Challenge 5: Enhancing the Quotes app with GenAI
+   - Use Google's GenAI capabilities to enhance the application. 
 
 ## Prerequisites
 
@@ -105,7 +108,7 @@ In this challenge, you'll seek to get comfortable using Gemini Code Assist. Desi
 
 - [Write better prompts for Gemini in Google Cloud](https://cloud.google.com/gemini/docs/discover/write-prompts)
 
-## Challenge 4: Test-Driven Development
+## Challenge 3: Test-Driven Development
 
 ### Introduction 
 Now that we understand the existing Quotes application, we'll seek to use test-driven development to add the additional method applying the business logic that your team is requesting. 
@@ -127,7 +130,7 @@ To add the quote retrieval by book name functionality, you start writing code in
 
 - [Test-driven development](https://en.wikipedia.org/wiki/Test-driven_development)
 
-## Challenge 5: Build, deploy, and test
+## Challenge 4: Build, deploy, and test
 
 ### Introduction 
 
@@ -149,7 +152,7 @@ Remember that Gemini Code Assist can always help out if you're unfamiliar with a
 - [Deploy a container image to Cloud Run](https://cloud.google.com/run/docs/quickstarts/deploy-container)
 
 
-## Challenge 6: Enhancing the Quotes app with GenAI
+## Challenge 5: Enhancing the Quotes app with GenAI
 
 ### Introduction 
 
