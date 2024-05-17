@@ -78,13 +78,15 @@ The Quotes repository is [found on GitHub here](https://github.com/ddobrin/quote
 ## Challenge 2: Get started with Gemini Code Assist
 
 ### Introduction 
-TODO: Code base is poorly documented, add comments here
-Find a bug in the repository
-Write a test 
 
-generate an OpenAPI spec to document the rest APIs for the Quotes app
-With a solid starting point for the Quotes app, it is time to build new business functionality using a test-driven development process assisted by Gemini.
-First, get a good understanding of what the Quotes application is currently doing, as well as a sense of how to prompt Gemini Code Assist. 
+With a solid starting point for the Quotes app, it is time to enhance the code base.  
+First, get a good understanding of what the Quotes application is currently doing, as well as a sense of how to prompt Gemini Code Assist. Then, start by adding comments to each method. The code base is poorly documented, so this will help your team understand each method and ensure that anything they add is useful and not duplicated. 
+
+Next, use the debugging features of Gemini. **TODO: Add bug that can be discovered**
+
+We can also use Gemini to generate an OpenAPI spec for all the operations in the QuoteController.java class. 
+
+Finally, write a unit test for **method (to be filled in**)
 ### Description
 In this challenge, you'll seek to get comfortable using Gemini Code Assist. Design your prompts to explain the current Quotes application, get a full code review and description, and see if Gemini Code Assist can translate your code into a different language. 
 
@@ -95,8 +97,9 @@ In this challenge, you'll seek to get comfortable using Gemini Code Assist. Desi
 ### Success Criteria
 
 - Be able to give a detailed overview of the Quotes application: what are the use cases? What might be missing or could be improved? Gemini can help you decide
-- Explain the methods within the QuoteController class
-- Show Gemini Code Assist in action and understand how to refine prompts 
+- Explain the methods within the QuoteController class and show an OpenAPI spec for all the operations
+- Find and fix the bug **more detail once the bug is added**
+- Produce a passing unit test
 
 ### Learning Resources
 
@@ -105,13 +108,12 @@ In this challenge, you'll seek to get comfortable using Gemini Code Assist. Desi
 ## Challenge 4: Test-Driven Development
 
 ### Introduction 
-TODO: Make sure it's clear to write the tests first before the code
 Now that we understand the existing Quotes application, we'll seek to use test-driven development to add the additional method applying the business logic that your team is requesting. 
 
 ### Description
 In this challenge, your team is asking you to enhance the existing Book Quotes application by adding new business functionality to retrieve quotes from books, given the book name. The Quotes app is missing this endpoint to retrieve book information by book name. This endpoint should respond on the “/quotes/book/{book}” path. You are being asked to implement it, with the associated business logic.
 
-To add the quote retrieval by book name functionality, you start writing code in true TDD fashion by adding tests to both the QuotesControllerTest (for the endpoint) and QuotesRepositoryTest (for data retrieval from the database). Once you've used Gemini to help you add these tests, you should run them to demonstrate that your code works as expected.
+To add the quote retrieval by book name functionality, you start writing code in true TDD fashion by first adding tests to both the QuotesControllerTest (for the endpoint) and QuotesRepositoryTest (for data retrieval from the database). Once you've defined the test criteria, you can then add the relevant methods. Once you've used Gemini to help you add this code, you should run the tests to demonstrate that your code works as expected.
 
 
 ### Success Criteria
@@ -151,19 +153,22 @@ Remember that Gemini Code Assist can always help out if you're unfamiliar with a
 
 ### Introduction 
 
-Finally, let's build and deploy the image so that your team can use it. 
+Now that we have a successful, working application, let's see how we can use Google's GenAI capabilities to enhance it. 
 
 ### Description
-In this challenge, you will use Cloud Build to build and deploy your container image to Cloud Run. Cloud Build supports a simple build, tag, push process in a single YAML file. The YAML file is available in the repository. You'll need to fill in the missing methods, and then submit the build to Cloud Build. Finally, you'll need to deploy your container image to Cloud Run.
+Let's introduce GenAI to the application, using the PaLM 2 Text Bison API. The PaLM 2 for Text (text-bison, text-unicorn) foundation models are optimized for a variety of natural language tasks such as sentiment analysis, entity extraction, and content creation.
 
-Remember that Gemini Code Assist can always help out if you're unfamiliar with a file or need some suggestions on how to get started with or improve your code.
+We can get started by asking Gemini which API would have to be enabled. Next, we can generate a new endpoint getByBookFromLLM() /quotes/bookfromllm/{book}. Ask Gemini for assistance to generate the quote from the book name provided in the request
+Rebuild the app, redeploy and test in Cloud Run
+
+
 ### Success Criteria
 
-- Have your container image built and pushed to Cloud Build
-- Have your container image deployed to Cloud Run
+- Deploy an endpoint that generates new quotes using PaLM 2 for Text instead of pulling from the database
+- Have your container image rebuilt and pushed to Cloud Build
+- Have your new container image re-deployed to Cloud Run
 - Ensure your tests pass using the new endpoint for your application
 
 ### Learning Resources
 
-- [Build and push a Docker image with Cloud Build](https://cloud.google.com/build/docs/build-push-docker-image)
-- [Deploy a container image to Cloud Run](https://cloud.google.com/run/docs/quickstarts/deploy-container)
+- [PaLM 2 for Text](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/text)
