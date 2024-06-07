@@ -85,11 +85,10 @@ The Quotes repository is [found on GitHub here](https://github.com/ddobrin/quote
 With a solid starting point for the Quotes app, it is time to enhance the code base.  
 First, get a good understanding of what the Quotes application is currently doing, as well as a sense of how to prompt Gemini Code Assist. Then, start by adding comments to each method. The code base is poorly documented, so this will help your team understand each method and ensure that anything they add is useful and not duplicated. 
 
-Next, use the debugging features of Gemini. **TODO: Add bug that can be discovered**
+Next, use the debugging features of Gemini. There is a potential NullPointerException error in the UpdateQuote method: use Gemini to locate this and solve it. 
 
-We can also use Gemini to generate an OpenAPI spec for all the operations in the QuoteController.java class. 
+We can also use Gemini to generate an OpenAPI spec for all the operations in the QuoteController.java class. Go ahead and prompt Gemini to generate this and save it as a YAML file within the repository. 
 
-Finally, write a unit test for **method (to be filled in**)
 ### Description
 In this challenge, you'll seek to get comfortable using Gemini Code Assist. Design your prompts to explain the current Quotes application, get a full code review and description, and see if Gemini Code Assist can translate your code into a different language. 
 
@@ -101,8 +100,8 @@ In this challenge, you'll seek to get comfortable using Gemini Code Assist. Desi
 
 - Be able to give a detailed overview of the Quotes application: what are the use cases? What might be missing or could be improved? Gemini can help you decide
 - Explain the methods within the QuoteController class and show an OpenAPI spec for all the operations
-- Find and fix the bug **more detail once the bug is added**
-- Produce a passing unit test
+- Find and fix the bug within the UpdateQuote method
+
 
 ### Learning Resources
 
