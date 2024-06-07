@@ -160,7 +160,9 @@ Now that we have a successful, working application, let's see how we can use Goo
 ### Description
 Let's introduce GenAI to the application, using the PaLM 2 Text Bison API. The PaLM 2 for Text (text-bison, text-unicorn) foundation models are optimized for a variety of natural language tasks such as sentiment analysis, entity extraction, and content creation.
 
- We can generate a new endpoint getByBookFromLLM()/quotes/bookfromllm/{book}. This endpoint should take in the name of a book, entered by the user. Ask Gemini for assistance to generate the quote from the book name provided in the request. We can ask Gemini which API we need to enable and call in order to do this generation. Once the endpoint is ready, you can rebuild the app, redeploy and test in Cloud Run.
+You will see the skeleton method within the QuotesTestApplication.java file. Using the method, we can generate a new endpoint getByBookFromLLM()/quotes/bookfromllm/{book}. This endpoint should take in the name of a book, entered by the user, and prompt Gemini to come up with an appropriate quote. As always, lean on your Gemini chat and code generation to help produce the correct code and refine the prompts as needed. 
+ 
+Once the endpoint is ready, you can rebuild the app, redeploy and test in Cloud Run.
 
 ### Success Criteria
 
