@@ -57,13 +57,15 @@ We begin our journey by creating the Kubernetes cluster that will run our new co
 
 ### Description
 
-In this challenge, you will create a single GKE cluster as per these specifications:
+In this challenge, you will create a single *Standard* GKE cluster as per these specifications:
 
 - An initial node pool of machine type: `n1-standard-2`
 - An initial node pool size of 3
 - Located in a GCP zone near you
 
 > **Note** Although you can create this cluster using the Google Cloud Console UI, we encourage you to explore and figure out how to create clusters using the `gcloud` CLI tool.
+
+> **Note** Creating a cluster will take 5-7 minutes.
 
 ### Success Criteria
 
@@ -72,9 +74,12 @@ In this challenge, you will create a single GKE cluster as per these specificati
 
 ### Learning Resources
 
-- [Kubernetes Overview](https://kubernetes.io/docs/concepts/overview/)
 - [GKE Overview](https://cloud.google.com/kubernetes-engine/docs/concepts/kubernetes-engine-overview)
 - [Zonal Clusters](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-zonal-cluster)
+
+## Tips
+
+- Keep in mind that you need to get the credentials to connect `kubectl` to your cluster.
 
 ## Challenge 2: 
 
@@ -139,7 +144,7 @@ We will create yaml files describing the Deployment and Service resources you wi
 Your Deployment resource will need to:
 - Use the container image that we built and pushed to your docker repository in Artifact Registry.
 - Deploy only 1 replica of our container
-- Expose the container on port 80
+- Expose the container on port 8080
 - Use an appropriate label to identify the pod
 
 Your Service resource will need to:
