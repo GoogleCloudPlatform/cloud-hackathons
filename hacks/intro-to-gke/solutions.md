@@ -242,7 +242,7 @@ spec:
       - name: monolith
         image: us-central1-docker.pkg.dev/my-project/dev/monolith:1.0.0
         ports:
-        - containerPort: 80
+        - containerPort: 8080
 ```
 
 > **Note** Make sure that you replace the image path with the exact one from your Artifact Registry docker repository.
