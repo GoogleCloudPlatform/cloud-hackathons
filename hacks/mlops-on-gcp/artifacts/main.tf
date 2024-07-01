@@ -117,7 +117,9 @@ resource "google_project_iam_member" "gce_default_iam" {
     "roles/aiplatform.admin",
     "roles/bigquery.admin",
     "roles/storage.admin",
-    "roles/monitoring.notificationChannelViewer"
+    "roles/monitoring.notificationChannelViewer",
+    "roles/source.reader",
+    "roles/logging.logWriter"
   ])
   role   = each.key
   member = "serviceAccount:${data.google_compute_default_service_account.gce_default.email}"
