@@ -83,17 +83,17 @@ The Quotes repository is [found on GitHub here](https://github.com/ddobrin/quote
 ### Introduction 
 
 With a solid starting point for the Quotes app, it is time to enhance the code base.  
-First, get a good understanding of what the Quotes application is currently doing, as well as a sense of how to prompt Gemini Code Assist. Then, start by adding comments to each method. The code base is poorly documented, so this will help your team understand each method and ensure that anything they add is useful and not duplicated. 
-
-Next, use the debugging features of Gemini. There is a potential NullPointerException error in the UpdateQuote method: use Gemini to locate this and solve it. 
-
-We can also use Gemini to generate an OpenAPI spec for all the operations in the QuoteController.java class. Go ahead and prompt Gemini to generate this and save it as a YAML file within the repository. 
 
 ### Description
 In this challenge, you'll seek to get comfortable using Gemini Code Assist. Design your prompts to explain the current Quotes application, get a full code review and description, and see if Gemini Code Assist can translate your code into a different language. 
 
 > **Note**  
 > Occasionally, we have to refine the request and account for the fact that GenAI tooling is non-deterministic. If the generated code did not generate the full output you're expecting, you can seek to refine it by asking more specifically for what you want or asking for more details or going step-by-step.
+First, get a good understanding of what the Quotes application is currently doing, as well as a sense of how to prompt Gemini Code Assist. Then, start by adding comments to each method. The code base is poorly documented, so this will help your team understand each method and ensure that anything they add is useful and not duplicated. 
+
+Next, use the debugging features of Gemini. There is a potential NullPointerException error in the UpdateQuote method: use Gemini to locate this and solve it. 
+
+We can also use Gemini to generate an OpenAPI spec for all the operations in the QuoteController.java class. Go ahead and prompt Gemini to generate this and save it as a YAML file within the repository. 
 
 
 ### Success Criteria
@@ -160,9 +160,9 @@ Now that we have a successful, working application, let's see how we can use Goo
 ### Description
 Let's introduce GenAI to the application, using the PaLM 2 Text Bison API. The PaLM 2 for Text (text-bison, text-unicorn) foundation models are optimized for a variety of natural language tasks such as sentiment analysis, entity extraction, and content creation.
 
-You will see the skeleton method within the QuotesTestApplication.java file. Using the method, we can generate a new endpoint getByBookFromLLM()/quotes/bookfromllm/{book}. This endpoint should take in the name of a book, entered by the user, and prompt Gemini to come up with an appropriate quote. As always, lean on your Gemini chat and code generation to help produce the correct code and refine the prompts as needed. 
+You will see the skeleton method within the GenerateQuote.java file. This method should take in the name of a book, entered by the user, and prompt Gemini to come up with an appropriate quote. As always, lean on your Gemini chat and code generation to help produce the correct code and refine the prompts as needed. 
  
-Once the endpoint is ready, you can rebuild the app, redeploy and test in Cloud Run.
+Once the method is completed, you can rebuild the app, redeploy and test in Cloud Run.
 
 ### Success Criteria
 
