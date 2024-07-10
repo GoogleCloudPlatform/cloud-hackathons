@@ -101,13 +101,13 @@ Use general non-bulleted text for the beginning of a solution area for this chal
 **Activate Cloud Shell**
 - Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud. Cloud Shell provides command-line access to your Google Cloud resources.
 - In the Cloud Console, in the top right toolbar, click the Activate Cloud Shell button.
-(https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/a914437c-aa75-4ce7-be29-931c962c02aa)
+[Activate Cloud Shell](https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/a914437c-aa75-4ce7-be29-931c962c02aa)
 
 - Click Continue.
-(https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/69a782f3-6506-400e-93ff-a0e15893f040)
+[Continue](https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/69a782f3-6506-400e-93ff-a0e15893f040)
 
 It takes a few moments to provision and connect to the environment. When you are connected, you are already authenticated, and the project is set to your PROJECT_ID. For example:
-(https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/b3ca7217-884d-44ec-9153-eacd8431cf5d)
+[PROJECT_ID](https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/b3ca7217-884d-44ec-9153-eacd8431cf5d)
 
 Enable Gemini
 Start by obtaining new credentials, by typing the following command, authorizing the request at the shared link, then copy/paste the authorization code in the Terminal :
