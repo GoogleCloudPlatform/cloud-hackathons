@@ -119,45 +119,36 @@ gcloud auth login
 Enable the APIs required by the Quotes application:
 
 `````
-#enable the DuetAI
+#enable the Gemini Code Assist API
 gcloud services enable cloudaicompanion.googleapis.com
 ``````
 
-To use Duet AI in the Console, click on the button in the navigation bar to open the Duet AI chat panel:
-
-Click "Start Chatting" and try a few queries about GCP or general programming related topics. For example:
-When programming should I use tabs or spaces?
+To use Gemini Code Assist in the Console, click on the button in the navigation bar to open the chat panel:
+![](https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/6d9fef08-ca0f-4874-b255-c27a117cc16b)
 
 
-Open the Editor
+Click "Start Chatting" and try a few queries about GCP or general programming related topics. 
+
+# Open the Editor
 As you are opening it in an incognito window, the editor will ask you to Open In a new window
 
-Enabling Duet AI in the Cloud Shell Editor
-Duet AI is available in a range of Editors. For the full list check the official documentation.
-In this lab we will use the Cloud Shell Editor but the instructions for enabling Duet AI are the same for all VS-Code based editors.
+![](https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/ee2ee1b9-0a3b-485a-ae27-902ae8bdbda2)
+
+# Enabling Gemini CodeAssist in the Cloud Shell Editor
+Gemini CodeAssist is available in a range of Editors. For the full list check the official documentation.
+In this lab we will use the Cloud Shell Editor but the instructions for enabling Gemini CodeAssist are the same for all VS-Code based editors.
 Once the editor has loaded, make sure you have the Cloud Code Extension installed. For Cloud Shell Editor this extension is automatically installed for you. If you were to use your own IDE you might have to install it manually.
 Open the settings page via Menu > File > Preferences > Settings by using the shortcut of CTRL+, (CMD+, for macOS).
-In the settings page search for "Duet AI" and check the boxes for using Duet AI and to enable suggestions. 
-Lastly, you'll need to set the GCP project that Duet AI will be using. We'll use the project that you were given in the Qwiklabs instructions page. Don't worry about saving the changes. They are automatically saved on edit.
+
+In the settings page search for "Gemini Code Assist" and check the boxes for using Gemini CodeAssist and to enable suggestions. 
+
+Lastly, you'll need to set the GCP project that Gemini CodeAssist will be using. We'll use the project that you were given in the Qwiklabs instructions page. Don't worry about saving the changes. They are automatically saved on edit.
+
+![](https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/36b5c1bd-08e3-44a9-acea-98ba82d0cdf5)
 
 At the bottom left of the editor you'll see a button with the label "Cloud Code - Sign in". Click to login to the lab's GCP account. After a few seconds of clicking the button you should see the label change to "Cloud Code - No Project".
 
-The Duet AI chat window on the right side of the editor will now be available for you to ask generic and context specific questions.
-
-Let's move to the next step to see the Duet AI chat in action.
-From the top menu, open a Terminal window, for command-line operations:
-
-Inside your Terminal window, set the following environment variables for the scripts in this lab, as well as install the latest version of Java:
-Note: to copy code snippets, you can hover over mouse to upper right corner of code block where the copy button will show up 
-
-Set the project ID:
-gcloud config set project <your project id from the lab start screen>
-
-
-Validate that the project is set with the command:
-
-gcloud config list
-
+![](https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/092bb7d3-22a1-4c63-a47d-93bc4618077b)
 
 Install the latest Java version - Java 21 with the SDKMan Software Developer Kit Manager, for the simplest installation:
 curl -s "https://get.sdkman.io" | bash
@@ -166,26 +157,31 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 Install the latest OpenJDK and confirm it as the default JDK in the install
 
+```
 #install OpenJDK
 sdk install java 21.0.2-tem && sdk use java 21.0.2-tem && java -version
-
+```
 
 Enable the APIs required by the Quotes application, if they are not already activated:
 #enable the DuetAI, Cloud Run, Cloud Build and Logging APIs
+
+```
 gcloud services enable cloudaicompanion.googleapis.com
 gcloud services enable cloudbuild.googleapis.com 
 gcloud services enable run.googleapis.com
 gcloud services enable logging.googleapis.com 
-
+```
 
 Task 2. Download and validate the Quotes app codebase
 Run the following steps in Cloud Shell window activated in Task 1 to create and build the application:
 
 First, let’s get the codebase for Quotes by cloning the Github repo and switching to the /services/quotes folder:
+
+```
 # clone the repo
 git clone https://github.com/GoogleCloudPlatform/serverless-production-readiness-java-gcp.git
 cd serverless-production-readiness-java-gcp/services/quotes
-
+```
 
 Open the codebase in the IDE, by adding the serverless-production-readiness-java-gcp/services/quotes folder to the Workspace:
 
@@ -206,53 +202,78 @@ Repeat the previous sign in step:  at the bottom left of the editor you'll see a
 
 If the terminal window is closed, re-open it and set the project as in the previous step:
 
+```
 #set the project
 gcloud config set project <your project ID>
-
+```
 
 Then set the PROJECT_ID environment variable:
 
+```
 #set the PROJECT_ID env variable
 export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 echo   $PROJECT_ID
-
+```
 
 Check that the project is set:
+
+```
 #validate it with the command
 gcloud config list
+```
 
 Validate that you have Java 21 and Maven installed:
+
+```
 sdk use java 21.0.2-tem && java -version
+```
 
 Validate that the starter app is good to go:
+
+```
 ./mvnw package spring-boot:run
+```
 
 Open a new terminal window. From the terminal window, test the app:
-curl localhost:8083/start -w "\n"
 
+```
+curl localhost:8083/start -w "\n"
+```
 
 # Output
 QuoteController started!
 In the terminal window where the app is running, Stop the running app using CTRL+C
 Alternatively, you can start the Quotes app also by using plain Java:
+
+```
 java -jar target/quotes-1.0.0.jar 
+```
 
 Build a JIT Docker image with Dockerfiles:
+
+```
 # build an image with a fat JAR
 docker build -f ./containerize/Dockerfile-fatjar -t quotes .
 
 # build an image with custom layers
 docker build -f ./containerize/Dockerfile-custom -t quotes-custom .
+```
+
 
 Build a Java Docker image with Buildpacks:
-./mvnw spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=quotes
 
+```
+./mvnw spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=quotes
+```
 Test the locally built images on the local machine from a terminal window:
+
+```
 docker run --rm -p 8080:8083 quotes
 
 
 #Test the start endpoint
 curl localhost:8080/start -w "\n"
+```
 
 Stop the running Docker container with CTRL+C
 
