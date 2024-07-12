@@ -182,6 +182,8 @@ ORDER BY 2
 
 The prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should be the corresponding category from the _Success Criteria_ for each paper.
 
+In order to compare things, the results must be sorted. If the students don't flatten the JSON outputs, they'll have to use the `JSON_VALUE` function on the column that contains the categories, to be able to sort.
+
 ## Challenge 5: Simple semantic search
 
 ### Notes & Guidance
