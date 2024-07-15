@@ -13,7 +13,6 @@
 # limitations under the License.
 import base64
 import json
-import logging
 import os
 
 from itertools import islice
@@ -46,6 +45,8 @@ def extract_text_from_document(src_bucket: str, file_name: str, dst_bucket: str)
     In order to extract the contents of the PDF document OCR is applied and the results, 
     consisting of JSON files, are stored in the destination bucket in a folder that has 
     the same name as the source file name.
+
+    Do not edit.
 
     Args:
         src_bucket: source bucket without the gs prefix, e.g. my-uploaded-docs-bucket
@@ -88,6 +89,8 @@ def collate_pages(bucket: str, folder: str) -> str:
     """Collates all pages, stored as JSON files in the provided bucket & folder, 
     parses them, extracts the relevant parts and concatenates them into a single string.
 
+    Do not edit.
+
     Args:
         bucket: bucket without the gs prefix, e.g. my-staging-bucket
         folder: folder name, e.g. my-file/
@@ -125,6 +128,8 @@ def get_prompt_for_title_extraction() -> str:
 def extract_title_from_text(text: str) -> str:
     """Given the full text of the PDF document, extracts the title.
 
+    To be modified for Challenge 2.
+
     Args:
         text: full text of the PDF document
 
@@ -147,6 +152,8 @@ def extract_title_from_text(text: str) -> str:
 
 def pages(text: str, batch_size: int) -> Iterator[str]:
     """Yield successive n-sized chunks from text.
+
+    Do not edit.
 
     Args:
         text: full text of the PDF document
@@ -200,6 +207,8 @@ def extract_summary_from_text(text: str) -> str:
 
 def store_results_in_bq(dataset: str, table: str, columns: dict[str, str]) -> bool:
     """Stores the results of title extraction and summary generation in BigQuery.
+
+    Do not edit.
     
     Args:
         dataset: the name of the BigQuery dataset
@@ -226,6 +235,8 @@ def store_results_in_bq(dataset: str, table: str, columns: dict[str, str]) -> bo
 
 def on_document_added(event, context):
     """Triggered from a message on a Cloud Pub/Sub topic.
+
+    Do not edit until Challenge 4.
 
     Args:
         event: event payload
