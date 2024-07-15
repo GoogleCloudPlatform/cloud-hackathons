@@ -236,9 +236,8 @@ def on_document_added(event, context):
     src_fname = pubsub_message["name"]
     print("Processing file:", src_fname)
 
-    if not "contentType" in pubsub_message or pubsub_message["contentType"] != "application/pdf":
-        print("Only PDF files are supported, aborting")
-        return
+    if pubsub_message["contentType"] != "application/pdf":
+        raise ValueError("Only PDF files are supported, aborting")
 
     dst_bucket = STAGING_BUCKET
     dst_folder = extract_text_from_document(src_bucket, src_fname, dst_bucket)
