@@ -1,4 +1,5 @@
 name: Publish to Github Pages
+
 on:
   workflow_dispatch:
 
@@ -20,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fix the base url
         run: |
           echo "baseurl: ${{ github.event.repository.name }}" >> _config.yml
@@ -28,7 +29,7 @@ jobs:
         run: |
           tools/setup-pages.sh
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 16
       - name: Set up Ruby
@@ -40,11 +41,11 @@ jobs:
           NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install --quiet --gemfile=tools/Gemfile
           github-pages build --source=dist        
       - name: Set up Pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v5
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
