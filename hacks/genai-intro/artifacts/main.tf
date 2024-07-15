@@ -136,8 +136,10 @@ resource "google_project_iam_member" "gce_default_iam" {
   project = var.gcp_project_id
   for_each = toset([
     "roles/aiplatform.user",
+    "roles/artifactregistry.writer",
     "roles/bigquery.dataEditor",
     "roles/bigquery.user",
+    "roles/logging.logWriter",
     "roles/storage.objectAdmin",
     "roles/storage.insightsCollectorService"
   ])

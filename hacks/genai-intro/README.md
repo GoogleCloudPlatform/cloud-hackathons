@@ -73,12 +73,13 @@ Let's get started with a simple objective; we're going to _extract_ the title of
 
 ### Description
 
-For this challenge we'll use PaLM (`text-bison`) to determine what the title (including any subtitle) of the uploaded document is. We've already provided the skeleton of the function `extract_title_from_text`, all you need to do is come up with the correct prompt and set the right values for the placeholder (in the `format` function) to pass the document content to your prompt. Once you've made your changes re-deploy the Cloud Function.
+For this challenge we'll use Gemini to determine what the title (including any subtitle) of the uploaded document is, *in a cost effective way*. We've already provided the skeleton of the function `extract_title_from_text`, all you need to do is come up with the correct prompt and set the right values for the placeholder (in the `format` function) to pass the document content to your prompt.  Once you've made your changes re-deploy the Cloud Function.
 
 > **Warning**  Beware of some of the quirks of Cloud Function source editor UI! When you click on _Save and redeploy_ button, the editor will show the code for the previous version of the function, which looks like your changes were lost. But that's only temporay, when the function is redeployed, the changes will be shown again. If there were any syntax errors though, the changes will be lost, so make a copy of your changes before you save and redeploy the code. Also, before editing the function make sure that you have the latest version of the code. If you're editing a previous version, the editor won't warn you about that.
 
 ### Success Criteria
 
+- Less than 2500 tokens are used to determine the title.
 - The following papers should yield the corresponding titles, you can see those in the `Logs` section of the Cloud Function. Make sure that only the title is output:
 
   | Paper                                           | Title |
@@ -101,17 +102,20 @@ For this challenge we'll use PaLM (`text-bison`) to determine what the title (in
 
 ### Introduction
 
-The objective of this challenge is to try to get a summary of a complete paper. You've already seen that there are limitations when it comes to the number of input tokens for an LLM. For the title it's okay to just look at a part of the document, but generating a summary for the complete document requires an alternative approach, namely LLM _chains_. 
+The objective of this challenge is to try to get a summary of a complete paper. For the title it's okay to just look at a part of the document, but generating a summary for the complete document requires an alternative approach, namely LLM _chains_. 
 
-With LLMs there's roughly 3 different approaches; _Stuffing_ is the most basic approach where the full content (possibly from multiple documents) is provided as the context. However this only works with smaller documents due to the context length limits.
+> **Note**  
+> Although the expanding context windows of LLMs are gradually reducing the need for this technique, it remains relevant in specific use cases. In our case there are papers like [this](https://arxiv.org/pdf/1511.08771), with more than 10K pages and 10s of millions of characters, exceeding well beyond the context window of current models. Also keep in mind that in some cases chaining might still be more memory efficient (processing chunks individually instead of whole documents) and more flexible (by integrating data from diverse information sources & tools within a single workflow). So, the optimal approach depends on the specific requirements of the task and the available resources.
+
+There's roughly 3 different approaches we can take; _Stuffing_ is the most basic approach where the full content (possibly from multiple documents) is provided as the context. However this only works with smaller documents due to the context length limits.
 
 The _Map-Reduce_ chain is an alternative approach that's designed to handle large/multiple documents. In essence it makes multiple calls to an LLM for chunks of content (usually in parallel). It first applies an LLM to each document/chunk individually (the _Map_ phase), then the results (outputs of the LLM) are combined and sent to an LLM again to get a single output (the _Reduce_ phase). Typically different prompts are used for the Map and Reduce phases. 
 
-The _Refine_ chain approach also makes multiple calls to an LLM, but it does that in an iterative fashion. It starts with the first document/chunk, passes its content and gets a response, and then gets to the second document/chunk passing that content plus the response from the previous call, iterating until the last document/chunk and then passing the last (rolling) response and getting a final answer using a different (final) prompt.
+The _Refine_ chain approach also makes multiple calls to an LLM, but it does that in an iterative fashion. It starts with the first document/chunk, passes its content and gets a response, and then gets to the second document/chunk passing that content plus the response from the previous call, iterating until the last document/chunk and then passing the last (rolling) response and getting a final answer.
 
 ### Description
 
-In order to get the summaries, we'll implement a mixture of _Map-Reduce_ and _Refine_ approaches for this challenge. Most of the code is already provided in the `extract_summary_from_text` method in Cloud Function. Similar to the previous challenge, you're expected to design the prompts and provide the right values to the placeholders.
+In order to get the summaries, we'll implement the _Refine_ approach for this challenge. Most of the code is already provided in the `extract_summary_from_text` method in Cloud Function. Similar to the previous challenge, you're expected to design the prompt and provide the right values to the placeholders.
 
 ### Success Criteria
 
@@ -138,7 +142,7 @@ In order to get the summaries, we'll implement a mixture of _Map-Reduce_ and _Re
 
 ### Introduction
 
-So far we've used the PaLM APIs from the Vertex AI Python SDK. It's also possible to use those through BigQuery, this challenge is all about using BigQuery to run an LLM.
+So far we've used the Gemini APIs from the Vertex AI Python SDK. It's also possible to use those through BigQuery, this challenge is all about using BigQuery to run an LLM.
 
 ### Description
 
@@ -161,7 +165,7 @@ Upload the following papers to Cloud Storage Bucket and run your SQL query in Bi
 - [Quantitative Biology](https://arxiv.org/pdf/2310.02553)
 
 > **Warning**  
-> Currently PaLM has a rate limit of 60 calls per minute, since every page from the documents is a single call, if you process more than 60 pages you might run into this limit. None of the provided examples has more than 60 pages, but if you add them all at the same time you'll get to that limit.
+> Currently GenAI models have a rate limit of 60 calls per minute, since every page from the documents is a single call, if you process more than 60 pages you might run into this limit. None of the provided examples has more than 60 pages, but if you add them all at the same time you'll get to that limit.
 
 ### Success Criteria
 
@@ -183,7 +187,7 @@ Upload the following papers to Cloud Storage Bucket and run your SQL query in Bi
 ### Learning Resources
 
 - Creating BigQuery [datasets](https://cloud.google.com/bigquery/docs/datasets) and [tables](https://cloud.google.com/bigquery/docs/tables)
-- BigQuery [LLM support](https://cloud.google.com/bigquery/docs/generate-text-tutorial)
+- BigQuery [LLM support](https://cloud.google.com/bigquery/docs/generate-text)
 
 ### Tips
 

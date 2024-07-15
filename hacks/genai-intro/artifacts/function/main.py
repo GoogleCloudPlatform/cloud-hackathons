@@ -16,6 +16,7 @@ import json
 import os
 
 from itertools import islice
+from typing import Iterator
 
 import vertexai
 
@@ -23,14 +24,19 @@ from google.cloud import bigquery
 from google.cloud import storage
 from google.cloud import vision
 
-from vertexai.language_models import TextGenerationModel
+from vertexai.generative_models import GenerativeModel
 
 
 PROJECT_ID=os.getenv("GCP_PROJECT_ID")
+REGION=os.getenv("GCP_REGION")
 STAGING_BUCKET=f"{PROJECT_ID}-staging"
 
 BQ_DATASET="articles"
 BQ_TABLE="summaries"
+
+MODEL_NAME="gemini-1.5-flash-001"
+
+vertexai.init(project=PROJECT_ID, location=REGION)
 
 
 def extract_text_from_document(src_bucket: str, file_name: str, dst_bucket: str) -> str:
@@ -39,6 +45,8 @@ def extract_text_from_document(src_bucket: str, file_name: str, dst_bucket: str)
     In order to extract the contents of the PDF document OCR is applied and the results, 
     consisting of JSON files, are stored in the destination bucket in a folder that has 
     the same name as the source file name.
+
+    Do not edit.
 
     Args:
         src_bucket: source bucket without the gs prefix, e.g. my-uploaded-docs-bucket
@@ -81,6 +89,8 @@ def collate_pages(bucket: str, folder: str) -> str:
     """Collates all pages, stored as JSON files in the provided bucket & folder, 
     parses them, extracts the relevant parts and concatenates them into a single string.
 
+    Do not edit.
+
     Args:
         bucket: bucket without the gs prefix, e.g. my-staging-bucket
         folder: folder name, e.g. my-file/
@@ -110,7 +120,7 @@ def get_prompt_for_title_extraction() -> str:
     Returns:
         prompt for title extraction, with placeholders for substitution
     """
-    # TODO provide the prompt, you can use {} references for substitution
+    # TODO Challenge 2, provide the prompt, you can use {} references for substitution
     # See https://www.w3schools.com/python/ref_string_format.asp
     return ""
 
@@ -118,25 +128,32 @@ def get_prompt_for_title_extraction() -> str:
 def extract_title_from_text(text: str) -> str:
     """Given the full text of the PDF document, extracts the title.
 
+    To be modified for Challenge 2.
+
     Args:
         text: full text of the PDF document
 
     Returns:
         title of the PDF document
     """
-    vertexai.init(project=PROJECT_ID, location="us-central1")  # PaLM only available in us for now
-    model = TextGenerationModel.from_pretrained("text-bison")
-    prompt = get_prompt_for_title_extraction()
+    model = GenerativeModel(MODEL_NAME)
+    prompt_template = get_prompt_for_title_extraction()
+    prompt = prompt_template.format() # TODO Challenge 2, set placeholder values in format
 
     if not prompt:
         return ""  # return empty title for empty prompt
+    
+    if model.count_tokens(prompt).total_tokens > 2500:
+        raise ValueError("Too many tokens used")
 
-    response = model.predict(prompt.format())  # TODO Challenge 2, set placeholder values in format
+    response = model.generate_content(prompt)
     return response.text
 
 
-def pages(text: str, batch_size: int) -> str:
+def pages(text: str, batch_size: int) -> Iterator[str]:
     """Yield successive n-sized chunks from text.
+
+    Do not edit.
 
     Args:
         text: full text of the PDF document
@@ -158,20 +175,7 @@ def get_prompt_for_page_summary_with_context() -> str:
     Returns:
         prompt for page summary with context, with placeholders for substitution
     """
-    # TODO provide the prompt, you can use {} references for substitution
-    # See https://www.w3schools.com/python/ref_string_format.asp
-    return ""
-
-
-def get_prompt_for_summary_of_summaries() -> str:
-    """Returns a prompt for the summary of summaries. 
-    
-    To be modified for Challenge 3.
-
-    Returns:
-        prompt for summary of summaries, with placeholders for substitution
-    """
-    # TODO provide the prompt, you can use {} references for substitution
+    # TODO Challenge 3, provide the prompt, you can use {} references for substitution
     # See https://www.w3schools.com/python/ref_string_format.asp
     return ""
 
@@ -187,26 +191,24 @@ def extract_summary_from_text(text: str) -> str:
     Returns:
         summary of the PDF document
     """
-    model = TextGenerationModel.from_pretrained("text-bison")
+    model = GenerativeModel(MODEL_NAME)
     rolling_prompt_template = get_prompt_for_page_summary_with_context()
-    final_prompt_template = get_prompt_for_summary_of_summaries()
 
-    if not rolling_prompt_template or not final_prompt_template:
+    if not rolling_prompt_template:
         return ""  # return empty summary for empty prompts
 
-    context = ""
-    summaries = ""
+    summary = ""
     for page in pages(text, 16000):
         prompt = rolling_prompt_template.format()  # TODO Challenge 3, set placeholder values in format
-        context = model.predict(prompt, max_output_tokens=256).text
-        summaries += f"\n{context}"
+        summary = model.generate_content(prompt).text
     
-    prompt = final_prompt_template.format()  # TODO Challenge 3, set placeholder values in format
-    return model.predict(prompt, max_output_tokens=256).text
+    return summary
 
 
 def store_results_in_bq(dataset: str, table: str, columns: dict[str, str]) -> bool:
     """Stores the results of title extraction and summary generation in BigQuery.
+
+    Do not edit.
     
     Args:
         dataset: the name of the BigQuery dataset
@@ -234,6 +236,8 @@ def store_results_in_bq(dataset: str, table: str, columns: dict[str, str]) -> bo
 def on_document_added(event, context):
     """Triggered from a message on a Cloud Pub/Sub topic.
 
+    Do not edit until Challenge 4.
+
     Args:
         event: event payload
         context: metadata for the event.
@@ -242,6 +246,9 @@ def on_document_added(event, context):
     src_bucket = pubsub_message["bucket"]
     src_fname = pubsub_message["name"]
     print("Processing file:", src_fname)
+
+    if pubsub_message["contentType"] != "application/pdf":
+        raise ValueError("Only PDF files are supported, aborting")
 
     dst_bucket = STAGING_BUCKET
     dst_folder = extract_text_from_document(src_bucket, src_fname, dst_bucket)
@@ -256,6 +263,6 @@ def on_document_added(event, context):
     summary = extract_summary_from_text(complete_text)
     print("Summary:", summary)
 
-    # TODO uncomment the next two lines for Challenge 4
+    # TODO Challenge 4, uncomment the next two lines
     # columns = {"uri": f"gs://{src_bucket}/{src_fname}", "name": src_fname, "title": title, "summary": summary}
     # store_results_in_bq(dataset=BQ_DATASET, table=BQ_TABLE, columns=columns)

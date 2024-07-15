@@ -19,7 +19,7 @@
 Create the buckets, on Cloud Shell the variable `$GOOGLE_CLOUD_PROJECT` contains the project id.
 
 ```shell
-REGION="us-central1"  # LLMs only available in US, although buckets could be anywhere
+REGION="us-central1"
 BUCKET="gs://$GOOGLE_CLOUD_PROJECT-documents"
 STAGING="gs://$GOOGLE_CLOUD_PROJECT-staging"
 
@@ -31,6 +31,7 @@ gsutil mb -l $REGION $STAGING
 TOPIC=documents
 gcloud storage buckets notifications create --event-types=OBJECT_FINALIZE --topic=$TOPIC $BUCKET
 ```
+Since the topic already exists, this command will emit a warning, indicating that the topic is already there, you can safely ignore it.
 
 If the participants miss the `OBJECT_FINALIZE` event type when they configure the notifications, things will fail when files are deleted from the bucket. Also, it's possible to have multiple triggers, so if they've made a mistake, the best course for action would be to delete all notification configurations and recreate it properly (as indicated above).
 
@@ -44,28 +45,24 @@ gcloud storage buckets notifications delete $BUCKET  # delete all notification c
 
 If students are new to Python, it might be helpful to explain the structure of the code. We've recently added [docstrings](https://peps.python.org/pep-0257/) to each function, make sure that they understand that it is the Pythonic way to document code. They only need to edit the parts where there's a TODO, they shouldn't modify the code in any other way.
 
-Note that these prompts are examples, we're using the latest version of the `text-bison` which is updated regularly, and until we have the `seed` parameter available in the API, we can't have a deterministic prompt that always works, so consider this as a good starting point.
+Note that these prompts are examples and until we have the `seed` parameter available in the API, we can't have a deterministic prompt that always works, so consider this as a good starting point.
 
 ```python
 def get_prompt_for_title_extraction() -> str:
     return """
-        Extract the title from the following text delimited by triple backquotes.
+        Extract the title from the following text delimited by triple backquotes. Output only the title. Do not format.
 
         ```{text}```
-
-        TITLE:
     """
 ```
 
-And make sure to truncate the text:
+And make sure to truncate the text (assuming that on average 1 token is 3-4 characters, 5000 characters should be less than 2500 tokens):
 
 ```python
-response = model.predict(prompt.format(text=text[:10000]))
+prompt = prompt_template.format(text=text[:5000])
 ```
 
-Note that when the input token limit is exceeded (when the contents are not truncated), there have been cases that there was no error but empty/non-sense responses both through the API as the console. You might need to give some hints if that happens.
-
-> **Note**  If participants mention that they could have used Gemini 1.5 with a much larger context window to prevent the token limit issue, remind them that longer windows mean more tokens and become more expensive. The title is typically at the beginning of the article, so even when using Gemini it would make sense to truncate the text.
+> **Note**  If participants mention that they could have used models with large context windows to prevent the token limit issue, remind them that longer windows mean more tokens and become more expensive. The title is typically at the beginning of the article, so even when using those models it would make sense to truncate the text.
 
 Some participants might want to use string concatenation (instead of `prompt.format`, something like `prompt + text`) which could work, but that's less elegant and limits things (text can only be put at the end). Since for the next challenge the `format` function is going to be more important, it's good to stick to that for this challenge. The linked documentation for `str.format` is quite helpful.
 
@@ -75,9 +72,9 @@ If you want to use gsutil & jq to get the contents, this is the command to use:
 gsutil cat $STAGING/2309.00031.pdf/output-1-to-2.json | jq -r .responses[].fullTextAnnotation.text
 ```
 
-But, for non-technical people, or even for technical people who don't have much `jq` experience, the easier option is to open the PDF file in a viewer and copy paste from there.
+But, for non-technical people *or even for technical people* who don't have much `jq` experience, the easier option is to open the PDF file in a viewer and copy paste from there.
 
-The prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should be (only) the title of the paper as it is in the paper.
+And just to re-emphasize, the prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should be (only) the title of the paper as it is in the paper (including any subtitles).
 
 ## Challenge 3: Summarizing a large document using chaining
 
@@ -92,46 +89,21 @@ def get_prompt_for_page_summary_with_context() -> str:
 
         ```{context}```
 
-        Write a concise summary of the following text delimited by triple backquotes.
+        Write a concise summary of the following text delimited by triple backquotes. Output only the summary. Do not format.
 
         ```{text}```
-
-        CONCISE SUMMARY:
     """
+```
 
+And then make sure to provide the `summary` as context and `page` as text in the `extract_summary_from_text` method.
 
-def get_prompt_for_summary_of_summaries() -> str:
-    return """
-        Write a concise summary of the following text delimited by triple backquotes.
-
-        ```{text}```
-
-        SUMMARY:
-    """
-
-
-def extract_summary_from_text(text: str) -> str:
-    model = TextGenerationModel.from_pretrained("text-bison")
-    rolling_prompt_template = get_prompt_for_page_summary_with_context()
-    final_prompt_template = get_prompt_for_summary_of_summaries()
-
-    if not rolling_prompt_template or not final_prompt_template:
-        return ""  # return empty summary for empty prompts
-
-    context = ""
-    summaries = ""
-    for page in pages(text, 16000):
-        prompt = rolling_prompt_template.format(context=context, text=page)  # <-- updated format
-        context = model.predict(prompt).text
-        summaries += f"\n{context}"
-    
-    prompt = final_prompt_template.format(text=summaries)  # <-- updated format
-    return model.predict(prompt).text   
+```python
+prompt = rolling_prompt_template.format(context=summary, text=page)
 ```
 
 The prompts listed here are just examples, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should in this case reflect the main points from the summary in _Success Criteria_.
 
-> **Note**  If participants mention that they could have used Gemini 1.5 with a much larger context window instead of chaining, remind them that these models sometimes have issues extracting relevant bits when given very large contexts (see for example [Lost in the Middle](https://arxiv.org/pdf/2307.03172.pdf) paper) although better prompt engineering sometimes can help. In addition, chaining might still be more memory efficient (processing chunks individually instead of whole documents) and more flexible (by integrating data from diverse information sources & tools within a single workflow) in some cases. Although the expanding context windows of LLMs are gradually reducing the need for this technique, it remains relevant in specific use cases. The optimal approach depends on the specific requirements of the task and the available resources.
+> **Note**  If participants mention that they could have used models with a much larger context window instead of chaining, remind them that these models sometimes have issues extracting relevant bits when given very large contexts (see for example [Lost in the Middle](https://arxiv.org/pdf/2307.03172.pdf) paper) although better prompt engineering sometimes can help. In addition, chaining might still be more memory efficient (processing chunks individually instead of whole documents) and more flexible (by integrating data from diverse information sources & tools within a single workflow) in some cases. Although the expanding context windows of LLMs are gradually reducing the need for this technique, it remains relevant in specific use cases. The optimal approach depends on the specific requirements of the task and the available resources.
 
 ## Challenge 4: BigQuery &#10084; LLMs
 
@@ -184,7 +156,7 @@ This is the SQL statement to create a link to the LLM (you need to replace `$REG
 ```sql
 CREATE OR REPLACE MODEL
   articles.llm REMOTE
-WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'text-bison')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'gemini-1.5-flash-001')
 ```
 
 Finally, we can use the linked model to make predictions.
@@ -192,23 +164,25 @@ Finally, we can use the linked model to make predictions.
 ```sql
 SELECT
   title,
-  json_value(ml_generate_text_result['predictions'][0]['content']) AS generated_text
+  ml_generate_text_llm_result
 FROM
   ML.GENERATE_TEXT( 
     MODEL `articles.llm`,
     (
       SELECT
         title,
-        CONCAT('Multi-choice problem: Define the category of the text?\nCategories:\n- Astrophysics\n- Mathematics\n- Computer Science\n- Quantitative Biology\n- Economics\nText:', summary, '\nCategory:') AS prompt
+        CONCAT('Multi-choice problem: Define the category of the text. Output only the category. Do not format. Categories: Astrophysics, Mathematics, Computer Science,Quantitative Biology, Economics\nText:', summary, '\nCategory:') AS prompt
       FROM
         `articles.summaries` 
     ),
-    STRUCT( 0.2 AS temperature, 64 AS max_output_tokens)
+    STRUCT( 0.2 AS temperature, 64 AS max_output_tokens, TRUE AS flatten_json_output)
   )
 ORDER BY 2
 ```
 
 The prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should be the corresponding category from the _Success Criteria_ for each paper.
+
+In order to compare things, the results must be sorted. If the students don't flatten the JSON outputs, they'll have to use the `JSON_VALUE` function on the column that contains the categories, to be able to sort.
 
 ## Challenge 5: Simple semantic search
 
