@@ -72,7 +72,7 @@ If you want to use gsutil & jq to get the contents, this is the command to use:
 gsutil cat $STAGING/2309.00031.pdf/output-1-to-2.json | jq -r .responses[].fullTextAnnotation.text
 ```
 
-But, for non-technical people *or even for technical people*b who don't have much `jq` experience, the easier option is to open the PDF file in a viewer and copy paste from there.
+But, for non-technical people *or even for technical people* who don't have much `jq` experience, the easier option is to open the PDF file in a viewer and copy paste from there.
 
 And just to re-emphasize, the prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should be (only) the title of the paper as it is in the paper (including any subtitles).
 
