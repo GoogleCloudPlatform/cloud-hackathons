@@ -104,12 +104,12 @@ To use Gemini Code Assist in the Console, click on the button in the navigation 
 
 Click "Start Chatting" and try a few queries about GCP or general programming related topics. 
 
-## Open the Editor
+### Open the Editor
 As you are opening it in an incognito window, the editor will ask you to Open In a new window
 
 ![](https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/ee2ee1b9-0a3b-485a-ae27-902ae8bdbda2)
 
-## Enabling Gemini CodeAssist in the Cloud Shell Editor
+### Enabling Gemini CodeAssist in the Cloud Shell Editor
 Gemini CodeAssist is available in a range of Editors. For the full list check the official documentation.
 In this lab we will use the Cloud Shell Editor but the instructions for enabling Gemini CodeAssist are the same for all VS-Code based editors.
 Once the editor has loaded, make sure you have the Cloud Code Extension installed. For Cloud Shell Editor this extension is automatically installed for you. If you were to use your own IDE you might have to install it manually.
@@ -267,9 +267,6 @@ Open the QuoteController class, then type the the following prompt in the Gemini
 ```Please perform a detailed code review of the QuoteController```
 
 
-Gemini CodeAssist would respond with a response similar to:
-
-
 You can ask Gemini CodeAssist for improvements to the class after the code review:
 
 ```Please recommend code improvements to the QuoteController class```
@@ -327,7 +324,7 @@ Open the /src/test/java/com/example/quotes folder and observe that several test 
 
 To add the quote retrieval by book name functionality, you start writing code in true TDD fashion by adding tests to both the QuotesControllerTest (for the endpoint) and QuotesRepositoryTest (for data retrieval from the db).
 
-Step 1: Generate test first
+### Step 1: Generate test first
 Open the QuotesControllerTest class in the com.example.quotes.web package
 In the code,and add the comment, say towards the end of the file and press Enter
 
@@ -342,19 +339,21 @@ In the Terminal window, run  the command:
 
 Observe that the test fails, as expected, with a ‘404’ error, as the business logic has not been implemented:
 
-```[ERROR] Failures: 
+```
+[ERROR] Failures: 
 [ERROR]   QuotesControllerTest.shouldReturnQuoteByBook:94 Status expected:<200> but was:<404>
 [INFO] 
-[ERROR] Tests run: 15, Failures: 1, Errors: 0, Skipped: 0```
+[ERROR] Tests run: 15, Failures: 1, Errors: 0, Skipped: 0
+```
 
-Step 2: Generate controller code
+### Step 2: Generate controller code
 Let’s add the missing controller method getByBook. Open the QuoteController class.
 Add the following comment towards the end of the class:
 
 ```// generate a getByBook method which responds at the HTTP endpoint /quotes/book/{book} and retrieves a quote by book name; use the QuoteService class to retrieve the book by name, as a String```
 
 
-Gemini CodeAssist will respond with a code block along the line of:
+Gemini CodeAssist will respond with a code block along the lines of:
 
 ```
     @GetMapping("/quotes/book/{book}")
@@ -375,12 +374,13 @@ Gemini CodeAssist will respond with a code block along the line of:
             return 
           new ResponseEntity<List<Quote>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }```
+    }
+```
 
 
 Note that the code is missing the ‘getByBook()’ implementation in the QuoteService class, which leads you to the next step in the implementation.
 
-Step 3: Generate now repository access methods, starting again with a test
+### Step 3: Generate now repository access methods, starting again with a test
 
 Open the QuoteService class and observe that the getByBook method is missing.
 Let’s generate a test for the service class, add methods to access the repository, then test it out 
@@ -416,18 +416,21 @@ Gemini CodeAssist will generate code along the lines of:
 ```  @Query( nativeQuery = true, value =
             "SELECT id,quote,author,book FROM quotes WHERE book = :book")
     List<Quote> findByBook(String book);
-    ```
+
+ ```
 
 
 With the repository method in place, generate the missing link, the getByBook method in the service class and test it out. Open the QuoteService class and add the comment:
 
-```// add get by book method, use the QuoteRepository
+```
+// add get by book method, use the QuoteRepository
 ```
 
 
 Gemini CodeAssist will generate code along the lines of:
 
-``````  public List<Quote> getByBook(String book) {
+``````
+public List<Quote> getByBook(String book) {
     return quoteRepository.findByBook(book);
   }
   ``````
@@ -440,19 +443,25 @@ Right-click in the QuotesControllerTest class and ‘Run Tests’
 
 Run ALL tests from the Terminal:
 
-`````` ./mvnw verify ``````
+`````` 
+./mvnw verify
+ ``````
 
  
 Ask Gemini CodeAssist to generate cURL commands to test the newly added functionality:
 
 Start the app with
 
-`````` ./mvnw spring-boot:run ``````
+``````
+./mvnw spring-boot:run
+``````
 
 Switch to a different terminal window to run a cURL command.
 In the Gemini CodeAssist AI chat window, prompt CodeAssist to generate a test command
 
-```generate a curl command for the /quotes/book endpoint for a local environment at port 8083 for the book "The Road"```
+```
+generate a curl command for the /quotes/book endpoint for a local environment at port 8083 for the book "The Road"
+```
 
 
 Gemini CodeAssist will generate the cURL command, which you can run:
@@ -484,7 +493,8 @@ Run the updated command generated by Gemini CodeAssist, which should return a 40
 
 Before you can use Cloud Build, you'll need to update the YAML file in the repository. You can ask Gemini to generate the build-project step: below is the solution.
 
-```- id: 'build-project'
+```
+- id: 'build-project'
 name: maven:3.9.5-eclipse-temurin-21
   entrypoint: mvn
   volumes:
@@ -498,7 +508,8 @@ There are two options to build, tag and push the image to a container registry: 
 Option 5.1 Build, tag, push the image from the command line
 Build a Java Docker image:
 
-```./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=quotes
+```
+./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=quotes
 ```
 
 Check that the PROJECT_ID is set in your terminal:
