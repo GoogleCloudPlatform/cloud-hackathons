@@ -15,3 +15,28 @@ resource "google_project_service" "compute_api" {
   service            = "compute.googleapis.com"
   disable_on_destroy = false  
 }
+
+# Cloud AI Companion API
+resource "google_project_service" "cloudaicompanion" {
+  service            = "cloudaicompanion.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Cloud Build API
+resource "google_project_service" "cloudbuild" {
+  service            = "cloudbuild.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Cloud Run API
+resource "google_project_service" "run" {
+  service            = "run.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Cloud Logging API
+resource "google_project_service" "logging" {
+  service            = "logging.googleapis.com"
+  disable_on_destroy = false
+}
+

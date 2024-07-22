@@ -89,6 +89,7 @@ In this challenge, you'll seek to get comfortable using Gemini Code Assist. Desi
 
 > **Note**  
 > Occasionally, we have to refine the request and account for the fact that GenAI tooling is non-deterministic. If the generated code did not generate the full output you're expecting, you can seek to refine it by asking more specifically for what you want or asking for more details or going step-by-step.
+
 First, get a good understanding of what the Quotes application is currently doing, as well as a sense of how to prompt Gemini Code Assist. Then, start by adding comments to each method. The code base is poorly documented, so this will help your team understand each method and ensure that anything they add is useful and not duplicated. 
 
 Next, use the debugging features of Gemini. There is a potential NullPointerException error in the UpdateQuote method: use Gemini to locate this and solve it. 
