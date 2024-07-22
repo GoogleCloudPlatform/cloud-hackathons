@@ -33,6 +33,8 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
   > Learn Docker and GKE with a web application that you can play! You will compose your own Dockerfile to containerize an existing web application and get practice in creating a cluster, creating node pools, and running deployments and services.
 - [Ready, Steady, Cloud Run!](./hacks/cloud-run/README.md)
   > We'll be using Cloud Run to quickly configure, deploy and troubleshoot a web service. During the process we'll introduce different ways to store data for the web service and learn about how to discover and fix issues. 
+- [gHacking with Gemini Code Assist](./hacks/gemini-ghack/README.md)
+> gHacking with Gemini CodeAssist guides participants through enhancing a Java and Spring Boot serverless application using Google Cloud's Gemini Code Assist. Participants will learn to use test-driven development, build and deploy the application to Cloud Run, and finally, enhance the application with GenAI.
 
 ### Industry Solutions
 - [Gaming on Google Cloud](./hacks/gaming-on-gcp/README.md)
