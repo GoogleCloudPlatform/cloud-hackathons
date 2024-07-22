@@ -17,6 +17,9 @@ Welcome to the coach's guide for gHacking with Gemini CodeAssist. gHack. Here yo
    - Have Gemini help you to add business logic using test-driven development guidelines.
 - Challenge 4: Build, deploy, and test
    - Build and deploy the updated Quotes app to Cloud Run and test the endpoint.
+- Challenge 5: Enhancing the Quotes app with GenAI
+   - Use Google's GenAI capabilities to enhance the application. 
+
 ## Coach Prerequisites
 
 This hack has prerequisites that a coach is responsible for understanding and/or setting up BEFORE hosting an event. Please review the [gHacks Hosting Guide](https://ghacks.dev/faq/howto-host-hack.html) for information on how to host a hack event.
@@ -101,12 +104,12 @@ To use Gemini Code Assist in the Console, click on the button in the navigation 
 
 Click "Start Chatting" and try a few queries about GCP or general programming related topics. 
 
-# Open the Editor
+## Open the Editor
 As you are opening it in an incognito window, the editor will ask you to Open In a new window
 
 ![](https://github.com/GoogleCloudPlatform/cloud-hackathons/assets/73710075/ee2ee1b9-0a3b-485a-ae27-902ae8bdbda2)
 
-# Enabling Gemini CodeAssist in the Cloud Shell Editor
+## Enabling Gemini CodeAssist in the Cloud Shell Editor
 Gemini CodeAssist is available in a range of Editors. For the full list check the official documentation.
 In this lab we will use the Cloud Shell Editor but the instructions for enabling Gemini CodeAssist are the same for all VS-Code based editors.
 Once the editor has loaded, make sure you have the Cloud Code Extension installed. For Cloud Shell Editor this extension is automatically installed for you. If you were to use your own IDE you might have to install it manually.
@@ -613,3 +616,30 @@ curl -H "Authorization: Bearer $TOKEN" https://$URL/random-quote
 curl -H "Authorization: Bearer $TOKEN" https://$URL/quotes
 
 ``````
+
+## Challenge 5: Adding GenAI
+
+The final challenge will be to update the Quotes app using Generative AI. We can use the Gemini API to request that new quotes be generated and printed to the command line in a few simple steps. We'll start out by identifying our project ID, region, and model ID to set as environment variables.
+
+``````
+export VERTEX_AI_GEMINI_PROJECT_ID=<your project id>
+export VERTEX_AI_GEMINI_LOCATION=<region>
+export VERTEX_AI_GEMINI_MODEL=<<model id>>
+``````
+
+Next, open the GenerateQuote class in the domain folder and use Gemini to generate the rest of the method to be filled in. You should develop something similar to the following:
+
+```
+public Quote findRandomQuote() {
+		ChatResponse chatResponse = chatClient.call(new Prompt("Give me a quote from a classic book... ",
+				VertexAiGeminiChatOptions.builder()
+						.withTemperature(0.4f)
+						.build())
+		);
+		System.out.println(chatResponse.getResult().getOutput().getContent());
+		return new Quote();
+	}
+
+```
+
+You should now be able to rebuild and redeploy the app locally, and see a random quote printed to the command line. 
