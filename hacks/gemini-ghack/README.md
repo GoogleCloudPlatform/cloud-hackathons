@@ -159,9 +159,9 @@ Remember that Gemini Code Assist can always help out if you're unfamiliar with a
 Now that we have a successful, working application, let's see how we can use Google's GenAI capabilities to enhance it. 
 
 ### Description
-Let's introduce GenAI to the application, using the PaLM 2 Text Bison API. The PaLM 2 for Text (text-bison, text-unicorn) foundation models are optimized for a variety of natural language tasks such as sentiment analysis, entity extraction, and content creation.
+Let's introduce GenAI to the application, using the Gemini API. 
 
-You will see the skeleton method within the GenerateQuote.java file. This method should take in the name of a book, entered by the user, and prompt Gemini to come up with an appropriate quote. As always, lean on your Gemini chat and code generation to help produce the correct code and refine the prompts as needed. 
+You will see the skeleton method within the GenerateQuote.java file. This method should prompt the Gemini API to generate a quote from a famous book. As always, lean on your Gemini Code Assist chat and code generation to help produce the correct code and refine the prompts as needed. 
  
 Once the method is completed, you can rebuild the app, redeploy and test in Cloud Run.
 
@@ -174,4 +174,4 @@ Once the method is completed, you can rebuild the app, redeploy and test in Clou
 
 ### Learning Resources
 
-- [PaLM 2 for Text](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/text)
+- [Gemini API Docs](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference#stream-text)
