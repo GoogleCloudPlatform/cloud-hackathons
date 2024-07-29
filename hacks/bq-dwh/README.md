@@ -99,15 +99,14 @@ Although we've only dealt with 3 tables so far, our data model has many more tab
 
 ### Description
 
-Create a new Dataform _repository_, update its settings to use the `BQ DWH Dataform Service Account`, _override_ workspace compilation settings to ensure that _Project ID_ points to your project. Then link it to [this Github repository](TBD), using HTTPS as the protocol and the provided `git-secret` as the secret to connect.
+Create a new Dataform _Repository_, update its settings to use the `BQ DWH Dataform Service Account`, _override_ workspace compilation settings to ensure that _Project ID_ points to your project. Then link it to [this Github repository](TBD), using HTTPS as the protocol and the provided `git-secret` as the secret to connect.
 
-After configuring the Dataform repository, create a new _development workspace_, solve any errors and execute the pipeline with the tag `staging`. Once you have a successful run, commit your changes.
+After configuring the Dataform repository, create a new _Development Workspace_, solve any errors and execute the pipeline with the tag `staging`. Once you have a successful run, commit your changes.
 
-TODO elaborate on Dataform local git branch
-
-> **Note** The provided `git-secret` has a dummy value, it'll be ignored when you pull from the repository but won't work if you want to push to that remote.
+> **Note** The provided `git-secret` has a dummy value, it'll be ignored when you pull from the repository. When you link a Git repository, Dataform clones that repository _locally_ (in your Dataform Development Workspace) and you can commit your changes to your local copy. Normally you'd be able to push those changes to the remote (either main or a different branch), but since the provided secret doesn't have any write permissions, you won't be able to that for this exercise.
 
 TODO include errors?
+TODO prepare BQ DWH Dataform Service Account
 
 ### Success Criteria
 
@@ -180,28 +179,34 @@ Business intelligence (BI) in data warehousing involves using tools and techniqu
 
 ### Description
 
-We're going to create a new dashboard using Looker Studio. Since we're keeping things simple and Looker Studio works better with an OBT (one big table), we'll create that as a first step.
+We're going to create a new report in Looker Studio. Since we're keeping things simple and Looker Studio works better with an _OBT_ (one big table), we'll create that as a first step.
 
-Create in the `dwh` dataset the new table `obt_sales` by joining all of the dimension tables with the fact table using Dataform. Once the table is created through Dataform, create a dashboard with the following:
+Create in the `dwh` dataset the new table `obt_sales` by joining all of the dimension tables with the fact table using Dataform. Once the table is created through Dataform, create a Looker Studo report with the following:
 
-TODO decide what to put in the dashboard
+- Scorecards for `gros_revenue` and `gross_profit` with human readable numbers.
+- Donut chart for `gross_revenue` broken down by product categories.
+- Map chart showing `gross_profit` for every city.
+- A line chart showing `gros_revenue` and `gross_profit` per quarter (e.g. Y2021Q3).
 
 ### Success Criteria
 
-- There's a new table `obt_sales` in the `dwh` dataset that joins the dimension tables with the fact table as a result of running Dataform pipeline with the tag `obt`.
-- There's a new Looker Studio dashboard with the following.
+- There's a new table `obt_sales` in the `dwh` dataset that joins the dimension tables with the fact table as a result of running the Dataform pipeline with the tag `obt`.
+- There's a new Looker Studio report with the abovementioned charts.
 
 ### Learning Resources
 
 - [Using Looker Studio with BigQuery](https://cloud.google.com/bigquery/docs/visualize-looker-studio)
+- [Calculated fields in Looker Studio](https://support.google.com/looker-studio/answer/6299685)
 
 ### Tips
+
+- You'll need to create a calculated field in Looker Studio to get the quarter information in proper format.
 
 ## Challenge 6: Notebooks for data scientists
 
 ### Introduction
 
-TODO Using Spark to create a SparkML model???
+TODO Using Spark to create a SparkML model??? 
 
 ### Description
 
@@ -218,7 +223,7 @@ TODO Using Spark to create a SparkML model???
 
 ### Introduction
 
-Running the Dataform pipelines manually works, but it's not very practical. We'd rather automate this process and run it periodically. Although Dataform provides a lot of functionality to automate and schedule running the pipelines, we're going to consider a bit more flexible orchestrator  that can also run additional steps, such as running our Spark models, that are not part of the Dataform pipelines. We're going to use Cloud Composer, which is basically a managed and serverless Apache Airflow service, to schedule and run our complete pipeline.
+Running the Dataform pipelines manually works, but it's not very practical. We'd rather automate this process and run it periodically. Although Dataform provides a lot of functionality to automate and schedule running the pipelines, we're going to consider a bit more flexible orchestrator  that can also run additional steps, such as running our Spark models, that are not part of the Dataform pipelines. We're going to use Cloud Composer, which is basically a managed and serverless version of the well-known Apache Airflow framework, to schedule and run our complete pipeline.
 
 ### Description
 
