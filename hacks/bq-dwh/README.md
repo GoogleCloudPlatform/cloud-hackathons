@@ -8,7 +8,7 @@ In this hack we'll implement a classic data warehouse using modern tools, such a
 
 In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make the data accessible in BigQuery. In the second challenge we'll apply some basic transformations to load the data in staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports.The 6th challenge is for the data scientists, using interactive notebooks to analyze data and finally we'll automate and orchestrate the whole process by tapping into Cloud Composer.
 
-TODO Decide on the landing bucket content
+TODO make the raw data available
 
 ## Learning Objectives
 
@@ -124,7 +124,6 @@ TODO prepare BQ DWH Dataform Service Account
   - `stg_sales_order_detail`
   - `stg_sales_order_header`
   - `stg_state_province`
-  - `stg_store`
 
 ### Learning Resources
 
@@ -181,7 +180,9 @@ Business intelligence (BI) in data warehousing involves using tools and techniqu
 
 We're going to create a new report in Looker Studio. Since we're keeping things simple and Looker Studio works better with an _OBT_ (one big table), we'll create that as a first step.
 
-Create in the `dwh` dataset the new table `obt_sales` by joining all of the dimension tables with the fact table using Dataform. Once the table is created through Dataform, create a Looker Studo report with the following:
+Create in the `dwh` dataset the new table `obt_sales` by joining all of the dimension tables with the fact table using Dataform. Make sure to exclude all of the surrogate keys. 
+
+Once the table is created through Dataform, create a Looker Studo report with the following:
 
 - Scorecards for `gros_revenue` and `gross_profit` with human readable numbers.
 - Donut chart for `gross_revenue` broken down by product categories.
@@ -190,7 +191,7 @@ Create in the `dwh` dataset the new table `obt_sales` by joining all of the dime
 
 ### Success Criteria
 
-- There's a new table `obt_sales` in the `dwh` dataset that joins the dimension tables with the fact table as a result of running the Dataform pipeline with the tag `obt`.
+- There's a new table `obt_sales` with 121317 records in the `dwh` dataset that joins the dimension tables with the fact table as a result of running the Dataform pipeline with the tag `obt` .
 - There's a new Looker Studio report with the abovementioned charts.
 
 ### Learning Resources
@@ -200,24 +201,30 @@ Create in the `dwh` dataset the new table `obt_sales` by joining all of the dime
 
 ### Tips
 
+- There are different types of joins you can do with BigQuery, choose the correct one.
 - You'll need to create a calculated field in Looker Studio to get the quarter information in proper format.
 
 ## Challenge 6: Notebooks for data scientists
 
 ### Introduction
 
-TODO Using Spark to create a SparkML model??? 
+BigQuery Studio and SQL are great tools for data analytics, but data scientists also enjoy working with interactive notebooks using Python. Luckily BigQuery provides Python notebooks capabilites that's very well integrated with BigQuery and makes it possible to run Python and (serverless) Spark tasks.
 
 ### Description
 
+We've already designed a [Colab notebook](#TBD) for this challenge. Upload that to BigQuery, update its parameters if necessary, and run the cells one by one to understand what's going on.
+
+TODO make the notebook available
 
 ### Success Criteria
 
+- All the cells from the provided Colab notebook has been run successfully.
+- There's a new model, `churn_model`, in the `dwh` dataset.
 
 ### Learning Resources
 
-### Tips
-
+- [BigQuery Python Notebooks](https://cloud.google.com/bigquery/docs/create-notebooks#upload_notebooks)
+- [Introduction to AI/ML in BigQuery](https://cloud.google.com/bigquery/docs/bqml-introduction)
 
 ## Challenge 7: Cloud Composer for orchestration
 
@@ -231,6 +238,7 @@ We've already created a Cloud Composer environment for you. You need to configur
 
 TODO explain the DAG
 TODO write the DAG
+TODO make the DAG available
 
 ### Success Criteria
 
@@ -239,4 +247,7 @@ TODO write the DAG
 
 ### Learning Resources
 
-### Tips
+- [Cloud Composer Overview](https://cloud.google.com/composer/docs/composer-3/composer-overview)
+- [Cloud Composer Environment Variables](https://cloud.google.com/composer/docs/composer-3/set-environment-variables)
+- [Triggering DAGs](https://cloud.google.com/composer/docs/composer-3/trigger-dags)
+
