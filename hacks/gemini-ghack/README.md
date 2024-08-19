@@ -167,7 +167,7 @@ Once the method is completed, you can rebuild the app, redeploy and test in Clou
 
 ### Success Criteria
 
-- Deploy an endpoint that generates new quotes using PaLM 2 for Text instead of pulling from the database
+- Deploy an endpoint that generates new quotes using Gemini instead of pulling from the database
 - Have your container image rebuilt and pushed to Cloud Build
 - Have your new container image re-deployed to Cloud Run
 - Ensure your tests pass using the new endpoint for your application
