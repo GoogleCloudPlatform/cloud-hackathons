@@ -9,16 +9,16 @@
 
 ## Challenge 1 
 > Goal: Create and initialize a Dialogflow agent
-1. Go to Diaglogflow CX in the Console (referred to as "Console" from now on as opposed from the "Cloud Console")
+1. Open the [Diaglogflow CX](https://dialogflow.cloud.google.com/cx/projects) Console
 2. Create a new Agent (choose "**build your own**") (use defaults for everything)
 3. Open the "Test Agent" panel and post a 'hello' message to the new agent (use defaults for everything)
 
 > At this point you have a new agent that can process simple Intents for greetings
 
-4. Download the sample HTML page (page.html in /resources folder) from the resources folder
-5. In the Console, go to the "Manage -> Integrations" and enable "DiaglogFlow Messenger" integration
-6. Copy the resulting HTML code and add it to the page.html code
-7. **TODO**: upload the page.html to the webserver (or is it OK to run locally?)
+4. Download the [sample HTML page](./resources/page.html).
+5. In the Console, go to "Manage -> Integrations" and connect "DiaglogFlow Messenger". Accept all defaults and click "Enable the unauthenticated API". 
+6. The DialogFlow Messenger will generate HTML code. Copy that code and add it to the page.html that you've downloaded on your local machine. 
+7. **TODO**: upload the page.html to the webserver (or is it OK to run locally?). **Note:** If the user is running locally, then they'll have to know how to setup a simple http server, otherwise it's unlikely that this will  work if they just double-click on the page.html and open it in their browser.  
 > At this point we have the agent testable in the Console or via the webpage (for end users)
 
 ## Challenge 2
@@ -28,11 +28,11 @@
 2. Create a new Intent called "Escalate to human"
 3. Add a 6 training phrases like:
     1. "I want to talk to an agent"
-    1. "I want to talk to a person."
-    1. "Agent NOW"
-    1. "Can I talk to a human"
-    1. "connect me to a person"
-    1. "Representative now!!!"
+    2. "I want to talk to a person."
+    3. "Agent NOW"
+    4. "Can I talk to a human"
+    5. "connect me to a person"
+    6. "Representative now!!!"
 4. Open the Start Page of the Agent
 5. Open up Routes and Add the new route
     1. Choose the "Escalate to human" intent
@@ -67,7 +67,7 @@
 ## Challenge 4
 > Goal: Update our agent flow to include answers based on generator 
 
-1. Go to Default Welcome Intent. Under Fulfillment open Generators and select "+ New generator" 
+1. From the Start Page, go to the Default Welcome Intent. Under Fulfillment open Generators and select "+ New generator" 
 2. Give it a name like "Gen Welcome"
 3. Under prompt suggest it greet the users based on the previous message. For example: 
 
