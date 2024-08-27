@@ -1,0 +1,18 @@
+#!/bin/bash
+
+export PROJECT_ID=${gcp_project_id}
+export REGION=${gcp_region}
+export LANDING_BUCKET=${landing_bucket}
+export DAGS_BUCKET=${dags_bucket}
+export COMPOSER_SA=${composer_sa}
+
+# gsutil -m cp -r gs://.../* gs://$LANDING_BUCKET/
+
+gcloud composer environments create cmp-bqdwh \
+    --async \
+    --environment-size small \
+    --location "$REGION" \
+    --image-version composer-3-airflow-2.9.1 \
+    --service-account "$COMPOSER_SA" \
+    --storage-bucket "gs://$DAGS_BUCKET" \
+    --env-variables GCP_PROJECT_ID=$PROJECT_ID,GCP_REGION=$REGION,DATAFORM_REPOSITORY_ID=,DATAFORM_GIT_REF=

@@ -69,16 +69,17 @@ We have already copied the data from the underlying database to a specific Cloud
 
 ### Introduction
 
-Before we create our dimensional model we'll first do some cleanup and filter columns. There's a plethora of different approaches here, and different modeling techniques, but we'll keep things simple again. Our source data is already relational and has the correct structure (3NF), we'll stick that data model and only do some minimal cleansing.
+Before we create our dimensional model we'll first do some cleanup and filter columns. There's a plethora of different approaches here, and different modeling techniques (Data Vault, normalized persistent/ephemeral staging tables etc.), but we'll keep things simple again. Our source data is already relational and has the correct structure (3NF), we'll stick to that data model and only do some minimal cleansing.
 
 ### Description
 
-Some of the tables have duplicate records and problematic columns that we'd like to remove. Create a new BigQuery dataset called `curated` and derive/create a new table for each BigLake table created in the previous challenge. Name the new tables by prefixing them with `stg_` and remove any **duplicate** records as well as any columns with only `null` values. Make sure that the columns `order_date`, `due_date` and `ship_date` have the data type `DATE`.
+Some of the tables have duplicate records and problematic columns that we'd like to remove. Create a new BigQuery dataset called `curated` and derive/create a new table for each BigLake table created in the previous challenge. Name the new tables by prefixing them with `stg_` and remove any **duplicate** records as well as any columns with only `null` values. Make sure that the columns `order_date`, `due_date` and `ship_date` have the data type `DATE` in the new tables.
 
 ### Success Criteria
 
 - There is a new BigQuery dataset `curated` in the same region as the other datasets.
 - There are 3 BigQuery tables with content in the `curated` dataset: `stg_person`, `stg_sales_order_header` and `stg_sales_order_detail` with no duplicate records and no columns with only `null` values.
+- The columns `order_date`, `due_date` and `ship_date` in the new tables have the data type `DATE`.
 
 ### Learning Resources
 
@@ -99,14 +100,11 @@ Although we've only dealt with 3 tables so far, our data model has many more tab
 
 ### Description
 
-Create a new Dataform _Repository_, update its settings to use the `BQ DWH Dataform Service Account`, _override_ workspace compilation settings to ensure that _Project ID_ points to your project. Then link it to [this Github repository](TBD), using HTTPS as the protocol and the provided `git-secret` as the secret to connect.
+Create a new Dataform _Repository_, update its settings to use the `BQ DWH Dataform Service Account`, _override_ workspace compilation settings to ensure that _Project ID_ points to your project. Then link it to [this Github repository](https://github.com/meken/gcp-dataform-bqdwh.git), using HTTPS as the protocol and the provided `git-secret` as the secret to connect.
 
 After configuring the Dataform repository, create a new _Development Workspace_, solve any errors and execute the pipeline with the tag `staging`. Once you have a successful run, commit your changes.
 
 > **Note** The provided `git-secret` has a dummy value, it'll be ignored when you pull from the repository. When you link a Git repository, Dataform clones that repository _locally_ (in your Dataform Development Workspace) and you can commit your changes to your local copy. Normally you'd be able to push those changes to the remote (either main or a different branch), but since the provided secret doesn't have any write permissions, you won't be able to that for this exercise.
-
-TODO include errors?
-TODO prepare BQ DWH Dataform Service Account
 
 ### Success Criteria
 
@@ -131,6 +129,10 @@ TODO prepare BQ DWH Dataform Service Account
 - [Connecting to a Git repository](https://cloud.google.com/dataform/docs/connect-repository)
 - [Configuring Dataform workflow settings](https://cloud.google.com/dataform/docs/configure-dataform)
 - [Creating a development workspace](https://cloud.google.com/dataform/docs/create-workspace)
+
+### Tips
+
+- You need to install packages to solve the errors about npm packages not found. This can be done from the UI if you open the `workflow_settings.yaml` file.
 
 ## Challenge 4: Dimensional modeling
 
@@ -191,7 +193,7 @@ Once the table is created through Dataform, create a Looker Studo report with th
 
 ### Success Criteria
 
-- There's a new table `obt_sales` with 121317 records in the `dwh` dataset that joins the dimension tables with the fact table as a result of running the Dataform pipeline with the tag `obt` .
+- There's a new table `obt_sales` with **121317** records in the `dwh` dataset that joins the dimension tables with the fact table as a result of running the Dataform pipeline with the tag `obt` .
 - There's a new Looker Studio report with the abovementioned charts.
 
 ### Learning Resources
@@ -202,7 +204,7 @@ Once the table is created through Dataform, create a Looker Studo report with th
 ### Tips
 
 - There are different types of joins you can do with BigQuery, choose the correct one.
-- You'll need to create a calculated field in Looker Studio to get the quarter information in proper format.
+- You'll need to create a calculated field in Looker Studio to get the _quarter_ information in proper format.
 
 ## Challenge 6: Notebooks for data scientists
 
@@ -212,7 +214,7 @@ BigQuery Studio and SQL are great tools for data analytics, but data scientists 
 
 ### Description
 
-We've already designed a [Colab notebook](#TBD) for this challenge. Upload that to BigQuery, update its parameters if necessary, and run the cells one by one to understand what's going on.
+We've already designed a [Colab notebook](#TBD) for this challenge. Upload that to BigQuery, and run the cells one by one to understand what's going on.
 
 TODO make the notebook available
 
@@ -220,6 +222,7 @@ TODO make the notebook available
 
 - All the cells from the provided Colab notebook has been run successfully.
 - There's a new model, `churn_model`, in the `dwh` dataset.
+- No code was modified.
 
 ### Learning Resources
 
@@ -230,20 +233,21 @@ TODO make the notebook available
 
 ### Introduction
 
-Running the Dataform pipelines manually works, but it's not very practical. We'd rather automate this process and run it periodically. Although Dataform provides a lot of functionality to automate and schedule running the pipelines, we're going to consider a bit more flexible orchestrator  that can also run additional steps, such as running our Spark models, that are not part of the Dataform pipelines. We're going to use Cloud Composer, which is basically a managed and serverless version of the well-known Apache Airflow framework, to schedule and run our complete pipeline.
+Running the Dataform pipelines manually works, but it's not very practical. We'd rather automate this process and run it periodically. Although Dataform provides a lot of functionality to automate and schedule running the pipelines, we're going to consider a bit more flexible orchestrator  that can also run additional steps that are not part of the Dataform pipelines. We're going to use Cloud Composer, which is basically a managed and serverless version of the well-known [Apache Airflow](https://airflow.apache.org/) framework, to schedule and run our complete pipeline.
 
 ### Description
 
-We've already created a Cloud Composer environment for you. You need to configure and run [this DAG](#TBD) (Directed Acyclic Graph, a collection of tasks organized with dependencies and relationships) on that environment every day at 6AM local time.
+We've already created a Cloud Composer environment for you. You need to configure and run [this DAG](#TBD) (Directed Acyclic Graph, a collection of tasks organized with dependencies and relationships) on that environment. The DAG is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning (and stores the predictions in a new BigQuery table). 
 
-TODO explain the DAG
-TODO write the DAG
+Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the environment variables to refer to the correct Dataform repository and use the tag `v1.0` as the Git reference.
+
 TODO make the DAG available
 
 ### Success Criteria
 
-- There's a new DAG that's triggered every day at 6AM local time
+- There's a new DAG that's triggered every day at midnight.
 - There's at least one successful run of the DAG.
+- No code was modified.
 
 ### Learning Resources
 
