@@ -16,11 +16,15 @@
 
 ### Notes & Guidance
 
+Although most of this will be done through the UI by the participants, the following commands make it possible to run this challenge from the command line.
+
 ```shell
 REGION=...
 BQ_DATASET=raw
 bq mk --location=$REGION -d $BQ_DATASET
 ```
+
+Creating the BigLake connection:
 
 ```shell
 CONN_ID=conn
@@ -31,6 +35,8 @@ SA_CONN=`bq show --connection --format=json $REGION.$CONN_ID | jq -r .cloudResou
 gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAccount:$SA_CONN" \
     --role="roles/storage.objectViewer" --condition=None
 ```
+
+Once the connection is created and has the proper permissions, you can then run the following SQL for the tables `person`, `sales_order_header` and `sales_order_detail` after updating the relevant bits.
 
 ```sql
 CREATE OR REPLACE EXTERNAL TABLE raw.person
@@ -51,6 +57,12 @@ bq mk --location=$REGION -d $BQ_DATASET
 ```
 
 ```sql
+CREATE TABLE curated.stg_person AS
+  SELECT DISTINCT * EXCEPT(hobby, comments)
+  FROM raw.person
+```
+
+```sql
 CREATE TABLE curated.stg_sales_order_header AS
   SELECT DISTINCT * EXCEPT(comment, order_date, ship_date, due_date), 
     DATE(order_date) AS order_date, 
@@ -59,14 +71,28 @@ CREATE TABLE curated.stg_sales_order_header AS
   FROM raw.sales_order_header
 ```
 
+```sql
+CREATE TABLE curated.stg_sales_order_detail AS
+  SELECT DISTINCT * 
+  FROM raw.sales_order_detail
+```
+
 ## Challenge 3: Dataform for automation
 
 ### Notes & Guidance
 
+Configuring the Git connection should be trivial through the UI, it's a link `SETUP GIT CONNECTION` in the `SETTINGS` tab. In that settings tab you can also set the Google Cloud Project ID by editing `Workspace compilation overrides`.
+
+Once the development workspace has been created, navigate to `workflow_settings.yaml` and click on `INSTALL PACKAGES` button to install the required packages. And then `START EXECUTION` and pick Tag _staging_. Don't forget to include the dependencies.
 
 ## Challenge 4: Dimensional modeling
 
 ### Notes & Guidance
+
+```shell
+BQ_DATASET=dwh
+bq mk --location=$REGION -d $BQ_DATASET
+```
 
 ```sql
 config {
@@ -74,6 +100,7 @@ config {
     schema: "dwh",
     tags: ["fact"]
 }
+
 SELECT
   ${keys.surrogate("sod.sales_order_id", "sod.sales_order_detail_id")} AS sales_key,
   ${keys.surrogate("sod.product_id")} AS product_key,
@@ -86,16 +113,17 @@ SELECT
   sod.sales_order_detail_id,
   sod.unit_price,
   sod.unit_price_discount,
-  p.standard_cost as cost_of_goods_sold,
-  sod.order_qty as order_quantity,
+  p.standard_cost AS cost_of_goods_sold,
+  sod.order_qty AS order_quantity,
   sod.order_qty * sod.unit_price AS gross_revenue,
-  (sod.order_qty * (sod.unit_price - sod.unit_price_discount)) - (p.standard_cost) as gross_profit
+  (sod.order_qty * sod.unit_price * (1 - sod.unit_price_discount)) - (p.standard_cost) AS gross_profit
 FROM
   ${ref("stg_sales_order_detail")} sod,
   ${ref("stg_sales_order_header")} soh,
   ${ref("stg_product")} p
 WHERE
-  sod.sales_order_id = soh.sales_order_id AND sod.product_id = p.product_id
+  sod.sales_order_id = soh.sales_order_id
+  AND sod.product_id = p.product_id
 ```
 
 ## Challenge 5: Business Intelligence
@@ -133,13 +161,26 @@ WHERE
   AND f.order_date_key = d.date_key
 ```
 
+Create a new _calculated field_ in Looker Studio (through `Add a field`) using the following formula:
+
+```sql
+CONCAT("Y", year, "Q", quarter_of_year)
+```
+
+Most of the charts should be trivial, the last one might present some challenges, see below an example dashboard and the configuration for the final chart in the following screenshot:
+
+![Looker Studio Dashboard Example](./images/looker-studio-dashboard.png)
+
 ## Challenge 6: Notebooks for data scientists
 
 ### Notes & Guidance
 
+This should be trivial, it's just a matter of uploading the notebook, connecting to a runtime and running the cells.
 
 ## Challenge 7: Cloud Composer for orchestration
 
 ### Notes & Guidance
+
+You need to set the environment variable `DATAFORM_REPOSITORY_ID` to the repository id configured in Challenge 4.
 
 
