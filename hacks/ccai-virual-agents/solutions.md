@@ -44,7 +44,7 @@
 ## Challenge 3
 > Goal: Give Agent access to PDF documents to use in chat answers
 
-1. Create a bucket and a folder and upload pdf files into it
+1. Create a bucket and a folder and upload PDF files into it
 1. In the DF Console, agent "Start Page" click "Add State Handler" and select "Data Store"
 2. Select to Add Data Store (the "+") the click "Create Vertex AI Search and Conversation app"
 3. This opens up [agent builder](www.link.com) where you can create the data store by uploading documents
