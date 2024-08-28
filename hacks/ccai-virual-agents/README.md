@@ -81,8 +81,10 @@ In this challenge we will train our agent on "Intents" - things we want it to un
 
 ### Description
 
-Create a new Intent for the agent to handle escalations. We want to train the agent on understanding certain phrases that would cause it to 'understand' the human in the chat wants help from a live agent. 
-> **NOTE:** Try to use at least 6 training phrases when creating the intent
+Create a new Intent for the agent to handle escalations. We want to train the agent on certain phrases that would cause it to 'understand' that the human in the chat wants help from a live agent. 
+> **NOTE:** Try to use at least 6 training phrases when creating the intent 
+
+> **NOTE:** It could take a few minutes for the new training phrases to get picked up by the agent
 
 Create a new Route to hold the escalation intent with the appropriate agent response
 
@@ -137,19 +139,16 @@ Add your data store to the agent
 
 ### Introduction
 
-In this challenge we enable the agent to answer questions based will company HR policy documents 
+In this challenge we will use Google's Gemini to enhance the agents responses and make it more interactive.
 
 ### Description
 
-Create a data store with the PDF HR documents provided.
-
-> **NOTE:** Indexing the documents will take about 5-10 minutes
-
-Add your data store to the agent
+Create a new Generator for the Default Welcome Intent Route, that generates more human-like welcome messages, and make sure that only that response is generated for this intent/route.
 
 ### Success Criteria
 
-- A data store is created and indexed your documents
+- There is a Generator created with a prompt that responds with human-like welcome messages
+- Agent uses new Generator 
 - Agent is connected to the data store 
 - Agent can respond to questions answerable by the HR documents
 
