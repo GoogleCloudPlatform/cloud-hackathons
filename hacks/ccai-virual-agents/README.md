@@ -159,3 +159,25 @@ Create a new Generator for the Default Welcome Intent Route, that generates more
 ### Learning Resources
 
 - [Data Store Agents](https://cloud.google.com/dialogflow/vertex/docs/concept/data-store-agent)
+
+
+ ## Challenge 5: Agent Phone Home
+
+ ### Introduction
+ 
+ In this challenge we see how to use Gemini to translate between natural language questions and API\JSON. This will let our agent answer question based on data found in an external system it can only get by an API call.
+
+
+### Description
+
+Create a new intent for answering a question about PipePiper's vacation days policy. Create a webhook that will get answers from the given Cloud Function (acting as a placeholder for a real CRM). Create two generators; one for translating the user question into an API call to the webhook, the other for translating the response JSON and answering the initial user question.
+
+### Success Criteria 
+
+- Agent has a webhook that can call the provided cloud function code
+- Agent can send questions about vacation policy to the webhook
+- Agent can provide correct answers based on webhook JSON respone back to the user
+
+
+### Learning Resources
+- [Dialogflow CX Webhooks](https://cloud.google.com/dialogflow/cx/docs/concept/webhook)
