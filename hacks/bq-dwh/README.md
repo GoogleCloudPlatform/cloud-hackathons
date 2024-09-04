@@ -96,7 +96,7 @@ Although we've only dealt with 3 tables so far, our data model has many more tab
 
 ### Description
 
-Create a new Dataform _Repository_, update its settings to use the `BQ DWH Dataform Service Account`, _override_ workspace compilation settings to ensure that _Project ID_ points to your project. Then link it to [this Github repository](https://github.com/meken/gcp-dataform-bqdwh.git), using HTTPS as the protocol and the provided `git-secret` as the secret to connect.
+Create a new Dataform _Repository_, update its settings to use the `BQ DWH Dataform Service Account`, _override_ workspace compilation settings to ensure that _Project ID_ points to your project. Then link it to [this Github repository](https://github.com/meken/gcp-dataform-bqdwh.git), using `HTTPS` as the protocol, `main` as the _Default branch name_ and the provided `git-secret` as the secret to connect.
 
 After configuring the Dataform repository, create a new _Development Workspace_, solve any errors and execute the pipeline with the tag `staging`. Once you have a successful run, commit your changes.
 
