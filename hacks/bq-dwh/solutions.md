@@ -23,7 +23,7 @@ REGION=...
 BQ_DATASET=raw
 bq mk --location=$REGION -d $BQ_DATASET
 ```
-
+  
 Creating the BigLake connection:
 
 ```shell
@@ -77,11 +77,25 @@ CREATE TABLE curated.stg_sales_order_detail AS
   FROM raw.sales_order_detail
 ```
 
+The table `person` has one duplicate record for `business_entity_id` with the value `11751`. You can verify that there are no duplicate records for this table by either checking the total number of rows (must be 19972) or by running the following query:
+
+```sql
+SELECT
+  business_entity_id,
+  COUNT(*) cnt
+FROM
+  `raw.person`
+GROUP BY
+  business_entity_id
+HAVING
+  cnt > 1
+```
+
 ## Challenge 3: Dataform for automation
 
 ### Notes & Guidance
 
-Configuring the Git connection should be trivial through the UI, it's a link `SETUP GIT CONNECTION` in the `SETTINGS` tab. In that settings tab you can also set the Google Cloud Project ID by editing `Workspace compilation overrides`.
+Configuring the Git connection should be trivial through the UI, it's a link `CONNECT WITH GIT` in the `SETTINGS` tab. In that settings tab you can also set the Google Cloud Project ID by editing `Workspace compilation overrides`.
 
 Once the development workspace has been created, navigate to `workflow_settings.yaml` and click on `INSTALL PACKAGES` button to install the required packages. And then `START EXECUTION` and pick Tag _staging_. Don't forget to include the dependencies.
 
@@ -109,8 +123,8 @@ SELECT
   ${keys.surrogate("ship_to_address_id")} AS ship_address_key,
   ${keys.surrogate("status")} AS order_status_key,
   ${keys.surrogate("order_date")} AS order_date_key,
-  sod.sales_order_id,
-  sod.sales_order_detail_id,
+  -- sod.sales_order_id,
+  -- sod.sales_order_detail_id,
   sod.unit_price,
   sod.unit_price_discount,
   p.standard_cost AS cost_of_goods_sold,
@@ -181,6 +195,6 @@ This should be trivial, it's just a matter of uploading the notebook, connecting
 
 ### Notes & Guidance
 
-You need to set the environment variable `DATAFORM_REPOSITORY_ID` to the repository id configured in Challenge 4.
+You need to set the environment variable `DATAFORM_REPOSITORY_ID` to the repository name (not the development workspace) configured in Challenge 4.
 
 
