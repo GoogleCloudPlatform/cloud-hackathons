@@ -8,8 +8,6 @@ In this hack we'll implement a classic data warehouse using modern tools, such a
 
 In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make the data accessible in BigQuery. In the second challenge we'll apply some basic transformations to load the data in staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports.The 6th challenge is for the data scientists, using interactive notebooks to analyze data and finally we'll automate and orchestrate the whole process by tapping into Cloud Composer.
 
-TODO make the raw data available
-
 ## Learning Objectives
 
 This hack will help you explore the following tasks:
@@ -90,8 +88,6 @@ Some of the tables have duplicate records and problematic columns that we'd like
 - Data Profile (with 100% sampling) and/or BigQuery Data Preparation can help you find `null` columns.
 - [EXCEPT](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#select_except) is useful when you want to discard a few columns when selecting all columns from a table.
 
-TODO Prepare the data to contain duplicate rows
-
 ## Challenge 3: Dataform for automation
 
 ### Introduction
@@ -147,12 +143,12 @@ We're going to create a star schema by extracting dimension tables and a _fact_ 
 We have already provided the code for the dimension tables, all you need to do is create a new `fact_sales.sqlx` file, configure the tags to have `fact` and create a fact table in with the following columns:
 
 - `sales_key`  (surrogate key built out of `sales_order_id` and `sales_order_detail_id`)
-- `product_key`
-- `customer_key`
-- `credit_card_key`
-- `ship_address_key`
-- `order_status_key`
-- `order_date_key`
+- `product_key` (surrogate key built out of `product_id`)
+- `customer_key` (surrogate key built out of `customer_id`)
+- `credit_card_key` (surrogate key built out of `credit_card_id`)
+- `ship_address_key` (surrogate key built out of `ship_to_address_id`)
+- `order_status_key` (surrogate key built out of `status`)
+- `order_date_key` (surrogate key built out of `order_date`)
 - `unit_price`
 - `unit_price_discount`
 - `cost_of_goods_sold` (retrieved from `stg_products` table, `standard_cost` column)
@@ -182,9 +178,9 @@ Business intelligence (BI) in data warehousing involves using tools and techniqu
 
 We're going to create a new report in Looker Studio. Since we're keeping things simple and Looker Studio works better with an _OBT_ (one big table), we'll create that as a first step.
 
-Create in the `dwh` dataset the new table `obt_sales` by joining all of the dimension tables with the fact table using Dataform. Make sure to exclude all of the surrogate keys. 
+Create in the `dwh` dataset the new table `obt_sales` by joining **all** of the dimension tables with the fact table using Dataform. Make sure to exclude all of the surrogate keys. 
 
-Once the table is created through Dataform, create a Looker Studo report with the following:
+Once the table is created through Dataform, create a Looker Studo report using the new table with the following charts:
 
 - Scorecards for `gros_revenue` and `gross_profit` with human readable numbers.
 - Donut chart for `gross_revenue` broken down by product categories.
@@ -216,8 +212,6 @@ BigQuery Studio and SQL are great tools for data analytics, but data scientists 
 
 We've already designed a [Colab notebook](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0/notebooks/churn-analysis.ipynb) for this challenge. Upload that to BigQuery, and run the cells one by one to understand what's going on.
 
-TODO make the notebook available
-
 ### Success Criteria
 
 - All the cells from the provided Colab notebook has been run successfully.
@@ -239,9 +233,7 @@ Running the Dataform pipelines manually works, but it's not very practical. We'd
 
 We've already created a Cloud Composer environment for you. You need to configure and run [this DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0/dags/etlflow.py) (Directed Acyclic Graph, a collection of tasks organized with dependencies and relationships) on that environment. The DAG is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning (and stores the predictions in a new BigQuery table). 
 
-Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the environment variables to refer to the correct Dataform repository and use the tag `v1.0` as the Git reference.
-
-TODO make the DAG available
+Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the _environment variables_ of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0` as the Git reference.
 
 ### Success Criteria
 
