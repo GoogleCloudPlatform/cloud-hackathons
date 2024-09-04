@@ -138,9 +138,9 @@ Dimensional modeling is a data warehousing technique that organizes data into fa
 
 ### Description
 
-We're going to create a star schema by extracting dimension tables and a _fact_ table from the staging tables that have been created in the previous challenge. First you need to create another dataset and call it `dwh`.
+We're going to create a star schema by extracting _dimension_ tables and a _fact_ table from the _staging_ tables that have been created in the previous challenge. First you need to create another dataset and call it `dwh`.
 
-We have already provided the code for the dimension tables, all you need to do is create a new `fact_sales.sqlx` file, configure the tags to have `fact` and create a fact table in with the following columns:
+We have already provided the code for the dimension tables, all you need to do is create a new `fact_sales.sqlx` file, configure the tags to have `fact` and create the fact table with the following columns:
 
 - `sales_key`  (surrogate key built out of `sales_order_id` and `sales_order_detail_id`)
 - `product_key` (surrogate key built out of `product_id`)
@@ -172,15 +172,15 @@ Once the configuration is complete run the Dataform pipeline with the tag `fact`
 
 ### Introduction
 
-Business intelligence (BI) in data warehousing involves using tools and techniques to analyze the massive amounts of data stored in a data warehouse to extract meaningful insights, identify trends, and support better business decision-making. This essentially translates raw data into actionable information for strategic planning and operational efficiency. We can do that by running SQL queries, but also create dashboards using a visualization tool, such as Looker or Looker Studio.
+Business intelligence (BI) in data warehousing involves using tools and techniques to analyze the massive amounts of data stored in a data warehouse to extract meaningful insights, identify trends, and support better business decision-making. In other words, we translate raw data into actionable information for strategic planning and operational efficiency. We can do that by running SQL queries, but we can also create dashboards using a visualization tool, such as Looker or Looker Studio, to achieve the same.
 
 ### Description
 
 We're going to create a new report in Looker Studio. Since we're keeping things simple and Looker Studio works better with an _OBT_ (one big table), we'll create that as a first step.
 
-Create in the `dwh` dataset the new table `obt_sales` by joining **all** of the dimension tables with the fact table using Dataform. Make sure to exclude all of the surrogate keys. 
+Create in the `dwh` dataset the new table `obt_sales` by joining **all** of the dimension tables with the fact table **using Dataform**, and use the tag `obt`. Make sure to exclude all of the surrogate keys. 
 
-Once the table is created through Dataform, create a Looker Studo report using the new table with the following charts:
+Once the table is created, create a new Looker Studo report using the new table and configure the following charts:
 
 - Scorecards for `gros_revenue` and `gross_profit` with human readable numbers.
 - Donut chart for `gross_revenue` broken down by product categories.
