@@ -6,7 +6,13 @@ export LANDING_BUCKET=${landing_bucket}
 export DAGS_BUCKET=${dags_bucket}
 export COMPOSER_SA=${composer_sa}
 
-# gsutil -m cp -r gs://.../* gs://$LANDING_BUCKET/
+# Retrieve the data and copy it to the landing bucket
+wget https://github.com/meken/gcp-dataform-bqdwh/releases/download/v3.0/adwb.zip
+
+apt-get install -y unzip
+unzip adwb.zip
+
+gsutil -m cp -r adwb/* gs://$LANDING_BUCKET/
 
 gcloud composer environments create cmp-bqdwh \
     --async \
