@@ -6,14 +6,20 @@ export LANDING_BUCKET=${landing_bucket}
 export DAGS_BUCKET=${dags_bucket}
 export COMPOSER_SA=${composer_sa}
 
+# Suppressing some warnings
+echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
+# Installing the OS dependencies
+apt-get install -y wget unzip
+
 # Retrieve the data and copy it to the landing bucket
+echo "Retrieving the source data..."
 wget https://github.com/meken/gcp-dataform-bqdwh/releases/download/v3.0/adwb.zip
-
-apt-get install -y unzip
 unzip adwb.zip
-
 gsutil -m cp -r adwb/* gs://$LANDING_BUCKET/
+echo "Source data successfully copied to the landing bucket."
 
+# Create the Cloud Composer environment in the background
 gcloud composer environments create cmp-bqdwh \
     --async \
     --environment-size small \
@@ -22,3 +28,5 @@ gcloud composer environments create cmp-bqdwh \
     --service-account "$COMPOSER_SA" \
     --storage-bucket "gs://$DAGS_BUCKET" \
     --env-variables GCP_PROJECT_ID=$PROJECT_ID,GCP_REGION=$REGION,DATAFORM_REPOSITORY_ID=,DATAFORM_GIT_REF=
+
+echo "Startup script finished successfully"
