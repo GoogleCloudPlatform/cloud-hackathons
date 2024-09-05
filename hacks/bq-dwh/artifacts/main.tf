@@ -151,7 +151,8 @@ resource "google_project_iam_member" "composer_sa_roles" {
 resource "google_project_iam_member" "startup_vm_sa_roles" {
   project = var.gcp_project_id
   for_each = toset([
-    "roles/composer.admin"
+    "roles/composer.admin",
+    "roles/storage.objectAdmin"
   ])
   role   = each.key
   member = "serviceAccount:${google_service_account.startup_vm_sa.email}"
