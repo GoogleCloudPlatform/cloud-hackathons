@@ -6,7 +6,7 @@ In this hack we'll implement a classic data warehouse using modern tools, such a
 
 ![Architecture of the solution](./images/bq-dwh-arch.png)
 
-In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make the data accessible in BigQuery. In the second challenge we'll apply some basic transformations to load the data in staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports.The 6th challenge is for the data scientists, using interactive notebooks to analyze data and finally we'll automate and orchestrate the whole process by tapping into Cloud Composer.
+In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make the data accessible in BigQuery. In the second challenge we'll apply some basic transformations to load the data in staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports.The 6th challenge is for the data scientists, using interactive notebooks to analyze data and finally, we'll automate and orchestrate the whole process by tapping into Cloud Composer in the last challenge.
 
 ## Learning Objectives
 
@@ -44,13 +44,13 @@ This hack will help you explore the following tasks:
 
 ### Introduction 
 
-This first step is all about getting started with the source data. Typically data is copied periodically from operational data stores, such as OLTP databases, CRM systems etc. to an analytics data platform. Many different methods exist for getting that data, either through pushes (change data capture streams, files being generated and forwarded), or pulls (running a query periodically to get the data), but for now we'll ignore all that and assume that somehow data has been collected from the source systems and put into Google Cloud Storage.
+This first step is all about getting started with the source data. Typically data is copied periodically from operational data stores, such as OLTP databases, CRM systems etc. to an *analytics data platform*. Many different methods exist for getting that data, either through pushes (change data capture streams, files being generated and forwarded etc.), or pulls (for example through running a query periodically to get the data). But for now we'll ignore all that and assume that somehow data has been collected from the source systems and put into Google Cloud Storage.
 
-> Note For the sake of simplicity, we'll implement full loads. In real world applications with larger datasets you might want to consider incremental loads.
+> **Note** For the sake of simplicity, we'll implement full loads. In real world applications with larger datasets you might want to consider incremental loads.
 
 ### Description
 
-We have already copied the data from the underlying database to a specific Cloud Storage bucket. Go ahead and find that bucket, and have a look at its contents. Create a new BigQuery dataset called `raw` in the same region as that storage bucket, and create BigLake tables for the following entities, `person`, `sales_order_header` and `sales_order_detail`. You can ignore the other files for now.
+We have already copied the data from the underlying database to a specific Cloud Storage bucket. Go ahead and find that bucket, and have a look at its contents. Create a new BigQuery dataset called `raw` in the same region as that storage bucket, and create **BigLake** tables for the following entities: `person`, `sales_order_header` and `sales_order_detail`. You can ignore the other files for now.
 
 ### Success Criteria
 
@@ -67,11 +67,11 @@ We have already copied the data from the underlying database to a specific Cloud
 
 ### Introduction
 
-Before we create our dimensional model we'll first do some cleanup and filter columns. There's a plethora of different approaches here, and different modeling techniques (Data Vault, normalized persistent/ephemeral staging tables etc.), but we'll keep things simple again. Our source data is already relational and has the correct structure (3NF), we'll stick to that data model and only do some minimal cleansing.
+Before we create our dimensional model we'll first do some cleanup. There's a plethora of different approaches here, and different modeling techniques (Data Vault, normalized persistent/ephemeral staging tables etc.), but we'll keep things simple again. Our source data is already relational and has the correct structure (3NF), we'll stick to that data model and only do some minimal cleansing.
 
 ### Description
 
-Some of the tables have duplicate records and problematic columns that we'd like to remove. Create a new BigQuery dataset called `curated` and derive/create a new table for each BigLake table created in the previous challenge. Name the new tables by prefixing them with `stg_` and remove any **duplicate** records as well as any columns with only `null` values. Make sure that the columns `order_date`, `due_date` and `ship_date` have the data type `DATE` in the new tables.
+Some of the tables have duplicate records and problematic columns that we'd like to remove. Create a new BigQuery dataset called `curated` and create a new table for each BigLake table from the previous challenge. Name the new tables by prefixing them with `stg_` and remove any **duplicate** records as well as any columns with **only `null` values**. Make sure that the columns `order_date`, `due_date` and `ship_date` have the **data type `DATE`** in the new tables.
 
 ### Success Criteria
 
@@ -92,13 +92,13 @@ Some of the tables have duplicate records and problematic columns that we'd like
 
 ### Introduction
 
-Although we've only dealt with 3 tables so far, our data model has many more tables, and we have to perform multiple SQL operations to process the data. Doing this manually is error-prone and labor intensive. Wouldn't it be great if we could automate this by developing and operationalizing scalable data transformation pipelines in BigQuery using SQL? Enter Dataform 🙂
+Although we've only dealt with 3 tables so far, our data model has many more tables, and we have to perform multiple SQL operations to process the data. Doing this manually is error-prone and labor intensive. Wouldn't it be great if we could automate this by developing and operationalizing scalable data transformation pipelines in BigQuery using SQL? Enter *Dataform* 🙂
 
 ### Description
 
 Create a new Dataform _Repository_, update its settings to use the `BQ DWH Dataform Service Account`, _override_ workspace compilation settings to ensure that _Project ID_ points to your project. Then link it to [this Github repository](https://github.com/meken/gcp-dataform-bqdwh.git), using `HTTPS` as the protocol, `main` as the _Default branch name_ and the provided `git-secret` as the secret to connect.
 
-After configuring the Dataform repository, create a new _Development Workspace_, solve any errors and execute the pipeline with the tag `staging`. Once you have a successful run, commit your changes.
+After configuring the Dataform repository, create a new _Development Workspace_, solve any errors and execute the pipeline with the *tag* `staging`. Once you have a successful run, commit your changes.
 
 > **Note** The provided `git-secret` has a dummy value, it'll be ignored when you pull from the repository. When you link a Git repository, Dataform clones that repository _locally_ (in your Dataform Development Workspace) and you can commit your changes to your local copy. Normally you'd be able to push those changes to the remote (either main or a different branch), but since the provided secret doesn't have any write permissions, you won't be able to that for this exercise.
 
@@ -134,13 +134,13 @@ After configuring the Dataform repository, create a new _Development Workspace_,
 
 ### Introduction
 
-Dimensional modeling is a data warehousing technique that organizes data into fact tables containing measurements, and dimension tables, which provide context for those measurements. This structure makes data analysis efficient and intuitive, allowing users to easily understand and query data related to specific business events
+Dimensional modeling is a data warehousing technique that organizes data into fact tables containing measurements, and dimension tables, which provide context for those measurements. This structure makes data analysis efficient and intuitive, allowing users to easily understand and query data related to specific business events.
 
 ### Description
 
-We're going to create a star schema by extracting _dimension_ tables and a _fact_ table from the _staging_ tables that have been created in the previous challenge. First you need to create another dataset and call it `dwh`.
+We're going to create a **star schema** by extracting _dimension_ tables and a _fact_ table from the _staging_ tables that have been created in the previous challenge. First you need to create another dataset and call it `dwh`.
 
-We have already provided the code for the dimension tables, all you need to do is create a new `fact_sales.sqlx` file, configure the tags to have `fact` and create the fact table with the following columns:
+We have already provided the code for the dimension tables, all you need to do is create a new `fact_sales.sqlx` file in the same folder, configure it with the tag `fact` and create the fact table with the following columns:
 
 - `sales_key`  (surrogate key built out of `sales_order_id` and `sales_order_detail_id`)
 - `product_key` (surrogate key built out of `product_id`)
@@ -172,13 +172,13 @@ Once the configuration is complete run the Dataform pipeline with the tag `fact`
 
 ### Introduction
 
-Business intelligence (BI) in data warehousing involves using tools and techniques to analyze the massive amounts of data stored in a data warehouse to extract meaningful insights, identify trends, and support better business decision-making. In other words, we translate raw data into actionable information for strategic planning and operational efficiency. We can do that by running SQL queries, but we can also create dashboards using a visualization tool, such as Looker or Looker Studio, to achieve the same.
+Business intelligence (BI) in data warehousing involves using tools and techniques to analyze the massive amounts of data stored in a data warehouse to extract meaningful insights, identify trends, and support better business decision-making. In other words, we translate raw data into actionable information. We can get that information by running SQL queries, but we can also create visual dashboards using a visualization tool, such as Looker or Looker Studio, to achieve the same.
 
 ### Description
 
-We're going to create a new report in Looker Studio. Since we're keeping things simple and Looker Studio works better with an _OBT_ (one big table), we'll create that as a first step.
+We're going to create a new report in *Looker Studio*. Since we're keeping things simple and Looker Studio works better with an _OBT_ (one big table), we'll create that as a first step.
 
-Create in the `dwh` dataset the new table `obt_sales` by joining **all** of the dimension tables with the fact table **using Dataform**, and use the tag `obt`. Make sure to exclude all of the surrogate keys. 
+Add a new file `obt_sales.sqlx` and configure it to create a new table `obt_sales` in the `dwh` dataset by joining **all** of the dimension tables with the fact table, and add the tag `obt`. Make sure to exclude all of the surrogate keys. 
 
 Once the table is created, create a new Looker Studo report using the new table and configure the following charts:
 
@@ -194,6 +194,7 @@ Once the table is created, create a new Looker Studo report using the new table 
 
 ### Learning Resources
 
+- [BigQuery explained: Working with joins and more](https://cloud.google.com/blog/topics/developers-practitioners/bigquery-explained-working-joins-nested-repeated-data)
 - [Using Looker Studio with BigQuery](https://cloud.google.com/bigquery/docs/visualize-looker-studio)
 - [Calculated fields in Looker Studio](https://support.google.com/looker-studio/answer/6299685)
 
@@ -206,7 +207,7 @@ Once the table is created, create a new Looker Studo report using the new table 
 
 ### Introduction
 
-BigQuery Studio and SQL are great tools for data analytics, but data scientists also enjoy working with interactive notebooks using Python. Luckily BigQuery provides Python notebooks capabilites that's very well integrated with BigQuery and makes it possible to run Python and (serverless) Spark tasks.
+BigQuery Studio and SQL are great tools for data analytics, but data scientists also enjoy working with interactive notebooks using *Python*. Luckily BigQuery provides Python notebooks capabilites integrated with BigQuery, making it possible to run Python and (serverless) Spark tasks.
 
 ### Description
 
@@ -227,11 +228,11 @@ We've already designed a [Colab notebook](https://raw.githubusercontent.com/meke
 
 ### Introduction
 
-Running the Dataform pipelines manually works, but it's not very practical. We'd rather automate this process and run it periodically. Although Dataform provides a lot of functionality to automate and schedule running the pipelines, we're going to consider a bit more flexible orchestrator  that can also run additional steps that are not part of the Dataform pipelines. We're going to use Cloud Composer, which is basically a managed and serverless version of the well-known [Apache Airflow](https://airflow.apache.org/) framework, to schedule and run our complete pipeline.
+Running the Dataform pipelines manually works, but it's not very practical. We'd rather automate this process and run it periodically. Although Dataform provides a lot of functionality to automate and schedule running the pipelines, we're going to consider a bit more flexible orchestrator  that can also run additional steps that might not be part of the Dataform pipelines. We're going to use Cloud Composer, which is basically a managed and serverless version of the well-known [Apache Airflow](https://airflow.apache.org/) framework, to schedule and run our complete pipeline.
 
 ### Description
 
-We've already created a Cloud Composer environment for you. You need to configure and run [this DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0/dags/etlflow.py) (Directed Acyclic Graph, a collection of tasks organized with dependencies and relationships) on that environment. The DAG is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning (and stores the predictions in a new BigQuery table). 
+We've already created a *Cloud Composer* environment for you. You need to configure and run [this pre-configured DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0/dags/etlflow.py) (which is basically a collection of tasks organized with dependencies and relationships) on that environment. The DAG is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning and stores the predictions in a new BigQuery table. 
 
 Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the _environment variables_ of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0` as the Git reference.
 
