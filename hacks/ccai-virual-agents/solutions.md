@@ -80,7 +80,7 @@
 6. Test the agent with different welcome phrases
 
 ## Challenge 5
-> Goal Call external system for knowledge
+> Goal: Call external system for knowledge
 
 1. Create a new intent for answering a question about vacation days. Use the steps in Challenge 1 to create it.
 
@@ -90,9 +90,9 @@
     3. Webhook URL -> TBD **TODO: create cloud function \ stub for this** 
     4. Fill in request parameters:
         1. $flow.vacation variable to store the result
-        2. $.fulfillment_response.messages[0].text.days to store the respose from the JSON
+        2. $.fulfillment_response.messages[0].text.days to store the response from the JSON
     5. Go to Start Page and create a new Route ("+" sign )
     6. Select vacation days Intent
     7. Under Fulfillment select Webhook Settings -> Enable Webhook and select the vacation days webhook
-    8. **TODO** Used webhook variable to respond to user
+3. **TODO** Use webhook response to the user question
 
