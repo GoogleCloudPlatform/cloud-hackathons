@@ -28,6 +28,7 @@ This hack will help you explore the following tasks:
 - Challenge 5: Business Intelligence
 - Challenge 6: Notebooks for data scientists
 - Challenge 7: Cloud Composer for orchestration
+- Challenge 8: Monitoring the workflow
 
 ## Prerequisites
 
@@ -248,3 +249,29 @@ Find the DAGs bucket for the Cloud Composer environment and copy the provided DA
 - [Cloud Composer Environment Variables](https://cloud.google.com/composer/docs/composer-3/set-environment-variables)
 - [Triggering DAGs](https://cloud.google.com/composer/docs/composer-3/trigger-dags)
 
+## Challenge 8: Monitoring the workflow
+
+### Introduction
+
+When we run our Cloud Composer DAG manually it's easy to see if it has failed or not, but we've configured to run it automatically every day; what if something goes wrong tomorrow or the day after? In order to make sure that things stay healthy we need to do some continous monitoring, create incidents when something goes wrong and notify the responsible people. This is where _Cloud Monitoring_ comes in to the play. In this challenge we'll introduce a very basic method of monitoring failed Cloud Composer workflows using Cloud Monitoring.
+
+### Description
+
+Create a new _Alerting Policy_ for _Failed DAG runs_ that will be triggered if there's at least 1 failed DAG run for the workflow from the previous challenge, for a rolling window of `10 minutes` using `delta` function and use an _Email Notification Channel_ that sends an email to your personal account(s). Configure a _Policy user label_ with the key `workflow-name` and the name of the monitored workflow as the value. Set the _Policy Severity Level_ to `Critical` and use some sensible values for the other fields. 
+
+Create a new `broken.csv` file with some random content, upload it to the landing bucket for one of the entities and re-run the Cloud Composer DAG.
+
+> **Note** If you had DAG failures in the previous challenge, the configured alert might be triggered before you re-run the DAG. Please ignore that and go ahead with uploading the broken file and re-run the DAG.
+
+When you receive an email for the incident, follow the link to view and then `Acknowledge` it.
+
+### Success Criteria
+
+- There's a new failed DAG run.
+- There's a new Cloud Monitoring incident related to the failed DAG run, that's _Acknowledged_.
+- No code was modified.
+
+### Learning Resources
+
+- [Using Monitoring Dashboard for Cloud Composer](https://cloud.google.com/composer/docs/composer-3/use-monitoring-dashboard)
+- [Creating and managing notification channels](https://cloud.google.com/monitoring/support/notification-options)

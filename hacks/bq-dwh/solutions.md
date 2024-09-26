@@ -11,6 +11,7 @@
 - Challenge 5: Business Intelligence
 - Challenge 6: Notebooks for data scientists
 - Challenge 7: Cloud Composer for orchestration
+- Challenge 8: Monitoring the workflow
 
 ## Challenge 1: Loading the source data
 
@@ -197,4 +198,8 @@ This should be trivial, it's just a matter of uploading the notebook, connecting
 
 You need to set the environment variable `DATAFORM_REPOSITORY_ID` to the repository name (not the development workspace) configured in Challenge 4.
 
+## Challenge 8: 
 
+### Notes & Guidance
+
+This should be trivial as well, from the Monitoring tab of the Cloud Composer environment you can find the Failed DAG runs metric and create an alert from it by filling in the provided details.
