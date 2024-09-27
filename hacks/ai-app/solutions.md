@@ -1,23 +1,29 @@
-# ai dev hack
+# AI App hack
 
 ## Introduction
 
-Welcome to the coach's guide for The IoT Hack of the Century gHack. Here you will find links to specific guidance for coaches for each of the challenges.
-
-Remember that this hack includes a optional [lecture presentation](resources/lecture.pdf) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
+This is a coaches guide for this ghack.
+This hack helps you create and deploy a GenAI application (see below) using Google Cloud and Firebase Genkit.
+You do the following:
+- Part1: Add data into the vector database.
+- Part1: Creating GenAI flows that power this app.
+- Part1: Building security and validation into model responses.
+- Part1: Run this application locally.
+- Part2: Make this a fully cloud based application (Deploy the application on GCP) using firebase, cloudrun, memory store for redis.
 
 > **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
-- Challenge 1: Provision an IoT environment
-   - Create an IoT Hub and run tests to ensure it can ingest telemetry
-- Challenge 2: Your First Device
-   - Make the connection to your Edge device and see that it is properly provisioned.
-- Challenge 3: Connecting the World
-   - Connect your device and make sure it can see all other devices in your team.
-- Challenge 4: Scalable Monitoring of Telemetry
-   - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
+
+- Challenge 1: Upload the data to the vector database
+   - Create an embedding for each entry in the dataset (discussed later), and upload the data to a vector database using the predefined schema. Do this using a genkit flow.
+- Challenge 2: Your first flow that analyses the user's input.
+   - Create a flow that takes the user's latest input and make sure you extract *any* long term preference or dislike. 
+- Challenge 3: Flow that analyses the converstation history and transforms the user's latest query with the relevant context.
+- Challenge 4: Retrieve the relevant documents from the transformed context created at the previous challenge.
+- Challenge 5: Create a meaningful response to the user (RAG flow).
+   - Select the relevant outputs from the previous stages and return a meaningful output to the user.
 
 ## Coach Prerequisites
 
@@ -58,13 +64,12 @@ _For example:_
 _This section is optional. You may wish to provide an estimate of how long each challenge should take for an average squad of students to complete and/or a proposal of how many challenges a coach should structure each session for a multi-session hack event. For example:_
 
 - Sample Day 1
-  - Challenge 1 (1 hour)
-  - Challenge 2 (30 mins)
-  - Challenge 3 (2 hours)
-- Sample Day 2
-  - Challenge 4 (45 mins)
-  - Challenge 5 (1 hour)
-  - Challenge 6 (45 mins)
+  - Challenge 1 (45 mins)
+  - Challenge 2 (15 mins)
+  - Challenge 3 (15 mins)
+  - Challenge 4 (30 mins)
+  - Challenge 5 (30 mins)
+
 
 ## Repository Contents
 
@@ -87,19 +92,13 @@ _The default files & folders are listed below. You may add to this if you want t
    - Before we can hack, you will need to set up a few things.
    - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 
-## Challenge 1: Provision an IoT environment
+## Challenge 1: Upload the data to the vector database
 
 ### Notes & Guidance
 
-This is the only section you need to include.
-
-Use general non-bulleted text for the beginning of a solution area for this challenge
-- Then move into bullets
-    - And sub-bullets and even
-        - sub-sub-bullets
-
-Break things apart with more than one bullet list
-- Like this 
-- One
-- Right
-- Here
+[Solution for Challenge 1: GoLang](https://github.com/MKand/movie-guru/blob/main/chat_server_go/pkg/flows/indexerFlow.go)
+[Solution for Challenge 1: JS]()
+- Students create a **content** entry with the following fields (Title, Plot, Director, Runtime_mins, Rating, Release, Director, Actors). *Poster* and *tconst* are excluded. 
+- They write createText method to include all the aforementioned fields and format the **Genre** and **Actors** fields, as you want comma seperated values. 
+- They create an embedding for the output of the **createText** method.
+- They upload the entry (embedding and other fields) into the **movies** table
