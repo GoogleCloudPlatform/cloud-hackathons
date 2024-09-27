@@ -100,7 +100,7 @@ Although we've only dealt with 3 tables so far, our data model has many more tab
 
 Create a new Dataform _Repository_, update its settings to use the `BQ DWH Dataform Service Account`, _override_ workspace compilation settings to ensure that _Project ID_ points to your project. Then link it to [this Github repository](https://github.com/meken/gcp-dataform-bqdwh.git), using `HTTPS` as the protocol, `main` as the _Default branch name_ and the provided `git-secret` as the secret to connect.
 
-After configuring the Dataform repository, create a new _Development Workspace_, solve any errors and execute the pipeline with the *tag* `staging`. Once you have a successful run, commit your changes.
+After configuring the Dataform repository, create a new _Development Workspace_, solve any errors and execute the pipeline with the *tag* `staging`. 
 
 > **Note** The provided `git-secret` has a dummy value, it'll be ignored when you pull from the repository. When you link a Git repository, Dataform clones that repository _locally_ (in your Dataform Development Workspace) and you can commit your changes to your local copy. Normally you'd be able to push those changes to the remote (either main or a different branch), but since the provided secret doesn't have any write permissions, you won't be able to do that for this exercise.
 
@@ -142,7 +142,7 @@ Dimensional modeling is a data warehousing technique that organizes data into fa
 
 We're going to create a **star schema** by extracting _dimension_ tables and a _fact_ table from the _staging_ tables that have been created in the previous challenge. First you need to create another dataset and call it `dwh`.
 
-We have already provided the code for the dimension tables, all you need to do is create a new `fact_sales.sqlx` file in the same folder, configure it with the tag `fact` and create the fact table with the following columns:
+We have already provided the code for the dimension tables, first run the pipeline for the tag `dimension` and then create a new `fact_sales.sqlx` file in the same folder, configure it with the tag `fact` and create the fact table with the following columns:
 
 - `sales_key`  (surrogate key built out of `sales_order_id` and `sales_order_detail_id`)
 - `product_key` (surrogate key built out of `product_id`)
@@ -158,13 +158,13 @@ We have already provided the code for the dimension tables, all you need to do i
 - `gross_revenue` (calculated by multiplying `unit_price` with `order_quantity`)
 - `gross_profit` (calculated by subtracting discounts and costs of goods sold from `gross_revenue`)
 
-Once the configuration is complete run the Dataform pipeline with the tag `fact`.
+Once the configuration is complete run the Dataform pipeline with the tag `fact` and commit your changes.
 
 ### Success Criteria
 
 - There is a new BigQuery dataset `dwh` in the same region as the other datasets.
 - There's a successful execution of the provided Dataform pipeline for the `fact` tag.
-- There are dimension tables and a new fact table, `fact_sales` in the `dwh` dataset, with the columns as specified above.
+- There are dimension tables and a new fact table, `fact_sales` in the `dwh` dataset, with the columns as specified above having in total **121317** rows.
 
 ### Learning Resources
 
@@ -240,6 +240,8 @@ We've already created a *Cloud Composer* environment for you. You need to config
 
 Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the _environment variables_ of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0.0` as the Git reference.
 
+> **Note** It might take a few minutes for the DAG to be discovered by Airflow, be patient :) Once the DAG is discovered it will be started automatically, make sure to configure the environment variables before you upload the DAG.
+
 ### Success Criteria
 
 - There's a new DAG that's triggered every day at midnight.
@@ -262,11 +264,20 @@ When we run our Cloud Composer DAG manually it's easy to see if it has failed or
 
 Create a new _Alerting Policy_ for _Failed DAG runs_ that will be triggered if there's at least 1 failed DAG run for the workflow from the previous challenge, for a rolling window of `10 minutes` using `delta` function and use an _Email Notification Channel_ that sends an email to your personal account(s). Configure a _Policy user label_ with the key `workflow-name` and the name of the monitored workflow as the value. Set the _Policy Severity Level_ to `Critical` and use some sensible values for the other fields. 
 
-Create a new `broken.csv` file with some random content, upload it to the landing bucket for one of the entities and re-run the Cloud Composer DAG.
+Create a new `broken.csv` file with the following (idea is to have multiple `csv` files with irreconcilable schemas to cause an error):
+
+```
+foo,bar
+xx,yy
+```
+
+And upload it to the landing bucket for one of the entities (next to a `data.csv` file, do not overwrite!) and re-run the Cloud Composer DAG.
 
 > **Note** If you had DAG failures in the previous challenge, the configured alert might be triggered before you re-run the DAG. Please ignore that and go ahead with uploading the broken file and re-run the DAG.
 
 When you receive an email for the incident, follow the link to view and then `Acknowledge` it.
+
+> **Note** This might take ~10 minutes as Airflow will retry the failing tasks multiple times before giving it up and mark the DAG run as _failed_.
 
 ### Success Criteria
 

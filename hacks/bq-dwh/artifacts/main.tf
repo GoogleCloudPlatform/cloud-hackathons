@@ -97,6 +97,11 @@ data "google_compute_network" "default_network" {
   ]
 }
 
+resource "google_project_service_identity" "composer_default_sa" {
+  provider = google-beta
+  service  = google_project_service.composer_api.service
+}
+
 resource "google_project_service_identity" "dataform_default_sa" {
   provider = google-beta
   service  = google_project_service.dataform_api.service
@@ -117,8 +122,17 @@ resource "google_service_account" "startup_vm_sa" {
   display_name = "BQ DWH Startup VM Service Account"
 }
 
+resource "google_project_iam_member" "composer_default_sa_roles" {
+  project  = var.gcp_project_id
+  for_each = toset([
+    "roles/composer.serviceAgent"
+  ])
+  role   = each.key
+  member = "serviceAccount:${google_project_service_identity.composer_default_sa.email}"
+}
+
 resource "google_project_iam_member" "dataform_default_sa_roles" {
-  project = var.gcp_project_id
+  project  = var.gcp_project_id
   for_each = toset([
     "roles/bigquery.user",
     "roles/dataform.serviceAgent",
@@ -197,7 +211,7 @@ resource "google_storage_bucket" "dags_bucket" {
 
 resource "google_compute_instance" "startup_vm" {
   name         = "gce-lnx-env-setup"
-  machine_type = "f1-micro"
+  machine_type = "e2-micro"
 
   boot_disk {
     initialize_params {
