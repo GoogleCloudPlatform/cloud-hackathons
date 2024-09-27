@@ -20,7 +20,7 @@
 Although most of this will be done through the UI by the participants, the following commands make it possible to run this challenge from the command line.
 
 ```shell
-REGION=...
+REGION=us-central1  
 BQ_DATASET=raw
 bq mk --location=$REGION -d $BQ_DATASET
 ```
@@ -78,14 +78,14 @@ CREATE TABLE curated.stg_sales_order_detail AS
   FROM raw.sales_order_detail
 ```
 
-The table `person` has one duplicate record for `business_entity_id` with the value `11751`. You can verify that there are no duplicate records for this table by either checking the total number of rows (must be 19972) or by running the following query:
+The table `person` has one duplicate record for `business_entity_id` with the value `11751`. You can verify that there are no duplicate records for this table by either checking the total number of rows (must be 19972) or by running the following query (result should be empty):
 
 ```sql
 SELECT
   business_entity_id,
   COUNT(*) cnt
 FROM
-  `raw.person`
+  `curated.stg_person`
 GROUP BY
   business_entity_id
 HAVING
@@ -141,6 +141,8 @@ WHERE
   AND sod.product_id = p.product_id
 ```
 
+Total number of rows for this table should be: **121317**
+
 ## Challenge 5: Business Intelligence
 
 ### Notes & Guidance
@@ -151,29 +153,45 @@ config {
     schema: "dwh",
     tags: ["obt"]
 }
+
 SELECT
-  a.* EXCEPT(address_key),
-  d.* EXCEPT(date_key),
-  p.* EXCEPT(product_key),
-  cc.* EXCEPT(credit_card_key),
-  o.* EXCEPT(order_status_key),
-  c.* EXCEPT(customer_key),
-  f.* EXCEPT(sales_key, customer_key, order_date_key, order_status_key, credit_card_key, ship_address_key, product_key)
+  * EXCEPT(
+    address_key,
+    date_key,
+    product_key,
+    sales_key,
+    customer_key,
+    order_date_key,
+    order_status_key,
+    credit_card_key,
+    ship_address_key
+  )
 FROM
-  ${ref("fact_sales")} f,
-  ${ref("dim_address")} a,
-  ${ref("dim_date")} d,
-  ${ref("dim_product")} p,
-  ${ref("dim_credit_card")} cc,
-  ${ref("dim_order_status")} o,
-  ${ref("dim_customer")} c
-WHERE
-  f.product_key = p.product_key
-  AND f.customer_key = c.customer_key
-  AND f.credit_card_key = cc.credit_card_key
-  AND f.order_status_key = o.order_status_key
-  AND f.ship_address_key = a.address_key
-  AND f.order_date_key = d.date_key
+  ${ref("fact_sales")}
+LEFT JOIN
+  ${ref("dim_product")}
+ON
+  ${ref("fact_sales")}.product_key = ${ref("dim_product")}.product_key
+LEFT JOIN
+  ${ref("dim_customer")}
+ON
+  ${ref("fact_sales")}.customer_key = ${ref("dim_customer")}.customer_key
+LEFT JOIN
+  ${ref("dim_credit_card")}
+ON
+  ${ref("fact_sales")}.credit_card_key = ${ref("dim_credit_card")}.credit_card_key
+LEFT JOIN
+  ${ref("dim_order_status")}
+ON
+  ${ref("fact_sales")}.order_status_key = ${ref("dim_order_status")}.order_status_key
+LEFT JOIN
+  ${ref("dim_address")}
+ON
+  ${ref("fact_sales")}.ship_address_key = ${ref("dim_address")}.address_key
+LEFT JOIN
+  ${ref("dim_date")}
+ON
+  ${ref("fact_sales")}.order_date_key = ${ref("dim_date")}.date_key
 ```
 
 Create a new _calculated field_ in Looker Studio (through `Add a field`) using the following formula:
