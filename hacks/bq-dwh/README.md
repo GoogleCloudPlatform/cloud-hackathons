@@ -6,7 +6,7 @@ In this hack we'll implement a classic data warehouse using modern tools, such a
 
 ![Architecture of the solution](./images/bq-dwh-arch.png)
 
-In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make the data accessible in BigQuery. In the second challenge we'll apply some basic transformations to load the data in staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports.The 6th challenge is for the data scientists, using interactive notebooks to analyze data and finally, we'll automate and orchestrate the whole process by tapping into Cloud Composer in the last challenge.
+In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make the data accessible in BigQuery. In the second challenge we'll apply some basic transformations to load the data in staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports.The 6th challenge is for the data scientists, using interactive notebooks to analyze data and finally, we'll automate, orchestrate and monitor the whole process by tapping into Cloud Composer in the last challenges.
 
 ## Learning Objectives
 
@@ -18,6 +18,7 @@ This hack will help you explore the following tasks:
 - Dimensional modeling
 - Looker Studio for visualizing data
 - Cloud Composer for orchestration
+- Cloud Monitoring for monitoring and alerting
 
 ## Challenges
 
@@ -101,7 +102,7 @@ Create a new Dataform _Repository_, update its settings to use the `BQ DWH Dataf
 
 After configuring the Dataform repository, create a new _Development Workspace_, solve any errors and execute the pipeline with the *tag* `staging`. Once you have a successful run, commit your changes.
 
-> **Note** The provided `git-secret` has a dummy value, it'll be ignored when you pull from the repository. When you link a Git repository, Dataform clones that repository _locally_ (in your Dataform Development Workspace) and you can commit your changes to your local copy. Normally you'd be able to push those changes to the remote (either main or a different branch), but since the provided secret doesn't have any write permissions, you won't be able to that for this exercise.
+> **Note** The provided `git-secret` has a dummy value, it'll be ignored when you pull from the repository. When you link a Git repository, Dataform clones that repository _locally_ (in your Dataform Development Workspace) and you can commit your changes to your local copy. Normally you'd be able to push those changes to the remote (either main or a different branch), but since the provided secret doesn't have any write permissions, you won't be able to do that for this exercise.
 
 ### Success Criteria
 
@@ -135,7 +136,7 @@ After configuring the Dataform repository, create a new _Development Workspace_,
 
 ### Introduction
 
-Dimensional modeling is a data warehousing technique that organizes data into fact tables containing measurements, and dimension tables, which provide context for those measurements. This structure makes data analysis efficient and intuitive, allowing users to easily understand and query data related to specific business events.
+Dimensional modeling is a data warehousing technique that organizes data into fact tables containing measurements and dimension tables, which provide context for those measurements. This structure makes data analysis efficient and intuitive, allowing users to easily understand and query data related to specific business events.
 
 ### Description
 
@@ -212,18 +213,18 @@ BigQuery Studio and SQL are great tools for data analytics, but data scientists 
 
 ### Description
 
-We've already designed a [Colab notebook](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0/notebooks/churn-analysis.ipynb) for this challenge. Upload that to BigQuery, and run the cells one by one to understand what's going on.
+We've already designed a [Colab notebook](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/refs/heads/v2.0/notebooks/churn-analysis.ipynb) for this challenge. Upload that to BigQuery, run the notebook interactively until you get to the cell for creating the model. Edit the cell and add the necessary SQL to create a BigQuery ML model, and run the notebook to completion.
 
 ### Success Criteria
 
 - All the cells from the provided Colab notebook has been run successfully.
-- There's a new model, `churn_model`, in the `dwh` dataset.
-- No code was modified.
+- There's a new _Logistic Regression_ model, `churn_model`, in the `dwh` dataset that predicts whether a customer will churn or not, trained on the prepared training data.
 
 ### Learning Resources
 
 - [BigQuery Python Notebooks](https://cloud.google.com/bigquery/docs/create-notebooks#upload_notebooks)
 - [Introduction to AI/ML in BigQuery](https://cloud.google.com/bigquery/docs/bqml-introduction)
+- [Tutorial on building a BQML model](https://cloud.google.com/bigquery/docs/logistic-regression-prediction)
 
 ## Challenge 7: Cloud Composer for orchestration
 
@@ -233,7 +234,7 @@ Running the Dataform pipelines manually works, but it's not very practical. We'd
 
 ### Description
 
-We've already created a *Cloud Composer* environment for you. You need to configure and run [this pre-configured DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0/dags/etlflow.py) (which is basically a collection of tasks organized with dependencies and relationships) on that environment. The DAG is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning and stores the predictions in a new BigQuery table. 
+We've already created a *Cloud Composer* environment for you. You need to configure and run [this pre-configured DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/refs/heads/v2.0/dags/etlflow.py) (which is basically a collection of tasks organized with dependencies and relationships) on that environment. The DAG is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning and stores the predictions in a new BigQuery table. 
 
 Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the _environment variables_ of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0` as the Git reference.
 

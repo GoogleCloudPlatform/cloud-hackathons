@@ -190,7 +190,18 @@ Most of the charts should be trivial, the last one might present some challenges
 
 ### Notes & Guidance
 
-This should be trivial, it's just a matter of uploading the notebook, connecting to a runtime and running the cells.
+Afer uploading the notebook, connecting to a runtime and running the cells, the following snippet can be used to create the model:
+
+```sql
+CREATE OR REPLACE MODEL `dwh.churn_model`
+OPTIONS
+(
+  model_type='LOGISTIC_REG',
+  auto_class_weights=TRUE,
+  input_label_cols=['churned']
+) AS
+SELECT * EXCEPT(customer_id) FROM exploration.churn_training
+```
 
 ## Challenge 7: Cloud Composer for orchestration
 
