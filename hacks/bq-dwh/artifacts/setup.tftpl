@@ -14,7 +14,7 @@ apt-get install -y wget unzip
 
 # Retrieve the data and copy it to the landing bucket
 echo "Retrieving the source data..."
-wget https://github.com/meken/gcp-dataform-bqdwh/releases/download/v3.0/adwb.zip
+wget https://github.com/meken/gcp-dataform-bqdwh/releases/download/v3.0.0/adwb.zip
 unzip adwb.zip
 gsutil -m cp -r adwb/* gs://$LANDING_BUCKET/
 echo "Source data successfully copied to the landing bucket."
