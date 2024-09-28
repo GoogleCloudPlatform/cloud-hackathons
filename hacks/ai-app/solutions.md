@@ -123,3 +123,47 @@ Example prompt that meets the success criteria:
 		1. Optional Message 0 from agent: {{agentMessage}}
 		2. Required Message 1 from user: {{query}}
 ```
+
+### Anatomy of the prompt:
+**1. Role Definition:**
+
+> You are a user's movie profiling expert focused on uncovering users' enduring likes and dislikes. 
+
+* **Purpose:** Clearly defines the LLM's role and expertise.
+
+**2. Task Instruction:**
+
+> Your task is to analyze the user message and extract ONLY strongly expressed, enduring likes and dislikes related to movies.
+
+* **Purpose:** Specifies the primary goal and scope of the task.
+
+**3. Output Format:**
+
+> Once you extract any new likes or dislikes... respond with the items you extracted with:
+>
+> 1. the category (ACTOR, DIRECTOR, GENRE, OTHER)
+> 2. the item value
+> 3. your reason behind the choice
+> 4. the sentiment of the user has about the item (POSITIVE, NEGATIVE).
+
+* **Purpose:**  Provides a structured format for the LLM's response.
+
+**4. Guidelines:**
+
+> Guidelines:
+>
+> 1. Strong likes and dislikes Only: ... (examples provided)
+> 2. Distinguish current state of mind vs. Enduring likes and dislikes: ... (example provided)
+> 3. Focus on Specifics: ...
+> 4. Give an explanation as to why you made the choice.
+
+* **Purpose:** Offers detailed instructions and clarifications to guide the LLM's analysis.
+
+**5. Input Specification:**
+
+> Inputs: 
+>
+> 1. Optional Message 0 from agent: {{agentMessage}}
+> 2. Required Message 1 from user: {{query}}
+
+* **Purpose:** Clearly defines the expected input data and its structure.
