@@ -9,9 +9,10 @@
 - Challenge 3: Dataform for automation
 - Challenge 4: Dimensional modeling
 - Challenge 5: Business Intelligence
-- Challenge 6: Notebooks for data scientists
-- Challenge 7: Cloud Composer for orchestration
-- Challenge 8: Monitoring the workflow
+- Challenge 6: Access control
+- Challenge 7: Notebooks for data scientists
+- Challenge 8: Cloud Composer for orchestration
+- Challenge 9: Monitoring the workflow
 
 ## Challenge 1: Loading the source data
 
@@ -56,6 +57,8 @@ CREATE OR REPLACE EXTERNAL TABLE raw.person
 BQ_DATASET=curated
 bq mk --location=$REGION -d $BQ_DATASET
 ```
+
+See below for example solutions, note that there are multiple ways of achieving the same objective and participants are free to explore those.
 
 ```sql
 CREATE TABLE curated.stg_person AS
@@ -110,6 +113,8 @@ Once the development workspace has been created, navigate to `workflow_settings.
 BQ_DATASET=dwh
 bq mk --location=$REGION -d $BQ_DATASET
 ```
+
+See below for an example, but just like the previous examples, there are multiple options (left joins are fine too).
 
 ```sql
 config {
@@ -206,11 +211,52 @@ Most of the charts should be trivial, the last one might present some challenges
 
 ![Looker Studio Dashboard Example](./images/looker-studio-dashboard.png)
 
-## Challenge 6: Notebooks for data scientists
+## Challenge 6: Access control
 
 ### Notes & Guidance
 
-Afer uploading the notebook, connecting to a runtime and running the cells, the following snippet can be used to create the model:
+### Row Level Security
+
+Turning on row level security requires creating a new _Row Access Policy_
+
+```sql
+CREATE OR REPLACE ROW ACCESS POLICY
+  only_accessories
+ON
+  dwh.obt_sales 
+GRANT TO ('user:student-XXX@qwiklabs.net') FILTER 
+USING (product_category_name="Accessories");
+```
+
+There are multiple ways to turn off row level security for users/groups, below is the `TRUE` filter approach that's very granular, but you can also assign the role `roles/bigquery.filteredDataViewer` to those users to disable row level security for them.
+
+```sql
+CREATE OR REPLACE ROW ACCESS POLICY 
+  all_access 
+ON 
+  dwh.obt_sales
+GRANT TO (
+  "user:student-YYY@qwiklabs.net",
+  "user:student-YYY@qwiklabs.net",
+  "..."
+)
+FILTER USING (TRUE);
+```
+
+### Dynamic Data Masking
+
+For the data masking create a _Taxonomy_ in the same region, add 2 _Policy Tags_, turn on _Enforce access control_, and add a different _Masking rule_ for each of the _Policy Tags_ by clicking on _Manage Data Policies_. 
+
+If you indicate the principal during rule creation, it will get _Masked Reader_ role automatically, otherwise you'll have to configure that yourself.
+In order to let everyone else read data without masking you need to assign the _Fine Grained Reader_ role to them. The roles can be assigned at the tag level (preferred/recommended) or project level.
+
+> **Note** Dynamic Data Masking will require fewer steps when the feature _Data policy directly on columns_ becomes available.
+
+## Challenge 7: Notebooks for data scientists
+
+### Notes & Guidance
+
+Afer uploading the notebook, connecting to a runtime and running the cells, the following snippet can be used to create the model (which will take roughly a minute to complete):
 
 ```sql
 CREATE OR REPLACE MODEL `dwh.churn_model`
@@ -223,13 +269,19 @@ OPTIONS
 SELECT * EXCEPT(customer_id) FROM exploration.churn_training
 ```
 
-## Challenge 7: Cloud Composer for orchestration
+> **Warning** Make sure that this is run by a user that doesn't have a row level security policy applied to limit the data.
+
+You can ignore the warning messages in the 2nd (authenticate_user is not supported in Colab Enterprise) and 13th (BigQuery error in show operation) cells. Those cells will succeed anyways.
+
+## Challenge 8: Cloud Composer for orchestration
 
 ### Notes & Guidance
 
 You need to set the environment variable `DATAFORM_REPOSITORY_ID` to the repository name (not the development workspace) configured in Challenge 4.
 
-## Challenge 8: Monitoring the workflow
+> **Warning** Keep in mind that the DAG runs the Dataform pipeline which will recreate the tables. At the time of this writing, recreating tables unfortunately removes the row level security filters and data policies although there are bugs filed to address this issue.
+
+## Challenge 9: Monitoring the workflow
 
 ### Notes & Guidance
 

@@ -16,6 +16,7 @@ This hack will help you explore the following tasks:
 - BigLake for accesing data in an object store and applying table semantics
 - Dataform for automating data transformation steps
 - Dimensional modeling
+- Access control to data through dynamic data masking & row level security
 - Looker Studio for visualizing data
 - Colab for data exploration
 - Cloud Composer for orchestration
@@ -28,9 +29,10 @@ This hack will help you explore the following tasks:
 - Challenge 3: Dataform for automation
 - Challenge 4: Dimensional modeling
 - Challenge 5: Business Intelligence
-- Challenge 6: Notebooks for data scientists
-- Challenge 7: Cloud Composer for orchestration
-- Challenge 8: Monitoring the workflow
+- Challenge 6: Access control
+- Challenge 7: Notebooks for data scientists
+- Challenge 8: Cloud Composer for orchestration
+- Challenge 9: Monitoring the workflow
 
 ## Prerequisites
 
@@ -207,7 +209,38 @@ Once the table is created, create a new Looker Studo report using the new table 
 - There are different types of joins you can do with BigQuery, choose the correct one.
 - You'll need to create a calculated field in Looker Studio to get the _quarter_ information in proper format.
 
-## Challenge 6: Notebooks for data scientists
+## Challenge 6: Access control
+
+### Introduction
+
+Data access management is the process of defining, enforcing, and monitoring the rules and policies governing who has access to data. Access management ensures that data is only accessible to those who are authorized to access it. BigQuery provides different mechanisms to help you with data access:
+- [Identity and Access Management](https://cloud.google.com/bigquery/docs/access-control) to manage access to your BigQuery resources such as projects, datasets, tables, and views
+- [Authorized views](https://cloud.google.com/bigquery/docs/authorized-views), datasets, routines let you share query results with particular users and groups without giving them access to the underlying source data
+- And if you want more granular control, you can utilize [Column Level Security](https://cloud.google.com/bigquery/docs/column-level-security-intro), [Row Level Security](https://cloud.google.com/bigquery/docs/row-level-security-intro), and [Dynamic Data Masking](https://cloud.google.com/bigquery/docs/column-data-masking-intro)
+
+### Description
+
+We'll add a couple of data governance rules to the `obt_sales` table that we've created in the previous challenge. Turn on Row Level Security for one of the users by letting that user see only the data for the product category `Accessories`. Make sure that everyone else has access to all of the data. 
+
+In addition, for the same user, add dynamic data masking to the columns `full_name`, showing only first 4 characters and replacing the rest with `XXXXX`, and `birth_date`, replacing it with the Unix epoch date.
+
+> **Note** We're granting permissions for individual users for the sake of simplicity in this challenge, but the best practice is to use user groups for this purpose (which also simplifies the management of these rules).
+
+### Success Criteria
+
+- One user can read only the data for the product category `Accessories` from the `obt_sales` table.
+- The same user can only read the masked version of `full_name` and `birth_date` columns from the `obt_sales` table.
+- All other users can read all data unmasked from the `obt_sales` table.
+- No code was modified.
+
+### Learning Resources
+
+- [Row Level Security](https://cloud.google.com/bigquery/docs/managing-row-level-security)
+- [The TRUE filter](https://cloud.google.com/bigquery/docs/using-row-level-security-with-features#the_true_filter)
+- [Introduction to Dynamic Data Masking](https://cloud.google.com/bigquery/docs/column-data-masking-intro)
+
+
+## Challenge 7: Notebooks for data scientists
 
 ### Introduction
 
@@ -216,6 +249,9 @@ BigQuery Studio and SQL are great tools for data analytics, but data scientists 
 ### Description
 
 We've already designed a [Colab notebook](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.0/notebooks/churn-analysis.ipynb) for this challenge. Upload that to BigQuery, run the notebook interactively until you get to the cell for creating the model. Edit the cell and add the necessary SQL to create a BigQuery ML model, and run the notebook to completion.
+
+> **Warning**  
+> Since Colab uses End User Credentials, make sure that you're running this notebook as a user that doesn't have the row level security filter applied to limit the data.
 
 ### Success Criteria
 
@@ -228,7 +264,7 @@ We've already designed a [Colab notebook](https://raw.githubusercontent.com/meke
 - [Introduction to AI/ML in BigQuery](https://cloud.google.com/bigquery/docs/bqml-introduction)
 - [Tutorial on building a BQML model](https://cloud.google.com/bigquery/docs/logistic-regression-prediction)
 
-## Challenge 7: Cloud Composer for orchestration
+## Challenge 8: Cloud Composer for orchestration
 
 ### Introduction
 
@@ -256,7 +292,7 @@ Find the DAGs bucket for the Cloud Composer environment and copy the provided DA
 - [Cloud Composer Environment Variables](https://cloud.google.com/composer/docs/composer-3/set-environment-variables)
 - [Triggering DAGs](https://cloud.google.com/composer/docs/composer-3/trigger-dags)
 
-## Challenge 8: Monitoring the workflow
+## Challenge 9: Monitoring the workflow
 
 ### Introduction
 
