@@ -56,6 +56,11 @@ resource "google_project_service" "datalineage_api" {
   disable_on_destroy = false
 }
 
+resource "google_project_service" "datacatalog_api" {
+  service            = "datacatalog.googleapis.com"
+  disable_on_destroy = false
+}
+
 # In case a default network is not present in the project the variable `create_default_network` needs to be set.
 resource "google_compute_network" "default_network_created" {
   name                    = "default"

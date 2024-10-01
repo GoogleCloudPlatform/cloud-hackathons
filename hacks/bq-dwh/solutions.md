@@ -59,7 +59,9 @@ bq mk --location=$REGION -d $BQ_DATASET
 
 ```sql
 CREATE TABLE curated.stg_person AS
-  SELECT DISTINCT * EXCEPT(hobby, comments)
+  SELECT DISTINCT * EXCEPT(hobby, comments, birth_date, date_first_purchase),
+  SAFE.PARSE_DATE("%FZ", birth_date) AS birth_date,
+  SAFE.PARSE_DATE("%FZ", date_first_purchase) AS date_first_purchase
   FROM raw.person
 ```
 
@@ -227,7 +229,7 @@ SELECT * EXCEPT(customer_id) FROM exploration.churn_training
 
 You need to set the environment variable `DATAFORM_REPOSITORY_ID` to the repository name (not the development workspace) configured in Challenge 4.
 
-## Challenge 8: 
+## Challenge 8: Monitoring the workflow
 
 ### Notes & Guidance
 

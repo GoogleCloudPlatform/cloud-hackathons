@@ -17,6 +17,7 @@ This hack will help you explore the following tasks:
 - Dataform for automating data transformation steps
 - Dimensional modeling
 - Looker Studio for visualizing data
+- Colab for data exploration
 - Cloud Composer for orchestration
 - Cloud Monitoring for monitoring and alerting
 
@@ -73,17 +74,18 @@ Before we create our dimensional model we'll first do some cleanup. There's a pl
 
 ### Description
 
-Some of the tables have duplicate records and problematic columns that we'd like to remove. Create a new BigQuery dataset called `curated` and create a new table for each BigLake table from the previous challenge. Name the new tables by prefixing them with `stg_` and remove any **duplicate** records as well as any columns with **only `null` values**. Make sure that the columns `order_date`, `due_date` and `ship_date` have the **data type `DATE`** in the new tables.
+Some of the tables have duplicate records and problematic columns that we'd like to remove. Create a new BigQuery dataset called `curated` and create a new table for each BigLake table from the previous challenge. Name the new tables by prefixing them with `stg_` and remove any **duplicate** records as well as any columns with **only `null` values**. Make sure that the columns `order_date`, `due_date`, `ship_date`, `birth_date` and `date_first_purchase` have the **data type `DATE`** in the new tables.
 
 ### Success Criteria
 
 - There is a new BigQuery dataset `curated` in the same region as the other datasets.
 - There are 3 BigQuery tables with content in the `curated` dataset: `stg_person`, `stg_sales_order_header` and `stg_sales_order_detail` with no duplicate records and no columns with only `null` values.
-- The columns `order_date`, `due_date` and `ship_date` in the new tables have the data type `DATE`.
+- The columns `order_date`, `due_date`, `ship_date`, `birth_date` and `date_first_purchase` in the new tables have the data type `DATE`.
 
 ### Learning Resources
 
 - [Creating BigQuery tables from a query result](https://cloud.google.com/bigquery/docs/tables#create_a_table_from_a_query_result)
+- [BigQuery Date functions](https://cloud.google.com/bigquery/docs/reference/standard-sql/date_functions)
 
 ### Tips
 
@@ -238,7 +240,7 @@ This challenge is all about Cloud Composer, which is basically a managed and ser
 
 We've already created a *Cloud Composer* environment for you. You need to configure and run [this pre-configured DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.0/dags/etlflow.py) (which is basically a collection of tasks organized with dependencies and relationships) on that environment. The DAG is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning and stores the predictions in a new BigQuery table. 
 
-Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the _environment variables_ of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0.0` as the Git reference.
+Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the _environment variables_ of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0.1` as the Git reference.
 
 > **Note** It might take a few minutes for the DAG to be discovered by Airflow, be patient :) Once the DAG is discovered it will be started automatically, make sure to configure the environment variables before you upload the DAG.
 
