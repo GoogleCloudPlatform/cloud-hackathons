@@ -704,3 +704,121 @@ Should return a model output like this:
 - [Genkit Prompts](https://firebase.google.com/docs/genkit-go/prompts)
 - [Prompt Engineering](https://www.promptingguide.ai/)
 - [Genkit Go examples](https://github.com/firebase/genkit/tree/main/go/samples/menu)
+
+## Challenge 4: Update the retriever to fetch documents based on a query
+
+### Introduction
+This is not a prompt engineering challenge. You are going to update the retriever to retrieve relevant documents from the vector db based on the user's (transformed) query you created in the previous flow.
+
+The flow should a list of documents that are relevant to the user's query.
+You need to perform the following steps:
+1. Write code that takes the query and transforms it into a vector embedding. 
+1. Perform a search on the vector db based on the embedding and retrive the following elements for each relevant document (plot, title, actors, director, rating, runtime_mins, poster, released, content, genre). You should have a list of movie documents with these fields.
+
+You can do this with *GoLang* or *Javascript*. Refer to the specific sections on how to continue. 
+
+### Pre-requisites 
+Genkit UI and CLI running. See setup steps for challenge 2.
+
+#### GoLang
+
+We're going to be using the Genkit UI for debugging verifying engineering the exercise.
+Make sure you have that up and running (see challenge 2 setup).
+
+Navigate to http://localhost:4001 in your browser. This will open up the **Genkit UI**.
+**Note: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit wasn't able to detect the local files. If that happens,  go to **chat_server_go/cmd/standaloneFlows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected.
+
+#### JS
+WIP
+
+### Description
+#### GoLang
+1. Go to **chat_server_go/cmd/standaloneFlows/docRetrieverFlow.go**. You should see code that looks like this in the method **DefineRetriever**. This retriever just returns an empty document list.
+```golang
+func DefineRetriever(maxRetLength int, db *sql.DB, embedder ai.Embedder) ai.Retriever {
+	f := func(ctx context.Context, req *ai.RetrieverRequest) (*ai.RetrieverResponse, error) {
+		retrieverResponse := &ai.RetrieverResponse{
+			Documents: make([]*ai.Document, 0, maxRetLength),
+		}
+		// INSTRUCTIONS:
+		// 1. Generate an embedding from the query.
+		// 2. Search for the relevant documents in the vector db based on the embedding
+		// 3. Convert the model output to type RetrieverFlowOutput
+		// HINT: https://github.com/firebase/genkit/blob/main/go/samples/pgvector/main.go
+
+		return retrieverResponse, nil
+	}
+	return ai.DefineRetriever("pgvector", "movieRetriever", f)
+}
+
+```
+
+3. Go to the genkit ui and find **Flows/movieDocFlow**. Enter the following in the input and run the flow.
+
+```json
+{
+    "query": "Good movie"
+}
+```
+
+4. You should see an output that looks like this:
+```json
+{
+    "documents": []
+}
+```
+5. Edit the code to search for an retriver the relevant documents. See the instructions and hints in the code.
+
+### JS
+WIP
+
+### Success Criteria
+**Criteria 1**: The retriever should return relevant documents.
+The input of:
+```json
+{
+    "query": "horror movies"
+}
+```
+Should return a model output like that below. The response is truncated in the output below. But, you should see something that resembles following:
+```json
+{
+  "documents": [
+    {
+      "content": [
+        {
+          "text": "{\"actors\":\"Mary Johnson,  Noah Wolf\",\"director\":\"Diego López\",\"genres\":\"Horror, Thriller\",\"plot\":\"A struggling filmmaker, desperate for a hit, stumbles upon a forgotten cult classic film reel.  He believes it holds the key to his success, but as he delves deeper into the film's history, he uncovers a dark secret that threatens to consume him.  The film's original director, now a recluse, warns him of the film's curse, but the filmmaker is too obsessed with his own ambition to listen.  He soon discovers that the film's power is real, and he must confront the consequences of his actions before it's too late.\",\"rating\":\"3.1\",\"released\":2010,\"runtime_mins\":42,\"title\":\"Cult Classic\"}"
+        }
+      ],
+      "metadata": {
+        "poster": "https://storage.googleapis.com/generated_posters/poster_221.png",
+        "rating": 3.1,
+        "released": 2010,
+        "runtime_mins": 42,
+        "title": "Cult Classic"
+      }
+    },
+    {
+      "content": [
+        {
+          "text": "{\"actors\":\"Leila Khaled\",\"director\":\"Benjamin Schulz\",\"genres\":\"Horror, Thriller\",\"plot\":\"A group of college students, seeking a thrilling weekend getaway, rent a secluded, dilapidated mansion rumored to be haunted.  As they explore the house, they uncover a dark history of tragedy and violence, and soon realize the spirits are not just stories - they are vengeful and determined to keep them trapped within the mansion's walls.  One by one, the students fall victim to the supernatural forces, their screams echoing through the empty halls.  As the last survivor faces their terrifying truth, they must find a way to break the curse and escape the haunted house before it's too late.\",\"rating\":\"2.5\",\"released\":2007,\"runtime_mins\":59,\"title\":\"Haunted House\"}"
+        }
+      ],
+      "metadata": {
+        "poster": "https://storage.googleapis.com/generated_posters/poster_363.png",
+        "rating": 2.5,
+        "released": 2007,
+        "runtime_mins": 59,
+        "title": "Haunted House"
+      }
+    },
+  ...
+  ]
+}
+```
+
+
+### Learning Resources
+- [Genkit PGVector](https://firebase.google.com/docs/genkit-go/pgvector)
+- [Genkit Go examples](https://github.com/firebase/genkit/blob/main/go/samples/menu/main.go)
+    

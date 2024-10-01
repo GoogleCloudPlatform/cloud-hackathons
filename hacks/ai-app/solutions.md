@@ -278,3 +278,58 @@ func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (
 	return queryTransformFlow, nil
 }
 ```
+
+## Challenge 4: Update the retriever to fetch documents based on a query
+Sample code that implements the retriever:
+
+```go
+func DefineRetriever(maxRetLength int, db *sql.DB, embedder ai.Embedder) ai.Retriever {
+	f := func(ctx context.Context, req *ai.RetrieverRequest) (*ai.RetrieverResponse, error) {
+
+    // Get the embedding for the query
+		eres, err := ai.Embed(ctx, embedder, ai.WithEmbedDocs(req.Document))
+		if err != nil {
+			return nil, err
+		}
+  // Query the db for the relevant rows
+		rows, err := db.QueryContext(ctx, `
+					SELECT title, poster, content, released, runtime_mins, rating, plot
+					FROM movies
+					ORDER BY embedding <-> $1
+					LIMIT $2`,
+			pgv.NewVector(eres.Embeddings[0].Embedding), maxRetLength)
+		if err != nil {
+			return nil, err
+		}
+		defer rows.Close()
+
+		retrieverResponse := &ai.RetrieverResponse{}
+		for rows.Next() {
+			var title, poster, content, plot string
+			var released, runtime_mins int
+			var rating float32
+			if err := rows.Scan(&title, &poster, &content, &released, &runtime_mins, &rating, &plot); err != nil {
+				return nil, err
+			}
+			meta := map[string]any{
+				"title":        title,
+				"poster":       poster,
+				"released":     released,
+				"rating":       rating,
+				"runtime_mins": runtime_mins,
+        "plot":         plot,
+			}
+			doc := &ai.Document{
+				Content:  []*ai.Part{ai.NewTextPart(content)},
+				Metadata: meta,
+			}
+			retrieverResponse.Documents = append(retrieverResponse.Documents, doc)
+		}
+		if err := rows.Err(); err != nil {
+			return nil, err
+		}
+		return retrieverResponse, nil
+	}
+	return ai.DefineRetriever("pgvector", "movieRetriever", f)
+}
+```
