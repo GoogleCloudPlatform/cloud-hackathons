@@ -215,7 +215,7 @@ This is your first prompt engineering challenge. The goal of this prompt is to c
 
 We want the model to take a user's statement, and potentially the agent's previous statement (if there is one) and extract the following:
 1. **List of recommendations** from the model about what it expects the user really likes or dislikes based on the user's latest statement. Each recommendation contains the following information:
-    -  **Item**: The (movie related) item the user expressed a strong sentiment about. Eg: A genre, an actor, director etc.
+    - **Item**: The (movie related) item the user expressed a strong sentiment about. Eg: A genre, an actor, director etc.
     - **Reason**: The justification from the model to have extracted that specific item.
     - **Category**: The category of the item. Eg: Genre, Actor, Director, or Other.
     - **Sentiment**: The user's sentiment about the item. **Positive** or **Negative**. 
@@ -242,7 +242,7 @@ When you run **genkit start**  directory where your genkit server code is locate
 The [normal workflow](https://firebase.google.com/docs/genkit-go/get-started-go) is to install the necessary components on your local machine. Given that this lab have minimal (pre) setup requirements (only docker and docker compose), we choose to run the genkit CLI and GUI through a container which adds a couple of extra setup steps, but ensures consistency across different lab setups. 
 
 For this challenge, you do not need to have the app running, we are just going to work with the flows.
-From the root of the project directory run the following
+From the root of the project directory run the following.
 ```sh
 docker compose up -d genkit-go # running just the genkit-go service
 ```
@@ -399,3 +399,286 @@ Should return a model output like this:
 - [Genkit Prompts](https://firebase.google.com/docs/genkit-go/prompts)
 - [Prompt Engineering](https://www.promptingguide.ai/)
 - [Genkit UI and CLI](https://firebase.google.com/docs/genkit/devtools)
+
+## Challenge 3: Create a flow that analyses the conversation history and transforms the user’s latest query with the relevant context.
+
+### Introduction
+This is your second prompt engineering challenge. On top of the prompt engineering challenge, we're also going to add a second challenge to this which is to embed the prompt in a flow and get a structured output back from the flow.
+
+We want the model to take a user's statement, the conversation history and extract the following:
+1. **Transformed query** The query that will be sent to the vector database to search for relevant documents:
+2. **User Intent**: The intent of the user's latest statement. Did the user issue a greeting to the chatbot (GREET), end the conversation (END_CONVERSATION), make a request to the chatbot (REQUEST), respond to the chatbot's question (RESPONSE), ackowledge a chatbot's statement (ACKNOWLEDGE), or is it unclear (UNCLEAR). The reason we do this is to prevent a call to the vector DB if the user is not searching for anything. The application only performs a search if the intent is REQUEST or RESPONSE. 
+
+You need to perform the following steps:
+1. Create a prompt that outputs the information mentioned above. The model takes in a user's query, the conversation history, and the user's profile information (long lasting likes or disklikes).
+1. Update the prompt in the codebase (look at instructions in GoLang or JS) to see how.
+1. Use the genkit UI (see steps below) to test the response of the model and make sure it returns what you expect.
+1. After the prompt does what you expect, then update the flow to use the prompt and return an output of the type **QueryTransformFlowOutput**
+
+You can do this with *GoLang* or *Javascript*. Refer to the specific sections on how to continue. 
+
+### Pre-requisites 
+Genkit UI and CLI running. See setup steps for challenge 2.
+
+#### GoLang
+
+We're going to be using the Genkit UI for the prompt engineering portion of the exercise.
+Make sure you have that up and running (see challenge 2 setup).
+
+Navigate to http://localhost:4001 in your browser. This will open up the **Genkit UI**.
+**Note: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit wasn't able to detect the local files. If that happens,  go to **chat_server_go/cmd/flows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected.
+
+#### JS
+WIP
+
+### Description
+#### GoLang
+1. Go to **chat_server_go/cmd/flows/main.go**. You should see code that looks like this in the method **getPrompts()**. 
+```golang
+queryTransformPrompt :=
+		`
+                    This is the user profile. This expresses their long-term likes and dislikes:
+                    {{userProfile}} 
+
+					This is the history of the conversation with the user so far:
+					{{history}} 
+			
+					This is the last message the user sent. Use this to understand the user's intent:
+					{{userMessage}}
+					Translate the user's message into a different language of your choice.
+		`
+```
+1. Keep this file (main.go) open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
+2. From the Genkit UI, go to **Prompts/dotprompt/queryTransformFlow**. 
+3. You should see an empty input to the prompt that looks like this:
+
+```json
+{
+    "history": [
+        {
+            "sender": "",
+            "message": ""
+        }
+    ],
+    "userProfile": {
+        "likes": { "actors":[""], "director":[""], "genres":[], "other":[""]},
+        "dislikes": {"actors":[""], "director":[""], "genres":[], "other":[""]}
+    },
+    "userMessage": "Hello"
+}
+```
+
+4. You should also see a prompt (the same prompt in main.go) below. You need to edit this prompt in **main.go** but can test it out by changing the input, model and other params in the UI.
+5. Test it out: Add a query "I want to watch a movie", and leave the rest empty and click on **RUN**. 
+6. The model should respond by translating this into a random language (this is what the prompt asks it to do). 
+7. You need to rewrite the prompt (in main.go) and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **main.go** and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters. 
+8. After you get your prompt working, it's now time to get implement the flow. Navigate to  **chat_server_go/pkg/flows/queryTransform.go**.  You should see something that looks like this. What you see is that we define the dotprompt and specify the input and output format for the dotprompt. The prompt is however never invoked. We create an empty **queryTransformFlowOutput** and this will always result in the default output. You need to invoke the prompt and have the model generate an output for this. 
+```go
+func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (*genkit.Flow[*types.QueryTransformFlowInput, *types.QueryTransformFlowOutput, struct{}], error) {
+
+	queryTransformPrompt, err := dotprompt.Define("queryTransformFlow",
+		prompt,
+
+		dotprompt.Config{
+			Model:        model,
+			InputSchema:  jsonschema.Reflect(types.QueryTransformFlowInput{}),
+			OutputSchema: jsonschema.Reflect(types.QueryTransformFlowOutput{}),
+			OutputFormat: ai.OutputFormatJSON,
+			GenerationConfig: &ai.GenerationCommonConfig{
+				Temperature: 0.5,
+			},
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	// Define a simple flow that prompts an LLM to generate menu suggestions.
+	queryTransformFlow := genkit.DefineFlow("queryTransformFlow", func(ctx context.Context, input *types.QueryTransformFlowInput) (*types.QueryTransformFlowOutput, error) {
+		// Default output
+		queryTransformFlowOutput := &types.QueryTransformFlowOutput{
+			ModelOutputMetadata: &types.ModelOutputMetadata{
+				SafetyIssue:   false,
+				Justification: "",
+			},
+			TransformedQuery: "",
+			Intent:           types.USERINTENT(types.UNCLEAR),
+		}
+
+		// INSTRUCTIONS:
+		// 1. Call this prompt with the necessary input and get the output.
+		// 2. The output should then be tranformed into the type  QueryTransformFlowOutput and stored in the variable queryTransformFlowOutput
+		// 3. Handle any errors that may arise.
+
+		return queryTransformFlowOutput, nil
+	})
+	return queryTransformFlow, nil
+}
+```
+
+
+If you run the following:
+```sh
+./curl-querytransform.sh
+``` 
+You should get something that looks like this:
+```json
+{
+    "result": {
+    "transformedQuery":"",
+    "userIntent":"UNCLEAR",
+    "justification":"",
+    "safetyIssue":false
+    }
+}
+```
+But, once you implement the necessary code (and prompt), you should see something like this
+```json
+{
+    "result": {
+    "transformedQuery":"movie",
+    "userIntent":"REQUEST",
+    "justification":"The user's request is simple and lacks specifics.  Since the user profile provides no likes or dislikes, the transformed query will reflect the user's general request for a movie to watch.  No additional information is added because there is no context to refine the search.",
+    "safetyIssue":false
+    }
+}
+```
+### JS
+WIP
+
+### Success Criteria
+**Criteria 1**: The model should be able to extract the user's intent from the message and a meaningful query.
+The input of:
+```json
+{
+    "history": [
+        {
+            "sender": "agent",
+            "message": "How can I help you today"
+        },
+        {
+            "sender": "user",
+            "message": "Hi"
+        }
+    ],
+    "userProfile": {
+        "likes": { "actors":[""], "director":[""], "genres":[], "other":[""]},
+        "dislikes": {"actors":[""], "director":[""], "genres":[], "other":[""]}
+       
+    },
+    "userMessage": "Hi"
+    }
+```
+Should return a model output like this:
+```json
+{
+  "justification": "The user's message 'hi' is a greeting and doesn't express a specific request or intent related to movies or any other topic.  Therefore, no query transformation is needed, and the userIntent is set to GREET.",
+  "transformedQuery": "",
+  "userIntent": "GREET"
+}
+```
+The input of:
+```json
+{
+    "history": [
+        {
+            "sender": "agent",
+            "message": "I have a large database of comedy films"
+        },
+        {
+            "sender": "user",
+            "message": "Ok. Tell me about them"
+        }
+    ],
+    "userProfile": {
+        "likes": { "actors":[], "director":[], "genres":[], "other":[]},
+        "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+    },
+    "userMessage": "Ok. Tell me about them"
+    }
+```
+Should return a model output like this:
+```json
+{
+  "justification": "The user's previous message indicated an interest in comedy films.  Their current message, \"Ok. tell me about them,\" is a request for more information about the comedy films previously mentioned by the agent.  Since the user profile lacks specific likes and dislikes regarding actors, directors, or genres,  the query focuses solely on the user's expressed interest in comedy films.",
+  "transformedQuery": "comedy films",
+  "userIntent": "REQUEST"
+}
+```
+The input of:
+```json
+{
+    "history": [
+        {
+            "sender": "agent",
+            "message": "I have a large database of comedy films"
+        }
+    ],
+    "userProfile": {
+        "likes": { "actors":[], "director":[], "genres":[], "other":[]},
+        "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+    },
+    "userMessage": "I'm not interested. Bye."
+    }
+```
+Should return a model output like this:
+```json
+{
+  "justification": "The user's last message, \"Ok. Not interested bye\", indicates they are ending the conversation after acknowledging the agent's previous message about comedy films.  There is no further query to refine.  The user's profile contains no preferences that could be used to refine a non-existent query.",
+  "transformedQuery": null,
+  "userIntent": "END_CONVERSATION"
+}
+```
+The input of:
+```json
+{
+    "history": [
+        {
+            "sender": "agent",
+            "message": "I have a large database of comedy films"
+        }
+    ],
+    "userProfile": {
+        "likes": { "actors":[], "director":[], "genres":[], "other":[]},
+        "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+    },
+    "userMessage": "Ok. Good to know"
+    }
+```
+Should return a model output like this:
+```json
+{
+  "justification": "The user's last message, \"Ok. Good to know\", is an acknowledgement of the agent's previous statement about having many comedy films.  It doesn't represent a new request or question. The user's profile provides no relevant likes or dislikes to refine a movie search. Therefore, the transformed query will remain broad, focusing on comedy films.",
+  "transformedQuery": "comedy films",
+  "userIntent": "ACKNOWLEDGE"
+}
+```
+**Criteria 2**: The model should be able to take existing likes and disklikes into account.  
+The input of:
+```json
+{
+    "history": [
+        {
+            "sender": "agent",
+            "message": "I have many films"
+        }
+    ],
+    "userProfile": {
+        "likes": { "actors":[], "director":[], "genres":["comedy"], "other":[]},
+        "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+    },
+    "userMessage": "Ok. give me some options"
+    }
+```
+Should return a model output like this:
+```json
+{
+  "justification": "The user's previous message indicates they are ready to receive movie options.  Their profile shows a strong preference for comedy movies. Therefore, the query will focus on retrieving comedy movies.",
+  "transformedQuery": "comedy films",
+  "userIntent": "REQUEST"
+}
+```
+
+### Learning Resources
+- [Genkit Prompts](https://firebase.google.com/docs/genkit-go/prompts)
+- [Prompt Engineering](https://www.promptingguide.ai/)
+- [Genkit Go examples](https://github.com/firebase/genkit/tree/main/go/samples/menu)

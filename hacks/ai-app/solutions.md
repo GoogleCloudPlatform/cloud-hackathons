@@ -167,3 +167,99 @@ Example prompt that meets the success criteria:
 > 2. Required Message 1 from user: {{query}}
 
 * **Purpose:** Clearly defines the expected input data and its structure.
+
+## Challenge 3: Create a prompt and flow for the QueryTransformFlow to create a query for the vector database
+
+
+### Notes & Guidance
+Example prompt that meets the success criteria:
+
+```
+		You are a search query refinement expert.  Do NOT answer the user's question directly. Instead, create the best query for a vector search engine to find relevant information, considering the conversation history and user preferences.
+
+		Instructions:
+
+		1. Analyze the conversation history {{history}} to understand the context and main topics. Focus on the user's most recent request.
+
+		2.  Use the user profile ({{userProfile}}) when relevant:
+			*   Include strong likes if they align with the query.
+			*   Include strong dislikes only if they conflict with or narrow the request.
+			*   Ignore irrelevant likes or dislikes.
+
+		3. Prioritize the user's current request ({{userMessage}}) as the core of the search query.
+
+		4. Keep the query concise and specific.
+
+		Respond with:
+
+		*   justification: Why you created the query this way.
+		*   transformedQuery: The refined search query.
+		*   userIntent:  (GREET, END_CONVERSATION, REQUEST, RESPONSE, ACKNOWLEDGE, UNCLEAR)
+```
+
+Sample code that implements the flow:
+```go
+func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (*genkit.Flow[*types.QueryTransformFlowInput, *types.QueryTransformFlowOutput, struct{}], error) {
+
+	queryTransformPrompt, err := dotprompt.Define("queryTransformFlow",
+		prompt,
+
+		dotprompt.Config{
+			Model:        model,
+			InputSchema:  jsonschema.Reflect(types.QueryTransformFlowInput{}),
+			OutputSchema: jsonschema.Reflect(types.QueryTransformFlowOutput{}),
+			OutputFormat: ai.OutputFormatJSON,
+			GenerationConfig: &ai.GenerationCommonConfig{
+				Temperature: 0.5,
+			},
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	// Define a simple flow that prompts an LLM to generate menu suggestions.
+	queryTransformFlow := genkit.DefineFlow("queryTransformFlow", func(ctx context.Context, input *types.QueryTransformFlowInput) (*types.QueryTransformFlowOutput, error) {
+		// Default output
+		queryTransformFlowOutput := &types.QueryTransformFlowOutput{
+			ModelOutputMetadata: &types.ModelOutputMetadata{
+				SafetyIssue:   false,
+				Justification: "",
+			},
+			TransformedQuery: "",
+			Intent:           types.USERINTENT(types.UNCLEAR),
+		}
+
+		resp, err := queryTransformPrompt.Generate(ctx,
+			&dotprompt.PromptRequest{
+				Variables: input,
+			},
+			nil,
+		)
+    //[OPTIONAL] Capture any safety issues and handle them differently.
+		if err != nil {
+			if blockedErr, ok := err.(*genai.BlockedError); ok {
+				log.Println("Request was blocked:", blockedErr)
+				queryTransformFlowOutput = &types.QueryTransformFlowOutput{
+					ModelOutputMetadata: &types.ModelOutputMetadata{
+						SafetyIssue: true,
+					},
+					TransformedQuery: "",
+				}
+				return queryTransformFlowOutput, nil
+
+			} else {
+				return nil, err
+
+			}
+		}
+		t := resp.Text()
+		err = json.Unmarshal([]byte(t), &queryTransformFlowOutput)
+		if err != nil {
+			return nil, err
+		}
+
+		return queryTransformFlowOutput, nil
+	})
+	return queryTransformFlow, nil
+}
+```
