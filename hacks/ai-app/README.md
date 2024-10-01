@@ -232,27 +232,27 @@ You can do this with *GoLang* or *Javascript*. Refer to the specific sections on
 
 #### GoLang
 Genkit provides a CLI and a GUI that work together to help you develop and manage generative AI components. They are tools designed to streamline your workflow and make building with LLMs more efficient. 
-When you start the genkit GUI, it starts up your flow server locally (go to **chat_server_go/cmd/flows/main.go**). You should see code that looks like this:
+When you start the genkit GUI, it starts up your flow server locally (go to **chat_server_go/cmd/standaloneFlows/main.go**). You should see code that looks like this:
 ```go
 	if err := genkit.Init(ctx, &genkit.Options{FlowAddr: ":3401"}); err != nil {
 		log.Fatal(err)
 	}
 ```
-When you run **genkit start**  directory where your genkit server code is located  (**chat_server_go/cmd/flows/main.go**), it starts up the genkit flows server defined in your Go code, and a GUI to interact with the GenAI components defined in your code.
+When you run **genkit start**  directory where your genkit server code is located  (**chat_server_go/cmd/standaloneFlows/main.go**), it starts up the genkit flows server defined in your Go code, and a GUI to interact with the GenAI components defined in your code.
 The [normal workflow](https://firebase.google.com/docs/genkit-go/get-started-go) is to install the necessary components on your local machine. Given that this lab have minimal (pre) setup requirements (only docker and docker compose), we choose to run the genkit CLI and GUI through a container which adds a couple of extra setup steps, but ensures consistency across different lab setups. 
 
 For this challenge, you do not need to have the app running, we are just going to work with the flows.
 From the root of the project directory run the following.
 ```sh
-docker compose up -d genkit-go # running just the genkit-go service
+docker compose -f docker-compose-genkit.yaml  up -d genkit-go # running just the genkit-go service
 ```
 Once the service has started up, we are going to exec into the container. The reason we are not using **genkit start** as a startup command is that it has an interactive step at startup that cannot be bypassed. 
 So, we will exec into the container and then run the command **genkit start**. 
 ```sh
-docker compose exec genkit-go sh
+docker compose -f docker-compose-genkit.yaml exec genkit-go sh
 ```
 This should open up a shell inside the container at the location **/app/cmd/flows**. 
-**NOTE**: In the docker compose file, we mount the local directory **chat_server_go/cmd/flows** into the container at **app/cmd/flows**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
+**NOTE**: In the docker compose file, we mount the local directory **chat_server_go/cmd/standaloneFlows** into the container at **app/cmd/standaloneFlows**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
 Inside the container, run
 ```sh
 genkit start
@@ -271,14 +271,14 @@ This should start the genkit server inside the container at port 4000 which we f
 You should see in the left-hand pane of the UI that there are 4 flows, 3 prompts and 1 retriever loaded. If that is the case you are good to go.
 
 Navigate to http://localhost:4001 in your browser. This will open up the **Genkit UI**.
-**Note: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit wasn't able to detect the local files. If that happens,  go to **chat_server_go/cmd/flows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected.
+**Note: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit wasn't able to detect the local files. If that happens,  go to **chat_server_go/cmd/standaloneFlows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected.
 
 #### JS
 WIP
 
 ### Description
 #### GoLang
-1. Go to **chat_server_go/cmd/flows/main.go**. You should see code that looks like this in the method **getPrompts()**. 
+1. Go to **chat_server_go/cmd/standaloneFlows/main.go**. You should see code that looks like this in the method **getPrompts()**. 
 ```golang
 userProfilePrompt :=
 		`
@@ -427,14 +427,14 @@ We're going to be using the Genkit UI for the prompt engineering portion of the 
 Make sure you have that up and running (see challenge 2 setup).
 
 Navigate to http://localhost:4001 in your browser. This will open up the **Genkit UI**.
-**Note: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit wasn't able to detect the local files. If that happens,  go to **chat_server_go/cmd/flows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected.
+**Note: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit wasn't able to detect the local files. If that happens,  go to **chat_server_go/cmd/standaloneFlows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected.
 
 #### JS
 WIP
 
 ### Description
 #### GoLang
-1. Go to **chat_server_go/cmd/flows/main.go**. You should see code that looks like this in the method **getPrompts()**. 
+1. Go to **chat_server_go/cmd/standaloneFlows/main.go**. You should see code that looks like this in the method **getPrompts()**. 
 ```golang
 queryTransformPrompt :=
 		`
@@ -450,7 +450,7 @@ queryTransformPrompt :=
 		`
 ```
 1. Keep this file (main.go) open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
-2. From the Genkit UI, go to **Prompts/dotprompt/queryTransformFlow**. 
+2. From the Genkit UI, go to **Prompts/dotprompt/queryTransformFlow**. If you choose to work with the flow directly go to **Flows/queryTransformFlow** (you cannot tweak the model parameters here, only the prompt).
 3. You should see an empty input to the prompt that looks like this:
 
 ```json
@@ -465,7 +465,7 @@ queryTransformPrompt :=
         "likes": { "actors":[""], "director":[""], "genres":[], "other":[""]},
         "dislikes": {"actors":[""], "director":[""], "genres":[], "other":[""]}
     },
-    "userMessage": "Hello"
+    "userMessage": ""
 }
 ```
 
@@ -473,17 +473,17 @@ queryTransformPrompt :=
 5. Test it out: Add a query "I want to watch a movie", and leave the rest empty and click on **RUN**. 
 6. The model should respond by translating this into a random language (this is what the prompt asks it to do). 
 7. You need to rewrite the prompt (in main.go) and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **main.go** and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters. 
-8. After you get your prompt working, it's now time to get implement the flow. Navigate to  **chat_server_go/pkg/flows/queryTransform.go**.  You should see something that looks like this. What you see is that we define the dotprompt and specify the input and output format for the dotprompt. The prompt is however never invoked. We create an empty **queryTransformFlowOutput** and this will always result in the default output. You need to invoke the prompt and have the model generate an output for this. 
+8. After you get your prompt working, it's now time to get implement the flow. Navigate to  **chat_server_go/cmd/standaloneFlows/queryTransform.go**.  You should see something that looks like this. What you see is that we define the dotprompt and specify the input and output format for the dotprompt. The prompt is however never invoked. We create an empty **queryTransformFlowOutput** and this will always result in the default output. You need to invoke the prompt and have the model generate an output for this. 
 ```go
-func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (*genkit.Flow[*types.QueryTransformFlowInput, *types.QueryTransformFlowOutput, struct{}], error) {
+func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (*genkit.Flow[*QueryTransformFlowInput, *QueryTransformFlowOutput, struct{}], error) {
 
 	queryTransformPrompt, err := dotprompt.Define("queryTransformFlow",
 		prompt,
 
 		dotprompt.Config{
 			Model:        model,
-			InputSchema:  jsonschema.Reflect(types.QueryTransformFlowInput{}),
-			OutputSchema: jsonschema.Reflect(types.QueryTransformFlowOutput{}),
+			InputSchema:  jsonschema.Reflect(QueryTransformFlowInput{}),
+			OutputSchema: jsonschema.Reflect(QueryTransformFlowOutput{}),
 			OutputFormat: ai.OutputFormatJSON,
 			GenerationConfig: &ai.GenerationCommonConfig{
 				Temperature: 0.5,
@@ -494,9 +494,9 @@ func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (
 		return nil, err
 	}
 	// Define a simple flow that prompts an LLM to generate menu suggestions.
-	queryTransformFlow := genkit.DefineFlow("queryTransformFlow", func(ctx context.Context, input *types.QueryTransformFlowInput) (*types.QueryTransformFlowOutput, error) {
+	queryTransformFlow := genkit.DefineFlow("queryTransformFlow", func(ctx context.Context, input *QueryTransformFlowInput) (*QueryTransformFlowOutput, error) {
 		// Default output
-		queryTransformFlowOutput := &types.QueryTransformFlowOutput{
+		queryTransformFlowOutput := &QueryTransformFlowOutput{
 			ModelOutputMetadata: &types.ModelOutputMetadata{
 				SafetyIssue:   false,
 				Justification: "",
@@ -517,18 +517,14 @@ func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (
 ```
 
 
-If you run the following:
-```sh
-./curl-querytransform.sh
-``` 
-You should get something that looks like this:
+If you try to invoke the flow in Genkit UI (**flows/queryTransformFlow**)
+You should get an output something that looks like this:
 ```json
 {
     "result": {
     "transformedQuery":"",
     "userIntent":"UNCLEAR",
     "justification":"",
-    "safetyIssue":false
     }
 }
 ```
@@ -539,7 +535,6 @@ But, once you implement the necessary code (and prompt), you should see somethin
     "transformedQuery":"movie",
     "userIntent":"REQUEST",
     "justification":"The user's request is simple and lacks specifics.  Since the user profile provides no likes or dislikes, the transformed query will reflect the user's general request for a movie to watch.  No additional information is added because there is no context to refine the search.",
-    "safetyIssue":false
     }
 }
 ```
@@ -653,6 +648,31 @@ Should return a model output like this:
   "userIntent": "ACKNOWLEDGE"
 }
 ```
+
+The input of:
+```json
+{
+    "history": [
+        {
+            "sender": "agent",
+            "message": "I have many films"
+        }
+    ],
+    "userProfile": {
+        "likes": { "actors":[], "director":[], "genres":["comedy"], "other":[]},
+        "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+    },
+    "userMessage": "What is the weather today"
+    }
+```
+Should return a model output like this:
+```json
+{
+  "transformedQuery": "",
+  "userIntent": "UNCLEAR",
+  "justification": "The user's message is unrelated to movies. Therefore, no search query is needed."
+}
+```
 **Criteria 2**: The model should be able to take existing likes and disklikes into account.  
 The input of:
 ```json
@@ -678,6 +698,7 @@ Should return a model output like this:
   "userIntent": "REQUEST"
 }
 ```
+
 
 ### Learning Resources
 - [Genkit Prompts](https://firebase.google.com/docs/genkit-go/prompts)
