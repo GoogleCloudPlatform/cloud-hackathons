@@ -151,7 +151,9 @@ resource "google_project_iam_member" "dataform_default_sa_roles" {
 resource "google_project_iam_member" "dataform_sa_roles" {
   project = var.gcp_project_id
   for_each = toset([
-    "roles/bigquery.admin"
+    "roles/bigquery.admin",
+    "roles/bigquery.filteredDataViewer",
+    "roles/datacatalog.categoryFineGrainedReader"
   ])
   role   = each.key
   member = "serviceAccount:${google_service_account.dataform_sa.email}"
@@ -161,7 +163,9 @@ resource "google_project_iam_member" "composer_sa_roles" {
   project = var.gcp_project_id
   for_each = toset([
     "roles/bigquery.admin",
-    "roles/composer.worker"
+    "roles/bigquery.filteredDataViewer",
+    "roles/composer.worker",
+    "roles/datacatalog.categoryFineGrainedReader"
   ])
   role   = each.key
   member = "serviceAccount:${google_service_account.composer_sa.email}"
