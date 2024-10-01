@@ -190,14 +190,15 @@ Example prompt that meets the success criteria:
 
 		4. Keep the query concise and specific.
 
-		Respond with:
+		Respond with the following:
 
-		*   justification: Why you created the query this way.
-		*   transformedQuery: The refined search query.
-		*   userIntent:  (GREET, END_CONVERSATION, REQUEST, RESPONSE, ACKNOWLEDGE, UNCLEAR)
+		*   a *justification* about why you created the query this way.
+		*   the *transformedQuery* which is the resulting refined search query.
+		*   a *userIntent*, which is one of GREET, END_CONVERSATION, REQUEST, RESPONSE, ACKNOWLEDGE, UNCLEAR
 ```
 
 Sample code that implements the flow:
+
 ```go
 func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (*genkit.Flow[*types.QueryTransformFlowInput, *types.QueryTransformFlowOutput, struct{}], error) {
 
@@ -219,7 +220,8 @@ func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (
 	}
 	// Define a simple flow that prompts an LLM to generate menu suggestions.
 	queryTransformFlow := genkit.DefineFlow("queryTransformFlow", func(ctx context.Context, input *types.QueryTransformFlowInput) (*types.QueryTransformFlowOutput, error) {
-		// Default output
+		
+    // Default output
 		queryTransformFlowOutput := &types.QueryTransformFlowOutput{
 			ModelOutputMetadata: &types.ModelOutputMetadata{
 				SafetyIssue:   false,
@@ -229,6 +231,7 @@ func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (
 			Intent:           types.USERINTENT(types.UNCLEAR),
 		}
 
+    // Generate model output
 		resp, err := queryTransformPrompt.Generate(ctx,
 			&dotprompt.PromptRequest{
 				Variables: input,
@@ -249,9 +252,10 @@ func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (
 
 			} else {
 				return nil, err
-
 			}
 		}
+
+    // Transform the model's output into the required format.
 		t := resp.Text()
 		err = json.Unmarshal([]byte(t), &queryTransformFlowOutput)
 		if err != nil {

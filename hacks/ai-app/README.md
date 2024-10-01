@@ -406,8 +406,9 @@ Should return a model output like this:
 This is your second prompt engineering challenge. On top of the prompt engineering challenge, we're also going to add a second challenge to this which is to embed the prompt in a flow and get a structured output back from the flow.
 
 We want the model to take a user's statement, the conversation history and extract the following:
-1. **Transformed query** The query that will be sent to the vector database to search for relevant documents:
+1. **Transformed query**: The query that will be sent to the vector database to search for relevant documents:
 2. **User Intent**: The intent of the user's latest statement. Did the user issue a greeting to the chatbot (GREET), end the conversation (END_CONVERSATION), make a request to the chatbot (REQUEST), respond to the chatbot's question (RESPONSE), ackowledge a chatbot's statement (ACKNOWLEDGE), or is it unclear (UNCLEAR). The reason we do this is to prevent a call to the vector DB if the user is not searching for anything. The application only performs a search if the intent is REQUEST or RESPONSE. 
+3. Optional **Justification**:  General explanation of the overall output. This will help you understand why the model made its suggestions and help you debug and improve your prompt.
 
 You need to perform the following steps:
 1. Create a prompt that outputs the information mentioned above. The model takes in a user's query, the conversation history, and the user's profile information (long lasting likes or disklikes).
