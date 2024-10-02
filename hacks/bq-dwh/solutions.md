@@ -49,6 +49,8 @@ CREATE OR REPLACE EXTERNAL TABLE raw.person
   );
 ```
 
+Let participants explore the data from BigQuery so that they understand that they're applying table semantics to blobs (CSV files).
+
 ## Challenge 2: Staging tables
 
 ### Notes & Guidance
@@ -83,7 +85,7 @@ CREATE TABLE curated.stg_sales_order_detail AS
   FROM raw.sales_order_detail
 ```
 
-The table `person` has one duplicate record for `business_entity_id` with the value `11751`. You can verify that there are no duplicate records for this table by either checking the total number of rows (must be 19972) or by running the following query (result should be empty):
+The table `person` has one duplicate record for `business_entity_id` with the value `11751`. You can verify that there are no duplicate records for this table by either checking the total number of rows (must be **19972**) or by running the following query (result should be empty):
 
 ```sql
 SELECT
@@ -101,7 +103,7 @@ HAVING
 
 ### Notes & Guidance
 
-Configuring the Git connection should be trivial through the UI, it's a link `CONNECT WITH GIT` in the `SETTINGS` tab. In that settings tab you can also set the Google Cloud Project ID by editing `Workspace compilation overrides`.
+Configuring the Git connection should be trivial through the UI, you should click on the link `CONNECT WITH GIT` in the `SETTINGS` tab. In that settings tab you can also set the _Google Cloud Project ID_ by editing `Workspace compilation overrides`.
 
 Once the development workspace has been created, navigate to `workflow_settings.yaml` and click on `INSTALL PACKAGES` button to install the required packages. And then `START EXECUTION` and pick Tag _staging_. Don't forget to include the dependencies.
 
@@ -247,10 +249,10 @@ FILTER USING (TRUE);
 
 ### Dynamic Data Masking
 
-For the data masking create a _Taxonomy_ in the same region, add 2 _Policy Tags_, turn on _Enforce access control_, and add a different _Masking rule_ for each of the _Policy Tags_ by clicking on _Manage Data Policies_. 
+For the data masking create a _Taxonomy_ in the same region, add 2 _Policy Tags_ (one for the _birth date_ and the other one for the _full name_), turn on _Enforce access control_, and add a different _Masking rule_ for each of the _Policy Tags_ by clicking on _Manage Data Policies_. 
 
-If you indicate the principal during rule creation, it will get _Masked Reader_ role automatically, otherwise you'll have to configure that yourself.
-In order to let everyone else read data without masking you need to assign the _Fine Grained Reader_ role to them. The roles can be assigned at the tag level (preferred/recommended) or project level.
+If you indicate the target principal during rule creation, it will get _Masked Reader_ role automatically, otherwise you'll have to configure that yourself.
+In order to let everyone else read data without masking you need to assign the _Fine Grained Reader_ role to them. The roles can be assigned at the tag level (preferred and recommended) or project level.
 
 > **Note** Dynamic Data Masking will require fewer steps when the feature _Data policy directly on columns_ becomes available.
 
@@ -289,4 +291,4 @@ Note that the provided Git reference points to a tag in the remote repo, which i
 
 ### Notes & Guidance
 
-This should be trivial as well, from the Monitoring tab of the Cloud Composer environment you can find the Failed DAG runs metric and create an alert from it by filling in the provided details.
+This should be trivial as well, from the _Monitoring_ tab of the Cloud Composer environment you can find the _Failed DAG runs_ chart and create an alert from it by filling in the provided details. Alternative is to go to the Cloud Monitoring screen and create a new chart based on the metric `Cloud Composer Workflow->Workflow->Workflow Runs` with a filter for `state = failed` and then save it in a dashboard. Once the chart is available in the dashboard, you can create the alert the same way as for the pre-defined _Failed DAG runs_ from the _Monitoring_ tab of the environment.

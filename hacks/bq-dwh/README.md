@@ -2,11 +2,11 @@
 
 ## Introduction
 
-In this hack we'll implement a classic data warehouse using modern tools, such as Cloud Storage, BigQuery, Dataform and Looker Studio. We'll start with a modified version of the well known AdventureWorks OLTP database, and we'll implement a dimensional model to report on business questions using a BI visualization tool.
+In this hack we'll implement a classic data warehouse using modern tools, such as Cloud Storage, BigQuery, Dataform, Looker Studio and Cloud Composer. We'll start with a modified version of the well known AdventureWorks OLTP database, and we'll implement a dimensional model to report on business questions using a BI visualization tool.
 
 ![Architecture of the solution](./images/bq-dwh-arch.png)
 
-In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make the data accessible in BigQuery. In the second challenge we'll apply some basic transformations to load the data in staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports.The 6th challenge is for the data scientists, using interactive notebooks to analyze data and finally, we'll automate, orchestrate and monitor the whole process by tapping into Cloud Composer in the last challenges.
+In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make the data accessible in BigQuery. In the second challenge we'll apply some basic transformations to load the data in staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports. In the 6th challenge we'll add some basic security to our data, the 7th challenge is for the data scientists, using interactive notebooks to analyze data and finally, we'll automate, orchestrate and monitor the whole process by tapping into Cloud Composer in the last 2 challenges.
 
 ## Learning Objectives
 
