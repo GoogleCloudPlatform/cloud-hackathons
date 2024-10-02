@@ -231,7 +231,6 @@ In addition, for the same user, add dynamic data masking to the columns `full_na
 - One user can read only the data for the product category `Accessories` from the `obt_sales` table.
 - The same user can only read the masked version of `full_name` and `birth_date` columns from the `obt_sales` table.
 - All other users can read all data unmasked from the `obt_sales` table.
-- No code was modified.
 
 ### Learning Resources
 

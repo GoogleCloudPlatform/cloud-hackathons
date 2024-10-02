@@ -215,6 +215,8 @@ Most of the charts should be trivial, the last one might present some challenges
 
 ### Notes & Guidance
 
+It's not required to add these to the Dataform configuration file for `obt_sales`, but participants are free to explore that if they want to. See the warning message in the solution guide for the [Cloud Composer challenge](#challenge-8-cloud-composer-for-orchestration) for more information.
+
 ### Row Level Security
 
 Turning on row level security requires creating a new _Row Access Policy_
@@ -279,7 +281,9 @@ You can ignore the warning messages in the 2nd (authenticate_user is not support
 
 You need to set the environment variable `DATAFORM_REPOSITORY_ID` to the repository name (not the development workspace) configured in Challenge 4.
 
-> **Warning** Keep in mind that the DAG runs the Dataform pipeline which will recreate the tables. At the time of this writing, recreating tables unfortunately removes the row level security filters and data policies although there are bugs filed to address this issue.
+Note that the provided Git reference points to a tag in the remote repo, which includes the working code for the fact & obt tables. So Dataform will be using our code instead of the code built by the participants in the previous challenges.
+
+> **Warning** Keep in mind that the DAG runs the Dataform pipeline which will recreate the tables. At the time of this writing, recreating tables unfortunately removes the row level security filters and data policies, although there is a bug filed to address this issue. The current alternative is to apply these measures as part of the Dataform ([post_operations](https://cloud.google.com/dataform/docs/dataform-core#define-SQL) for RLS and [policy tags](https://cloud.google.com/dataform/docs/policy-tags) for masking) or Cloud Composer pipelines.
 
 ## Challenge 9: Monitoring the workflow
 
