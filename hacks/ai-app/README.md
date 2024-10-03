@@ -73,7 +73,7 @@ Step 3:
  - Open the IDE (or **Cloud Shell Editor**).
  - Clone the repo and naviagate to the folder.
 ```sh
-git clone https://github.com/MKand/movie-guru.git --branch test-ghack
+git clone https://github.com/MKand/movie-guru.git --branch ghack
 cd movie-guru
 ```
  - Re-open the IDE with the folder movie-guru as the current workspace.
