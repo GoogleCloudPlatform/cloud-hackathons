@@ -135,8 +135,6 @@ Now you are ready to start the challenges.
 
 ## Challenge 1: Upload the data to the vector database
 This is one of the most complex challenges in Part1. This should take approximately **45 minutes**.
-You can use [VertexAI Studio prompt engineering tools](https://cloud.google.com/vertex-ai/generative-ai/docs/start/quickstarts/quickstart) for help.
-The working movie-guru app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
 
 ### Introduction
 The goal of challenge 1 is to insert this data, along with the vector embeddings into the **movie-guru-db-instance** DB, under the table **movies**.
@@ -225,6 +223,9 @@ You need to perform the following steps:
 1. Create a prompt that outputs the information mentioned above. The model takes in a user's query and a preceeding agentMessage (if present).
 1. Update the prompt in the codebase (look at instructions in GoLang or JS) to see how.
 1. Use the genkit UI (see steps below) to test the response of the model and make sure it returns what you expect.
+
+You can use [VertexAI Studio prompt engineering tools](https://cloud.google.com/vertex-ai/generative-ai/docs/start/quickstarts/quickstart) for help.
+The working movie-guru app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
 
 You can do this with *GoLang* or *Javascript*. Refer to the specific sections on how to continue. 
 
