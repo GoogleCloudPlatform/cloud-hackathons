@@ -1,4 +1,4 @@
-# AI App hack
+# AI App Development and SRE Operations
 
 ## Introduction
 
@@ -8,7 +8,9 @@ You do the following:
 - Part1: Creating GenAI flows that power this app.
 - Part1: Building security and validation into model responses.
 - Part1: Run this application locally.
-- Part2: Make this a fully cloud based application (Deploy the application on GCP) using firebase, cloudrun, memory store for redis.
+- Part2: Build in testing and monitoring for the app.
+- Part2: Design SLIs, and SLOs for the app.
+
 
 [![Movie Guru](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
 
@@ -22,11 +24,7 @@ In this hack you will learn how to:
    1. Create a flow using genkit that takes the transformed query and retrieves relevant documents from the vector database.
    1. Create a flow using genkit that takes the retrieved documents, conversation history and the user's latest query and formulates a relevant response to the user.
 - Part 2:
-  The Postgres DB, the Redis memory store, Artifact Registry are already created for you.
-  1. You will learn how to build containers in the cloud and store them in an artifact registry.
-  1. You will learn to deploy the frontend in firebase.
-  1. You will learn to deploy the webserver and the genkit flow server into cloud run.
-  1. You will learn how to communicate with the database and the redis instance over a private network.
+    WIP
 
 ## Challenges
 
