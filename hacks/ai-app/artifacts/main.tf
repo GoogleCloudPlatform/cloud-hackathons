@@ -80,3 +80,22 @@ resource "google_project_iam_member" "redis-user" {
   role    = "roles/redis.editor"
   member  = "serviceAccount:${google_service_account.default.email}"
 }
+
+resource "google_project_iam_member" "monitoring-writer" {
+  project = var.gcp_project_id
+  role    = "roles/monitoring.metricWriter"
+  member  = "serviceAccount:${google_service_account.default.email}"
+}
+
+resource "google_project_iam_member" "trace-agent" {
+  project = var.gcp_project_id
+  role    = "roles/cloudtrace.agent"
+  member  = "serviceAccount:${google_service_account.default.email}"
+}
+
+resource "google_project_iam_member" "log-writer" {
+  project = var.gcp_project_id
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${google_service_account.default.email}"
+}
+
