@@ -135,6 +135,8 @@ Now you are ready to start the challenges.
 
 ## Challenge 1: Upload the data to the vector database
 This is one of the most complex challenges in Part1. This should take approximately **45 minutes**.
+You can use [VertexAI Studio prompt engineering tools](https://cloud.google.com/vertex-ai/generative-ai/docs/start/quickstarts/quickstart) for help.
+The working movie-guru app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
 
 ### Introduction
 The goal of challenge 1 is to insert this data, along with the vector embeddings into the **movie-guru-db-instance** DB, under the table **movies**.
