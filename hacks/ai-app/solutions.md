@@ -16,13 +16,13 @@ You do the following:
 ## Coach's Guides
 
 
-- Challenge 1: Upload the data to the vector database
+- [Challenge 1](#challenge-1-upload-the-data-to-the-vector-database): Upload the data to the vector database
    - Create an embedding for each entry in the dataset (discussed later), and upload the data to a vector database using the predefined schema. Do this using a genkit flow.
-- Challenge 2: Your first flow that analyses the user's input.
+- [Challenge 2](#challenge-2-create-a-prompt-for-the-userprofileflow-to-extract-strong-preferences-and-dislikes-from-the-users-statement): Your first flow that analyses the user's input.
    - Create a flow that takes the user's latest input and make sure you extract *any* long term preference or dislike. 
-- Challenge 3: Flow that analyses the converstation history and transforms the user's latest query with the relevant context.
-- Challenge 4: Retrieve the relevant documents from the transformed context created at the previous challenge.
-- Challenge 5: Create a meaningful response to the user (RAG flow).
+- [Challenge 3](#challenge-3-create-a-prompt-and-flow-for-the-querytransformflow-to-create-a-query-for-the-vector-database): Flow that analyses the converstation history and transforms the user's latest query with the relevant context.
+- [Challenge 4](#challenge-4-update-the-retriever-to-fetch-documents-based-on-a-query): Retrieve the relevant documents from the transformed context created at the previous challenge.
+- [Challenge 5](#challenge-5-put-all-the-components-from-the-previous-stages-together-a-meaningful-response-to-the-user-rag-flow): Create a meaningful response to the user (RAG flow).
    - Select the relevant outputs from the previous stages and return a meaningful output to the user.
 
 ## Coach Prerequisites

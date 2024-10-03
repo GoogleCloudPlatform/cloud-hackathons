@@ -28,13 +28,13 @@ In this hack you will learn how to:
 
 ## Challenges
 
-- Challenge 1: Upload the data to the vector database
+- [Challenge 1](#challenge-1-upload-the-data-to-the-vector-database): Upload the data to the vector database
    - Create an embedding for each entry in the dataset (discussed later), and upload the data to a vector database using the predefined schema. Do this using a genkit flow.
-- Challenge 2: Your first flow that analyses the user's input.
+- [Challenge 2](#challenge-2-create-a-prompt-for-the-userprofileflow-to-extract-strong-preferences-and-dislikes-from-the-users-statement): Your first flow that analyses the user's input.
    - Create a flow that takes the user's latest input and make sure you extract *any* long term preference or dislike. 
-- Challenge 3: Flow that analyses the converstation history and transforms the user's latest query with the relevant context.
-- Challenge 4: Retrieve the relevant documents from the transformed context created at the previous challenge.
-- Challenge 5: Create a meaningful response to the user (RAG flow).
+- [Challenge 3](#challenge-3-create-a-flow-that-analyses-the-conversation-history-and-transforms-the-users-latest-query-with-the-relevant-context): Flow that analyses the converstation history and transforms the user's latest query with the relevant context.
+- [Challenge 4](#challenge-4-update-the-retriever-to-fetch-documents-based-on-a-query): Retrieve the relevant documents from the transformed context created at the previous challenge.
+- [Challenge 5](#challenge-5-put-all-the-components-from-the-previous-stages-together-a-meaningful-response-to-the-user-rag-flow): Create a meaningful response to the user (RAG flow).
    - Select the relevant outputs from the previous stages and return a meaningful output to the user.
 
 ## Prerequisites
@@ -133,7 +133,7 @@ Step 7:
 
 Now you are ready to start the challenges.
 
-## Challenge 1: Upload the data to the vector database
+# Challenge 1: Upload the data to the vector database
 This is one of the most complex challenges in Part1. This should take approximately **45 minutes**.
 
 ### Introduction
@@ -224,8 +224,7 @@ You need to perform the following steps:
 1. Update the prompt in the codebase (look at instructions in GoLang or JS) to see how.
 1. Use the genkit UI (see steps below) to test the response of the model and make sure it returns what you expect.
 
-You can use [VertexAI Studio prompt engineering tools](https://cloud.google.com/vertex-ai/generative-ai/docs/start/quickstarts/quickstart) for help.
-The working movie-guru app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
+The working **movie-guru** app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
 
 You can do this with *GoLang* or *Javascript*. Refer to the specific sections on how to continue. 
 
@@ -420,7 +419,7 @@ You need to perform the following steps:
 You can do this with *GoLang* or *Javascript*. Refer to the specific sections on how to continue. 
 
 ### Pre-requisites 
-Genkit UI and CLI running. See setup steps for challenge 2.
+Genkit UI and CLI running. See setup steps for [challenge 2: GoLang](#challenge-2-create-a-prompt-for-the-userprofileflow-to-extract-strong-preferences-and-dislikes-from-the-users-statement).
 
 #### GoLang
 
@@ -719,7 +718,7 @@ You need to perform the following steps:
 You can do this with *GoLang* or *Javascript*. Refer to the specific sections on how to continue. 
 
 ### Pre-requisites 
-Genkit UI and CLI running. See setup steps for challenge 2.
+Genkit UI and CLI running. See setup steps for [challenge 2: GoLang](#challenge-2-create-a-prompt-for-the-userprofileflow-to-extract-strong-preferences-and-dislikes-from-the-users-statement).
 
 #### GoLang
 
@@ -842,7 +841,7 @@ You need to perform the following steps:
 You can do this with *GoLang* or *Javascript*. Refer to the specific sections on how to continue. 
 
 ### Pre-requisites 
-Genkit UI and CLI running. See setup steps for challenge 2.
+Genkit UI and CLI running. See setup steps for [challenge 2: GoLang](#challenge-2-create-a-prompt-for-the-userprofileflow-to-extract-strong-preferences-and-dislikes-from-the-users-statement).
 
 #### GoLang
 
