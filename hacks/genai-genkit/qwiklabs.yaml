@@ -87,6 +87,11 @@ environment:
     reference: user_5.username
   - label: Password 5
     reference: user_5.password
-
   - label: Project ID
     reference: project.project_id
+  - label: "Database Public IP"
+    reference: project.startup_script.database_public_ip
+  - label: "Database Main User password"
+    reference: project.startup_script.postgres_mainuser_password
+  - label: "Database Minimal User password"
+    reference: project.startup_script.postgres_minimaluser_password

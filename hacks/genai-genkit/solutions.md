@@ -1,4 +1,4 @@
-# AI App hack
+# GenAI App Development with Genkit and SRE Operations
 
 ## Introduction
 
