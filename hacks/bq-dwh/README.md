@@ -91,7 +91,7 @@ Some of the tables have duplicate records and problematic columns that we'd like
 
 ### Tips
 
-- Data Profile (with 100% sampling) and/or BigQuery Data Preparation can help you find `null` columns.
+- Data Profile (with 100% sampling!) can help you find `null` columns.
 - [EXCEPT](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#select_except) is useful when you want to discard a few columns when selecting all columns from a table.
 
 ## Challenge 3: Dataform for automation

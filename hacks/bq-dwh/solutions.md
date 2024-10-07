@@ -99,6 +99,8 @@ HAVING
   cnt > 1
 ```
 
+> **Note** Regarding the `null` columns, make sure that things are not sampled, as many columns have sparse data, so sampling (through Data Profile or Data Preparation) will mark _too_ many columns as all `null`.
+
 ## Challenge 3: Dataform for automation
 
 ### Notes & Guidance
