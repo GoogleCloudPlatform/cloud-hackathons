@@ -99,7 +99,21 @@ HAVING
   cnt > 1
 ```
 
-> **Note** Regarding the `null` columns, make sure that things are not sampled, as many columns have sparse data, so sampling (through Data Profile or Data Preparation) will mark _too_ many columns as all `null`.
+Regarding the `null` columns; since many columns have sparse data, _sampling_ through Data Profile or Data Preparation will mark _too_ many columns as all `null`. Data Profile allows you to set the sampling percentage to 100%, so that's on option, however Data Preparation doesn't allow you to change the sampling percentage at the time of this writing. Alternatively a SQL query could be used to determine if a column has only `null` values; the `COUNT` function doesn't include `null` values, so any column with a count of `0` will contain only `null` values. See below for an attempt to do this holistically, although doing this only for the suspicious columns is probably more practical (unless someone would like to automate the generation of this, or an alternative query, for all columns using the *INFORMATION_SCHEMA*).
+
+```sql
+WITH COL_COUNTS AS (
+  SELECT "business_entity_id" as col, COUNT(business_entity_id) cnt FROM raw.person
+  UNION ALL
+  SELECT "person_type" as col, COUNT(person_type) cnt FROM raw.person
+  UNION ALL
+  SELECT "name_style" as col, COUNT(name_style) cnt FROM raw.person
+  UNION ALL
+  SELECT "hobby" as col, COUNT(hobby) cnt FROM raw.person
+  -- add all columns
+) 
+SELECT col from COL_COUNTS WHERE cnt = 0
+```
 
 ## Challenge 3: Dataform for automation
 
