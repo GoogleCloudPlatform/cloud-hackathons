@@ -183,7 +183,7 @@ TRUNCATE TABLE movies;
 - If you are successful, there should be a total of **652** entries in the table.
 - Once finished run the following command to close the indexer. You won't need it anymore for other challenges.
 ```sh
-docker compose -f docker-compose-indexer.yaml indexer-go down
+docker compose -f docker-compose-indexer.yaml down indexer-js
 ```
 
 #### TypeScript
@@ -215,10 +215,11 @@ FROM "movies";
 * The other fields in the schema should also be present and meaningful.
 
 ### Learning Resources
-- [Example Implementation Indexer](https://github.com/firebase/genkit/blob/main/go/samples/pgvector/main.go)
-- [GenKit Indexer](https://firebase.google.com/docs/genkit-go/rag#define_an_indexer)
-- [GenKit PGVector](https://firebase.google.com/docs/genkit-go/pgvector)
-
+- [Example Implementation Indexer PGVector Go](https://github.com/firebase/genkit/blob/main/go/samples/pgvector/main.go)
+- [GenKit Indexer Go](https://firebase.google.com/docs/genkit-go/rag#define_an_indexer)
+- [GenKit PGVector Go](https://firebase.google.com/docs/genkit-go/pgvector)
+- [GenKit Indexer JS](https://firebase.google.com/docs/genkit/rag#define_an_indexer)
+- [GenKit PGVector JS](https://firebase.google.com/docs/genkit/templates/pgvector)
 
 ## Challenge 2: Setup the prompt for the UserProfileFlow
 
@@ -281,7 +282,7 @@ Learn more at https://policies.google.com/technologies/cookies
 Press "Enter" to continue
 ```
 Then press **ENTER** as instructed (this is the interactive step mentioned earlier).
-This should start the genkit server inside the container at port 4000 which we forward to port **4001** to your host machine (in the docker compose file).
+This should start the genkit server inside the container at port 4000 which we forward to port **4002** to your host machine (in the docker compose file).
 > **NOTE**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
 **Please be patient**.
 
@@ -313,7 +314,7 @@ Genkit Tools UI: http://localhost:4000
 
 You should see in the left-hand pane of the UI that there are 4 flows, 3 prompts and 1 retriever loaded. If that is the case you are good to go.
 
-Navigate to **http://localhost:4001** in your browser. This will open up the **Genkit UI**.
+Navigate to **http://localhost:4002** in your browser. This will open up the **Genkit UI**.
 
 ##### Challenge-steps
 1. Go to **chat_server_go/cmd/standaloneFlows/main.go**. You should see code that looks like this in the method **getPrompts()**. 
@@ -383,7 +384,7 @@ Learn more at https://policies.google.com/technologies/cookies
 Press "Enter" to continue
 ```
 Then press **ENTER** as instructed (this is the interactive step mentioned earlier).
-This should start the genkit server inside the container at port 4000 which we forward to port **4002** to your host machine (in the docker compose file).
+This should start the genkit server inside the container at port 4000 which we forward to port **4003** to your host machine (in the docker compose file).
 > **NOTE**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
 **Please be patient**.
 
@@ -418,7 +419,7 @@ Genkit Tools UI: http://localhost:4000
 You should see in the left-hand pane of the UI that there are 4 flows, 3 prompts and 1 retriever loaded. If that is the case you are good to go.
 
 ##### Challenge-steps
-Navigate to **http://localhost:4002** in your browser. This will open up the **Genkit UI**.
+Navigate to **http://localhost:4003** in your browser. This will open up the **Genkit UI**.
 1. Go to **js/flows-js/src/prompts.ts**. You should see code that looks like this in the method **getPrompts()**. 
 ```ts
 export const UserProfilePromptText = 
@@ -547,9 +548,10 @@ export const UserProfilePromptText =
     **Sentiment:** POSITIVE 
     ```
 ### Learning Resources
-- [Genkit Prompts](https://firebase.google.com/docs/genkit-go/prompts)
 - [Prompt Engineering](https://www.promptingguide.ai/)
 - [Genkit UI and CLI](https://firebase.google.com/docs/genkit/devtools)
+- [Genkit Prompts Go](https://firebase.google.com/docs/genkit-go/prompts)
+- [Genkit Prompts JS](https://firebase.google.com/docs/genkit/prompts)
 
 ## Challenge 3: Contextually transform user queries based on chat history.
 ### Introduction
@@ -606,8 +608,8 @@ Make sure the Genkit UI is up and running.
             }
         ],
         "userProfile": {
-            "likes": { "actors":[""], "director":[""], "genres":[], "other":[""]},
-            "dislikes": {"actors":[""], "director":[""], "genres":[], "other":[""]}
+            "likes": { "actors":[""], "directors":[""], "genres":[], "others":[""]},
+            "dislikes": {"actors":[""], "directors":[""], "genres":[], "others":[""]}
         },
         "userMessage": ""
     }
@@ -796,8 +798,8 @@ The input of:
             }
         ],
         "userProfile": {
-            "likes": { "actors":[], "director":[], "genres":[], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
            
         },
         "userMessage": "Hi"
@@ -826,8 +828,8 @@ The input of:
             }
         ],
         "userProfile": {
-            "likes": { "actors":[], "director":[], "genres":[], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
         },
         "userMessage": "Ok. Tell me about them"
         }
@@ -850,8 +852,8 @@ The input of:
             }
         ],
         "userProfile": {
-            "likes": { "actors":[], "director":[], "genres":[], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
         },
         "userMessage": "I'm not interested. Bye."
         }
@@ -874,8 +876,8 @@ The input of:
             }
         ],
         "userProfile": {
-            "likes": { "actors":[], "director":[], "genres":[], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
         },
         "userMessage": "Ok. Good to know"
         }
@@ -899,8 +901,8 @@ The input of:
             }
         ],
         "userProfile": {
-            "likes": { "actors":[], "director":[], "genres":["comedy"], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":["comedy"], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
         },
         "userMessage": "What is the weather today"
         }
@@ -924,8 +926,8 @@ The input of:
             }
         ],
         "userProfile": {
-            "likes": { "actors":[], "director":[], "genres":["comedy"], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":["comedy"], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
         },
         "userMessage": "Ok. give me some options"
         }
@@ -940,9 +942,10 @@ The input of:
     ```
 
 ### Learning Resources
-- [Genkit Prompts](https://firebase.google.com/docs/genkit-go/prompts)
 - [Prompt Engineering](https://www.promptingguide.ai/)
-- [Genkit Go examples](https://github.com/firebase/genkit/tree/main/go/samples/menu)
+- [Genkit UI and CLI](https://firebase.google.com/docs/genkit/devtools)
+- [Genkit Prompts Go](https://firebase.google.com/docs/genkit-go/prompts)
+- [Genkit Prompts JS](https://firebase.google.com/docs/genkit/prompts)
 
 ## Challenge 4: Update the retriever to fetch documents based on a query
 
@@ -1077,8 +1080,9 @@ Make sure the Genkit UI is up and running.
     ```
 
 ### Learning Resources
-- [Genkit PGVector](https://firebase.google.com/docs/genkit-go/pgvector)
-- [Genkit Go examples](https://github.com/firebase/genkit/blob/main/go/samples/menu/main.go)
+- [Genkit PGVector Go](https://firebase.google.com/docs/genkit-go/pgvector)
+- [Genkit Retriever examples PGVector Go](https://github.com/firebase/genkit/blob/main/go/samples/pgvector/main.go)
+- [Genkit PGVector JS](https://firebase.google.com/docs/genkit/pgvector)
 
 ## Challenge 5: The full RAG flow
 
@@ -1132,8 +1136,8 @@ Make sure the Genkit UI is up and running.
             }
         ],
         "userPreferences": {
-            "likes": { "actors":[], "director":[], "genres":[], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
         },
         "contextDocuments": [
             {
@@ -1212,8 +1216,8 @@ Make sure the Genkit UI is up and running.
             }
         ],
         "userPreferences": {
-            "likes": { "actors":[], "director":[], "genres":[], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
         },
         "contextDocuments": [
             {
@@ -1259,8 +1263,8 @@ Make sure the Genkit UI is up and running.
             }
         ],
         "userPreferences": {
-            "likes": { "actors":[], "director":[], "genres":[], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
         },
         "contextDocuments": [],
         "userMessage": "Hello."
@@ -1284,8 +1288,8 @@ Make sure the Genkit UI is up and running.
             }
         ],
         "userPreferences": {
-            "likes": { "actors":[], "director":[], "genres":[], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
         },
         "contextDocuments": [
             {
@@ -1326,8 +1330,8 @@ Make sure the Genkit UI is up and running.
             }
         ],
         "userPreferences": {
-            "likes": { "actors":[], "director":[], "genres":[], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
         },
         "contextDocuments": [
             {
@@ -1374,8 +1378,8 @@ Make sure the Genkit UI is up and running.
             }
         ],
         "userPreferences": {
-            "likes": { "actors":[], "director":[], "genres":[], "other":[]},
-            "dislikes": {"actors":[], "director":[], "genres":[], "other":[]}
+            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
+            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
         },
         "contextDocuments": [
             {

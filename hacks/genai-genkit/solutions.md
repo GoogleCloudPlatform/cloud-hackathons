@@ -16,13 +16,13 @@ You do the following:
 ## Coach's Guides
 
 
-- [Challenge 1](#challenge-1-upload-the-data-to-the-vector-database): Upload the data to the vector database
+- Challenge 1: Upload the data to the vector database
    - Create an embedding for each entry in the dataset (discussed later), and upload the data to a vector database using the predefined schema. Do this using a genkit flow.
-- [Challenge 2](#challenge-2-create-a-prompt-for-the-userprofileflow-to-extract-strong-preferences-and-dislikes-from-the-users-statement): Your first flow that analyses the user's input.
+- Challenge 2: Your first flow that analyses the user's input.
    - Create a flow that takes the user's latest input and make sure you extract *any* long term preference or dislike. 
-- [Challenge 3](#challenge-3-create-a-prompt-and-flow-for-the-querytransformflow-to-create-a-query-for-the-vector-database): Flow that analyses the converstation history and transforms the user's latest query with the relevant context.
-- [Challenge 4](#challenge-4-update-the-retriever-to-fetch-documents-based-on-a-query): Retrieve the relevant documents from the transformed context created at the previous challenge.
-- [Challenge 5](#challenge-5-put-all-the-components-from-the-previous-stages-together-a-meaningful-response-to-the-user-rag-flow): Create a meaningful response to the user (RAG flow).
+- Challenge 3: Flow that analyses the converstation history and transforms the user's latest query with the relevant context.
+- Challenge 4: Retrieve the relevant documents from the transformed context created at the previous challenge.
+- Challenge 5: Create a meaningful response to the user (RAG flow).
    - Select the relevant outputs from the previous stages and return a meaningful output to the user.
 
 ## Coach Prerequisites
@@ -191,6 +191,7 @@ func createText(movie *types.MovieContext) string {
 - They upload the entry (embedding and other fields) into the **movies** table.
 This is what the functions should look like in **js/indexer/src/indexerFlow.ts**.
 
+
 ```ts
 export const IndexerFlow = defineFlow(
 {
@@ -199,7 +200,7 @@ export const IndexerFlow = defineFlow(
     outputSchema: z.string(),
 },
   async (doc) => {
-    const db = await OpenDB();
+    const db = await openDB();
     if (!db) {
       throw new Error('Database connection failed');
     }
@@ -253,28 +254,55 @@ function createText(movie: MovieContext): string {
 ### Notes & Guidance
 Example prompt that meets the success criteria:
 ```
-		 You are a user's movie profiling expert focused on uncovering users' enduring likes and dislikes. 
-     Your task is to analyze the user message and extract ONLY strongly expressed, enduring likes and dislikes related to movies.
-     Once you extract any new likes or dislikes from the current query respond with the items you extracted with:
-		  1. the category (ACTOR, DIRECTOR, GENRE, OTHER)
-		  2. the item value
-		  3. your reason behind the choice
-		  4. the sentiment of the user has about the item (POSITIVE, NEGATIVE).
+		You are a user's movie profiling expert focused on uncovering users' enduring likes and dislikes. 
+		Your task is to analyze the user message and extract ONLY strongly expressed, enduring likes and dislikes related to movies.
+		Once you extract any new likes or dislikes from the current query respond with the items you extracted with:
+			1. the category (ACTOR, DIRECTOR, GENRE, OTHER)
+			2. the item value
+			3. your reason behind the choice
+			4. the sentiment of the user has about the item (POSITIVE, NEGATIVE).
+			
+		Guidelines:
+		1. Strong likes and dislikes Only: Add or Remove ONLY items expressed with strong language indicating long-term enjoyment or aversion (e.g., "love," "hate," "can't stand,", "always enjoy"). Ignore mild or neutral items (e.g., "like,", "okay with," "fine", "in the mood for", "do not feel like").
+		2. Distinguish current state of mind vs. Enduring likes and dislikes:  Focus only on long-term likes or dislikes while ignoring current state of mind. 
 		
-      Guidelines:
-      1. Strong likes and dislikes Only: Add or Remove ONLY items expressed with strong language indicating long-term enjoyment or aversion (e.g., "love," "hate," "can't stand,", "always enjoy"). Ignore mild or neutral items (e.g., "like,", "okay with," "fine", "in the mood for", "do not feel like").
-      2. Distinguish current state of mind vs. Enduring likes and dislikes:  Be very cautious when interpreting statements. Focus only on long-term likes or dislikes while ignoring current state of mind. If the user expresses wanting to watch a specific type of movie or actor NOW, do NOT assume it's an enduring like unless they explicitly state it. For example, "I want to watch a horror movie movie with Christina Appelgate" is a current desire, NOT an enduring preference for horror movies or Christina Appelgate.
-      3. Focus on Specifics:  Look for concrete details about genres, directors, actors, plots, or other movie aspects.
-      4. Give an explanation as to why you made the choice.
-        
-		Here are the inputs:: 
-		* Optional Message 0 from agent: {{agentMessage}}
-		* Required Message 1 from user: {{query}}
+		Examples:
+			---
+			userMessage: "I want to watch a horror movie with Christina Appelgate" 
+			output: profileChangeRecommendations:[]
+			---
+			userMessage: "I love horror movies and want to watch one with Christina Appelgate" 
+			output: profileChangeRecommendations=[
+			item: horror,
+			category: genre,
+			reason: The user specifically stated they love horror indicating a strong preference. They are looking for one with Christina Appelgate, which is a current desire and not an enduring preference.
+			sentiment: POSITIVE]
+			---
+			userMessage: "Show me some action films" 
+			output: profileChangeRecommendations:[]
+			---
+			userMessage: "I dont feel like watching an action film" 
+			output: profileChangeRecommendations:[]
+			---
+			userMessage: "I dont like action films" 
+			output: profileChangeRecommendations=[
+			item: action,
+			category: genre,
+			reason: The user specifically states they don't like action films which is a statement that expresses their long term disklike for action films.
+			sentiment: NEGATIVE]
+			---
 
-    Respond with the following:
+		3. Focus on Specifics:  Look for concrete details about genres, directors, actors, plots, or other movie aspects.
+		4. Give an explanation as to why you made the choice.
+			
+			Here are the inputs:: 
+			* Optional Message 0 from agent: {{agentMessage}}
+			* Required Message 1 from user: {{query}}
 
-		*   a *justification* about why you created the query this way.
-		*   a list of *profileChangeRecommendations* that are a list of extracted strong likes or dislikes with the following fields: category, item, reason, sentiment
+		Respond with the following:
+
+			*   a *justification* about why you created the query this way.
+			*   a list of *profileChangeRecommendations* that are a list of extracted strong likes or dislikes with the following fields: category, item, reason, sentiment
 ```
 
 ### Anatomy of the prompt:
@@ -363,9 +391,10 @@ You are a search query refinement expert regarding movies and movie related info
 
 Sample code that implements the flow:
 
-```go
+GoLang version:
 
-func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (*genkit.Flow[*QueryTransformFlowInput, *QueryTransformFlowOutput, struct{}], error) {
+```go
+pfunc GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (*genkit.Flow[*QueryTransformFlowInput, *QueryTransformFlowOutput, struct{}], error) {
 
 	queryTransformPrompt, err := dotprompt.Define("queryTransformFlow",
 		prompt,
@@ -414,6 +443,47 @@ func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (
 	return queryTransformFlow, nil
 }
 ```
+
+TypeScript version:
+
+```ts
+export const QueryTransformPrompt = defineDotprompt(
+    {
+      name: 'queryTransformFlow',
+      model: gemini15Flash,
+      input: {
+        schema: QueryTransformFlowInputSchema,
+      },
+      output: {
+        format: 'json',
+        schema: QueryTransformFlowOutputSchema,
+      },  
+    }, 
+   QueryTransformPromptText
+)
+  export const QueryTransformFlow = defineFlow(
+    {
+      name: 'queryTransformFlow',
+      inputSchema: QueryTransformFlowInputSchema,
+      outputSchema: QueryTransformFlowOutputSchema
+    },
+    async (input) => {
+      try {
+        const response = await QueryTransformPrompt.generate({ input: input });
+        console.log(response.output(0))
+        return response.output(0);
+      } catch (error) {
+        console.error("Error generating response:", error);
+        return { 
+          transformedQuery: "",
+          userIntent: 'UNCLEAR',
+          justification: ""
+         }; 
+      }
+    }
+  );
+```
+
 
 ## Challenge 4: Update the retriever to fetch documents based on a query
 Sample code that implements the retriever:
@@ -468,6 +538,38 @@ func DefineRetriever(maxRetLength int, db *sql.DB, embedder ai.Embedder) ai.Retr
 	}
 	return ai.DefineRetriever("pgvector", "movieRetriever", f)
 }
+```
+
+```ts
+const sqlRetriever = defineRetriever(
+  {
+    name: 'movies',
+    configSchema: QueryOptionsSchema,
+  },
+  async (input, options) => {
+    const db = await openDB();
+    if (!db) {
+      throw new Error('Database connection failed');
+    }
+    const embedding = await embed({
+      embedder: textEmbedding004,
+      content: input,
+    });
+    const results = await db`
+      SELECT title, poster, content, released, runtime_mins, rating, genres, director, actors, plot
+	    FROM movies
+        ORDER BY embedding <#> ${toSql(embedding)}
+        LIMIT ${options.k ?? 10}
+      `;
+    return {
+      documents: results.map((row) => {
+        const { content, ...metadata } = row;
+        return Document.fromText(content, metadata);
+      }),
+    };
+  }
+);
+
 ```
 ## Challenge 5: Put all the components from the previous stages together a meaningful response to the user (RAG flow)
 Sample prompt:
