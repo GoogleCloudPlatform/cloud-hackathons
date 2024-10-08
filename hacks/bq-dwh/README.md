@@ -6,7 +6,7 @@ In this hack we'll implement a classic data warehouse using modern tools, such a
 
 ![Architecture of the solution](./images/bq-dwh-arch.png)
 
-In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make the data accessible in BigQuery. In the second challenge we'll apply some basic transformations to load the data in staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports. In the 6th challenge we'll add some basic security to our data, the 7th challenge is for the data scientists, using interactive notebooks to analyze data and finally, we'll automate, orchestrate and monitor the whole process by tapping into Cloud Composer in the last 2 challenges.
+In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make that data accessible in BigQuery. In the second challenge we'll apply some basic cleansing and transformations to load the data into staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports. In the 6th challenge we'll add some basic security to our data, the 7th challenge is for the data scientists, using interactive notebooks to analyze data and train ML models and finally, we'll automate, orchestrate and monitor the whole process by tapping into Cloud Composer and Cloud Monitoring in the last 2 challenges.
 
 ## Learning Objectives
 
@@ -15,7 +15,7 @@ This hack will help you explore the following tasks:
 - BigQuery as a classic Data warehouse
 - BigLake for accesing data in an object store and applying table semantics
 - Dataform for automating data transformation steps
-- Dimensional modeling
+- Dimensional modeling with a star schema
 - Access control to data through dynamic data masking & row level security
 - Looker Studio for visualizing data
 - Colab for data exploration
@@ -49,7 +49,7 @@ This hack will help you explore the following tasks:
 
 ### Introduction 
 
-This first step is all about getting started with the source data. Typically data is copied periodically from operational data stores, such as OLTP databases, CRM systems etc. to an *analytics data platform*. Many different methods exist for getting that data, either through pushes (change data capture streams, files being generated and forwarded etc.), or pulls (for example through running a query periodically to get the data). But for now we'll ignore all that and assume that somehow data has been collected from the source systems and put into Google Cloud Storage.
+This first step is all about getting started with the source data. Typically data is copied periodically from operational data stores, such as OLTP databases, CRM systems etc. to an *analytics data platform*. Many different methods exist for getting that data, either through pushes (change data capture streams, files being generated and forwarded etc.), or pulls (running periodically a query on a database, copying from a file system etc). But for now we'll ignore all that and assume that somehow data has been collected from the source systems and put into a Google Cloud Storage bucket.
 
 > **Note** For the sake of simplicity, we'll implement full loads. In real world applications with larger datasets you might want to consider incremental loads.
 
@@ -134,7 +134,7 @@ After configuring the Dataform repository, create a new _Development Workspace_,
 
 ### Tips
 
-- You need to install packages to solve the errors about npm packages not found. This can be done from the UI if you open the `workflow_settings.yaml` file.
+- You need to install packages to solve the errors about `npm` packages not found. This can be done from the UI if you open the `workflow_settings.yaml` file.
 
 ## Challenge 4: Dimensional modeling
 
@@ -220,11 +220,11 @@ Data access management is the process of defining, enforcing, and monitoring the
 
 ### Description
 
-We'll add a couple of data governance rules to the `obt_sales` table that we've created in the previous challenge. Turn on Row Level Security for one of the users by letting that user see only the data for the product category `Accessories`. Make sure that everyone else has access to all of the data. 
+We'll add a couple of data governance rules to the `obt_sales` table that we've created in the previous challenge. Turn on _Row Level Security_ for one of the users by letting that user see only the data for the product category `Accessories`. Make sure that everyone else on the team has access to all of the data. 
 
 In addition, for the same user, add dynamic data masking to the columns `full_name`, showing only first 4 characters and replacing the rest with `XXXXX`, and `birth_date`, replacing it with the Unix epoch date.
 
-> **Note** We're granting permissions for individual users for the sake of simplicity in this challenge, but the best practice is to use user groups for this purpose (which also simplifies the management of these rules).
+> **Note** We're granting permissions for individual users for the sake of simplicity in this challenge, but the best practice is to use _User Groups_ for this purpose (which also simplifies the management of these rules).
 
 ### Success Criteria
 
@@ -247,10 +247,10 @@ BigQuery Studio and SQL are great tools for data analytics, but data scientists 
 
 ### Description
 
-We've already designed a [Colab notebook](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.0/notebooks/churn-analysis.ipynb) for this challenge. Upload that to BigQuery, run the notebook interactively until you get to the cell for creating the model. Edit the cell and add the necessary SQL to create a BigQuery ML model, and run the notebook to completion.
+We've already designed a [Python notebook](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.0/notebooks/churn-analysis.ipynb) for this challenge. Upload that to BigQuery, run the notebook interactively until you get to the cell for creating the model. Edit the cell and add the necessary SQL to create a BigQuery ML model, and run the notebook to completion.
 
 > **Warning**  
-> Since Colab uses End User Credentials, make sure that you're running this notebook as a user that doesn't have the row level security filter applied to limit the data.
+> Since notebooks on BigQuery use _End User Credentials_, make sure that you're running this notebook as a user that doesn't have the row level security filter applied to limit the data.
 
 ### Success Criteria
 
@@ -270,6 +270,8 @@ We've already designed a [Colab notebook](https://raw.githubusercontent.com/meke
 Running the Dataform pipelines manually works, but it's not very practical. We'd rather automate this process and run it periodically. Although Dataform provides a lot of functionality to automate and schedule running the pipelines, we're going to consider a bit more flexible orchestrator  that can also run additional steps that might not be part of the Dataform pipelines, such as pulling data from source systems, running the inferencing with the model we've created in the last challenge etc. 
 
 This challenge is all about Cloud Composer, which is basically a managed and serverless version of the well-known [Apache Airflow](https://airflow.apache.org/) framework, to schedule and run our complete pipeline.
+
+> **Note** There's a myriad of different orchestration services on Google Cloud, see the [documentation](https://cloud.google.com/bigquery/docs/orchestrate-workloads) for more information and guidance on which one to pick for *your* specific needs. 
 
 ### Description
 
