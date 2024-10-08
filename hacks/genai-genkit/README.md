@@ -41,8 +41,7 @@ In this hack you will learn how to:
 - gCloud CloudShell terminal **OR**
 - Local IDE (like VSCode) with [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/)  
 > **WARNING**: 
-    - With **CloudShell terminal** you cannot get the front-end to talk to the rest of the components, so viewing the full working app locally is difficult.
-    - It will let you get through all the exercises, but it is complex to work with the frontend (vue app).
+    - With **CloudShell terminal** you cannot get the front-end to talk to the rest of the components, so viewing the full working app locally is difficult, but this doesn't affect the challenges.
 
 ## Contributors
 - Manasa Kandula
