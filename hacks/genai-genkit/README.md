@@ -373,6 +373,7 @@ This should open up a shell inside the container at the location **/app**.
 
 Inside the container, run
 ```sh
+npm install
 genkit start
 ```
 
