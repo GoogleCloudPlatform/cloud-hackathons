@@ -13,7 +13,7 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "[gHacks] GenAI App Development with Genkit and SRE Operations"
+title: "[gHacks] GenAI App Development with Genkit"
 description: ""
 instruction:
   type: md
@@ -89,9 +89,5 @@ environment:
     reference: user_5.password
   - label: Project ID
     reference: project.project_id
-  - label: "Database Public IP"
-    reference: project.startup_script.database_public_ip
-  - label: "Database Main User password"
-    reference: project.startup_script.postgres_mainuser_password
-  - label: "Database Minimal User password"
-    reference: project.startup_script.postgres_minimaluser_password
+  - label: Service Account Email
+    reference: project.startup_script.service_account_email

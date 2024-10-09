@@ -23,11 +23,11 @@ In this hack you will learn how to:
 
 - Challenge 1: Upload the data to the vector database
    - Create an embedding for each entry in the dataset (discussed later), and upload the data to a vector database using the predefined schema. Do this using a genkit flow.
-- Challenge 2: Your first flow that analyses the user's input.
+- Challenge 2: Your first flow that analyses the user's input
    - Create a flow that takes the user's latest input and make sure you extract *any* long term preference or dislike. 
-- Challenge 3: Flow that analyses the converstation history and transforms the user's latest query with the relevant context.
-- Challenge 4: Retrieve the relevant documents from the transformed context created at the previous challenge.
-- Challenge 5: Create a meaningful response to the user (RAG flow).
+- Challenge 3: Contextually transform user queries based on chat history
+- Challenge 4: Update the retriever to fetch documents based on a query
+- Challenge 5: The full RAG flow
    - Select the relevant outputs from the previous stages and return a meaningful output to the user.
 
 ## Prerequisites
@@ -50,28 +50,32 @@ Open your project in the GCP console, and open a **cloud shell editor**. This sh
 If you developing locally, open up your IDE.
 
 Step 1:
-    - Open a terminal from the editor (**cloud shell editor** Hamburgermenu > terminal > new terminal). 
-    - Check if the basic tools we need are installed. Run the following command.
+- Open a terminal from the editor (**cloud shell editor** Hamburgermenu > terminal > new terminal). 
+- Check if the basic tools we need are installed. Run the following command.
+
     ```sh
     docker compose version
     ```
-If it prints out a version number you are good to go.
+- If it prints out a version number you are good to go.
 
 Step 2:
  - Create a shared network for all the containers. We will be running containers across different docker compose files so we want to ensure the db is reachable to all of the containers.
+
      ```sh
      docker network create db-shared-network
      ```
+
  - Setup the local postgres database. This will create a pgvector instance, 2 users, and a database.
  - It also sets up **adminer**, lightweight tool for managing databases.  
 
      ```sh
      docker compose -f docker-compose-pgvector.yaml up -d
      ```
+     
 Step 3:
  - Connect to the database.
- - Go to http://locahost:8082 to open the adminer interface.
- - Log in to the database using the following details
+ - Go to http://locahost:8082 to open the **adminer** interface.
+ - Log in to the database using the following details:
     - Username: main
     - Password: mainpassword
     - Database: fake-movies-db
@@ -81,7 +85,7 @@ Step 3:
 
 Step 4:
 - Once logged in, you should see a button that says *SQLCommand* on the left hand pane. Click on it.
-- It should open an interface that looks like this
+- It should open an interface that looks like this:
   
   ![Execute SQL command](images/sqlcommand.png)
   
@@ -117,29 +121,36 @@ Step 4:
 
 Step 5:
 - Go to the project in the GCP console. Go to **IAM > Service Accounts**. 
-- Select the movie guru service account (movie-guru-chat-server-sa@<project id>.iam.gserviceaccount.com). * Create a new JSON key. 
-- Download the key and store it as **.key.json** in the root of this repo (make sure you use the filename exactly).  
+- Select the movie guru service account (movie-guru-chat-server-sa@<project id>.iam.gserviceaccount.com). 
+- Select **Create a new JSON key**. 
+- Download the key and store it as **.key.json** in the root of this repo (make sure you use the filename exactly). 
+
 >**NOTE**: In production it is BAD practice to store keys in file. Applications running in GoogleCloud use serviceaccounts attached to the platform to perform authentication. The setup used here is simply for convenience.
 
 Step 6:
 - Go to set_env_vars.sh.
 - You need to edit the first line in this file with the actual project id.
+   
     ```sh
     export PROJECT_ID="<enter project id>"
     ```
+
 - Save the updated file and run the following command. 
+
     ```sh
     source set_env_vars.sh
     ```
->**NOTE**: You will need to re-run this each time you execute something from a new terminal instance.
+
+    >**NOTE**: You will need to re-run this each time you execute something from a new terminal instance.
 
 
 Now you are ready to start the challenges.
 
 ## Challenge 1: Upload the data to the vector database
-This is one of the most complex challenges in Part1. This should take approximately **45 minutes**.
+
 
 ### Introduction
+This is one of the most complex challenges in Part1. This should take approximately **45 minutes**.
 The goal of this challenge is to insert this data, along with the vector embeddings into the **movie-guru-db-instance** DB, under the table **movies**.
 This includes creating an embedding per movie, and uploading the remainder of the metadata into each row.
 You need to perform the following steps:
@@ -191,19 +202,24 @@ There are instructions hints in the file to help you proceed.
 
 - Once you think you have accomplished what you need to do, run the following command to start the indexer and let it upload data to the **movies** table. 
 - You can always run it intermediately if you want to verify something.  
+
     ```sh
     docker compose -f docker-compose-indexer.yaml up indexer-go --build
     ```
+
 - A successful uploading process should look like this:
 
     ![Indexer working](images/indexer-go.png)
 
 - If at any point you want to clear the entire table, run the following command in **adminer**.
+
     ```SQL
     TRUNCATE TABLE movies;
     ```
+
 - If you are successful, there should be a total of **652** entries in the table.
 - Once finished, run the following command to close the indexer. You won't need it anymore for other challenges.
+
     ```sh
     docker compose -f docker-compose-indexer.yaml down indexer-go
     ```
@@ -213,19 +229,24 @@ Look at the **js/indexer/src/indexerFlow.ts* file. You'll need to edit it to upl
 There are instructions and hints in the file to help you proceed.
 
 - Once you think you have accomplished what you need to do, run the following to start the indexer and let it upload data to the **movies** table. You can always run it intermediately if you want to verify something.  
+
     ```sh
     docker compose -f docker-compose-indexer.yaml up indexer-js --build
     ```
+
 - Successful uploading process should look like this:
 
     ![Indexer working](images/indexer-js.png)
 
 - (OPTIONAL) If at any stage you want to clear the table because you made a mistake, you can run the following command in **adminer**.
+
     ```SQL
     TRUNCATE TABLE movies;
     ```
+
 - If you are successful, there should be a total of **652** entries in the table.
 - Once finished run the following command to close the indexer. You won't need it anymore for other challenges.
+
     ```sh
     docker compose -f docker-compose-indexer.yaml down indexer-js
     ```
@@ -247,7 +268,7 @@ There are instructions and hints in the file to help you proceed.
 - [GenKit Indexer JS](https://firebase.google.com/docs/genkit/rag#define_an_indexer)
 - [GenKit PGVector JS](https://firebase.google.com/docs/genkit/templates/pgvector)
 
-## Challenge 2: Setup the prompt for the UserProfileFlow
+## Challenge 2: Your first flow that analyses the user’s input
 
 ### Introduction
 This is your first prompt engineering challenge. The goal is to create the prompt required to extract strong preferences and dislikes from the user's statement.
@@ -274,39 +295,49 @@ Genkit provides a CLI and a GUI that work together to help you develop and manag
 ##### Pre-requisites 
 
 When you start the genkit GUI, it starts up your flow server locally (go to **chat_server_go/cmd/standaloneFlows/main.go**). You should see code that looks like this:
+
 ```go
 	if err := genkit.Init(ctx, &genkit.Options{FlowAddr: ":3401"}); err != nil {
 		log.Fatal(err)
 	}
 ```
-When you run **genkit start** in the directory where your genkit server code is located  (**chat_server_go/cmd/standaloneFlows/main.go**), it starts up the genkit flows server defined in your Go code, and a GUI to interact with the GenAI components defined in your code.
+When you run **genkit start** in the directory where your genkit server code is located (**chat_server_go/cmd/standaloneFlows/main.go**), it starts up the genkit flows server defined in your Go code, and a GUI to interact with the GenAI components defined in your code.
+
 The [normal workflow](https://firebase.google.com/docs/genkit-go/get-started-go) is to install the necessary components on your local machine. Given that this lab have minimal (pre) setup requirements (only docker and docker compose), we choose to run the genkit CLI and GUI through a container which adds a couple of extra setup steps, but ensures consistency across different lab setups. 
 
 For these challenges, you do not need to have the full movie-guru app running, we are just going to work with the flows.
-- From the root of the project directory run the following.
+
+- From the root of the project directory run the following:
+
     ```sh
     docker compose -f docker-compose-genkit.yaml  up -d genkit-go # running just the genkit-go service
     ```
+
 - Once the service has started up, we are going to *exec* into the container's shell. The reason we are not using **genkit start** as a startup command for the container is that it has an interactive step at startup that cannot be bypassed. So, we will exec into the container and then run the command **genkit start**. 
+  
     ```sh
     docker compose -f docker-compose-genkit.yaml exec genkit-go sh
     ```
+
 - This should open up a shell inside the container at the location **/app/cmd/flows**. 
 
 > **NOTE**: In the docker compose file, we mount the local directory **chat_server_go/cmd/standaloneFlows** into the container at **app/cmd/standaloneFlows**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
 
 - Inside the container, run
+
     ```sh
     genkit start
     ```
 
 - You should see something like this in the termimal
+
     ```
     Genkit CLI and Developer UI use cookies and similar technologies from Google
     to deliver and enhance the quality of its services and to analyze usage.
     Learn more at https://policies.google.com/technologies/cookies
     Press "Enter" to continue
     ```
+
 - Then press **ENTER** as instructed (this is the interactive step mentioned earlier). This should start the genkit server inside the container at port 4000 which we forward to port **4002** to your host machine (in the docker compose file).
 
 > **NOTE**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
@@ -335,8 +366,11 @@ For these challenges, you do not need to have the full movie-guru app running, w
     time=2024-10-05T10:19:58.300Z level=INFO msg="request end" reqID=1
     Genkit Tools UI: http://localhost:4000
     ```
+
 - Once up and running, navigate to **http://localhost:4002** in your browser. This will open up the **Genkit UI**. you should see a screen that looks like this:
+
     ![Genkit UI Go](images/genkit-go.png)
+
 
 > **WARNING: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens,  go to **chat_server_go/cmd/standaloneFlows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
 
@@ -344,6 +378,7 @@ For these challenges, you do not need to have the full movie-guru app running, w
 
 ##### Challenge-steps
 1. Go to **chat_server_go/cmd/standaloneFlows/main.go**. You should see code that looks like this in the method **getPrompts()**. 
+
     ```golang
     userProfilePrompt :=
     		`
@@ -354,9 +389,11 @@ For these challenges, you do not need to have the full movie-guru app running, w
     		Just say hi in a language you know.
     		`
     ```
+
 1. Keep this file (main.go) open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
 1. From the Genkit UI, go to **Prompts/dotprompt/userProfileFlow**. 
 1. You should see an empty input to the prompt that looks like this:
+
     ```json
     {
         "query": "",
@@ -372,6 +409,7 @@ For these challenges, you do not need to have the full movie-guru app running, w
 #### TypeScript
 ##### Prerequisites
 When you start the genkit GUI, it starts up your flow server locally (go to **js/flows-js/src/index.ts**). You should see code that looks like this:
+
 ```ts
 export {UserProfileFlowPrompt, UserProfileFlow} from './userProfileFlow'
 export {QueryTransformPrompt, QueryTransformFlow} from './queryTransformFlow'
@@ -380,35 +418,44 @@ export {movieDocFlow} from './docRetriever'
 
 startFlowsServer();
 ```
+
 When you run **genkit start** from the directory where your genkit server code is located  (**js/flows-js/src/**), it starts up the genkit flows server defined in your code, and a GUI to interact with the GenAI components defined in your code.
 The [normal workflow](https://firebase.google.com/docs/genkit/get-started) is to install the necessary components on your local machine. Given that this lab have minimal (pre) setup requirements (only docker and docker compose), we choose to run the genkit CLI and GUI through a container which adds a couple of extra setup steps, but ensures consistency across different lab setups. 
 
 For this challenge, you do not need to have the movieguru app running, we are just going to work with the flows.
-- From the root of the project directory run the following.
+- From the root of the project directory run the following:
+
     ```sh
     docker compose -f docker-compose-genkit.yaml  up -d genkit-js # running just the genkit-js service
     ```
+
 - Once the service has started up, we are going to exec into the container. The reason we are not using **genkit start** as a startup command for the container is that it has an interactive step at startup that cannot be bypassed. So, we will exec into the container and then run the command **genkit start**. 
+
     ```sh
     docker compose -f docker-compose-genkit.yaml exec genkit-js sh
     ```
+
 - This should open up a shell inside the container at the location **/app**. 
+
 
 >**NOTE**: In the docker compose file, we mount the local directory **js/flows-js** into the container at **/app**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
 
 - Inside the container, run
+
     ```sh
     npm install 
     genkit start
     ```
 
 - You should see something like this in your terminal
+
     ```
     Genkit CLI and Developer UI use cookies and similar technologies from Google
     to deliver and enhance the quality of its services and to analyze usage.
     Learn more at https://policies.google.com/technologies/cookies
     Press "Enter" to continue
     ```
+
 - Then press **ENTER** as instructed (this is the interactive step mentioned earlier).
 - This should start the genkit server inside the container at port 4000 which we forward to port **4003** to your host machine (in the docker compose file).
 
@@ -442,6 +489,7 @@ For this challenge, you do not need to have the movieguru app running, we are ju
     ```
 
 - Once up and running, vavigate to **http://localhost:4003** in your browser. This will open up the **Genkit UI**. It will look something like this:
+
     ![Genkit UI JS](images/genkit-js.png)
 
 
@@ -451,6 +499,7 @@ For this challenge, you do not need to have the movieguru app running, we are ju
 ##### Challenge-steps
 
 1. Go to **js/flows-js/src/prompts.ts**. You should see code that looks like this in the method **getPrompts()**. 
+
     ```ts
     export const UserProfilePromptText = 
     		`
@@ -462,6 +511,7 @@ For this challenge, you do not need to have the movieguru app running, we are ju
 1. Keep this file (prompts.ts) open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
 1. From the Genkit UI, go to **Prompts/dotprompt/userProfileFlow**. 
 1. You should see an empty input to the prompt that looks like this:
+
     ```json
     {
         "query": "",
@@ -472,6 +522,7 @@ For this challenge, you do not need to have the movieguru app running, we are ju
 1. You should also see an uneditable prompt (the same prompt in prompts.ts) below. You need to edit this prompt in **prompts.ts** but can test it out by changing the input, model and other params in the UI.
 1. Test it out: Add a query "I want to watch a movie", and leave the agentMessage empty and click on **RUN**. 
 1. The model should respond by saying something like this. This is clearly nonsensical as a "Movie Recommendation" is not an item that describes a user's **specific** movie interests. The model is just retrofitting the output to match the output schema we've suggested (see **UserProfileFlow.ts**, we define an output schema) and trying to infer some semi-sensible outputs.
+
     ```json
     {
       "profileChangeRecommendations": [
@@ -485,6 +536,7 @@ For this challenge, you do not need to have the movieguru app running, we are ju
       "justification": "The user expressed interest in watching a movie, so I recommend movie recommendations."
     }
     ```
+
 1. You need to rewrite the prompt (in prompts.ts) and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters. 
 
 
@@ -492,13 +544,16 @@ For this challenge, you do not need to have the movieguru app running, we are ju
 1. The model should be able to extract the user's sentiments from the message.
 1. The model should be able output all the required fields with the correct values (see introduction to). 
     The input of:
+
     ```json
     {
         "agentMessage": "",
         "query": "I really like comedy films."
     }
     ```
+
     Should return a model output like this (or json formatted with typescript):
+
     ```
     ## New Profile Item:
     **Category:** GENRE 
@@ -506,15 +561,19 @@ For this challenge, you do not need to have the movieguru app running, we are ju
     **Reason:** The user explicitly states "I really like comedy films," indicating a strong and enduring preference for this genre.
     **Sentiment:** POSITIVE 
     ```
+
 1.  The model should be able to pick up categorise sentiments as Postive and Negative.  
     The input of:
+
     ```json
     {
         "agentMessage": "",
         "query": "I really hate comedy films."
     }
     ```
+
     Should return a model output like this:
+
     ```
     ## New Profile Item:
     **Category:** GENRE 
@@ -522,8 +581,10 @@ For this challenge, you do not need to have the movieguru app running, we are ju
     **Reason:** The user explicitly states "I really hate comedy films."  This indicates a strong, enduring dislike for the genre. 
     **Sentiment:** NEGATIVE 
     ```
+
 1.  The model should ignore weak/temporary sentiments.  
     The input of:
+
     ```json
     {
         "agentMessage": "",
@@ -532,18 +593,21 @@ For this challenge, you do not need to have the movieguru app running, we are ju
     ```
     
     Should return a model output (something) like this:
+
     ```
     I cannot extract any new likes or dislikes from this user message. The user is expressing a current desire to watch a movie with Tom Hanks, but this does not necessarily indicate a long-term preference for him. The user may simply be in the mood for a Tom Hanks film right now, without actually having a strong enduring like for his movies.
     ```
 
 1. The model should be able to pick up multiple sentiments.  
     The input of:
+
     ```json
     {
         "agentMessage": "",
         "query": "I really hate comedy films but love Tom Hanks."
     }
     ```
+
     Should return a model output like this:
        
     ```
@@ -562,14 +626,18 @@ For this challenge, you do not need to have the movieguru app running, we are ju
     **Explanation:**
     The user expresses strong, enduring feelings about both comedy films and Tom Hanks.  "Really hate" and "love" indicate strong, long-term preferences. 
     ```
+
 1. The model can infer context
+
     ```json
     {
         "agentMessage": "I know of 3 actors: Tom Hanks, Johnny Depp, Susan Sarandon",
         "query": "Oh! I really love the last one."
     }
     ```
+
     Should return a model output like this:
+
     ```
     ## New Profile Item:
     **Category:** ACTOR 
@@ -577,6 +645,7 @@ For this challenge, you do not need to have the movieguru app running, we are ju
     **Reason:** The user explicitly states "I really love the last one," referring to Susan Sarandon, indicating a strong and enduring liking.
     **Sentiment:** POSITIVE 
     ```
+
 ### Learning Resources
 - [Prompt Engineering](https://www.promptingguide.ai/)
 - [Genkit UI and CLI](https://firebase.google.com/docs/genkit/devtools)
@@ -611,6 +680,7 @@ Make sure the Genkit UI is up and running at http://localhost:4002.
 
 #### Challenge-steps
 1. Go to **chat_server_go/cmd/standaloneFlows/main.go**. You should see code that looks like this in the method **getPrompts()**. 
+
     ```golang
     queryTransformPrompt :=
     		`
@@ -625,9 +695,11 @@ Make sure the Genkit UI is up and running at http://localhost:4002.
 			Translate the user's message into a different language of your choice.
     		`
     ```
+
 1. Keep this file (main.go) open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
 1. From the Genkit UI, go to **Prompts/dotprompt/queryTransformFlow**. If you choose to work with the flow directly go to **Flows/queryTransformFlow** (you cannot tweak the model parameters here, only the inputs).
 1. You should see an empty input to the prompt that looks like this:
+
     ```json
     {
         "history": [
@@ -649,8 +721,9 @@ Make sure the Genkit UI is up and running at http://localhost:4002.
 1. The model should respond by translating this into a random language (this is what the prompt asks it to do). 
 1. You need to rewrite the prompt (in main.go) and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **main.go** and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters. 
 1. After you get your prompt working, it's now time to get implement the flow. Navigate to  **chat_server_go/cmd/standaloneFlows/queryTransform.go**.  You should see something that looks like this (code snippet below). What you see is that we define the dotprompt and specify the input and output format for the dotprompt. The prompt is however never invoked. We create an empty **queryTransformFlowOutput** and this will always result in the default output. You need to invoke the prompt and have the model generate an output for this. 
+
     ```goLang
-      func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (*genkit.Flow[*QueryTransformFlowInput, *QueryTransformFlowOutput, struct{}], error) {
+    func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (*genkit.Flow[*QueryTransformFlowInput, *QueryTransformFlowOutput, struct{}], error) {
     	queryTransformPrompt, err := dotprompt.Define("queryTransformFlow",
     		prompt,
     
@@ -691,6 +764,7 @@ Make sure the Genkit UI is up and running at http://localhost:4002.
 
 1. If you try to invoke the flow in Genkit UI (**flows/queryTransformFlow**)
     You should get an output something that looks like this:
+
     ```json
     {
         "result": {
@@ -700,7 +774,9 @@ Make sure the Genkit UI is up and running at http://localhost:4002.
         }
     }
     ```
+
 1. But, once you implement the necessary code (and prompt), you should see something like this when you ask for movie recommendations.
+
     ```json
     {
         "result": {
@@ -717,6 +793,7 @@ Make sure the Genkit UI is up and running at http://localhost:4003
 
 #### Challenge-steps
 1. Go to **js/flows-js/src/prompts.ts**. You should see code that looks like this in the method **getPrompts()**. 
+
     ```ts
         export const QueryTransformPromptText = `
           Here are the inputs:
@@ -726,8 +803,9 @@ Make sure the Genkit UI is up and running at http://localhost:4003
         			{{userProfile}}
         		* User Message:
         			{{userMessage}})
-    `
+            `
     ```
+
 1. Keep this file open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
 1. From the Genkit UI, go to **Prompts/dotprompt/queryTransformFlow**. 
 1. You should see an empty input to the prompt that looks like this:
@@ -754,6 +832,7 @@ Make sure the Genkit UI is up and running at http://localhost:4003
 1. You should also see a prompt (the same prompt in prompt.go) below. You need to edit this prompt in the file but can test it out by changing the input, model and other params in the UI.
 1. Test it out: Add a query "I want to watch a movie", and leave the rest empty and click on **RUN**. 
 1. The model should respond by saying something like this. This is clearly nonsensical as a "I want to watch a movie" is not a sensible vector db query. The model is just retrofitting the output to match the output schema we've suggested (see **queryTransformFlow.ts**, we define an output schema) and trying to infer some semi-sensible outputs.
+
     ```json
         {
           "transformedQuery": "I want to watch a movie",
@@ -761,46 +840,51 @@ Make sure the Genkit UI is up and running at http://localhost:4003
           "justification": "The user is requesting to watch a movie."
         }
     ```
+
 1. You need to rewrite the prompt and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **prompts.ts** and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters. 
 1. After you get your prompt working, it's now time to get implement the flow. Navigate to  **js/flows-js/src/queryTransformFlow.ts**.  You should see something that looks like this. What you see is that we define the dotprompt and specify the input and output format for the dotprompt. The prompt is however never invoked in a flow. We create an empty **queryTransformFlowOutput** and this will always result in the default output. You need to invoke the flow and have the model generate an output for this. 
+
     ```ts
-         export const QueryTransformPrompt = defineDotprompt(
+        export const QueryTransformPrompt = defineDotprompt(
+            {
+                name: 'queryTransformFlow',
+                model: gemini15Flash,
+                input: {
+                    schema: QueryTransformFlowInputSchema,
+                },
+                output: {
+                    format: 'json',
+                    schema: QueryTransformFlowOutputSchema,
+                },  
+            }, 
+            QueryTransformPromptText
+        )
+        
+        // Implement the QueryTransformFlow
+        export const QueryTransformFlow = defineFlow(
         {
-          name: 'queryTransformFlow',
-          model: gemini15Flash,
-          input: {
-            schema: QueryTransformFlowInputSchema,
-          },
-          output: {
-            format: 'json',
-            schema: QueryTransformFlowOutputSchema,
-          },  
-        }, 
-       QueryTransformPromptText
-    )
-    
-    // Implement the QueryTransformFlow
-    export const QueryTransformFlow = defineFlow(
-    {
-      name: 'queryTransformFlow',
-      inputSchema: z.string(), // what should this be?
-      outputSchema: z.string(), // what should this be?
-    },
-    async (input) => {
-    // Missing flow invocation
-    
-    // Just returning hello world
-      return "Hello World"
-    }
-    );
-        ```
+            name: 'queryTransformFlow',
+            inputSchema: z.string(), // what should this be?
+            outputSchema: z.string(), // what should this be?
+            },
+            async (input) => {
+            // Missing flow invocation
+            
+            // Just returning hello world
+            return "Hello World"
+            }
+        );
+    ```
         
 1. If you try to invoke the flow in Genkit UI (**flows/queryTransformFlow**), you'll notice that the input format for the flow is different from the prompt. The flow just expects a string. You need to fix this in the challenge, so that the prompt and flow take the same input type.
 You should get an output something that looks like this:
+
     ```
     "Hello World"
     ```
+
 1. But, once you implement the necessary code (and prompt), you should see something like this (if the input is "I want to watch a movie")
+
     ```json
     {
         "result": {
@@ -815,6 +899,7 @@ You should get an output something that looks like this:
 The model should be able to extract the user's intent from the message and a meaningful query.
 1. The model doesn't return a transformed query when the user is just greeting them.
 The input of:
+
     ```json
     {
         "history": [
@@ -835,7 +920,9 @@ The input of:
         "userMessage": "Hi"
         }
     ```
+
     Should return a model output like this:
+
     ```json
     {
       "justification": "The user's message 'hi' is a greeting and doesn't express a specific request or intent related to movies or any other topic.  Therefore, no query transformation is needed, and the userIntent is set to GREET.",
@@ -845,6 +932,7 @@ The input of:
     ```
         
 1. The model returns a specific query based on the context.
+
     ```json
     {
         "history": [
@@ -864,7 +952,9 @@ The input of:
         "userMessage": "Ok. Tell me about them"
         }
     ```
+
     Should return a model output like this:
+
     ```json
     {
       "justification": "The user's previous message indicated an interest in comedy films.  Their current message, \"Ok. tell me about them,\" is a request for more information about the comedy films previously mentioned by the agent.  Since the user profile lacks specific likes and dislikes regarding actors, directors, or genres,  the query focuses solely on the user's expressed interest in comedy films.",
@@ -872,7 +962,9 @@ The input of:
       "userIntent": "REQUEST"
     }
     ```
+
 1. The model realises when the user is no longer interested and ends the conversation
+
     ```json
     {
         "history": [
@@ -888,7 +980,9 @@ The input of:
         "userMessage": "I'm not interested. Bye."
         }
     ```
+
     Should return a model output like this:
+
     ```json
     {
       "justification": "The user's last message, \"Ok. Not interested bye\", indicates they are ending the conversation after acknowledging the agent's previous message about comedy films.  There is no further query to refine.  The user's profile contains no preferences that could be used to refine a non-existent query.",
@@ -896,7 +990,9 @@ The input of:
       "userIntent": "END_CONVERSATION"
     }
     ```
+
 1. The model realises when the user is not interested in pursuing a search and is just acknowleding a statement.
+
     ```json
     {
         "history": [
@@ -912,7 +1008,9 @@ The input of:
         "userMessage": "Ok. Good to know"
         }
     ```
+
     Should return a model output like this:
+
     ```json
     {
       "justification": "The user's last message, \"Ok. Good to know\", is an acknowledgement of the agent's previous statement about having many comedy films.  It doesn't represent a new request or question. The user's profile provides no relevant likes or dislikes to refine a movie search. Therefore, the transformed query will remain broad, focusing on comedy films.",
@@ -922,6 +1020,7 @@ The input of:
     ```
 
 1. The model recognizes and responds appropriately when the user is asking it to do something outside its core task.
+
     ```json
     {
         "history": [
@@ -937,7 +1036,9 @@ The input of:
         "userMessage": "What is the weather today?"
         }
     ```
+
     Should return a model output like this:
+
     ```json
     {
       "transformedQuery": "",
@@ -947,6 +1048,7 @@ The input of:
     ```
 1. The model should be able to take existing likes and disklikes into account.  
     The input of:
+
     ```json
     {
         "history": [
@@ -962,7 +1064,9 @@ The input of:
         "userMessage": "Ok. give me some options"
         }
     ```
+
     Should return a model output like this:
+
     ```json
     {
       "justification": "The user's previous message indicates they are ready to receive movie options.  Their profile shows a strong preference for comedy movies. Therefore, the query will focus on retrieving comedy movies.",
@@ -997,6 +1101,7 @@ Make sure the Genkit UI is up and running at http://localhost:4002
 
 ##### Challenge-steps
 1. Go to **chat_server_go/cmd/standaloneFlows/docRetrieverFlow.go**. You should see code that looks like this in the method **DefineRetriever**. This retriever just returns an empty document list.
+
     ```golang
     func DefineRetriever(maxRetLength int, db *sql.DB, embedder ai.Embedder) ai.Retriever {
     	f := func(ctx context.Context, req *ai.RetrieverRequest) (*ai.RetrieverResponse, error) {
@@ -1020,11 +1125,13 @@ Make sure the Genkit UI is up and running at http://localhost:4002
     ```
 
 1. You should see an output that looks like this:
+
     ```json
     {
         "documents": []
     }
     ```
+
 1. Edit the code to search for an retriver the relevant documents. See the instructions and hints in the code.
 
 ### TypeScript
@@ -1033,8 +1140,9 @@ Make sure the Genkit UI is up and running at http://localhost:4003
 
 ##### Challenge-steps
 1. Go to **js/flows-js/src/docRetriever.ts**. You should see code that looks like this in the method **defineRetriever**. This retriever just returns an empty document list.
+
     ```ts
-        const sqlRetriever = defineRetriever(
+    const sqlRetriever = defineRetriever(
       {
         name: 'movies',
         configSchema: QueryOptionsSchema,
@@ -1062,21 +1170,26 @@ Make sure the Genkit UI is up and running at http://localhost:4003
     ```
 
 1. You should see an output that looks like this:
+
     ```
      []
     ```
+
 1. Edit the code to search for relevant documents and return the documents. See the instructions and hints in the code.
 
 ### Success Criteria
 1.  The retriever should return relevant documents.
     The input of:
+
     ```json
     {
         "query": "good movies",
         "k": 10
     }
     ```
+
     Should return a model output like that below. The response is truncated in the output below. But, you should see something that resembles following:
+
     ```json
         [
              {
@@ -1131,6 +1244,7 @@ Make sure the Genkit UI is up and running at http://localhost:4002
 
 ##### Challenge-steps
 1. Go to **chat_server_go/cmd/standaloneFlows/main.go** and look at the movie flow prompt
+
     ```golang
     movieFlowPrompt := `
     		Here are the inputs:
@@ -1150,6 +1264,7 @@ Make sure the Genkit UI is up and running at http://localhost:4002
     ```
 
 1. Go to the genkit ui and find **dotPrompt/movieFlow**. Enter the following in the input and run the prompt.
+
     ```json
     {
         "history": [
@@ -1183,7 +1298,9 @@ Make sure the Genkit UI is up and running at http://localhost:4002
         "userMessage": "I want to watch a movie."
     }
     ```
+
 1. You will get an answer like this. Note that this will vary greatly. But the LLM will try to translate the userMessage into a different language.
+
     ```
     Here are some translations of "I want to watch a movie" into random languages:
     
@@ -1204,6 +1321,7 @@ Make sure the Genkit UI is up and running at http://localhost:4002
     
     You can choose whichever translation you like, or I can generate a random one for you. 
     ```
+
 1. Edit the prompt to achieve the task described in the introduction.
 
 ### TypeScript
@@ -1211,25 +1329,28 @@ Make sure the Genkit UI is up and running at http://localhost:4002
 Make sure the Genkit UI is up and running at http://localhost:4003
 
 ##### Challenge-steps
-1. Go to **js/flows-js/src/prompts.ts** and look at the movie flow prompt
-    ```golang
-    movieFlowPrompt := `
-    		Here are the inputs:
-        	* Context retrieved from vector db:
-        	{{contextDocuments}}
-        
-        	* User Preferences:
-        	{{userPreferences}}
-        
-        	* Conversation history:
-        	{{history}}
-        
-        	* User message:
-        	{{userMessage}}
+1. Go to **js/flows-js/src/prompts.ts** and look at the movie flow prompt.
+
+    ```ts
+    export const MovieFlowPromptText =  ` 
+        Here are the inputs:
+
+        * Context retrieved from vector db:
+        {{contextDocuments}}
+
+        * User Preferences:
+        {{userPreferences}}
+
+        * Conversation history:
+        {{history}}
+
+        * User message:
+        {{userMessage}}
     `
     ```
 
 1. Go to the genkit ui and find **dotPrompt/movieFlow**. Enter the following in the input and run the prompt.
+
     ```json
     {
         "history": [
@@ -1263,7 +1384,9 @@ Make sure the Genkit UI is up and running at http://localhost:4003
         "userMessage": "I want to watch a movie."
     }
     ```
+
 1. You will get an answer like this: a default empty answer.
+
     ```json
     {
       "relevantMovies": [],
@@ -1271,12 +1394,14 @@ Make sure the Genkit UI is up and running at http://localhost:4003
       "justification": ""
     }
     ```
+
 1. Edit the prompt to achieve the task described in the introduction.
 
 
 ### Success Criteria
 1. The flow should give a meaningful answer and not return any relevant movies.
     The input of:
+
     ```json
     {
         "history": [
@@ -1293,7 +1418,9 @@ Make sure the Genkit UI is up and running at http://localhost:4003
         "userMessage": "Hello."
     }
     ```
+
     Should return a model output like that below. 
+
     ```json
     {
       "answer": "Hello! 👋 How can I help you with movies today?",
@@ -1301,7 +1428,9 @@ Make sure the Genkit UI is up and running at http://localhost:4003
       "justification": "The user said 'Hello', so I responded with a greeting and asked what they want to know about movies."
     }
     ```
+
 1. The flow should ignore context documents when the user's query doesn't require any.
+
     ```json
     {
         "history": [
@@ -1335,7 +1464,9 @@ Make sure the Genkit UI is up and running at http://localhost:4003
         "userMessage": "Hello."
     }
     ```
+
     Should return a model output like that below. 
+
     ```json
     {
       "answer": "Hello! 👋  What can I do for you today?  I'm happy to answer any questions you have about movies.",
@@ -1434,3 +1565,6 @@ Make sure the Genkit UI is up and running at http://localhost:4003
       "justification": "The user asked for information on tailoring, which is outside my expertise as a movie expert. I politely declined and offered to discuss movies instead."
     }
     ```
+### Learning Resources
+- [Genkit RAG Go](https://firebase.google.com/docs/genkit-go/rag)
+- [Genkit RAG JS](https://firebase.google.com/docs/genkit/rag)

@@ -1,4 +1,4 @@
-# GenAI App Development with Genkit and SRE Operations
+# GenAI App Development with Genkit
 
 ## Introduction
 
