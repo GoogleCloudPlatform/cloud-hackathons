@@ -30,31 +30,18 @@ resource "google_project_service" "default" {
     "storage.googleapis.com",
     "aiplatform.googleapis.com",
     "artifactregistry.googleapis.com",
-    "sqladmin.googleapis.com",
     "storage-api.googleapis.com",
     "sql-component.googleapis.com",
     "run.googleapis.com",
     "iam.googleapis.com",
-    "redis.googleapis.com",
     "firebase.googleapis.com",
-  "secretmanager.googleapis.com"])
+  ])
   service = each.key
 
   # Don't disable the service if the resource block is removed by accident.
   disable_on_destroy = false
 }
 
-resource "google_artifact_registry_repository" "repo" {
-  location      = var.gcp_region
-  repository_id = "movie-guru-repo"
-  description   = "docker repository for app movie-guru"
-  format        = "DOCKER"
-  project       = var.gcp_project_id
-  docker_config {
-    immutable_tags = false
-  }
-  depends_on = [google_project_service.default]
-}
 
 resource "google_service_account" "default" {
   account_id   = "movie-guru-chat-server-sa"

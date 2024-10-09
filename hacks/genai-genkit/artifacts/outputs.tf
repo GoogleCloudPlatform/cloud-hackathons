@@ -15,24 +15,6 @@ output "project_id" {
   value = var.gcp_project_id
 }
 
-output "database_public_ip" {
-  value = google_sql_database_instance.main.ip_address.0.ip_address
-}
-
-output "database_private_ip" {
-  value = google_sql_database_instance.main.private_ip_address
-}
-
-output "postgres_mainuser_password" {
-  value     = random_password.postgres_mainuser_password.result
-  sensitive = true
-}
-
-output "postgres_minimaluser_password" {
-  value     = random_password.postgres_minimaluser_password.result
-  sensitive = true
-}
-
 output "service_account_email" {
   value = google_service_account.default.email
 }
