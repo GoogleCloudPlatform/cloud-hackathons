@@ -63,9 +63,9 @@ _For example:_
 
 - Sample Day 1
   - Challenge 1 (45 mins)
-  - Challenge 2 (15 mins)
-  - Challenge 3 (15 mins)
-  - Challenge 4 (30 mins)
+  - Challenge 2 (30 mins)
+  - Challenge 3 (30 mins)
+  - Challenge 4 (45 mins)
   - Challenge 5 (30 mins)
 
 ## Repository Contents

@@ -1,22 +1,16 @@
-# GenAI App Development with Genkit and SRE Operations
+# GenAI App Development with Genkit
 ## Introduction
 
-This hack helps you create and deploy a GenAI application (see below) using Google Cloud and Firebase Genkit.
-You do the following:
-- Part1: 
-    - Add data into the vector database.
-    - Creating GenAI flows that power this app.
-    - Retrieving documents for a RAG flow
-- Part2 (WIP):
-    - Build in testing and monitoring for the app.
-    - Design SLIs, and SLOs for the app.
+Learn how to create and deploy a generative AI application with Google Cloud's Genkit and Firebase. This hands-on example provides valuable skills transferable to other GenAI frameworks.
+
+You will learn how create the GenAI components that power the **Movie Guru** application.
 
 [![Movie Guru](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
+
 
 ## Learning Objectives
 
 In this hack you will learn how to: 
-- Part 1:
    1. Vectorise a simple dataset and add it to a vector database (postgres PGVector).
    1. Create a flow using genkit that anaylses a user's statement and extract's their long term preferences and dislikes.
    1. Create a flow using genkit that summarises the conversation with the user and transform's the user's latest query by adding context.
@@ -48,7 +42,7 @@ In this hack you will learn how to:
 - Christiaan Hees
 
 ## Setup
-This should take approximately **15 minutes**.
+This should take approximately **15 minutes**. 
 
 Open your project in the GCP console, and open a **cloud shell editor**. This should open up a VSCode-like editor. Make it full screen if it isn't already.
 If you developing locally, open up your IDE.
@@ -62,38 +56,35 @@ docker compose version
 If it prints out a version number you are good to go.
 
 Step 2:
- - Open another GCP console for this project and look for **SQL**. You should see a DB called **movie-guru-db-instance**.
- - Go to **Secret Manager**. You should see 2 secrets here.
+ - Create a shared network for all the containers
+ ```sh
+ docker network create db-shared-network
+ ```
+ - Setup the local postgres database. This will create a pgvector instance, 2 users, and a database.
+ - It also sets up **adminer**, lightweight tool for managing databases.  
 
+ ```sh
+ docker compose -f docker-compose-pgvector.yaml up -d
+ ```
 Step 3:
- - Open the IDE (or **Cloud Shell Editor**).
- - Clone the repo and naviagate to the folder.
-```sh
-git clone https://github.com/MKand/movie-guru.git --branch ghack
-cd movie-guru
-```
- - Re-open the IDE with the folder movie-guru as the current workspace.
-
-Step 4: 
-- Open the **set_env_vars.sh** file (found at the root of the repo folder).
-- Copy the value of the **postgres-main-user-password** and **postgres-minimal-user-password** and replace them in the **set_env_vars.sh** file and replace them under   **POSTGRES_DB_MAIN_USER_PASSWORD** and **POSTGRES_DB_USER_PASSWORD** respectively.
-- Copy the **PROJECT ID** (not PROJECT name) and replace it in the **set_env_vars.sh** under **PROJECT_ID**.
-- Go the **movie-guru-db-instance** instance and copy down the public IP address. Replace it in the **set_env_vars.sh** under **POSTGRES_HOST**.
-- Save the **set_env_vars.sh** file.
-- Load the env variables into the current terminal by running the following command.
-```sh
-source set_env_vars.sh
-```
-
-Step 5:
- Connect to the sql db through the **Cloud SQL Studio**.
- - We will use the **main** user for this step. 
- - Log into the **Cloud SQL Studio** from the GCP console with the credentials of the main user.
+ - Connect to the database.
+ - Go to http://locahost:8082 to open the adminer interface.
+ - Log in to the database using the following details
+    - Username: main
+    - Password: mainpassword
+    - Database: fake-movies-db
+    
+    ![Adminer login](images/login_adminer.png)
 
 
-Step 6:
-Create the necessary tables and add permissions to the minimal-user.
-Run the following SQL queries in the editor of **Cloud SQL Studio**
+Step 4:
+- Once logged in, you should see a button that says *SQLCommand* on the left hand pane. Click on it.
+- It should open an interface that looks like this
+  
+  ![Execute SQL command](images/sqlcommand.png)
+  
+- Paste the following commands there and click **Execute**.
+
 ```SQL
 CREATE EXTENSION IF NOT EXISTS vector;
 
@@ -122,15 +113,28 @@ GRANT SELECT ON movies TO "minimal-user";
 GRANT SELECT, INSERT, UPDATE, DELETE ON user_preferences TO "minimal-user";
 ```
 
-Step 7:
-* Go to the project in the GCP console. Go to **IAM > Service Accounts**. 
-* Select the movie guru service account (movie-guru-chat-server-sa@<project id>.iam.gserviceaccount.com). * Create a new JSON key. 
-* Download the key and store it as **.key.json** in the root of this repo (make sure you use the filename exactly).  
+Step 5:
+- Go to the project in the GCP console. Go to **IAM > Service Accounts**. 
+- Select the movie guru service account (movie-guru-chat-server-sa@<project id>.iam.gserviceaccount.com). * Create a new JSON key. 
+- Download the key and store it as **.key.json** in the root of this repo (make sure you use the filename exactly).  
 >**NOTE**: In production it is BAD practice to store keys in file. Applications running in GoogleCloud use serviceaccounts attached to the platform to perform authentication. The setup used here is simply for convenience.
+
+Step 6:
+- Go to set_env_vars.sh.
+- You need to edit the first line in this file with the actual project id.
+```sh
+export PROJECT_ID="<enter project id>"
+```
+- Save the updated file and run the following command. 
+```sh
+source set_env_vars.sh
+```
+>**NOTE**: You will need to re-run this each time you execute something from a new terminal instance.
+
 
 Now you are ready to start the challenges.
 
-# Challenge 1: Upload the data to the vector database
+## Challenge 1: Upload the data to the vector database
 This is one of the most complex challenges in Part1. This should take approximately **45 minutes**.
 
 ### Introduction
@@ -175,14 +179,19 @@ There are instructions hints in the file to help you proceed.
 ```sh
 docker compose -f docker-compose-indexer.yaml up indexer-go --build
 ```
-- (OPTIONAL) If at any stage you want to clear the table because you made a mistake, you can run the following command in **Cloud SQL Studio**
+- (OPTIONAL) If at any stage you want to clear the table because you made a mistake, you can run the following command in **adminer**.
+Successful uploading process should look like this:
+
+![Indexer working](images/indexer-go.png)
+
+If at any point you want to clear the entire table, run the following command in **adminer**.
 ```SQL
 TRUNCATE TABLE movies;
 ```
 - If you are successful, there should be a total of **652** entries in the table.
 - Once finished run the following command to close the indexer. You won't need it anymore for other challenges.
 ```sh
-docker compose -f docker-compose-indexer.yaml down indexer-js
+docker compose -f docker-compose-indexer.yaml down indexer-go
 ```
 
 #### TypeScript
@@ -193,7 +202,12 @@ There are instructions and hints in the file to help you proceed.
 ```sh
 docker compose -f docker-compose-indexer.yaml up indexer-js --build
 ```
-- (OPTIONAL) If at any stage you want to clear the table because you made a mistake, you can run the following command in **Cloud SQL Studio**
+- (OPTIONAL) If at any stage you want to clear the table because you made a mistake, you can run the following command in **adminer**.
+Successful uploading process should look like this:
+
+![Indexer working](images/indexer-js.png)
+
+If at any point you want to clear the entire table, run the following command in **adminer**.
 ```SQL
 TRUNCATE TABLE movies;
 ```
@@ -204,7 +218,7 @@ docker compose -f docker-compose-indexer.yaml indexer-js down
 ```
 
 ### Success Criteria
-* The **movies** table contains **652** entries. You can verify this by running the following command in the **Cloud SQL Studio**:
+* The **movies** table contains **652** entries. You can verify this by running the following command in the **adminer**:
 
 ```SQL
 SELECT COUNT(*)
@@ -501,6 +515,7 @@ export const UserProfilePromptText =
         "query": "I feel like watching a movie with Tom Hanks."
     }
     ```
+    
     Should return a model output (something) like this:
     ```
     I cannot extract any new likes or dislikes from this user message. The user is expressing a current desire to watch a movie with Tom Hanks, but this does not necessarily indicate a long-term preference for him. The user may simply be in the mood for a Tom Hanks film right now, without actually having a strong enduring like for his movies.
