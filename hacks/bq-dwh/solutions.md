@@ -115,6 +115,37 @@ WITH COL_COUNTS AS (
 SELECT col from COL_COUNTS WHERE cnt = 0
 ```
 
+See below for a dynamic version of an alternative query that achieves the same. Note that this is only for reference (you'll have to replace `$PROJECT_ID`, `$REGION`, `$DATASET` and `$TABLE` placeholders with proper values to be able to run it).
+
+```sql
+DECLARE column_names ARRAY<STRING>;
+DECLARE count_sql STRING;
+SET column_names = (
+  SELECT
+      ARRAY_AGG(column_name)
+    FROM
+      `$PROJECT_ID.region-$REGION.INFORMATION_SCHEMA.COLUMNS`
+    WHERE 
+    table_catalog = '$PROJECT_ID'
+    AND table_schema = '$DATASET'
+    AND table_name = '$TABLE'
+);
+SET count_sql = (
+  SELECT "SELECT "|| STRING_AGG(DISTINCT "COUNT(" || column_name || ") AS " || column_name) || " FROM $DATASET.$TABLE" 
+  FROM UNNEST(column_names) as column_name
+);
+EXECUTE IMMEDIATE FORMAT("""
+  SELECT 
+    column_name, cnt FROM (%s) 
+  UNPIVOT (
+    cnt FOR column_name IN (%s)
+  )
+  WHERE cnt = 0
+  """, 
+  count_sql, ARRAY_TO_STRING(column_names, ", ")
+);
+```
+
 ## Challenge 3: Dataform for automation
 
 ### Notes & Guidance
