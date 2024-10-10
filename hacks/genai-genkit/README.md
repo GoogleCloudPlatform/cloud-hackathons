@@ -39,7 +39,7 @@ In this hack you will learn how to:
 - gCloud CLI 
 - gCloud CloudShell terminal **OR**
 - Local IDE (like VSCode) with [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/)  
-> **WARNING**: 
+> **Warning**: 
     - With **CloudShell terminal** you cannot get the front-end to talk to the rest of the components, so viewing the full working app locally is difficult, but this doesn't affect the challenges.
 
 ## Contributors
@@ -74,7 +74,10 @@ Step 2:
      ```sh
      docker compose -f docker-compose-pgvector.yaml up -d
      ```
-     
+
+>**Note**: If you are using the GCP Cloud Shell editor, click on the  webpreview button and change the port to 8082. 
+![webpreview](images/webpreview.png)
+
 Step 3:
  - Connect to the database.
  - Go to http://locahost:8082 to open the **adminer** interface.
@@ -128,7 +131,7 @@ Step 5:
 - Select **Create a new JSON key**. 
 - Download the key and store it as **.key.json** in the root of this repo (make sure you use the filename exactly). 
 
->**NOTE**: In production it is BAD practice to store keys in file. Applications running in GoogleCloud use serviceaccounts attached to the platform to perform authentication. The setup used here is simply for convenience.
+>**Note**: In production it is BAD practice to store keys in file. Applications running in GoogleCloud use serviceaccounts attached to the platform to perform authentication. The setup used here is simply for convenience.
 
 Step 6:
 - Go to set_env_vars.sh.
@@ -144,7 +147,7 @@ Step 6:
     source set_env_vars.sh
     ```
 
-    >**NOTE**: You will need to re-run this each time you execute something from a new terminal instance.
+    >**Note**: You will need to re-run this each time you execute something from a new terminal instance.
 
 
 Now you are ready to start the challenges.
@@ -205,7 +208,7 @@ The **movies** table has the following columns:
 * **actors**: A character varying string containing comma-separated actors.
 * **embedding**: A user-defined data type to store vector embeddings of the movies.
 
-> **NOTE**: You can do this exercise with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue. 
+> **Note**: You can do this exercise with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue. 
 
 #### GoLang
 Look at the **chat_server_go/pkg/flows/indexer.go** file. This module is called by **chat_server_go/cmd/indexer/main.go**
@@ -336,7 +339,7 @@ For these challenges, you do not need to have the full **Movie Guru** app runnin
 
 - This should open up a shell inside the container at the location **/app/cmd/flows**. 
 
-> **NOTE**: In the docker compose file, we mount the local directory **chat_server_go/cmd/standaloneFlows** into the container at **app/cmd/standaloneFlows**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
+> **Note**: In the docker compose file, we mount the local directory **chat_server_go/cmd/standaloneFlows** into the container at **app/cmd/standaloneFlows**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
 
 - Inside the container, run
 
@@ -355,7 +358,10 @@ For these challenges, you do not need to have the full **Movie Guru** app runnin
 
 - Then press **ENTER** as instructed (this is the interactive step mentioned earlier). This should start the genkit server inside the container at port 4000 which we forward to port **4002** to your host machine (in the docker compose file).
 
-> **NOTE**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
+>**Note**: If you are using the GCP Cloud Shell editor, click on the  webpreview button and change the port to 4002. 
+![webpreview](images/webpreview.png)
+
+> **Note**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
 **Please be patient**.
 
     ```sh
@@ -453,7 +459,7 @@ For this challenge, you do not need to have the ****Movie Guru**** app running, 
 - This should open up a shell inside the container at the location **/app**. 
 
 
->**NOTE**: In the docker compose file, we mount the local directory **js/flows-js** into the container at **/app**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
+>**Note**: In the docker compose file, we mount the local directory **js/flows-js** into the container at **/app**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
 
 - Inside the container, run
 
@@ -474,7 +480,7 @@ For this challenge, you do not need to have the ****Movie Guru**** app running, 
 - Then press **ENTER** as instructed (this is the interactive step mentioned earlier).
 - This should start the genkit server inside the container at port 4000 which we forward to port **4003** to your host machine (in the docker compose file).
 
-> **NOTE**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
+> **Note**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
 **Please be patient**.
 
     ```sh
@@ -507,6 +513,9 @@ For this challenge, you do not need to have the ****Movie Guru**** app running, 
 
     ![Genkit UI JS](images/genkit-js.png)
 
+
+    >**Note**: If you are using the GCP Cloud Shell editor, click on the  webpreview button and change the port to 4003. 
+    ![webpreview](images/webpreview.png)
 
 > **WARNING: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens, go to **js/flows-js/src/index.ts**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
 
@@ -700,7 +709,7 @@ We want the model to take a user's statement, the conversation history and extra
 1. **User Intent**: The intent of the user's latest statement. Did the user issue a greeting to the chatbot (GREET), end the conversation (END_CONVERSATION), make a request to the chatbot (REQUEST), respond to the chatbot's question (RESPONSE), ackowledge a chatbot's statement (ACKNOWLEDGE), or is it unclear (UNCLEAR). The reason we do this is to prevent a call to the vector DB if the user is not searching for anything. The application only performs a search if the intent is REQUEST or RESPONSE.
 1. Optional **Justification**:  General explanation of the overall output. This will help you understand why the model made its suggestions and help you debug and improve your prompt.
 
-> **NOTE** We can improve the testability of our model by augmenting its response with strongly typed outputs (those with a limited range of possible values like `User Intent`). This is because automatically validating free-form responses, like the `Transformed query`, is challenging due to their inherent variability and non-deterministic nature of the output. Even a short `Transformed query` can have many variations (e.g., "horror films," "horror movies," "horror," or "films horror"). However, by including additional outputs with a restricted set of possible values, such as booleans, enums, or integers, we provide more concrete data points for our tests, ultimately leading to more robust and reliable validation of the model's performance.
+> **Note** We can improve the testability of our model by augmenting its response with strongly typed outputs (those with a limited range of possible values like `User Intent`). This is because automatically validating free-form responses, like the `Transformed query`, is challenging due to their inherent variability and non-deterministic nature of the output. Even a short `Transformed query` can have many variations (e.g., "horror films," "horror movies," "horror," or "films horror"). However, by including additional outputs with a restricted set of possible values, such as booleans, enums, or integers, we provide more concrete data points for our tests, ultimately leading to more robust and reliable validation of the model's performance.
 
 
 You need to perform the following steps:
