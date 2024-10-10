@@ -114,14 +114,10 @@ func GetIndexerFlow(maxRetLength int, movieDB *db.MovieDB, embedder ai.Embedder)
 				return nil, err
 			}
 
-			genres := strings.Join(doc.Genres, ", ")
-			actors := strings.Join(doc.Actors, ", ")
-
-			query := `INSERT INTO movies (embedding, title, runtime_mins, genres, rating, released, actors, director, plot, poster, tconst, content)
-					VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-					ON CONFLICT (tconst) DO UPDATE
-					SET embedding = EXCLUDED.embedding
-					`
+			query := `INSERT INTO movies (embedding, title, runtime_mins, genres, rating, released, actors, director, plot, poster, tconst, content) 
+			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+			ON CONFLICT (tconst) DO NOTHING;
+			`
 			dbCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 			defer cancel()
 
@@ -171,7 +167,7 @@ func createText(movie *types.MovieContext) string {
 		}(),
 		"plot": func() string {
 			if movie.Plot != "" {
-				return strings.ReplaceAll(movie.Plot, "\n", "")
+				return movie.Plot
 			}
 			return ""
 		}(),
@@ -181,7 +177,6 @@ func createText(movie *types.MovieContext) string {
 	stringData := string(jsonData)
 	return stringData
 }
-
 ```
 
 [Solution for Challenge 1: JS]()
@@ -194,59 +189,41 @@ This is what the functions should look like in **js/indexer/src/indexerFlow.ts**
 
 ```ts
 export const IndexerFlow = defineFlow(
-{
-    name: 'indexerFlow',
-    inputSchema: MovieContextSchema,
-    outputSchema: z.string(),
-},
-  async (doc) => {
-    const db = await openDB();
-    if (!db) {
-      throw new Error('Database connection failed');
-    }
-    try {
-      // Reduce rate at which operation is performed to avoid hitting VertexAI rate limits
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const contentString = createText(doc);
-      const eres = await embed({
-        embedder: textEmbedding004,
-        content: contentString,
-      });
-      try {
-        await db`
-        INSERT INTO movies (embedding, title, runtime_mins, genres, rating, released, actors, director, plot, poster, tconst, content)
-        VALUES (${toSql(eres)}, ${doc.title}, ${doc.runtimeMinutes}, ${doc.genres.join(', ')}, ${doc.rating}, ${doc.released}, ${doc.actors.join(', ')}, ${doc.director}, ${doc.plot}, ${doc.poster}, ${doc.tconst}, ${contentString})
-        ON CONFLICT (tconst) DO UPDATE
-        SET embedding = EXCLUDED.embedding
-      `;
-        return contentString; 
-      } catch (error) {
-        console.error('Error inserting or updating movie:', error);
-        throw error; // Re-throw the error to be handled by the outer try...catch
+  {
+      name: 'indexerFlow',
+      inputSchema: MovieContextSchema,
+      outputSchema: z.string(),
+  },
+    async (doc) => {
+      const db = await openDB();
+      if (!db) {
+        throw new Error('Database connection failed');
       }
-    } catch (error) {
-      console.error('Error indexing movie:', error);
-      return 'Error indexing movie'; // Return an error message
+      try {
+        // Reduce rate at which operation is performed to avoid hitting VertexAI rate limits
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        const contentString = createText(doc);
+        const eres = await embed({
+          embedder: textEmbedding004,
+          content: contentString,
+        });
+        try {
+          await db`
+          INSERT INTO movies (embedding, title, runtime_mins, genres, rating, released, actors, director, plot, poster, tconst, content)
+          VALUES (${toSql(eres)}, ${doc.title}, ${doc.runtimeMinutes}, ${doc.genres}, ${doc.rating}, ${doc.released}, ${doc.actors}, ${doc.director}, ${doc.plot}, ${doc.poster}, ${doc.tconst}, ${contentString})
+		  ON CONFLICT (tconst) DO NOTHING;
+        `;
+          return contentString; 
+        } catch (error) {
+          console.error('Error inserting or updating movie:', error);
+          throw error; // Re-throw the error to be handled by the outer try...catch
+        }
+      } catch (error) {
+        console.error('Error indexing movie:', error);
+        return 'Error indexing movie'; // Return an error message
+      }
     }
-  }
-);
-
-
-function createText(movie: MovieContext): string {
-  const dataDict = {
-    title: movie.title,
-    runtime_mins: movie.runtimeMinutes,
-    genres: movie.genres.length > 0 ? movie.genres.join(', ') : '',
-    rating: movie.rating > 0 ? movie.rating.toFixed(1) : '',
-    released: movie.released > 0 ? movie.released : '',
-    actors: movie.actors.length > 0 ? movie.actors.join(', ') : '',
-    director: movie.director !== '' ? movie.director : '',
-    plot: movie.plot !== '' ? movie.plot.replace(/\n/g, '') : '',
-  };
-
-  const jsonData = JSON.stringify(dataDict);
-  return jsonData;
-}
+  );
 ```
 
 ## Challenge 2: Create a prompt for the UserProfileFlow to extract strong preferences and dislikes from the user's statement
@@ -523,7 +500,7 @@ func DefineRetriever(maxRetLength int, db *sql.DB, embedder ai.Embedder) ai.Retr
 				"released":     released,
 				"rating":       rating,
 				"runtime_mins": runtime_mins,
-        "plot":         plot,
+        		"plot":         plot,
 			}
 			doc := &ai.Document{
 				Content:  []*ai.Part{ai.NewTextPart(content)},
