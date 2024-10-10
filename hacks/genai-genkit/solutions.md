@@ -542,14 +542,14 @@ const sqlRetriever = defineRetriever(
     name: 'movies',
     configSchema: QueryOptionsSchema,
   },
-  async (input, options) => {
+  async (query, options) => {
     const db = await openDB();
     if (!db) {
       throw new Error('Database connection failed');
     }
     const embedding = await embed({
       embedder: textEmbedding004,
-      content: input,
+      content: query,
     });
     const results = await db`
       SELECT title, poster, content, released, runtime_mins, rating, genres, director, actors, plot

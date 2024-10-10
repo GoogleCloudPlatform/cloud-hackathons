@@ -1212,7 +1212,6 @@ Make sure the Genkit UI is up and running at http://localhost:4003
     ```json
     {
         "query": "Good movie",
-        "k": 10
     }
     ```
 
@@ -1231,11 +1230,10 @@ Make sure the Genkit UI is up and running at http://localhost:4003
     ```json
     {
         "query": "good movies",
-        "k": 10
     }
     ```
 
-    Should return a model output like that below. The response is truncated in the output below. But, you should see something that resembles following:
+    Should return a model output like that below. The response is **truncated** in the output below. But, you should see something that resembles following:
 
     ```json
         [
@@ -1249,6 +1247,7 @@ Make sure the Genkit UI is up and running at http://localhost:4003
             "actors": "Mei Zhang,  Leymah Gbowee",
             "poster": "https://storage.googleapis.com/generated_posters/poster_408.png"
           },
+          
           {
             "title": "A Noble Sacrifice",
             "genres": "Drama, Thriller",
