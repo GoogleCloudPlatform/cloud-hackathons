@@ -76,6 +76,7 @@ Step 2:
      ```
 
 >**Note**: If you are using the GCP Cloud Shell editor, click on the  webpreview button and change the port to 8082. 
+
 ![webpreview](images/webpreview.png)
 
 Step 3:
@@ -127,9 +128,16 @@ Step 4:
 
 Step 5:
 - Go to the project in the GCP console. Go to **IAM > Service Accounts**. 
-- Select the service account (movie-guru-chat-server-sa@<project id>.iam.gserviceaccount.com). 
+- Select the service account (movie-guru-chat-server-sa@##########.iam.gserviceaccount.com). 
+
+![IAM](images/IAM.png)
+
 - Select **Create a new JSON key**. 
+
+![CreateKey](images/createnewkey.png)
+
 - Download the key and store it as **.key.json** in the root of this repo (make sure you use the filename exactly). 
+
 
 >**Note**: In production it is BAD practice to store keys in file. Applications running in GoogleCloud use serviceaccounts attached to the platform to perform authentication. The setup used here is simply for convenience.
 
