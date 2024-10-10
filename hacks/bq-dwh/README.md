@@ -18,7 +18,7 @@ This hack will help you explore the following tasks:
 - Dimensional modeling with a star schema
 - Access control to data through dynamic data masking & row level security
 - Looker Studio for visualizing data
-- Colab for data exploration
+- Python notebooks for data exploration
 - Cloud Composer for orchestration
 - Cloud Monitoring for monitoring and alerting
 
@@ -174,6 +174,10 @@ Once the configuration is complete run the Dataform pipeline with the tag `fact`
 
 - [Creating tables with Dataform](https://cloud.google.com/dataform/docs/define-table)
 
+### Tips
+
+- Find out which staging tables have the `sales_order_id` and `sales_order_details_id` as their _id_ columns. Those tables will be the basis of your fact table. 
+
 ## Challenge 5: Business Intelligence
 
 ### Introduction
@@ -254,7 +258,7 @@ We've already designed a [Python notebook](https://raw.githubusercontent.com/mek
 
 ### Success Criteria
 
-- All the cells from the provided Colab notebook has been run successfully.
+- All the cells from the provided Python notebook has been run successfully.
 - There's a new _Logistic Regression_ model, `churn_model`, in the `dwh` dataset that predicts whether a customer will churn or not, trained on the prepared training data.
 
 ### Learning Resources
