@@ -1157,9 +1157,7 @@ Make sure the Genkit UI is up and running at http://localhost:4002
     		retrieverResponse := &ai.RetrieverResponse{
     			Documents: make([]*ai.Document, 0, maxRetLength),
     		}
-    		
-    		// returns the empty list created above.
-    		return retrieverResponse, nil
+    		    		return retrieverResponse, nil
     	}
     	return ai.DefineRetriever("pgvector", "movieRetriever", f)
     }

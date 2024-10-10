@@ -490,9 +490,9 @@ func DefineRetriever(maxRetLength int, db *sql.DB, embedder ai.Embedder) ai.Retr
 		if err != nil {
 			return nil, err
 		}
-  	// Query the db for the relevant rows
+  	// Query the db for the relevant rows. 
 		rows, err := db.QueryContext(ctx, `
-					SELECT title, poster, content, released, runtime_mins, rating, plot
+					SELECT title, poster, content, released, runtime_mins, rating, plot, actors, director, genres
 					FROM movies
 					ORDER BY embedding <-> $1
 					LIMIT $2`,
@@ -504,10 +504,10 @@ func DefineRetriever(maxRetLength int, db *sql.DB, embedder ai.Embedder) ai.Retr
 
 		retrieverResponse := &ai.RetrieverResponse{}
 		for rows.Next() {
-			var title, poster, content, plot string
+			var title, poster, content, plot, director, actors, genres string
 			var released, runtime_mins int
 			var rating float32
-			if err := rows.Scan(&title, &poster, &content, &released, &runtime_mins, &rating, &plot); err != nil {
+			if err := rows.Scan(&title, &poster, &content, &released, &runtime_mins, &rating, &plot, &actors, &director, &genres); err != nil {
 				return nil, err
 			}
 			meta := map[string]any{
@@ -517,6 +517,9 @@ func DefineRetriever(maxRetLength int, db *sql.DB, embedder ai.Embedder) ai.Retr
 				"rating":       rating,
 				"runtime_mins": runtime_mins,
         		"plot":         plot,
+				"actors": 		actors.split(","),
+				"director": 	director,
+				"genres":       genres.split(",")
 			}
 			doc := &ai.Document{
 				Content:  []*ai.Part{ai.NewTextPart(content)},
