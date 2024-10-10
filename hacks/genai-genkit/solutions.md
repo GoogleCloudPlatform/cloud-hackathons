@@ -203,14 +203,14 @@ export const IndexerFlow = defineFlow(
         // Reduce rate at which operation is performed to avoid hitting VertexAI rate limits
         await new Promise((resolve) => setTimeout(resolve, 300));
         const filteredContent = createText(doc);
-        const eres = await embed({
+        const embedding = await embed({
           embedder: textEmbedding004,
           content: filteredContent,
         });
         try {
           await db`
           INSERT INTO movies (embedding, title, runtime_mins, genres, rating, released, actors, director, plot, poster, tconst, content)
-          VALUES (${toSql(eres)}, ${doc.title}, ${doc.runtimeMinutes}, ${doc.genres}, ${doc.rating}, ${doc.released}, ${doc.actors}, ${doc.director}, ${doc.plot}, ${doc.poster}, ${doc.tconst}, ${filteredContent})
+          VALUES (${toSql(embedding)}, ${doc.title}, ${doc.runtimeMinutes}, ${doc.genres}, ${doc.rating}, ${doc.released}, ${doc.actors}, ${doc.director}, ${doc.plot}, ${doc.poster}, ${doc.tconst}, ${filteredContent})
 		  ON CONFLICT (tconst) DO NOTHING;
         `;
           return filteredContent; 
