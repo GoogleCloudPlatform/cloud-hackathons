@@ -47,7 +47,7 @@ This hack will help you explore the following tasks:
 
 ## Challenge 1: Loading the source data
 
-### Introduction 
+### Introduction
 
 This first step is all about getting started with the source data. Typically data is copied periodically from operational data stores, such as OLTP databases, CRM systems etc. to an *analytics data platform*. Many different methods exist for getting that data, either through pushes (change data capture streams, files being generated and forwarded etc.), or pulls (running periodically a query on a database, copying from a file system etc). But for now we'll ignore all that and assume that somehow data has been collected from the source systems and put into a Google Cloud Storage bucket.
 
@@ -102,16 +102,16 @@ Although we've only dealt with 3 tables so far, our data model has many more tab
 
 ### Description
 
-Create a new Dataform _Repository_, update its settings to use the `BQ DWH Dataform Service Account`, _override_ workspace compilation settings to ensure that _Project ID_ points to your project. Then link it to [this Github repository](https://github.com/meken/gcp-dataform-bqdwh.git), using `HTTPS` as the protocol, `main` as the _Default branch name_ and the provided `git-secret` as the secret to connect.
+Create a new Dataform *Repository*, update its settings to use the `BQ DWH Dataform Service Account`, *override* workspace compilation settings to ensure that *Project ID* points to your project. Then link it to [this Github repository](https://github.com/meken/gcp-dataform-bqdwh.git), using `HTTPS` as the protocol, `main` as the *Default branch name* and the provided `git-secret` as the secret to connect.
 
-After configuring the Dataform repository, create a new _Development Workspace_, solve any errors and execute the pipeline with the *tag* `staging`. 
+After configuring the Dataform repository, create a new *Development Workspace*, solve any errors and execute the pipeline with the *tag* `staging`.
 
-> **Note** The provided `git-secret` has a dummy value, it'll be ignored when you pull from the repository. When you link a Git repository, Dataform clones that repository _locally_ (in your Dataform Development Workspace) and you can commit your changes to your local copy. Normally you'd be able to push those changes to the remote (either main or a different branch), but since the provided secret doesn't have any write permissions, you won't be able to do that for this exercise.
+> **Note** The provided `git-secret` has a dummy value, it'll be ignored when you pull from the repository. When you link a Git repository, Dataform clones that repository *locally* (in your Dataform Development Workspace) and you can commit your changes to your local copy. Normally you'd be able to push those changes to the remote (either main or a different branch), but since the provided secret doesn't have any write permissions, you won't be able to do that for this exercise.
 
 ### Success Criteria
 
 - There's a successful execution of the provided Dataform pipeline for the `staging` tables.
-- The following 12 tables have been created in the `curated` dataset: 
+- The following 12 tables have been created in the `curated` dataset:
   - `stg_address`
   - `stg_country_region`
   - `stg_credit_card`
@@ -144,7 +144,7 @@ Dimensional modeling is a data warehousing technique that organizes data into fa
 
 ### Description
 
-We're going to create a **star schema** by extracting _dimension_ tables and a _fact_ table from the _staging_ tables that have been created in the previous challenge. First you need to create another dataset and call it `dwh`.
+We're going to create a **star schema** by extracting *dimension* tables and a *fact* table from the *staging* tables that have been created in the previous challenge. First you need to create another dataset and call it `dwh`.
 
 We have already provided the code for the dimension tables, first run the pipeline for the tag `dimension` and then create a new `fact_sales.sqlx` file in the same folder, configure it with the tag `fact` and create the fact table with the following columns:
 
@@ -176,7 +176,7 @@ Once the configuration is complete run the Dataform pipeline with the tag `fact`
 
 ### Tips
 
-- Find out which staging tables have the `sales_order_id` and `sales_order_details_id` as their _id_ columns. Those tables will be the basis of your fact table. 
+- Find out which staging tables have the `sales_order_id` and `sales_order_details_id` as their *id* columns. Those tables will be the basis of your fact table.
 
 ## Challenge 5: Business Intelligence
 
@@ -186,9 +186,9 @@ Business intelligence (BI) in data warehousing involves using tools and techniqu
 
 ### Description
 
-We're going to create a new report in *Looker Studio*. Since we're keeping things simple and Looker Studio works better with an _OBT_ (one big table), we'll create that as a first step.
+We're going to create a new report in *Looker Studio*. Since we're keeping things simple and Looker Studio works better with an *OBT* (one big table), we'll create that as a first step.
 
-Add a new file `obt_sales.sqlx` and configure it to create a new table `obt_sales` in the `dwh` dataset by joining **all** of the dimension tables with the fact table, and add the tag `obt`. Make sure to exclude all of the surrogate keys. 
+Add a new file `obt_sales.sqlx` and configure it to create a new table `obt_sales` in the `dwh` dataset by joining **all** of the dimension tables with the fact table, and add the tag `obt`. Make sure to exclude all of the surrogate keys.
 
 Once the table is created, create a new Looker Studo report using the new table and configure the following charts:
 
@@ -211,24 +211,25 @@ Once the table is created, create a new Looker Studo report using the new table 
 ### Tips
 
 - There are different types of joins you can do with BigQuery, choose the correct one.
-- You'll need to create a calculated field in Looker Studio to get the _quarter_ information in proper format.
+- You'll need to create a calculated field in Looker Studio to get the *quarter* information in proper format.
 
 ## Challenge 6: Access control
 
 ### Introduction
 
 Data access management is the process of defining, enforcing, and monitoring the rules and policies governing who has access to data. Access management ensures that data is only accessible to those who are authorized to access it. BigQuery provides different mechanisms to help you with data access:
+
 - [Identity and Access Management](https://cloud.google.com/bigquery/docs/access-control) to manage access to your BigQuery resources such as projects, datasets, tables, and views
 - [Authorized views](https://cloud.google.com/bigquery/docs/authorized-views), datasets, routines let you share query results with particular users and groups without giving them access to the underlying source data
 - And if you want more granular control, you can utilize [Column Level Security](https://cloud.google.com/bigquery/docs/column-level-security-intro), [Row Level Security](https://cloud.google.com/bigquery/docs/row-level-security-intro), and [Dynamic Data Masking](https://cloud.google.com/bigquery/docs/column-data-masking-intro)
 
 ### Description
 
-We'll add a couple of data governance rules to the `obt_sales` table that we've created in the previous challenge. Turn on _Row Level Security_ for one of the users by letting that user see only the data for the product category `Accessories`. Make sure that everyone else on the team has access to all of the data. 
+We'll add a couple of data governance rules to the `obt_sales` table that we've created in the previous challenge. Turn on *Row Level Security* for one of the users by letting that user see only the data for the product category `Accessories`. Make sure that everyone else on the team has access to all of the data.
 
 In addition, for the same user, add dynamic data masking to the columns `full_name`, showing only first 4 characters and replacing the rest with `XXXXX`, and `birth_date`, replacing it with the Unix epoch date.
 
-> **Note** We're granting permissions for individual users for the sake of simplicity in this challenge, but the best practice is to use _User Groups_ for this purpose (which also simplifies the management of these rules).
+> **Note** We're granting permissions for individual users for the sake of simplicity in this challenge, but the best practice is to use *User Groups* for this purpose (which also simplifies the management of these rules).
 
 ### Success Criteria
 
@@ -242,7 +243,6 @@ In addition, for the same user, add dynamic data masking to the columns `full_na
 - [The TRUE filter](https://cloud.google.com/bigquery/docs/using-row-level-security-with-features#the_true_filter)
 - [Introduction to Dynamic Data Masking](https://cloud.google.com/bigquery/docs/column-data-masking-intro)
 
-
 ## Challenge 7: Notebooks for data scientists
 
 ### Introduction
@@ -254,12 +254,12 @@ BigQuery Studio and SQL are great tools for data analytics, but data scientists 
 We've already designed a [Python notebook](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.0/notebooks/churn-analysis.ipynb) for this challenge. Upload that to BigQuery, run the notebook interactively until you get to the cell for creating the model. Edit the cell and add the necessary SQL to create a BigQuery ML model, and run the notebook to completion.
 
 > **Warning**  
-> Since notebooks on BigQuery use _End User Credentials_, make sure that you're running this notebook as a user that doesn't have the row level security filter applied to limit the data.
+> Since notebooks on BigQuery use *End User Credentials*, make sure that you're running this notebook as a user that doesn't have the row level security filter applied to limit the data.
 
 ### Success Criteria
 
 - All the cells from the provided Python notebook has been run successfully.
-- There's a new _Logistic Regression_ model, `churn_model`, in the `dwh` dataset that predicts whether a customer will churn or not, trained on the prepared training data.
+- There's a new *Logistic Regression* model, `churn_model`, in the `dwh` dataset that predicts whether a customer will churn or not, trained on the prepared training data.
 
 ### Learning Resources
 
@@ -271,17 +271,17 @@ We've already designed a [Python notebook](https://raw.githubusercontent.com/mek
 
 ### Introduction
 
-Running the Dataform pipelines manually works, but it's not very practical. We'd rather automate this process and run it periodically. Although Dataform provides a lot of functionality to automate and schedule running the pipelines, we're going to consider a bit more flexible orchestrator  that can also run additional steps that might not be part of the Dataform pipelines, such as pulling data from source systems, running the inferencing with the model we've created in the last challenge etc. 
+Running the Dataform pipelines manually works, but it's not very practical. We'd rather automate this process and run it periodically. Although Dataform provides a lot of functionality to automate and schedule running the pipelines, we're going to consider a bit more flexible orchestrator  that can also run additional steps that might not be part of the Dataform pipelines, such as pulling data from source systems, running the inferencing with the model we've created in the last challenge etc.
 
 This challenge is all about Cloud Composer, which is basically a managed and serverless version of the well-known [Apache Airflow](https://airflow.apache.org/) framework, to schedule and run our complete pipeline.
 
-> **Note** There's a myriad of different orchestration services on Google Cloud, see the [documentation](https://cloud.google.com/bigquery/docs/orchestrate-workloads) for more information and guidance on which one to pick for *your* specific needs. 
+> **Note** There's a myriad of different orchestration services on Google Cloud, see the [documentation](https://cloud.google.com/bigquery/docs/orchestrate-workloads) for more information and guidance on which one to pick for *your* specific needs.
 
 ### Description
 
-We've already created a *Cloud Composer* environment for you. You need to configure and run [this pre-configured DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.0/dags/etlflow.py) (which is basically a collection of tasks organized with dependencies and relationships) on that environment. The DAG is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning and stores the predictions in a new BigQuery table. 
+We've already created a *Cloud Composer* environment for you. You need to configure and run [this pre-configured DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.0/dags/etlflow.py) (which is basically a collection of tasks organized with dependencies and relationships) on that environment. The DAG is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning and stores the predictions in a new BigQuery table.
 
-Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the _environment variables_ of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0.1` as the Git reference.
+Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the *environment variables* of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0.1` as the Git reference.
 
 > **Note** It might take a few minutes for the DAG to be discovered by Airflow, be patient :) Once the DAG is discovered it will be started automatically, make sure to configure the environment variables before you upload the DAG.
 
@@ -301,15 +301,15 @@ Find the DAGs bucket for the Cloud Composer environment and copy the provided DA
 
 ### Introduction
 
-When we run our Cloud Composer DAG manually it's easy to see if it has failed or not, but we've configured to run it automatically every day; what if something goes wrong tomorrow or the day after? In order to make sure that things stay healthy we need to do some continous monitoring, create incidents when something goes wrong and notify the responsible people. This is where _Cloud Monitoring_ comes in to the play. In this challenge we'll introduce a very basic method of monitoring failed Cloud Composer workflows using Cloud Monitoring.
+When we run our Cloud Composer DAG manually it's easy to see if it has failed or not, but we've configured to run it automatically every day; what if something goes wrong tomorrow or the day after? In order to make sure that things stay healthy we need to do some continous monitoring, create incidents when something goes wrong and notify the responsible people. This is where *Cloud Monitoring* comes in to the play. In this challenge we'll introduce a very basic method of monitoring failed Cloud Composer workflows using Cloud Monitoring.
 
 ### Description
 
-Create a new _Alerting Policy_ for _Failed DAG runs_ that will be triggered if there's at least 1 failed DAG run for the workflow from the previous challenge, for a rolling window of `10 minutes` using `delta` function and use an _Email Notification Channel_ that sends an email to your personal account(s). Configure a _Policy user label_ with the key `workflow-name` and the name of the monitored workflow as the value. Set the _Policy Severity Level_ to `Critical` and use some sensible values for the other fields. 
+Create a new *Alerting Policy* for *Failed DAG runs* that will be triggered if there's at least 1 failed DAG run for the workflow from the previous challenge, for a rolling window of `10 minutes` using `delta` function and use an *Email Notification Channel* that sends an email to your personal account(s). Configure a *Policy user label* with the key `workflow-name` and the name of the monitored workflow as the value. Set the *Policy Severity Level* to `Critical` and use some sensible values for the other fields.
 
 Create a new `broken.csv` file with the following (idea is to have multiple `csv` files with irreconcilable schemas to cause an error):
 
-```
+```text
 foo,bar
 xx,yy
 ```
@@ -320,12 +320,12 @@ And upload it to the landing bucket for one of the entities (next to a `data.csv
 
 When you receive an email for the incident, follow the link to view and then `Acknowledge` it.
 
-> **Note** This might take ~10 minutes as Airflow will retry the failing tasks multiple times before giving it up and mark the DAG run as _failed_.
+> **Note** This might take ~10 minutes as Airflow will retry the failing tasks multiple times before giving it up and mark the DAG run as *failed*.
 
 ### Success Criteria
 
 - There's a new failed DAG run.
-- There's a new Cloud Monitoring incident related to the failed DAG run, that's _Acknowledged_.
+- There's a new Cloud Monitoring incident related to the failed DAG run, that's *Acknowledged*.
 - No code was modified.
 
 ### Learning Resources
