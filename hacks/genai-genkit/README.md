@@ -819,23 +819,23 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
      // Define a simple flow that prompts an LLM to generate menu suggestions.
      queryTransformFlow := genkit.DefineFlow("queryTransformFlow", func(ctx context.Context, input *QueryTransformFlowInput) (*QueryTransformFlowOutput, error) {
   
-  // Create default output
-  queryTransformFlowOutput := &QueryTransformFlowOutput{
-   ModelOutputMetadata: &types.ModelOutputMetadata{
-    SafetyIssue:   false,
-    Justification: "",
-   },
-   TransformedQuery: "",
-   Intent:           types.USERINTENT(types.UNCLEAR),
-  }
-  
-  // Missing flow invocation code
-  
-  // We're directly returning the default output
-     return queryTransformFlowOutput, nil
-     })
-     return queryTransformFlow, nil
+    // Create default output
+    queryTransformFlowOutput := &QueryTransformFlowOutput{
+    ModelOutputMetadata: &types.ModelOutputMetadata{
+        SafetyIssue:   false,
+        Justification: "",
+    },
+    TransformedQuery: "",
+    Intent:           types.USERINTENT(types.UNCLEAR),
     }
+    
+    // Missing flow invocation code
+    
+    // We're directly returning the default output
+        return queryTransformFlowOutput, nil
+        })
+        return queryTransformFlow, nil
+        }
     ```
 
 1. If you try to invoke the flow in Genkit UI (**flows/queryTransformFlow**)
