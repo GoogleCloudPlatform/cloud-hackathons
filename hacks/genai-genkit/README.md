@@ -47,6 +47,47 @@ In this hack you will learn how to:
 - Manasa Kandula
 - Christiaan Hees
 
+## Challenge 1: Upload the data to the vector database
+
+### Introduction
+
+This is one of the most complex challenges. This should take approximately **45 minutes**.
+
+The goal of this challenge is to insert the movie data, along with the vector embeddings into the database, under the table **movies**. Each movie's data is stored along with a vector representation of it's relevant fields in a row. When performing a vector search, the vector representing the search query sent to the db, and the db returns similar vectors. Along with these vectors, we ask postgres to also send the other fields that are interesting to us (such as the movie title, actors, plot etc.).
+
+This challenge includes creating an embedding per movie, and uploading the remainder of the metadata for each movie into each row. A row will look like this.
+
+```text
+Vector; Title; Actors; Director; Plot; Release; Rating; Poster; tconst; Genre; Runtime
+
+[0.1, 0.3, 0.56, ...]; The Kings Loss; Tom Hanks,Meryl Streep; Steven Spielberg; King Kong loses the tree his lives in and wants to plant a new one; 2001; 3.4; www.posterurl/poster.jpg; 128; Action,Comedy; 110  ...
+```
+
+You need to perform the following steps:
+
+1. Open the file **dataset/movies_with_posters.csv** and review it. This file contains the AI Generated movie details used in application.
+1. Select appropriate fields in the raw data for each movie that are useful to use in a vector search. These are factors users would typically use when looking for movies.
+1. Create an embedding per movie based on the fields you selected before.
+1. Upload each movie into the **movies** table. The schema is given below in the **Description** section. You might need to reformat some columns in the raw data to match the DB schema while uploading data to the db.
+1. Structure each entry (embedding and other fields) into the format required by the table.
+
+#### Genkit Flows
+
+[Flows](https://firebase.google.com/docs/genkit/flows) are like blueprints for specific AI tasks in Genkit. They define a sequence of actions, such as analyzing your words, searching a database, and generating a response. This structured approach helps the AI understand your requests and provide relevant information, similar to how a recipe guides a chef to create a dish. By breaking down complex tasks into smaller steps, flows make the AI more organized and efficient.
+
+**Key Differences from LangChain Chains:**
+
+While both flows and chains orchestrate AI operations, Genkit flows emphasize:
+
+- **Modularity:**  Flows are designed to be easily combined and reused like building blocks.
+- **Strong Typing:**  Clear input/output definitions help catch errors and improve code reliability.
+- **Visual Development:**  The Genkit UI provides a visual way to design and manage flows.
+- **Google Cloud Integration:**  Genkit works seamlessly with Google Cloud's AI services.
+
+If you're familiar with LangChain, think of flows as Genkit's counterpart with a focus on modularity and Google Cloud integration.
+
+### Pre-requisites
+
 ## Setup
 
 This should take approximately **15 minutes**.
@@ -165,49 +206,6 @@ Step 6:
     >**Note**: You will need to re-run this each time you execute something from a new terminal instance.
 
 Now you are ready to start the challenges.
-
-## Challenge 1: Upload the data to the vector database
-
-### Introduction
-
-This is one of the most complex challenges. This should take approximately **45 minutes**.
-
-The goal of this challenge is to insert the movie data, along with the vector embeddings into the database, under the table **movies**. Each movie's data is stored along with a vector representation of it's relevant fields in a row. When performing a vector search, the vector representing the search query sent to the db, and the db returns similar vectors. Along with these vectors, we ask postgres to also send the other fields that are interesting to us (such as the movie title, actors, plot etc.).
-
-This challenge includes creating an embedding per movie, and uploading the remainder of the metadata for each movie into each row. A row will look like this.
-
-```text
-Vector; Title; Actors; Director; Plot; Release; Rating; Poster; tconst; Genre; Runtime
-
-[0.1, 0.3, 0.56, ...]; The Kings Loss; Tom Hanks,Meryl Streep; Steven Spielberg; King Kong loses the tree his lives in and wants to plant a new one; 2001; 3.4; www.posterurl/poster.jpg; 128; Action,Comedy; 110  ...
-```
-
-You need to perform the following steps:
-
-1. Open the file **dataset/movies_with_posters.csv** and review it. This file contains the AI Generated movie details used in application.
-1. Select appropriate fields in the raw data for each movie that are useful to use in a vector search. These are factors users would typically use when looking for movies.
-1. Create an embedding per movie based on the fields you selected before.
-1. Upload each movie into the **movies** table. The schema is given below in the **Description** section. You might need to reformat some columns in the raw data to match the DB schema while uploading data to the db.
-1. Structure each entry (embedding and other fields) into the format required by the table.
-
-#### Genkit Flows
-
-[Flows](https://firebase.google.com/docs/genkit/flows) are like blueprints for specific AI tasks in Genkit. They define a sequence of actions, such as analyzing your words, searching a database, and generating a response. This structured approach helps the AI understand your requests and provide relevant information, similar to how a recipe guides a chef to create a dish. By breaking down complex tasks into smaller steps, flows make the AI more organized and efficient.
-
-**Key Differences from LangChain Chains:**
-
-While both flows and chains orchestrate AI operations, Genkit flows emphasize:
-
-- **Modularity:**  Flows are designed to be easily combined and reused like building blocks.
-- **Strong Typing:**  Clear input/output definitions help catch errors and improve code reliability.
-- **Visual Development:**  The Genkit UI provides a visual way to design and manage flows.
-- **Google Cloud Integration:**  Genkit works seamlessly with Google Cloud's AI services.
-
-If you're familiar with LangChain, think of flows as Genkit's counterpart with a focus on modularity and Google Cloud integration.
-
-### Pre-requisites
-
-Make sure you have finished the **Setup**.
 
 ### Description
 
