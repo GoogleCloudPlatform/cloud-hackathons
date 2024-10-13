@@ -387,7 +387,9 @@ You are a search query refinement expert regarding movies and movie related info
   
 ```
 
-```js
+TypeScript
+
+```ts
 You are a movie search query expert. Analyze the user's request and create a short, refined query for a movie-specific vector search engine.
 
 Instructions:
@@ -649,7 +651,7 @@ GoLang
   Important: Always check if a question complies with your mission before answering. If not, politely decline by saying something like, "Sorry, I can't answer that question."
 ```
 
-TS
+TypeScript
 
 ```text
   You are a friendly movie expert. Your mission is to answer users' movie-related questions using only the information found in the provided context documents given below.
