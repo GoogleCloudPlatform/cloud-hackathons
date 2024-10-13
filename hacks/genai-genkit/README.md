@@ -791,8 +791,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     {
         "history": [
             {
-                "sender": "",
-                "message": ""
+                "role": "",
+                "content": ""
             }
         ],
         "userProfile": {
@@ -902,7 +902,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
             * others: {{#each userProfile.dislikes.others}}{{this}}, {{~/each}}
     * userMessage: {{userMessage}}
     * history: (May be empty)
-        {{#each history}}{{this.sender}}: {{this.message}}{{~/each}}
+        {{#each history}}{{this.role}}: {{this.content}}{{~/each}}
     `
     ```
 
@@ -1010,12 +1010,12 @@ The input of:
     {
         "history": [
             {
-                "sender": "agent",
-                "message": "How can I help you today"
+                "role": "agent",
+                "content": "How can I help you today"
             },
             {
-                "sender": "user",
-                "message": "Hi"
+                "role": "user",
+                "content": "Hi"
             }
         ],
         "userProfile": {
@@ -1043,8 +1043,8 @@ The input of:
     {
         "history": [
             {
-                "sender": "agent",
-                "message": "I have a large database of comedy films"
+                "role": "agent",
+                "content": "I have a large database of comedy films"
             }
         ],
         "userProfile": {
@@ -1071,8 +1071,8 @@ The input of:
     {
         "history": [
             {
-                "sender": "agent",
-                "message": "I have a large database of comedy films"
+                "role": "agent",
+                "content": "I have a large database of comedy films"
             }
         ],
         "userProfile": {
@@ -1099,8 +1099,8 @@ The input of:
     {
         "history": [
             {
-                "sender": "agent",
-                "message": "I have a large database of comedy films"
+                "role": "agent",
+                "content": "I have a large database of comedy films"
             }
         ],
         "userProfile": {
@@ -1127,8 +1127,8 @@ The input of:
     {
         "history": [
             {
-                "sender": "agent",
-                "message": "I have many films"
+                "role": "agent",
+                "content": "I have many films"
             }
         ],
         "userProfile": {
@@ -1156,8 +1156,8 @@ The input of:
     {
         "history": [
             {
-                "sender": "agent",
-                "message": "I have many films"
+                "role": "agent",
+                "content": "I have many films"
             }
         ],
         "userProfile": {
@@ -1277,7 +1277,7 @@ You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on
 
     ```json
     {
-        "query": "drama movie",
+        "query": "drama movie"
     }
     ```
 
@@ -1298,7 +1298,7 @@ You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on
 
     ```json
     {
-        "query": "drama movies",
+        "query": "drama movies"
     }
     ```
 
@@ -1400,8 +1400,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     {
         "history": [
             {
-                "sender": "",
-                "message": ""
+                "role": "",
+                "content": ""
             }
         ],
         "userPreferences": {
@@ -1482,8 +1482,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     {
         "history": [
             {
-                "sender": "",
-                "message": ""
+                "role": "",
+                "content": ""
             }
         ],
         "userPreferences": {
@@ -1536,8 +1536,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     {
         "history": [
             {
-                "sender": "",
-                "message": ""
+                "role": "",
+                "content": ""
             }
         ],
         "userPreferences": {
@@ -1565,8 +1565,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     {
         "history": [
             {
-                "sender": "",
-                "message": ""
+                "role": "",
+                "content": ""
             }
         ],
         "userPreferences": {
@@ -1611,8 +1611,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     {
          "history": [
             {
-                "sender": "",
-                "message": ""
+                "role": "",
+                "content": ""
             }
         ],
         "userPreferences": {
@@ -1663,8 +1663,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     {
         "history": [
             {
-                "sender": "",
-                "message": ""
+                "role": "",
+                "content": ""
             }
         ],
         "userPreferences": {
