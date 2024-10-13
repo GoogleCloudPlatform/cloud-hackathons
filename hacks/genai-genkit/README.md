@@ -1394,7 +1394,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     `
     ```
 
-1. Go to the genkit ui and find **dotPrompt/movieFlow**. Enter the following in the input and run the prompt.
+1. Go to the genkit ui and find **Prompts/dotPrompt/movieFlow**. Enter the following in the input and run the prompt.
 
     ```json
     {
@@ -1470,35 +1470,13 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     export const MovieFlowPromptText =  ` 
     Here are the inputs:
     * userPreferences: (May be empty)
-        * likes: 
-            * actors: {{#each userPreferences.likes.actors}}{{this}}, {{~/each}}
-            * directors: {{#each userPreferences.likes.directors}}{{this}}, {{~/each}}
-            * genres: {{#each userPreferences.likes.genres}}{{this}}, {{~/each}}
-            * others: {{#each userPreferences.likes.others}}{{this}}, {{~/each}}
-        * dislikes: 
-            * actors: {{#each userPreferences.dislikes.actors}}{{this}}, {{~/each}}
-            * directors: {{#each userPreferences.dislikes.directors}}{{this}}, {{~/each}}
-            * genres: {{#each userPreferences.dislikes.genres}}{{this}}, {{~/each}}
-            * others: {{#each userPreferences.dislikes.others}}{{this}}, {{~/each}}
     * userMessage: {{userMessage}}
     * history: (May be empty)
-        {{#each history}}{{this.sender}}: {{this.message}}{{~/each}}
     * Context retrieved from vector db (May be empty):
-    {{#each contextDocuments}} 
-    Movie: 
-    - title:{{this.title}}
-    - plot:{{this.plot}} 
-    - genres:{{this.genres}}
-    - actors:{{this.actors}} 
-    - directors:{{this.directors}} 
-    - rating:{{this.rating}} 
-    - runtimeMinutes:{{this.runtimeMinutes}}
-    - released:{{this.released}} 
-    {{/each}}
     `
     ```
 
-1. Go to the genkit ui and find **dotPrompt/movieFlow**. Enter the following in the input and run the prompt.
+1. Go to the genkit ui and find **Prompts/movieFlow**. Enter the following in the input and run the prompt.
 
     ```json
     {
@@ -1534,14 +1512,15 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     }
     ```
 
-1. You will get an answer like this: a default empty answer.
+1. You will get an answer like this. The answer might seem like it makes sense as the model infers some semi-sensible values from the input types. But, the minimal prompt will not let allow you to meet the other success criteria.
 
     ```json
     {
-      "relevantMovies": [],
-      "answer": "",
-      "justification": ""
-    }
+    "answer": "Sure, what kind of movie are you in the mood for?  Do you have any preferences for genre, actors, or directors?",
+    "relevantMovies": [],
+    "wrongQuery": false,
+    "justification": "The user has not provided any preferences, so I am asking for more information."
+    }   
     ```
 
 1. Edit the prompt to achieve the task described in the introduction.
