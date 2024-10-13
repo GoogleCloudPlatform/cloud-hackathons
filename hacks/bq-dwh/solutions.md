@@ -163,7 +163,7 @@ BQ_DATASET=dwh
 bq mk --location=$REGION -d $BQ_DATASET
 ```
 
-See below for an example, but just like the previous examples, there are multiple options (left joins are fine, and probably better, too). Note that this configuration contains some additional things such as partioning, clustering, primary and foreign keys. Those are not required, but if the participants are knowledgeable about other SQL dialects, they're worth pointing out.
+See below for an example, but just like the previous examples, there are multiple options (left joins are fine, and probably better, too). Note that the configuration below contains some additional things such as partitioning, clustering (with an example column), primary and foreign keys. Those are not required, but if the participants are knowledgeable about other SQL dialects, they're worth pointing out.
 
 ```sql
 config {
