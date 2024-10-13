@@ -163,13 +163,18 @@ BQ_DATASET=dwh
 bq mk --location=$REGION -d $BQ_DATASET
 ```
 
-See below for an example, but just like the previous examples, there are multiple options (left joins are fine too).
+See below for an example, but just like the previous examples, there are multiple options (left joins are fine, and probably better, too). Note that this configuration contains some additional things such as partioning, clustering, primary and foreign keys. Those are not required, but if the participants are knowledgeable about other SQL dialects, they're worth pointing out.
 
 ```sql
 config {
     type: "table",
     schema: "dwh",
-    tags: ["fact"]
+    tags: ["fact"],
+    -- this part is optional
+    bigquery: {
+      partitionBy: "order_date",
+      clusterBy: ["product_key"]
+    }
 }
 
 SELECT
@@ -180,8 +185,7 @@ SELECT
   ${keys.surrogate("ship_to_address_id")} AS ship_address_key,
   ${keys.surrogate("status")} AS order_status_key,
   ${keys.surrogate("order_date")} AS order_date_key,
-  -- sod.sales_order_id,
-  -- sod.sales_order_detail_id,
+  soh.order_date, -- optional, only needed if used for partitioning
   sod.unit_price,
   sod.unit_price_discount,
   p.standard_cost AS cost_of_goods_sold,
@@ -195,6 +199,17 @@ FROM
 WHERE
   sod.sales_order_id = soh.sales_order_id
   AND sod.product_id = p.product_id
+
+-- this part is optional as well
+post_operations {
+  ${keys.primary(ctx, "sales_key")}
+  ${keys.foreign(ctx, ref("dim_product"), "product_key")}
+  ${keys.foreign(ctx, ref("dim_customer"), "customer_key")}
+  ${keys.foreign(ctx, ref("dim_credit_card"), "credit_card_key")}
+  ${keys.foreign(ctx, ref("dim_address"), "address_key", "ship_address_key")}
+  ${keys.foreign(ctx, ref("dim_order_status"), "order_status_key")}
+  ${keys.foreign(ctx, ref("dim_date"), "date_key", "order_date_key")}
+}
 ```
 
 Total number of rows for this table should be: **121317**
@@ -208,6 +223,10 @@ config {
     type: "table",
     schema: "dwh",
     tags: ["obt"]
+    -- this part is optional
+    bigquery: {
+      partitionBy: "order_date"
+    }
 }
 
 SELECT
