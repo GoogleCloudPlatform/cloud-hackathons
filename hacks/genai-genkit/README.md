@@ -904,9 +904,11 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     `
     ```
 
+>**Note**: When using Genkit dotprompts with Typescript, any elements of type zod.array() need to be rolled out in the prompt, else the object is not passed along to the model. While in GoLang, you can send the entire object as a single entity.
+
 1. Keep this file open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
-1. From the Genkit UI, go to **Prompts/queryTransformFlow**.
-1. You should see an empty input to the prompt that looks like this:
+2. From the Genkit UI, go to **Prompts/queryTransformFlow**.
+3. You should see an empty input to the prompt that looks like this:
 
     ```json
     {
@@ -927,9 +929,9 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     }
     ```
 
-1. You should also see a prompt (the same prompt in prompt.go) below. You need to edit this prompt in the file but can test it out by changing the input, model and other params in the UI.
-1. Test it out: Add a query "I want to watch a movie", and leave the rest empty and click on **RUN**.
-1. The model should respond by saying something like this. This is clearly nonsensical as a "I want to watch a movie" is not a sensible vector db query. The model is just retrofitting the output to match the output schema we've suggested (see **queryTransformFlow.ts**, we define an output schema) and trying to infer some semi-sensible outputs.
+4. You should also see a prompt (the same prompt in prompt.go) below. You need to edit this prompt in the file but can test it out by changing the input, model and other params in the UI.
+5. Test it out: Add a query "I want to watch a movie", and leave the rest empty and click on **RUN**.
+6. The model should respond by saying something like this. This is clearly nonsensical as a "I want to watch a movie" is not a sensible vector db query. The model is just retrofitting the output to match the output schema we've suggested (see **queryTransformFlow.ts**, we define an output schema) and trying to infer some semi-sensible outputs.
 
     ```json
     {
@@ -939,8 +941,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     }
     ```
 
-1. You need to rewrite the prompt and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **prompts.ts** and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters.
-1. After you get your prompt working, it's now time to get implement the flow. Navigate to  **js/flows-js/src/queryTransformFlow.ts**.  You should see something that looks like this. What you see is that we define the dotprompt and specify the input and output format for the dotprompt. The prompt is however never invoked in a flow. We create an empty **queryTransformFlowOutput** and this will always result in the default output. You need to invoke the flow and have the model generate an output for this.
+7. You need to rewrite the prompt and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **prompts.ts** and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters.
+8. After you get your prompt working, it's now time to get implement the flow. Navigate to  **js/flows-js/src/queryTransformFlow.ts**.  You should see something that looks like this. What you see is that we define the dotprompt and specify the input and output format for the dotprompt. The prompt is however never invoked in a flow. We create an empty **queryTransformFlowOutput** and this will always result in the default output. You need to invoke the flow and have the model generate an output for this.
 
     ```ts
     export const QueryTransformPrompt = defineDotprompt(
@@ -974,7 +976,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     );
     ```
 
-1. If you try to invoke the flow in Genkit UI (**flows/queryTransformFlow**), you'll notice that the input format for the flow is different from the prompt. The flow just expects a string. You need to fix the codee in the challenge to change the input type from string to the custom input type, so that the prompt and flow take the same input type.
+9. If you try to invoke the flow in Genkit UI (**flows/queryTransformFlow**), you'll notice that the input format for the flow is different from the prompt. The flow just expects a string. You need to fix the codee in the challenge to change the input type from string to the custom input type, so that the prompt and flow take the same input type.
 You should get an output something that looks like this:
 
     ```text
