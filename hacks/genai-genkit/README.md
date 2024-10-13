@@ -946,18 +946,18 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 
     ```ts
     export const QueryTransformPrompt = defineDotprompt(
-        {
-            name: 'queryTransformFlow',
-            model: gemini15Flash,
-            input: {
-                schema: QueryTransformFlowInputSchema,
-            },
-            output: {
-                format: 'json',
-                schema: QueryTransformFlowOutputSchema,
-            },  
-        }, 
-        QueryTransformPromptText
+    {
+        name: 'queryTransformFlow',
+        model: gemini15Flash,
+        input: {
+            schema: QueryTransformFlowInputSchema,
+        },
+        output: {
+            format: 'json',
+            schema: QueryTransformFlowOutputSchema,
+        },  
+    }, 
+    QueryTransformPromptText
     )
         
         // Implement the QueryTransformFlow
