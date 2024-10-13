@@ -1465,7 +1465,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 
 1. Go to **js/flows-js/src/prompts.ts** and look at the movie flow prompt.
 
-    ```ts
+    ```text
     // Look at the prompt in the ts file, markdown might not render it properly.
     export const MovieFlowPromptText =  ` 
     Here are the inputs:
