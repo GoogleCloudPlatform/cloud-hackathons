@@ -843,9 +843,10 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     // Missing flow invocation code
     
     // We're directly returning the default output
-        return queryTransformFlowOutput, nil
-        })
-        return queryTransformFlow, nil
+    return queryTransformFlowOutput, nil
+    })
+    ~~~~
+    return queryTransformFlow, nil
     }
     ```
 
@@ -884,7 +885,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 
 1. Go to **js/flows-js/src/prompts.ts**. You should see code that looks like this in the method **getPrompts()**.
 
-    ```ts
+    ```text
+    // Look at the prompt in the ts file, markdown might not render it properly.
     export const QueryTransformPromptText = `
     Here are the inputs:
     * userProfile: (May be empty)
@@ -1464,6 +1466,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 1. Go to **js/flows-js/src/prompts.ts** and look at the movie flow prompt.
 
     ```ts
+    // Look at the prompt in the ts file, markdown might not render it properly.
     export const MovieFlowPromptText =  ` 
     Here are the inputs:
     * userPreferences: (May be empty)
