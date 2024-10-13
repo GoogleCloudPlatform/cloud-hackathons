@@ -36,11 +36,11 @@ In this hack you will learn how to:
 
 - Your own GCP project with Owner IAM role.
 - gCloud CLI
-- gCloud CloudShell terminal **OR**
+- gCloud **CloudShell Terminal** **OR**
 - Local IDE (like VSCode) with [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/)  
 
 > **Warning**:
-    - With **CloudShell terminal** you cannot get the front-end to talk to the rest of the components, so viewing the full working app locally is difficult, but this doesn't affect the challenges.
+    - With **CloudShell Terminal** you cannot get the front-end to talk to the rest of the components, so viewing the full working app locally is difficult, but this doesn't affect the challenges.
 
 ## Contributors
 
@@ -90,21 +90,21 @@ If you're familiar with LangChain, think of flows as Genkit's counterpart with a
 
 The setup should take approximately **15 minutes**.
 
-Open your project in the GCP console, and open a **Cloud Shell Editor**. This should open up a VSCode-like editor. Make it full screen if it isn't already.
+Open your project in the GCP console, and open a **CloudShell Editor**. This should open up a VSCode-like editor. Make it full screen if it isn't already.
 If you developing locally, open up your IDE.
 
 Step 1:
 
 - Clone the repo.
 
-```sh
-git clone https://github.com/MKand/movie-guru.git --branch ghack
-cd movie-guru
-```
+    ```sh
+    git clone https://github.com/MKand/movie-guru.git --branch ghack
+    cd movie-guru
+    ```
 
 Step 2:
 
-- Open a terminal from the editor (**cloud shell editor** Hamburgermenu > terminal > new terminal).
+- Open a terminal from the editor (**CloudShell Editor** Hamburgermenu > terminal > new terminal).
 - Check if the basic tools we need are installed. Run the following command.
 
     ```sh
@@ -128,7 +128,7 @@ Step 3:
      docker compose -f docker-compose-pgvector.yaml up -d
      ```
 
->**Note**: If you are using the GCP Cloud Shell editor, click on the  webpreview button and change the port to 8082.
+>**Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 8082.
 
 ![webpreview](images/webpreview.png)
 
@@ -392,7 +392,7 @@ For these challenges, you do not need to have the full **Movie Guru** app runnin
 
 - Then press **ENTER** as instructed (this is the interactive step mentioned earlier). This should start the genkit server inside the container at port 4000 which we forward to port **4002** to your host machine (in the docker compose file).
 
->**Note**: If you are using the GCP Cloud Shell editor, click on the  webpreview button and change the port to 4002.
+>**Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4002.
 ![webpreview](images/webpreview.png)
 > **Note**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
 **Please be patient**.
@@ -546,7 +546,7 @@ Genkit Tools UI: http://localhost:4000
 
     ![Genkit UI JS](images/genkit-js.png)
 
-    >**Note**: If you are using the GCP Cloud Shell editor, click on the  webpreview button and change the port to 4003.
+    >**Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4003.
     ![webpreview](images/webpreview.png)
 
 > **WARNING: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens, go to **js/flows-js/src/index.ts**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
@@ -774,13 +774,13 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     This is the user profile. This expresses their long-term likes and dislikes:
     {{userProfile}} 
 
-   This is the history of the conversation with the user so far:
-   {{history}} 
+    This is the history of the conversation with the user so far:
+    {{history}} 
  
-   This is the last message the user sent. Use this to understand the user's intent:
-   {{userMessage}}
-   Translate the user's message into a different language of your choice.
-      `
+    This is the last message the user sent. Use this to understand the user's intent:
+    {{userMessage}}
+    Translate the user's message into a different language of your choice.
+    `
     ```
 
 1. Keep this file (main.go) open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
@@ -846,7 +846,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
         return queryTransformFlowOutput, nil
         })
         return queryTransformFlow, nil
-        }
+    }
     ```
 
 1. If you try to invoke the flow in Genkit UI (**flows/queryTransformFlow**)
@@ -885,8 +885,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 1. Go to **js/flows-js/src/prompts.ts**. You should see code that looks like this in the method **getPrompts()**.
 
     ```ts
-        export const QueryTransformPromptText = `
-        Here are the inputs:
+    export const QueryTransformPromptText = `
+    Here are the inputs:
     * userProfile: (May be empty)
         * likes: 
             * actors: {{#each userProfile.likes.actors}}{{this}}, {{~/each}}
@@ -932,46 +932,46 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 1. The model should respond by saying something like this. This is clearly nonsensical as a "I want to watch a movie" is not a sensible vector db query. The model is just retrofitting the output to match the output schema we've suggested (see **queryTransformFlow.ts**, we define an output schema) and trying to infer some semi-sensible outputs.
 
     ```json
-        {
-          "transformedQuery": "I want to watch a movie",
-          "userIntent": "REQUEST",
-          "justification": "The user is requesting to watch a movie."
-        }
+    {
+        "transformedQuery": "I want to watch a movie",
+        "userIntent": "REQUEST",
+        "justification": "The user is requesting to watch a movie."
+    }
     ```
 
 1. You need to rewrite the prompt and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **prompts.ts** and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters.
 1. After you get your prompt working, it's now time to get implement the flow. Navigate to  **js/flows-js/src/queryTransformFlow.ts**.  You should see something that looks like this. What you see is that we define the dotprompt and specify the input and output format for the dotprompt. The prompt is however never invoked in a flow. We create an empty **queryTransformFlowOutput** and this will always result in the default output. You need to invoke the flow and have the model generate an output for this.
 
     ```ts
-        export const QueryTransformPrompt = defineDotprompt(
-            {
-                name: 'queryTransformFlow',
-                model: gemini15Flash,
-                input: {
-                    schema: QueryTransformFlowInputSchema,
-                },
-                output: {
-                    format: 'json',
-                    schema: QueryTransformFlowOutputSchema,
-                },  
-            }, 
-            QueryTransformPromptText
-        )
-        
-        // Implement the QueryTransformFlow
-        export const QueryTransformFlow = defineFlow(
+    export const QueryTransformPrompt = defineDotprompt(
         {
             name: 'queryTransformFlow',
-            inputSchema: z.string(), // what should this be?
-            outputSchema: z.string(), // what should this be?
+            model: gemini15Flash,
+            input: {
+                schema: QueryTransformFlowInputSchema,
             },
-            async (input) => {
-            // Missing flow invocation
-            
-            // Just returning hello world
-            return "Hello World"
-            }
-        );
+            output: {
+                format: 'json',
+                schema: QueryTransformFlowOutputSchema,
+            },  
+        }, 
+        QueryTransformPromptText
+    )
+        
+        // Implement the QueryTransformFlow
+    export const QueryTransformFlow = defineFlow(
+    {
+        name: 'queryTransformFlow',
+        inputSchema: z.string(), // what should this be?
+        outputSchema: z.string(), // what should this be?
+        },
+        async (input) => {
+        // Missing flow invocation
+        
+        // Just returning hello world
+        return "Hello World"
+    }
+    );
     ```
 
 1. If you try to invoke the flow in Genkit UI (**flows/queryTransformFlow**), you'll notice that the input format for the flow is different from the prompt. The flow just expects a string. You need to fix the codee in the challenge to change the input type from string to the custom input type, so that the prompt and flow take the same input type.
@@ -1463,7 +1463,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 
     ```ts
     export const MovieFlowPromptText =  ` 
-            Here are the inputs:
+    Here are the inputs:
     * userPreferences: (May be empty)
         * likes: 
             * actors: {{#each userPreferences.likes.actors}}{{this}}, {{~/each}}
