@@ -326,7 +326,7 @@ There are instructions and hints in the file to help you proceed.
 
 Remember that the **Movie Guru** app presents the user with a list of their long-term likes and dislikes. The app learns this by analysing the user's conversation for utterances of their preferences and extracts them. The app stores these extracted preferences in the postgres db and retrieves them whenever the user loads the app. In this challenge, you will be building the flow that does the analysis and extraction (persisting to the db is not a part of this challenge).
 
-This is your first prompt engineering challenge. The goal is to create the prompt required to extract strong preferences and dislikes from the user's statement.
+This is your first prompt engineering challenge. The goal is to create the prompt (dotPrompt) required to extract strong preferences and dislikes from the user's statement.
 We want the model to take a user's statement, and potentially the agent's previous statement (if there is one) and extract the following:
 
 1. **List of recommendations** from the model about what it expects the user really likes or dislikes based on the user's latest statement. Each recommendation contains the following information:
@@ -338,9 +338,14 @@ We want the model to take a user's statement, and potentially the agent's previo
 
 You need to perform the following steps:
 
-1. Create a prompt that outputs the information mentioned above. The model takes in a user's query and a preceeding agentMessage (if present).
+1. Create a dotPrompt that outputs the information mentioned above. The model takes in a user's query and a preceeding agentMessage (if present).
 1. Update the prompt in the codebase (look at instructions in GoLang or TypeScript) to see how.
 1. Use the Genkit UI (see steps below) to test the response of the model and make sure it returns what you expect.
+
+#### What is a Dotprompt?
+
+Dotprompts are a way to write and manage your AI prompts like code. They're special files that let you define your prompt template, input and output types (could be basic types like strings or more complex custom types), and model settings all in one place. Unlike regular prompts, which are just text, Dotprompts allow you to easily insert variables and dynamic data using [Handlebars](https://handlebarsjs.com/guide/) templating. This means you can create reusable prompts that adapt to different situations and user inputs, making your AI interactions more personalized and effective.
+This makes it easy to version, test, and organize your prompts, keeping them consistent and improving your AI results.
 
 The working **Movie Guru** app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
 
@@ -609,8 +614,8 @@ Genkit Tools UI: http://localhost:4000
 > **Note**: What to do if you've made the necessary change in the code files and still see weird output in the UI? Changing the code in the code files should automatically refresh it in the UI. Sometimes, however, genkit fails to autoupdate the prompt/flow in the UI after you've made the change in code. Hitting refresh on the browser (afer you've made and saved the code change) and reloading the UI page should fix it.
 
 1. The model should be able to extract the user's sentiments from the message.
-1. The model should be able output all the required fields with the correct values (see introduction to).
-    The input of:
+2. The model should be able output all the required fields with the correct values (see introduction).
+   The input of:
 
     ```json
     {
@@ -629,7 +634,7 @@ Genkit Tools UI: http://localhost:4000
     **Sentiment:** POSITIVE 
     ```
 
-1. The model should be able to pick up categorise sentiments as Postive and Negative.  
+3. The model should be able to pick up categorise sentiments as Postive and Negative.  
     The input of:
 
     ```json
@@ -649,7 +654,7 @@ Genkit Tools UI: http://localhost:4000
     **Sentiment:** NEGATIVE 
     ```
 
-1. The model should ignore weak/temporary sentiments.  
+4. The model should ignore weak/temporary sentiments.  
     The input of:
 
     ```json
@@ -665,7 +670,7 @@ Genkit Tools UI: http://localhost:4000
     I cannot extract any new likes or dislikes from this user message. The user is expressing a current desire to watch a movie with Tom Hanks, but this does not necessarily indicate a long-term preference for him. The user may simply be in the mood for a Tom Hanks film right now, without actually having a strong enduring like for his movies.
     ```
 
-1. The model should be able to pick up multiple sentiments.  
+5. The model should be able to pick up multiple sentiments.  
     The input of:
 
     ```json
@@ -694,7 +699,7 @@ Genkit Tools UI: http://localhost:4000
     The user expresses strong, enduring feelings about both comedy films and Tom Hanks.  "Really hate" and "love" indicate strong, long-term preferences. 
     ```
 
-1. The model can infer context
+6. The model can infer context
 
     ```json
     {
@@ -744,13 +749,13 @@ The **Movie Guru** app then needs to understand from this context that the user 
 This challenge has two parts:
 
 1. Craft the Prompt: You'll engineer a prompt to guide the AI in understanding user queries and extracting key information.
-1. Integrate into a Flow: You'll then embed this prompt within a Genkit flow. Flows provide a structured way to interact with the AI, ensuring reliable outputs and error handling. This involves querying the model, processing the response, and formatting it for use in the Movie Guru application.
+1. Integrate into a Flow: You'll then embed this prompt within a Genkit flow. Flows provide a structured way to interact with the AI, ensuring reliable outputs and error handling. This involves querying the model, processing the response, and formatting it for use in the Movie Guru application. In the previous challenge, we included the code for the flow for you (you just needed to write th  prompt). In this challenge, you'll need to write it yourself. The challenge also includes setting the correct input and output types for the flow.
 
-Think of it like this: the prompt is the recipe, and the flow is the chef who executes it and serves the final dish.
+> **Note**:Think of the relationship between flows and prompts like this: the prompt is the recipe, and the flow is the chef who executes it and serves the final dish.
 
 We want the model to take a user's statement, the conversation history and extract the following:
 
-1. **Transformed query**: The query that will be sent to the vector database to search for relevant documents:
+1. **Transformed query**: The query that will be sent to the vector database to search for relevant documents.
 1. **User Intent**: The intent of the user's latest statement. Did the user issue a greeting to the chatbot (GREET), end the conversation (END_CONVERSATION), make a request to the chatbot (REQUEST), respond to the chatbot's question (RESPONSE), ackowledge a chatbot's statement (ACKNOWLEDGE), or is it unclear (UNCLEAR). The reason we do this is to prevent a call to the vector DB if the user is not searching for anything. The application only performs a search if the intent is REQUEST or RESPONSE.
 1. Optional **Justification**:  General explanation of the overall output. This will help you understand why the model made its suggestions and help you debug and improve your prompt.
 
