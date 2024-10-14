@@ -1212,11 +1212,16 @@ The input of:
 
 Now it is time to take the **transformed query** created in the previous steps and search for relevant movies (and their data) in the vector database.
 
-The retriever flow should return a list of documents that are relevant to the user's query.
+We're building a **Retriever** that's integrated into a **Flow**. A *working* retriever takes a user query, transforms it into a vector embedding, and instructs our vector database to search for relevant documents. This process is entirely code-driven and doesn't involve any prompts. We embed the *Retriever* within its own *Flow* (like we did with the prompts in earlier exercises) to create a modular and reusable component for our AI workflow. This allows us to organize the retrieval process, provide context to the retriever, and add flexibility in how we handle the retrieved documents. It also improves the testability of our application by allowing us to test the retrieval process independently.
+The retriver defined in our code is just a skeleton and doesn't perform any embedding creation or searches on the postgres db. You will be implementing the necessary functionality to do that in this challenge.
+The *finished* retriever flow should return a list of documents that are relevant to the user's query.
+
+The retriever also doesn't interact with a LLM. Instead it will work with an embedding model to generate a vector representation of the query.
+
 You need to perform the following steps:
 
-1. Write code that takes the query and transforms it into a vector embedding. This is because the vector db searches for  vectors and not text. So, you take your textual-query and transform it into a vector so that the db can return documents that have a similar representation to your search vector.
-1. Perform a search on the vector db based on the embedding and retrive the following elements for each relevant movie (plot, title, actors, director, rating, runtime_mins, poster, released, content, genre).
+1. Write code that takes the query and transforms it into a vector embedding. This is because the vector db searches for *vectors* and not for *text*. So, you take your textual-query and transform it into a vector so that the db can return documents that have a similar representation to your search vector.
+2. Perform a search on the vector db based on the embedding and retrieve the following elements for each relevant movie (plot, title, actors, director, rating, runtime_mins, poster, released, content, genre).
 
 You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue.
 
@@ -1234,13 +1239,17 @@ You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on
 1. Go to **chat_server_go/cmd/standaloneFlows/docRetrieverFlow.go**. You should see code that looks like this in the method **DefineRetriever**. This retriever just returns an empty document list.
 
     ```go
+    // define the retriever
     func DefineRetriever(maxRetLength int, db *sql.DB, embedder ai.Embedder) ai.Retriever {
      f := func(ctx context.Context, req *ai.RetrieverRequest) (*ai.RetrieverResponse, error) {
+      // create a default empty response
       retrieverResponse := &ai.RetrieverResponse{
        Documents: make([]*ai.Document, 0, maxRetLength),
       }
+            // returning the default response
             return retrieverResponse, nil
      }
+     // return the retriever
      return ai.DefineRetriever("pgvector", "movieRetriever", f)
     }
     ```
@@ -1249,7 +1258,7 @@ You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on
 
     ```json
     {
-        "query": "Good movie"
+        "query": "horror movie"
     }
     ```
 
@@ -1261,7 +1270,7 @@ You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on
     }
     ```
 
-1. Edit the code to search for an retriver the relevant documents. See the instructions and hints in the code.
+1. Edit the code to search for an retriver the relevant documents. See the instructions and hints in the code for guidance.
 
 #### TypeScript
 
@@ -1275,18 +1284,19 @@ You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on
 1. Go to **js/flows-js/src/docRetriever.ts**. You should see code that looks like this in the method **defineRetriever**. This retriever just returns an empty document list.
 
     ```ts
+    // define the retriever
     const sqlRetriever = defineRetriever(
       {
         name: 'movies',
         configSchema: RetrieverOptionsSchema,
       },
       async (query, options) => {
-        const db = await OpenDB();
+        const db = await openDB();
         if (!db) {
           throw new Error('Database connection failed');
         }
         return {
-        // returns empty list
+        // returns empty document list
           documents: [] as Document[],
         };
       }
@@ -1297,7 +1307,7 @@ You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on
 
     ```json
     {
-        "query": "drama movie"
+        "query": "horror movie"
     }
     ```
 
@@ -1307,7 +1317,7 @@ You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on
      []
     ```
 
-1. Edit the code to search for relevant documents and return the documents. See the instructions and hints in the code.
+1. Edit the code to search for relevant documents and return these documents. See the instructions and hints in the code for guidance.
 
 ### Success Criteria
 
