@@ -244,7 +244,7 @@ The **movies** table has the following columns:
 
 Look at the **chat_server_go/pkg/flows/indexer.go** file. This module is called by **chat_server_go/cmd/indexer/main.go**
 You'll need to edit **chat_server_go/pkg/flows/indexer.go** file to upload the required data successfully.
-There are instructions hints in the file to help you proceed.
+There are instructions and hints in the file to help you proceed.
 
 - Once you think you have accomplished what you need to do, run the following command to start the indexer and let it upload data to the **movies** table.
 - You can always run it intermediately if you want to verify something.  
