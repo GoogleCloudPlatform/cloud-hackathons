@@ -400,7 +400,9 @@ For these challenges, you do not need to have the full **Movie Guru** app runnin
 - Then press **ENTER** as instructed (this is the interactive step mentioned earlier). This should start the genkit server inside the container at port 4000 which we forward to port **4002** to your host machine (in the docker compose file).
 
 > **Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4002.
+
 ![webpreview](images/webpreview.png)
+
 > **Note**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
 **Please be patient**.
 
