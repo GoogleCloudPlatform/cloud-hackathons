@@ -124,7 +124,7 @@ Step 3:
 - Setup the local postgres database. This will create a pgvector instance, a db (fake-movies-db), 2 tables (movies, user_preferences), 2 users (main, minimal-user).
 - Crucially, it also creates an hnsw index for the embedding column in the movies table.
 
->**Note**: We create an index on our vector column (**embedding**) to speed up similarity searches. Without an index, the database would have to compare the query vector to every single vector in the table, which is very slow. An index allows the database to quickly find the most similar vectors by organizing the data in a way that optimizes these comparisons. We chose the **HNSW** (Hierarchical Navigable Small World) index because it offers a good balance of speed and accuracy. Additionally, we use **cosine similarity** as the distance metric to compare the vectors, as it's well-suited for text-based embeddings and focuses on the conceptual similarity of the text.
+>**Note**: We create an index on our vector column (**embedding**) to speed up similarity searches. Without an index, the database would have to compare the query vector to every single vector in the table, which is not optimal. An index allows the database to quickly find the most similar vectors by organizing the data in a way that optimizes these comparisons. We chose the **HNSW** (Hierarchical Navigable Small World) index because it offers a good balance of speed and accuracy. Additionally, we use **cosine similarity** as the distance metric to compare the vectors, as it's well-suited for text-based embeddings and focuses on the conceptual similarity of the text.
 
 - It also sets up **adminer**, lightweight tool for managing databases.  
 
@@ -132,14 +132,15 @@ Step 3:
      docker compose -f docker-compose-pgvector.yaml up -d
      ```
 
->**Note**: If you are using the GCP **CloudShell Editor**, click on the webpreview button and change the port to 8082.
-
-![webpreview](images/webpreview.png)
-
 Step 4:
 
 - Connect to the database.
 - Go to <http://locahost:8082> to open the **adminer** interface.
+
+>**Note**: If you are using the GCP **CloudShell Editor**, click on the **webpreview** button and change the port to 8082.
+
+![webpreview](images/webpreview.png)
+
 - Log in to the database using the following details:
   - Username: main
   - Password: mainpassword
