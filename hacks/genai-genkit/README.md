@@ -571,13 +571,14 @@ Genkit Tools UI: http://localhost:4000
 1. Go to **js/flows-js/src/prompts.ts**. You should see code that looks like this in the method **getPrompts()**.
 
     ```ts
-    // Look at the prompt in the code file, markdown might not render it properly.
+    {% raw %}
     export const UserProfilePromptText = 
       `
       Inputs: 
       1. Optional Message 0 from agent: {{agentMessage}}
       2. Required Message 1 from user: {{query}}
       `
+    {% endraw %}    
     ```
 
 1. Keep this file (prompts.ts) open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
@@ -785,7 +786,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
 1. Go to **chat_server_go/cmd/standaloneFlows/main.go**. You should see code that looks like this in the method **getPrompts()**.
 
     ```go
-    // Look at the prompt in the code file, markdown might not render it properly.
+    {% raw %}
     queryTransformPrompt :=
     `
     This is the user profile. This expresses their long-term likes and dislikes:
@@ -798,6 +799,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     {{userMessage}}
     Translate the user's message into a different language of your choice.
     `
+    {% endraw %}
     ```
 
 1. Keep this file (main.go) open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
@@ -906,7 +908,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 1. Go to **js/flows-js/src/prompts.ts**. You should see code that looks like this in the method **getPrompts()**.
 
     ```ts
-    // Look at the prompt in the code file, markdown might not render it properly.
+    {% raw %}
     export const QueryTransformPromptText = `
     Here are the inputs:
     * userProfile: (May be empty)
@@ -924,6 +926,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     * history: (May be empty)
         {{#each history}}{{this.role}}: {{this.content}}{{~/each}}
     `
+    {% endraw %}
     ```
 
 > **Note**: When using Genkit dotprompts with Typescript, any elements of type zod.array() need to be rolled out in the prompt, else the object is not passed along to the model. While in GoLang, you can send the entire object as a single entity.
@@ -1409,7 +1412,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
 1. Go to **chat_server_go/cmd/standaloneFlows/main.go** and look at the movie flow prompt
 
     ```golang
-    // Look at the prompt in the code file, markdown might not render it properly.
+    {% raw %}
     movieFlowPrompt := `
       Here are the inputs:
          * Context retrieved from vector db:
@@ -1425,6 +1428,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
          {{userMessage}}
       Translate the user's message into a random language.
     `
+    {% endraw %}
     ```
 
 1. Go to the Genkit UI and find **Prompts/dotPrompt/movieFlow**. Enter the following in the input and run the prompt.
@@ -1479,7 +1483,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 1. Go to **js/flows-js/src/prompts.ts** and look at the movie flow prompt.
 
     ```ts
-    // Look at the prompt in the code file, markdown might not render it properly.
+    {% raw %}    
     export const MovieFlowPromptText =  ` 
     Here are the inputs:
     * userPreferences: (May be empty)
@@ -1487,6 +1491,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     * history: (May be empty)
     * Context retrieved from vector db (May be empty):
     `
+    {% endraw %}
     ```
 
 1. Go to the genkit ui and find **Prompts/movieFlow**. Enter the following in the input and run the prompt.
