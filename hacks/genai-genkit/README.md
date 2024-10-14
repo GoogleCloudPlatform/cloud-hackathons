@@ -446,6 +446,7 @@ Genkit Tools UI: http://localhost:4000
 1. Go to **chat_server_go/cmd/standaloneFlows/main.go**. You should see code that looks like this in the method **getPrompts()**.
 
     ```golang
+    // Look at the prompt in the code file, markdown might not render it properly.
     userProfilePrompt :=
       `
       Inputs: 
@@ -570,6 +571,7 @@ Genkit Tools UI: http://localhost:4000
 1. Go to **js/flows-js/src/prompts.ts**. You should see code that looks like this in the method **getPrompts()**.
 
     ```ts
+    // Look at the prompt in the code file, markdown might not render it properly.
     export const UserProfilePromptText = 
       `
       Inputs: 
@@ -783,7 +785,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
 1. Go to **chat_server_go/cmd/standaloneFlows/main.go**. You should see code that looks like this in the method **getPrompts()**.
 
     ```go
-    // Look at the code file. The rendering may not be correct in the readme.
+    // Look at the prompt in the code file, markdown might not render it properly.
     queryTransformPrompt :=
     `
     This is the user profile. This expresses their long-term likes and dislikes:
@@ -903,8 +905,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 
 1. Go to **js/flows-js/src/prompts.ts**. You should see code that looks like this in the method **getPrompts()**.
 
-    ```text
-    // Look at the prompt in the ts file, markdown might not render it properly.
+    ```ts
+    // Look at the prompt in the code file, markdown might not render it properly.
     export const QueryTransformPromptText = `
     Here are the inputs:
     * userProfile: (May be empty)
@@ -1476,8 +1478,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 
 1. Go to **js/flows-js/src/prompts.ts** and look at the movie flow prompt.
 
-    ```text
-    // Look at the prompt in the ts file, markdown might not render it properly.
+    ```ts
+    // Look at the prompt in the code file, markdown might not render it properly.
     export const MovieFlowPromptText =  ` 
     Here are the inputs:
     * userPreferences: (May be empty)
