@@ -163,14 +163,15 @@ BQ_DATASET=dwh
 bq mk --location=$REGION -d $BQ_DATASET
 ```
 
-See below for an example, but just like the previous examples, there are multiple options (left joins are fine, and probably better, too). Note that the configuration below contains some additional things such as partitioning, clustering (with an example column), primary and foreign keys. Those are not required, but if the participants are knowledgeable about other SQL dialects, they're worth pointing out.
+See below for an example, but just like the previous examples, there are multiple options (left joins are fine, and probably better, too). This might be good moment to explain partitioning and clustering if participants are not familiar with the concepts. We're using `order_date` which is a date column as the partition column in this table. We could've used the `order_date_key` too, but then we'd have to use integer range partitioning and bucket things, which (for dates, and certainly for hash values) is not very efficient as there's a maximum of 10K partitions per table. For clustering, it's important to note that typically columns that are often used for joins for lookups are selected and the order matters! You should use the most often used column as the first cluster column. For this challenge we're just using `product_key` as the example.
+
+Also note that BigQuery doesn't enforce primary & foreign key constraints, but they're used as hints for optimizing joins.
 
 ```sql
 config {
     type: "table",
     schema: "dwh",
     tags: ["fact"],
-    -- this part is optional
     bigquery: {
       partitionBy: "order_date",
       clusterBy: ["product_key"]
@@ -185,7 +186,7 @@ SELECT
   ${keys.surrogate("ship_to_address_id")} AS ship_address_key,
   ${keys.surrogate("status")} AS order_status_key,
   ${keys.surrogate("order_date")} AS order_date_key,
-  soh.order_date, -- optional, only needed if used for partitioning
+  soh.order_date, 
   sod.unit_price,
   sod.unit_price_discount,
   p.standard_cost AS cost_of_goods_sold,
@@ -200,7 +201,6 @@ WHERE
   sod.sales_order_id = soh.sales_order_id
   AND sod.product_id = p.product_id
 
--- this part is optional as well
 post_operations {
   ${keys.primary(ctx, "sales_key")}
   ${keys.foreign(ctx, ref("dim_product"), "product_key")}
@@ -223,7 +223,6 @@ config {
     type: "table",
     schema: "dwh",
     tags: ["obt"]
-    -- this part is optional
     bigquery: {
       partitionBy: "order_date"
     }
