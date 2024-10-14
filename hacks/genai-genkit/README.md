@@ -124,7 +124,7 @@ Step 3:
 - Setup the local postgres database. This will create a pgvector instance, a db (fake-movies-db), 2 tables (movies, user_preferences), 2 users (main, minimal-user).
 - Crucially, it also creates an hnsw index for the embedding column in the movies table.
 
->**Note**: We create an index on our vector column (**embedding**) to speed up similarity searches. Without an index, the database would have to compare the query vector to every single vector in the table, which is not optimal. An index allows the database to quickly find the most similar vectors by organizing the data in a way that optimizes these comparisons. We chose the **HNSW** (Hierarchical Navigable Small World) index because it offers a good balance of speed and accuracy. Additionally, we use **cosine similarity** as the distance metric to compare the vectors, as it's well-suited for text-based embeddings and focuses on the conceptual similarity of the text.
+> **Note**: We create an index on our vector column (**embedding**) to speed up similarity searches. Without an index, the database would have to compare the query vector to every single vector in the table, which is not optimal. An index allows the database to quickly find the most similar vectors by organizing the data in a way that optimizes these comparisons. We chose the **HNSW** (Hierarchical Navigable Small World) index because it offers a good balance of speed and accuracy. Additionally, we use **cosine similarity** as the distance metric to compare the vectors, as it's well-suited for text-based embeddings and focuses on the conceptual similarity of the text.
 
 - It also sets up **adminer**, lightweight tool for managing databases.  
 
@@ -137,7 +137,7 @@ Step 4:
 - Connect to the database.
 - Go to <http://locahost:8082> to open the **adminer** interface.
 
->**Note**: If you are using the GCP **CloudShell Editor**, click on the **webpreview** button and change the port to 8082.
+> **Note**: If you are using the GCP **CloudShell Editor**, click on the **webpreview** button and change the port to 8082.
 
 ![webpreview](images/webpreview.png)
 
@@ -217,7 +217,7 @@ Step 7:
     source set_env_vars.sh
     ```
 
-    >**Note**: You will need to re-run this each time you execute something from a new terminal instance.
+    > **Note**: You will need to re-run this each time you execute something from a new terminal instance.
 
 Now you are ready to start the challenges.
 
@@ -399,7 +399,7 @@ For these challenges, you do not need to have the full **Movie Guru** app runnin
 
 - Then press **ENTER** as instructed (this is the interactive step mentioned earlier). This should start the genkit server inside the container at port 4000 which we forward to port **4002** to your host machine (in the docker compose file).
 
->**Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4002.
+> **Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4002.
 ![webpreview](images/webpreview.png)
 > **Note**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
 **Please be patient**.
@@ -499,7 +499,7 @@ For this challenge, you do not need to have the ****Movie Guru**** app running, 
 
 - This should open up a shell inside the container at the location **/app**.
 
->**Note**: In the docker compose file, we mount the local directory **js/flows-js** into the container at **/app**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
+> **Note**: In the docker compose file, we mount the local directory **js/flows-js** into the container at **/app**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
 
 - Inside the container, run
 
@@ -553,7 +553,7 @@ Genkit Tools UI: http://localhost:4000
 
     ![Genkit UI JS](images/genkit-js.png)
 
-    >**Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4003.
+    > **Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4003.
     ![webpreview](images/webpreview.png)
 
 > **WARNING: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens, go to **js/flows-js/src/index.ts**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
@@ -913,7 +913,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     `
     ```
 
->**Note**: When using Genkit dotprompts with Typescript, any elements of type zod.array() need to be rolled out in the prompt, else the object is not passed along to the model. While in GoLang, you can send the entire object as a single entity.
+> **Note**: When using Genkit dotprompts with Typescript, any elements of type zod.array() need to be rolled out in the prompt, else the object is not passed along to the model. While in GoLang, you can send the entire object as a single entity.
 
 1. Keep this file open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
 1. From the Genkit UI, go to **Prompts/queryTransformFlow**.
