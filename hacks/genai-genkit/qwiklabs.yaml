@@ -14,12 +14,12 @@
 schema_version: 2
 default_locale: en
 title: "[gHacks] GenAI App Development with Genkit"
-description: ""
+description: "Learn how to create and deploy a GenAI application with Google Cloud and Firebase Genkit."
 instruction:
   type: md
   uri: instructions/en.md
-duration: 480
-max_duration: 600
+duration: 420
+max_duration: 420
 credits: 0
 level: fundamental
 tags:

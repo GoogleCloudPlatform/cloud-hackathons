@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Learn how to create and deploy a generative AI application with Google Cloud's Genkit and Firebase.
+Learn how to create and deploy a GenAI application with Google Cloud and Firebase Genkit.
 This hands-on example provides skills transferable to other GenAI frameworks.
 
 You will learn how create the GenAI components that power the ****Movie Guru**** application.
@@ -15,8 +15,8 @@ Watch the video below to see what it does and understand the flows you will be b
 
 In this hack you will learn how to:
 
-   1. Vectorise a simple dataset and add it to a vector database (postgres PGVector).
-   1. Create a flow using Genkit that anaylses a user's statement and extract's their long term preferences and dislikes.
+   1. Vectorise a simple dataset and add it to a vector database (Postgres PGVector).
+   1. Create a flow using Genkit that anaylses a user's statement and extracts their long term preferences and dislikes.
    1. Create a flow using Genkit that summarises the conversation with the user and transform's the user's latest query into one that can be used by a vector database.
    1. Create a flow using Genkit that takes the transformed query and retrieves relevant documents from the vector database.
    1. Create a flow using Genkit that takes the retrieved documents, conversation history and the user's latest query and formulates a relevant response to the user.
@@ -24,9 +24,9 @@ In this hack you will learn how to:
 ## Challenges
 
 - Challenge 1: Upload the data to the vector database
-  - Create an embedding for each entry in the dataset (discussed later), and upload the data to a vector database using the predefined schema. Do this using a Genkit flow.
+  - Using a Genkit flow, create an embedding for each entry in the dataset (discussed later), and upload the data to a vector database using the predefined schema.
 - Challenge 2: Your first flow that analyses the user's input
-  - Create a flow that takes the user's latest input and make sure you extract *any* long term preference or dislike.
+  - Create a flow that takes the user's latest input and extract *any* long term preference or dislike.
 - Challenge 3: Create vector searchable queries
 - Challenge 4: Update the retriever to fetch documents
 - Challenge 5: The full RAG flow
@@ -39,8 +39,7 @@ In this hack you will learn how to:
 - gCloud **CloudShell Terminal** **OR**
 - Local IDE (like VSCode) with [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/)  
 
-> **Warning**:
-    - With **CloudShell Terminal** you cannot get the front-end to talk to the rest of the components, so viewing the full working app locally is difficult, but this doesn't affect the challenges.
+> **Warning** With **CloudShell Terminal** you cannot get the front-end to talk to the rest of the components, so viewing the full working app locally is difficult, but this doesn't affect the challenges.
 
 ## Contributors
 
@@ -53,7 +52,7 @@ In this hack you will learn how to:
 
 This is one of the most complex challenges. This should take approximately **45 minutes**.
 
-The goal of this challenge is to insert the movie data, along with the vector embeddings into the database, under the table **movies**. Each movie's data is stored along with a vector representation of its relevant fields in a row. When performing a vector search, the vector representing the search query sent to the db, and the db returns similar vectors. Along with these vectors, we ask postgres to also send the other fields that are interesting to us (such as the movie title, actors, plot etc.).
+The goal of this challenge is to insert the movie data, along with the vector embeddings into the database, under the table **movies**. Each movie's data is stored along with a vector representation of its relevant fields in a row. When performing a vector search, the vector representing the search query sent to the db, and the db returns similar vectors. Along with these vectors, we ask Postgres to also send the other fields that are interesting to us (such as the movie title, actors, plot etc.).
 
 This challenge includes creating an embedding per movie, and uploading the remainder of the metadata for each movie into each row. A row will look like this.
 
@@ -121,7 +120,7 @@ Step 3:
      docker network create db-shared-network
      ```
 
-- Setup the local postgres database. This will create a pgvector instance, a db (fake-movies-db), 2 tables (movies, user_preferences), 2 users (main, minimal-user).
+- Setup the local Postgres database. This will create a pgvector instance, a db (fake-movies-db), 2 tables (movies, user_preferences), 2 users (main, minimal-user).
 - Crucially, it also creates an hnsw index for the embedding column in the movies table.
 
 > **Note**: We create an index on our vector column (**embedding**) to speed up similarity searches. Without an index, the database would have to compare the query vector to every single vector in the table, which is not optimal. An index allows the database to quickly find the most similar vectors by organizing the data in a way that optimizes these comparisons. We chose the **HNSW** (Hierarchical Navigable Small World) index because it offers a good balance of speed and accuracy. Additionally, we use **cosine similarity** as the distance metric to compare the vectors, as it's well-suited for text-based embeddings and focuses on the conceptual similarity of the text.
@@ -157,7 +156,7 @@ Step 5:
   
 - Paste the following commands there and click **Execute**.
 
-    ```SQL
+    ```sql
     CREATE EXTENSION IF NOT EXISTS vector;
     
     CREATE TABLE IF NOT EXISTS movies (
@@ -238,9 +237,9 @@ The **movies** table has the following columns:
 - **actors**: A character varying string containing comma-separated actors.
 - **embedding**: A user-defined data type to store vector embeddings of the movies.
 
-> **Note**: You can do this exercise with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue.
+You can do this exercise with [*GoLang*](#golang-indexer-flow) or [*TypeScript*](#typescript-indexer-flow). Refer to the specific sections on how to continue.
 
-#### GoLang
+#### GoLang Indexer Flow
 
 Look at the **chat_server_go/pkg/flows/indexer.go** file. This module is called by **chat_server_go/cmd/indexer/main.go**
 You'll need to edit **chat_server_go/pkg/flows/indexer.go** file to upload the required data successfully.
@@ -259,7 +258,7 @@ There are instructions and hints in the file to help you proceed.
 
 - If at any point you want to clear the entire table, run the following command in **adminer**.
 
-    ```SQL
+    ```sql
     TRUNCATE TABLE movies;
     ```
 
@@ -270,7 +269,7 @@ There are instructions and hints in the file to help you proceed.
     docker compose -f docker-compose-indexer.yaml down indexer-go
     ```
 
-#### TypeScript
+#### TypeScript Indexer Flow
 
 Look at the **js/indexer/src/indexerFlow.ts** file. You'll need to edit it to upload the required data successfully.
 There are instructions and hints in the file to help you proceed.
@@ -287,7 +286,7 @@ There are instructions and hints in the file to help you proceed.
 
 - (OPTIONAL) If at any stage you want to clear the table because you made a mistake, you can run the following command in **adminer**.
 
-    ```SQL
+    ```sql
     TRUNCATE TABLE movies;
     ```
 
@@ -304,9 +303,8 @@ There are instructions and hints in the file to help you proceed.
 
 - The **movies** table contains **652** entries. You can verify this by running the following command in the **adminer**:
 
-    ```SQL
-    SELECT COUNT(*)
-    FROM "movies";
+    ```sql
+    SELECT COUNT(*) FROM "movies";
     ```
 
 - Each entry should contain a vector embedding in the **embedding** field.
@@ -324,7 +322,7 @@ There are instructions and hints in the file to help you proceed.
 
 ### Introduction
 
-Remember that the **Movie Guru** app presents the user with a list of their long-term likes and dislikes. The app learns this by analysing the user's conversation for utterances of their preferences and extracts them. The app stores these extracted preferences in the postgres db and retrieves them whenever the user loads the app. In this challenge, you will be building the flow that does the analysis and extraction (persisting to the db is not a part of this challenge).
+Remember that the **Movie Guru** app presents the user with a list of their long-term likes and dislikes. The app learns this by analysing the user's conversation for utterances of their preferences and extracts them. The app stores these extracted preferences in the Postgres db and retrieves them whenever the user loads the app. In this challenge, you will be building the flow that does the analysis and extraction (persisting to the db is not a part of this challenge).
 
 This is your first prompt engineering challenge. The goal is to create the prompt (dotPrompt) required to extract strong preferences and dislikes from the user's statement.
 We want the model to take a user's statement, and potentially the agent's previous statement (if there is one) and extract the following:
@@ -347,13 +345,15 @@ You need to perform the following steps:
 Dotprompts are a way to write and manage your AI prompts like code. They're special files that let you define your prompt template, input and output types (could be basic types like strings or more complex custom types), and model settings all in one place. Unlike regular prompts, which are just text, Dotprompts allow you to easily insert variables and dynamic data using [Handlebars](https://handlebarsjs.com/guide/) templating. This means you can create reusable prompts that adapt to different situations and user inputs, making your AI interactions more personalized and effective.
 This makes it easy to version, test, and organize your prompts, keeping them consistent and improving your AI results.
 
-The working **Movie Guru** app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
+> **Note** The working **Movie Guru** app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
 
 ### Description
 
 Genkit provides a CLI and a GUI that work together to help you develop and manage generative AI components. They are tools designed to streamline your workflow and make building with LLMs more efficient. We're going to set it up in this step and keep using it for the remainder of the challenges.
 
-#### GoLang
+You can do this with [*GoLang*](#golang-basic-flow) or [*TypeScript*](#typescript-basic-flow). Refer to the specific sections on how to continue.
+
+#### GoLang Basic Flow
 
 ##### Pre-requisites
 
@@ -439,7 +439,8 @@ Genkit Tools UI: http://localhost:4000
 
     ![Genkit UI Go](images/genkit-go.png)
 
-> **WARNING: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens,  go to **chat_server_go/cmd/standaloneFlows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
+> **Warning**  
+> **Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens,  go to **chat_server_go/cmd/standaloneFlows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
 
 ##### Challenge-steps
 
@@ -473,7 +474,7 @@ Genkit Tools UI: http://localhost:4000
 1. The model should respond by greeting you in a random language (this is what the prompt asks it to do).
 1. You need to rewrite the prompt (in main.go) and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **main.go** and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters.
 
-#### TypeScript
+#### TypeScript Basic Flow
 
 ##### Prerequisites
 
@@ -564,7 +565,8 @@ Genkit Tools UI: http://localhost:4000
     > **Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4003.
     ![webpreview](images/webpreview.png)
 
-> **WARNING: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens, go to **js/flows-js/src/index.ts**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
+> **Warning**  
+> **Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens, go to **js/flows-js/src/index.ts**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
 
 ##### Challenge-steps
 
@@ -771,11 +773,11 @@ You need to perform the following steps:
 1. Use the Genkit UI (see steps below) to test the response of the model and make sure it returns what you expect.
 1. After the prompt does what you expect, then update the flow to use the prompt and return an output of the type **QueryTransformFlowOutput**
 
-You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue.
+You can do this with [*GoLang*](#golang-query-transform-flow) or [*TypeScript*](#typescript-query-transform-flow). Refer to the specific sections on how to continue.
 
 ### Description
 
-#### GoLang
+#### GoLang Query Transform Flow
 
 ##### Pre-requisites
 
@@ -897,7 +899,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     }
     ```
 
-#### TypeScript
+#### TypeScript Query Transform Flow
 
 ##### Pre-requisites
 
@@ -1218,7 +1220,7 @@ The input of:
 Now it is time to take the **transformed query** created in the previous steps and search for relevant movies (and their data) in the vector database.
 
 We're building a **Retriever** that's integrated into a **Flow**. A *working* retriever takes a user query, transforms it into a vector embedding, and instructs our vector database to search for relevant documents. This process is entirely code-driven and doesn't involve any prompts. We embed the *Retriever* within its own *Flow* (like we did with the prompts in earlier exercises) to create a modular and reusable component for our AI workflow. This allows us to organize the retrieval process, provide context to the retriever, and add flexibility in how we handle the retrieved documents. It also improves the testability of our application by allowing us to test the retrieval process independently.
-The retriver defined in our code is just a skeleton and doesn't perform any embedding creation or searches on the postgres db. You will be implementing the necessary functionality to do that in this challenge.
+The retriver defined in our code is just a skeleton and doesn't perform any embedding creation or searches on the Postgres db. You will be implementing the necessary functionality to do that in this challenge.
 The *finished* retriever flow should return a list of documents that are relevant to the user's query.
 
 The retriever also doesn't interact with a LLM. Instead it will work with an embedding model to generate a vector representation of the query.
@@ -1228,11 +1230,11 @@ You need to perform the following steps:
 1. Write code that takes the query and transforms it into a vector embedding. This is because the vector db searches for *vectors* and not for *text*. So, you take your textual-query and transform it into a vector so that the db can return documents that have a similar representation to your search vector.
 2. Perform a search on the vector db based on the embedding and retrieve the following elements for each relevant movie (plot, title, actors, director, rating, runtime_mins, poster, released, content, genre).
 
-You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue.
+You can do this with [*GoLang*](#golang-retriever-flow) or [*TypeScript*](#typescript-retriever-flow). Refer to the specific sections on how to continue.
 
 ### Description
 
-#### GoLang
+#### GoLang Retriever FLow
 
 ##### Pre-requisites
 
@@ -1277,7 +1279,7 @@ You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on
 
 1. Edit the code to search for an retriver the relevant documents. See the instructions and hints in the code for guidance.
 
-#### TypeScript
+#### TypeScript Retriever Flow
 
 ##### Pre-requisites
 
@@ -1399,9 +1401,9 @@ You need to perform the following steps:
 
 1. The **Movie Guru** app has fully fictional data. No real movies, actors, directors are used. You want to make sure that the model doesn't start returning data from the movies in the real world. To do this, you will need to instruct the model to only use data from the context documents you send.
 
-You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue.
+You can do this with [*GoLang*](#golang-rag-flow) or [*TypeScript*](#typescript-rag-flow). Refer to the specific sections on how to continue.
 
-#### GoLang
+#### GoLang RAG Flow
 
 ##### Pre-requisites
 
@@ -1472,7 +1474,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
 
 2. Edit the prompt to achieve the task described in the introduction.
 
-#### TypeScript
+#### TypeScript RAG Flow
 
 ##### Pre-requisites
 

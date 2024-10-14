@@ -32,7 +32,9 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 - [Modernizing the Monolith: Containerizing and Deploying to Kubernetes](./hacks/modernizing-monoliths/README.md)
   > Learn Docker and GKE with a web application that you can play! You will compose your own Dockerfile to containerize an existing web application and get practice in creating a cluster, creating node pools, and running deployments and services.
 - [Ready, Steady, Cloud Run!](./hacks/cloud-run/README.md)
-  > We'll be using Cloud Run to quickly configure, deploy and troubleshoot a web service. During the process we'll introduce different ways to store data for the web service and learn about how to discover and fix issues. 
+  > We'll be using Cloud Run to quickly configure, deploy and troubleshoot a web service. During the process we'll introduce different ways to store data for the web service and learn about how to discover and fix issues.
+- [GenAI App Development with Genkit](./hacks/genai-genkit/README.md)
+  > Learn how to create and deploy a GenAI application with Google Cloud and Firebase Genkit.
 
 ### Industry Solutions
 - [Gaming on Google Cloud](./hacks/gaming-on-gcp/README.md)
