@@ -146,15 +146,16 @@ Dimensional modeling is a data warehousing technique that organizes data into fa
 
 We're going to create a **star schema** by extracting *dimension* tables and a *fact* table from the *staging* tables that have been created in the previous challenge. First you need to create another dataset and call it `dwh`.
 
-We have already provided the code for the dimension tables, first run the pipeline for the tag `dimension` and then create a new `fact_sales.sqlx` file in the same folder, configure it with the tag `fact` and create the fact table with the following columns:
+We have already provided the code for the dimension tables, first run the pipeline for the tag `dimension` to generate the dimension tables. Then create a new `fact_sales.sqlx` file in the same folder as the dimension tables, configure it with the tag `fact`, `order_date` as the partition column and `product_key` as the clustering column. Include the following columns in the the fact table:
 
 - `sales_key`  (surrogate key built out of `sales_order_id` and `sales_order_detail_id`)
-- `product_key` (surrogate key built out of `product_id`)
+- `product_key` (surrogate key built out of `product_id`, to be used for clustering)
 - `customer_key` (surrogate key built out of `customer_id`)
 - `credit_card_key` (surrogate key built out of `credit_card_id`)
 - `ship_address_key` (surrogate key built out of `ship_to_address_id`)
 - `order_status_key` (surrogate key built out of `status`)
 - `order_date_key` (surrogate key built out of `order_date`)
+- `order_date` (to be used for the partitioning)
 - `unit_price`
 - `unit_price_discount`
 - `cost_of_goods_sold` (retrieved from `stg_products` table, `standard_cost` column)
@@ -162,22 +163,33 @@ We have already provided the code for the dimension tables, first run the pipeli
 - `gross_revenue` (calculated by multiplying `unit_price` with `order_quantity`)
 - `gross_profit` (calculated by subtracting discounts and costs of goods sold from `gross_revenue`)
 
+Add the `sales_key` as the primary key and create foreign key references for all of the dimensions referenced through the surrogate keys.
+
 Once the configuration is complete run the Dataform pipeline with the tag `fact` and commit your changes.
+
+> **Note** If you've created the fact table with no or a different partition column, you'll have to drop it first manually before you can run the Dataform pipeline with the `fact` tag.
 
 ### Success Criteria
 
 - There is a new BigQuery dataset `dwh` in the same region as the other datasets.
 - There's a successful execution of the provided Dataform pipeline for the `fact` tag.
-- There are dimension tables and a new fact table, `fact_sales` in the `dwh` dataset, with the columns as specified above having in total **121317** rows.
+- There are dimension tables and a new partitioned and clustered fact table, `fact_sales` in the `dwh` dataset, with the columns as specified above having in total **121317** rows.
+- The new fact table has `sales_key` as its primary key, and foreign keys for all of the referenced dimension tables.
 
 ### Learning Resources
 
 - [Creating tables with Dataform](https://cloud.google.com/dataform/docs/define-table)
+- [Create table partitions and clusters with Dataform](https://cloud.google.com/dataform/docs/partitions-clusters)
+- [Defining additional table configurations with Dataform](https://cloud.google.com/dataform/docs/table-settings#execute-sql-after-table)
+- [Introduction to partitioned tables](https://cloud.google.com/bigquery/docs/partitioned-tables)
+- [Introduction to clustered tables](https://cloud.google.com/bigquery/docs/clustered-tables)
+- [More information on primary keys and foreign keys](https://cloud.google.com/blog/products/data-analytics/join-optimizations-with-bigquery-primary-and-foreign-keys)
 
 ### Tips
 
 - Find out which staging tables have the `sales_order_id` and `sales_order_details_id` as their *id* columns. Those tables will be the basis of your fact table (and you'll need *one* more table to complete your join).
 - Note that the discount column is a factor between 0 and 1 (0 being no discount and 1 being a 100% discount).
+- Check the dimension table configurations and the `keys.js` file for inspiration on how to set up the primary and foreign key constraints.
 
 ## Challenge 5: Business Intelligence
 
@@ -189,7 +201,7 @@ Business intelligence (BI) in data warehousing involves using tools and techniqu
 
 We're going to create a new report in *Looker Studio*. Since we're keeping things simple and Looker Studio works better with an *OBT* (one big table), we'll create that as a first step.
 
-Add a new file `obt_sales.sqlx` and configure it to create a new table `obt_sales` in the `dwh` dataset by joining **all** of the dimension tables with the fact table, and add the tag `obt`. Make sure to exclude all of the surrogate keys.
+Add a new file `obt_sales.sqlx` in the same folder as the fact table. Configure it to create a new table `obt_sales` in the `dwh` dataset by joining **all** of the dimension tables with the fact table. Add the tag `obt` to the configuration, configure the table to be partitioned on the `order_date` column and make sure to exclude all of the surrogate keys.
 
 Once the table is created, create a new Looker Studo report using the new table and configure the following charts:
 
@@ -200,7 +212,7 @@ Once the table is created, create a new Looker Studo report using the new table 
 
 ### Success Criteria
 
-- There's a new table `obt_sales` with **121317** records in the `dwh` dataset that joins the dimension tables with the fact table as a result of running the Dataform pipeline with the tag `obt` .
+- There's a new partitioned table `obt_sales` with **121317** records in the `dwh` dataset that joins the dimension tables with the fact table as a result of running the Dataform pipeline with the tag `obt` .
 - There's a new Looker Studio report with the abovementioned charts.
 
 ### Learning Resources
