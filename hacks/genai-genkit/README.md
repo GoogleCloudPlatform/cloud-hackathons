@@ -156,7 +156,7 @@ Step 5:
   
 - Paste the following commands there and click **Execute**.
 
-    ```SQL
+    ```sql
     CREATE EXTENSION IF NOT EXISTS vector;
     
     CREATE TABLE IF NOT EXISTS movies (
@@ -237,9 +237,9 @@ The **movies** table has the following columns:
 - **actors**: A character varying string containing comma-separated actors.
 - **embedding**: A user-defined data type to store vector embeddings of the movies.
 
-> **Note**: You can do this exercise with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue.
+You can do this exercise with [*GoLang*](#golang-indexer-flow) or [*TypeScript*](#typescript-indexer-flow). Refer to the specific sections on how to continue.
 
-#### GoLang
+#### GoLang Indexer Flow
 
 Look at the **chat_server_go/pkg/flows/indexer.go** file. This module is called by **chat_server_go/cmd/indexer/main.go**
 You'll need to edit **chat_server_go/pkg/flows/indexer.go** file to upload the required data successfully.
@@ -258,7 +258,7 @@ There are instructions and hints in the file to help you proceed.
 
 - If at any point you want to clear the entire table, run the following command in **adminer**.
 
-    ```SQL
+    ```sql
     TRUNCATE TABLE movies;
     ```
 
@@ -269,7 +269,7 @@ There are instructions and hints in the file to help you proceed.
     docker compose -f docker-compose-indexer.yaml down indexer-go
     ```
 
-#### TypeScript
+#### TypeScript Indexer Flow
 
 Look at the **js/indexer/src/indexerFlow.ts** file. You'll need to edit it to upload the required data successfully.
 There are instructions and hints in the file to help you proceed.
@@ -286,7 +286,7 @@ There are instructions and hints in the file to help you proceed.
 
 - (OPTIONAL) If at any stage you want to clear the table because you made a mistake, you can run the following command in **adminer**.
 
-    ```SQL
+    ```sql
     TRUNCATE TABLE movies;
     ```
 
@@ -303,9 +303,8 @@ There are instructions and hints in the file to help you proceed.
 
 - The **movies** table contains **652** entries. You can verify this by running the following command in the **adminer**:
 
-    ```SQL
-    SELECT COUNT(*)
-    FROM "movies";
+    ```sql
+    SELECT COUNT(*) FROM "movies";
     ```
 
 - Each entry should contain a vector embedding in the **embedding** field.
@@ -352,7 +351,9 @@ This makes it easy to version, test, and organize your prompts, keeping them con
 
 Genkit provides a CLI and a GUI that work together to help you develop and manage generative AI components. They are tools designed to streamline your workflow and make building with LLMs more efficient. We're going to set it up in this step and keep using it for the remainder of the challenges.
 
-#### GoLang
+You can do this with [*GoLang*](#golang-basic-flow) or [*TypeScript*](#typescript-basic-flow). Refer to the specific sections on how to continue.
+
+#### GoLang Basic Flow
 
 ##### Pre-requisites
 
@@ -473,7 +474,7 @@ Genkit Tools UI: http://localhost:4000
 1. The model should respond by greeting you in a random language (this is what the prompt asks it to do).
 1. You need to rewrite the prompt (in main.go) and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **main.go** and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters.
 
-#### TypeScript
+#### TypeScript Basic Flow
 
 ##### Prerequisites
 
@@ -772,11 +773,11 @@ You need to perform the following steps:
 1. Use the Genkit UI (see steps below) to test the response of the model and make sure it returns what you expect.
 1. After the prompt does what you expect, then update the flow to use the prompt and return an output of the type **QueryTransformFlowOutput**
 
-You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue.
+You can do this with [*GoLang*](#golang-query-transform-flow) or [*TypeScript*](#typescript-query-transform-flow). Refer to the specific sections on how to continue.
 
 ### Description
 
-#### GoLang
+#### GoLang Query Transform Flow
 
 ##### Pre-requisites
 
@@ -898,7 +899,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     }
     ```
 
-#### TypeScript
+#### TypeScript Query Transform Flow
 
 ##### Pre-requisites
 
@@ -1229,11 +1230,11 @@ You need to perform the following steps:
 1. Write code that takes the query and transforms it into a vector embedding. This is because the vector db searches for *vectors* and not for *text*. So, you take your textual-query and transform it into a vector so that the db can return documents that have a similar representation to your search vector.
 2. Perform a search on the vector db based on the embedding and retrieve the following elements for each relevant movie (plot, title, actors, director, rating, runtime_mins, poster, released, content, genre).
 
-You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue.
+You can do this with [*GoLang*](#golang-retriever-flow) or [*TypeScript*](#typescript-retriever-flow). Refer to the specific sections on how to continue.
 
 ### Description
 
-#### GoLang
+#### GoLang Retriever FLow
 
 ##### Pre-requisites
 
@@ -1278,7 +1279,7 @@ You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on
 
 1. Edit the code to search for an retriver the relevant documents. See the instructions and hints in the code for guidance.
 
-#### TypeScript
+#### TypeScript Retriever Flow
 
 ##### Pre-requisites
 
@@ -1400,9 +1401,9 @@ You need to perform the following steps:
 
 1. The **Movie Guru** app has fully fictional data. No real movies, actors, directors are used. You want to make sure that the model doesn't start returning data from the movies in the real world. To do this, you will need to instruct the model to only use data from the context documents you send.
 
-You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue.
+You can do this with [*GoLang*](#golang-rag-flow) or [*TypeScript*](#typescript-rag-flow). Refer to the specific sections on how to continue.
 
-#### GoLang
+#### GoLang RAG Flow
 
 ##### Pre-requisites
 
@@ -1473,7 +1474,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
 
 2. Edit the prompt to achieve the task described in the introduction.
 
-#### TypeScript
+#### TypeScript RAG Flow
 
 ##### Pre-requisites
 
