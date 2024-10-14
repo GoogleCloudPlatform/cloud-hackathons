@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Learn how to create and deploy a generative AI application with Google Cloud's Genkit and Firebase.
+Learn how to create and deploy a GenAI application with Google Cloud and Firebase Genkit.
 This hands-on example provides skills transferable to other GenAI frameworks.
 
 You will learn how create the GenAI components that power the ****Movie Guru**** application.
@@ -15,8 +15,8 @@ Watch the video below to see what it does and understand the flows you will be b
 
 In this hack you will learn how to:
 
-   1. Vectorise a simple dataset and add it to a vector database (postgres PGVector).
-   1. Create a flow using Genkit that anaylses a user's statement and extract's their long term preferences and dislikes.
+   1. Vectorise a simple dataset and add it to a vector database (Postgres PGVector).
+   1. Create a flow using Genkit that anaylses a user's statement and extracts their long term preferences and dislikes.
    1. Create a flow using Genkit that summarises the conversation with the user and transform's the user's latest query into one that can be used by a vector database.
    1. Create a flow using Genkit that takes the transformed query and retrieves relevant documents from the vector database.
    1. Create a flow using Genkit that takes the retrieved documents, conversation history and the user's latest query and formulates a relevant response to the user.
@@ -24,9 +24,9 @@ In this hack you will learn how to:
 ## Challenges
 
 - Challenge 1: Upload the data to the vector database
-  - Create an embedding for each entry in the dataset (discussed later), and upload the data to a vector database using the predefined schema. Do this using a Genkit flow.
+  - Using a Genkit flow, create an embedding for each entry in the dataset (discussed later), and upload the data to a vector database using the predefined schema.
 - Challenge 2: Your first flow that analyses the user's input
-  - Create a flow that takes the user's latest input and make sure you extract *any* long term preference or dislike.
+  - Create a flow that takes the user's latest input and extract *any* long term preference or dislike.
 - Challenge 3: Create vector searchable queries
 - Challenge 4: Update the retriever to fetch documents
 - Challenge 5: The full RAG flow
@@ -39,8 +39,7 @@ In this hack you will learn how to:
 - gCloud **CloudShell Terminal** **OR**
 - Local IDE (like VSCode) with [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/)  
 
-> **Warning**:
-    - With **CloudShell Terminal** you cannot get the front-end to talk to the rest of the components, so viewing the full working app locally is difficult, but this doesn't affect the challenges.
+> **Warning** With **CloudShell Terminal** you cannot get the front-end to talk to the rest of the components, so viewing the full working app locally is difficult, but this doesn't affect the challenges.
 
 ## Contributors
 
@@ -53,7 +52,7 @@ In this hack you will learn how to:
 
 This is one of the most complex challenges. This should take approximately **45 minutes**.
 
-The goal of this challenge is to insert the movie data, along with the vector embeddings into the database, under the table **movies**. Each movie's data is stored along with a vector representation of its relevant fields in a row. When performing a vector search, the vector representing the search query sent to the db, and the db returns similar vectors. Along with these vectors, we ask postgres to also send the other fields that are interesting to us (such as the movie title, actors, plot etc.).
+The goal of this challenge is to insert the movie data, along with the vector embeddings into the database, under the table **movies**. Each movie's data is stored along with a vector representation of its relevant fields in a row. When performing a vector search, the vector representing the search query sent to the db, and the db returns similar vectors. Along with these vectors, we ask Postgres to also send the other fields that are interesting to us (such as the movie title, actors, plot etc.).
 
 This challenge includes creating an embedding per movie, and uploading the remainder of the metadata for each movie into each row. A row will look like this.
 
@@ -121,7 +120,7 @@ Step 3:
      docker network create db-shared-network
      ```
 
-- Setup the local postgres database. This will create a pgvector instance, a db (fake-movies-db), 2 tables (movies, user_preferences), 2 users (main, minimal-user).
+- Setup the local Postgres database. This will create a pgvector instance, a db (fake-movies-db), 2 tables (movies, user_preferences), 2 users (main, minimal-user).
 - Crucially, it also creates an hnsw index for the embedding column in the movies table.
 
 > **Note**: We create an index on our vector column (**embedding**) to speed up similarity searches. Without an index, the database would have to compare the query vector to every single vector in the table, which is not optimal. An index allows the database to quickly find the most similar vectors by organizing the data in a way that optimizes these comparisons. We chose the **HNSW** (Hierarchical Navigable Small World) index because it offers a good balance of speed and accuracy. Additionally, we use **cosine similarity** as the distance metric to compare the vectors, as it's well-suited for text-based embeddings and focuses on the conceptual similarity of the text.
@@ -324,7 +323,7 @@ There are instructions and hints in the file to help you proceed.
 
 ### Introduction
 
-Remember that the **Movie Guru** app presents the user with a list of their long-term likes and dislikes. The app learns this by analysing the user's conversation for utterances of their preferences and extracts them. The app stores these extracted preferences in the postgres db and retrieves them whenever the user loads the app. In this challenge, you will be building the flow that does the analysis and extraction (persisting to the db is not a part of this challenge).
+Remember that the **Movie Guru** app presents the user with a list of their long-term likes and dislikes. The app learns this by analysing the user's conversation for utterances of their preferences and extracts them. The app stores these extracted preferences in the Postgres db and retrieves them whenever the user loads the app. In this challenge, you will be building the flow that does the analysis and extraction (persisting to the db is not a part of this challenge).
 
 This is your first prompt engineering challenge. The goal is to create the prompt (dotPrompt) required to extract strong preferences and dislikes from the user's statement.
 We want the model to take a user's statement, and potentially the agent's previous statement (if there is one) and extract the following:
@@ -347,7 +346,7 @@ You need to perform the following steps:
 Dotprompts are a way to write and manage your AI prompts like code. They're special files that let you define your prompt template, input and output types (could be basic types like strings or more complex custom types), and model settings all in one place. Unlike regular prompts, which are just text, Dotprompts allow you to easily insert variables and dynamic data using [Handlebars](https://handlebarsjs.com/guide/) templating. This means you can create reusable prompts that adapt to different situations and user inputs, making your AI interactions more personalized and effective.
 This makes it easy to version, test, and organize your prompts, keeping them consistent and improving your AI results.
 
-The working **Movie Guru** app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
+> **Note** The working **Movie Guru** app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
 
 ### Description
 
@@ -439,7 +438,8 @@ Genkit Tools UI: http://localhost:4000
 
     ![Genkit UI Go](images/genkit-go.png)
 
-> **WARNING: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens,  go to **chat_server_go/cmd/standaloneFlows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
+> **Warning**  
+> **Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens,  go to **chat_server_go/cmd/standaloneFlows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
 
 ##### Challenge-steps
 
@@ -564,7 +564,8 @@ Genkit Tools UI: http://localhost:4000
     > **Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4003.
     ![webpreview](images/webpreview.png)
 
-> **WARNING: Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens, go to **js/flows-js/src/index.ts**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
+> **Warning**  
+> **Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens, go to **js/flows-js/src/index.ts**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
 
 ##### Challenge-steps
 
@@ -1218,7 +1219,7 @@ The input of:
 Now it is time to take the **transformed query** created in the previous steps and search for relevant movies (and their data) in the vector database.
 
 We're building a **Retriever** that's integrated into a **Flow**. A *working* retriever takes a user query, transforms it into a vector embedding, and instructs our vector database to search for relevant documents. This process is entirely code-driven and doesn't involve any prompts. We embed the *Retriever* within its own *Flow* (like we did with the prompts in earlier exercises) to create a modular and reusable component for our AI workflow. This allows us to organize the retrieval process, provide context to the retriever, and add flexibility in how we handle the retrieved documents. It also improves the testability of our application by allowing us to test the retrieval process independently.
-The retriver defined in our code is just a skeleton and doesn't perform any embedding creation or searches on the postgres db. You will be implementing the necessary functionality to do that in this challenge.
+The retriver defined in our code is just a skeleton and doesn't perform any embedding creation or searches on the Postgres db. You will be implementing the necessary functionality to do that in this challenge.
 The *finished* retriever flow should return a list of documents that are relevant to the user's query.
 
 The retriever also doesn't interact with a LLM. Instead it will work with an embedding model to generate a vector representation of the query.

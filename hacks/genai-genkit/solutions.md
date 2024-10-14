@@ -2,13 +2,7 @@
 
 ## Introduction
 
-This is a coaches guide for this ghack.
-This hack helps you create and deploy a GenAI application (see below) using Google Cloud and Firebase Genkit.
-You do the following:
-
-- Part1: Add data into the vector database.
-- Part1: Creating GenAI flows that power this app.
-- Part1: Building security and validation into model responses.
+This hack helps you create and deploy a GenAI application using Google Cloud and Firebase Genkit.
 
 > **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
@@ -23,18 +17,10 @@ You do the following:
 - Challenge 5: Create a meaningful response to the user (RAG flow).
   - Select the relevant outputs from the previous stages and return a meaningful output to the user.
 
-## Coach Prerequisites
-
-This hack has prerequisites that a coach is responsible for understanding and/or setting up BEFORE hosting an event. Please review the [gHacks Hosting Guide](https://ghacks.dev/faq/howto-host-hack.html) for information on how to host a hack event.
-
-The guide covers the common preparation steps a coach needs to do before any gHacks event, including how to properly setup Google Meet and Chat Spaces.
-
 ### Student Resources
 
 Before the hack, it is the Coach's responsibility create and make available needed resources including:
 
-- Files for students
-- Lecture presentation
 - Terraform scripts for setup (if running in the customer's own environment)
 
 Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available) to create the zip files needed and upload them to your gHack's Google Space's Files area.
@@ -42,10 +28,6 @@ Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-r
 Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
 
 > **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
-
-### Additional Coach Prerequisites (Optional)
-
-*Please list any additional pre-event setup steps a coach would be required to set up such as, creating or hosting a shared dataset, or preparing external resources.*
 
 ## Google Cloud Requirements
 
@@ -75,8 +57,6 @@ The default files & folders are listed below. You may add to this if you want to
   - Student's Challenge Guide
 - `solutions.md`
   - Coach's Guide and related files
-- `./resources`
-  - Resource files, sample code, scripts, etc meant to be provided to students. (Must be packaged up by the coach and provided to students at start of event)
 - `./artifacts`
   - Terraform scripts and other files needed to set up the environment for the gHack
 - `./images`
@@ -179,7 +159,7 @@ func createText(movie *types.MovieContext) string {
 }
 ```
 
-[Solution for Challenge 1: JS]
+[Solution for Challenge 1: TypeScript]
 
 - Students create a **content** entry with the following fields (Title, Plot, Director, Runtime_mins, Rating, Release, Director, Actors). *Poster* and *tconst* are excluded.
 - They write createText method to include all the aforementioned fields and format the **Genre** and **Actors** fields, as you want comma seperated values.
