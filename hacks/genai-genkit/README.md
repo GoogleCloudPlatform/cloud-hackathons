@@ -16,15 +16,15 @@ Watch the video below to see what it does and understand the flows you will be b
 In this hack you will learn how to:
 
    1. Vectorise a simple dataset and add it to a vector database (postgres PGVector).
-   1. Create a flow using genkit that anaylses a user's statement and extract's their long term preferences and dislikes.
-   1. Create a flow using genkit that summarises the conversation with the user and transform's the user's latest query by adding context.
-   1. Create a flow using genkit that takes the transformed query and retrieves relevant documents from the vector database.
-   1. Create a flow using genkit that takes the retrieved documents, conversation history and the user's latest query and formulates a relevant response to the user.
+   1. Create a flow using Genkit that anaylses a user's statement and extract's their long term preferences and dislikes.
+   1. Create a flow using Genkit that summarises the conversation with the user and transform's the user's latest query into one that can be used by a vector database.
+   1. Create a flow using Genkit that takes the transformed query and retrieves relevant documents from the vector database.
+   1. Create a flow using Genkit that takes the retrieved documents, conversation history and the user's latest query and formulates a relevant response to the user.
 
 ## Challenges
 
 - Challenge 1: Upload the data to the vector database
-  - Create an embedding for each entry in the dataset (discussed later), and upload the data to a vector database using the predefined schema. Do this using a genkit flow.
+  - Create an embedding for each entry in the dataset (discussed later), and upload the data to a vector database using the predefined schema. Do this using a Genkit flow.
 - Challenge 2: Your first flow that analyses the user's input
   - Create a flow that takes the user's latest input and make sure you extract *any* long term preference or dislike.
 - Challenge 3: Create vector searchable queries
@@ -121,14 +121,18 @@ Step 3:
      docker network create db-shared-network
      ```
 
-- Setup the local postgres database. This will create a pgvector instance, 2 users, and a database.
+- Setup the local postgres database. This will create a pgvector instance, a db (fake-movies-db), 2 tables (movies, user_preferences), 2 users (main, minimal-user).
+- Crucially, it also creates an hnsw index for the embedding column in the movies table.
+
+>**Note**: We create an index on our vector column (**embedding**) to speed up similarity searches. Without an index, the database would have to compare the query vector to every single vector in the table, which is very slow. An index allows the database to quickly find the most similar vectors by organizing the data in a way that optimizes these comparisons. We chose the **HNSW** (Hierarchical Navigable Small World) index because it offers a good balance of speed and accuracy. Additionally, we use **cosine similarity** as the distance metric to compare the vectors, as it's well-suited for text-based embeddings and focuses on the conceptual similarity of the text.
+
 - It also sets up **adminer**, lightweight tool for managing databases.  
 
      ```sh
      docker compose -f docker-compose-pgvector.yaml up -d
      ```
 
->**Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 8082.
+>**Note**: If you are using the GCP **CloudShell Editor**, click on the webpreview button and change the port to 8082.
 
 ![webpreview](images/webpreview.png)
 
@@ -170,6 +174,8 @@ Step 5:
         content VARCHAR
     );
     
+    CREATE INDEX ON movies USING hnsw (embedding vector_cosine_ops);    
+
     CREATE TABLE user_preferences (
       "user" VARCHAR(255) NOT NULL, 
       preferences JSON NOT NULL,
@@ -333,7 +339,7 @@ You need to perform the following steps:
 
 1. Create a prompt that outputs the information mentioned above. The model takes in a user's query and a preceeding agentMessage (if present).
 1. Update the prompt in the codebase (look at instructions in GoLang or TypeScript) to see how.
-1. Use the genkit UI (see steps below) to test the response of the model and make sure it returns what you expect.
+1. Use the Genkit UI (see steps below) to test the response of the model and make sure it returns what you expect.
 
 The working ****Movie Guru**** app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
 
@@ -345,7 +351,7 @@ Genkit provides a CLI and a GUI that work together to help you develop and manag
 
 ##### Pre-requisites
 
-When you start the genkit GUI, it starts up your flow server locally (go to **chat_server_go/cmd/standaloneFlows/main.go**). You should see code that looks like this:
+When you start the Genkit GUI, it starts up your flow server locally (go to **chat_server_go/cmd/standaloneFlows/main.go**). You should see code that looks like this:
 
 ```go
  if err := genkit.Init(ctx, &genkit.Options{FlowAddr: ":3401"}); err != nil {
@@ -353,7 +359,7 @@ When you start the genkit GUI, it starts up your flow server locally (go to **ch
  }
 ```
 
-When you run **genkit start** in the directory where your genkit server code is located (**chat_server_go/cmd/standaloneFlows/main.go**), it starts up the genkit flows server defined in your Go code, and a GUI to interact with the GenAI components defined in your code.
+When you run **genkit start** in the directory where your Genkit server code is located (**chat_server_go/cmd/standaloneFlows/main.go**), it starts up the Genkit flows server defined in your Go code, and a GUI to interact with the GenAI components defined in your code.
 
 The [normal workflow](https://firebase.google.com/docs/genkit-go/get-started-go) is to install the necessary components on your local machine. Given that this lab have minimal (pre) setup requirements (only docker and docker compose), we choose to run the genkit CLI and GUI through a container which adds a couple of extra setup steps, but ensures consistency across different lab setups.
 
