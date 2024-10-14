@@ -1376,7 +1376,7 @@ In the previous steps, we took the conversation history and the user's latest qu
 1. Transform the user's query to a query suitable for a vector search.
 1. Get relevant documents from the DB.
 
-Now it is time to take the relevant documents, and the user's message along with the conversation history, and craft a response to the user.
+Now it is time to take the relevant documents, the updated user's profile, and the user's message along with the conversation history, and craft a response to the user.
 This is the response that the user finally recieves when chatting with the **Movie Guru** chatbot.
 
 The conversation history is again relevant as the user's intent is often not captured in a single (latest) message.
@@ -1407,6 +1407,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
 1. Go to **chat_server_go/cmd/standaloneFlows/main.go** and look at the movie flow prompt
 
     ```golang
+    // Look at the prompt in the code file, markdown might not render it properly.
     movieFlowPrompt := `
       Here are the inputs:
          * Context retrieved from vector db:
@@ -1424,7 +1425,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     `
     ```
 
-1. Go to the genkit ui and find **Prompts/dotPrompt/movieFlow**. Enter the following in the input and run the prompt.
+1. Go to the Genkit UI and find **Prompts/dotPrompt/movieFlow**. Enter the following in the input and run the prompt.
 
     ```json
     {
@@ -1434,33 +1435,12 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
                 "content": ""
             }
         ],
-        "userPreferences": {
-            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
-            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
-        },
-        "contextDocuments": [
-            {
-                "title": "",
-                "runtime_minutes": 1,
-                "genres": [
-                    ""
-                ],
-                "rating": 1,
-                "plot": "",
-                "released": 1,
-                "director": "",
-                "actors": [
-                    ""
-                ],
-                "poster": "",
-                "tconst": ""
-            }
-        ],
         "userMessage": "I want to watch a movie."
     }
-    ```
 
-1. You will get an answer like this. Note that the exact response will vary greatly between instances as LLMs are not determinstic in behaviour. However, you should expect the LLM to translate the userMessage into a different language.
+> **Note**: When testing this prompt (especially an unfinished one), use the **Prompts interface** (**Prompts/dotPrompt/movieFlow**) instead of the **Flows interface**(**Flows/movieQAFlow**). There's an issue with Genkit's Go SDK (which is still in alpha) where complex output schemas can sometimes cause errors at the output parsing step if the model's response doesn't perfectly match the expected structure. This is because the model might include the schema in its output, leading to unmarshalling errors.
+
+1. You will get an answer like this. Note that the exact response will vary greatly between instances as LLMs are not determinstic in behaviour. However, you should expect the LLM to translate the userMessage into a different language or have more questions about it.
 
     ```text
     Here are some translations of "I want to watch a movie" into random languages:
@@ -1483,7 +1463,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     You can choose whichever translation you like, or I can generate a random one for you. 
     ```
 
-1. Edit the prompt to achieve the task described in the introduction.
+2. Edit the prompt to achieve the task described in the introduction.
 
 #### TypeScript
 
@@ -1514,28 +1494,6 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
             {
                 "role": "",
                 "content": ""
-            }
-        ],
-        "userPreferences": {
-            "likes": { "actors":[], "directors":[], "genres":[], "others":[]},
-            "dislikes": {"actors":[], "directors":[], "genres":[], "others":[]}
-        },
-        "contextDocuments": [
-            {
-                "title": "",
-                "runtime_minutes": 1,
-                "genres": [
-                    ""
-                ],
-                "rating": 1,
-                "plot": "",
-                "released": 1,
-                "director": "",
-                "actors": [
-                    ""
-                ],
-                "poster": "",
-                "tconst": ""
             }
         ],
         "userMessage": "I want to watch a movie."
