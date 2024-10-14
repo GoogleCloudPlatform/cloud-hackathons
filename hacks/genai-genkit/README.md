@@ -1437,10 +1437,11 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
         ],
         "userMessage": "I want to watch a movie."
     }
+    ```
 
 > **Note**: When testing this prompt (especially an unfinished one), use the **Prompts interface** (**Prompts/dotPrompt/movieFlow**) instead of the **Flows interface**(**Flows/movieQAFlow**). There's an issue with Genkit's Go SDK (which is still in alpha) where complex output schemas can sometimes cause errors at the output parsing step if the model's response doesn't perfectly match the expected structure. This is because the model might include the schema in its output, leading to unmarshalling errors.
 
-1. You will get an answer like this. Note that the exact response will vary greatly between instances as LLMs are not determinstic in behaviour. However, you should expect the LLM to translate the userMessage into a different language or have more questions about it.
+1. You will get an answer like this. Note that the exact response will vary greatly between instances as LLMs are not determinstic in behaviour. However, you should expect the LLM to translate the userMessage into a different language or at the very least, ask you to clarify details about it.
 
     ```text
     Here are some translations of "I want to watch a movie" into random languages:
