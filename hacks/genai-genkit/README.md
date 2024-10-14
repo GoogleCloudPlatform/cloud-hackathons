@@ -751,21 +751,21 @@ This challenge has two parts:
 1. Craft the Prompt: You'll engineer a prompt to guide the AI in understanding user queries and extracting key information.
 1. Integrate into a Flow: You'll then embed this prompt within a Genkit flow. Flows provide a structured way to interact with the AI, ensuring reliable outputs and error handling. This involves querying the model, processing the response, and formatting it for use in the Movie Guru application. In the previous challenge, we included the code for the flow for you (you just needed to write th  prompt). In this challenge, you'll need to write it yourself. The challenge also includes setting the correct input and output types for the flow.
 
-> **Note**:Think of the relationship between flows and prompts like this: the prompt is the recipe, and the flow is the chef who executes it and serves the final dish.
+> **Note**: Think of the relationship between flows and prompts like this; the prompt is the recipe, and the flow is the chef who executes it and serves the final dish.
 
 We want the model to take a user's statement, the conversation history and extract the following:
 
 1. **Transformed query**: The query that will be sent to the vector database to search for relevant documents.
-1. **User Intent**: The intent of the user's latest statement. Did the user issue a greeting to the chatbot (GREET), end the conversation (END_CONVERSATION), make a request to the chatbot (REQUEST), respond to the chatbot's question (RESPONSE), ackowledge a chatbot's statement (ACKNOWLEDGE), or is it unclear (UNCLEAR). The reason we do this is to prevent a call to the vector DB if the user is not searching for anything. The application only performs a search if the intent is REQUEST or RESPONSE.
-1. Optional **Justification**:  General explanation of the overall output. This will help you understand why the model made its suggestions and help you debug and improve your prompt.
+2. **User Intent**: The intent of the user's latest statement. Did the user issue a greeting to the chatbot (GREET), end the conversation (END_CONVERSATION), make a request to the chatbot (REQUEST), respond to the chatbot's question (RESPONSE), ackowledge a chatbot's statement (ACKNOWLEDGE), or is it unclear (UNCLEAR)? The reason we do this is to prevent a call to the vector DB if the user is not searching for anything. The application only performs a search if the intent is REQUEST or RESPONSE.
+3. Optional **Justification**:  Overall explanation of the model's response. This will help you understand why the model made its suggestions and help you debug and improve your prompt.
 
-> **Note** We can improve the testability of our model by augmenting its response with strongly typed outputs (those with a limited range of possible values like `User Intent`). This is because automatically validating free-form responses, like the `Transformed query`, is challenging due to their inherent variability and non-deterministic nature of the output. Even a short `Transformed query` can have many variations (e.g., "horror films," "horror movies," "horror," or "films horror"). However, by including additional outputs with a restricted set of possible values, such as booleans, enums, or integers, we provide more concrete data points for our tests, ultimately leading to more robust and reliable validation of the model's performance.
+> **Note**: We can improve the testability of our model by augmenting its response with strongly typed outputs (those with a limited range of possible values like the enum `User Intent`). This is because automatically validating free-form responses, like the `Transformed query`, is challenging due to the inherent variability and non-deterministic nature of the output. Even a short `Transformed query` can have many variations (e.g., "horror films," "horror movies," "horror," or "films horror"). However, by including additional outputs (with a restricted set of possible values, such as booleans, enums, or integers), we provide more concrete data points for our tests, ultimately leading to more robust and reliable validation of the model's performance.
 
 You need to perform the following steps:
 
 1. Create a prompt that outputs the information mentioned above. The model takes in a user's query, the conversation history, and the user's profile information (long lasting likes or disklikes).
-1. Update the prompt in the codebase (look at instructions in GoLang or JS) to see how.
-1. Use the genkit UI (see steps below) to test the response of the model and make sure it returns what you expect.
+1. Update the prompt in the codebase (look at instructions in GoLang or TS) to see how.
+1. Use the Genkit UI (see steps below) to test the response of the model and make sure it returns what you expect.
 1. After the prompt does what you expect, then update the flow to use the prompt and return an output of the type **QueryTransformFlowOutput**
 
 You can do this with *GoLang* or *TypeScript*. Refer to the specific sections on how to continue.
@@ -783,6 +783,7 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
 1. Go to **chat_server_go/cmd/standaloneFlows/main.go**. You should see code that looks like this in the method **getPrompts()**.
 
     ```go
+    // Look at the code file. The rendering may not be correct in the readme.
     queryTransformPrompt :=
     `
     This is the user profile. This expresses their long-term likes and dislikes:
@@ -818,15 +819,17 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     ```
 
 1. You should also see a prompt in the prompt view (the same prompt in main.go) below. You need to edit this prompt in **main.go** but can test it out by changing the input, model and other params in the UI.
-1. Test it out: Add a query "I want to watch a movie", and leave the rest empty and click on **RUN**.
+1. Test it out: Add a *userMessage* "I want to watch a movie", and leave the rest empty and click on **RUN**.
 1. The model should respond by translating this into a random language (this is what the prompt asks it to do).
-1. You need to rewrite the prompt (in main.go) and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **main.go** and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters.
-1. After you get your prompt working, it's now time to get implement the flow. Navigate to  **chat_server_go/cmd/standaloneFlows/queryTransform.go**.  You should see something that looks like this (code snippet below). What you see is that we define the dotprompt and specify the input and output format for the dotprompt. The prompt is however never invoked. We create an empty **queryTransformFlowOutput** and this will always result in the default output. You need to invoke the prompt and have the model generate an output for this.
+1. You need to rewrite the prompt (in main.go) and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **main.go** and **save** the file. The updated prompt should show up in the UI. If it doesn't, just refresh the Genkit UI page. You can also play around with the model parameters.
+1. After you get your prompt working, it's now time to get implement the flow. Navigate to  **chat_server_go/cmd/standaloneFlows/queryTransform.go**. You should see something that looks like this (code snippet below). What you see is that we define the dotprompt and specify the input and output format for the dotprompt. The prompt is however never invoked. We create an empty **queryTransformFlowOutput** and this will always result in the default output. You need to invoke the prompt and have the model generate an output for this.
 
     ```go
     func GetQueryTransformFlow(ctx context.Context, model ai.Model, prompt string) (*genkit.Flow[*QueryTransformFlowInput, *QueryTransformFlowOutput, struct{}], error) {
+    
+    // Defining the dotPrompt
      queryTransformPrompt, err := dotprompt.Define("queryTransformFlow",
-      prompt,
+      prompt, // the prompt you created earlier is passed along as a variable
     
       dotprompt.Config{
        Model:        model,
@@ -837,11 +840,12 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
         Temperature: 0.5,
        },
       },
-     )
-     if err != nil {
-      return nil, err
-     }
+    )
+    if err != nil {
+        return nil, err
+    }
 
+    // Defining the flow
     queryTransformFlow := genkit.DefineFlow("queryTransformFlow", func(ctx context.Context, input *QueryTransformFlowInput) (*QueryTransformFlowOutput, error) {
   
     // Create default output
@@ -864,8 +868,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     }
     ```
 
-1. If you try to invoke the flow in Genkit UI (**flows/queryTransformFlow**)
-    You should get an output something that looks like this:
+1. If you try to invoke the flow in Genkit UI (**Flows/queryTransformFlow**)
+    You should get an output something that looks like this as the flow is returning a default empty output.
 
     ```json
     {
@@ -930,7 +934,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     {
     "history": [
         {
-            "role": "","content": ""
+            "role": "",
+            "content": ""
         }
     ],
     "userProfile": {
@@ -946,8 +951,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     ```
 
 1. You should also see a prompt (the same prompt in prompt.go) below. You need to edit this prompt in the file but can test it out by changing the input, model and other params in the UI.
-1. Test it out: Add a query "I want to watch a movie", and leave the rest empty and click on **RUN**.
-1. The model should respond by saying something like this. This is clearly nonsensical as a "I want to watch a movie" is not a sensible vector db query. The model is just retrofitting the output to match the output schema we've suggested (see **queryTransformFlow.ts**, we define an output schema) and trying to infer some semi-sensible outputs.
+1. Test it out: Add a **userMessage** "I want to watch a movie", and leave the rest empty and click on **RUN**.
+1. The model should respond by saying something like this (don't expect the exact same output). This is clearly nonsensical as a "I want to watch a movie" is not a sensible vector db query. The model is just retrofitting the output to match the output schema we've suggested (see **queryTransformFlow.ts**, we define an output schema) and trying to infer some semi-sensible outputs.
 
     ```json
     {
@@ -957,10 +962,11 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     }
     ```
 
-1. You need to rewrite the prompt and test the model's outputs for various inputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **prompts.ts** and **save** the file. The updated prompt should show up in the UI. If it doesn't just refresh the UI. You can also play around with the model parameters.
+1. You need to rewrite the prompt and test the model's outputs such that it does what it is required to do (refer to the goal of challenge 2). Edit the prompt in **prompts.ts** and **save** the file. The updated prompt should show up in the UI. If it doesn't, just refresh the UI. You can also play around with the model parameters.
 1. After you get your prompt working, it's now time to get implement the flow. Navigate to  **js/flows-js/src/queryTransformFlow.ts**.  You should see something that looks like this. What you see is that we define the dotprompt and specify the input and output format for the dotprompt. The prompt is however never invoked in a flow. We create an empty **queryTransformFlowOutput** and this will always result in the default output. You need to invoke the flow and have the model generate an output for this.
 
     ```ts
+    // defining the dotPrompt
     export const QueryTransformPrompt = defineDotprompt(
     {
         name: 'queryTransformFlow',
@@ -973,10 +979,10 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
             schema: QueryTransformFlowOutputSchema,
         },  
     }, 
-    QueryTransformPromptText
+    QueryTransformPromptText // the prompt you created earlier is passed along as a variable
     )
         
-        // Implement the QueryTransformFlow
+    // defining the flow
     export const QueryTransformFlow = defineFlow(
     {
         name: 'queryTransformFlow',
@@ -992,21 +998,21 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     );
     ```
 
-1. If you try to invoke the flow in Genkit UI (**flows/queryTransformFlow**), you'll notice that the input format for the flow is different from the prompt. The flow just expects a string. You need to fix the codee in the challenge to change the input type from string to the custom input type, so that the prompt and flow take the same input type.
+1. If you try to invoke the flow in Genkit UI (**Flows/queryTransformFlow**), you'll notice that the input format for the flow is different from the prompt. The flow just expects a string. You need to fix the code in the challenge to change the input type from string to the required input type, so that the prompt and flow take the same input type. The output will just say "Hello World".
 You should get an output something that looks like this:
 
     ```text
     "Hello World"
     ```
 
-1. But, once you implement the necessary code (and prompt), you should see something like this (if the input is "I want to watch a movie")
+1. But, once you implement the necessary code (and prompt), you should see something like this (if the **userMessage** is "I want to watch a movie").
 
     ```json
     {
         "result": {
         "transformedQuery":"movie",
         "userIntent":"REQUEST",
-        "justification":"The user's request is simple and lacks specifics.  Since the user profile provides no likes or dislikes, the transformed query will reflect the user's general request for a movie to watch.  No additional information is added because there is no context to refine the search.",
+        "justification":"The user's request is simple and lacks specifics. Since the user profile provides no likes or dislikes, the transformed query will reflect the user's general request for a movie to watch.  No additional information is added because there is no context to refine the search.",
         }
     }
     ```
