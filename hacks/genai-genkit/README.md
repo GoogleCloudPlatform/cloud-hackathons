@@ -342,7 +342,7 @@ You need to perform the following steps:
 1. Update the prompt in the codebase (look at instructions in GoLang or TypeScript) to see how.
 1. Use the Genkit UI (see steps below) to test the response of the model and make sure it returns what you expect.
 
-The working ****Movie Guru**** app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
+The working **Movie Guru** app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
 
 ### Description
 
