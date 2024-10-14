@@ -200,7 +200,7 @@ Step 6:
 
 - Download the key and store it as **.key.json** in the root of this repo (make sure you use the filename exactly).
 
->**Note**: In production it is BAD practice to store keys in file. Applications running in GoogleCloud use serviceaccounts attached to the platform to perform authentication. The setup used here is simply for convenience.
+> **Note**: In production it is BAD practice to store keys in file. Applications running in GoogleCloud use serviceaccounts attached to the platform to perform authentication. The setup used here is simply for convenience.
 
 Step 7:
 
