@@ -5,3 +5,5 @@ dist/
 *.zip
 .DS_Store
 
+.terraform*
+terraform.tfstate*
