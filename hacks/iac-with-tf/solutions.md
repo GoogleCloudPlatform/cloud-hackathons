@@ -14,7 +14,6 @@ Welcome to the coach's guide for the Infrastructure as Code with Terraform. Here
 - Challenge 4: Hello HTTP server
 - Challenge 5: Automation
 
-
 ## Challenge 1: Bootstrapping
 
 ### Notes & Guidance
@@ -39,6 +38,8 @@ terraform {
   }
 }
 ```
+
+Ignore the warning banner at the top that Cloud Source Repositories is end of sale.
 
 Git requires users to set up their identity before anything can be committed. So users need do the following:
 
@@ -219,11 +220,6 @@ This should be trivial, make sure that the path to the `cloudbuild.yaml` is corr
       - 'terraform apply --auto-approve --var="gcp_project=$_TARGET_PROJECT" --var="cidr_block=$_CIDR_BLOCK"'
 ```
 
-Also important to know is the service account that's used. The service account used (either the Cloud Build service agent, Compute Engine Default or a custom one) must have sufficient priviliges to create resources. 
+Also important to know is the service account that's used. The service account used (either the Cloud Build service agent, Compute Engine Default or a custom one) must have sufficient priviliges to create resources.
 
-In addition, if any service account other than Cloud Buid service agent is used, the logging configuration must be set, for example:
-
-```yaml
-options:
-  logging: CLOUD_LOGGING_ONLY
-```
+If participants want to challenge themselves they're free to create a new service account with the least priviliged permissions.

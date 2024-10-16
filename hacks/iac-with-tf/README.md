@@ -2,7 +2,11 @@
 
 ## Introduction
 
-This hack is intended as an introduction to provisioning GCP resources using Terraform. We'll start with the basics of Infrastructure as Code (IaC) and help you automate the process of infrastructure provisioning. 
+This hack is intended as an introduction to provisioning GCP resources using Terraform. We'll start with the basics of Infrastructure as Code (IaC) and help you automate the process of infrastructure provisioning.
+
+![Overview](./images/iac-with-tf-overview.png)
+
+> **Warning** As of June 2024 *Cloud Source Repositories* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. If you're running this in a Qwiklabs environment you're good to go, but if you're running this in **your** own environment, please verify that you have access to *Cloud Source Repositories* in your organization.
 
 ## Learning Objectives
 
@@ -16,15 +20,15 @@ In this hack you will be exploring the following tasks
 ## Challenges
 
 - Challenge 1: Bootstrapping
-   - Terraform backend & version control
+  - Terraform backend & version control
 - Challenge 2: Your very first provisioning
-   - Let's start with networking
+  - Let's start with networking
 - Challenge 3: Open the gates!
-   - Opening the Firewall ports
+  - Opening the Firewall ports
 - Challenge 4: Hello HTTP server
-   - NGINX on a Linux VM
+  - NGINX on a Linux VM
 - Challenge 5: Automation
-   - Enable GitOps by running Terraform through Cloud Build 
+  - Enable GitOps by running Terraform through Cloud Build
 
 ## Prerequisites
 
@@ -42,7 +46,9 @@ In this hack you will be exploring the following tasks
 
 ### Introduction
 
-In this challenge we'll set up a few prerequisites for the hack. Since we'll be working in a team, we'll need to share the assets with each other and keep track of the changes. For that purpose we'll create and configure a Git version control system. In addition, Terraform needs to store its state somewhere. By default it does that on the local file system, but that's not practical if multiple people would need access to the same state. So, we'll have to configure a remote _backend_.
+In this challenge we'll set up a few prerequisites for the hack. Since we'll be working in a team, we'll need to share the assets with each other and keep track of the changes. For that purpose we'll create and configure a Git version control system. In addition, Terraform needs to store its state somewhere. By default it does that on the local file system, but that's not practical if multiple people would need access to the same state. So, we'll have to configure a remote *backend*.
+
+> **Warning** As of June 2024 *Cloud Source Repository* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. So, if you've made it so far, and your coaches have done their due diligence, you're lucky and can use CSR for this challenge.
 
 ### Description
 
@@ -50,7 +56,7 @@ For this challenge you could use any external Git repository (Github/Bitbucket/G
 
 We've prepared a [sample project](https://github.com/meken/gcp-iac-with-tf/archive/refs/heads/main.zip) for you, download it and extract the contents. Make sure that code is pushed to the external repository.
 
-Create a new bucket to hold the Terraform state using best practices and configure Terraform to use that as the backend. 
+Create a new bucket to hold the Terraform state using best practices and configure Terraform to use that as the backend.
 
 > **Note**  
 > For the sake of simplicity we'll stick to a single environment for this challenge. But in real world you'll probably have to deal with multiple environments (dev/test/acc/prod) and might need to track the state for these environments separately.
@@ -101,7 +107,6 @@ Configure a firewall rule for allowing HTTP/HTTPS requests for all VMs having th
 1. There's a new firewall rule that allows HTTP/HTTPS communication for the tag `http`, created by Terraform
 1. All of this configuration is in the Cloud Source Repository
 
-
 ## Challenge 4: Hello HTTP server
 
 ### Introduction
@@ -132,7 +137,7 @@ We can run the Terraform commands locally but ideally they should be executed in
 Create a new Cloud Build push trigger using the `cloudbuild.yaml` in the provided sample project. Make sure that the variables for the build are configured properly. Note that you might need to edit this file to get a successful build.
 
 > **Warning**  
-> For the sake of simplicity stick to the default Cloud Build Service Account to run the build, otherwise you'll have to do additional modifications to the build file to configure logging.
+> For the sake of simplicity we'll stick to the `Compute Engine Default Service Account`, but typically you'd want to create a specific service account for the build with limited permissions.
 
 ### Success Criteria
 

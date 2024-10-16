@@ -2,15 +2,15 @@
 
 ## Introduction
 
-In this hack, you'll implement the full lifecycle of an ML project. We'll provide you with a sample code base and you'll work on automating continuous integration (CI), continuous delivery (CD), and continuous training (CT) for a machine learning (ML) system. 
+In this hack, you'll implement the full lifecycle of an ML project. We'll provide you with a sample code base and you'll work on automating continuous integration (CI), continuous delivery (CD), and continuous training (CT) for a machine learning (ML) system.
 
-| ![MLOps Overview](https://cloud.google.com/static/architecture/images/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning-4-ml-automation-ci-cd.svg) |
-| :--: |
-| _Picture is from [this article](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning)_ |
+![MLOps Overview](./images/mlops-challenges.png)
+
+> **Note** This gHack is inspired by the methodology from [this article](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning).
 
 There's no coding involved, we've already prepared the code to train a simple *scikit-learn* model; this could've been any other framework too, the model code has no dependencies on any Google Services or libraries.
 
-We're using the New York Taxi dataset to build a *RandomForestClassifier* to predict whether 
+We're using the New York Taxi dataset to build a *RandomForestClassifier* to predict whether
 the tip for the trip is going to be more than 20% of the fare.
 
 First step is all about exploration and running that code in an interactive environment for development and experimentation purposes.
@@ -27,21 +27,21 @@ Challenge 6 is all about monitoring that endpoint/batch predictions and detectin
 
 And finally in Challenge 7 we'll bring all these things together by tapping into model monitoring and triggering re-training when the model starts to behave off.
 
+> **Warning** As of June 2024 *Cloud Source Repositories* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. If you're running this in a Qwiklabs environment you're good to go, but if you're running this in **your** own environment, please verify that you have access to *Cloud Source Repositories* in your organization.
+
 ## Learning Objectives
 
 This hack will help you explore the following tasks:
 
 - Using Cloud Source Repositories for version control
 - Using Cloud Build for automating continuous integration and delivery
-- Vertex AI for 
+- Vertex AI for
   - Exploration through an interactive environment
-  - Training on diverse hardware 
+  - Training on diverse hardware
   - Model registration
   - Managed pipelines
   - Model serving
   - Model monitoring
-
-> The instructions are minimal, meaning that you need to figure out things :) That's by design
 
 ## Challenges
 
@@ -70,17 +70,17 @@ This hack will help you explore the following tasks:
 
 As depicted in the overview diagram, the first step of any ML project is data analysis and maybe some experimentation. Jupyter notebooks are great for interactive exploration. We can run those locally, but Vertex AI provides managed environments where you get to run Jupyter with the right security controls and flexible hardware options.
 
-### Description 
+### Description
 
-Create a _Vertex AI Workbench Instance_. Pick a region close to you and choose the **single user only** option.
+Create a *Vertex AI Workbench Instance*. Pick a region close to you and choose the **single user only** option.
 
-It's a good practice to have isolated virtual environments for experiments, so create a new virtual environment and install that as a kernel. See this [gist](https://gist.github.com/meken/e6c7430997de9b3f2cf7721f8ecffc04) for the instructions. 
+It's a good practice to have isolated virtual environments for experiments, so create a new virtual environment and install that as a kernel. See this [gist](https://gist.github.com/meken/e6c7430997de9b3f2cf7721f8ecffc04) for the instructions.
 
 > **Warning** Not using a dedicated and isolated environment/kernel might cause dependency conflicts as Vertex AI Workbench Instances come pre-installed with some versions of the required libraries.
 
 We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-demo/archive/refs/heads/main.zip), navigate there and download the project as a **zip** file and extract the contents of the zip file onto your Notebook instance. Open the notebook `01-tip-toe-vertex-ai.ipynb`, make sure that you've selected the newly created kernel. You should now be able to run the first notebook and get familiar with some of the Vertex AI concepts.
 
-> **Note** As we're installing packages in the first cell of the sample notebook and restarting the kernel in one of the following cells, _Run All_ will not work. Run the cells one-by-one also to understand what's going on in every cell.
+> **Note** As we're installing packages in the first cell of the sample notebook and restarting the kernel in one of the following cells, *Run All* will not work. Run the cells one-by-one also to understand what's going on in every cell.
 
 ### Success Criteria
 
@@ -88,9 +88,9 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 2. The sample notebook `01-tip-toe-vertex-ai.ipynb` is successfully run (using the newly generated kernel) and a model file is generated/stored in Google Cloud Storage.
 3. No code was modified.
 
-### Tips
+### Tips  
 
-- Some of the required settings can be found in the _Advanced Settings_ section when you're creating a new Vertex AI Workbench Instance.
+- Some of the required settings can be found in the *Advanced Settings* section when you're creating a new Vertex AI Workbench Instance.
 - If there's nothing mentioned in the instructions about a parameter, stick to the defaults (this applies to all of the challenges).
 - You can download the zip file to your local machine and then upload it to the Notebook instance, but you can also get the zip URL and use the `wget` (or `curl`) command from a terminal on the Notebook instance.
 - The sample notebook creates a bucket in a specific *region*, take note of that as you'll need that information in the next challenges.
@@ -103,7 +103,9 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 
 ### Introduction
 
-The objective of this challenge is to create and configure a Git repository so that the code can be version controlled. In principle, you can use any external Git repository (Github/BitBucket/Gitlab etc), but for this challenge we'll use a _Cloud Source Repository_ on GCP.
+The objective of this challenge is to create and configure a Git repository so that the code can be version controlled. In principle, you can use any external Git repository (Github/BitBucket/Gitlab etc), but for this challenge we'll use a *Cloud Source Repository* on GCP.
+
+> **Warning** As of June 2024 *Cloud Source Repository* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. So, if you've made it so far, and your coaches have done their due diligence, you're lucky and can use CSR for this challenge.
 
 ### Description
 
@@ -134,20 +136,20 @@ Make sure that the source code is pushed to the freshly created repository and c
 
 ### Introduction
 
-This task is all about automating things using Cloud Build. When multiple people work on the same project and contribute to the same repository it's good to have a _Continuous Integration_ pipeline that can lint, test and package the source code everytime new commits are pushed. In this challenge we'll use the provided build pipeline to automate this process. It will generate and store the newest version of the Python package, which contains the training code, when there's a new commit.
+This task is all about automating things using Cloud Build. When multiple people work on the same project and contribute to the same repository it's good to have a *Continuous Integration* pipeline that can lint, test and package the source code everytime new commits are pushed. In this challenge we'll use the provided build pipeline to automate this process. It will generate and store the newest version of the Python package, which contains the training code, when there's a new commit.
 
 ### Description
 
-Once things look fine locally, set up a Cloud Build that's triggered when code is pushed to the repository. The code base already includes a build configuration (`cloudbuild.yaml`), have a look at it to understand what it does. Make sure that the trigger uses that build configuration. Name the trigger `CI` (or `continuous-integration`).
+Once things look fine locally, set up a *Cloud Build Trigger* that's run when code is *pushed* to the repository. The code base already includes a build configuration (`cloudbuild.yaml`), have a look at it to understand what it does. Make sure that the trigger uses that build configuration and the `Compute Engine Default Service Account` as the service account. Name the trigger `CI` (or `continuous-integration`).
 
 > **Warning**  
-> The qwiklabs environment only has quota in the _global_ region, make sure that you pick that when you're creating the trigger.
+> The qwiklabs environment only has quota in the *global* region, make sure that you pick that when you're creating the trigger.
 
 ### Success Criteria
 
 1. There's a new Cloud Build push trigger called `CI` (or `continuous-integration`).
 2. The trigger is connected to the Cloud Source Repository created in the previous challenge.
-3. The trigger uses the provided (fully configured) build configuration from the repository.
+3. The trigger uses the provided (fully configured) build configuration.
 4. And there's at least one successful build.
 
 ### Tips
@@ -162,13 +164,13 @@ Once things look fine locally, set up a Cloud Build that's triggered when code i
 
 ### Introduction
 
-The previous challenge introduced the concept of build pipelines. But there are different types of pipelines, and this task is getting started with Vertex AI pipelines for _Continuous Training_. In our example the continuous training pipeline will extract data from BigQuery, validate it, prepare it, train a model with it (using the Python package that's built during the previous challenge), evaluate that model and register it in Vertex AI Model Registry.
+The previous challenge introduced the concept of build pipelines. But there are different types of pipelines, and this task is getting started with Vertex AI pipelines for *Continuous Training*. In our example the continuous training pipeline will extract data from BigQuery, validate it, prepare it, train a model with it (using the Python package that's built during the previous challenge), evaluate that model and register it in Vertex AI Model Registry.
 
 ### Description
 
 If you've successfully completed the previous challenge, your training code has been packaged and can be run from a Vertex AI pipeline.
 
-The provided project has a `pipeline.py` file that can generate a pipeline definition. Run that to generate a pipeline definition file (JSON). Use the generated pipeline definition file to create a new Pipeline Run through the GCP Console. You'll need to fill in some parameters (you can look up the Python package location). Do not set/override the `endpoint` and `monitoring_job` parameters (keep the default values).
+The provided project has a `pipeline.py` file that can generate a pipeline definition. Run that to generate a pipeline definition file in `YML` format. Use the generated pipeline definition file to create a new *Pipeline Run* through the GCP Console. Fill in the required pipeline parameters in the next step (you can look up the Python package location). Do not set/override the `endpoint` and `monitoring_job` parameters (keep the default values).
 
 > **Note**  
 > Once the pipeline is triggered, it will take ~10 minutes to complete.
@@ -181,11 +183,12 @@ The provided project has a `pipeline.py` file that can generate a pipeline defin
 ### Tips
 
 - Read the `pipeline.py` to understand what it does.
+- Note that the `pipeline.py` can generate `JSON` and `YML` pipeline definition files based on the extension of the output file name.
 - You can either upload the pipeline definition from a local machine, or put it on GCS and refer to its location.
 - You have already created a bucket, you can use that as the pipeline root (optionally add `pipelines` folder in it).
 - For the parameter *location* look up the *region* of the storage bucket created in the first challenge.
 - And for the *python_pkg* parameter check the Cloud Build pipeline to find out where the created Python package is stored and browse to that location to get the name of the package.
-- If you're in doubt about the parameters, remember to _Use the Force and read the Source_ ;)
+- If you're in doubt about the parameters, remember to *Use the Force and read the Source* ;)
 
 ### Learning Resources
 
@@ -195,10 +198,10 @@ The provided project has a `pipeline.py` file that can generate a pipeline defin
 
 ### Introduction
 
-Having a model is only the first step, we can now make predictions using that model. This is typically called inferencing (or scoring) and can be done 
+Having a model is only the first step, we can now make predictions using that model. This is typically called inferencing (or scoring) and can be done
 
-- In an **online** fashion with an HTTP endpoint that can generate predictions for incoming data in real-time, 
-- Or in **batch** by running the model on a large set of files or a database table. 
+- In an **online** fashion with an HTTP endpoint that can generate predictions for incoming data in real-time,
+- Or in **batch** by running the model on a large set of files or a database table.
 
 From this challenge onwards you'll have the option to either do online inferencing or batch inferencing. Please choose your path:
 
@@ -209,13 +212,13 @@ From this challenge onwards you'll have the option to either do online inferenci
 
 ### Description
 
-So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI provides exactly what we need, a managed service for serving predictions, called Online Prediction. 
+So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI provides exactly what we need, a managed service for serving predictions, called Online Prediction.
 
-Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest machine type but make sure that it can scale to more than 1 node by configuring _autoscaling_.
+Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest machine type but make sure that it can scale to more than 1 node by configuring *autoscaling*.
 
 > **Note**  
 > The deployment of the model will take ~10 minutes to complete.
-
+>
 > **Warning**  
 > Note that the Qwiklab environment we're using has a quota on the endpoint throughput (30K requests per minute), **do not exceed that**.
 
@@ -257,6 +260,7 @@ So, you've chosen for the batch inferencing path. We're going to use Vertex AI B
 - Make sure that the input table has the exact same number of input columns as required by the model. Remember, for training extra data is needed which is not an input for the model at inferencing time ;)
 
 ### Learning Resources
+
 - Creating BigQuery [datasets](https://cloud.google.com/bigquery/docs/datasets)
 - Creating BigQuery [tables](https://cloud.google.com/bigquery/docs/tables#sql)
 - BigQuery [public datasets](https://console.cloud.google.com/marketplace/details/city-of-new-york/nyc-tlc-trips)
@@ -266,7 +270,9 @@ So, you've chosen for the batch inferencing path. We're going to use Vertex AI B
 
 ### Introduction
 
-There are times when the training data becomes not representative anymore because of changing demographics, trends etc. To catch any skew or drift in feature distributions or even in predictions, it is necessary to monitor your model performance continuously. 
+There are times when the training data becomes not representative anymore because of changing demographics, trends etc. To catch any skew or drift in feature distributions or even in predictions, it is necessary to monitor your model performance continuously.
+
+> **Note** We'll be using *Model Monitoring v1* for this challenge, which is configured during *Online Prediction Endpoint configuration* for online models, and *Batch Prediction Run configuration* for batch execution.
 
 If you've chosen the online inferencing path, continue with [Online Monitoring](#online-monitoring), otherwise please skip to the [Batch Monitoring](#batch-monitoring) section.
 
@@ -324,7 +330,7 @@ Vertex AI Batch prediction jobs provide Model Monitoring capabilities as well. C
 
 ### Introduction
 
-If you've completed all of the previous challenges, you're now ready to bring it all together. This task is all about automating the whole process, so that when Model Monitoring raises an alert, a new model is trained and deployed. 
+If you've completed all of the previous challenges, you're now ready to bring it all together. This task is all about automating the whole process, so that when Model Monitoring raises an alert, a new model is trained and deployed.
 
 Just like the previous challenges, if you've chosen the online inferencing path, continue to [Online Loop](#online-loop), otherwise please skip to the [Batch Loop](#batch-loop) section.
 
@@ -358,14 +364,13 @@ Use the provided build pipeline (`clouddeploy.yaml`) to create a new build confi
 
 Typically Batch Predictions are asynchronous and are scheduled to run periodically (daily/weekly etc). You can trigger batch jobs using different methods, for this challenge we'll use Cloud Build pipelines in combination with Vertex AI pipelines. Create a new Cloud Build trigger using the provided `batchdeploy.yaml` file, don't forget to set the required variables. Call this trigger `CD` (or `continuous-delivery`) and make sure that this build pipeline is triggered through webhook events. Create a new Cloud Scheduler job that runs every Sunday at 3:30 and uses the webhook event URL as the execution method.
 
-Running the batch predictions periodically will only get us half way. We need to monitor any Model Monitoring alerts and act on that. There's another Cloud Build pipeline definition provided by `clouddeploy.yaml` that's responsible for retraining. Configure that in a new Cloud Build trigger, call it `CT` (or `continuous-training`) set the required variables (remember to set _ENDPOINT_ to `[none]`, the others should be familiar, when in doubt have a look at the yaml file). Use Pub/Sub messages as the trigger event and pick the topic that's configured for Model Monitoring Pub/Sub notification channel.
-
+Running the batch predictions periodically will only get us half way. We need to monitor any Model Monitoring alerts and act on that. There's another Cloud Build pipeline definition provided by `clouddeploy.yaml` that's responsible for retraining. Configure that in a new Cloud Build trigger, call it `CT` (or `continuous-training`) set the required variables (remember to set *ENDPOINT* to `[none]`, the others should be familiar, when in doubt have a look at the yaml file). Use Pub/Sub messages as the trigger event and pick the topic that's configured for Model Monitoring Pub/Sub notification channel.
 
 ### Success Criteria
 
-1. There's a correctly configured build pipeline for _batch predictions_ that can be triggered with webhooks, called `CD` (or `continuous-delivery`).
+1. There's a correctly configured build pipeline for *batch predictions* that can be triggered with webhooks, called `CD` (or `continuous-delivery`).
 2. There's a Cloud Scheduler job that is configured to run every Sunday at 3.30 triggering the batch predictions build pipeline.
-3. There's a correctly configured build pipeline for _retraining_ that can be triggered with Pub/Sub messages, called `CT` (or `continuous-training`).
+3. There's a correctly configured build pipeline for *retraining* that can be triggered with Pub/Sub messages, called `CT` (or `continuous-training`).
 4. Show that all the components have run at least once.
 5. No code was modified.
 
@@ -373,7 +378,7 @@ Running the batch predictions periodically will only get us half way. We need to
 
 - If you create the topic before you create the notification channel you can copy its name and paste when configuring the notification channel.
 - The webhook URL configuration in Cloud Scheduler requires the header `Content-Type` to be set to `application/json` otherwise the things won't work.
-- You can _force run_ a Cloud Scheduler job, no need to wait until Sunday :).
+- You can *force run* a Cloud Scheduler job, no need to wait until Sunday :).
 
 ### Learning Resources
 
