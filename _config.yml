@@ -3,6 +3,7 @@ minimal_mistakes_skin: dark
 google_analytics:
 logo: /assets/images/gh-logo.png
 title: ""
+enable_copy_code_button: true
 #subtitle: "Learning By Doing on Google Cloud"
 defaults:
   - scope:
