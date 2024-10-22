@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 variable "gcp_project_id" {
   type        = string
   description = "The GCP project ID to create resources in."
@@ -20,12 +21,28 @@ variable "gcp_project_id" {
 variable "gcp_region" {
   type        = string
   description = "Region to create resources in."
-  default     = "us-central1"
+  default     = "europe-west4"
 }
 
 # Default value passed in
 variable "gcp_zone" {
   type        = string
   description = "Zone to create resources in."
-  default     = "us-central1-c"
+  default     = "europe-west4-c"
+}
+
+variable "locust_file" {
+  description = "URL of the locustfile"
+  default = "https://raw.githubusercontent.com/MKand/movie-guru/refs/heads/ghack-sre/locust/locustfile.py"
+}
+
+variable "helm_chart" {
+  description = "URL of the movie guru helm chart"
+  default = "https://mkand.github.io/movie-guru/movie-guru-0.1.0.tgz"
+}
+
+variable "image_repo_name" {
+  description = "Base repo where images are stored"
+  default = "manaskandula"
+  
 }

@@ -87,6 +87,7 @@ environment:
     reference: user_5.username
   - label: Password 5
     reference: user_5.password
-
   - label: Project ID
     reference: project.project_id
+  - label: Locust IP
+    reference: project.locust_address

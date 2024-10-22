@@ -14,3 +14,7 @@
 output "project_id" {
     value = var.gcp_project_id
 }
+
+output "locust_address" {
+  value = "http://${data.kubernetes_service.locust.status.0.load_balancer.0.ingress.0.ip}:8089"
+}

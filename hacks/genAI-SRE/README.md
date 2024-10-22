@@ -1,66 +1,56 @@
 # Practical SRE
 
-## Introduction
+Welcome to the Practical SRE (Site Reliability Engineering) Workshop! In this hands-on session, you’ll step into the role of SREs and Product Owners for the **Movie Guru** GenAI app—a cutting-edge application that helps users find movies using natural language queries powered by AI. Your mission is to ensure that Movie Guru delivers a smooth, reliable, and responsive experience for its users.
 
-The IoT Hack of the Century will take you on a whirlwind tour in the world of IoT and how it is being used in the modern world of mineral extraction in exotic locations like the Arctic and the wilds of South Africa.
+The Movie Guru app's backend is currently running in your cloud environments and has been pre-instrumented to silently generate a wealth of metrics through the use of a load generator. This means that as you work on these challenges, you’ll have access to valuable data reflecting its performance and user interactions, allowing you to make informed decisions throughout the workshop.
 
-## Learning Objectives
+Throughout this session, you’ll analyze how real users interact with the Movie Guru app, and based on those insights, you will:
 
-In this hack you will be solving the common business problem that companies in the mineral extraction industry face and how IoT solutions from Google are brought to bear.
+1. Design User Journeys (UJs): Understand the key workflows and map out user journeys that represent typical interactions with the app, such as logging into the app, chatting with the agent for movie recommendations etc.
 
-1. Provision an IoT Hub
-1. Set up an IoT Edge device
-1. Bring Edge Computing to your solution for scale and resiliency 
+1. Define SLIs (Service Level Indicators): Identify measurable signals that reflect the health and performance of the app. These indicators could include response time, query accuracy, and success rates for search results.
 
-## Challenges
+1. Set SLOs (Service Level Objectives): Establish concrete performance targets that **Movie Guru** should meet, such as ensuring 99% of user queries return results within 2 seconds or that 95% of responses are relevant.
 
-- Challenge 1: Provision an IoT environment
-   - Create an IoT Hub and run tests to ensure it can ingest telemetry
-- Challenge 2: Your First Device
-   - Make the connection to your Edge device and see that it is properly provisioned.
-- Challenge 3: Connecting the World
-   - Connect your device and make sure it can see all other devices in your team.
-- Challenge 4: Scalable Monitoring of Telemetry
-   - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
+1. Set up Alerting: Implement a robust alerting system to track your SLIs and SLOs and ensure that when the app's performance falls short of your SLOs, the right people are alerted. You’ll learn how to configure alerts for incidents such as slow response times, degraded search accuracy.
+
+By the end of this workshop, you’ll have developed a comprehensive reliability framework for Movie Guru, gaining practical SRE skills that can be applied to real-world systems. This will include creating actionable alerts, ensuring operational excellence, and building a culture of reliability around AI-powered apps.
 
 ## Prerequisites
 
-- Your own GCP project with Owner IAM role.
-- An AVNET X231 device
-- gCloud CLI
-- Visual Studio Code
+- Your own GCP project with Editor IAM role.
+- Kubectl
+- gcloud command line tool
 
 ## Contributors
 
-- Gino Filicetti
-- Murat Eken
-- Jane Q. Public
-- Joe T. Muppet
+- Manasa Kanduula
 
-## Challenge 1: Provision an IoT environment
+## Challenge 2: Start Silent Metrics collection
 
-***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section.  You should remove all italicized & sample text and replace with your content.***
+### Introduction
 
-_You can use these two specific blockquote styles to emphasize your text as needed and they will be specially rendered to be more noticeable_
-> **Note**  
-> Sample informational blockquote
+In this challenge, we will set up metrics generation using locust. Locust is a load generator tool.
+The **Movie Guru** backend application is running on the GKE cluster. The locust load test tool is also running on the same cluster. Lets get the address.
 
-> **Warning**  
-> Sample warning blockquote
+First navigate to the google cloud console and open a google cloud terminal.
 
-### Pre-requisites (Optional)
+```sh
+export PROJECT_ID=<your project id>
+export LOCATION=<your project id>
+```
 
-*Include any technical pre-requisites needed for this challenge specifically.  Typically, it is completion of one or more of the previous challenges if there is a dependency. This section is optional and may be omitted.*
+Let's connect to the cluster (don't worry this isn't a GKE exercise). We just need to get the IP address of the locust server.
 
-### Introduction (Optional)
+```sh
+gcloud container clusters get-credentials movie-guru-gke --region $LOCATION --project $PROJECT_ID
+```
 
-*This section should provide an overview of the technologies or tasks that will be needed to complete the this challenge.  This includes the technical context for the challenge, as well as any new "lessons" the attendees should learn before completing the challenge.*
+Once connected, let's get the ip address of the locust server.
 
-*Optionally, the coach or event host is encouraged to present a mini-lesson (with the provided lectures presentation or maybe a video) to set up the context and introduction to each challenge. A summary of the content of that mini-lesson is a good candidate for this Introduction section*
-
-*For example:*
-
-When setting up an IoT device, it is important to understand how 'thingamajigs' work. Thingamajigs are a key part of every IoT device and ensure they are able to communicate properly with edge servers. Thingamajigs require IP addresses to be assigned to them by a server and thus must have unique MAC addresses. In this challenge, you will get hands on with a thingamajig and learn how one is configured.
+```sh
+export PROJECT_ID=<your project id>
+```
 
 ### Description
 *This section should clearly state the goals of the challenge and any high-level instructions you want the students to follow. You may provide a list of specifications required to meet the goals. If this is more than 2-3 paragraphs, it is likely you are not doing it right.*
