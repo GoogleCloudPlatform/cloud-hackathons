@@ -30,27 +30,76 @@ By the end of this workshop, you’ll have developed a comprehensive reliability
 
 ### Introduction
 
-In this challenge, we will set up metrics generation using locust. Locust is a load generator tool.
-The **Movie Guru** backend application is running on the GKE cluster. The locust load test tool is also running on the same cluster. Lets get the address.
+#### Load Testing and Monitoring with Locust
 
-First navigate to the google cloud console and open a google cloud terminal.
+In this challenge, you'll set up and generate application metrics using Locust, a powerful load testing tool. The goal is to simulate user activity on the Movie Guru backend application, which is running on a GKE cluster. Locust is also deployed within the same cluster, and its load generator is pre-configured.
 
-```sh
-export PROJECT_ID=<your project id>
-export LOCATION=<your project id>
-```
+You will be provided with the address of the Locust load generator at the start of the project. It should look like this: http://123.123.123.123:8089.
 
-Let's connect to the cluster (don't worry this isn't a GKE exercise). We just need to get the IP address of the locust server.
+#### Step 1: Generate Load on the Application
 
-```sh
-gcloud container clusters get-credentials movie-guru-gke --region $LOCATION --project $PROJECT_ID
-```
+- Open your browser and navigate to the Locust load generator address. You should see a screen similar to the one below:
 
-Once connected, let's get the ip address of the locust server.
+   ![locust start screen](images/locust-startscreen.png)
 
-```sh
-export PROJECT_ID=<your project id>
-```
+- Fill out the *Start new load test* form with the following values:
+
+  - Number of users: 1
+  - Spawn rate: 0.001
+  - Host: Leave this field empty. (The Locust service is already pre-configured with the correct backend host address, so this field is ignored.)
+  - Runtime: 3 hours (under Advanced options)
+  
+   This configuration will gradually increase the load on the backend, spawning around 10 simulated users over the course of 3 hours.
+
+- Once the load test begins, Locust will swarm various backend endpoints, simulating traffic as users interact with the application. You should see something similar to this:
+
+  ![Locust Swarming](images/locust-swarming.png)
+
+#### Step 2: Monitor Application Metrics
+
+- Open the Google Cloud Console and navigate to the Monitoring page.
+
+   ![Console View](images/console-monitoring.png)
+
+- In the Monitoring page, go to Dashboards > Custom Dashboards.
+
+   ![Custom Dashboards](images/customdashboards.png)
+
+- Here, you’ll find 4 custom dashboards. Click on the MovieGuru-Login dashboard.
+
+#### Step 3: Analyze the Login Dashboard
+
+The login dashboard tracks 2 metrics related to the user's login flow.
+
+The MovieGuru-Login dashboard displays two important graphs:
+
+   ![Login Dashboard](images/logindashboard.png)
+
+- Login Success Rate: This graph tracks the percentage of successful logins. The success rate should ideally be close to 100%.
+
+- Login Latency: This graph tracks the login response times using percentile latency metrics. The graph shows 5 different lines representing the following percentiles:
+  - 99th Percentile: The response time for the slowest 1% of requests.
+  - 95th Percentile: The response time for the slowest 5% of requests.
+  - 90th Percentile: The response time for the slowest 10% of requests.
+  - 50th Percentile (Median): The median response time.
+  - 10th Percentile: The response time for the fastest 10% of requests.
+
+   For example, in the image above, the 99th percentile latency is approximately 9.93 ms, while the 95th percentile is under 9.65 ms. The 50th percentile (median) response time is around 6.5 ms, and the 10th percentile is below 3.7 ms.
+
+Monitoring these metrics will help you understand how the system performs under load and identify potential bottlenecks or performance issues.
+
+#### Step 4: Analyze the Start-up Dashboard
+
+This dashboard monitors critical metrics related to the post-login startup process. Right after the user logs in, the backend quickly returns the following to the frontend:
+
+- User Preferences: Personalized settings specific to the user.
+- Featured Movies: A random curated list of movies.
+
+Since users expect fast load times, ensuring that this process is swift is essential for a smooth experience. Slow responses here can lead to frustration and poor user satisfaction.
+
+This dashboad is very similar to the login dashboard as it tracks the startup success rate and latency.
+
+
 
 ### Description
 *This section should clearly state the goals of the challenge and any high-level instructions you want the students to follow. You may provide a list of specifications required to meet the goals. If this is more than 2-3 paragraphs, it is likely you are not doing it right.*

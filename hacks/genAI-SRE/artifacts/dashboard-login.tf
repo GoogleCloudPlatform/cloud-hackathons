@@ -1,5 +1,5 @@
 locals {
-  interval = "$${local.interval}" 
+  interval = "$${__interval}" 
 }
 resource "google_monitoring_dashboard" "login-dashboard" {
 project = var.gcp_project_id
