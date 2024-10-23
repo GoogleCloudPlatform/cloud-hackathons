@@ -44,12 +44,12 @@ You will be provided with the address of the Locust load generator at the start 
 
 - Fill out the *Start new load test* form with the following values:
 
-  - Number of users: 1
-  - Spawn rate: 0.001
+  - Number of users at peak: 20
+  - Spawn rate: 0.05
   - Host: Leave this field empty. (The Locust service is already pre-configured with the correct backend host address, so this field is ignored.)
   - Runtime: 3 hours (under Advanced options)
   
-   This configuration will gradually increase the load on the backend, spawning around 10 simulated users over the course of 3 hours.
+   This configuration will gradually increase the load on the backend, spawning around 20 simulated users over the course of 3 hours.
 
 - Once the load test begins, Locust will swarm various backend endpoints, simulating traffic as users interact with the application. You should see something similar to this:
 
@@ -98,7 +98,6 @@ This dashboard monitors critical metrics related to the post-login startup proce
 Since users expect fast load times, ensuring that this process is swift is essential for a smooth experience. Slow responses here can lead to frustration and poor user satisfaction.
 
 This dashboad is very similar to the login dashboard as it tracks the startup success rate and latency.
-
 
 
 ### Description
