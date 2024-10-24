@@ -38,11 +38,11 @@ variable "locust_file" {
 
 variable "helm_chart" {
   description = "URL of the movie guru helm chart"
-  default = "https://mkand.github.io/movie-guru/movie-guru-0.1.0.tgz"
+  default = "https://mkand.github.io/movie-guru/movie-guru-0.2.0.tgz"
 }
 
 variable "image_repo_name" {
-  description = "Base repo where images are stored"
+  description = "Base docker repo where images are stored"
   default = "manaskandula"
   
 }

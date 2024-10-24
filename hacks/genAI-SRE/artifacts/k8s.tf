@@ -1,3 +1,17 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
@@ -18,6 +32,20 @@ provider "helm" {
   }
 }
 
+resource "google_compute_address" "server-address" {
+  name         = "server-address"
+  address_type = "EXTERNAL"
+  project = var.gcp_project_id
+  region = var.gcp_region
+}
+
+resource "google_compute_address" "frontend-address" {
+  name         = "frontend-address"
+  address_type = "EXTERNAL"
+  project = var.gcp_project_id
+  region = var.gcp_region
+}
+
 data "http" "locustfile" {
   url = var.locust_file
 }
@@ -25,16 +53,23 @@ data "http" "locustfile" {
 resource "helm_release" "movie_guru" {
   name  = "movie-guru"
   chart = var.helm_chart
-
   set {
     name  = "Config.Image.Repository"
-    value = var.image_repo_name
+    value = "manaskandula"
   }
-
+  set {
+    name  = "Config.serverIP"
+    value = google_compute_address.server-address.address
+  }
+    set {
+    name  = "Config.frontendIP"
+    value = google_compute_address.frontend-address.address
+  }
   set {
     name  = "Config.projectID"
     value = var.gcp_project_id
   }
+  depends_on = [ google_compute_address.server-address ]
 }
 
 resource "kubernetes_config_map" "loadtest_locustfile" {
@@ -101,7 +136,6 @@ resource "helm_release" "locust" {
     value = "http://mockuser-service.movie-guru.svc.cluster.local"
   }
     depends_on = [helm_release.movie_guru, kubernetes_config_map.loadtest_locustfile]
-
 }
 
 data "kubernetes_service" "locust" {
@@ -109,4 +143,6 @@ data "kubernetes_service" "locust" {
     name      = "locust"  
     namespace = "locust"   
   }
+    depends_on = [ helm_release.locust ]
+
 }

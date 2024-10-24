@@ -11,10 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-output "project_id" {
-    value = var.gcp_project_id
-}
 
 output "locust_address" {
   value = "http://${data.kubernetes_service.locust.status.0.load_balancer.0.ingress.0.ip}:8089"
+}
+
+output "backend_address" {
+  value = "http://${google_compute_address.server-address.address}"
+}
+
+output "frontend_address" {
+  value = "http://${google_compute_address.frontend-address.address}"
 }

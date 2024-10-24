@@ -24,7 +24,7 @@ By the end of this workshop, you’ll have developed a comprehensive reliability
 
 ## Contributors
 
-- Manasa Kanduula
+- Manasa Kandula
 
 ## Challenge 2: Start Silent Metrics collection
 
@@ -97,7 +97,7 @@ This dashboard monitors critical metrics related to the post-login startup proce
 
 Since users expect fast load times, ensuring that this process is swift is essential for a smooth experience. Slow responses here can lead to frustration and poor user satisfaction.
 
-This dashboad is very similar to the login dashboard as it tracks the startup success rate and latency.
+This dashboard is very similar to the login dashboard as it tracks the startup success rate and latency.
 
 
 ### Description
