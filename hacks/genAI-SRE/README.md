@@ -30,12 +30,12 @@ By the end of this workshop, you’ll have developed a comprehensive reliability
 
 Ok. You have started on Day 1 as the newly formed SRE team for the **Movie Advisory Company** whose first product is the **Movie Guru** app.
 
-Task 1 - Your first task is to get an idea of what the application looks like.
+Your first task is to get an idea of what the application looks like.
 
 - Navigate to "http://FrontEnd IP" to visit the app.
-- Login in using your name.
+- Login in using your name. The movie guru app hasn't implemented authentication yet.
 - Work with the app and get an understanding of it.
-- Make a list of atleast 3 **user journeys** you can identify with the app.
+- Make a list of atleast 3 **user journeys** you can identify with the **Movie Guru** app.
 
 ### What is a User Journey
 
@@ -63,8 +63,36 @@ Steps:
 - Click the "Add to Cart" button.
 - View the updated shopping cart with the added item.
 
+## Success Criteria
 
-Task 2 - The CEO of the company calls you in for a meeting 
+- You have identified 2 user journeys
+
+### UJ 1
+
+Goal: Log into to the website
+
+Steps:
+
+- Go to the **Movie Guru** login page.
+- Enter username.
+- Click the "Login" button.
+- View the chatbot, any chat history (if it exists), and see featured films, and profile info (if it exists).
+
+### UJ 2
+
+Goal: Get movie recommendations
+
+Steps:
+
+- Initiate chat.
+- Express Preferences.
+- Receive Recommendations.
+- Explore Recommendations.
+- End Chat.
+
+
+
+## Challenge 2: There are stakeholders
 
 
 ## Challenge 2: Start Silent Metrics collection
