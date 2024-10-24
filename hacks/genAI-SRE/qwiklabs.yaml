@@ -91,3 +91,5 @@ environment:
     reference: project.project_id
   - label: Locust IP
     reference: project.locust_address
+  - label: FrontEnd IP
+    reference: project.frontend_address

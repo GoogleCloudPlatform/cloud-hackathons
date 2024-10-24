@@ -26,6 +26,47 @@ By the end of this workshop, you’ll have developed a comprehensive reliability
 
 - Manasa Kandula
 
+## Challenge 1: Your first day as SRE
+
+Ok. You have started on Day 1 as the newly formed SRE team for the **Movie Advisory Company** whose first product is the **Movie Guru** app.
+
+Task 1 - Your first task is to get an idea of what the application looks like.
+
+- Navigate to "http://FrontEnd IP" to visit the app.
+- Login in using your name.
+- Work with the app and get an understanding of it.
+- Make a list of atleast 3 **user journeys** you can identify with the app.
+
+### What is a User Journey
+
+In the context of SRE (Site Reliability Engineering), a user journey describes the series of steps a user takes to accomplish a specific goal while interacting with a service. It focuses on the user's perspective and their experience with the system's performance and reliability.
+
+Here are 2 example user journeys for an online webshop.
+
+#### Logging into a Website
+
+Goal: Access a website's protected content.
+Steps:
+
+- Go to the website's login page.
+- Enter username and password.
+- Click the "Login" button.
+- Access the desired content.
+
+#### Adding an Item to an Online Shopping Cart
+
+Goal: Add a desired product to their shopping cart.
+Steps:
+
+- Browse an e-commerce website.
+- Find a product they want to purchase.
+- Click the "Add to Cart" button.
+- View the updated shopping cart with the added item.
+
+
+Task 2 - The CEO of the company calls you in for a meeting 
+
+
 ## Challenge 2: Start Silent Metrics collection
 
 ### Introduction
@@ -44,12 +85,12 @@ You will be provided with the address of the Locust load generator at the start 
 
 - Fill out the *Start new load test* form with the following values:
 
-  - Number of users at peak: 20
+  - Number of users at peak: 3
   - Spawn rate: 0.05
   - Host: Leave this field empty. (The Locust service is already pre-configured with the correct backend host address, so this field is ignored.)
   - Runtime: 3 hours (under Advanced options)
   
-   This configuration will gradually increase the load on the backend, spawning around 20 simulated users over the course of 3 hours.
+   This configuration will gradually increase the load on the backend, spawning around 3 simulated users over the course of 3 hours.
 
 - Once the load test begins, Locust will swarm various backend endpoints, simulating traffic as users interact with the application. You should see something similar to this:
 
