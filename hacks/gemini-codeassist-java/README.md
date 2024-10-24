@@ -117,15 +117,14 @@ Now that we understand the existing Quotes application, we'll seek to use test-d
 ### Description
 In this challenge, your team is asking you to enhance the existing Book Quotes application by adding new business functionality to retrieve quotes from books, given the book name. The Quotes app is missing this endpoint to retrieve book information by book name. This endpoint should respond on the “/quotes/book/{book}” path. You are being asked to implement it, with the associated business logic.
 
-To add the quote retrieval by book name functionality, you start writing code in true TDD fashion by first adding tests to both the QuotesControllerTest (for the endpoint) and QuotesRepositoryTest (for data retrieval from the database). Once you've defined the test criteria, you can then add the relevant methods. Once you've used Gemini to help you add this code, you should run the tests to demonstrate that your code works as expected.
+To add the quote retrieval by book name functionality, you start writing code in true TDD fashion by first creating test files for the QuotesController and QuotesRepository methods, and then adding tests to the new QuotesControllerTest file (for the endpoint) and the QuotesRepositoryTest file (for data retrieval from the database). Once you've defined the test criteria, you can then add the relevant methods. Once you've used Gemini to help you add this code, you should run the tests to demonstrate that your code works as expected.
 
 
 ### Success Criteria
 
 - Have the tests for the getbyBook method written within the QuotesControllerTest and the QuotesRepositoryTest class
 - Have the getByBook method written within the QuotesController class, and the findbyBook method for the QuoteRepository class
-- Demonstrate that all existing and new tests pass and that the getByBook method works as expected
-
+- Demonstrate that all existing and new tests pass and that the getByBook method works as expected 
 
 ### Learning Resources
 
