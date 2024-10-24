@@ -60,16 +60,18 @@ In this gHack you will learn how to add business functionality to an existing Ja
 
 ### Description
 
-In this challenge, you will set up the provided repository in your own GCP project so that you can edit it within the Cloud Shell editor and use the Gemini Code Assist plugin and chat, all without leaving GCP. Before cloning your repository, ensure you have Java and OpenJDK installed, and enable the Gemini Code Assist, Cloud Build, Cloud Run, and Cloud Logging APIs within your project (if not enabled by running the included Terraform).
+In this challenge, you will set up the provided repository in your own GCP project so that you can edit it within the Cloud Shell editor and use the Gemini Code Assist plugin and chat, all without leaving GCP. 
 
-The Quotes repository is [found on GitHub here](https://github.com/ddobrin/quotes-workshop). You can see some notes in the README file for running the application locally. 
+Clone [this repo](https://github.com/ddobrin/quotes-workshop) and follow the instructions in README.md to install Java 21 (at the time of this writing Cloud Shell comes with Java 17) and run it locally. Open the repo in Cloud Shell Editor and enable Gemini Code Assist.
+
+> **Note**  
+> Ensure that JAVA_HOME is set properly, otherwise Maven will fail. 
+
 
 ### Success Criteria
 
-- Set up your project prerequisites. 
-- Verify that the Quotes app is cloned within your Google Cloud project. 
-- Demonstrate your understanding of how to call Gemini Code Assist within the Quotes repository. 
-
+- App is running locally
+- Gemini Code Assist is enabled in Cloud Shell Editor
 
 ### Learning Resources
 
