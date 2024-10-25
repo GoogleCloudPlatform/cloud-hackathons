@@ -28,30 +28,29 @@ By the end of this workshop, you’ll have developed a comprehensive reliability
 
 ## Challenge 1: Your first day as SRE
 
-Ok. You have started on Day 1 as the newly formed SRE team for the **Movie Advisory Company** whose first product is the **Movie Guru** app.
+Ok. You have started on Day 1 as the newly formed SRE team for **The Movie Advisory Company**, a start-up whose first product is the **Movie Guru** app.
 
 Your first task is to get an idea of what the application looks like.
 
-- Navigate to "http://FrontEnd IP" to visit the app.
-- Login in using your name. The movie guru app hasn't implemented authentication yet.
-- Work with the app and get an understanding of it.
-- Make a list of atleast 3 **user journeys** you can identify with the **Movie Guru** app.
+- Navigate to "http://FrontEndIP" (replace with the correct IP) to visit the app.
+- Login in using your name or email. The movie guru app hasn't implemented authentication yet (it is on the roadmap).
+- Work with the app and get an understanding of it. Make sure you do the following:
+  - Log into to it. What happens after you log in?
+  - Ask for movie recommendations ("Eg: I feel like watching a fantasy movie").
+  - Express strong likes and dislikes towards certain genres, plot types etc. ("Eg: I love movies with funny animals" or "I really can't stand movies with violence").
+  - Keep an eye on your user profile, does the app remember what you like?
+  - Log out and log in a few times to understand how the app behaves.
+- Based on your interaction, make a list of atleast 2 **user journeys** you can identify with the **Movie Guru** app.
+- If you need a refresher on what a user journey is, visit the section on **What is a user journey** (below).
+- Clearly document your user journeys using a structured format that includes:
+  - **Goal:** The user's objective in this journey.
+  - **Steps:** The specific actions the user takes to achieve the goal.
 
 ### What is a User Journey
 
-In the context of SRE (Site Reliability Engineering), a user journey describes the series of steps a user takes to accomplish a specific goal while interacting with a service. It focuses on the user's perspective and their experience with the system's performance and reliability.
+In the context of SRE (Site Reliability Engineering), a user journey (UJ) describes the series of steps a user takes to accomplish a specific goal while interacting with a service. It focuses on the user's perspective and their experience with the system's performance and reliability. It is like a map that shows the steps a user takes to achieve a goal while using our service. We use this map to understand user behavior, their expectations, and improve their experience.
 
-Here are 2 example user journeys for an online webshop.
-
-#### Logging into a Website
-
-Goal: Access a website's protected content.
-Steps:
-
-- Go to the website's login page.
-- Enter username and password.
-- Click the "Login" button.
-- Access the desired content.
+Here is an example UJ for a typical online webshop:
 
 #### Adding an Item to an Online Shopping Cart
 
@@ -65,35 +64,64 @@ Steps:
 
 ## Success Criteria
 
-- You have identified 2 user journeys
+To successfully complete this exercise, you should:
 
-### UJ 1
+- **Identify at least 2 user journeys:** Written down 2 UJs in the format mentioned above for the **Movie Guru** app
+- **Compare your journeys to the examples:**  See how your ideas align with the user journeys provided below. The examples below cover some common interactions, but there will be other ways users interact with the app. There is no perfect answer.
+- **Remember that user journeys are hypotheses:** They are your best guess about how users will interact with the app.  These journeys will need to be refined over time based on real user data and feedback.
 
-Goal: Log into to the website
+### Example User Journeys for Movie Guru
 
-Steps:
+Here are a few examples of user journeys for the Movie Guru app:
 
-- Go to the **Movie Guru** login page.
-- Enter username.
-- Click the "Login" button.
-- View the chatbot, any chat history (if it exists), and see featured films, and profile info (if it exists).
+#### UJ 1: Access the App
 
-### UJ 2
+**Goal:**  Start using the Movie Guru app and view the main interface.
 
-Goal: Get movie recommendations
+**Steps:**
 
-Steps:
+1. Go to the Movie Guru login page.
+1. The user enters their username.
+1. Click the "Login" button.
+1. View the main page. This contains the chatbot, with any chat history loaded (if it exists), and a view of featured films, and profile info (if it exists).
 
-- Initiate chat.
-- Express Preferences.
-- Receive Recommendations.
-- Explore Recommendations.
-- End Chat.
+#### UJ 2: Get Movie Recommendations
 
+**Goal:** Receive personalized movie recommendations.
+
+**Steps:**
+
+1. Initiate Chat: The user opens the chat interface in the Movie Guru app.
+    - The app may have an initial profile with some initial preferences to guide the recommendations.
+1. User Receives Recommendations:
+    - Movie Guru provides an initial set of movie recommendations based on the user's input (if any) or previous interactions.
+1. User Explores Recommendations:
+    - The user browses through the recommendations.
+    - The user can ask for details about each movie (e.g., plot, actors, rating).
+1. User Provides Feedback:
+    - The user provides explicit feedback (e.g., "I love this movie!" or "Not interested in this genre").
+    - Skipping recommendations and asking to search again.
+1. User Receives Refined Recommendations:
+    - Movie Guru refines the recommendations based on the user's feedback, providing a more personalized set of suggestions.
+1. Repeat Steps 2-5 (Optional): The user can continue to explore and provide feedback to further refine the recommendations.
+1. End Chat: The user ends the chat session.
+
+#### UJ 3:  Update  Preferences
+
+**Goal:** Update invalid preferences to personalize future recommendations.
+
+**Steps:**
+
+1. Access Preferences: The user navigates to the "Preferences" or "Profile" section of the home page.
+1. View Existing Preferences (Optional): The app displays any existing preferences the user has previously saved. This could include:
+   - Liked/dislikes genres
+   - Liked/disliked actors
+   - Liked/disliked directors
+1. Delete Wrong/Invalid Items: The user interacts with the interface to adjust their preferences. This might involve:
+1. Receive Confirmation (Optional): The app provides feedback to the user that their preferences have been successfully saved by not rendering the preference again.
 
 
 ## Challenge 2: There are stakeholders
-
 
 ## Challenge 2: Start Silent Metrics collection
 
