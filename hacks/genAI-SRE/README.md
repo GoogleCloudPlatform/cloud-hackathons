@@ -28,6 +28,37 @@ By the end of this workshop, you’ll have developed a comprehensive reliability
 
 ## Challenge 1: Your first day as SRE
 
+### Prerequisites
+
+Before we start our first day as SREs, we are going to start up metrics collection so that we have a nice load of metrics to work with in later challenges.
+
+You'll set up and generate application metrics using Locust, a powerful load testing tool. The goal is to simulate user activity on the Movie Guru backend application, which is running on a GKE cluster. Locust is also deployed within the same cluster, and its load generator is pre-configured.
+
+You will be provided with the address of the Locust load generator at the start of the project. It should look like this: http://LocustIP:8089 (replace with the correct IP).
+
+#### Step 1: Generate Load on the Application
+
+- Open your browser and navigate to the Locust load generator address. You should see a screen similar to the one below:
+
+   ![locust start screen](images/locust-startscreen.png)
+
+- Fill out the *Start new load test* form with the following values:
+
+  - Number of users at peak: 3
+  - Spawn rate: 0.05
+  - Host: http://mockserver-service.movie-guru.svc.cluster.local
+  - Runtime: 3 hours (under Advanced options)
+  
+   This configuration will gradually increase the load on the backend, spawning around 3 simulated users over the course of 3 hours.
+
+- Once the load test begins, Locust will swarm various backend endpoints, simulating traffic as users interact with the application. You should see something similar to this:
+
+  ![Locust Swarming](images/locust-swarming.png)
+
+- Confirm this is running as expected and start challenge 1.
+
+### Introduction
+
 Ok. You have started on Day 1 as the newly formed SRE team for **The Movie Advisory Company**, a start-up whose first product is the **Movie Guru** app.
 
 Your first task is to get an idea of what the application looks like.
@@ -52,7 +83,7 @@ In the context of SRE (Site Reliability Engineering), a user journey (UJ) descri
 
 Here is an example UJ for a typical online webshop:
 
-#### Adding an Item to an Online Shopping Cart
+#### Example: Adding an Item to an Online Shopping Cart
 
 Goal: Add a desired product to their shopping cart.
 Steps:
@@ -131,9 +162,9 @@ Your challenge:  figure out how to improve the app's stability, manage the CEO's
 
 Challenge Steps:
 
-1. **Initial Response:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with a teammate or coach who can role-play as the CEO.
+1. **Initial Response to CEO:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with a teammate or coach who can role-play as the CEO.
 
-   > **NOTE**: The focus on the roleplay should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
+   > **NOTE**: The focus on the role-play should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
 
 2. **Information Gathering:** You're not alone in this quest for stability! To improve Movie Guru's stability, you'll need to collaborate with others. Identify the key stakeholders within the company and determine what information you need from each of them to achieve your reliability goals.
 
@@ -210,7 +241,7 @@ SLOs provide a clear and measurable way to define the desired reliability of you
 
 **Your Task:**
 
-1. **Choose Your Journeys:** Select two key user journeys for Movie Guru. These could be the ones you identified in Challenge 1 or the examples provided.
+1. **Choose Your Journeys:** Select two key user journeys for **Movie Guru**. These could be the ones you identified in Challenge 1 or the examples provided.
 2. **Craft Your SLOs:**  Define specific, measurable, achievable, relevant, and time-bound (SMART) SLOs for each chosen user journey. Consider what aspects of reliability matter most to users in each journey and how you can measure success.
 
 ### What are SLOs?
@@ -234,38 +265,165 @@ The addition of "measured over a 30-day rolling window" specifies the timeframe 
   - **Time window:** The period over which the SLI is measured (e.g., 30-day rolling window).
   - [OPTIONAL] **Measurement:**  A clear description of how the SLI will be measured and tracked (e.g., using logs, monitoring tools, user feedback).
 
+## Challenge 4: Let the monitoring begin
 
-## Challenge 4: Let the instrumentation begin
+### Introduction
 
-## Challenge 5: Dashboards can sometimes decieve
+The platform team introduces you to the app's monitoring dashboards in the Google Cloud Console. They've set up four dashboards, each providing key insights into different aspects of Movie Guru's performance:
+
+- **Login Dashboard**: Tracks the health and efficiency of the user login process.
+- **Startup Dashboard**: Monitors the performance of the post-login startup process, ensuring users get into the app quickly.
+- **Chat Dashboard**: Provides a comprehensive view of user interactions with the chatbot, including engagement, sentiment, and response times.
+- **User Profile Dashboard**: Tracks the performance and reliability of user profile management functions.
+  
+To give you a well-rounded understanding of each area, every dashboard includes at least two crucial metrics:
+
+- **Success Counters**: These show how often the server successfully responds to requests, giving you a sense of overall availability and reliability.
+- **Latency Counters**: These track how long it takes the server to respond to requests, providing insights into performance and potential bottlenecks.
+
+On top of these, the chat dashboard has 3 other dashboards:
+
+1. **User Engagement Dashboard**: This tracks the User Engagement Rate for the Movie Guru chatbot. It essentially measures the percentage of chatbot interactions that result in either an "Engaged" outcome. These metrics are gathered by analysing the chat conversations.
+
+2. **User Sentiment Dashboard**: This gauges user satisfaction with the Movie Guru chatbot by tracking the sentiment expressed in user messages. It categorizes messages as "positive," "negative," "neutral," or "unknown". The dashboard then displays the percentage of each sentiment category over time,  as a multi-line graph.
+
+3. **Safety Issue Dashboard**: This tracks the rate of user chat messages where the user made unsafe remarks.
+
+### Latency Metrics
+
+- These metrics (for all dashboards) measures how long it takes for users to get a successful response from the server.
+- It provides insights into the speed and efficiency of a specific server process (eg: login, chat, etc).
+- Lower latency means faster logins, contributing to a better user experience.
+- The dashboard displays several percentiles of login latency (10th, 50th, 90th, 95th, 99th), giving you a comprehensive view of the login speed distribution.
+- This metric is also displayed as a line chart, allowing you to track changes in latency over time and identify any performance degradations.
+
+### Challenge Steps
+
+- Analyze Existing Metrics
+  - Navigate to Google Cloud Monitoring \> Dashboards \> Custom Dashboards.  
+  - Examine the "Login", "Startup", and "Chat" dashboards.  
+  - Create a list of the metrics captured in each dashboard (Login, Chat, Startup).
+- Assess User Experience
+  - Based on the metrics and your own experience (or user feedback if available), describe how users likely perceive the app's performance.  
+  - For example: "Users may experience slow initial load times, especially during peak hours. Chat functionality generally seems responsive, but occasional connection errors can be frustrating."  
+  - Categorize aspects of the application into:  
+    - **Going Well:** Features or areas with good performance.  
+    - **Need Improvement:** Areas with minor performance issues.  
+    - **Need Improvement Urgently:** Areas with significant performance issues impacting user experience.
+- Define Short-Term SLOs (for the items below)
+  - After discussing with product owners, you’ve identified two key SLOs for short-term improvement. Fill in realistic, achievable values that you would like the app to meet in the short term (1 month). Let the current indicators be a guide.
+- Set Aspirational SLOs (Optional)
+- While short-term SLOs guide immediate improvements, long-term aspirational SLOs set ambitious targets for the app's future performance (make any necessary assumptions about current technical debt, issues etc when necessary).
+
+#### SLO 1: App Accessibility and Responsiveness
+
+- **Objective:** `xx%` of users should be able to access the Movie Guru app and view the main interface within `yy` seconds, measured over a `zz`-day rolling window.  
+- **Measurement:**  
+  - **Availability:** Percentage of successful attempts to login and load the main interface.
+  - **Latency:** Latency the startup endpoint (server-side measurement).  
+
+#### SLO 2: Chatbot Responsiveness
+
+- **Objective:** `xx%`% of user messages should receive a relevant response from the Movie Guru chatbot within `yy` seconds, measured over a `zz`-hour rolling window.  
+- **Measurement:**  
+  - **Relevance:** Measured by the `Chat_Outcome_Counter` metric. A response is considered relevant if the outcome is registered as "engaged"
+  - **Latency:**  Calculated as the time difference between the server receiving the user's message and sending the response.
+
+### Success Criteria
+
+- You’ve set realistic SLO objectives for the two cases that are realistically achievable in the short term.
+- You set aspirational SLOs based on what you think is technically achievable and what your users would expect in the long term.
+
+## Challenge 5: Implementing SLOs on the dashboard
+
+### Prerequisites
+
+Run the following command on a terminal
+
+```sh
+BACKEND_IP=<the backend ip>
+
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+  "ChatSuccess": 0.95,
+  "ChatSafetyIssue": 0.1,
+  "ChatEngaged": 0.70,
+  "ChatAcknowledged": 0.15,
+  "ChatRejected": 0.05,
+  "ChatUnclassified": 0.1,
+  "ChatSPositive": 0.6,
+  "ChatSNegative": 0.1,
+  "ChatSNeutral": 0.2,
+  "ChatSUnclassified": 0.1,
+  "LoginSuccess": 0.999,
+  "StartupSuccess": 0.95,
+  "PrefUpdateSuccess": 0.99,
+  "PrefGetSuccess": 0.999,
+  "LoginLatencyMinMS": 10,
+  "LoginLatencyMaxMS": 200,
+  "ChatLatencyMinMS": 906,
+  "ChatLatencyMaxMS": 4683,
+  "StartupLatencyMinMS": 400,
+  "StartupLatencyMaxMS": 1000,
+  "PrefGetLatencyMinMS": 153,
+  "PrefGetLatencyMaxMS": 348,
+  "PrefUpdateLatencyMinMS": 363,
+  "PrefUpdateLatencyMaxMS": 645
+}' \
+  http://$BACKEND_IP/phase 
+```
+
+### Introduction
+
+This challenge is about up the short-term Service Level Objectives (SLOs) for the app in Cloud Monitoring Suite. SLOs help you define and track the performance targets for your service, ensuring a positive user experience.
+
+#### Steps
+
+1. Navigate to SLOs in the monitoring suite:
+   - Go to the "SLOs" tab. This is where you'll define and manage your SLOs.
+   - Define the Service. Look for a service called **mockserver-service** (this is the name of the GKE service hosting the app)
+   - If "mockserver-service" isn't already listed, you'll need to define it as a custom service.
+   - Under "service candidates," select "mockserver-service." This links your SLOs to the correct service for monitoring.
+  
+2. Create SLOs:
+Now, let's create the specific SLOs for your service:
+
+- Chat Latency:
+  - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the prometheus metrics section)
+  - Target: p99 latency of 5 seconds (5000 milliseconds)
+  - Time Window: 24-hour rolling window
+  - Burn Rate Alert: Set an alert for a burn rate that makes sense for your application's needs and risk tolerance. For example, alert if the error budget is consumed at 2x the rate in 1 hour. This means if you have a 30-day error budget, you'll be alerted if the service consumes 1 day's worth of errors in 1 hour.
+  - Notification (Optional): Configure email notifications to stay informed about SLO violations.
+
+- Chat Engagement:
+  - Metric: **movieguru_chat_outcome_counter_total** (Filter: Outcome=Engaged)
+  - Target: Define a target engagement rate. For example, 70% of chat interactions should result in an "Engaged" outcome.
+  - Time Window: 24-hour rolling window
+
+- Startup Latency:
+  - Metric: **movieguru_startup_latency_milliseconds_bucket** (measured at the **startup** endpoint)
+  - Target: p99 latency of 1 second (1000 milliseconds)
+  - Time Window: Choose an appropriate time window, such as a 24-hour or 7-day rolling window.
+  - Remarks: Ideally we would like to combine the latency of the login and startup process to know about the startup latency *as experienced by the user*. But, we'll stick to the startup endpoint latency for now.
+
+- Startup Success Rate:
+  - Metric: This requires combining two metrics: **movieguru_startup_success_total** and **movieguru_startup_attempts_total**.
+  - Target: 90% success rate over a 7-day rolling window.
+  - Implementation: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO. This allows for more complex SLO configurations. Refer to the Cloud Monitoring API documentation for details on how to create SLOs programmatically (see **learning resources**)
+  - Remarks: Ideally we would like to combine the success rate of the login and startup processes to know about the startup success *as experienced by the user*. But, we'll stick to the startup endpoint success rate  for now.
+
+Learning Resources:
+
+- [Setting SLOs through UI](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-slo)
+- [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#slo-create)
+
+## Challenge 6: Dashboards can sometimes decieve
 
 
 ### Introduction
 
 #### Load Testing and Monitoring with Locust
-
-In this challenge, you'll set up and generate application metrics using Locust, a powerful load testing tool. The goal is to simulate user activity on the Movie Guru backend application, which is running on a GKE cluster. Locust is also deployed within the same cluster, and its load generator is pre-configured.
-
-You will be provided with the address of the Locust load generator at the start of the project. It should look like this: http://123.123.123.123:8089.
-
-#### Step 1: Generate Load on the Application
-
-- Open your browser and navigate to the Locust load generator address. You should see a screen similar to the one below:
-
-   ![locust start screen](images/locust-startscreen.png)
-
-- Fill out the *Start new load test* form with the following values:
-
-  - Number of users at peak: 3
-  - Spawn rate: 0.05
-  - Host: Leave this field empty. (The Locust service is already pre-configured with the correct backend host address, so this field is ignored.)
-  - Runtime: 3 hours (under Advanced options)
-  
-   This configuration will gradually increase the load on the backend, spawning around 3 simulated users over the course of 3 hours.
-
-- Once the load test begins, Locust will swarm various backend endpoints, simulating traffic as users interact with the application. You should see something similar to this:
-
-  ![Locust Swarming](images/locust-swarming.png)
 
 #### Step 2: Monitor Application Metrics
 
@@ -310,7 +468,6 @@ This dashboard monitors critical metrics related to the post-login startup proce
 Since users expect fast load times, ensuring that this process is swift is essential for a smooth experience. Slow responses here can lead to frustration and poor user satisfaction.
 
 This dashboard is very similar to the login dashboard as it tracks the startup success rate and latency.
-
 
 ### Description
 *This section should clearly state the goals of the challenge and any high-level instructions you want the students to follow. You may provide a list of specifications required to meet the goals. If this is more than 2-3 paragraphs, it is likely you are not doing it right.*

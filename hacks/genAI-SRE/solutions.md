@@ -185,7 +185,7 @@ This starting SLO acknowledges that the chatbot is still under development and m
 
 **Measurement:**
 
-- **Relevance:** Measured by the `Chat_Outcome_Counter` metric. A response is considered relevant if the outcome is registered as either "engaged" or "acknowledged."
+- **Relevance:** Measured by the `Chat_Outcome_Counter` metric. A response is considered relevant if the outcome is registered as "engaged"."
 - **Latency:**  Calculated as the time difference between the server receiving the user's message and sending the response.
 
 #### SLO for Updating User Preferences in Movie Guru
@@ -200,3 +200,66 @@ This starting SLO acknowledges that the chatbot is still under development and m
 
   - Success Rate: Measured as the percentage of successful attempts to update user preferences.
   - Latency: Calculated as the time it takes for the app to successfully save the updated preferences after a user submits the changes.
+
+## Challenge 4: Let the monitoring begin
+
+This section helps you address the challenges in defining and achieving SLOs for the Movie Guru app.
+
+SLO 1: App Accessibility and Responsiveness
+
+Current State: 90% availability, p99 latency of 3 seconds.
+Target SLO: 99% of users access the main interface within 1 seconds over a 7-day rolling window.
+
+SLO 2: Chatbot Responsiveness
+
+Current State: 50% engagement rate, p99 latency of 9.8 seconds.
+Target SLO: 70% of user messages receive a relevant response within 5 seconds over a 24-hour rolling window.
+
+
+## Challenge 5: Implementing SLOs on the dashboard
+
+This is a challenging exercise. The last SLO needs to be implmenting using the API as the GCP Monitoring UI for SLIs doesn't allow you to define different metrics in the numerator and denominator.
+Here is the command for it that needs to be run in a terminal.
+
+```sh
+ACCESS_TOKEN=`gcloud auth print-access-token`
+
+
+CREATE_SERVICE_POST_BODY=$(cat <<EOF
+{
+  "displayName": "mockserver-service",
+  "gkeService": {
+    "projectId": "movie-guru-ghack",
+    "location": "europe-west4",
+    "clusterName": "movie-guru-gke",
+    "namespaceName": "movie-guru",
+    "serviceName": "mockserver-service"
+  }
+}
+EOF
+)
+
+SERVICE_ID=service-startup
+
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CREATE_SERVICE_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services?service_id=${SERVICE_ID}
+
+
+CREATE_SLO_POST_BODY=$(cat <<EOF
+{
+  "displayName": "90% - Startup Success - Calendar Week",
+  "goal": 0.90,
+  "calendarPeriod": "WEEK",
+  "serviceLevelIndicator": {
+    "requestBased": {
+      "goodTotalRatio": {
+        "goodServiceFilter": "metric.type=\"prometheus.googleapis.com/movieguru_startup_success_total/counter\" resource.type=\"prometheus_target\"",
+        "totalServiceFilter": "metric.type=\"prometheus.googleapis.com/movieguru_startup_attempts_total/counter\" resource.type=\"prometheus_target\""
+      }
+    }
+  }
+}
+EOF
+)
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CREATE_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
+
+```
