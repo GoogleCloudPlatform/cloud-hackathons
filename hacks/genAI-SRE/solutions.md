@@ -104,4 +104,4 @@ _The default files & folders are listed below. You may add to this if you want t
 
 - The goal of this challenge is to familiarize themselves with the Movie Guru app and practice identifying user journeys.
 - There is no single "correct" set of user journeys.  Focus on capturing the key interactions and user goals.
-- Documenting user journeys in a structured format helps ensure clarity and facilitates future analysis and improvements.
+- Documenting user journeys in a structured format helps ensure clarity and facilitates future analysis and improvements

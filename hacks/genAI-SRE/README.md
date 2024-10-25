@@ -106,7 +106,7 @@ Here are a few examples of user journeys for the Movie Guru app:
 1. Repeat Steps 2-5 (Optional): The user can continue to explore and provide feedback to further refine the recommendations.
 1. End Chat: The user ends the chat session.
 
-#### UJ 3:  Update  Preferences
+#### UJ 3: Update Preferences
 
 **Goal:** Update invalid preferences to personalize future recommendations.
 
@@ -120,10 +120,69 @@ Here are a few examples of user journeys for the Movie Guru app:
 1. Delete Wrong/Invalid Items: The user interacts with the interface to adjust their preferences. This might involve:
 1. Receive Confirmation (Optional): The app provides feedback to the user that their preferences have been successfully saved by not rendering the preference again.
 
-
 ## Challenge 2: There are stakeholders
 
-## Challenge 2: Start Silent Metrics collection
+Your second day as an SRE at **The Movie Advisory Company** started with a bang. The CEO, clearly fueled by an excessive amount of coffee, stormed into your workspace, ranting about Movie Guru's unreliable performance.  "Users are complaining about the site not always being reachable!" he yelled, "This is unacceptable! Movie Guru can never be down!" He demanded a solution immediately. With a panicked look in his eyes, he pointed you towards the platform team (a single, overworked engineer) and the application team (known for their eccentric work habits).
+Your challenge:  figure out how to improve the app's stability, manage the CEO's expectations, and prevent a complete meltdown.  Welcome to the world of SRE!
+
+Challenge Steps:
+
+1. **Initial Response:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with a teammate or coach who can role-play as the CEO.
+   > **NOTE**: The focus on the roleplay should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
+
+2. **Information Gathering:** You're not alone in this quest for stability! To improve Movie Guru's stability, you'll need to collaborate with others. Identify the key stakeholders within the company and determine what information you need from each of them to achieve your reliability goals.
+
+### Success Criteria
+
+#### Initial Response
+
+You have effectively addressed the CEO's demand for 100% uptime by:
+
+- **Challenging the feasibility of 100% reliability:** You clearly explained why achieving perfect uptime is practically impossible and highlighted the exponential relationship between reliability and cost.
+- **Emphasizing user needs:**  You highlighted the importance of aligning reliability targets with user expectations and business needs, rather than blindly pursuing an arbitrary number.
+- **Balancing reliability with other priorities:** You emphasized the need to balance reliability investments with other crucial factors like innovation and new feature development. Overachieving on reliability (providing more than what the user expects) is also not a good thing.
+
+**Key takeaway:**  You successfully communicated that 100% is the wrong target for everything and that a balanced approach to reliability is essential for the long-term success of Movie Guru.
+
+#### Information Gathering
+
+As the SRE responsible for improving Movie Guru's stability, you need to collaborate with various stakeholders within the organization.
+Remember, there's no single "right answer" to this challenge.
+The goal is to encourage you to think critically about who you need to involve and what information you need to gather.
+
+To guide your thinking, consider these two key aspects:
+
+**1. Identify Key Stakeholders:**
+
+ **Technical Teams:**
+    - **Development Team:** Responsible for the application code. They can provide insights into potential bugs, performance bottlenecks, and upcoming releases.
+    - **Platform Team:** Manages the underlying infrastructure (servers, databases, etc.). They can offer information about system architecture, resource allocation, potential infrastructure limitations, incident history, monitoring tools, and existing alerting mechanisms.
+    - **QA Team:** (If one exists) Responsible for testing the application. They can offer insights into known issues, testing procedures, and potential areas of fragility. 
+
+ **Business and Product Stakeholders:**
+    - **Product Owner/Product Manager:** Can provide crucial information about user needs and expectations regarding reliability, the product roadmap, and how stability fits into the overall business strategy.
+    - **Other Business Stakeholders:** Consider departments like marketing, sales, and customer support. They can offer insights into how reliability impacts their work, provide valuable user feedback, and clarify budget constraints.
+
+**2. Gather Essential Information:**
+
+Once you've identified the key stakeholders, consider what specific information you need from each of them. This might include:
+
+- **Current Performance Data:** Uptime history, error rates, latency metrics.
+- **System Architecture Diagrams:** Visual representations of the app's components and their interactions.
+- **Deployment Processes:** How new code is released and deployed to production.
+- **Monitoring and Alerting:** What tools and systems are used to monitor the app's health, and what alerts are in place?
+- **Incident Response Procedures:** How are incidents handled, and what are the communication channels?
+
+**Collaboration is Key:** Remember that achieving reliability is a shared responsibility. Building strong relationships with these teams is essential for success.
+
+By systematically identifying your stakeholders and gathering the necessary information, you can gain a comprehensive understanding of the current state of Movie Guru's reliability and lay the groundwork for effective improvements.
+
+## Challenge 3: Your first set of SLOs
+
+## Challenge 4: Let the instrumentation begin
+
+## Challenge 5: Dashboards can sometimes decieve
+
 
 ### Introduction
 
