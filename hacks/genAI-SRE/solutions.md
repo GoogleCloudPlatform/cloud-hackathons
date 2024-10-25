@@ -104,4 +104,99 @@ _The default files & folders are listed below. You may add to this if you want t
 
 - The goal of this challenge is to familiarize themselves with the Movie Guru app and practice identifying user journeys.
 - There is no single "correct" set of user journeys.  Focus on capturing the key interactions and user goals.
-- Documenting user journeys in a structured format helps ensure clarity and facilitates future analysis and improvements
+- Documenting user journeys in a structured format helps ensure clarity and facilitates future analysis and improvements.
+
+## Challenge 2: There are others
+
+This challenge focuses on stakeholder management, SRE principles, and gathering information. Here's a guide to help you facilitate the exercise:
+
+**Key takeaways for students:**
+
+- **100% uptime is an unrealistic goal:**  Emphasize the trade-offs between reliability, cost, and innovation.
+- **SRE is about balance:**  Help students understand the importance of balancing reliability with user needs and business priorities.
+- **Collaboration is key:**  Stress the importance of identifying and collaborating with key stakeholders across different teams.
+- **Information gathering is crucial:** Guide students to identify the essential information needed to assess and improve reliability.
+
+**Guiding the discussion:**
+
+- **Challenge the CEO's demand:** Encourage students to critically evaluate the CEO's demand and explain why 100% uptime is not a feasible or desirable goal.
+- **Explore SRE principles:**  Use this opportunity to discuss core SRE principles like SLOs, error budgets, and embracing risk.
+- **Identify stakeholders:**  Guide students to identify a wide range of stakeholders, including technical teams, product owners, and business stakeholders.
+- **Gather essential information:**  Help students determine the specific information needed from each stakeholder group to develop a comprehensive reliability strategy.
+- **Facilitate role-play:**  Encourage students to role-play the conversation with the CEO, focusing on clear communication and alignment with SRE principles.
+
+**Remember:** The goal is not to find the "perfect" solution but to encourage critical thinking, collaboration, and a deeper understanding of SRE principles and make them tangible.
+
+## Challenge 3: Your first set of SLOs
+
+## Instructor's Guide: Challenge 3
+
+This challenge focuses on defining and understanding Service Level Objectives (SLOs). Here's a guide to help you facilitate the exercise:
+
+**Key takeaways for students:**
+
+- **SLOs are key to SRE:**  Emphasize the importance of SLOs in defining and measuring service reliability.
+- **Align with user needs:**  Help students understand that SLOs should be based on what matters most to users, not arbitrary targets.
+- **SMART SLOs:** Guide students to create SLOs that are specific, measurable, achievable, relevant, and time-bound.
+- **Components of an SLO:** Ensure students understand the key components of an SLO: objective, SLI, target, time window, and measurement.
+
+**Guiding the discussion:**
+
+- **Review SLO concepts:**  Start by reviewing the definition and purpose of SLOs, using the provided "What are SLOs?" section as a reference.
+- **Choose user journeys:**  Help students select relevant user journeys from Challenge 1 or the provided examples.
+- **Define SLOs:** Guide students to define appropriate SLOs for each chosen user journey, ensuring they include all the necessary components.
+- **Discuss measurement:** Encourage students to think about how they would measure and track the defined SLOs.
+- **Provide feedback:** Offer constructive feedback on the students' SLOs, focusing on clarity, relevance, and measurability.
+
+**Example SLO discussion points:**
+
+- **Why is this SLO relevant to the chosen user journey?**
+- **How would you measure the SLI?**
+- **What tools or data sources would you use?**
+- **How would you know if the SLO is being met?**
+- **What actions might you take if the SLO is not met?**
+
+**Remember:** The goal is to help students develop a strong understanding of SLOs and their role in SRE. Encourage them to think critically about user needs, business goals, and the technical aspects of measuring and achieving reliability targets.
+
+### Example **Movie Guru** SLOs
+
+#### SLO for Movie Guru App Access
+
+- SLO: 99.95% of users should be able to access the Movie Guru app and view the main interface within 3 seconds, measured over a 7-day rolling window.
+
+- Rationale:
+
+    This SLO focuses on the app's availability and initial load time, which are crucial for a positive first impression.  The 99.95% target ensures high availability, while the 3-second threshold aims for a responsive and quick-loading interface. The 7-day rolling window provides a balance between capturing short-term trends and allowing for some variability in daily traffic patterns.
+
+- Measurement:
+
+  - Availability: Measured as the percentage of successful attempts to access and load the main interface of the Movie Guru app.
+  - Latency: Calculated as the combined latency of the login endpoint and the startup endpoint, both measured at the server
+
+#### SLO for Movie Guru Chatbot Responsiveness
+
+**Current SLO:** 70% of user messages should receive a relevant response from the Movie Guru chatbot within 8 seconds, measured over a 24-hour rolling window.
+
+**Aspirational SLO:** 90% of user messages should receive a relevant response from the Movie Guru chatbot within 5 seconds, measured over a 24-hour rolling window.
+
+**Rationale:**
+
+This starting SLO acknowledges that the chatbot is still under development and may not yet be able to provide highly relevant responses in all cases. The 70% target allows for some room for improvement while still ensuring a reasonable level of user satisfaction. The aspirational SLO sets a higher bar for the future, aiming for both improved relevance and reduced latency.
+
+**Measurement:**
+
+- **Relevance:** Measured by the `Chat_Outcome_Counter` metric. A response is considered relevant if the outcome is registered as either "engaged" or "acknowledged."
+- **Latency:**  Calculated as the time difference between the server receiving the user's message and sending the response.
+
+#### SLO for Updating User Preferences in Movie Guru
+
+- SLO: 99.5% of user preference updates should be successfully saved within 1 second, measured over a 24-hour rolling window.
+
+- Rationale:
+
+    This SLO focuses on the performance and reliability of the preference update functionality within Movie Guru. The 99.5% target ensures that users can reliably modify their preferences, while the 1-second threshold aims for a quick and responsive experience. The 24-hour rolling window provides a frequent assessment of this critical function.
+
+- Measurement:
+
+  - Success Rate: Measured as the percentage of successful attempts to update user preferences.
+  - Latency: Calculated as the time it takes for the app to successfully save the updated preferences after a user submits the changes.

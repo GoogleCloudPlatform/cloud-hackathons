@@ -41,12 +41,12 @@ Your first task is to get an idea of what the application looks like.
   - Keep an eye on your user profile, does the app remember what you like?
   - Log out and log in a few times to understand how the app behaves.
 - Based on your interaction, make a list of atleast 2 **user journeys** you can identify with the **Movie Guru** app.
-- If you need a refresher on what a user journey is, visit the section on **What is a user journey** (below).
+- If you need a refresher on what a user journey is, visit the section on **What is a user journey?** (below).
 - Clearly document your user journeys using a structured format that includes:
   - **Goal:** The user's objective in this journey.
   - **Steps:** The specific actions the user takes to achieve the goal.
 
-### What is a User Journey
+### What is a User Journey?
 
 In the context of SRE (Site Reliability Engineering), a user journey (UJ) describes the series of steps a user takes to accomplish a specific goal while interacting with a service. It focuses on the user's perspective and their experience with the system's performance and reliability. It is like a map that shows the steps a user takes to achieve a goal while using our service. We use this map to understand user behavior, their expectations, and improve their experience.
 
@@ -64,11 +64,15 @@ Steps:
 
 ## Success Criteria
 
-To successfully complete this exercise, you should:
+To successfully complete this exercise, you should have:
 
 - **Identify at least 2 user journeys:** Written down 2 UJs in the format mentioned above for the **Movie Guru** app
-- **Compare your journeys to the examples:**  See how your ideas align with the user journeys provided below. The examples below cover some common interactions, but there will be other ways users interact with the app. There is no perfect answer.
-- **Remember that user journeys are hypotheses:** They are your best guess about how users will interact with the app.  These journeys will need to be refined over time based on real user data and feedback.
+
+## Learning Resources
+
+**Compare your journeys to the examples below:**  See how your ideas align with the user journeys provided below. The examples below cover some common interactions, but there will be other ways users interact with the app. There is no perfect answer.
+
+**User journeys are hypotheses:** They are your best guess about how users will interact with the app.  These journeys will need to be refined over time based on real user data and feedback.
 
 ### Example User Journeys for Movie Guru
 
@@ -85,26 +89,26 @@ Here are a few examples of user journeys for the Movie Guru app:
 1. Click the "Login" button.
 1. View the main page. This contains the chatbot, with any chat history loaded (if it exists), and a view of featured films, and profile info (if it exists).
 
-#### UJ 2: Get Movie Recommendations
+#### UJ 2: Get Useful Responses
 
-**Goal:** Receive personalized movie recommendations.
+Goal: Receive helpful and relevant responses from the Movie Guru chatbot.
 
-**Steps:**
+Steps:
 
 1. Initiate Chat: The user opens the chat interface in the Movie Guru app.
-    - The app may have an initial profile with some initial preferences to guide the recommendations.
-1. User Receives Recommendations:
-    - Movie Guru provides an initial set of movie recommendations based on the user's input (if any) or previous interactions.
-1. User Explores Recommendations:
-    - The user browses through the recommendations.
-    - The user can ask for details about each movie (e.g., plot, actors, rating).
-1. User Provides Feedback:
-    - The user provides explicit feedback (e.g., "I love this movie!" or "Not interested in this genre").
-    - Skipping recommendations and asking to search again.
-1. User Receives Refined Recommendations:
-    - Movie Guru refines the recommendations based on the user's feedback, providing a more personalized set of suggestions.
-1. Repeat Steps 2-5 (Optional): The user can continue to explore and provide feedback to further refine the recommendations.
-1. End Chat: The user ends the chat session.
+    - The app may have an initial profile with some initial preferences to guide the interaction.
+2. User Receives a Response:
+    - Movie Guru provides an initial response based on the user's input or previous interactions.
+3. User Explores the Response:
+    - The user reads and interprets the information provided.
+    - The user may ask follow-up questions or request clarification.
+4. User Provides Feedback:
+    - The user provides explicit feedback (e.g., "This is helpful!" or "I need more information on this").
+    - The user may rephrase their query or ask for alternative suggestions.
+5. User Receives Refined Response:
+    - Movie Guru refines its response based on the user's feedback, providing more relevant and helpful information.
+6. Repeat Steps 2-5 (Optional): The user can continue to interact and provide feedback to further refine the conversation.
+7. End Chat: The user ends the chat session.
 
 #### UJ 3: Update Preferences
 
@@ -120,7 +124,7 @@ Here are a few examples of user journeys for the Movie Guru app:
 1. Delete Wrong/Invalid Items: The user interacts with the interface to adjust their preferences. This might involve:
 1. Receive Confirmation (Optional): The app provides feedback to the user that their preferences have been successfully saved by not rendering the preference again.
 
-## Challenge 2: There are stakeholders
+## Challenge 2: There are others
 
 Your second day as an SRE at **The Movie Advisory Company** started with a bang. The CEO, clearly fueled by an excessive amount of coffee, stormed into your workspace, ranting about Movie Guru's unreliable performance.  "Users are complaining about the site not always being reachable!" he yelled, "This is unacceptable! Movie Guru can never be down!" He demanded a solution immediately. With a panicked look in his eyes, he pointed you towards the platform team (a single, overworked engineer) and the application team (known for their eccentric work habits).
 Your challenge:  figure out how to improve the app's stability, manage the CEO's expectations, and prevent a complete meltdown.  Welcome to the world of SRE!
@@ -128,11 +132,32 @@ Your challenge:  figure out how to improve the app's stability, manage the CEO's
 Challenge Steps:
 
 1. **Initial Response:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with a teammate or coach who can role-play as the CEO.
+
    > **NOTE**: The focus on the roleplay should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
 
 2. **Information Gathering:** You're not alone in this quest for stability! To improve Movie Guru's stability, you'll need to collaborate with others. Identify the key stakeholders within the company and determine what information you need from each of them to achieve your reliability goals.
 
 ### Success Criteria
+
+To successfully complete this challenge, you should be able to demonstrate the following to a coach:
+
+**Initial Response:**
+
+- Explained why 100% uptime is an unrealistic and potentially harmful goal.
+- Clearly articulated the relationship between reliability and cost.
+- Emphasized the importance of aligning reliability targets with user needs and business priorities.
+- [BOUNUS] Communicated the need to balance reliability investments with other factors like innovation.
+
+**Information Gathering:**
+
+- Identified key stakeholder teams within The Movie Advisory Company (including technical teams, product owners, and business stakeholders).
+- Explained the role of each stakeholder group in ensuring Movie Guru's reliability.
+- Specified the information needed from each stakeholder group to assess the current state of reliability and plan for improvements.
+- Demonstrated an understanding of the importance of collaboration and communication in achieving reliability goals.
+
+### Learning Resources
+
+By systematically identifying your stakeholders and gathering the necessary information, you gain a holistic view of Movie Guru's reliability. This sets the stage for effective improvements that balance business needs, user expectations, current system design, and technical debt—all without chasing the mirage of 100% uptime
 
 #### Initial Response
 
@@ -146,13 +171,13 @@ You have effectively addressed the CEO's demand for 100% uptime by:
 
 #### Information Gathering
 
-As the SRE responsible for improving Movie Guru's stability, you need to collaborate with various stakeholders within the organization.
+As the SRE responsible for improving Movie Guru's stability, you need to collaborate with various stakeholders within the organization. You are there to **break down silos** and not solve everthing on your own.
 Remember, there's no single "right answer" to this challenge.
 The goal is to encourage you to think critically about who you need to involve and what information you need to gather.
 
 To guide your thinking, consider these two key aspects:
 
-**1. Identify Key Stakeholders:**
+1. **Identify Key Stakeholders:**
 
  **Technical Teams:**
     - **Development Team:** Responsible for the application code. They can provide insights into potential bugs, performance bottlenecks, and upcoming releases.
@@ -175,9 +200,40 @@ Once you've identified the key stakeholders, consider what specific information 
 
 **Collaboration is Key:** Remember that achieving reliability is a shared responsibility. Building strong relationships with these teams is essential for success.
 
-By systematically identifying your stakeholders and gathering the necessary information, you can gain a comprehensive understanding of the current state of Movie Guru's reliability and lay the groundwork for effective improvements.
-
 ## Challenge 3: Your first set of SLOs
+
+In the previous challenge, you dove deep into Movie Guru's reliability landscape, discovering a young app with room to grow. You learned that the company currently lacks a robust way to measure and define user experience, relying instead on the unsustainable goal of constant uptime.
+
+Armed with the insights gained from exploring the app, collaborating with stakeholders, and understanding the system's design, challenges, and user feedback, it's time to take a crucial step: defining Service Level Objectives (SLOs). If you need a referesher on SLOs, see the section **What is an SLO?** below.
+
+SLOs provide a clear and measurable way to define the desired reliability of your services, ensuring they align with user expectations and business goals.  Remember, the product owner or product manager (PO/PM) often has valuable insights into user needs.  Be sure to consider their perspective as you embark on this challenge.
+
+**Your Task:**
+
+1. **Choose Your Journeys:** Select two key user journeys for Movie Guru. These could be the ones you identified in Challenge 1 or the examples provided.
+2. **Craft Your SLOs:**  Define specific, measurable, achievable, relevant, and time-bound (SMART) SLOs for each chosen user journey. Consider what aspects of reliability matter most to users in each journey and how you can measure success.
+
+### What are SLOs?
+
+Based on Google's SRE framework, Service Level Objectives (SLOs) are target values or ranges for a service's reliability, measured by Service Level Indicators (SLIs). SLOs help you define the desired user experience and guide decisions about reliability investments. They act as a key communication tool between technical teams and business stakeholders, ensuring everyone is aligned on what level of reliability is acceptable and achievable.  Crucially, SLOs should be based on what matters most to users, not arbitrary targets like 100% uptime.
+
+Example SLO:
+
+For the user journey of "adding a product to an online shopping cart", a possible SLO could be:
+
+- **99.9% of "Add to Cart" requests should be successful within 2 seconds, measured over a 30-day rolling window**.
+This SLO focuses on the key user action ("Add to Cart") and sets targets for both availability (99.9% success rate) and latency (2-second response time). It's specific, measurable, and directly tied to user experience, ensuring a smooth and efficient shopping experience.
+The addition of "measured over a 30-day rolling window" specifies the timeframe for evaluating the SLO. This means that the success rate and response time are calculated based on data collected over the past 30 days. This rolling window provides a continuous and up-to-date assessment of the SLO's performance.
+
+### Success Criteria
+
+- You have crafted 2 SLOs for the **Movie Guru** app. Each SLO includes the following components, demonstrating a comprehensive understanding of how to define and measure service level objectives:
+  - **Objective:** A clear statement of the desired reliability target for a specific user journey or feature.
+  - **Service Level Indicator (SLI):**  A specific and measurable metric used to assess the service's performance against the objective (e.g., availability, latency, error rate).
+  - **Target:**  The desired level of performance for the SLI (e.g., 99.9% availability).
+  - **Time window:** The period over which the SLI is measured (e.g., 30-day rolling window).
+  - [OPTIONAL] **Measurement:**  A clear description of how the SLI will be measured and tracked (e.g., using logs, monitoring tools, user feedback).
+
 
 ## Challenge 4: Let the instrumentation begin
 
