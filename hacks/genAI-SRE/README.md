@@ -16,6 +16,27 @@ Throughout this session, you’ll analyze how real users interact with the Movie
 
 By the end of this workshop, you’ll have developed a comprehensive reliability framework for Movie Guru, gaining practical SRE skills that can be applied to real-world systems. This will include creating actionable alerts, ensuring operational excellence, and building a culture of reliability around AI-powered apps.
 
+## Learning Objectives
+
+In this hack you will learn how to:
+
+   1. Identify User Journeys
+   2. Identify your stakeholders in an organization.
+   3. Design realistic SLOs
+   4. Understanding metrics dashboards in Google Cloud Monitoring.
+   5. Create SLOs in Google Cloud Monitoring.
+   6. Creating Alerts
+   7. SRE best practices
+
+## Challenges
+
+- Challenge 1: Your first day as SRE
+- Challenge 2: There are others
+- Challenge 3: Your first set of SLOs
+- Challenge 4: Let the monitoring begin
+- Challenge 5: Implementing SLOs on the dashboard
+- Challenge 6: Stay alert
+  
 ## Prerequisites
 
 - Your own GCP project with Editor IAM role.
