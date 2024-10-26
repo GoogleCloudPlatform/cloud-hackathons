@@ -414,9 +414,9 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 
 1. Navigate to SLOs in the monitoring suite:
    - Go to the "SLOs" tab. This is where you'll define and manage your SLOs.
-   - Define the Service. Look for a service called **mockserver-service** (this is the name of the GKE service hosting the app)
-   - If "mockserver-service" isn't already listed, you'll need to define it as a custom service.
-   - Under "service candidates," select "mockserver-service." This links your SLOs to the correct service for monitoring.
+   - Under **service candidates**, select **mockserver-service** This links your SLOs to the correct service for monitoring.
+   - If **mockserver-service** isn't already listed, you'll need to define it as a custom service.
+     - This is very simple, click on **Custom Serivce** and enter a name (eg: movie-guru) for the service.
 
 ![SLO UI](images/SLO_Success.png)
   
@@ -433,7 +433,7 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
      - Metric: **movieguru_chat_outcome_counter_total** (Filter: Outcome=Engaged)
      - Target: Define a target engagement rate. For example, 70% of chat interactions should result in an "Engaged" outcome.
      - Time Window: 24-hour rolling window
-     - Remarks: Ideally we would like to use Outcome=Engaged and Outcome=Accepted to indicate that the user finds the response relevant, but we will stick to just Engaged for now. [Optional] If you want to use a filter that incorporates both Engaged and Acknowledged, use the monitoring API to create the SLO.
+     - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Accepted** to indicate that the user finds the response relevant, but we will stick to just Engaged for now. [Optional] If you want to use a filter that incorporates both Engaged and Acknowledged, use the monitoring API to create the SLO.
 
    - Startup Latency:
      - Metric: **movieguru_startup_latency_milliseconds_bucket** (measured at the **startup** endpoint)
@@ -511,14 +511,6 @@ This challenge guides you through monitoring the four SLOs created in the previo
    ![Short dips in SLI are OK](images/short_dips_are_ok.png)
 
 - **SLO Degradation**: In a few minutes, you'll observe two SLOs consistently underperforming: **Chat Latency** and **Chat Engagement Rate**. (View these on your SLO dashboard)
-  
-  - Here is the graph of the failing **Chat Latency SLO**
-
-   ![Chat Latency Burning](images/SLO-chatlatency.png)
-
-  - Here is the graph of the failing **Chat Engagement SLO**
-
-   ![Chat Latency Burning](images/SLO-chatlatency.png)
 
 - **Identifying Real Issues**: To distinguish between temporary dips and significant issues requiring action, we'll use burn rate alerts.
 
