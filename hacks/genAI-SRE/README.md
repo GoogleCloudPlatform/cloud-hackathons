@@ -83,21 +83,37 @@ You will be provided with the address of the Locust load generator at the start 
 
 Ok. You have started on Day 1 as the newly formed SRE team for **The Movie Advisory Company**, a start-up whose first product is the **Movie Guru** app.
 
-Your first task is to get an idea of what the application looks like.
+### Challenge Steps
 
-- Navigate to "<http://FrontEndIP>" (replace with the correct IP) to visit the app.
-- Login in using your name or email. The movie guru app hasn't implemented authentication yet (it is on the roadmap).
-- Work with the app and get an understanding of it. Make sure you do the following:
-  - Log into to it. What happens after you log in?
-  - Ask for movie recommendations ("Eg: I feel like watching a fantasy movie").
-  - Express strong likes and dislikes towards certain genres, plot types etc. ("Eg: I love movies with funny animals" or "I really can't stand movies with violence").
-  - Keep an eye on your user profile, does the app remember what you like?
-  - Log out and log in a few times to understand how the app behaves.
-- Based on your interaction, make a list of atleast 2 **user journeys** you can identify with the **Movie Guru** app.
-- If you need a refresher on what a user journey is, visit the section on **What is a user journey?** (below).
-- Clearly document your user journeys using a structured format that includes:
-  - **Goal:** The user's objective in this journey.
-  - **Steps:** The specific actions the user takes to achieve the goal.
+This challenge involves exploring the Movie Guru app and documenting typical user journeys.
+
+1. Access and Explore the App
+
+   - Go to <http://FrontEndIP> (replace with the provided IP address) in your web browser.
+   - Log in using your name or email. No password is required at this stage.
+   - Interact with the app to understand its features:
+     - Observe what happens after logging in.
+     - Request movie recommendations (e.g., "I feel like watching a fantasy movie").
+     - Express your preferences for genres and themes (e.g., "I love movies with funny animals," or "I dislike violent movies").
+     - Check your user profile to see if the app remembers your preferences.
+     - Log out and log in again to understand the app's behavior.
+1. Document User Journeys
+
+    - Identify at least two distinct user journeys within the Movie Guru app.
+    - Clearly document each journey using this format:
+      - Journey Name: [Give a descriptive name]
+      - Goal: [What does the user want to achieve?]
+      - Steps: [List the specific actions the user takes to achieve the goal]
+
+> **Note**: - If you need a refresher on what a user journey is, visit the section on **What is a user journey?** (in Learning Resources).
+
+## Success Criteria
+
+To successfully complete this exercise, you should have:
+
+- **Identify at least 2 user journeys:** Written down 2 UJs in the format mentioned above for the **Movie Guru** app
+
+## Learning Resources
 
 ### What is a User Journey?
 
@@ -114,14 +130,6 @@ Steps:
 - Find a product they want to purchase.
 - Click the "Add to Cart" button.
 - View the updated shopping cart with the added item.
-
-## Success Criteria
-
-To successfully complete this exercise, you should have:
-
-- **Identify at least 2 user journeys:** Written down 2 UJs in the format mentioned above for the **Movie Guru** app
-
-## Learning Resources
 
 **Compare your journeys to the examples below:**  See how your ideas align with the user journeys provided below. The examples below cover some common interactions, but there will be other ways users interact with the app. There is no perfect answer.
 
@@ -230,7 +238,7 @@ The goal is to encourage you to think critically about who you need to involve a
 
 To guide your thinking, consider these two key aspects:
 
-1. **Identify Key Stakeholders:**
+**Identify Key Stakeholders:**
 
  **Technical Teams:**
     - **Development Team:** Responsible for the application code. They can provide insights into potential bugs, performance bottlenecks, and upcoming releases.
@@ -241,7 +249,7 @@ To guide your thinking, consider these two key aspects:
     - **Product Owner/Product Manager:** Can provide crucial information about user needs and expectations regarding reliability, the product roadmap, and how stability fits into the overall business strategy.
     - **Other Business Stakeholders:** Consider departments like marketing, sales, and customer support. They can offer insights into how reliability impacts their work, provide valuable user feedback, and clarify budget constraints.
 
-**2. Gather Essential Information:**
+**Gather Essential Information:**
 
 Once you've identified the key stakeholders, consider what specific information you need from each of them. This might include:
 
@@ -261,10 +269,21 @@ Armed with the insights gained from exploring the app, collaborating with stakeh
 
 SLOs provide a clear and measurable way to define the desired reliability of your services, ensuring they align with user expectations and business goals.  Remember, the product owner or product manager (PO/PM) often has valuable insights into user needs.  Be sure to consider their perspective as you embark on this challenge.
 
-**Your Task:**
+### Challenge Steps
 
 1. **Choose Your Journeys:** Select two key user journeys for **Movie Guru**. These could be the ones you identified in Challenge 1 or the examples provided.
 2. **Craft Your SLOs:**  Define specific, measurable, achievable, relevant, and time-bound (SMART) SLOs for each chosen user journey. Consider what aspects of reliability matter most to users in each journey and how you can measure success.
+
+### Success Criteria
+
+- You have crafted 2 SLOs for the **Movie Guru** app. Each SLO includes the following components, demonstrating a comprehensive understanding of how to define and measure service level objectives:
+  - **Objective:** A clear statement of the desired reliability target for a specific user journey or feature.
+  - **Service Level Indicator (SLI):**  A specific and measurable metric used to assess the service's performance against the objective (e.g., availability, latency, error rate).
+  - **Target:**  The desired level of performance for the SLI (e.g., 99.9% availability).
+  - **Time window:** The period over which the SLI is measured (e.g., 30-day rolling window).
+  - [OPTIONAL] **Measurement:**  A clear description of how the SLI will be measured and tracked (e.g., using logs, monitoring tools, user feedback).
+
+### Learning Resources 
 
 ### What are SLOs?
 
@@ -277,15 +296,6 @@ For the user journey of "adding a product to an online shopping cart", a possibl
 - **99.9% of "Add to Cart" requests should be successful within 2 seconds, measured over a 30-day rolling window**.
 This SLO focuses on the key user action ("Add to Cart") and sets targets for both availability (99.9% success rate) and latency (2-second response time). It's specific, measurable, and directly tied to user experience, ensuring a smooth and efficient shopping experience.
 The addition of "measured over a 30-day rolling window" specifies the timeframe for evaluating the SLO. This means that the success rate and response time are calculated based on data collected over the past 30 days. This rolling window provides a continuous and up-to-date assessment of the SLO's performance.
-
-### Success Criteria
-
-- You have crafted 2 SLOs for the **Movie Guru** app. Each SLO includes the following components, demonstrating a comprehensive understanding of how to define and measure service level objectives:
-  - **Objective:** A clear statement of the desired reliability target for a specific user journey or feature.
-  - **Service Level Indicator (SLI):**  A specific and measurable metric used to assess the service's performance against the objective (e.g., availability, latency, error rate).
-  - **Target:**  The desired level of performance for the SLI (e.g., 99.9% availability).
-  - **Time window:** The period over which the SLI is measured (e.g., 30-day rolling window).
-  - [OPTIONAL] **Measurement:**  A clear description of how the SLI will be measured and tracked (e.g., using logs, monitoring tools, user feedback).
 
 ## Challenge 4: Let the monitoring begin
 
@@ -303,21 +313,13 @@ To give you a well-rounded understanding of each area, every dashboard includes 
 - **Success Counters**: These show how often the server successfully responds to requests, giving you a sense of overall availability and reliability.
 - **Latency Counters**: These track how long it takes the server to respond to requests, providing insights into performance and potential bottlenecks.
 
-On top of these, the chat dashboard has 3 other dashboards:
+On top of these, the **Chat dashboard** has 3 other dashboards:
 
 1. **User Engagement Dashboard**: This tracks the User Engagement Rate for the Movie Guru chatbot. It essentially measures the percentage of chatbot interactions that result in either an **Engaged** or **Acknowledged** outcome. These metrics are gathered by analysing the chat conversations.
 
 2. **User Sentiment Dashboard**: This gauges user satisfaction with the Movie Guru chatbot by tracking the sentiment expressed in user messages. It categorizes messages as "positive," "negative," "neutral," or "unknown". The dashboard then displays the percentage of each sentiment category over time,  as a multi-line graph.
 
 3. **Safety Issue Dashboard**: This tracks the rate of user chat messages where the user made unsafe remarks.
-
-### Latency Metrics
-
-- These metrics (for all dashboards) measures how long it takes for users to get a successful response from the server.
-- It provides insights into the speed and efficiency of a specific server process (eg: login, chat, etc).
-- Lower latency means faster logins, contributing to a better user experience.
-- The dashboard displays several percentiles of login latency (10th, 50th, 90th, 95th, 99th), giving you a comprehensive view of the login speed distribution.
-- This metric is also displayed as a line chart, allowing you to track changes in latency over time and identify any performance degradations.
 
 ### Challenge Steps
 
@@ -327,15 +329,13 @@ On top of these, the chat dashboard has 3 other dashboards:
   - Create a list of the metrics captured in each dashboard (Login, Chat, Startup).
 - Assess User Experience
   - Based on the metrics and your own experience (or user feedback if available), describe how users likely perceive the app's performance.  
-  - For example: "Users may experience slow initial load times, especially during peak hours. Chat functionality generally seems responsive, but occasional connection errors can be frustrating."  
   - Categorize aspects of the application into:  
-    - **Going Well:** Features or areas with good performance.  
+    - **Going Well:** Areas with good performance.  
     - **Need Improvement:** Areas with minor performance issues.  
     - **Need Improvement Urgently:** Areas with significant performance issues impacting user experience.
-- Define Short-Term SLOs (for the items below)
-  - After discussing with product owners, you’ve identified two key SLOs for short-term improvement. Fill in realistic, achievable values that you would like the app to meet in the short term (1 month). Let the current indicators be a guide.
+- Define Achievable SLOs (for the SLO templates below)
+  - After discussing with product owners, you’ve identified two key SLOs for short-term improvement. Fill in realistic, achievable values that you would like the app to meet in the short term (around 1 month). Let the current performance indicators be a guide.
 - Set Aspirational SLOs (Optional)
-- While short-term SLOs guide immediate improvements, long-term aspirational SLOs set ambitious targets for the app's future performance (make any necessary assumptions about current technical debt, issues etc when necessary).
 
 #### SLO 1: App Accessibility and Responsiveness
 
@@ -353,8 +353,18 @@ On top of these, the chat dashboard has 3 other dashboards:
 
 ### Success Criteria
 
-- You’ve set realistic SLO objectives for the two cases that are realistically achievable in the short term.
-- You set aspirational SLOs based on what you think is technically achievable and what your users would expect in the long term.
+- You’ve set realistic SLO objectives for the two cases that are achievable in the short term.
+- You set aspirational SLOs based on what your users would expect in the long term.
+
+### Learning Resources
+
+### Latency Metrics
+
+- These metrics (for all dashboards) measures how long it takes for users to get a successful response from the server.
+- It provides insights into the speed and efficiency of a specific server process (eg: login, chat, etc).
+- Lower latency means faster logins, contributing to a better user experience.
+- The dashboard displays several percentiles of login latency (10th, 50th, 90th, 95th, 99th), giving you a comprehensive view of the login speed distribution.
+- This metric is also displayed as a line chart, allowing you to track changes in latency over time and identify any performance degradations.
 
 ## Challenge 5: Implementing SLOs on the dashboard
 
@@ -450,6 +460,8 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 ## Challenge 6: Stay alert
 
 ### Prerequisites
+
+Run this command in the terminal:
 
 ```sh
 curl -X POST \
