@@ -516,7 +516,7 @@ This challenge guides you through monitoring the four SLOs created in the previo
 
 - **Burn Rate Alerts**
   - Create burn rate alerts (notifications are optional) for the failing "Chat Latency" and "Chat Engagement Rate" SLOs. In the real world, you should proactively create these alerts for all SLOs before they start failing.
-  - To differentiate between the severity of issues, set two alerts for each SLO (use a 5min lookback window):
+  - To differentiate between the severity of issues, set two alerts for each SLO (use a 5 minute lookback window):
     - **Slow burn rate alert** (1.5-2.0x): Indicates minor issues or gradual degradation.
     - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
 - **Observing Alert Triggers**: After a few minutes (> lookback window) of monitoring the SLOs with the configured burn rate alerts, you'll start to see which alerts are triggered. Pay close attention to the following:
