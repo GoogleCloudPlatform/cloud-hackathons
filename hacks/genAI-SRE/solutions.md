@@ -11,7 +11,11 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 ## Coach's Guides
 
 - Challenge 1: Your first day as SRE
-  - Create an IoT Hub and run tests to ensure it can ingest telemetry
+- Challenge 2: There are others
+- Challenge 3: Your first set of SLOs
+- Challenge 4: Let the monitoring begin
+- Challenge 5: Implementing SLOs on the dashboard
+- Challenge 6: Stay alert
 
 ## Coach Prerequisites
 
@@ -46,20 +50,16 @@ _Please list Google Cloud project requirements._
 _For example:_
 
 - Cloud Observability Suite
-- 
 
-## Suggested Hack Agenda (Optional)
 
-_This section is optional. You may wish to provide an estimate of how long each challenge should take for an average squad of students to complete and/or a proposal of how many challenges a coach should structure each session for a multi-session hack event. For example:_
+## Suggested Hack Agenda
 
-- Sample Day 1
-  - Challenge 1 (1 hour)
-  - Challenge 2 (30 mins)
-  - Challenge 3 (2 hours)
-- Sample Day 2
-  - Challenge 4 (45 mins)
-  - Challenge 5 (1 hour)
-  - Challenge 6 (45 mins)
+- Challenge 1 (45 mins)
+- Challenge 2 (20 mins)
+- Challenge 3 (30 mins)
+- Challenge 4 (30 mins)
+- Challenge 5 (45 mins)
+- Challenge 6 (30 mins)
 
 ## Repository Contents
 
