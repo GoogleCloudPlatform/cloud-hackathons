@@ -504,8 +504,6 @@ This challenge guides you through monitoring the four SLOs created in the previo
 
 - **Error Budget and Maintenance**: Examine the error budget for the Startup Success Rate SLO. The error budget represents the allowed deviation from the SLO. (Check out Learning Resources if you need a refresher on **Error budgets** or **Burn Rates**)
 
-- Calculate how much time your team has this week for these activities based on the current error budget consumption rate for the Startup Success Rate SLO.
-
 - This is how a healthy SLO would look like (it isn’t required to be always above the line)
 
    ![Short dips in SLI are OK](images/short_dips_are_ok.png)
@@ -520,7 +518,7 @@ This challenge guides you through monitoring the four SLOs created in the previo
     - **Slow burn rate alert** (1.5-2.0x): Indicates minor issues or gradual degradation.
     - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
 - **Observing Alert Triggers**: After a few minutes (> lookback window) of monitoring the SLOs with the configured burn rate alerts, you'll start to see which alerts are triggered. Pay close attention to the following:
-  - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives. 
+  - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives.
   - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
   
 > **Note**: For quicker alert triggering, consider a shorter lookback window (1-2 minutes). However, remember that in real-world scenarios, longer lookback periods are crucial to avoid false positives and ensure accurate alert signals.
