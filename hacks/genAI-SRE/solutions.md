@@ -221,6 +221,8 @@ Target SLO: 70% of user messages receive a relevant response within 5 seconds ov
 This is a challenging exercise. The last SLO needs to be implmenting using the API as the GCP Monitoring UI for SLIs doesn't allow you to define different metrics in the numerator and denominator.
 Here is the command for it that needs to be run in a terminal.
 
+- Create Access token and service
+
 ```sh
 ACCESS_TOKEN=`gcloud auth print-access-token`
 
@@ -229,7 +231,7 @@ CREATE_SERVICE_POST_BODY=$(cat <<EOF
 {
   "displayName": "mockserver-service",
   "gkeService": {
-    "projectId": "movie-guru-ghack",
+    "projectId": "${PROJECT_ID}",
     "location": "europe-west4",
     "clusterName": "movie-guru-gke",
     "namespaceName": "movie-guru",
@@ -243,8 +245,12 @@ SERVICE_ID=service-startup
 
 curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CREATE_SERVICE_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services?service_id=${SERVICE_ID}
 
+```
 
-CREATE_SLO_POST_BODY=$(cat <<EOF
+- SLO Startup Success Rate SLO
+
+```sh
+STARTUP_SUCCESS_SLO_POST_BODY=$(cat <<EOF
 {
   "displayName": "90% - Startup Success - Calendar Week",
   "goal": 0.90,
@@ -260,6 +266,110 @@ CREATE_SLO_POST_BODY=$(cat <<EOF
 }
 EOF
 )
-curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CREATE_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${STARTUP_SUCCESS_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
 
 ```
+
+Chat Engagement Rate SLO (using engaged and acknowledged)
+
+```sh
+CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
+{
+  "displayName": "80% - Chat Engagement Rate - Calendar day",
+  "goal": 0.8,
+  "calendarPeriod": "DAY",
+  "serviceLevelIndicator": {
+    "requestBased": {
+      "goodTotalRatio": {
+        "goodServiceFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_outcome_counter_total/counter\" resource.type=\"prometheus_target\" metric.labels.Outcome=monitoring.regex.full_match(\"Engaged|Acknowledged\")",
+        "totalServiceFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_outcome_counter_total/counter\" resource.type=\"prometheus_target\""
+      }
+    }
+  }
+}
+EOF
+)
+
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CHAT_ENGAGEMENT_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
+
+```
+
+- SLO Startup Latency Windowed SLO
+
+```sh
+STARTUP_LATENCY_SLO_POST_BODY=$(cat <<EOF
+{
+  "displayName": "99% - Startup Latency - Calendar Week",
+  "goal": 0.99,
+  "calendarPeriod": "WEEK",
+  "serviceLevelIndicator": {
+    "windowsBased": {
+      "windowPeriod": "60s",
+      "goodTotalRatioThreshold": {
+        "performance": {
+          "distributionCut": {
+            "distributionFilter": "metric.type=\"prometheus.googleapis.com/movieguru_startup_latency_milliseconds/histogram\" resource.type=\"prometheus_target\"",
+            "range": {
+              "min": -1000,
+              "max": 1200
+            }
+          }
+        },
+        "threshold": 0.99
+      }
+    }
+  }
+}
+EOF
+)
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${STARTUP_LATENCY_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
+
+```
+
+Chat Latency SLO
+
+```sh
+CHAT_LATENCY_SLO_POST_BODY=$(cat <<EOF
+{
+  "displayName": "99% - CHAT Latency - Calendar DAY",
+  "goal": 0.99,
+  "calendarPeriod": "DAY",
+  "serviceLevelIndicator": {
+    "windowsBased": {
+      "windowPeriod": "60s",
+      "goodTotalRatioThreshold": {
+        "performance": {
+          "distributionCut": {
+            "distributionFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_latency_milliseconds/histogram\" resource.type=\"prometheus_target\"",
+            "range": {
+              "min": -1000,
+              "max": 5000
+            }
+          }
+        },
+        "threshold": 0.99
+      }
+    }
+  }
+}
+EOF
+)
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${STARTUP_LATENCY_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
+
+```
+
+### Challenge 6: Stay alert
+
+This challenge focuses on monitoring SLOs and using burn rate alerts to identify and prioritize service issues. Guide participants to:
+
+- Verify initial SLO health: Confirm all SLIs are initially within the acceptable range on the dashboard.
+Analyze error budget: Discuss the "Startup Success Rate" SLO's error budget, its meaning, and how it allows for feature development and maintenance.
+- Observe SLO degradation: Point out the declining performance of the "Chat Latency" and "Chat Engagement Rate" SLOs.
+- Create burn rate alerts: Instruct participants to create slow (1.5-2.0x) and fast (10x) burn rate alerts for both failing SLOs, emphasizing the importance of proactive alert creation in real-world scenarios.
+- Discuss burn rate concept: Explain that burn rate indicates how quickly the error budget is being consumed, like overspending a monthly allowance.
+- Monitor alert triggers: Have participants observe which alerts fire and discuss how the burn rate helps prioritize issues.
+- Highlight the lookback window: Remind participants that alerts will trigger only after the lookback period (5 minutes in this case) has elapsed.
+- Verify success criteria: Ensure participants have created at least four burn rate alerts and that at least one alert fires for the "Chat Latency" SLO.
+- Example view of firing alerts
+  
+  ![Alerts firing](images/Alerts-firing.png)

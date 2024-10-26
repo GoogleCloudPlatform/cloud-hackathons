@@ -25,6 +25,7 @@ By the end of this workshop, you’ll have developed a comprehensive reliability
 ## Contributors
 
 - Manasa Kandula
+- Steve McGhee
 
 ## Challenge 1: Your first day as SRE
 
@@ -34,7 +35,7 @@ Before we start our first day as SREs, we are going to start up metrics collecti
 
 You'll set up and generate application metrics using Locust, a powerful load testing tool. The goal is to simulate user activity on the Movie Guru backend application, which is running on a GKE cluster. Locust is also deployed within the same cluster, and its load generator is pre-configured.
 
-You will be provided with the address of the Locust load generator at the start of the project. It should look like this: http://LocustIP:8089 (replace with the correct IP).
+You will be provided with the address of the Locust load generator at the start of the project. It should look like this: <http://LocustIP:8089> (replace with the correct IP).
 
 #### Step 1: Generate Load on the Application
 
@@ -46,7 +47,7 @@ You will be provided with the address of the Locust load generator at the start 
 
   - Number of users at peak: 3
   - Spawn rate: 0.05
-  - Host: http://mockserver-service.movie-guru.svc.cluster.local
+  - Host: <http://mockserver-service.movie-guru.svc.cluster.local>
   - Runtime: 3 hours (under Advanced options)
   
    This configuration will gradually increase the load on the backend, spawning around 3 simulated users over the course of 3 hours.
@@ -63,7 +64,7 @@ Ok. You have started on Day 1 as the newly formed SRE team for **The Movie Advis
 
 Your first task is to get an idea of what the application looks like.
 
-- Navigate to "http://FrontEndIP" (replace with the correct IP) to visit the app.
+- Navigate to "<http://FrontEndIP>" (replace with the correct IP) to visit the app.
 - Login in using your name or email. The movie guru app hasn't implemented authentication yet (it is on the roadmap).
 - Work with the app and get an understanding of it. Make sure you do the following:
   - Log into to it. What happens after you log in?
@@ -157,12 +158,12 @@ Steps:
 
 ## Challenge 2: There are others
 
-Your second day as an SRE at **The Movie Advisory Company** started with a bang. The CEO, clearly fueled by an excessive amount of coffee, stormed into your workspace, ranting about Movie Guru's unreliable performance.  "Users are complaining about the site not always being reachable!" he yelled, "This is unacceptable! Movie Guru can never be down!" He demanded a solution immediately. With a panicked look in his eyes, he pointed you towards the platform team (a single, overworked engineer) and the application team (known for their eccentric work habits).
+Your second day as an SRE at **The Movie Advisory Company** started with a bang. The CEO, clearly fueled by an excessive amount of coffee, stormed into your workspace, ranting about Movie Guru's unreliable performance.  "Users are complaining about the site not always being reachable!" he yelled, "This is unacceptable! Movie Guru needs to be up 100% of the time!" He demanded a solution immediately. With a panicked look in his eyes, he pointed you towards the platform team (a single, overworked engineer) and the application team (known for their eccentric work habits).
 Your challenge:  figure out how to improve the app's stability, manage the CEO's expectations, and prevent a complete meltdown.  Welcome to the world of SRE!
 
 Challenge Steps:
 
-1. **Initial Response to CEO:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with a teammate or coach who can role-play as the CEO.
+1. **Initial Response to CEO:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with a teammate or coach. Optionally you and your team do a short role-play with one of you acting as the CEO.
 
    > **NOTE**: The focus on the role-play should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
 
@@ -170,7 +171,7 @@ Challenge Steps:
 
 ### Success Criteria
 
-To successfully complete this challenge, you should be able to demonstrate the following to a coach:
+To successfully complete this challenge, you should be able to demonstrate the following:
 
 **Initial Response:**
 
@@ -213,7 +214,7 @@ To guide your thinking, consider these two key aspects:
  **Technical Teams:**
     - **Development Team:** Responsible for the application code. They can provide insights into potential bugs, performance bottlenecks, and upcoming releases.
     - **Platform Team:** Manages the underlying infrastructure (servers, databases, etc.). They can offer information about system architecture, resource allocation, potential infrastructure limitations, incident history, monitoring tools, and existing alerting mechanisms.
-    - **QA Team:** (If one exists) Responsible for testing the application. They can offer insights into known issues, testing procedures, and potential areas of fragility. 
+    - **QA Team:** (If one exists) Responsible for testing the application. They can offer insights into known issues, testing procedures, and potential areas of fragility.
 
  **Business and Product Stakeholders:**
     - **Product Owner/Product Manager:** Can provide crucial information about user needs and expectations regarding reliability, the product roadmap, and how stability fits into the overall business strategy.
@@ -283,7 +284,7 @@ To give you a well-rounded understanding of each area, every dashboard includes 
 
 On top of these, the chat dashboard has 3 other dashboards:
 
-1. **User Engagement Dashboard**: This tracks the User Engagement Rate for the Movie Guru chatbot. It essentially measures the percentage of chatbot interactions that result in either an "Engaged" outcome. These metrics are gathered by analysing the chat conversations.
+1. **User Engagement Dashboard**: This tracks the User Engagement Rate for the Movie Guru chatbot. It essentially measures the percentage of chatbot interactions that result in either an **Engaged** or **Acknowledged** outcome. These metrics are gathered by analysing the chat conversations.
 
 2. **User Sentiment Dashboard**: This gauges user satisfaction with the Movie Guru chatbot by tracking the sentiment expressed in user messages. It categorizes messages as "positive," "negative," "neutral," or "unknown". The dashboard then displays the percentage of each sentiment category over time,  as a multi-line graph.
 
@@ -326,7 +327,7 @@ On top of these, the chat dashboard has 3 other dashboards:
 
 - **Objective:** `xx%`% of user messages should receive a relevant response from the Movie Guru chatbot within `yy` seconds, measured over a `zz`-hour rolling window.  
 - **Measurement:**  
-  - **Relevance:** Measured by the `Chat_Outcome_Counter` metric. A response is considered relevant if the outcome is registered as "engaged"
+  - **Relevance:** Measured by the `Chat_Outcome_Counter` metric. A response is considered relevant if the outcome is registered as "engaged" or "acknowledged"
   - **Latency:**  Calculated as the time difference between the server receiving the user's message and sending the response.
 
 ### Success Criteria
@@ -385,158 +386,135 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
    - Define the Service. Look for a service called **mockserver-service** (this is the name of the GKE service hosting the app)
    - If "mockserver-service" isn't already listed, you'll need to define it as a custom service.
    - Under "service candidates," select "mockserver-service." This links your SLOs to the correct service for monitoring.
+
+![SLO UI](images/SLO_Success.png)
   
-2. Create SLOs:
-Now, let's create the specific SLOs for your service:
+1. Create SLOs:
 
-- Chat Latency:
-  - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the prometheus metrics section)
-  - Target: p99 latency of 5 seconds (5000 milliseconds)
-  - Time Window: 24-hour rolling window
-  - Burn Rate Alert: Set an alert for a burn rate that makes sense for your application's needs and risk tolerance. For example, alert if the error budget is consumed at 2x the rate in 1 hour. This means if you have a 30-day error budget, you'll be alerted if the service consumes 1 day's worth of errors in 1 hour.
-  - Notification (Optional): Configure email notifications to stay informed about SLO violations.
+   Now, let's create the specific SLOs for your service:
 
-- Chat Engagement:
-  - Metric: **movieguru_chat_outcome_counter_total** (Filter: Outcome=Engaged)
-  - Target: Define a target engagement rate. For example, 70% of chat interactions should result in an "Engaged" outcome.
-  - Time Window: 24-hour rolling window
+   - Chat Latency:
+     - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the prometheus metrics section)
+     - Target: p99 latency of **5 seconds** (5000 milliseconds)
+     - Time Window: **24-hour** rolling window
 
-- Startup Latency:
-  - Metric: **movieguru_startup_latency_milliseconds_bucket** (measured at the **startup** endpoint)
-  - Target: p99 latency of 1 second (1000 milliseconds)
-  - Time Window: Choose an appropriate time window, such as a 24-hour or 7-day rolling window.
-  - Remarks: Ideally we would like to combine the latency of the login and startup process to know about the startup latency *as experienced by the user*. But, we'll stick to the startup endpoint latency for now.
+   - Chat Engagement:
+     - Metric: **movieguru_chat_outcome_counter_total** (Filter: Outcome=Engaged)
+     - Target: Define a target engagement rate. For example, 70% of chat interactions should result in an "Engaged" outcome.
+     - Time Window: 24-hour rolling window
+     - Remarks: Ideally we would like to use Outcome=Engaged and Outcome=Accepted to indicate that the user finds the response relevant, but we will stick to just Engaged for now. [Optional] If you want to use a filter that incorporates both Engaged and Acknowledged, use the monitoring API to create the SLO.
 
-- Startup Success Rate:
-  - Metric: This requires combining two metrics: **movieguru_startup_success_total** and **movieguru_startup_attempts_total**.
-  - Target: 90% success rate over a 7-day rolling window.
-  - Implementation: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO. This allows for more complex SLO configurations. Refer to the Cloud Monitoring API documentation for details on how to create SLOs programmatically (see **learning resources**)
-  - Remarks: Ideally we would like to combine the success rate of the login and startup processes to know about the startup success *as experienced by the user*. But, we'll stick to the startup endpoint success rate  for now.
+   - Startup Latency:
+     - Metric: **movieguru_startup_latency_milliseconds_bucket** (measured at the **startup** endpoint)
+     - Target: p99 latency of 1 second (1000 milliseconds)
+     - Time Window: Choose an appropriate time window, such as a 24-hour or 7-day rolling window.
+     - Remarks: Ideally we would like to combine the latency of the login and startup process to know about the startup latency *as experienced by the user*. But, we'll stick to the startup endpoint latency for now.
 
-Learning Resources:
+   - Startup Success Rate:
+     - Metric: This requires combining two metrics: **movieguru_startup_success_total** and **movieguru_startup_attempts_total**.
+     - Target: 90% success rate over a 7-day rolling window.
+     - Implementation: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO. This allows for more complex SLO configurations. Refer to the Cloud Monitoring API documentation for details on how to create SLOs programmatically (see **learning resources**)
+     - Remarks: Ideally we would like to combine the success rate of the login and startup processes to know about the startup success *as experienced by the user*. But, we'll stick to the startup endpoint success rate for now.
+
+### Success Criteria
+
+- You have all the SLOs created.
+- You have created atleast 1 SLO through the Monitoring API.
+
+### Learning Resources
 
 - [Setting SLOs through UI](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-slo)
 - [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#slo-create)
 
-## Challenge 6: Dashboards can sometimes decieve
+## Challenge 6: Stay alert
 
+### Prerequisites
+
+```sh
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+  "ChatSuccess": 0.95,
+  "ChatSafetyIssue": 0.1,
+  "ChatEngaged": 0.50,
+  "ChatAcknowledged": 0.10,
+  "ChatRejected": 0.05,
+  "ChatUnclassified": 0.1,
+  "ChatSPositive": 0.6,
+  "ChatSNegative": 0.1,
+  "ChatSNeutral": 0.2,
+  "ChatSUnclassified": 0.1,
+  "LoginSuccess": 0.999,
+  "StartupSuccess": 0.95,
+  "PrefUpdateSuccess": 0.99,
+  "PrefGetSuccess": 0.999,
+  "LoginLatencyMinMS": 10,
+  "LoginLatencyMaxMS": 200,
+  "ChatLatencyMinMS": 3000,
+  "ChatLatencyMaxMS": 8000,
+  "StartupLatencyMinMS": 400,
+  "StartupLatencyMaxMS": 1000,
+  "PrefGetLatencyMinMS": 153,
+  "PrefGetLatencyMaxMS": 348,
+  "PrefUpdateLatencyMinMS": 363,
+  "PrefUpdateLatencyMaxMS": 645
+}' \
+  http://$BACKEND_IP/phase
+
+```
 
 ### Introduction
 
-#### Load Testing and Monitoring with Locust
+This challenge guides you through monitoring the four SLOs created in the previous challenge.
 
-#### Step 2: Monitor Application Metrics
+- **Initial Observation**: Initially, all Service Level Indicators (SLIs) should be within the acceptable range of the objective. Minor, short-term dips below the objective are normal and not a cause for concern, as long as the SLO is met within the specified time window. (Verify this on your SLO dashboard)
 
-- Open the Google Cloud Console and navigate to the Monitoring page.
+- **Error Budget and Maintenance**: Examine the error budget for the Startup Success Rate SLO. The error budget represents the allowed deviation from the SLO. (Check out Learning Resources if you need a refresher on **Error budgets** or **Burn Rates**)
 
-   ![Console View](images/console-monitoring.png)
+- Calculate how much time your team has this week for these activities based on the current error budget consumption rate for the Startup Success Rate SLO.
 
-- In the Monitoring page, go to Dashboards > Custom Dashboards.
+- This is how a healthy SLO would look like (it isn’t required to be always above the line)
 
-   ![Custom Dashboards](images/customdashboards.png)
+   ![Short dips in SLI are OK](images/short_dips_are_ok.png)
 
-- Here, you’ll find 4 custom dashboards. Click on the MovieGuru-Login dashboard.
+- **SLO Degradation**: In a few minutes, you'll observe two SLOs consistently underperforming: **Chat Latency** and **Chat Engagement Rate**. (View these on your SLO dashboard)
+  
+  - Here is the graph of the failing **Chat Latency SLO**
 
-#### Step 3: Analyze the Login Dashboard
+   ![Chat Latency Burning](images/SLO-chatlatency.png)
 
-The login dashboard tracks 2 metrics related to the user's login flow.
+  - Here is the graph of the failing **Chat Engagement SLO**
 
-The MovieGuru-Login dashboard displays two important graphs:
+   ![Chat Latency Burning](images/SLO-chatlatency.png)
 
-   ![Login Dashboard](images/logindashboard.png)
+- **Identifying Real Issues**: To distinguish between temporary dips and significant issues requiring action, we'll use burn rate alerts.
 
-- Login Success Rate: This graph tracks the percentage of successful logins. The success rate should ideally be close to 100%.
-
-- Login Latency: This graph tracks the login response times using percentile latency metrics. The graph shows 5 different lines representing the following percentiles:
-  - 99th Percentile: The response time for the slowest 1% of requests.
-  - 95th Percentile: The response time for the slowest 5% of requests.
-  - 90th Percentile: The response time for the slowest 10% of requests.
-  - 50th Percentile (Median): The median response time.
-  - 10th Percentile: The response time for the fastest 10% of requests.
-
-   For example, in the image above, the 99th percentile latency is approximately 9.93 ms, while the 95th percentile is under 9.65 ms. The 50th percentile (median) response time is around 6.5 ms, and the 10th percentile is below 3.7 ms.
-
-Monitoring these metrics will help you understand how the system performs under load and identify potential bottlenecks or performance issues.
-
-#### Step 4: Analyze the Start-up Dashboard
-
-This dashboard monitors critical metrics related to the post-login startup process. Right after the user logs in, the backend quickly returns the following to the frontend:
-
-- User Preferences: Personalized settings specific to the user.
-- Featured Movies: A random curated list of movies.
-
-Since users expect fast load times, ensuring that this process is swift is essential for a smooth experience. Slow responses here can lead to frustration and poor user satisfaction.
-
-This dashboard is very similar to the login dashboard as it tracks the startup success rate and latency.
-
-### Description
-*This section should clearly state the goals of the challenge and any high-level instructions you want the students to follow. You may provide a list of specifications required to meet the goals. If this is more than 2-3 paragraphs, it is likely you are not doing it right.*
-
-> **Note** *Do NOT use ordered lists as that is an indicator of 'step-by-step' instructions. Instead, use bullet lists to list out goals and/or specifications.*
-
-> **Note** *You may use Markdown sub-headers to organize key sections of your challenge description.*
-
-*Optionally, you may provide resource files such as a sample application, code snippets, or templates as learning aids for the students. These files are stored in the hack's `resources` sub-folder. It is the coach's responsibility to package these resources and provide them to students in the Google Space's Files section as per [the instructions provided](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available).*
-
-> **Note** *Do NOT provide direct links to files or folders in the gHacks Github repository from the student guide. Instead, you should refer to the "resources in the Google Space Files section".*
-
-*Here is some sample challenge text for the IoT Hack Of The Century:*
-
-In this challenge, you will properly configure the thingamajig for your IoT device so that it can communicate with the mother ship.
-
-You can find a sample `thingamajig.config` file in the Files section of this hack's Google Space provided by your coach. This is a good starting reference, but you will need to discover how to set exact settings.
-
-Please configure the thingamajig with the following specifications:
-- Use dynamic IP addresses
-- Only trust the following whitelisted servers: "mothership", "IoTQueenBee" 
-- Deny access to "IoTProxyShip"
+- **Burn Rate Alerts**
+  - Create burn rate alerts (notifications are optional) for the failing "Chat Latency" and "Chat Engagement Rate" SLOs. In the real world, you should proactively create these alerts for all SLOs before they start failing.
+  - To differentiate between the severity of issues, set two alerts for each SLO (use a 5min lookback window):
+    - **Slow burn rate alert** (1.5-2.0x): Indicates minor issues or gradual degradation.
+    - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
+- **Observing Alert Triggers**: After a few minutes (> lookback window) of monitoring the SLOs with the configured burn rate alerts, you'll start to see which alerts are triggered. Pay close attention to the following:
+  - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives. 
+  - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
+  
+> **Note**: For quicker alert triggering, consider a shorter lookback window (1-2 minutes). However, remember that in real-world scenarios, longer lookback periods are crucial to avoid false positives and ensure accurate alert signals.
 
 ### Success Criteria
 
-*Success criteria go here. The success criteria should be a list of checks so a student knows they have completed the challenge successfully. These should be things that can be demonstrated to a coach.* 
+To verify successful completion of this exercise, check the following:
 
-*The success criteria should not be a list of instructions.*
-
-*Success criteria should always start with language like: "Validate XXX..." or "Verify YYY..." or "Show ZZZ..." or "Demonstrate VVV..."*
-
-*Sample success criteria for the IoT sample challenge:*
-
-- Verify that the IoT device boots properly after its thingamajig is configured.
-- Verify that the thingamajig can connect to the mothership.
-- Demonstrate that the thingamajig will not connect to the IoTProxyShip
-
-### Tips
-
-*This section is optional and may be omitted.*
-
-*Add tips and hints here to give students food for thought. Sample IoT tips:*
-
-- IoTDevices can fail from a broken heart if they are not together with their thingamajig. Your device will display a broken heart emoji on its screen if this happens.
-- An IoTDevice can have one or more thingamajigs attached which allow them to connect to multiple networks.
+- **Burn Rate Triggers**: Ensure you have created at least four burn rate alerts across your SLOs. These alerts should be configured to trigger at different burn rates (e.g., 1.5-2.0x for slow burn, 10x for fast burn) to capture varying levels of degradation.
+- **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, you should expect at least one alert to fire for the "Chat Latency" SLO. This SLO is intentionally designed to exhibit issues, so an alert confirms that your monitoring and alerting setup is functioning correctly.
 
 ### Learning Resources
 
-*This is a list of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
+#### What are **error budgets**
 
-*Think of this list as giving the students a head start on some easy Internet searches. However, try not to include documentation links that are the literal step-by-step answer of the challenge's scenario.*
+An error budget is the acceptable amount of time your service can fail to meet its SLOs, helping you balance innovation and reliability. Calculated as 1 - SLO, a 99% availability SLO gives you a 1% error budget (about 7.3 hours per month) for new features, maintenance, and experimentation.  Error budgets promote proactive risk management and informed decision-making about service reliability.
 
-> **Note** *Use descriptive text for each link instead of just URLs.*
+#### What is a **burn rate**
 
-*Sample IoT resource links:*
+Burn rate measures how quickly you're using up your error budget.  It acts as an early warning system for SLO violations, helping you prioritize and respond to issues before they impact users. Calculated as a multiple of your error budget consumption, a high burn rate (e.g., 10x) signals a major problem needing immediate action. Setting alerts for different burn rates (e.g., 2x for slow burn, 10x for fast burn) allows you to proactively manage service reliability and keep users happy. By monitoring burn rate, you can ensure your services meet their SLOs and avoid "overspending" your error budget.
 
-- [What is a Thingamajig?](https://www.google.com/search?q=what+is+a+thingamajig)
-- [10 Tips for Never Forgetting Your Thingamajig](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
-- [IoT & Thingamajigs: Together Forever](https://www.youtube.com/watch?v=yPYZpwSpKmA)
-
-### Advanced Challenges (Optional)
-
-*If you want, you may provide additional goals to this challenge for folks who are eager.*
-
-*This section is optional and may be omitted.*
-
-*Sample IoT advanced challenges:*
-
-Too comfortable?  Eager to do more?  Try these additional challenges!
-
-- Observe what happens if your IoTDevice is separated from its thingamajig.
-- Configure your IoTDevice to connect to BOTH the mothership and IoTQueenBee at the same time.
+- [Burn Rate](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/alerting-on-budget-burn-rate)
