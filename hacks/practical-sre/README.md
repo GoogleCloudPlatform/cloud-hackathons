@@ -63,6 +63,7 @@ You will be provided with the address of the Locust load generator at the start 
 
 - You will likely need them often, keep a note of these values and set them as environment variables.
 - You might need to re-run them before running command-line commands.
+- Copy the values (after replacing the placeholders) into a notepad to be able to re-run when needed.
 
   ```sh
   FRONTEND_ADDRESS=<your frontend address>
@@ -141,10 +142,10 @@ Ok. You have started on Day 1 as the newly formed SRE team for **The Movie Advis
 
 This challenge involves exploring the Movie Guru app and documenting typical user journeys.
 
-- Access and Explore the App
+- **Access and Explore the App**
 
   - Go to FRONTEND_ADDRESS in your web browser.
-  - Log in using your name or email. No password is required at this stage.
+  - Log in using your name or email. No password is required.
   - Interact with the app to understand its features:
     - Observe what happens after logging in.
     - Request movie recommendations (e.g., "I feel like watching a fantasy movie").
@@ -157,7 +158,7 @@ This challenge involves exploring the Movie Guru app and documenting typical use
 
 [![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
 
-- Document User Journeys
+- **Document User Journeys**
 
   - Identify at least two distinct user journeys within the Movie Guru app.
   - Clearly document each journey using this format:
@@ -195,62 +196,13 @@ Steps:
 
 **User journeys are hypotheses:** They are your best guess about how users will interact with the app.  These journeys will need to be refined over time based on real user data and feedback.
 
-### Example User Journeys for Movie Guru
-
-Here are a few examples of user journeys for the Movie Guru app:
-
-#### UJ 1: Access the App
-
-**Goal:**  Start using the Movie Guru app and view the main interface.
-
-**Steps:**
-
-1. Go to the Movie Guru login page.
-1. The user enters their username.
-1. Click the "Login" button.
-1. View the main page. This contains the chatbot, with any chat history loaded (if it exists), and a view of featured films, and profile info (if it exists).
-
-#### UJ 2: Get Useful Responses
-
-Goal: Receive helpful and relevant responses from the Movie Guru chatbot.
-
-Steps:
-
-1. Initiate Chat: The user opens the chat interface in the Movie Guru app.
-    - The app may have an initial profile with some initial preferences to guide the interaction.
-2. User Receives a Response:
-    - Movie Guru provides an initial response based on the user's input or previous interactions.
-3. User Explores the Response:
-    - The user reads and interprets the information provided.
-    - The user may ask follow-up questions or request clarification.
-4. User Provides Feedback:
-    - The user provides explicit feedback (e.g., "This is helpful!" or "I need more information on this").
-    - The user may rephrase their query or ask for alternative suggestions.
-5. User Receives Refined Response:
-    - Movie Guru refines its response based on the user's feedback, providing more relevant and helpful information.
-6. Repeat Steps 2-5 (Optional): The user can continue to interact and provide feedback to further refine the conversation.
-7. End Chat: The user ends the chat session.
-
-#### UJ 3: Update Preferences
-
-**Goal:** Update invalid preferences to personalize future recommendations.
-
-**Steps:**
-
-1. Access Preferences: The user navigates to the "Preferences" or "Profile" section of the home page.
-1. View Existing Preferences (Optional): The app displays any existing preferences the user has previously saved. This could include:
-   - Liked/dislikes genres
-   - Liked/disliked actors
-   - Liked/disliked directors
-1. Delete Wrong/Invalid Items: The user interacts with the interface to adjust their preferences. This might involve:
-1. Receive Confirmation (Optional): The app provides feedback to the user that their preferences have been successfully saved by not rendering the preference again.
-
 ## Challenge 2: There are others
 
-Your second day as an SRE at **The Movie Advisory Company** started with a bang. The CEO, clearly fueled by an excessive amount of coffee, stormed into your workspace, ranting about Movie Guru's unreliable performance.  "Users are complaining about the site not always being reachable!" he yelled, "This is unacceptable! Movie Guru needs to be up 100% of the time!" He demanded a solution immediately. With a panicked look in his eyes, he pointed you towards the platform team (a single, overworked engineer) and the application team (known for their eccentric work habits).
+Your second day as an SRE at **The Movie Advisory Company** started with a bang. The CEO, clearly fueled by an excessive amount of coffee, stormed into your workspace, ranting about Movie Guru's unreliable performance.  **"Users are complaining about the site not always being reachable!" he yelled, "This is unacceptable! Movie Guru needs to be up 100% of the time!"** He demanded a solution immediately. With a panicked look in his eyes, he pointed you towards the platform team (a single, overworked engineer) and the application team (known for their eccentric work habits).
+
 Your challenge:  figure out how to improve the app's stability, manage the CEO's expectations, and prevent a complete meltdown.  Welcome to the world of SRE!
 
-Challenge Steps:
+### Challenge Steps
 
 1. **Initial Response to CEO:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with a teammate or coach. Optionally you and your team do a short role-play with one of you acting as the CEO.
 
@@ -331,9 +283,7 @@ Once you've identified the key stakeholders, consider what specific information 
 
 In the previous challenge, you dove deep into Movie Guru's reliability landscape, discovering a young app with room to grow. You learned that the company currently lacks a robust way to measure and define user experience, relying instead on the unsustainable goal of constant uptime.
 
-Armed with the insights gained from exploring the app, collaborating with stakeholders, and understanding the system's design, challenges, and user feedback, it's time to take a crucial step: defining Service Level Objectives (SLOs). If you need a referesher on SLOs, see the section **What is an SLO?** below.
-
-SLOs provide a clear and measurable way to define the desired reliability of your services, ensuring they align with user expectations and business goals.  Remember, the product owner or product manager (PO/PM) often has valuable insights into user needs.  Be sure to consider their perspective as you embark on this challenge.
+Armed with the insights gained from exploring the app, collaborating with stakeholders, and understanding the system's design, challenges, and user feedback, it's time to take a crucial step: defining Service Level Objectives (SLOs). If you need a referesher on SLOs, see the section **What is an SLO?** in the **Learning Resources**.
 
 ### Challenge Steps
 
@@ -388,20 +338,20 @@ On top of these, the **Chat dashboard** has 3 other dashboards:
 
 ### Challenge Steps
 
-- Analyze Existing Metrics
-  - Navigate to **Google Cloud Monitoring \> Dashboards \> Custom Dashboards**.  
-  - Examine the **Login**, **Startup**, and **Chat** dashboards.  
-  - Create a list of the metrics captured in each dashboard (Login, Chat, Startup).
-- Assess User Experience
-  - Based on the metrics and your own experience (or user feedback if available), describe how users likely perceive the app's performance.  
-  - Categorize aspects of the application into:  
+1. **Browse existing metrics**
+   - Navigate to **Google Cloud Monitoring \> Dashboards \> Custom Dashboards**.  
+   - Examine the **Login**, **Startup**, and **Chat** dashboards.  
+2. **Assess user experience**
+     - Based on the metrics and your own experience (or user feedback if available), describe how users likely perceive the app's performance.  
+3. **Categorize** aspects of the application into:  
     - **Going Well:** Areas with good performance.  
     - **Need Improvement:** Areas with minor performance issues.  
     - **Need Improvement Urgently:** Areas with significant performance issues impacting user experience.
-- Define **Achievable** SLOs (for the **SLO templates** below)
-  - After discussing with product owners, you’ve identified two key SLOs for short-term improvement.
-  - Fill in realistic, achievable values that you would like the app to meet in the short term (around 1 month). Let the current performance indicators be a guide.
-- Define **Aspirational** SLOs: Imagine **Movie Guru** one year from now, a finely-tuned, user-pleasing machine (but still not perfect, because unicorns don't exist, and 100% is never the right target).  It's so good that users are delighted with its performance and reliability.  What would the SLOs look like in this ideal scenario? Fill those values in. These are targets that your company can work towards in the upcoming year or so.
+4. Define **Achievable**  objectives(for the **SLO templates** below)
+    - After discussing with product owners, you’ve identified **two** key SLOs for short-term improvement.
+    - Fill in realistic, **Achievable** values that you would like the app to meet in the short term (around 1 month). Let the current performance indicators be a guide.
+5. Define **Aspirational** SLOs (for the **SLO templates** below).
+   - Imagine **Movie Guru** one year from now, a finely-tuned, user-pleasing machine (but still not perfect, because unicorns don't exist, and 100% is never the right target). It's so good that users are delighted with its performance and reliability. What would the SLOs look like in this ideal scenario? Fill those values in. These are targets that your company can work towards in the upcoming year or so.
 
 #### Template SLO 1: App Accessibility and Responsiveness
 
@@ -479,18 +429,17 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 
 #### Steps
 
-1. Navigate to SLOs in the monitoring suite:
-   - Go to the "SLOs" tab. This is where you'll define and manage your SLOs.
+1. **Create a service in the SLOs tab**
+   - Go to the **SLOs** tab in the monitoring suite. This is where you'll define and manage your SLOs.
    - Click create **new service**.
    - Under **service candidates**, select **mockserver-service** This links your SLOs to the correct service for monitoring.
-   - If **mockserver-service** isn't already listed, you'll need to define it as a custom service.
-     - This is very simple, click on **Custom Serivce** and enter a name (eg: movie-guru) for the service.
+   - Give it a **Display name**. It can be anything. Use **mockserver-service** if you can't think of anything else.
 
-> **Note**: Check **HINT** in **Learning Resources** for creating services and SLOs via the API.
+    > **Note**: You can also create these via the API. Check **HINT** in **Learning Resources** for creating services via the API.
 
-![SLO UI](images/SLO_Success.png)
+    ![SLO UI](images/SLO_Success.png)
 
-1. Create SLOs
+1. **Create 4 SLOs**
   
    Now, let's create the specific SLOs for your service:
 
@@ -517,6 +466,7 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
      - Implementation: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO. This allows for more complex SLO configurations. Refer to the Cloud Monitoring API documentation for details on how to create SLOs programmatically (see **learning resources**)
      - Remarks: Ideally we would like to combine the success rate of the login and startup processes to know about the startup success *as experienced by the user*. But, we'll stick to the startup endpoint success rate for now.
 
+> **Note**: You can also create these via the API. Check **HINT** in **Learning Resources** for creating  SLOs via the API.
 
 ### Success Criteria
 
@@ -540,8 +490,10 @@ Use the [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/soluti
 ### [Spoiler alert] Example
 
 ```sh
-# Creating a service
+# Get an access token
 ACCESS_TOKEN=`gcloud auth print-access-token`
+
+# Create a service definition
 SERVICE_ID=movieguru-service
 CREATE_SERVICE_POST_BODY=$(cat <<EOF
 {
@@ -592,17 +544,16 @@ Run this command in the terminal (**Cloud Shell terminal**).
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
 > **Note**:  Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
-
 ```sh
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{
   "ChatSuccess": 0.95,
   "ChatSafetyIssue": 0.1,
-  "ChatEngaged": 0.50,
+  "ChatEngaged": 0.40,
   "ChatAcknowledged": 0.10,
   "ChatRejected": 0.05,
-  "ChatUnclassified": 0.1,
+  "ChatUnclassified": 0.2,
   "ChatSPositive": 0.6,
   "ChatSNegative": 0.1,
   "ChatSNeutral": 0.2,
@@ -613,7 +564,7 @@ curl -X POST \
   "PrefGetSuccess": 0.999,
   "LoginLatencyMinMS": 10,
   "LoginLatencyMaxMS": 200,
-  "ChatLatencyMinMS": 3000,
+  "ChatLatencyMinMS": 4500,
   "ChatLatencyMaxMS": 8000,
   "StartupLatencyMinMS": 400,
   "StartupLatencyMaxMS": 1000,
@@ -629,7 +580,7 @@ $BACKEND_ADDRESS/phase
 
 This challenge guides you through monitoring the four SLOs created in the previous challenge.
 
-- **Initial Observation**: Initially, all Service Level Indicators (SLIs) should be within the acceptable range of the objective. Minor, short-term dips below the objective are normal and not a cause for concern, as long as the SLO is met within the specified time window. (Verify this on your SLO dashboard)
+- **Perform an Initial Observation**: Initially, all Service Level Indicators (SLIs) should be within the acceptable range of the objective. Minor, short-term dips below the objective are normal and not a cause for concern, as long as the SLO is met within the specified time window. (Verify this on your SLO dashboard)
 
 - **Error Budget and Maintenance**: Examine the error budget for the Startup Success Rate SLO. The error budget represents the allowed deviation from the SLO. (Check out Learning Resources if you need a refresher on **Error budgets** or **Burn Rates**)
 
@@ -637,27 +588,61 @@ This challenge guides you through monitoring the four SLOs created in the previo
 
    ![Short dips in SLI are OK](images/short_dips_are_ok.png)
 
-- **SLO Degradation**: In a few minutes, you'll observe two SLOs consistently underperforming: **Chat Latency** and **Chat Engagement Rate**. (View these on your SLO dashboard)
-
-- **Identifying Real Issues**: To distinguish between temporary dips and significant issues requiring action, we'll use burn rate alerts.
-
-- **Burn Rate Alerts**
-  - Create burn rate alerts (notifications are optional) for the failing "Chat Latency" and "Chat Engagement Rate" SLOs. In the real world, you should proactively create these alerts for all SLOs before they start failing.
-  - To differentiate between the severity of issues, set two alerts for each SLO (use a 5 minute lookback window):
+- **Create Burn Rate Alerts**
+  - Create **SLO alerts** from the UI for all the SLOs
+  - To differentiate between the severity of issues, set two alerts for each SLO (use a 15 minute lookback window):
     - **Slow burn rate alert** (1.5-2.0x): Indicates minor issues or gradual degradation.
     - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
-- **Observing Alert Triggers**: After a few minutes (> lookback window) of monitoring the SLOs with the configured burn rate alerts, you'll start to see which alerts are triggered. Pay close attention to the following:
+- Run this command in the terminal (**Cloud Shell terminal**).
+
+  > **Note**:  Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+
+  ```sh
+  curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "ChatSuccess": 0.95,
+    "ChatSafetyIssue": 0.1,
+    "ChatEngaged": 0.40,
+    "ChatAcknowledged": 0.10,
+    "ChatRejected": 0.05,
+    "ChatUnclassified": 0.2,
+    "ChatSPositive": 0.6,
+    "ChatSNegative": 0.1,
+    "ChatSNeutral": 0.2,
+    "ChatSUnclassified": 0.1,
+    "LoginSuccess": 0.999,
+    "StartupSuccess": 0.95,
+    "PrefUpdateSuccess": 0.99,
+    "PrefGetSuccess": 0.999,
+    "LoginLatencyMinMS": 10,
+    "LoginLatencyMaxMS": 200,
+    "ChatLatencyMinMS": 4500,
+    "ChatLatencyMaxMS": 8000,
+    "StartupLatencyMinMS": 400,
+    "StartupLatencyMaxMS": 1000,
+    "PrefGetLatencyMinMS": 153,
+    "PrefGetLatencyMaxMS": 348,
+    "PrefUpdateLatencyMinMS": 363,
+    "PrefUpdateLatencyMaxMS": 645
+  }' \
+  $BACKEND_ADDRESS/phase
+  ```
+
+- **Observing Alert Triggers**:  Wait for a few minutes
   - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives.
   - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
-  
-> **Note**: For quicker alert triggering, consider a shorter lookback window (1-2 minutes). However, remember that in real-world scenarios, longer lookback periods are crucial to avoid false positives and ensure accurate alert signals.
+
+> **Warning**: Having trouble triggering alerts? Don't worry, it might just be due to the lab setting! Keep in mind that these alerts analyze performance over 15 minutes. So, if you created the alert 10-15 minutes *after* the service started having problems, it might not cause the alert to trigger. If you don't see an alert within 5 minutes, don't panic! Instead, put on your detective hat and examine the graphs. You should be able to spot any significant deviations from the baseline or SLO targets. Take a look at the graphs – they'll tell the story! You should be able to quickly spot which SLOs are misbehaving, which ones are having a minor hiccup, and which ones are performing like champs.
 
 ### Success Criteria
 
 To verify successful completion of this exercise, check the following:
 
-- **Burn Rate Triggers**: Ensure you have created at least four burn rate alerts across your SLOs. These alerts should be configured to trigger at different burn rates (e.g., 1.5-2.0x for slow burn, 10x for fast burn) to capture varying levels of degradation.
+- **Burn Rate Triggers**: Ensure you have created 2 burn rate alerts for all your SLOs (8 in total). 
+  - These alerts should be configured to trigger at different burn rates (e.g., 1.5-2.0x for slow burn, 10x for fast burn) to capture varying levels of degradation.
 - **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, you should expect at least one alert to fire for the "Chat Latency" SLO. This SLO is intentionally designed to exhibit issues, so an alert confirms that your monitoring and alerting setup is functioning correctly.
+- **Alerts not working?**: These alerts are designed to work when detecting a change from baseline performance monitored over 60 minutes. Sometimes, in the lab environment because we are using short lookback windows, it is possible that you created the alert after the service started degrading for a few minutes already in which case the alert threshold isn't reached in a short time. If you don't see an alert even after 10 minutes, just look at the graph, it should be pretty easy to see which SLO is failing badly, and which is failing less drastically.
 
 ### Learning Resources
 
@@ -667,9 +652,10 @@ An error budget is the acceptable amount of time your service can fail to meet i
 
 #### What is a **burn rate**
 
-Burn rate measures how quickly you're using up your error budget.  It acts as an early warning system for SLO violations, helping you prioritize and respond to issues before they impact users. Calculated as a multiple of your error budget consumption, a high burn rate (e.g., 10x) signals a major problem needing immediate action. Setting alerts for different burn rates (e.g., 2x for slow burn, 10x for fast burn) allows you to proactively manage service reliability and keep users happy. By monitoring burn rate, you can ensure your services meet their SLOs and avoid "overspending" your error budget.
+Burn rate measures how quickly you're using up your error budget.  It acts as an early warning system for SLO violations, helping you prioritize and respond to issues before they impact users. Calculated as a multiple of your error budget consumption, a high burn rate (e.g., 10x) signals a major problem needing immediate action. A slow burn rate (generally configured over a longer interval) alerts you if you are likely to exhaust your error budget before the end of the compliance period. It is less urgent than a fast burn, but signals something may be wrong, but not urgent. Setting alerts for different burn rates (e.g., 2x for slow burn, 10x for fast burn) allows you to proactively manage service reliability and keep users happy. By monitoring burn rate, you can ensure your services meet their SLOs and avoid "overspending" your error budget.
 
-- [Burn Rate](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/alerting-on-budget-burn-rate)
+- [SLO alerting on Burn Rate](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/alerting-on-budget-burn-rate)
+- [Creating alerting policies with the UI](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-alert)
 
 ## Challenge 7: What's really UP, doc?
 
@@ -678,7 +664,7 @@ Burn rate measures how quickly you're using up your error budget.  It acts as an
 - Connect to the GKE cluster from the **Cloud Shell terminal**
 
 ```sh
-<gke-connection-string> # Get this from your coach, it's in the start up variables you get
+$GKE_CONENCTION_STRING
 ```
 
 - Deploy a new frontend version
@@ -722,25 +708,26 @@ curl -X POST \
   "PrefUpdateLatencyMinMS": 363,
   "PrefUpdateLatencyMaxMS": 645
 }' \
-
 $BACKEND_ADDRESS/phase 
 ```
 
+### Introduction
+
+**The Calm Before the Storm**
+
+You settle in for another day of SRE serenity, casually monitoring the dashboards and basking in the glow of Movie Guru's stable performance.  Suddenly, your peaceful morning is shattered by a frantic colleague from customer support.
+
+**"Mayday! Mayday!"** they exclaim, bursting into your cubicle. "*Users are reporting that Movie Guru is acting up! They can't seem to use the website properly!*"
+
 ### Challenge Steps
 
-- **The Calm Before the Storm**
-
-    You settle in for another day of SRE serenity, casually monitoring the dashboards and basking in the glow of Movie Guru's stable performance.  Suddenly, your peaceful morning is shattered by a frantic colleague from customer support.
-
-- **"Mayday! Mayday!"** they exclaim, bursting into your cubicle. "Users are reporting that Movie Guru is acting up! They can't seem to use the website properly!"
-
-- **A Confusing Conundrum**
+- **Look at your dashboards**
 
   - Check the SLO dashboards, if the backend server has been reset correctly (prerequisite step), and a few minutes have passed, you should see that the **Startup SLOs** are well within expected range.
 
-- **Investigating the Issue**
+- **Investigate the Issue**
 
-  - To get to the bottom of this mystery, open an incognito/private browser window and navigate to the Movie Guru frontend.
+  - To get to the bottom of this mystery, open a new **incognito/private** browser window and navigate to the Movie Guru frontend.
   - Refresh the page a few times and see if you spot something wrong.
 
 - **Your Challenge:**
@@ -749,13 +736,6 @@ $BACKEND_ADDRESS/phase
   - **Analyze:**  Compare your observations with the data displayed on the dashboards. What discrepancies do you notice?
   - **Explain:**  Explain the reason for the difference between what users are reporting and what the dashboards are showing. What might be causing this discrepancy?
   - **Consider:**  What are the implications of this discrepancy for your monitoring and alerting strategy? How can you improve your monitoring to better reflect the actual user experience?
-
-- This challenge will test your ability to:
-
-  - Analyze and interpret monitoring data.
-  - Troubleshoot issues based on user reports.
-  - Identify blind spots in your monitoring setup.
-  - Think critically about the relationship between technical metrics and user experience.
 
 ### Success Criteria
 

@@ -112,6 +112,56 @@ The **fake backend** is primed to create responses that are suboptimal. This is 
 - There is no single "correct" set of user journeys.  Focus on capturing the key interactions and user goals.
 - Documenting user journeys in a structured format helps ensure clarity and facilitates future analysis and improvements.
 
+### Example User Journeys for Movie Guru
+
+Here are a few examples of user journeys for the Movie Guru app:
+
+#### UJ 1: Access the App
+
+**Goal:**  Start using the Movie Guru app and view the main interface.
+
+**Steps:**
+
+1. Go to the Movie Guru login page.
+1. The user enters their username.
+1. Click the "Login" button.
+1. View the main page. This contains the chatbot, with any chat history loaded (if it exists), and a view of featured films, and profile info (if it exists).
+
+#### UJ 2: Get Useful Responses
+
+Goal: Receive helpful and relevant responses from the Movie Guru chatbot.
+
+Steps:
+
+1. Initiate Chat: The user opens the chat interface in the Movie Guru app.
+    - The app may have an initial profile with some initial preferences to guide the interaction.
+2. User Receives a Response:
+    - Movie Guru provides an initial response based on the user's input or previous interactions.
+3. User Explores the Response:
+    - The user reads and interprets the information provided.
+    - The user may ask follow-up questions or request clarification.
+4. User Provides Feedback:
+    - The user provides explicit feedback (e.g., "This is helpful!" or "I need more information on this").
+    - The user may rephrase their query or ask for alternative suggestions.
+5. User Receives Refined Response:
+    - Movie Guru refines its response based on the user's feedback, providing more relevant and helpful information.
+6. Repeat Steps 2-5 (Optional): The user can continue to interact and provide feedback to further refine the conversation.
+7. End Chat: The user ends the chat session.
+
+#### UJ 3: Update Preferences
+
+**Goal:** Update invalid preferences to personalize future recommendations.
+
+**Steps:**
+
+1. Access Preferences: The user navigates to the "Preferences" or "Profile" section of the home page.
+1. View Existing Preferences (Optional): The app displays any existing preferences the user has previously saved. This could include:
+   - Liked/dislikes genres
+   - Liked/disliked actors
+   - Liked/disliked directors
+1. Delete Wrong/Invalid Items: The user interacts with the interface to adjust their preferences. This might involve:
+1. Receive Confirmation (Optional): The app provides feedback to the user that their preferences have been successfully saved by not rendering the preference again.
+
 ## Challenge 2: Yes, there are others
 
 This challenge focuses on stakeholder management, SRE principles, and gathering information. Here's a guide to help you facilitate the exercise:
@@ -388,7 +438,7 @@ CHAT_LATENCY_SLO_POST_BODY=$(cat <<EOF
 }
 EOF
 )
-curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${STARTUP_LATENCY_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CHAT_LATENCY_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
 
 ```
 
