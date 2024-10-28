@@ -493,7 +493,7 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
    Now, let's create the specific SLOs for your service:
 
    - Chat Latency:
-     - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the prometheus metrics section)
+     - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the **prometheus targets** section)
      - Target: p99 latency of **5 seconds** (5000 milliseconds)
      - Time Window: **24-hour** rolling window
 
@@ -525,7 +525,6 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 
 - [Setting SLOs through UI](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-slo)
 - [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#slo-create)
-
 
 ### Hint: High level steps for creating SLOs via API
 
