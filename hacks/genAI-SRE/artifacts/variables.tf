@@ -36,13 +36,17 @@ variable "locust_file" {
   default = "https://raw.githubusercontent.com/MKand/movie-guru/refs/heads/ghack-sre/locust/locustfile.py"
 }
 
-variable "helm_chart" {
-  description = "URL of the movie guru helm chart"
-  default = "https://mkand.github.io/movie-guru/movie-guru-0.2.0.tgz"
+variable "region" {
+  default     = "europe-west4"
+  description = "Region"
 }
 
-variable "image_repo_name" {
-  description = "Base docker repo where images are stored"
-  default = "manaskandula"
-  
+variable "locust_file" {
+  description = "URL of the locustfile"
+  default = "https://raw.githubusercontent.com/MKand/movie-guru/refs/heads/ghack-sre/locust/locustfile.py"
+}
+
+variable "helm_chart" {
+  description = "URL of the movie guru helm chart"
+  default = "https://mkand.github.io/movie-guru/movie-guru-0.6.0.tgz"
 }

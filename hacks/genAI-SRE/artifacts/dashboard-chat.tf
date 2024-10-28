@@ -50,7 +50,7 @@ resource "google_monitoring_dashboard" "chat_dashboard" {
             "dataSets": [
               {
                 "timeSeriesQuery": {
-                  "prometheusQuery": "(sum(rate(movieguru_chat_outcome_counter_total{Outcome=\"Engaged\"}[$${__interval}])) / sum(rate(movieguru_chat_outcome_counter_total[$${__interval}]))) * 100",
+                  "prometheusQuery": "(sum(rate(movieguru_chat_outcome_counter_total{Outcome=~\"Engaged\"}[$${__interval}])) / sum(rate(movieguru_chat_outcome_counter_total[$${__interval}]))) * 100",
                   "unitOverride": "%",
                   "outputFullDuration": false
                 },
@@ -237,7 +237,7 @@ resource "google_monitoring_dashboard" "chat_dashboard" {
             "dataSets": [
               {
                 "timeSeriesQuery": {
-                  "prometheusQuery": "(sum(movieguru_chat_calls_success_total) / sum(movieguru_chat_calls_total)) * 100",
+                  "prometheusQuery": "(sum(rate(movieguru_chat_safetyissue_counter_total[$${__interval}])) / sum(rate(movieguru_chat_calls_total[$${__interval}]))) * 100",
                   "unitOverride": "%",
                   "outputFullDuration": false
                 },

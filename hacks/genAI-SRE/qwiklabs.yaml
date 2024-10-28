@@ -93,3 +93,5 @@ environment:
     reference: project.locust_address
   - label: FrontEnd IP
     reference: project.frontend_address
+  - label: GKE connection string
+    reference: project.gke-connection-string

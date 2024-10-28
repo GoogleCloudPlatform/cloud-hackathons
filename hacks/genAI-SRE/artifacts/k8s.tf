@@ -46,6 +46,14 @@ resource "google_compute_address" "frontend-address" {
   region = var.gcp_region
 }
 
+resource "google_compute_address" "mockserver-address" {
+  name         = "mockerserver-address"
+  address_type = "EXTERNAL"
+  project = var.gcp_project_id
+  region = var.gcp_region
+}
+
+
 data "http" "locustfile" {
   url = var.locust_file
 }
@@ -61,6 +69,11 @@ resource "helm_release" "movie_guru" {
     name  = "Config.serverIP"
     value = google_compute_address.server-address.address
   }
+    set {
+    name  = "Config.mockserverIP"
+    value = google_compute_address.mockserver-address.address
+  }
+  
     set {
     name  = "Config.frontendIP"
     value = google_compute_address.frontend-address.address
@@ -105,6 +118,10 @@ resource "helm_release" "locust" {
     name  = "loadtest.locust_locustfile"
     value = "locustfile.py"
   }
+  set {
+    name  = "loadtest.locust_host"
+    value = "http://mockserver-service.movie-guru.svc.cluster.local"
+  }
 
   set {
     name  = "service.type"
@@ -116,25 +133,6 @@ resource "helm_release" "locust" {
     value = "3"
   }
 
-  set {
-    name  = "master.environment.CHAT_SERVER"
-    value = "http://server-service.movie-guru.svc.cluster.local"
-  }
-
-  set {
-    name  = "master.environment.MOCK_USER_SERVER"
-    value = "http://mockuser-service.movie-guru.svc.cluster.local"
-  }
-
-  set {
-    name  = "worker.environment.CHAT_SERVER"
-    value = "http://server-service.movie-guru.svc.cluster.local"
-  }
-
-  set {
-    name  = "worker.environment.MOCK_USER_SERVER"
-    value = "http://mockuser-service.movie-guru.svc.cluster.local"
-  }
     depends_on = [helm_release.movie_guru, kubernetes_config_map.loadtest_locustfile]
 }
 
@@ -146,3 +144,4 @@ data "kubernetes_service" "locust" {
     depends_on = [ helm_release.locust ]
 
 }
+

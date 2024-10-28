@@ -31,12 +31,13 @@ In this hack you will learn how to:
 ## Challenges
 
 - Challenge 1: Your first day as SRE
-- Challenge 2: There are others
-- Challenge 3: Your first set of SLOs
+- Challenge 2: Yes, there are others
+- Challenge 3: SLOs: Not Just Another Acronym
 - Challenge 4: Let the monitoring begin
-- Challenge 5: Implementing SLOs on the dashboard
+- Challenge 5: SLOs on the dashboard
 - Challenge 6: Stay alert
-  
+- Challenge 6: Whats really UP, doc?
+
 ## Prerequisites
 
 - Your own GCP project with Editor IAM role.
@@ -69,15 +70,55 @@ You will be provided with the address of the Locust load generator at the start 
   - Number of users at peak: 3
   - Spawn rate: 0.05
   - Host: <http://mockserver-service.movie-guru.svc.cluster.local>
-  - Runtime: 3 hours (under Advanced options)
+  - Runtime: 7 hours (under Advanced options)
   
-   This configuration will gradually increase the load on the backend, spawning around 3 simulated users over the course of 3 hours.
+   This configuration will gradually increase the load on the backend, spawning around 3 simulated users over the course of 7 hours.
 
 - Once the load test begins, Locust will swarm various backend endpoints, simulating traffic as users interact with the application. You should see something similar to this:
 
   ![Locust Swarming](images/locust-swarming.png)
 
 - Confirm this is running as expected and start challenge 1.
+
+#### [Optional] Step 2: If you are repeating Challenge 1, reset the metrics generator
+
+> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
+
+Run the following in the terminal (**Cloud Shell terminal**)
+
+```sh
+BACKEND_IP=<the backend ip>
+
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+  "ChatSuccess": 0.7,
+  "ChatSafetyIssue": 0.2,
+  "ChatEngaged": 0.5,
+  "ChatAcknowledged": 0.15,
+  "ChatRejected": 0.25,
+  "ChatUnclassified": 0.1,
+  "ChatSPositive": 0.4,
+  "ChatSNegative": 0.3,
+  "ChatSNeutral": 0.1,
+  "ChatSUnclassified": 0.2,
+  "LoginSuccess": 0.99,
+  "StartupSuccess": 0.75,
+  "PrefUpdateSuccess": 0.84,
+  "PrefGetSuccess": 0.99,
+  "LoginLatencyMinMS": 10,
+  "LoginLatencyMaxMS": 200,
+  "ChatLatencyMinMS": 1607,
+  "ChatLatencyMaxMS": 7683,
+  "StartupLatencyMinMS": 456,
+  "StartupLatencyMaxMS": 1634,
+  "PrefGetLatencyMinMS": 153,
+  "PrefGetLatencyMaxMS": 348,
+  "PrefUpdateLatencyMinMS": 463,
+  "PrefUpdateLatencyMaxMS": 745
+}' \
+  http://$BACKEND_IP/phase 
+```
 
 ### Introduction
 
@@ -222,6 +263,12 @@ By systematically identifying your stakeholders and gathering the necessary info
 
 #### Initial Response
 
+Realistically, as an SRE, it is common for stakeholders to expect the application to deliver 100% uptime and flawless performance. However, it's essential to communicate professionally why this expectation is *unachievable* and *unnecessary*.
+
+Understanding the inherent complexities and uncertainties in systems, we must educate stakeholders about the trade-offs involved in achieving high availability. Given that these discussions are likely to arise several times, being able to handle them with confidence and clarity is crucial.
+
+By pushing back against unrealistic expectations, we foster a more informed dialogue, helping stakeholders appreciate the balance between ambition and practicality. Ultimately, it's our responsibility to advocate for achievable service level objectives (SLOs) that ensure both reliability and a sustainable operational model while meeting user requirements. By articulating these points fluently, we can build trust and alignment with our stakeholders while driving continuous improvement in our systems."
+
 You have effectively addressed the CEO's demand for 100% uptime by:
 
 - **Challenging the feasibility of 100% reliability:** You clearly explained why achieving perfect uptime is practically impossible and highlighted the exponential relationship between reliability and cost.
@@ -261,7 +308,7 @@ Once you've identified the key stakeholders, consider what specific information 
 
 **Collaboration is Key:** Remember that achieving reliability is a shared responsibility. Building strong relationships with these teams is essential for success.
 
-## Challenge 3: Your first set of SLOs
+## Challenge 3: SLOs: Not Just Another Acronym
 
 In the previous challenge, you dove deep into Movie Guru's reliability landscape, discovering a young app with room to grow. You learned that the company currently lacks a robust way to measure and define user experience, relying instead on the unsustainable goal of constant uptime.
 
@@ -366,11 +413,13 @@ On top of these, the **Chat dashboard** has 3 other dashboards:
 - The dashboard displays several percentiles of login latency (10th, 50th, 90th, 95th, 99th), giving you a comprehensive view of the login speed distribution.
 - This metric is also displayed as a line chart, allowing you to track changes in latency over time and identify any performance degradations.
 
-## Challenge 5: Implementing SLOs on the dashboard
+## Challenge 5: SLOs on the dashboard
 
 ### Prerequisites
 
-Run the following command on a terminal
+Run the following command on a terminal (**Cloud Shell terminal**).
+
+> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
 
 ```sh
 BACKEND_IP=<the backend ip>
@@ -461,7 +510,9 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 
 ### Prerequisites
 
-Run this command in the terminal:
+Run this command in the terminal (**Cloud Shell terminal**).
+
+> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
 
 ```sh
 curl -X POST \
@@ -541,3 +592,104 @@ An error budget is the acceptable amount of time your service can fail to meet i
 Burn rate measures how quickly you're using up your error budget.  It acts as an early warning system for SLO violations, helping you prioritize and respond to issues before they impact users. Calculated as a multiple of your error budget consumption, a high burn rate (e.g., 10x) signals a major problem needing immediate action. Setting alerts for different burn rates (e.g., 2x for slow burn, 10x for fast burn) allows you to proactively manage service reliability and keep users happy. By monitoring burn rate, you can ensure your services meet their SLOs and avoid "overspending" your error budget.
 
 - [Burn Rate](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/alerting-on-budget-burn-rate)
+
+## Challenge 7: What's really UP, doc?
+
+### Prerequisites
+
+- Connect to the GKE cluster from the **Cloud Shell terminal**
+
+```sh
+<gke-connection-string> # Get this from your coach, it's in the start up variables you get
+```
+
+- Deploy a new frontend version
+
+```sh
+kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/refs/heads/ghack-sre/k8s/frontend-v2.yaml)
+```
+
+- Reset the backend server
+
+```sh
+BACKEND_IP=<the backend ip>
+
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+  "ChatSuccess": 0.95,
+  "ChatSafetyIssue": 0.1,
+  "ChatEngaged": 0.70,
+  "ChatAcknowledged": 0.15,
+  "ChatRejected": 0.05,
+  "ChatUnclassified": 0.1,
+  "ChatSPositive": 0.6,
+  "ChatSNegative": 0.1,
+  "ChatSNeutral": 0.2,
+  "ChatSUnclassified": 0.1,
+  "LoginSuccess": 0.999,
+  "StartupSuccess": 0.95,
+  "PrefUpdateSuccess": 0.99,
+  "PrefGetSuccess": 0.999,
+  "LoginLatencyMinMS": 10,
+  "LoginLatencyMaxMS": 200,
+  "ChatLatencyMinMS": 906,
+  "ChatLatencyMaxMS": 4683,
+  "StartupLatencyMinMS": 400,
+  "StartupLatencyMaxMS": 1000,
+  "PrefGetLatencyMinMS": 153,
+  "PrefGetLatencyMaxMS": 348,
+  "PrefUpdateLatencyMinMS": 363,
+  "PrefUpdateLatencyMaxMS": 645
+}' \
+
+  http://$BACKEND_IP/phase 
+```
+
+### Challenge Steps
+
+- **The Calm Before the Storm**
+
+    You settle in for another day of SRE serenity, casually monitoring the dashboards and basking in the glow of Movie Guru's stable performance.  Suddenly, your peaceful morning is shattered by a frantic colleague from customer support.
+
+- **"Mayday! Mayday!"** they exclaim, bursting into your cubicle. "Users are reporting that Movie Guru is acting up! They can't seem to use the website properly!"
+
+- **A Confusing Conundrum**
+
+    Your heart rate quickens as you glance at the dashboards, focusing on the **Startup** flow SLOs. But wait... everything seems normal! The metrics are all within the expected range. What's going on?
+
+    > **Note**: You can check the read dashboards, if the backend server has been reset correctly (prerequisite step), and a few minutes have passed, you should see that the **Startup SLOs** are well within expected range.
+
+- **Investigating the Issue**
+
+    To get to the bottom of this mystery, you open an incognito/private browser window and navigate to the Movie Guru frontend. You refresh the page a few times, and then it hits you... something's definitely not right.
+
+- **Your Challenge:**
+
+  - **Observe:**  Carefully observe what happens when you try to use the Movie Guru website. What issues are you experiencing?
+  - **Analyze:**  Compare your observations with the data displayed on the dashboards. What discrepancies do you notice?
+  - **Explain:**  Explain the reason for the difference between what users are reporting and what the dashboards are showing. What might be causing this discrepancy?
+  - **Consider:**  What are the implications of this discrepancy for your monitoring and alerting strategy? How can you improve your monitoring to better reflect the actual user experience?
+
+- This challenge will test your ability to:
+
+  - Analyze and interpret monitoring data.
+  - Troubleshoot issues based on user reports.
+  - Identify blind spots in your monitoring setup.
+  - Think critically about the relationship between technical metrics and user experience.
+  - How do you solve this?
+
+### Success Criteria
+
+To successfully complete this challenge, you should be able to:
+
+- **Identify the monitoring gap:**  Explain that the current dashboards only track server-side metrics and lack visibility into the frontend performance, leading to a blind spot in monitoring.
+- **Pinpoint the potential cause:**  Deduce that a recent change likely broke the connection between the frontend and backend, causing the user-facing issues.
+- **(Optional) Dive deeper:** Investigate further and discover the root cause: half of the frontend pods are configured with an incorrect backend URL, preventing them from communicating with the backend.
+- **Realize the importance of end-to-end monitoring:** Understand that monitoring user-facing interfaces and interactions is crucial for accurately reflecting the user experience and detecting issues that may not be visible in server-side metrics alone.
+- **Propose solutions:** Suggest ways to improve monitoring, such as implementing synthetic checks or real user monitoring (RUM) to track frontend performance and availability from the user's perspective.
+
+### Learning Resources
+
+- [SRE Books](https://sre.google)
+- [SRE workbook](https://sre.google/workbook/table-of-contents/)

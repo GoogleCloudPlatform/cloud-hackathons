@@ -6,7 +6,7 @@ Welcome to the coach's guide for The IoT Hack of the Century gHack. Here you wil
 
 Remember that this hack includes a optional [lecture presentation](resources/lecture.pdf) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
 
-> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+> **Note** If you are a gHacks student, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
@@ -37,20 +37,11 @@ Always refer students to the [gHacks website](https://ghacks.dev) for the studen
 
 > **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
 
-### Additional Coach Prerequisites (Optional)
-
-_Please list any additional pre-event setup steps a coach would be required to set up such as, creating or hosting a shared dataset, or preparing external resources._
-
 ## Google Cloud Requirements
 
 This hack requires students to have access to Google Cloud project where they can create and consume Google Cloud resources. These requirements should be shared with a stakeholder in the organization that will be providing the Google Cloud project that will be used by the students.
 
-_Please list Google Cloud project requirements._
-
-_For example:_
-
 - Cloud Observability Suite
-
 
 ## Suggested Hack Agenda
 
@@ -83,9 +74,18 @@ _The default files & folders are listed below. You may add to this if you want t
   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
   - Make sure the students take a note of the **Locust IP** and the **Frontend IP**
 
+## Whats happening in the backend
+
+We have a fully functional Movie Guru app running on the GKE cluster, albeit with simplified authentication and cookie handling. When a student logs into the frontend, they interact with the actual Movie Guru backend components.
+
+For our metrics generation, we utilize a separate backend (henceforth called **fake backend**) specifically designed to simulate conditions that produce metrics without requiring real users. We employ **Locust** as the tool to generate simulated user traffic. This backend mirrors the same API as the real Movie Guru backend but only returns expected response codes while simulating a predefined range of latencies and error rates, as defined in the **/phase** endpoint. This approach enables us to create various failure scenarios and observe system behavior, yielding valuable insights for our workshop. For different challenges, we set distinct probability distributions to generate the required types of metrics.
+
 ## Challenge 1: Your first day as SRE
 
 ### Notes & Guidance
+
+We're starting the load generator although the students don't need to understand the loadtest at all.
+The **fake backend** is primed to create responses that are suboptimal. This is to create the idea that at the start of the workshop, the **Movie Guru** app is performing suboptimally.
 
 #### Getting Started
 
@@ -106,7 +106,7 @@ _The default files & folders are listed below. You may add to this if you want t
 - There is no single "correct" set of user journeys.  Focus on capturing the key interactions and user goals.
 - Documenting user journeys in a structured format helps ensure clarity and facilitates future analysis and improvements.
 
-## Challenge 2: There are others
+## Challenge 2: Yes, there are others
 
 This challenge focuses on stakeholder management, SRE principles, and gathering information. Here's a guide to help you facilitate the exercise:
 
@@ -127,7 +127,7 @@ This challenge focuses on stakeholder management, SRE principles, and gathering 
 
 **Remember:** The goal is not to find the "perfect" solution but to encourage critical thinking, collaboration, and a deeper understanding of SRE principles and make them tangible.
 
-## Challenge 3: Your first set of SLOs
+## Challenge 3: SLOs: Not Just Another Acronym
 
 ## Instructor's Guide: Challenge 3
 
@@ -203,6 +203,21 @@ This starting SLO acknowledges that the chatbot is still under development and m
 
 ## Challenge 4: Let the monitoring begin
 
+#### Notes & Guidance
+
+This is the first challenge where students look at the metrics generated thus far.
+The **fake backend** is expected to generate metrics that show that the app is behaving suboptimally. Slow responses, frequent errors etc should be seen by looking at the dahsboard.
+
+- The chat latency p99 is around 9 seconds (Very SLOW)
+- The chat failure rate is around 30% (HIGH)
+- Safety error rate is around 30% (Quite high)
+- User engagement rate is around 60% (LOW)
+- Startup latency is around p99 1.5 seconds (SLOW)
+
+The students should notice how bad the performance and imagine what the user experience would be like if the metrics are like this. Their goal is to create achievable SLOs based on the current perfomance. For example if the chat latency p99 is around 9 seconds, it is realistic to bring it down to around 5 seconds, and NOT < 1 second.
+
+#### Getting Started
+
 This section helps you address the challenges in defining and achieving SLOs for the Movie Guru app.
 
 SLO 1: App Accessibility and Responsiveness
@@ -215,8 +230,21 @@ SLO 2: Chatbot Responsiveness
 Current State: 50% engagement rate, p99 latency of 9.8 seconds.
 Target SLO: 70% of user messages receive a relevant response within 5 seconds over a 24-hour rolling window.
 
+## Challenge 5: SLOs on the dashboard
 
-## Challenge 5: Implementing SLOs on the dashboard
+#### Notes & Guidance
+
+At the start of this challenge, the students need to post to the **fake backend** and provide it a new set of probability distribution. This simulates the **Movie Guru** app improving performance to meet achievable SLOs desgined in the previous step.
+
+- The chat latency p99 is around 5 seconds (Better)
+- The chat failure rate is around 10% (IMPROVED)
+- Safety error rate is around 10% (IMPROVED)
+- User engagement rate is around 85% (MUCH Better)
+- Startup latency is around p99 1 seconds (Slightly improved)
+
+The students should notice how bad the performance is and create achievable SLOs based on the current perfomance. For example if the chat latency p99 is around 9 seconds, it is realistic to bring it down to around 5 seconds, and NOT < 1 second.
+
+#### Getting Started
 
 This is a challenging exercise. The last SLO needs to be implmenting using the API as the GCP Monitoring UI for SLIs doesn't allow you to define different metrics in the numerator and denominator.
 Here is the command for it that needs to be run in a terminal.
@@ -360,16 +388,52 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 
 ### Challenge 6: Stay alert
 
-This challenge focuses on monitoring SLOs and using burn rate alerts to identify and prioritize service issues. Guide participants to:
+#### Context
+
+At the start of this challenge, the students need to post to the **fake backend** and provide it a probability distribution that determines performance.
+The new values posted simulate the **Movie Guru** app suddenly having issues with the **chat** user journey
+
+The students should within a few minutes notice the two chat related SLOs are degrading. The latency SLO is degrading quickly, while the engagement query is degrading slightly less quickly.
+
+The goal is for them to create burn rate alerts for the SLOs (ideally one creates at the SLO creation and not after things start slowly.)
+
+#### Challenge Steps
+
+This challenge focuses on monitoring SLOs and using burn rate alerts to identify and prioritize service issues. Guide students to:
 
 - Verify initial SLO health: Confirm all SLIs are initially within the acceptable range on the dashboard.
 Analyze error budget: Discuss the "Startup Success Rate" SLO's error budget, its meaning, and how it allows for feature development and maintenance.
 - Observe SLO degradation: Point out the declining performance of the "Chat Latency" and "Chat Engagement Rate" SLOs.
-- Create burn rate alerts: Instruct participants to create slow (1.5-2.0x) and fast (10x) burn rate alerts for both failing SLOs, emphasizing the importance of proactive alert creation in real-world scenarios.
+- Create burn rate alerts: Instruct students to create slow (1.5-2.0x) and fast (10x) burn rate alerts for both failing SLOs, emphasizing the importance of proactive alert creation in real-world scenarios.
 - Discuss burn rate concept: Explain that burn rate indicates how quickly the error budget is being consumed, like overspending a monthly allowance.
-- Monitor alert triggers: Have participants observe which alerts fire and discuss how the burn rate helps prioritize issues.
-- Highlight the lookback window: Remind participants that alerts will trigger only after the lookback period (5 minutes in this case) has elapsed.
-- Verify success criteria: Ensure participants have created at least four burn rate alerts and that at least one alert fires for the "Chat Latency" SLO.
+- Monitor alert triggers: Have students observe which alerts fire and discuss how the burn rate helps prioritize issues.
+- Highlight the lookback window: Remind students that alerts will trigger only after the lookback period (5 minutes in this case) has elapsed.
+- Verify success criteria: Ensure students have created at least four burn rate alerts and that at least one alert fires for the "Chat Latency" SLO.
 - Example view of firing alerts
   
   ![Alerts firing](images/Alerts-firing.png)
+
+### Challenge 7: What's Really UP, Doc?
+
+#### Context
+
+  Before diving into this challenge, you'll need to orchestrate a bit of controlled chaos:
+
+    1. **Fake Backend Manipulation:**  Instruct the students to configure the **fake backend** with a probability distribution that simulates excellent performance. This should push all SLOs into the "good" region, creating a false sense of stability.
+    2. **Frontend Sabotage:**  Have the students introduce a sneaky change to the frontend code that causes 50% of the calls to the backend to fail. This will create a noticeable impact on user experience while leaving the backend metrics untouched.
+
+- **The Illusion of Perfection**
+
+    With the stage set, the students should observe a perplexing situation: their dashboards are glowing green, signaling perfect health, but their colleagues (and their own attempts to use the app) reveal a harsh reality – the frontend is misbehaving, displaying a blank screen half the time.
+
+- **Unmasking the Blind Spot**
+
+    This challenge encourages students to recognize a critical blind spot in their monitoring strategy: relying solely on backend metrics can create a misleading picture of application health.  The true measure of success lies in understanding the *user experience*, which requires monitoring from the frontend as well.
+
+- **Key Takeaways**
+
+  - **End-to-End Visibility:**  Emphasize the importance of monitoring the entire application flow, from the frontend to the backend, to gain a complete understanding of performance and user experience.
+  - **User-Centric Monitoring:**  Highlight the need to prioritize metrics that reflect the user's perspective, even if they don't directly align with backend performance.
+  - **Proactive Problem Solving:** Encourage students to think proactively about potential monitoring gaps and explore solutions like synthetic monitoring or real user monitoring (RUM) to gain insights into frontend performance.
+
+- **Note:**  The goal of this challenge is not to debug the frontend issue itself, but to highlight the limitations of relying solely on backend metrics and to encourage a more holistic approach to monitoring.
