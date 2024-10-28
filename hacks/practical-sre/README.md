@@ -4,29 +4,21 @@ Welcome to the Practical SRE (Site Reliability Engineering) Workshop! In this ha
 
 The Movie Guru app's backend is currently running in your cloud environments and has been pre-instrumented to silently generate a wealth of metrics through the use of a load generator. This means that as you work on these challenges, you’ll have access to valuable data reflecting its performance and user interactions, allowing you to make informed decisions throughout the workshop.
 
-Throughout this session, you’ll analyze how real users interact with the Movie Guru app, and based on those insights, you will:
+By the end of this workshop, you’ll have developed a comprehensive reliability framework for Movie Guru, gaining practical SRE skills that can be applied to real-world systems. 
 
-1. Design User Journeys (UJs): Understand the key workflows and map out user journeys that represent typical interactions with the app, such as logging into the app, chatting with the agent for movie recommendations etc.
-
-1. Define SLIs (Service Level Indicators): Identify measurable signals that reflect the health and performance of the app. These indicators could include response time, query accuracy, and success rates for search results.
-
-1. Set SLOs (Service Level Objectives): Establish concrete performance targets that **Movie Guru** should meet, such as ensuring 99% of user queries return results within 2 seconds or that 95% of responses are relevant.
-
-1. Set up Alerting: Implement a robust alerting system to track your SLIs and SLOs and ensure that when the app's performance falls short of your SLOs, the right people are alerted. You’ll learn how to configure alerts for incidents such as slow response times, degraded search accuracy.
-
-By the end of this workshop, you’ll have developed a comprehensive reliability framework for Movie Guru, gaining practical SRE skills that can be applied to real-world systems. This will include creating actionable alerts, ensuring operational excellence, and building a culture of reliability around AI-powered apps.
+Remember, if there is a term being used in the challenge you don't understand, there **Learning Resources** section at the bottom of the challenge probably explains it. Otherwise, there is always **Google**.
 
 ## Learning Objectives
 
 In this hack you will learn how to:
 
    1. Identify User Journeys
-   2. Identify your stakeholders in an organization.
-   3. Design realistic SLOs
-   4. Understanding metrics dashboards in Google Cloud Monitoring.
-   5. Create SLOs in Google Cloud Monitoring.
-   6. Creating Alerts
-   7. SRE best practices
+   1. Identify your stakeholders in an organization.
+   1. Design realistic SLOs
+   1. Understanding metrics dashboards in Google Cloud Monitoring.
+   1. Create SLOs in Google Cloud Monitoring.
+   1. Creating Alerts
+   1. SRE best practices
 
 ## Challenges
 
@@ -62,7 +54,7 @@ You will be provided with the address of the Locust load generator at the start 
 #### Step 1: Make note of the 3 IP addresses from your environment
 
 - You will likely need them often, keep a note of these values and set them as environment variables.
-- You might need to re-run them before running command-line commands.
+- You might need to re-run them before running command-line commands for all challenges.
 - Copy the values (after replacing the placeholders) into a notepad to be able to re-run when needed.
 
   ```sh
