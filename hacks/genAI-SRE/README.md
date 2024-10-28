@@ -36,7 +36,7 @@ In this hack you will learn how to:
 - Challenge 4: Let the monitoring begin
 - Challenge 5: SLOs on the dashboard
 - Challenge 6: Stay alert
-- Challenge 6: Whats really UP, doc?
+- Challenge 7: What's really UP, doc?
 
 ## Prerequisites
 
@@ -371,8 +371,8 @@ On top of these, the **Chat dashboard** has 3 other dashboards:
 ### Challenge Steps
 
 - Analyze Existing Metrics
-  - Navigate to Google Cloud Monitoring \> Dashboards \> Custom Dashboards.  
-  - Examine the "Login", "Startup", and "Chat" dashboards.  
+  - Navigate to **Google Cloud Monitoring \> Dashboards \> Custom Dashboards**.  
+  - Examine the **Login**, **Startup**, and **Chat** dashboards.  
   - Create a list of the metrics captured in each dashboard (Login, Chat, Startup).
 - Assess User Experience
   - Based on the metrics and your own experience (or user feedback if available), describe how users likely perceive the app's performance.  
@@ -380,18 +380,19 @@ On top of these, the **Chat dashboard** has 3 other dashboards:
     - **Going Well:** Areas with good performance.  
     - **Need Improvement:** Areas with minor performance issues.  
     - **Need Improvement Urgently:** Areas with significant performance issues impacting user experience.
-- Define Achievable SLOs (for the SLO templates below)
-  - After discussing with product owners, you’ve identified two key SLOs for short-term improvement. Fill in realistic, achievable values that you would like the app to meet in the short term (around 1 month). Let the current performance indicators be a guide.
-- Set Aspirational SLOs (Optional)
+- Define **Achievable** SLOs (for the **SLO templates** below)
+  - After discussing with product owners, you’ve identified two key SLOs for short-term improvement.
+  - Fill in realistic, achievable values that you would like the app to meet in the short term (around 1 month). Let the current performance indicators be a guide.
+- Define **Aspirational** SLOs: Imagine **Movie Guru** one year from now, a finely-tuned, user-pleasing machine (but still not perfect, because unicorns don't exist, and 100% is never the right target).  It's so good that users are delighted with its performance and reliability.  What would the SLOs look like in this ideal scenario? Fill those values in. These are targets that your company can work towards in the upcoming year or so.
 
-#### SLO 1: App Accessibility and Responsiveness
+#### Template SLO 1: App Accessibility and Responsiveness
 
 - **Objective:** `xx%` of users should be able to access the Movie Guru app and view the main interface within `yy` seconds, measured over a `zz`-day rolling window.  
 - **Measurement:**  
   - **Availability:** Percentage of successful attempts to login and load the main interface.
   - **Latency:** Latency the startup endpoint (server-side measurement).  
 
-#### SLO 2: Chatbot Responsiveness
+#### Template SLO 2: Chatbot Responsiveness
 
 - **Objective:** `xx%`% of user messages should receive a relevant response from the Movie Guru chatbot within `yy` seconds, measured over a `zz`-hour rolling window.  
 - **Measurement:**  
