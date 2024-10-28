@@ -136,4 +136,6 @@ resource "google_monitoring_dashboard" "login_dashboard" {
   }
   
   EOF
+    depends_on = [ google_monitoring_dashboard.chat_dashboard ]
+
 }

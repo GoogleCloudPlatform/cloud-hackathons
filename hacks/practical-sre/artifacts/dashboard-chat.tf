@@ -270,4 +270,6 @@ resource "google_monitoring_dashboard" "chat_dashboard" {
   "labels": {}
   }
   EOF
+
+  depends_on = [ helm_release.locust ]
 }
