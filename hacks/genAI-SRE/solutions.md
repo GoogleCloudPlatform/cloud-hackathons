@@ -47,11 +47,12 @@ This hack requires students to have access to Google Cloud project where they ca
 ## Suggested Hack Agenda
 
 - Challenge 1 (45 mins)
-- Challenge 2 (20 mins)
+- Challenge 2 (20 mins) [Optional]
 - Challenge 3 (30 mins)
 - Challenge 4 (30 mins)
 - Challenge 5 (45 mins)
 - Challenge 6 (30 mins)
+- Challenge 7 (30 mins)
 
 ## Repository Contents
 
