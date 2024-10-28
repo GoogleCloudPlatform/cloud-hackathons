@@ -394,7 +394,7 @@ On top of these, the **Chat dashboard** has 3 other dashboards:
 
 #### Template SLO 2: Chatbot Responsiveness
 
-- **Objective:** `xx%`% of user messages should receive a relevant response from the Movie Guru chatbot within `yy` seconds, measured over a `zz`-hour rolling window.  
+- **Objective:** `xx%`% of user messages should receive a relevant response from the Movie Guru chatbot, and `yy%`% of users should recieve responses within `zz` seconds, measured over a `aa`-hour rolling window.  
 - **Measurement:**  
   - **Relevance:** Measured by the `Chat_Outcome_Counter` metric. A response is considered relevant if the outcome is registered as "engaged" or "acknowledged"
   - **Latency:**  Calculated as the time difference between the server receiving the user's message and sending the response.

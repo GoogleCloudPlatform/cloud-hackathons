@@ -223,12 +223,12 @@ This section helps you address the challenges in defining and achieving SLOs for
 SLO 1: App Accessibility and Responsiveness
 
 Current State: 90% availability, p99 latency of 3 seconds.
-Target SLO: 99% of users access the main interface within 1 seconds over a 7-day rolling window.
+Target SLO: **99%** of users access the main interface within **1 seconds** over a **7-day** rolling window.
 
 SLO 2: Chatbot Responsiveness
 
 Current State: 50% engagement rate, p99 latency of 9.8 seconds.
-Target SLO: 70% of user messages receive a relevant response within 5 seconds over a 24-hour rolling window.
+Target SLO: **70%** of user messages receive a relevant response, and **99%** of users should recieve responses within **5 seconds** over a **24-hour** rolling window.
 
 ## Challenge 5: SLOs on the dashboard
 
