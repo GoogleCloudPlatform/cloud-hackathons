@@ -657,13 +657,12 @@ curl -X POST \
 
 - **A Confusing Conundrum**
 
-    Your heart rate quickens as you glance at the dashboards, focusing on the **Startup** flow SLOs. But wait... everything seems normal! The metrics are all within the expected range. What's going on?
-
-    > **Note**: You can check the read dashboards, if the backend server has been reset correctly (prerequisite step), and a few minutes have passed, you should see that the **Startup SLOs** are well within expected range.
+- Check the SLO dashboards, if the backend server has been reset correctly (prerequisite step), and a few minutes have passed, you should see that the **Startup SLOs** are well within expected range.
 
 - **Investigating the Issue**
 
-    To get to the bottom of this mystery, you open an incognito/private browser window and navigate to the Movie Guru frontend. You refresh the page a few times, and then it hits you... something's definitely not right.
+  - To get to the bottom of this mystery, open an incognito/private browser window and navigate to the Movie Guru frontend.
+  - Refresh the page a few times and see if you spot something wrong.
 
 - **Your Challenge:**
 
