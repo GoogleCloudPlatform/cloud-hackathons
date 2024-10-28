@@ -590,6 +590,8 @@ This challenge guides you through monitoring the four SLOs created in the previo
 
    ![Short dips in SLI are OK](images/short_dips_are_ok.png)
 
+### Challenge Steps
+
 - **Create Burn Rate Alerts**
   - Create **SLO alerts** from the UI for all the SLOs
   - To differentiate between the severity of issues, set two alerts for each SLO (use a 15 minute lookback window):
@@ -635,7 +637,7 @@ This challenge guides you through monitoring the four SLOs created in the previo
   - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives.
   - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
 
-> **Warning**: Having trouble triggering alerts? Don't worry, it might just be due to the lab setting! Keep in mind that these alerts analyze performance over 15 minutes. So, if you created the alert 10-15 minutes *after* the service started having problems, it might not cause the alert to trigger. If you don't see an alert within 5 minutes, don't panic! Instead, put on your detective hat and examine the graphs. You should be able to spot any significant deviations from the baseline or SLO targets. Take a look at the graphs – they'll tell the story! You should be able to quickly spot which SLOs are misbehaving, which ones are having a minor hiccup, and which ones are performing like champs.
+> **Warning**: Having trouble triggering alerts? Don't worry, it might just be due to the lab setting! Keep in mind that these alerts analyze performance over 15 minutes. So, if you created the alert 10-15 minutes *after* the service started having problems, it might not cause the alert to trigger. If you don't see an alert within 5 minutes, don't panic! Instead, put you SRE hat on and take a look at the graphs – they'll tell the story! You should be able to quickly spot which SLOs are misbehaving, which ones are having a minor hiccup, and which ones are performing like champs.
 
 ### Success Criteria
 
@@ -643,8 +645,7 @@ To verify successful completion of this exercise, check the following:
 
 - **Burn Rate Triggers**: Ensure you have created 2 burn rate alerts for all your SLOs (8 in total). 
   - These alerts should be configured to trigger at different burn rates (e.g., 1.5-2.0x for slow burn, 10x for fast burn) to capture varying levels of degradation.
-- **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, you should expect at least one alert to fire for the "Chat Latency" SLO. This SLO is intentionally designed to exhibit issues, so an alert confirms that your monitoring and alerting setup is functioning correctly.
-- **Alerts not working?**: These alerts are designed to work when detecting a change from baseline performance monitored over 60 minutes. Sometimes, in the lab environment because we are using short lookback windows, it is possible that you created the alert after the service started degrading for a few minutes already in which case the alert threshold isn't reached in a short time. If you don't see an alert even after 10 minutes, just look at the graph, it should be pretty easy to see which SLO is failing badly, and which is failing less drastically.
+- **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, you should expect 3 alerts. Both burn rate alerts should fire for the "Chat Latency" SLO, and the slow burn rate alert should fire for the "Chat Engagement SLO".
 
 ### Learning Resources
 
@@ -663,7 +664,7 @@ Burn rate measures how quickly you're using up your error budget.  It acts as an
 
 ### Prerequisites
 
-- Connect to the GKE cluster from the **Cloud Shell terminal**
+- Connect to the GKE cluster from the **Cloud Shell terminal** by running the following command.
 
 ```sh
 $GKE_CONENCTION_STRING
@@ -679,9 +680,8 @@ kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/re
 
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
 
-> **Note**: Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
-
 ```sh
+# Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
 curl -X POST \
   -H "Content-Type: application/json" \
