@@ -13,7 +13,6 @@
 # limitations under the License.
 
 resource "google_project_service" "default" {
-  provider = google-beta.no_user_project_override
   project  = var.gcp_project_id
   for_each = toset([
     "cloudbilling.googleapis.com",
