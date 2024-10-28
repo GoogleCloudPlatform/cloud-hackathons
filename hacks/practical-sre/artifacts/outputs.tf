@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "gke-connection-string" {
+output "gke_connection_string" {
   value       = "gcloud container clusters get-credentials movie-guru-gke --region ${var.gcp_region} --project ${var.gcp_project_id}"
   description = "Connection string for the cluster"
 }

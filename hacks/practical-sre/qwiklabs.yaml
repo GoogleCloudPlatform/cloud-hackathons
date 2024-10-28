@@ -90,8 +90,10 @@ environment:
   - label: Project ID
     reference: project.project_id
   - label: Locust IP
-    reference: project.locust_address
-  - label: FrontEnd IP
-    reference: project.frontend_address
+    reference: project.startup_script.locust_address
+  - label: Frontend IP
+    reference: project.startup_script.frontend_address
+  - label: Backend IP
+    reference: project.startup_script.backend_address
   - label: GKE connection string
-    reference: project.gke-connection-string
+    reference: project.startup_script.gke-connection-string
