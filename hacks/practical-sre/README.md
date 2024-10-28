@@ -61,10 +61,15 @@ You will be provided with the address of the Locust load generator at the start 
 
 #### Step 1: Make note of the 3 IP addresses from your environment
 
-- You will likely need them often, keep a note of them in a notepad.
-  - Frontend Address
-  - Backend Address
-  - Locust Address
+- You will likely need them often, keep a note of these values and set them as environment variables.
+- You might need to re-run them before running command-line commands.
+
+  ```sh
+  FRONTEND_ADDRESS=<your frontend address>
+  BACKEND_ADDRESS=<your backend address>
+  LOCUST_ADDRESS=<your locust address>
+  PROJECT_ID=<your project id>
+  ```
 
 #### Step 2: Generate Load on the Application
 
@@ -90,12 +95,11 @@ You will be provided with the address of the Locust load generator at the start 
 #### [Optional] Step 3: If you are repeating Challenge 1, reset the metrics generator
 
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
+> **Note**:  Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
 Run the following in the terminal (**Cloud Shell terminal**)
 
 ```sh
-BACKEND_IP=<the backend ip>
-
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{
@@ -124,7 +128,7 @@ curl -X POST \
   "PrefUpdateLatencyMinMS": 463,
   "PrefUpdateLatencyMaxMS": 745
 }' \
-$BACKEND_IP/phase 
+$BACKEND_ADDRESS/phase 
 ```
 
 ### Introduction
@@ -137,7 +141,7 @@ This challenge involves exploring the Movie Guru app and documenting typical use
 
 - Access and Explore the App
 
-  - Go to <http://FrontEndIP> (replace with the provided IP address) in your web browser.
+  - Go to FRONTEND_ADDRESS in your web browser.
   - Log in using your name or email. No password is required at this stage.
   - Interact with the app to understand its features:
     - Observe what happens after logging in.
@@ -433,10 +437,9 @@ On top of these, the **Chat dashboard** has 3 other dashboards:
 Run the following command on a terminal (**Cloud Shell terminal**).
 
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
+> **Note**:  Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
 ```sh
-BACKEND_IP=<the backend ip>
-
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{
@@ -465,7 +468,7 @@ curl -X POST \
   "PrefUpdateLatencyMinMS": 363,
   "PrefUpdateLatencyMaxMS": 645
 }' \
-$BACKEND_IP/phase 
+$BACKEND_ADDRESS/phase 
 ```
 
 ### Introduction
@@ -476,14 +479,17 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 
 1. Navigate to SLOs in the monitoring suite:
    - Go to the "SLOs" tab. This is where you'll define and manage your SLOs.
+   - Click create **new service**.
    - Under **service candidates**, select **mockserver-service** This links your SLOs to the correct service for monitoring.
    - If **mockserver-service** isn't already listed, you'll need to define it as a custom service.
      - This is very simple, click on **Custom Serivce** and enter a name (eg: movie-guru) for the service.
 
-![SLO UI](images/SLO_Success.png)
-  
-1. Create SLOs:
+> **Note**: Check **HINT** in **Learning Resources** for creating services and SLOs via the API.
 
+![SLO UI](images/SLO_Success.png)
+
+1. Create SLOs
+  
    Now, let's create the specific SLOs for your service:
 
    - Chat Latency:
@@ -509,6 +515,7 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
      - Implementation: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO. This allows for more complex SLO configurations. Refer to the Cloud Monitoring API documentation for details on how to create SLOs programmatically (see **learning resources**)
      - Remarks: Ideally we would like to combine the success rate of the login and startup processes to know about the startup success *as experienced by the user*. But, we'll stick to the startup endpoint success rate for now.
 
+
 ### Success Criteria
 
 - You have all the SLOs created.
@@ -519,6 +526,62 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 - [Setting SLOs through UI](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-slo)
 - [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#slo-create)
 
+
+### Hint: High level steps for creating SLOs via API
+
+Use the [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#slo-create) as a reference for finding the right commands for the following steps.
+
+1. Create an access token.
+2. Create a service with a name like **movieguru-backend** (you can use a pre-existing service, but their id's need to be referenced. For this step, it's just easier to create one.)
+3. Create an SLO definition.
+4. Create the SLO from the definition.
+
+### [Spoiler alert] Example
+
+```sh
+# Creating a service
+ACCESS_TOKEN=`gcloud auth print-access-token`
+SERVICE_ID=movieguru-service
+CREATE_SERVICE_POST_BODY=$(cat <<EOF
+{
+  "displayName": ${SERVICE_ID},
+  "gkeService": {
+    "projectId": "${PROJECT_ID}",
+    "location": "europe-west4",
+    "clusterName": "movie-guru-gke",
+    "namespaceName": "movie-guru",
+    "serviceName": "mockserver-service"
+  }
+}
+EOF
+)
+
+# POST to create the service
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CREATE_SERVICE_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services?service_id=${SERVICE_ID}
+
+# Create an SLO definition
+CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
+{
+  "displayName": "80% - Chat Engagement Rate - Calendar day",
+  "goal": 0.8,
+  "calendarPeriod": "DAY",
+  "serviceLevelIndicator": {
+    "requestBased": {
+      "goodTotalRatio": {
+        "goodServiceFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_outcome_counter_total/counter\" resource.type=\"prometheus_target\" metric.labels.Outcome=monitoring.regex.full_match(\"Engaged|Acknowledged\")",
+        "totalServiceFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_outcome_counter_total/counter\" resource.type=\"prometheus_target\""
+      }
+    }
+  }
+}
+EOF
+)
+
+# POST the SLO definition
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CHAT_ENGAGEMENT_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
+
+```
+
 ## Challenge 6: Stay alert
 
 ### Prerequisites
@@ -526,6 +589,8 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 Run this command in the terminal (**Cloud Shell terminal**).
 
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
+> **Note**:  Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+
 
 ```sh
 curl -X POST \
@@ -556,8 +621,7 @@ curl -X POST \
   "PrefUpdateLatencyMinMS": 363,
   "PrefUpdateLatencyMaxMS": 645
 }' \
-  http://$BACKEND_IP/phase
-
+$BACKEND_ADDRESS/phase
 ```
 
 ### Introduction
@@ -624,8 +688,10 @@ kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/re
 
 - Reset the backend server
 
+> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
+> **Note**:  Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+
 ```sh
-BACKEND_IP=<the backend ip>
 
 curl -X POST \
   -H "Content-Type: application/json" \
@@ -656,7 +722,7 @@ curl -X POST \
   "PrefUpdateLatencyMaxMS": 645
 }' \
 
-$BACKEND_IP/phase 
+$BACKEND_ADDRESS/phase 
 ```
 
 ### Challenge Steps

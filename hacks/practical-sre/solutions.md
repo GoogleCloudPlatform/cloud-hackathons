@@ -260,10 +260,11 @@ Here is the command for it that needs to be run in a terminal.
 ```sh
 ACCESS_TOKEN=`gcloud auth print-access-token`
 
+SERVICE_ID=movieguru-service
 
 CREATE_SERVICE_POST_BODY=$(cat <<EOF
 {
-  "displayName": "mockserver-service",
+  "displayName": "${SERVICE_ID}",
   "gkeService": {
     "projectId": "${PROJECT_ID}",
     "location": "europe-west4",
@@ -275,7 +276,6 @@ CREATE_SERVICE_POST_BODY=$(cat <<EOF
 EOF
 )
 
-SERVICE_ID=service-startup
 
 curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CREATE_SERVICE_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services?service_id=${SERVICE_ID}
 
