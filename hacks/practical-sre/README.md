@@ -117,7 +117,7 @@ curl -X POST \
   "PrefUpdateLatencyMinMS": 463,
   "PrefUpdateLatencyMaxMS": 745
 }' \
-  http://$BACKEND_IP/phase 
+$BACKEND_IP/phase 
 ```
 
 ### Introduction
@@ -453,7 +453,7 @@ curl -X POST \
   "PrefUpdateLatencyMinMS": 363,
   "PrefUpdateLatencyMaxMS": 645
 }' \
-  http://$BACKEND_IP/phase 
+$BACKEND_IP/phase 
 ```
 
 ### Introduction
@@ -644,7 +644,7 @@ curl -X POST \
   "PrefUpdateLatencyMaxMS": 645
 }' \
 
-  http://$BACKEND_IP/phase 
+$BACKEND_IP/phase 
 ```
 
 ### Challenge Steps

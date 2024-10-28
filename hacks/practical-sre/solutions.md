@@ -78,6 +78,7 @@ This hack requires students to have access to Google Cloud project where they ca
   - Before we can hack, you will need to set up a few things.
   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
   - Make sure the students take a note of the **Locust IP** and the **Frontend IP**
+  - The environment takes around 10-15 to setup.
 
 ## Whats happening in the backend
 
