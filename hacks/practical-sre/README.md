@@ -59,7 +59,14 @@ You'll set up and generate application metrics using Locust, a powerful load tes
 
 You will be provided with the address of the Locust load generator at the start of the project. It should look like this: <http://LocustIP:8089> (replace with the correct IP).
 
-#### Step 1: Generate Load on the Application
+#### Step 1: Make note of the 3 IP addresses from your environment
+
+- You will likely need them often, keep a note of them in a notepad.
+  - Frontend Address
+  - Backend Address
+  - Locust Address
+
+#### Step 2: Generate Load on the Application
 
 - Open your browser and navigate to the Locust load generator address. You should see a screen similar to the one below:
 
@@ -80,7 +87,7 @@ You will be provided with the address of the Locust load generator at the start 
 
 - Confirm this is running as expected and start challenge 1.
 
-#### [Optional] Step 2: If you are repeating Challenge 1, reset the metrics generator
+#### [Optional] Step 3: If you are repeating Challenge 1, reset the metrics generator
 
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
 
