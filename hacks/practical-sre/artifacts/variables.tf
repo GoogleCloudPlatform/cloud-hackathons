@@ -31,17 +31,12 @@ variable "gcp_zone" {
   default     = "europe-west4-c"
 }
 
-variable "locust_file" {
-  description = "URL of the locustfile"
-  default = "https://raw.githubusercontent.com/MKand/movie-guru/refs/heads/ghack-sre/locust/locustfile.py"
-}
-
-variable "region" {
-  default     = "europe-west4"
-  description = "Region"
-}
-
 variable "helm_chart" {
   description = "URL of the movie guru helm chart"
   default = "https://mkand.github.io/movie-guru/movie-guru-0.6.0.tgz"
+}
+
+variable "locust_file" {
+  description = "URL of the locustfile"
+  default = "https://raw.githubusercontent.com/MKand/movie-guru/refs/heads/ghack-sre/locust/locustfile.py"
 }
