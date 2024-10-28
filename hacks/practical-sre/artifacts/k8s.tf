@@ -101,7 +101,7 @@ resource "kubernetes_config_map" "loadtest_locustfile" {
 
 resource "helm_release" "locust" {
   name      = "locust"
-  chart     = "deliveryhero/locust"
+  chart     = "oci://ghcr.io/deliveryhero/helm-charts/locust"
   namespace = "locust"
 
   set {
