@@ -657,7 +657,7 @@ curl -X POST \
 
 - **A Confusing Conundrum**
 
-- Check the SLO dashboards, if the backend server has been reset correctly (prerequisite step), and a few minutes have passed, you should see that the **Startup SLOs** are well within expected range.
+  - Check the SLO dashboards, if the backend server has been reset correctly (prerequisite step), and a few minutes have passed, you should see that the **Startup SLOs** are well within expected range.
 
 - **Investigating the Issue**
 
