@@ -96,4 +96,4 @@ environment:
   - label: Backend IP
     reference: project.startup_script.backend_address
   - label: GKE connection string
-    reference: project.startup_script.gke-connection-string
+    reference: project.startup_script.gke_connection_string
