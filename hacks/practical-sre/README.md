@@ -366,7 +366,6 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
 - **Login Dashboard**: Tracks the health and efficiency of the user login process.
 - **Startup Dashboard**: Monitors the performance of the post-login startup process, ensuring users get into the app quickly.
 - **Chat Dashboard**: Provides a comprehensive view of user interactions with the chatbot, including engagement, sentiment, and response times.
-- **User Profile Dashboard**: Tracks the performance and reliability of user profile management functions.
   
 To give you a well-rounded understanding of each area, every dashboard includes at least two crucial metrics:
 
