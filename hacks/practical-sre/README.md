@@ -128,23 +128,29 @@ Ok. You have started on Day 1 as the newly formed SRE team for **The Movie Advis
 
 This challenge involves exploring the Movie Guru app and documenting typical user journeys.
 
-1. Access and Explore the App
+- Access and Explore the App
 
-   - Go to <http://FrontEndIP> (replace with the provided IP address) in your web browser.
-   - Log in using your name or email. No password is required at this stage.
-   - Interact with the app to understand its features:
-     - Observe what happens after logging in.
-     - Request movie recommendations (e.g., "I feel like watching a fantasy movie").
-     - Express your preferences for genres and themes (e.g., "I love movies with funny animals," or "I dislike violent movies").
-     - Check your user profile to see if the app remembers your preferences.
-     - Log out and log in again to understand the app's behavior.
-1. Document User Journeys
+  - Go to <http://FrontEndIP> (replace with the provided IP address) in your web browser.
+  - Log in using your name or email. No password is required at this stage.
+  - Interact with the app to understand its features:
+    - Observe what happens after logging in.
+    - Request movie recommendations (e.g., "I feel like watching a fantasy movie").
+    - Express your preferences for genres and themes (e.g., "I love movies with funny animals," or "I dislike violent movies").
+    - Check your user profile to see if the app remembers your preferences.
+    - Log out and log in again to understand the app's behavior.
+  
+  > **Warning**: AI platform rate limits in qwiklabs environments can be very low (around 10 per minute). This
+    might cause the app to fail (Oops.. Something went wrong). If that is the case, then watch this video with sound turned down to understand the working of the app.
 
-    - Identify at least two distinct user journeys within the Movie Guru app.
-    - Clearly document each journey using this format:
-      - Journey Name: [Give a descriptive name]
-      - Goal: [What does the user want to achieve?]
-      - Steps: [List the specific actions the user takes to achieve the goal]
+[![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
+
+- Document User Journeys
+
+  - Identify at least two distinct user journeys within the Movie Guru app.
+  - Clearly document each journey using this format:
+    - Journey Name: [Give a descriptive name]
+    - Goal: [What does the user want to achieve?]
+    - Steps: [List the specific actions the user takes to achieve the goal]
 
 > **Note**: - If you need a refresher on what a user journey is, visit the section on **What is a user journey?** (in Learning Resources).
 
