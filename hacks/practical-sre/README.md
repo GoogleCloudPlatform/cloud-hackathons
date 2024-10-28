@@ -139,7 +139,7 @@ This challenge involves exploring the Movie Guru app and documenting typical use
     - Check your user profile to see if the app remembers your preferences.
     - Log out and log in again to understand the app's behavior.
   
-  > **Warning**: AI platform rate limits in qwiklabs environments can be very low (around 10 per minute). This
+> **Warning**: AI platform rate limits in qwiklabs environments can be very low (around 10 per minute). This
     might cause the app to fail (Oops.. Something went wrong). If that is the case, then watch this video with sound turned down to understand the working of the app.
 
 [![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
