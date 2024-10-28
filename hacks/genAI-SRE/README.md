@@ -678,7 +678,6 @@ curl -X POST \
   - Troubleshoot issues based on user reports.
   - Identify blind spots in your monitoring setup.
   - Think critically about the relationship between technical metrics and user experience.
-  - How do you solve this?
 
 ### Success Criteria
 
@@ -688,7 +687,7 @@ To successfully complete this challenge, you should be able to:
 - **Pinpoint the potential cause:**  Deduce that a recent change likely broke the connection between the frontend and backend, causing the user-facing issues.
 - **(Optional) Dive deeper:** Investigate further and discover the root cause: half of the frontend pods are configured with an incorrect backend URL, preventing them from communicating with the backend.
 - **Realize the importance of end-to-end monitoring:** Understand that monitoring user-facing interfaces and interactions is crucial for accurately reflecting the user experience and detecting issues that may not be visible in server-side metrics alone.
-- **Propose solutions:** Suggest ways to improve monitoring, such as implementing synthetic checks or real user monitoring (RUM) to track frontend performance and availability from the user's perspective.
+- **Propose solutions:** Suggest ways to improve monitoring, such as real user monitoring (RUM) to track frontend performance and availability from the user's perspective.
 
 ### Learning Resources
 
