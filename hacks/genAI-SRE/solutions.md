@@ -16,6 +16,7 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 - Challenge 4: Let the monitoring begin
 - Challenge 5: Implementing SLOs on the dashboard
 - Challenge 6: Stay alert
+- Challenge 7: What's really UP, doc?!
 
 ## Coach Prerequisites
 
