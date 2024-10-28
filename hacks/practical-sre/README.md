@@ -248,7 +248,7 @@ To successfully complete this challenge, you should be able to demonstrate the f
 - Explained why 100% uptime is an unrealistic and potentially harmful goal.
 - Clearly articulated the relationship between reliability and cost.
 - Emphasized the importance of aligning reliability targets with user needs and business priorities.
-- [BOUNUS] Communicated the need to balance reliability investments with other factors like innovation.
+- [BONUS] Communicated the need to balance reliability investments with other factors like innovation.
 
 **Information Gathering:**
 
