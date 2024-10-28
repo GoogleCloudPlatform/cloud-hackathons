@@ -98,11 +98,11 @@ You will be provided with the address of the Locust load generator at the start 
 #### [Optional] Step 3: If you are repeating Challenge 1, reset the metrics generator
 
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
-> **Note**:  Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
 Run the following in the terminal (**Cloud Shell terminal**)
 
 ```sh
+# Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{
@@ -389,9 +389,10 @@ On top of these, the **Chat dashboard** has 3 other dashboards:
 Run the following command on a terminal (**Cloud Shell terminal**).
 
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
-> **Note**:  Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
 ```sh
+# Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{
@@ -542,9 +543,10 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 Run this command in the terminal (**Cloud Shell terminal**).
 
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
-> **Note**:  Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
 ```sh
+# Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{
@@ -595,9 +597,9 @@ This challenge guides you through monitoring the four SLOs created in the previo
     - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
 - Run this command in the terminal (**Cloud Shell terminal**).
 
-  > **Note**:  Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
-
   ```sh
+  # Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+
   curl -X POST \
     -H "Content-Type: application/json" \
     -d '{
@@ -676,7 +678,8 @@ kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/re
 - Reset the backend server
 
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
-> **Note**:  Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+
+> **Note**: Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
 ```sh
 
