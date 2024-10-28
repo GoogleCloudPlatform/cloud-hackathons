@@ -69,6 +69,8 @@ You will be provided with the address of the Locust load generator at the start 
   BACKEND_ADDRESS=<your backend address>
   LOCUST_ADDRESS=<your locust address>
   PROJECT_ID=<your project id>
+  GKE_CONNECTION_STRING=<your GKE connection string> # Don't worry you don't need to have any GKE knowledge.
+
   ```
 
 #### Step 2: Generate Load on the Application
