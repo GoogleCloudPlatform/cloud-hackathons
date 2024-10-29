@@ -164,14 +164,15 @@ Steps:
 
 ## Challenge 2: Yes, there are others
 
+### Notes & Guidance
+
 This challenge focuses on stakeholder management, SRE principles, and gathering information. Here's a guide to help you facilitate the exercise:
 
-**Key takeaways for students:**
+**Key discussion points for students when addressing the CEOs request:**
 
-- **100% uptime is an unrealistic goal:**  Emphasize the trade-offs between reliability, cost, and innovation.
-- **SRE is about balance:**  Help students understand the importance of balancing reliability with user needs and business priorities.
-- **Collaboration is key:**  Stress the importance of identifying and collaborating with key stakeholders across different teams.
-- **Information gathering is crucial:** Guide students to identify the essential information needed to assess and improve reliability.
+- **100% uptime is an unrealistic goal:** They emphasize the trade-offs between reliability, cost, and innovation.
+- **Reliability is expensive:** They emphasise that costs skyrocket exponentially with increasing reliability.
+- **SRE is about balance:**  It is important to balance reliability with user needs and business priorities, and costs.
 
 **Guiding the discussion:**
 
@@ -185,7 +186,7 @@ This challenge focuses on stakeholder management, SRE principles, and gathering 
 
 ## Challenge 3: SLOs: Not Just Another Acronym
 
-## Instructor's Guide: Challenge 3
+### Notes & Guidance
 
 This challenge focuses on defining and understanding Service Level Objectives (SLOs). Here's a guide to help you facilitate the exercise:
 
@@ -218,7 +219,7 @@ This challenge focuses on defining and understanding Service Level Objectives (S
 
 #### SLO for Movie Guru App Access
 
-- SLO: 99.95% of users should be able to access the Movie Guru app and view the main interface within 3 seconds, measured over a 7-day rolling window.
+- SLO: 99.95% of users should be able to access the Movie Guru app and view the main interface within 1 second, measured over a 7-day rolling window.
 
 - Rationale:
 
@@ -231,9 +232,9 @@ This challenge focuses on defining and understanding Service Level Objectives (S
 
 #### SLO for Movie Guru Chatbot Responsiveness
 
-**Current SLO:** 70% of user messages should receive a relevant response from the Movie Guru chatbot within 8 seconds, measured over a 24-hour rolling window.
+**Current SLO:** 70% of user messages should receive a relevant response from the Movie Guru chatbot, 99% should recieve a response within 5 seconds, measured over a 24-hour rolling window.
 
-**Aspirational SLO:** 90% of user messages should receive a relevant response from the Movie Guru chatbot within 5 seconds, measured over a 24-hour rolling window.
+**Aspirational SLO:** 90% of user messages should receive a relevant response from the Movie Guru chatbot, and 99% should recieve a response within 3 seconds, measured over a 24-hour rolling window.
 
 **Rationale:**
 
@@ -272,10 +273,6 @@ The **fake backend** is expected to generate metrics that show that the app is b
 
 The students should notice how bad the performance and imagine what the user experience would be like if the metrics are like this. Their goal is to create achievable SLOs based on the current perfomance. For example if the chat latency p99 is around 9 seconds, it is realistic to bring it down to around 5 seconds, and NOT < 1 second.
 
-#### Getting Started
-
-This section helps you address the challenges in defining and achieving SLOs for the Movie Guru app.
-
 SLO 1: App Accessibility and Responsiveness
 
 Current State: 90% availability, p99 latency of 3 seconds.
@@ -288,7 +285,7 @@ Target SLO: **70%** of user messages receive a relevant response, and **99%** of
 
 ## Challenge 5: SLOs on the dashboard
 
-#### Notes & Guidance
+### Notes & Guidance
 
 At the start of this challenge, the students need to post to the **fake backend** and provide it a new set of probability distribution. This simulates the **Movie Guru** app improving performance to meet achievable SLOs desgined in the previous step.
 
@@ -300,10 +297,8 @@ At the start of this challenge, the students need to post to the **fake backend*
 
 The students should notice how bad the performance is and create achievable SLOs based on the current perfomance. For example if the chat latency p99 is around 9 seconds, it is realistic to bring it down to around 5 seconds, and NOT < 1 second.
 
-#### Getting Started
-
 This is a challenging exercise. The last SLO needs to be implmenting using the API as the GCP Monitoring UI for SLIs doesn't allow you to define different metrics in the numerator and denominator.
-Here is the command for it that needs to be run in a terminal.
+Here is the command for it that needs to be run in a terminal to create all the SLOs.
 
 - Create Access token and service
 
@@ -331,7 +326,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 
 ```
 
-- SLO Startup Success Rate SLO
+- SLO Startup Success Rate
 
 ```sh
 STARTUP_SUCCESS_SLO_POST_BODY=$(cat <<EOF
@@ -354,7 +349,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 
 ```
 
-Chat Engagement Rate SLO (using engaged and acknowledged)
+- Chat Engagement Rate SLO (using engaged and acknowledged)
 
 ```sh
 CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
@@ -378,7 +373,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 
 ```
 
-- SLO Startup Latency Windowed SLO
+- Startup Latency Windowed SLO
 
 ```sh
 STARTUP_LATENCY_SLO_POST_BODY=$(cat <<EOF
@@ -410,7 +405,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 
 ```
 
-Chat Latency SLO
+- Chat Latency SLO
 
 ```sh
 CHAT_LATENCY_SLO_POST_BODY=$(cat <<EOF
@@ -442,9 +437,9 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 
 ```
 
-### Challenge 6: Stay alert
+## Challenge 6: Stay alert
 
-#### Context
+### Notes & Guidance
 
 At the start of this challenge, the students need to post to the **fake backend** and provide it a probability distribution that determines performance.
 The new values posted simulate the **Movie Guru** app suddenly having issues with the **chat** user journey
@@ -452,8 +447,6 @@ The new values posted simulate the **Movie Guru** app suddenly having issues wit
 The students should within a few minutes notice the two chat related SLOs are degrading. The latency SLO is degrading quickly, while the engagement query is degrading slightly less quickly.
 
 The goal is for them to create burn rate alerts for the SLOs (ideally one creates at the SLO creation and not after things start slowly.)
-
-#### Challenge Steps
 
 This challenge focuses on monitoring SLOs and using burn rate alerts to identify and prioritize service issues. Guide students to:
 
@@ -469,14 +462,14 @@ Analyze error budget: Discuss the "Startup Success Rate" SLO's error budget, its
   
   ![Alerts firing](images/Alerts-firing.png)
 
-### Challenge 7: What's Really UP, Doc?
+## Challenge 7: What's Really UP, Doc?
 
-#### Context
+### Notes & Guidance
 
   Before diving into this challenge, you'll need to orchestrate a bit of controlled chaos:
 
-    1. **Fake Backend Manipulation:**  Instruct the students to configure the **fake backend** with a probability distribution that simulates excellent performance. This should push all SLOs into the "good" region, creating a false sense of stability.
-    2. **Frontend Sabotage:**  Have the students introduce a sneaky change to the frontend code that causes 50% of the calls to the backend to fail. This will create a noticeable impact on user experience while leaving the backend metrics untouched.
+  1. **Fake Backend Manipulation:**  Instruct the students to configure the **fake backend** with a probability distribution that simulates excellent performance. This should push all SLOs into the "good" region, creating a false sense of stability.
+  2. **Frontend Sabotage:**  Have the students introduce a sneaky change to the frontend code that causes 50% of the calls to the backend to fail. This will create a noticeable impact on user experience while leaving the backend metrics untouched.
 
 - **The Illusion of Perfection**
 

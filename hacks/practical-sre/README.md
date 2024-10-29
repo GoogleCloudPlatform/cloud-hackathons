@@ -130,7 +130,7 @@ $BACKEND_ADDRESS/phase
 
 Ok. You have started on Day 1 as the newly formed SRE team for **The Movie Advisory Company**, a start-up whose first product is the **Movie Guru** app.
 
-### Challenge Steps
+### Description
 
 This challenge involves exploring the Movie Guru app and documenting typical user journeys.
 
@@ -158,7 +158,7 @@ This challenge involves exploring the Movie Guru app and documenting typical use
     - Goal: [What does the user want to achieve?]
     - Steps: [List the specific actions the user takes to achieve the goal]
 
-> **Note**: - If you need a refresher on what a user journey is, visit the section on **What is a user journey?** (in Learning Resources).
+> **Note**: If you need a refresher on what a user journey is, visit the section on **What is a user journey?** (in **Learning Resources**).
 
 ## Success Criteria
 
@@ -188,17 +188,17 @@ Steps:
 
 **User journeys are hypotheses:** They are your best guess about how users will interact with the app.  These journeys will need to be refined over time based on real user data and feedback.
 
-## Challenge 2: There are others
+## Challenge 2: Yes, there are others
 
 Your second day as an SRE at **The Movie Advisory Company** started with a bang. The CEO, clearly fueled by an excessive amount of coffee, stormed into your workspace, ranting about Movie Guru's unreliable performance.  **"Users are complaining about the site not always being reachable!" he yelled, "This is unacceptable! Movie Guru needs to be up 100% of the time!"** He demanded a solution immediately. With a panicked look in his eyes, he pointed you towards the platform team (a single, overworked engineer) and the application team (known for their eccentric work habits).
 
 Your challenge:  figure out how to improve the app's stability, manage the CEO's expectations, and prevent a complete meltdown.  Welcome to the world of SRE!
 
-### Challenge Steps
+### Description
 
 1. **Initial Response to CEO:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with a teammate or coach. Optionally you and your team do a short role-play with one of you acting as the CEO.
 
-   > **NOTE**: The focus on the role-play should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
+   > **Note**: The focus on the role-play should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
 
 2. **Information Gathering:** You're not alone in this quest for stability! To improve Movie Guru's stability, you'll need to collaborate with others. Identify the key stakeholders within the company and determine what information you need from each of them to achieve your reliability goals.
 
@@ -277,7 +277,7 @@ In the previous challenge, you dove deep into Movie Guru's reliability landscape
 
 Armed with the insights gained from exploring the app, collaborating with stakeholders, and understanding the system's design, challenges, and user feedback, it's time to take a crucial step: defining Service Level Objectives (SLOs). If you need a referesher on SLOs, see the section **What is an SLO?** in the **Learning Resources**.
 
-### Challenge Steps
+### Description
 
 1. **Choose Your Journeys:** Select two key user journeys for **Movie Guru**. These could be the ones you identified in Challenge 1 or the examples provided.
 2. **Craft Your SLOs:**  Define specific, measurable, achievable, relevant, and time-bound (SMART) SLOs for each chosen user journey. Consider what aspects of reliability matter most to users in each journey and how you can measure success.
@@ -328,7 +328,7 @@ On top of these, the **Chat dashboard** has 3 other dashboards:
 
 3. **Safety Issue Dashboard**: This tracks the rate of user chat messages where the user made unsafe remarks.
 
-### Challenge Steps
+### Description
 
 1. **Browse existing metrics**
    - Navigate to **Google Cloud Monitoring \> Dashboards \> Custom Dashboards**.  
@@ -424,15 +424,15 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 
 1. **Create a service in the SLOs tab**
    - Go to the **SLOs** tab in the monitoring suite. This is where you'll define and manage your SLOs.
-   - Click create **new service**.
+   - Click create **new service**. (In the context of GCP SLOs and services, *creating* a service doesn't mean building the service itself from scratch. It means defining the service as a monitored entity within Cloud Monitoring.)
    - Under **service candidates**, select **mockserver-service** This links your SLOs to the correct service for monitoring.
    - Give it a **Display name**. It can be anything. Use **mockserver-service** if you can't think of anything else.
 
-    > **Note**: You can also create these via the API. Check **HINT** in **Learning Resources** for creating services via the API.
+    > **Note**: You can also create these via the API. Check **Tips** in **Learning Resources** for creating services via the API.
 
     ![SLO UI](images/SLO_Success.png)
 
-1. **Create 4 SLOs**
+2. **Create 4 SLOs**
   
    Now, let's create the specific SLOs for your service:
 
@@ -459,7 +459,7 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
      - Implementation: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO. This allows for more complex SLO configurations. Refer to the Cloud Monitoring API documentation for details on how to create SLOs programmatically (see **learning resources**)
      - Remarks: Ideally we would like to combine the success rate of the login and startup processes to know about the startup success *as experienced by the user*. But, we'll stick to the startup endpoint success rate for now.
 
-> **Note**: You can also create these via the API. Check **HINT** in **Learning Resources** for creating  SLOs via the API.
+> **Note**: You can also create these via the API. Check **Tips** in **Learning Resources** for creating  SLOs via the API.
 
 ### Success Criteria
 
@@ -471,7 +471,9 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 - [Setting SLOs through UI](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-slo)
 - [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#slo-create)
 
-### Hint: High level steps for creating SLOs via API
+### Tips
+
+See below for high level steps for creating services and SLOs via API
 
 Use the [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#slo-create) as a reference for finding the right commands for the following steps.
 
@@ -480,13 +482,13 @@ Use the [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/soluti
 3. Create an SLO definition.
 4. Create the SLO from the definition.
 
-### [Spoiler alert] Example
+#### Example
 
 ```sh
 # Get an access token
 ACCESS_TOKEN=`gcloud auth print-access-token`
 
-# Create a service definition
+# Create a custom service definition
 SERVICE_ID=movieguru-service
 CREATE_SERVICE_POST_BODY=$(cat <<EOF
 {
@@ -582,7 +584,7 @@ This challenge guides you through monitoring the four SLOs created in the previo
 
    ![Short dips in SLI are OK](images/short_dips_are_ok.png)
 
-### Challenge Steps
+### Description
 
 - **Create Burn Rate Alerts**
   - Create **SLO alerts** from the UI for all the SLOs
@@ -659,7 +661,7 @@ Burn rate measures how quickly you're using up your error budget.  It acts as an
 - Connect to the GKE cluster from the **Cloud Shell terminal** by running the following command.
 
 ```sh
-$GKE_CONENCTION_STRING
+$GKE_CONNECTION_STRING
 ```
 
 - Deploy a new frontend version
@@ -714,7 +716,7 @@ You settle in for another day of SRE serenity, casually monitoring the dashboard
 
 **"Mayday! Mayday!"** they exclaim, bursting into your cubicle. "*Users are reporting that Movie Guru is acting up! They can't seem to use the website properly!*"
 
-### Challenge Steps
+### Description
 
 - **Look at your dashboards**
 
