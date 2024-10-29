@@ -485,14 +485,16 @@ Use the [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/soluti
 #### Example
 
 ```sh
-# Get an access token
+## Make sure the env variable PROJECT_ID is set.
+
+## Get an access token
 ACCESS_TOKEN=`gcloud auth print-access-token`
 
-# Create a custom service definition
+## Create a custom service definition
 SERVICE_ID=movieguru-service
 CREATE_SERVICE_POST_BODY=$(cat <<EOF
 {
-  "displayName": ${SERVICE_ID},
+  "displayName": "${SERVICE_ID}",
   "gkeService": {
     "projectId": "${PROJECT_ID}",
     "location": "europe-west4",
@@ -504,10 +506,10 @@ CREATE_SERVICE_POST_BODY=$(cat <<EOF
 EOF
 )
 
-# POST to create the service
+## POST to create the service
 curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CREATE_SERVICE_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services?service_id=${SERVICE_ID}
 
-# Create an SLO definition
+## Create an SLO definition
 CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
 {
   "displayName": "80% - Chat Engagement Rate - Calendar day",
@@ -525,7 +527,7 @@ CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
 EOF
 )
 
-# POST the SLO definition
+## POST the SLO definition
 curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CHAT_ENGAGEMENT_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
 
 ```
