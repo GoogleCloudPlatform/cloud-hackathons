@@ -94,7 +94,7 @@ You will be provided with the address of the Locust load generator at the start 
 Run the following in the terminal (**Cloud Shell terminal**)
 
 ```sh
-# Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{
@@ -383,7 +383,7 @@ Run the following command on a terminal (**Cloud Shell terminal**).
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
 
 ```sh
-# Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
 curl -X POST \
   -H "Content-Type: application/json" \
@@ -539,7 +539,7 @@ Run this command in the terminal (**Cloud Shell terminal**).
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
 
 ```sh
-# Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
 curl -X POST \
   -H "Content-Type: application/json" \
@@ -594,7 +594,7 @@ This challenge guides you through monitoring the four SLOs created in the previo
 - Run this command in the terminal (**Cloud Shell terminal**).
 
   ```sh
-  # Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+  ## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
   curl -X POST \
     -H "Content-Type: application/json" \
@@ -675,7 +675,7 @@ kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/re
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
 
 ```sh
-# Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
 curl -X POST \
   -H "Content-Type: application/json" \
