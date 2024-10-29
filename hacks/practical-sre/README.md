@@ -200,7 +200,7 @@ Your challenge:  figure out how to improve the app's stability, manage the CEO's
 
    > **Note**: The focus on the role-play should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
 
-2. **Information Gathering:** You're not alone in this quest for stability! To improve Movie Guru's stability, you'll need to collaborate with others. Identify the key stakeholders within the company and determine what information you need from each of them to achieve your reliability goals.
+1. **Information Gathering:** You're not alone in this quest for stability! To improve Movie Guru's stability, you'll need to collaborate with others. Identify the key stakeholders within the company and determine what information you need from each of them to achieve your reliability goals.
 
 ### Success Criteria
 
@@ -282,8 +282,8 @@ Armed with the insights gained from exploring the app, collaborating with stakeh
 **Make guesses for this exercise whenever you don't have real information to go on.**
 
 1. **Choose Your Journeys:** Select two key user journeys for **Movie Guru**. These could be the ones you identified in Challenge 1 or the examples provided.
-2. **Choose Your SLIs:** What SLIs would you use to see that your application is healthy (as experienced by the user)?
-3. **Craft Your SLOs:** Define relevant SLOs for each chosen user journey using the SLIs identified above.
+1. **Choose Your SLIs:** What SLIs would you use to see that your application is healthy (as experienced by the user)?
+1. **Craft Your SLOs:** Define relevant SLOs for each chosen user journey using the SLIs identified above.
    - Consider what aspects of reliability matter most to users in each journey and how you can measure success.
    - See **Learning Resources** for an example.
 
@@ -327,6 +327,8 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
 
 ### Description
 
+**Make guesses for this exercise whenever you don't have real information to go on.**
+
 1. **Browse existing dashboards**
    - Navigate to **Google Cloud Monitoring \> Dashboards \> Custom Dashboards**.  
    - Examine the **Login**, **Startup**, and **Chat** dashboards.  
@@ -344,7 +346,7 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
    - **Tips**:
      - If you don't understand the difference between an **SLI** and a **metric** is, look at the **Learning Resources**.
      - Look at the **Business Goals** below to narrow down your search to just a few SLIs relevant for this exercise.
-1. Define **Achievable** objectives for the **SLO templates** below. 
+1. Define **Achievable** objectives for the **SLO templates** below.
     - Fill in realistic, **Achievable** values that you would like the app to meet in the short term (around 1 month). Let the current performance indicators be a guide.
 1. [Optional] Define **Aspirational** SLOs (for the **SLO templates** below).
    - Imagine **Movie Guru** one year from now, a finely-tuned, user-pleasing machine (but still not perfect, because unicorns don't exist, and 100% is never the right target). It's so good that users are delighted with its performance and reliability. What would the SLOs look like in this ideal scenario? Fill those values in. These are targets that your company can work towards in the upcoming year or so.
@@ -353,15 +355,15 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
 
 - **Business goal 1:** The main page should be accessible and load quickly for users.
 
-  - **SLO 1a:** `xx%` of users should be able to access the main page after logging in, measured over a `zz`-day rolling window.  
+  - **SLO 1a:** `xx%` of users should successfully access the main page after logging in, measured over a `zz`-day rolling window.  
 
-  - **SLO 1b:** `xx%` of users should be able to access the main page after logging in, within `yy` seconds measured over a `zz`-day rolling window.  
+  - **SLO 1b:** `xx%` of users should access the main page after logging in within `yy` seconds, measured over a `zz`-day rolling window.
 
-- **Business goal 2:** The chatbot should respond quickly to users, and keep the users engaged.
+- **Business goal 2:** The chatbot should respond quickly to users and keep them engaged.
 
-  - **SLO 2a:** `xx%`% of users should be engaged by the Movie Guru chatbot measured over a `zz`-hour rolling window.  
+  - **SLO 2a:** `xx%` of users should be engaged by the chatbot, measured over a `zz`-hour rolling window.
 
-  - **SLO 2b:** `xx%`% of users should recieve responses within `yy` seconds, measured over a `zz`-hour rolling window.  
+  - **SLO 2b:** `xx%` of users should receive responses within `yy` seconds, measured over a `zz`-hour rolling window.
 
 ### Success Criteria
 
@@ -487,9 +489,9 @@ See below for high level steps for creating services and SLOs via API
 Use the [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#slo-create) as a reference for finding the right commands for the following steps.
 
 1. Create an access token.
-2. Create a service with a name like **movieguru-backend** (you can use a pre-existing service, but their id's need to be referenced. For this step, it's just easier to create one.)
-3. Create an SLO definition.
-4. Create the SLO from the definition.
+1. Create a service with a name like **movieguru-backend** (you can use a pre-existing service, but their id's need to be referenced. For this step, it's just easier to create one.)
+1. Create an SLO definition.
+1. Create the SLO from the definition.
 
 #### Example
 
