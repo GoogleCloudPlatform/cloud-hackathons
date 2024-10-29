@@ -349,30 +349,6 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 
 ```
 
-- Chat Engagement Rate SLO (using engaged and acknowledged)
-
-```sh
-CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
-{
-  "displayName": "80% - Chat Engagement Rate - Calendar day",
-  "goal": 0.8,
-  "calendarPeriod": "DAY",
-  "serviceLevelIndicator": {
-    "requestBased": {
-      "goodTotalRatio": {
-        "goodServiceFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_outcome_counter_total/counter\" resource.type=\"prometheus_target\" metric.labels.Outcome=monitoring.regex.full_match(\"Engaged|Acknowledged\")",
-        "totalServiceFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_outcome_counter_total/counter\" resource.type=\"prometheus_target\""
-      }
-    }
-  }
-}
-EOF
-)
-
-curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CHAT_ENGAGEMENT_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
-
-```
-
 - Startup Latency Windowed SLO
 
 ```sh
@@ -403,6 +379,29 @@ EOF
 )
 curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${STARTUP_LATENCY_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
 
+```
+
+- Chat Engagement Rate SLO (using engaged and acknowledged)
+
+```sh
+CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
+{
+  "displayName": "80% - Chat Engagement Rate - Calendar day",
+  "goal": 0.8,
+  "calendarPeriod": "DAY",
+  "serviceLevelIndicator": {
+    "requestBased": {
+      "goodTotalRatio": {
+        "goodServiceFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_outcome_counter_total/counter\" resource.type=\"prometheus_target\" metric.labels.Outcome=monitoring.regex.full_match(\"Engaged|Acknowledged\")",
+        "totalServiceFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_outcome_counter_total/counter\" resource.type=\"prometheus_target\""
+      }
+    }
+  }
+}
+EOF
+)
+
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CHAT_ENGAGEMENT_SLO_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services/${SERVICE_ID}/serviceLevelObjectives
 ```
 
 - Chat Latency SLO
