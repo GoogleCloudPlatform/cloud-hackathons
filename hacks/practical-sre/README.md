@@ -47,15 +47,10 @@ In this hack you will learn how to:
 
 Before we start our first day as SREs, we are going to start up metrics collection so that we have a nice load of metrics to work with in later challenges.
 
-You'll set up and generate application metrics using Locust, a powerful load testing tool. The goal is to simulate user activity on the Movie Guru backend application, which is running on a GKE cluster. Locust is also deployed within the same cluster, and its load generator is pre-configured.
-
-You will be provided with the address of the Locust load generator at the start of the project. It should look like this: <http://LocustIP:8089> (replace with the correct IP).
-
 #### Step 1: Make note of the 3 IP addresses from your environment
 
-- You will likely need them often, keep a note of these values and set them as environment variables.
-- You might need to re-run them before running command-line commands for all challenges.
 - Copy the values (after replacing the placeholders) into a notepad to be able to re-run when needed.
+- You might need to re-run them before running command-line commands for all challenges.
 
   ```sh
   FRONTEND_ADDRESS=<your frontend address>
@@ -68,16 +63,16 @@ You will be provided with the address of the Locust load generator at the start 
 
 #### Step 2: Generate Load on the Application
 
-- Open your browser and navigate to the Locust load generator address. You should see a screen similar to the one below:
+- Open your browser and navigate to the Locust load generator address ($LOCUST_ADDRESS). You should see a screen similar to the one below:
 
    ![locust start screen](images/locust-startscreen.png)
 
 - Fill out the *Start new load test* form with the following values:
 
-  - Number of users at peak: 3
+  - Number of users at peak: 5
   - Spawn rate: 0.05
   - Host: <http://mockserver-service.movie-guru.svc.cluster.local>
-  - Runtime: 7 hours (under Advanced options)
+  - Runtime: 7h (under Advanced options)
   
    This configuration will gradually increase the load on the backend, spawning around 3 simulated users over the course of 7 hours.
 
@@ -339,13 +334,14 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
     - **Need Improvement:** Areas with minor performance issues.  
     - **Need Improvement Urgently:** Areas with significant performance issues impacting user experience.
 1. **Choose Your SLIs:** Create 4 SLIs from metrics that are already available. 
-   - Define SLIs by examining the dashboards to identify relevant metrics. In many cases, the dashboards already display key SLIs.
-   - Write them down in definition form (see examples)
-     - Example Availability SLI: The availability is measured by the ratio of successful startups recorded as a ratio of `metric x` to the total attempts in `metric y`.
-     - Example Latency SLI: The latency, measured by the `metric x`, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.
+   - Define SLIs (on paper) by examining the dashboards to identify relevant metrics. In many cases, the dashboards already display key SLIs.
+   - Write them down in definition form.
+     - Example Availability SLI: The availability of `service abc` is measured by the ratio of successful startups recorded as a ratio of `metric x` to the total attempts in `metric y`.
+     - Example Latency SLI: The latency of `service abc`, measured by the `metric x`, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.
    - **Tips**:
-     - If you don't understand the difference between an **SLI** and a **metric** is, look at the **Learning Resources**.
      - Look at the **Business Goals** below to narrow down your search to just a few SLIs relevant for this exercise.
+     - If you aren't sure of the difference between an **SLI** and a **metric**, look at the **Learning Resources**.
+
 1. Define **Achievable** objectives for the **SLO templates** below.
     - Fill in realistic, **Achievable** values that you would like the app to meet in the short term (around 1 month). Let the current performance indicators be a guide.
 1. [Optional] Define **Aspirational** SLOs (for the **SLO templates** below).
