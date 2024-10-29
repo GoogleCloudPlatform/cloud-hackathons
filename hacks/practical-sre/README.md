@@ -160,15 +160,15 @@ This challenge involves exploring the Movie Guru app and documenting typical use
 
 > **Note**: If you need a refresher on what a user journey is, visit the section on **What is a user journey?** (in **Learning Resources**).
 
-## Success Criteria
+### Success Criteria
 
 To successfully complete this exercise, you should have:
 
 - **Identify at least 2 user journeys:** Written down 2 UJs in the format mentioned above for the **Movie Guru** app
 
-## Learning Resources
+### Learning Resources
 
-### What is a User Journey?
+#### What is a User Journey?
 
 In the context of SRE (Site Reliability Engineering), a user journey (UJ) describes the series of steps a user takes to accomplish a specific goal while interacting with a service. It focuses on the user's perspective and their experience with the system's performance and reliability. It is like a map that shows the steps a user takes to achieve a goal while using our service. We use this map to understand user behavior, their expectations, and improve their experience.
 
