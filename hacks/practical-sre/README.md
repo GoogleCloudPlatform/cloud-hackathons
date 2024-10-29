@@ -289,7 +289,7 @@ Armed with the insights gained from exploring the app, collaborating with stakeh
 
 ### Success Criteria
 
-- You have selected a subset of metrics as SLIs for your app.
+- You have selected SLIs for your app.
 - You have crafted 2 SLOs for the **Movie Guru** app. Each SLO includes the following components, demonstrating a comprehensive understanding of how to define and measure service level objectives:
   - **Objective:** A clear statement of the reliability target for a specific user journey or feature. The value has to have a good business reason behind it.
   - **Time window:** The period over which the SLI is measured (e.g., 30-day rolling window).
