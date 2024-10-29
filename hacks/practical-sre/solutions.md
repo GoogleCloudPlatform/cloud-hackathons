@@ -48,16 +48,15 @@ This hack requires students to have access to Google Cloud project where they ca
 - Ability to created unshielded VMs.
 - Ability to pull public docker images
 
-
 ## Suggested Hack Agenda
 
-- Challenge 1 (45 mins)
+- Challenge 1 (30 mins)
 - Challenge 2 (20 mins) [Optional]
 - Challenge 3 (30 mins)
-- Challenge 4 (30 mins)
-- Challenge 5 (45 mins)
+- Challenge 4 (45 mins)
+- Challenge 5 (60 mins)
 - Challenge 6 (30 mins)
-- Challenge 7 (30 mins)
+- Challenge 7 (20 mins)
 
 ## Repository Contents
 
@@ -148,7 +147,7 @@ Steps:
 6. Repeat Steps 2-5 (Optional): The user can continue to interact and provide feedback to further refine the conversation.
 7. End Chat: The user ends the chat session.
 
-#### UJ 3: Update Preferences 
+#### UJ 3: Update Preferences
 
 **Goal:** Update invalid preferences to personalize future recommendations.
 
@@ -219,44 +218,32 @@ This challenge focuses on defining and understanding Service Level Objectives (S
 
 #### SLO for Movie Guru App Access
 
-- SLO: 99.95% of users should be able to access the Movie Guru app and view the main interface within 1 second, measured over a 7-day rolling window.
+SLO: 99.95% of users should be able to access the Movie Guru app and view the main interface within 1 second, measured over a 7-day rolling window.
 
-- Rationale:
+SLIs:
 
-    This SLO focuses on the app's availability and initial load time, which are crucial for a positive first impression.  The 99.95% target ensures high availability, while the 3-second threshold aims for a responsive and quick-loading interface. The 7-day rolling window provides a balance between capturing short-term trends and allowing for some variability in daily traffic patterns.
-
-- Measurement:
-
-  - Availability: Measured as the percentage of successful attempts to access and load the main interface of the Movie Guru app.
-  - Latency: Calculated as the combined latency of the login endpoint and the startup endpoint, both measured at the server
+Availability: Measured as the percentage of successful attempts to login and access the home/main page of the Movie Guru app.
+Latency: Calculated as the combined latency of the login endpoint and the startup endpoint, both measured at the server
 
 #### SLO for Movie Guru Chatbot Responsiveness
 
-**Current SLO:** 70% of user messages should receive a relevant response from the Movie Guru chatbot, 99% should recieve a response within 5 seconds, measured over a 24-hour rolling window.
+SLO part 1: 80% of users should be engaged while chatting with Movie Guru chatbot measured over a 24-hour rolling window.
+SLO part 2: 99% of users should recieve a response within 5 seconds, measured over a 24-hour rolling window.x
 
-**Aspirational SLO:** 90% of user messages should receive a relevant response from the Movie Guru chatbot, and 99% should recieve a response within 3 seconds, measured over a 24-hour rolling window.
+SLIs:
 
-**Rationale:**
-
-This starting SLO acknowledges that the chatbot is still under development and may not yet be able to provide highly relevant responses in all cases. The 70% target allows for some room for improvement while still ensuring a reasonable level of user satisfaction. The aspirational SLO sets a higher bar for the future, aiming for both improved relevance and reduced latency.
-
-**Measurement:**
-
-- **Relevance:** Measured by the `Chat_Outcome_Counter` metric. A response is considered relevant if the outcome is registered as "engaged"."
-- **Latency:**  Calculated as the time difference between the server receiving the user's message and sending the response.
+Relevance: Measured by the Chat_Outcome_Counter metric. A response is considered relevant if the outcome is registered as "engaged"."
+Latency: Calculated as the time difference between the server receiving the user's message and sending the response.
 
 #### SLO for Updating User Preferences in Movie Guru
 
-- SLO: 99.5% of user preference updates should be successfully saved within 1 second, measured over a 24-hour rolling window.
+SLO part 1: 99.5% of user preference updates should be successfully saved measured over a 24-hour rolling window.
+SLO part 2: 99.5% of user preference updates should be successfully saved within 1 second, measured over a 24-hour rolling window.
 
-- Rationale:
+SLIs:
 
-    This SLO focuses on the performance and reliability of the preference update functionality within Movie Guru. The 99.5% target ensures that users can reliably modify their preferences, while the 1-second threshold aims for a quick and responsive experience. The 24-hour rolling window provides a frequent assessment of this critical function.
-
-- Measurement:
-
-  - Success Rate: Measured as the percentage of successful attempts to update user preferences.
-  - Latency: Calculated as the time it takes for the app to successfully save the updated preferences after a user submits the changes.
+Success Rate: Measured as the percentage of successful attempts to update user preferences.
+Latency: Calculated as the time it takes for the app to successfully save the updated preferences after a user submits the changes.
 
 ## Challenge 4: Let the monitoring begin
 
@@ -273,15 +260,46 @@ The **fake backend** is expected to generate metrics that show that the app is b
 
 The students should notice how bad the performance and imagine what the user experience would be like if the metrics are like this. Their goal is to create achievable SLOs based on the current perfomance. For example if the chat latency p99 is around 9 seconds, it is realistic to bring it down to around 5 seconds, and NOT < 1 second.
 
-SLO 1: App Accessibility and Responsiveness
+#### SLO for Movie Guru Chatbot Access
 
-Current State: 90% availability, p99 latency of 3 seconds.
-Target SLO: **99%** of users access the main interface within **1 seconds** over a **7-day** rolling window.
+**SLIs:**
 
-SLO 2: Chatbot Responsiveness
+- **Availability:** Measured as the percentage of successful attempts to load the main interface of the Movie Guru app. (The availability is measured by the ratio of successful startups recorded as a ratio of **movieguru_startup_success_total** to the total startup attempts in **movieguru_startup_attempts_total**.)
+- **Latency:** Calculated as the combined latency of the login endpoint and the startup endpoint, both measured at the server. (The startup latency, measured by the **movieguru_startup_latency_milliseconds_bucket** metric, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.)
 
-Current State: 50% engagement rate, p99 latency of 9.8 seconds.
-Target SLO: **70%** of user messages receive a relevant response, and **99%** of users should recieve responses within **5 seconds** over a **24-hour** rolling window.
+**Achievable SLO:**
+
+- SLO 1a: `99.95%` of users should be able to access the main page after logging in,  measured over a `7`-day rolling window.  
+- SLO 1b: `99%` of users should be able to access the main page after logging in, within `3` seconds measured over a `7`-day rolling window.
+- Rationale:
+
+    This SLO focuses on the app's availability and initial load time, which are crucial for a positive first impression.  The 99.95% target ensures high availability, while the 3-second threshold aims for a responsive and quick-loading interface. The 7-day rolling window provides a balance between capturing short-term trends and allowing for some variability in daily traffic patterns.
+
+**Aspirational SLO:**
+
+- SLO 1a: `99.95%` of users should be able to access the Movie Guru app measured over a `7`-day rolling window.  (No change here)
+- SLO 1b: `99%` of users should be able to access the Movie Guru app within `1` seconds measured over a `7`-day rolling window.
+
+#### SLO for Movie Guru Chatbot Responsiveness
+
+**SLIs:**
+
+- **Relevance:** Measured by the `Chat_Outcome_Counter` metric. A response is considered relevant if the outcome is registered as "engaged". (Engagement is measured by the ratio of engaged outcomes in **movieguru_chat_outcome_counter_total**—where the outcome is either **Engaged** or **Acknowledged**—to the total outcomes recorded in **movieguru_chat_outcome_counter_total**.)
+- **Latency:**  Calculated as the time difference between the server receiving the user's message and sending the response. (The chat latency, measured by the **movieguru_chat_latency_milliseconds_bucket** metric, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.)
+
+**Achievable SLO:**
+
+- SLO 2a: `70%` of user messages should receive a relevant response from the Movie Guru chatbot measured over a `24`-hour rolling window.
+- SLO 2b: `99%` should recieve a response within `5` seconds, measured over a `24`-hour rolling window.
+
+**Rationale:**
+
+This starting SLO acknowledges that the chatbot is still under development and may not yet be able to provide highly relevant responses in all cases. The 70% target allows for some room for improvement while still ensuring a reasonable level of user satisfaction. The aspirational SLO sets a higher bar for the future, aiming for both improved relevance and reduced latency.
+
+**Aspirational SLO:**
+
+- SLO 2a: `90%` of user messages should receive a relevant response from the Movie Guru chatbot measured over a `24`-hour rolling window.
+- SLO 2b: `99%` should recieve a response within `3` seconds, measured over a `24`-hour rolling window.
 
 ## Challenge 5: SLOs on the dashboard
 
@@ -326,12 +344,12 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 
 ```
 
-- SLO Startup Success Rate
+- SLO Main Page Load Success Rate
 
 ```sh
 STARTUP_SUCCESS_SLO_POST_BODY=$(cat <<EOF
 {
-  "displayName": "90% - Startup Success - Calendar Week",
+  "displayName": "90% - Main Page Load Success Rate - Calendar Week",
   "goal": 0.90,
   "calendarPeriod": "WEEK",
   "serviceLevelIndicator": {
@@ -349,12 +367,12 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 
 ```
 
-- Startup Latency Windowed SLO
+- Main Page Load Latency Windowed SLO
 
 ```sh
 STARTUP_LATENCY_SLO_POST_BODY=$(cat <<EOF
 {
-  "displayName": "99% - Startup Latency - Calendar Week",
+  "displayName": "99% - Main Page Load Latency - Calendar Week",
   "goal": 0.99,
   "calendarPeriod": "WEEK",
   "serviceLevelIndicator": {
@@ -366,7 +384,7 @@ STARTUP_LATENCY_SLO_POST_BODY=$(cat <<EOF
             "distributionFilter": "metric.type=\"prometheus.googleapis.com/movieguru_startup_latency_milliseconds/histogram\" resource.type=\"prometheus_target\"",
             "range": {
               "min": -1000,
-              "max": 1200
+              "max": 1000
             }
           }
         },
@@ -386,8 +404,8 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 ```sh
 CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
 {
-  "displayName": "80% - Chat Engagement Rate - Calendar day",
-  "goal": 0.8,
+  "displayName": "70% - Chat Engagement Rate - Calendar day",
+  "goal": 0.7,
   "calendarPeriod": "DAY",
   "serviceLevelIndicator": {
     "requestBased": {

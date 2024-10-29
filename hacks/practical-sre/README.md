@@ -280,16 +280,18 @@ Armed with the insights gained from exploring the app, collaborating with stakeh
 ### Description
 
 1. **Choose Your Journeys:** Select two key user journeys for **Movie Guru**. These could be the ones you identified in Challenge 1 or the examples provided.
-2. **Craft Your SLOs:**  Define specific, measurable, achievable, relevant, and time-bound (SMART) SLOs for each chosen user journey. Consider what aspects of reliability matter most to users in each journey and how you can measure success.
+1. **Craft Your SLOs:**  Define specific, measurable, achievable, relevant, and time-bound (SMART) SLOs for each chosen user journey using the SLIs identified above.
+   - Consider what aspects of reliability matter most to users in each journey and how you can measure success.
+   - Make sensible guesses when necessary.
 
 ### Success Criteria
 
+- You have selected a subset of metrics as SLIs for your app.
 - You have crafted 2 SLOs for the **Movie Guru** app. Each SLO includes the following components, demonstrating a comprehensive understanding of how to define and measure service level objectives:
   - **Objective:** A clear statement of the desired reliability target for a specific user journey or feature.
-  - **Service Level Indicator (SLI):**  A specific and measurable metric used to assess the service's performance against the objective (e.g., availability, latency, error rate).
   - **Target:**  The desired level of performance for the SLI (e.g., 99.9% availability).
   - **Time window:** The period over which the SLI is measured (e.g., 30-day rolling window).
-  - [OPTIONAL] **Measurement:**  A clear description of how the SLI will be measured and tracked (e.g., using logs, monitoring tools, user feedback).
+  - [OPTIONAL] **Service Level Indicator (SLI):**  A specific and measurable metric used to assess the service's performance against the objective (e.g., availability, latency, error rate). Make your best guess here.
 
 ### Learning Resources 
 
@@ -314,57 +316,58 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
 - **Login Dashboard**: Tracks the health and efficiency of the user login process.
 - **Startup Dashboard**: Monitors the performance of the post-login startup process, ensuring users get into the app quickly.
 - **Chat Dashboard**: Provides a comprehensive view of user interactions with the chatbot, including engagement, sentiment, and response times.
-  
-To give you a well-rounded understanding of each area, every dashboard includes at least two crucial metrics:
 
-- **Success Counters**: These show how often the server successfully responds to requests, giving you a sense of overall availability and reliability.
-- **Latency Counters**: These track how long it takes the server to respond to requests, providing insights into performance and potential bottlenecks.
-
-On top of these, the **Chat dashboard** has 3 other dashboards:
-
-1. **User Engagement Dashboard**: This tracks the User Engagement Rate for the Movie Guru chatbot. It essentially measures the percentage of chatbot interactions that result in either an **Engaged** or **Acknowledged** outcome. These metrics are gathered by analysing the chat conversations.
-
-2. **User Sentiment Dashboard**: This gauges user satisfaction with the Movie Guru chatbot by tracking the sentiment expressed in user messages. It categorizes messages as "positive," "negative," "neutral," or "unknown". The dashboard then displays the percentage of each sentiment category over time,  as a multi-line graph.
-
-3. **Safety Issue Dashboard**: This tracks the rate of user chat messages where the user made unsafe remarks.
+> **Note**: Metrics in the dashboards may appear blocky because we’re simulating load with only a few users. Achieving smoother graphs generally requires a larger user load.
 
 ### Description
 
-1. **Browse existing metrics**
+1. **Browse existing dashboards**
    - Navigate to **Google Cloud Monitoring \> Dashboards \> Custom Dashboards**.  
    - Examine the **Login**, **Startup**, and **Chat** dashboards.  
-2. **Assess user experience**
+1. **Assess user experience**
      - Based on the metrics and your own experience (or user feedback if available), describe how users likely perceive the app's performance.  
-3. **Categorize** aspects of the application into:  
+1. **Categorize** aspects of the application into:  
     - **Going Well:** Areas with good performance.  
     - **Need Improvement:** Areas with minor performance issues.  
     - **Need Improvement Urgently:** Areas with significant performance issues impacting user experience.
-4. Define **Achievable**  objectives(for the **SLO templates** below)
-    - After discussing with product owners, you’ve identified **two** key SLOs for short-term improvement.
+1. **Choose Your SLIs:** Create 4 SLIs from metrics that are already available. 
+   - Define SLIs by examining the dashboards to identify relevant metrics. In many cases, the dashboards already display key SLIs.
+   - Write them down in definition form (see examples)
+     - Example Availability SLI: The availability is measured by the ratio of successful startups recorded as a ratio of `metric x` to the total attempts in `metric y`.
+     - Example Latency SLI: The latency, measured by the `metric x`, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.
+   - **Tips**:
+     - If you don't understand the difference between an **SLI** and a **metric** is, look at the **Learning Resources**.
+     - Look at the **Business Goals** below to narrow down your search to just a few SLIs relevant for this exercise.
+1. Define **Achievable** objectives for the **SLO templates** below. 
     - Fill in realistic, **Achievable** values that you would like the app to meet in the short term (around 1 month). Let the current performance indicators be a guide.
-5. Define **Aspirational** SLOs (for the **SLO templates** below).
+1. [Optional] Define **Aspirational** SLOs (for the **SLO templates** below).
    - Imagine **Movie Guru** one year from now, a finely-tuned, user-pleasing machine (but still not perfect, because unicorns don't exist, and 100% is never the right target). It's so good that users are delighted with its performance and reliability. What would the SLOs look like in this ideal scenario? Fill those values in. These are targets that your company can work towards in the upcoming year or so.
 
-#### Template SLO 1: App Accessibility and Responsiveness
+#### SLO templates
 
-- **Objective:** `xx%` of users should be able to access the Movie Guru app and view the main interface within `yy` seconds, measured over a `zz`-day rolling window.  
-- **Measurement:**  
-  - **Availability:** Percentage of successful attempts to login and load the main interface.
-  - **Latency:** Latency the startup endpoint (server-side measurement).  
+- **Business goal 1:** The main page should be accessible and load quickly for users.
 
-#### Template SLO 2: Chatbot Responsiveness
+  - **SLO 1a:** `xx%` of users should be able to access the main page after logging in, measured over a `zz`-day rolling window.  
 
-- **Objective:** `xx%`% of user messages should receive a relevant response from the Movie Guru chatbot, and `yy%`% of users should recieve responses within `zz` seconds, measured over a `aa`-hour rolling window.  
-- **Measurement:**  
-  - **Relevance:** Measured by the `Chat_Outcome_Counter` metric. A response is considered relevant if the outcome is registered as "engaged" or "acknowledged"
-  - **Latency:**  Calculated as the time difference between the server receiving the user's message and sending the response.
+  - **SLO 1b:** `xx%` of users should be able to access the main page after logging in, within `yy` seconds measured over a `zz`-day rolling window.  
+
+- **Business goal 2:** The chatbot should respond quickly to users, and keep the users engaged.
+
+  - **SLO 2a:** `xx%`% of users should be engaged by the Movie Guru chatbot measured over a `zz`-hour rolling window.  
+
+  - **SLO 2b:** `xx%`% of users should recieve responses within `yy` seconds, measured over a `zz`-hour rolling window.  
 
 ### Success Criteria
 
+- You've chosen SLI based on the metrics that are being collected from the server.
 - You’ve set realistic SLO objectives for the two cases that are achievable in the short term.
-- You set aspirational SLOs based on what your users would expect in the long term.
+- [Optional] You set aspirational SLOs based on what your users would expect in the long term.
 
 ### Learning Resources
+
+### How do metrics differ from SLIs?
+
+Metrics and Service Level Indicators (SLIs) both provide valuable data about a system’s performance, but they serve distinct roles. Metrics are broad measurements that capture various aspects of system activity, such as CPU usage, latency, and error rates. They form the foundational data used to observe, monitor, and troubleshoot a system. SLIs, on the other hand, are carefully selected metrics that directly reflect the quality of service experienced by users. Focusing on factors like availability, latency, or error rate, SLIs gauge how well a service is meeting specific reliability targets known as Service Level Objectives (SLOs). While metrics provide a comprehensive view of system health, SLIs narrow the focus to measure the specific qualities that most affect user satisfaction, aligning system performance with business objectives.
 
 ### Latency Metrics
 
@@ -443,21 +446,19 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 
    - Chat Engagement:
      - Metric: **movieguru_chat_outcome_counter_total** (Filter: Outcome=Engaged)
-     - Target: Define a target engagement rate. For example, 70% of chat interactions should result in an "Engaged" outcome.
-     - Time Window: 24-hour rolling window
-     - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Accepted** to indicate that the user finds the response relevant, but we will stick to just Engaged for now. [Optional] If you want to use a filter that incorporates both Engaged and Acknowledged, use the monitoring API to create the SLO.
+     - Target: 70% of chat interactions should result in an "Engaged" outcome.
+     - Time Window: **24-hour** rolling window
+     - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Accepted** to indicate that the user finds the response relevant, but we will stick to just Engaged for now. [Optional] If you want to use a filter that incorporates both **Engaged** and **Acknowledged**, use the monitoring API to create the SLO.
 
-   - Startup Latency:
+   - Main Page Load Latency:
      - Metric: **movieguru_startup_latency_milliseconds_bucket** (measured at the **startup** endpoint)
-     - Target: p99 latency of 1 second (1000 milliseconds)
+     - Target: p99 latency of **1 second** (1000 milliseconds)
      - Time Window: Choose an appropriate time window, such as a 24-hour or 7-day rolling window.
-     - Remarks: Ideally we would like to combine the latency of the login and startup process to know about the startup latency *as experienced by the user*. But, we'll stick to the startup endpoint latency for now.
 
-   - Startup Success Rate:
+   - Main Page Load Success Rate:
      - Metric: This requires combining two metrics: **movieguru_startup_success_total** and **movieguru_startup_attempts_total**.
      - Target: 90% success rate over a 7-day rolling window.
-     - Implementation: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO. This allows for more complex SLO configurations. Refer to the Cloud Monitoring API documentation for details on how to create SLOs programmatically (see **learning resources**)
-     - Remarks: Ideally we would like to combine the success rate of the login and startup processes to know about the startup success *as experienced by the user*. But, we'll stick to the startup endpoint success rate for now.
+     - Remarks: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO. This allows for more complex SLO configurations (see **Learning Resources**).
 
 > **Note**: You can also create these via the API. Check **Tips** in **Learning Resources** for creating  SLOs via the API.
 
@@ -512,8 +513,8 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 ## Create an SLO definition
 CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
 {
-  "displayName": "80% - Chat Engagement Rate - Calendar day",
-  "goal": 0.8,
+  "displayName": "70% - Chat Engagement Rate - Calendar day",
+  "goal": 0.7,
   "calendarPeriod": "DAY",
   "serviceLevelIndicator": {
     "requestBased": {
