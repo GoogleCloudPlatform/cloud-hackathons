@@ -148,7 +148,7 @@ Steps:
 6. Repeat Steps 2-5 (Optional): The user can continue to interact and provide feedback to further refine the conversation.
 7. End Chat: The user ends the chat session.
 
-#### UJ 3: Update Preferences
+#### UJ 3: Update Preferences 
 
 **Goal:** Update invalid preferences to personalize future recommendations.
 
