@@ -267,7 +267,7 @@ Once you've identified the key stakeholders, consider what specific information 
 - **System Architecture Diagrams:** Visual representations of the app's components and their interactions.
 - **Deployment Processes:** How new code is released and deployed to production.
 - **Monitoring and Alerting:** What tools and systems are used to monitor the app's health, and what alerts are in place?
-- **Incident Response Procedures:** How are incidents handled, and what are the communication channels?
+- **Incident Response Procedures:** How are incidents handled, and what are the communication channels? Also think about capacity plans, disaster recovery plans, backup/restore procedures etc.
 
 **Collaboration is Key:** Remember that achieving reliability is a shared responsibility. Building strong relationships with these teams is essential for success.
 
@@ -275,25 +275,31 @@ Once you've identified the key stakeholders, consider what specific information 
 
 In the previous challenge, you dove deep into Movie Guru's reliability landscape, discovering a young app with room to grow. You learned that the company currently lacks a robust way to measure and define user experience, relying instead on the unsustainable goal of constant uptime.
 
-Armed with the insights gained from exploring the app, collaborating with stakeholders, and understanding the system's design, challenges, and user feedback, it's time to take a crucial step: defining Service Level Objectives (SLOs). If you need a referesher on SLOs, see the section **What is an SLO?** in the **Learning Resources**.
+Armed with the insights gained from exploring the app, collaborating with stakeholders, and understanding the system's design, challenges, and user feedback, it's time to take a crucial step: defining SLIs and SLOs for User Journeys. If you need a refresher on SLIs or SLOs, see the **Learning Resources**.
 
 ### Description
 
+**Make guesses for this exercise whenever you don't have real information to go on.**
+
 1. **Choose Your Journeys:** Select two key user journeys for **Movie Guru**. These could be the ones you identified in Challenge 1 or the examples provided.
-1. **Craft Your SLOs:**  Define specific, measurable, achievable, relevant, and time-bound (SMART) SLOs for each chosen user journey using the SLIs identified above.
+2. **Choose Your SLIs:** What SLIs would you use to see that your application is healthy (as experienced by the user)?
+3. **Craft Your SLOs:** Define relevant SLOs for each chosen user journey using the SLIs identified above.
    - Consider what aspects of reliability matter most to users in each journey and how you can measure success.
-   - Make sensible guesses when necessary.
+   - See **Learning Resources** for an example.
 
 ### Success Criteria
 
 - You have selected a subset of metrics as SLIs for your app.
 - You have crafted 2 SLOs for the **Movie Guru** app. Each SLO includes the following components, demonstrating a comprehensive understanding of how to define and measure service level objectives:
-  - **Objective:** A clear statement of the desired reliability target for a specific user journey or feature.
-  - **Target:**  The desired level of performance for the SLI (e.g., 99.9% availability).
+  - **Objective:** A clear statement of the reliability target for a specific user journey or feature. The value has to have a good business reason behind it.
   - **Time window:** The period over which the SLI is measured (e.g., 30-day rolling window).
-  - [OPTIONAL] **Service Level Indicator (SLI):**  A specific and measurable metric used to assess the service's performance against the objective (e.g., availability, latency, error rate). Make your best guess here.
+  - **Service Level Indicator (SLI):**  A metric used to assess the service's performance against the objective (e.g., availability, latency,  quality, throughput, timeliness). Make your best guess here.
 
-### Learning Resources 
+### Learning Resources
+
+### What are SLIs?
+
+Service Level Indicators (SLIs) are specific measurements that show how well a service is performing. They help teams understand if they are meeting their goals for reliability and quality. For example, one SLI might measure how often a website is available to users, while another could track how quickly the website responds to requests. An SLI can also look at the number of errors or failures compared to total requests. These indicators are important because they help teams see where they can improve their services.
 
 ### What are SLOs?
 
@@ -304,7 +310,7 @@ Example SLO:
 For the user journey of "adding a product to an online shopping cart", a possible SLO could be:
 
 - **99.9% of "Add to Cart" requests should be successful within 2 seconds, measured over a 30-day rolling window**.
-This SLO focuses on the key user action ("Add to Cart") and sets targets for both availability (99.9% success rate) and latency (2-second response time). It's specific, measurable, and directly tied to user experience, ensuring a smooth and efficient shopping experience.
+This SLO focuses on the key user action ("Add to Cart") and sets targets for both availability (99.9% success rate) and latency (2-second response time). It's directly tied to user experience, ensuring a smooth and efficient shopping experience.
 The addition of "measured over a 30-day rolling window" specifies the timeframe for evaluating the SLO. This means that the success rate and response time are calculated based on data collected over the past 30 days. This rolling window provides a continuous and up-to-date assessment of the SLO's performance.
 
 ## Challenge 4: Let the monitoring begin
@@ -314,7 +320,7 @@ The addition of "measured over a 30-day rolling window" specifies the timeframe 
 The platform team introduces you to the app's monitoring dashboards in the Google Cloud Console. They've set up four dashboards, each providing key insights into different aspects of Movie Guru's performance:
 
 - **Login Dashboard**: Tracks the health and efficiency of the user login process.
-- **Startup Dashboard**: Monitors the performance of the post-login startup process, ensuring users get into the app quickly.
+- **Startup Dashboard**: Monitors the performance of the post-login, **Main Page Load** process, ensuring users get into the app quickly.
 - **Chat Dashboard**: Provides a comprehensive view of user interactions with the chatbot, including engagement, sentiment, and response times.
 
 > **Note**: Metrics in the dashboards may appear blocky because we’re simulating load with only a few users. Achieving smoother graphs generally requires a larger user load.
@@ -425,9 +431,11 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 
 #### Steps
 
-1. **Create a service in the SLOs tab**
+1. **Create a service in the UI**
+    In the context of GCP SLOs and services, *creating* a service doesn't mean building the service itself from scratch. It means defining the service as a monitored entity within Cloud Monitoring.
+
    - Go to the **SLOs** tab in the monitoring suite. This is where you'll define and manage your SLOs.
-   - Click create **new service**. (In the context of GCP SLOs and services, *creating* a service doesn't mean building the service itself from scratch. It means defining the service as a monitored entity within Cloud Monitoring.)
+   - Click create **new service**.
    - Under **service candidates**, select **mockserver-service** This links your SLOs to the correct service for monitoring.
    - Give it a **Display name**. It can be anything. Use **mockserver-service** if you can't think of anything else.
 
@@ -435,12 +443,12 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 
     ![SLO UI](images/SLO_Success.png)
 
-2. **Create 4 SLOs**
+1. **Create 4 SLOs**
   
    Now, let's create the specific SLOs for your service:
 
    - Chat Latency:
-     - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the **prometheus targets** section)
+     - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the **prometheus targets > movieguru** section)
      - Target: p99 latency of **5 seconds** (5000 milliseconds)
      - Time Window: **24-hour** rolling window
 
@@ -589,12 +597,18 @@ This challenge guides you through monitoring the four SLOs created in the previo
 
 ### Description
 
+- Click on the **Error Budget** view for each SLO to view the error budget and burn rate.
+  - The burn rate is the rate at which this error budget line is changing.
+  - If there were no issues, or planned maintainence events and everything operated perfectly, the error budget would remain at 100%.
+  - A healthy burn rate is beneficial, indicating that you are utilizing your error budgets effectively for improvements and planned maintenance. If you error budget is near 100% at the end of the compliance period, then you're likely wasting these windows.
+  - While you established the SLOs in Challenge 5, it's important to note that the error budgets are calculated from the beginning of the lab, as metrics collection commenced in Challenge 1.
 - **Create Burn Rate Alerts**
+  Let’s be honest—you can’t just sit there staring at dashboards all day without turning into a zombie! So, give your setup a little pizzazz by creating alerts to let you know when things start to go awry. Make sure to have one for those *bad* moments and another for *really really bad* moments.
   - Create **SLO alerts** from the UI for all the SLOs
   - To differentiate between the severity of issues, set two alerts for each SLO (use a 15 minute lookback window):
     - **Slow burn rate alert** (1.5-2.0x): Indicates minor issues or gradual degradation.
     - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
-- Run this command in the terminal (**Cloud Shell terminal**).
+- Run this command in the terminal (**Cloud Shell terminal**). This simulates your app team making some changes to the app.
 
   ```sh
   ## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
@@ -606,8 +620,8 @@ This challenge guides you through monitoring the four SLOs created in the previo
     "ChatSafetyIssue": 0.1,
     "ChatEngaged": 0.40,
     "ChatAcknowledged": 0.10,
-    "ChatRejected": 0.05,
-    "ChatUnclassified": 0.2,
+    "ChatRejected": 0.45,
+    "ChatUnclassified": 0.05,
     "ChatSPositive": 0.6,
     "ChatSNegative": 0.1,
     "ChatSNeutral": 0.2,
@@ -630,17 +644,24 @@ This challenge guides you through monitoring the four SLOs created in the previo
   $BACKEND_ADDRESS/phase
   ```
 
-- **Observing Alert Triggers**:  Wait for a few minutes
+- **Observing Alert Triggers**:  
+  - Wait for about 5-10 minutes.
   - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives.
   - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
 
-> **Warning**: Having trouble triggering alerts? Don't worry, it might just be due to the lab setting! Keep in mind that these alerts analyze performance over 15 minutes. So, if you created the alert 10-15 minutes *after* the service started having problems, it might not cause the alert to trigger. If you don't see an alert within 5 minutes, don't panic! Instead, put you SRE hat on and take a look at the graphs – they'll tell the story! You should be able to quickly spot which SLOs are misbehaving, which ones are having a minor hiccup, and which ones are performing like champs.
+> **Warning**: Having trouble triggering alerts? Don't worry, it might just be due to the lab setting! Keep in mind that the SLIs very performing very badly at the start of the lab, eating into the error budgets even after an "improvement" was simulated. The alerts might not fire if you are already out of budget. Just look at the error budgets burn rates and figure out which SLOs require immediate attention, and which ones are being slightly problematic.
+
+```text
+Simplified formula to estimate Burn Rate = 
+((Error Budget at Start of look back window − Current Error Budget)/Window Length) x 100 %
+
+```
 
 ### Success Criteria
 
 To verify successful completion of this exercise, check the following:
 
-- **Burn Rate Triggers**: Ensure you have created 2 burn rate alerts for all your SLOs (8 in total). 
+- **Burn Rate Triggers**: Ensure you have created 2 burn rate alerts for all your SLOs (8 in total).
   - These alerts should be configured to trigger at different burn rates (e.g., 1.5-2.0x for slow burn, 10x for fast burn) to capture varying levels of degradation.
 - **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, you should expect 3 alerts. Both burn rate alerts should fire for the "Chat Latency" SLO, and the slow burn rate alert should fire for the "Chat Engagement SLO".
 
@@ -651,6 +672,8 @@ To verify successful completion of this exercise, check the following:
 An error budget is the acceptable amount of time your service can fail to meet its SLOs, helping you balance innovation and reliability. Calculated as 1 - SLO, a 99% availability SLO gives you a 1% error budget (about 7.3 hours per month) for new features, maintenance, and experimentation.  Error budgets promote proactive risk management and informed decision-making about service reliability.
 
 #### What is a **burn rate**
+
+Informal Formula: (Error budget at start of window - Error budge now)/window length x 100
 
 Burn rate measures how quickly you're using up your error budget.  It acts as an early warning system for SLO violations, helping you prioritize and respond to issues before they impact users. Calculated as a multiple of your error budget consumption, a high burn rate (e.g., 10x) signals a major problem needing immediate action. A slow burn rate (generally configured over a longer interval) alerts you if you are likely to exhaust your error budget before the end of the compliance period. It is less urgent than a fast burn, but signals something may be wrong, but not urgent. Setting alerts for different burn rates (e.g., 2x for slow burn, 10x for fast burn) allows you to proactively manage service reliability and keep users happy. By monitoring burn rate, you can ensure your services meet their SLOs and avoid "overspending" your error budget.
 
@@ -675,7 +698,7 @@ kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/re
 
 - Reset the backend server
 
-> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
+> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way. This simulates your colleagues making some changes that might have broken a few things.
 
 ```sh
 ## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
