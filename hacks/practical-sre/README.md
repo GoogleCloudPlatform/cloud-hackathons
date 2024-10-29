@@ -4,7 +4,7 @@ Welcome to the Practical SRE (Site Reliability Engineering) Workshop! In this ha
 
 The Movie Guru app's backend is currently running in your cloud environments and has been pre-instrumented to silently generate a wealth of metrics through the use of a load generator. This means that as you work on these challenges, you’ll have access to valuable data reflecting its performance and user interactions, allowing you to make informed decisions throughout the workshop.
 
-By the end of this workshop, you’ll have developed a comprehensive reliability framework for Movie Guru, gaining practical SRE skills that can be applied to real-world systems. 
+By the end of this workshop, you’ll have developed a comprehensive reliability framework for Movie Guru, gaining practical SRE skills that can be applied to real-world systems.
 
 Remember, if there is a term being used in the challenge you don't understand, there **Learning Resources** section at the bottom of the challenge probably explains it. Otherwise, there is always **Google**.
 
@@ -651,7 +651,7 @@ This challenge guides you through monitoring the four SLOs created in the previo
   - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives.
   - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
 
-> **Warning**: Having trouble triggering alerts? Don't worry, it might just be due to the lab setting! Keep in mind that the SLIs very performing very badly at the start of the lab, eating into the error budgets even after an "improvement" was simulated. The alerts might not fire if you are already out of budget. Just look at the error budgets burn rates and figure out which SLOs require immediate attention, and which ones are being slightly problematic.
+> **Warning**: Having trouble triggering alerts? Don't worry, it might just be due to the lab setting! Keep in mind that the SLIs were performing very badly at the start of the lab, eating into the error budgets even after an "improvement" was simulated. You might have just missed the window at which the burn rates would have triggered alerts. Instead, look at the error budgets burn rates in the graph and figure out which SLOs require immediate attention, and which ones are being slightly problematic.
 
 ```text
 Simplified formula to estimate Burn Rate = 
