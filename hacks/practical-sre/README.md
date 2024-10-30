@@ -49,9 +49,9 @@ In this hack you will learn how to:
 
 Before we start our first day as SREs, we are going to start up metrics collection so that we have a nice load of metrics to work with in later challenges. The load generator is preprovisioned and the address is provided to you as by the coach.
 
-#### Step 1: Make note of the 3 IP addresses from your environment
+#### Step 1: Make note of the necessary environment variables
 
-- The following values will be provided to you by the coach. Each team has its own set of values.
+- The values will be provided to you by the coach. Each team has its own set of values.
 - Copy the values (after replacing the placeholders) into a notepad to be able to re-run when needed.
 - You might need to re-run them before running command-line commands for all challenges.
 
