@@ -287,7 +287,7 @@ The addition of "measured over a 30-day rolling window" specifies the timeframe 
 
 ### Introduction
 
-The platform team introduces you to the app's monitoring dashboards in the Google Cloud Console. They've set up four dashboards, each providing key insights into different aspects of Movie Guru's performance:
+The platform team introduces you to the app's monitoring dashboards in the Google Cloud Console.
 
 - **Login Dashboard**: Tracks the health and efficiency of the user login process.
 - **Startup Dashboard**: Monitors the performance of the post-login, **Main Page Load** process, ensuring users get into the app quickly.
@@ -300,16 +300,15 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
 **Make guesses for this exercise whenever you don't have real information to go on.**
 
 1. **Browse existing dashboards**
-   - Navigate to **Google Cloud Monitoring \> Dashboards \> Custom Dashboards**.  
-   - Examine the **Login**, **Startup**, and **Chat** dashboards.  
+   - Find them at **Google Cloud Monitoring \> Dashboards \> Custom Dashboards**.  
 1. **Assess user experience**
-     - Based on the metrics and your own experience (or user feedback if available), describe how users likely perceive the app's performance.  
+     - Based on the metrics and your own experience, describe how users likely perceive the app's performance.  
 1. **Categorize** aspects of the application into:  
     - **Going Well:** Areas with good performance.  
     - **Need Improvement:** Areas with minor performance issues.  
     - **Need Improvement Urgently:** Areas with significant performance issues impacting user experience.
-1. **Choose Your SLIs:** Create 4 SLIs from metrics that are already available.
-   - Define SLIs (on paper) by examining the dashboards to identify relevant metrics. In many cases, the dashboards already display key SLIs.
+1. **Choose Your SLIs:**
+   - Define SLIs (on paper) by examining the dashboards to identify relevant metrics.
    - Write them down in definition form.
      - Example Availability SLI: The availability of `service abc` is measured by the ratio of successful startups recorded as a ratio of `metric x` to the total attempts in `metric y`.
      - Example Latency SLI: The latency of `service abc`, measured by the `metric x`, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.
@@ -345,7 +344,8 @@ Metrics and Service Level Indicators (SLIs) both provide valuable data about a s
 
 ### Introduction
 
-Now that you’re familiar with the business goals and the SLIs that measure them, and you know your app's current performance, it's time to set improvement goals. We'll be setting achievable targets for your teams to achieve in 1 month and aspirational long-term objectives for the app.
+Now that you’re familiar with the business goals and the SLIs that measure them, and you know your app's current performance, it's time to set improvement goals.
+We'll be setting achievable targets for your teams to achieve in the short term (a few months) and aspirational long-term objectives for the app.
 
 ### Description
 
@@ -371,7 +371,7 @@ Define SLO 2b: Latency SLO
 
 ### Success Criteria
 
-- You’ve established **Achievable** SLO objectives that are to be met within the current month.
+- You’ve established **Achievable** SLO objectives for the short-term.
   - Each SLO has a target value and a compliance period (see examples below)
   - Example SLOs for a fictional shopping cart service:
     - Availability: 99.9% of the users are able to visit the shopping cart measured over a 24-hour rolling window.
@@ -429,41 +429,29 @@ This challenge is about setting up **Achievable** Service Level Objectives (SLOs
 
 1. **Create a service in the UI**
     > **Note**: You can also create these via the API. Check **Tips** in **Learning Resources** for creating services via the API.
-  
-    In the context of GCP SLOs and services, *creating* a service doesn't mean building the service itself from scratch. It means defining the service as a monitored entity within Cloud Monitoring.
 
    - Go to the **SLOs** tab in the monitoring suite. This is where you'll define and manage your SLOs.
    - Click create **new service**.
    - Under **service candidates**, select **mockserver-service** This links your SLOs to the correct service for monitoring.
-   - Give it a **Display name**. It can be anything. Use **mockserver-service** if you can't think of anything else.
+   - Give it a **Display name**.
 
     ![SLO UI](images/SLO_Success.png)
 
-1. **Create 4 SLOs**
+2. **Create 4 SLOs**
   
-   Now, let's create the specific SLOs for your service. Feel free to use the values you defined in the previous challenge.
+   Use the values you defined in the previous challenge.
 
    - Chat Latency:
      - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the **prometheus targets > movieguru** section)
-     - Target: p99 latency of **5 seconds** (5000 milliseconds)
-     - Time Window: **24-hour** rolling window
-
    - Chat Engagement:
-     - Metric: **movieguru_chat_outcome_counter_total** (Filter: Outcome=Engaged)
-     - Target: 70% of chat interactions should result in an "Engaged" outcome.
-     - Time Window: **24-hour** rolling window
-     - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Accepted** to indicate that the user finds the response relevant, but we will stick to just Engaged for now.
+     - Metric: **movieguru_chat_outcome_counter_total** (Filter: **Outcome=Engaged**)
+     - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Accepted** to indicate that the user finds the response relevant, but we will stick to just **Engaged** for now.
      - [Optional] If you want to use a filter that incorporates both **Engaged** and **Acknowledged**, use the monitoring API to create the SLO (see example).
-
    - Main Page Load Latency:
      - Metric: **movieguru_startup_latency_milliseconds_bucket** (measured at the **startup** endpoint)
-     - Target: p99 latency of **1 second** (1000 milliseconds)
-     - Time Window: Choose an appropriate time window, such as a 24-hour or 7-day rolling window.
-
    - Main Page Load Success Rate:
      - Metric: This requires combining two metrics: **movieguru_startup_success_total** and **movieguru_startup_attempts_total**.
-     - Target: 90% success rate over a 7-day rolling window.
-     - Remarks: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO. This allows for more complex SLO configurations (see **Learning Resources**).
+     - Remarks: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO.
 
 ### Success Criteria
 
@@ -474,6 +462,10 @@ This challenge is about setting up **Achievable** Service Level Objectives (SLOs
 
 - [Setting SLOs through UI](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-slo)
 - [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/api/using-api#slo-create)
+
+#### Why are we creating services again?
+
+ In the context of creating GCP SLOs and services, *creating* a service doesn't mean building the service itself from scratch. It means defining the service as a monitored entity within Cloud Monitoring.
 
 ### Tips
 
@@ -581,25 +573,22 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 This challenge guides you through monitoring the four SLOs created in the previous challenge.
 
 - **The devs have pushed a change**: You've learnt that the app team just made a change to the backend a short while ago.
-- **Perform an Initial Observation**: Initially, all Service Level Indicators (SLIs) should be within the acceptable range of the objective. Minor, short-term dips below the objective are normal and not a cause for concern, as long as the SLO is met within the specified time window. (Verify this on your SLO dashboard)
-- This is how a healthy SLO would look like (it isn’t required to be always above the target line)
+- **Perform an Initial Observation of the SLOs**: Initially, all Service Level Indicators (SLIs) should be within the acceptable range of the objective. Minor, short-term dips below the objective are normal and not a cause for concern, as long as the SLO is met within the specified compliance window.
 
    ![Short dips in SLI are OK](images/short_dips_are_ok.png)
 
 ### Description
 
-- Click on the **Error Budget** (EB) view for each SLO to view the error budget and burn rate.
-  - The burn rate is the rate at which this error budget line is changing.
-  - As an SRE, what would an ideal burn rate be?
+- View the **Error Budget** (EB) charts for each SLO.
 - **Create Burn Rate Alerts**
   - Create **SLO alerts** from the UI for all 4 SLOs
-  - To differentiate between the severity of issues, set two alerts for each SLO:
     - **Slow burn rate alert** (1.5-2.0x): Indicates minor issues or gradual degradation.
     - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
 - **Observe burn rates for different SLOs**:
   - Keep an eye on the burn rates for the 4 SLOs for 5-10 minutes.
   - Has the recent app change introduced any issues. If so, where?
   - Estimate the burn rate for each SLO and identify which ones require immediate action.
+  - As an SRE, what would an ideal burn rate be?
 - [Optional] **Observing Alert Triggers**:  
   - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives.
   - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
@@ -611,7 +600,7 @@ This challenge guides you through monitoring the four SLOs created in the previo
 - **Burn Rate Triggers**: Ensure you have created 2 burn rate alerts for all your SLOs (8 in total).
   - These alerts should be configured to trigger at different burn rates (e.g., 1.5-2.0x for slow burn, 10x for fast burn) to capture varying levels of degradation.
 - You've identified 2 problematic SLOs.
-- [Optional] **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, you should expect 3 alerts. Both burn rate alerts should fire for the "Chat Latency" SLO, and the slow burn rate alert should fire for the "Chat Engagement SLO".
+- [Optional] **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, you should expect a few alerts.
 
 ### Learning Resources
 
@@ -693,29 +682,20 @@ $BACKEND_ADDRESS/phase
 
 ### Description
 
-- **Look at your dashboards**
+- Look at your SLO dashboards to spot issues (wait a few minutes).
 
-  - Check the SLO dashboards, if the backend server has been reset correctly (prerequisite step), and a few minutes have passed, you should see that the **Main Page Load SLOs** are well within expected range.
-
-- **Investigate the Issue**
-
+- Investigate the Issue
   - To get to the bottom of this mystery, open a new **incognito/private** browser window and navigate to the Movie Guru frontend.
   - Refresh the page a few times and see if you spot something wrong.
-
-- **Your Challenge:**
-
-  - **Observe:**  Carefully observe what happens when you try to use the Movie Guru website. What issues are you experiencing?
-  - **Analyze:**  Compare your observations with the data displayed on the dashboards. What discrepancies do you notice?
-  - **Explain:**  Explain the reason for the difference between what users are reporting and what the dashboards are showing. What might be causing this discrepancy?
-  - **Consider:**  What are the implications of this discrepancy for your monitoring and alerting strategy? How can you improve your monitoring to better reflect the actual user experience?
+- Compare your observations with the data displayed on the dashboards. What discrepancies do you notice?
+- Explain the reason for the difference between what users are reporting and what the dashboards are showing.  - How can you improve your monitoring to better reflect the actual user experience?
 
 ### Success Criteria
 
-- **Identify the monitoring gap:**  Explain that the current dashboards only track server-side metrics and lack visibility into the frontend performance, leading to a blind spot in monitoring.
-- **Pinpoint the potential cause:**  Deduce that a recent change likely broke the connection between the frontend and backend, causing the user-facing issues.
-- **(Optional) Dive deeper:** Investigate further and discover the root cause: half of the frontend pods are configured with an incorrect backend URL, preventing them from communicating with the backend.
-- **Realize the importance of end-to-end monitoring:** Understand that monitoring user-facing interfaces and interactions is crucial for accurately reflecting the user experience and detecting issues that may not be visible in server-side metrics alone.
-- **Propose solutions:** Suggest ways to improve monitoring, such as real user monitoring (RUM) to track frontend performance and availability from the user's perspective.
+- Identify the monitoring gap
+- Pinpoint the potential cause
+- [Optional] Dive deeper: Investigate further and discover the root cause
+- Propose solutions
 
 ### Learning Resources
 
