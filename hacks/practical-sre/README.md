@@ -303,10 +303,7 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
    - Find them at **Google Cloud Monitoring \> Dashboards \> Custom Dashboards**.  
 1. **Assess user experience**
      - Based on the metrics and your own experience, describe how users likely perceive the app's performance.  
-1. **Categorize** aspects of the application into:  
-    - **Going Well:** Areas with good performance.  
-    - **Need Improvement:** Areas with minor performance issues.  
-    - **Need Improvement Urgently:** Areas with significant performance issues impacting user experience.
+1. Note down which aspects of the app need serious improvement.
 1. **Choose Your SLIs:**
    - Define SLIs (on paper) by examining the dashboards to identify relevant metrics.
    - Write them down in definition form.
