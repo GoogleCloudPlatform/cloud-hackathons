@@ -90,7 +90,7 @@ Ok. You have started on Day 1 as the newly formed SRE team for **The Movie Advis
 
 This challenge involves exploring the Movie Guru app and documenting typical user journeys.
 
-- **Access and Explore the App**
+- **Access** and **Explore** the App
 
   - Go to FRONTEND_ADDRESS in your web browser.
   - Log in using your name or email. No password is required.
@@ -107,7 +107,7 @@ This challenge involves exploring the Movie Guru app and documenting typical use
 
 - **Document User Journeys**
 
-  - Identify at least two distinct user journeys within the Movie Guru app.
+  - Identify at least two distinct user journeys within the **Movie Guru** app.
   - Clearly document each journey using this format:
     - Journey Name: [Give a descriptive name]
     - Goal: [What does the user want to achieve?]
@@ -120,6 +120,7 @@ This challenge involves exploring the Movie Guru app and documenting typical use
 To successfully complete this exercise, you should have:
 
 - **Identify at least 2 user journeys:** Written down 2 UJs in the format mentioned above for the **Movie Guru** app
+- Remember there is no perfect answer.
 
 ### Learning Resources
 
@@ -199,11 +200,11 @@ Steps:
 
 Your second day as an SRE at **The Movie Advisory Company** started with a bang. The CEO, clearly fueled by an excessive amount of coffee, stormed into your workspace, ranting about Movie Guru's unreliable performance.  **"Users are complaining about the site not always being reachable!" he yelled, "This is unacceptable! Movie Guru needs to be up 100% of the time!"** He demanded a solution immediately. With a panicked look in his eyes, he pointed you towards the platform team (a single, overworked engineer) and the application team (known for their eccentric work habits).
 
-Your challenge:  figure out how to improve the app's stability, manage the CEO's expectations, and prevent a complete meltdown.  Welcome to the world of SRE!
+Your challenge:  figure out how to improve the app's stability, manage the CEO's expectations, and prevent a complete meltdown. Welcome to the world of SRE!
 
 ### Description
 
-1. **Initial Response to CEO:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with your teammates and coach. You can also do a short role-play with one of you acting as the CEO.
+1. **Initial Response to CEO:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with your team-mates and coach. You can also do a short role-play with one of you acting as the CEO.
 
    > **Note**: The focus on the role-play should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
 
@@ -243,7 +244,7 @@ To successfully complete this challenge, you should be able to demonstrate the f
 
 In the previous challenge, you dove deep into Movie Guru's reliability landscape, discovering a young app with room to grow. You learned that the company currently lacks a robust way to measure and define user experience, relying instead on the unsustainable goal of constant uptime.
 
-Armed with the insights gained from exploring the app, collaborating with stakeholders, and understanding the system's design, challenges, and user feedback, it's time to take a crucial step: defining SLIs and SLOs for User Journeys. If you need a refresher on SLIs or SLOs, see the **Learning Resources**.
+Armed with the insights gained from exploring the app, collaborating with stakeholders, and understanding the system's design, challenges, and user feedback, it's time to take a crucial step: defining SLIs and SLOs for User Journeys. If you need a refresher on [SLIs or SLOs](#learning-resources-2), see the **Learning Resources**.
 
 ### Description
 
@@ -310,8 +311,8 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
      - Example Availability SLI: The availability of `service abc` is measured by the ratio of successful startups recorded as a ratio of `metric x` to the total attempts in `metric y`.
      - Example Latency SLI: The latency of `service abc`, measured by the `metric x`, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.
    - **Tips**:
-     - Look at the **Business Goals** below to narrow down your search to just a few SLIs relevant for this and the upcoming exercises.
-     - If you aren't sure of the difference between an **SLI** and a **metric**, look at the **Learning Resources**.
+     - Look at the [Business Goals](#business-goals) below to narrow down your search to just a few SLIs relevant for this and the upcoming exercises.
+     - If you aren't sure of the difference between an **SLI** and a **metric**, look at the [Learning Resources](#learning-resources-3).
 
 #### Business goals
 
@@ -342,16 +343,16 @@ Metrics and Service Level Indicators (SLIs) both provide valuable data about a s
 ### Introduction
 
 Now that you’re familiar with the business goals and the SLIs that measure them, and you know your app's current performance, it's time to set improvement goals.
-We'll be setting achievable targets for your teams to achieve in the short term (a few months) and aspirational long-term objectives for the app.
+We'll be setting achievable targets for your teams to achieve in the short-term (a few months) and aspirational long-term objectives for the app.
 
 ### Description
 
 > **Note**: For this exercise, make educated guesses if exact data isn’t available.
 
-1. Define **Achievable** SLOs (on paper) for the business goals below.
+1. Define **Achievable** SLOs (on paper) for the [business goals](#business-goals-1) below.
    - Set realistic, achievable values that you’d like the app to reach in the next month. Use the app’s current performance as a reference point. Your application needs to walk before it can run.
 
-2. Define **Aspirational** SLOs (on paper) for the business goals below.
+2. Define **Aspirational** SLOs (on paper) for the [business goals](#business-goals-1) below.
    - Picture Movie Guru a year from now: an efficient, user-delighting tool (but still short of perfection—since unicorns and 100% targets are rare in the real world). These SLOs should represent goals your team can work toward in the coming year.
 
 #### Business goals
@@ -373,7 +374,7 @@ Define SLO 2b: Latency SLO
   - Example SLOs for a fictional shopping cart service:
     - Availability: 99.9% of the users are able to visit the shopping cart measured over a 24-hour rolling window.
     - Latency:  99% of users should be able to load the shopping cart within 600 milliseconds, measured over a 24-hour rolling window.
-- You’ve set aspirational SLOs based on an ideal user experience to aim for over the next year.
+- You’ve set **Aspirational** SLOs based on an ideal user experience to aim for over the next year.
 - Your objectives are backed by logical business assumptions.
 
 ## Challenge 6: SLOs on the dashboard
@@ -420,12 +421,12 @@ $BACKEND_ADDRESS/phase
 
 ### Introduction
 
-This challenge is about setting up **Achievable** Service Level Objectives (SLOs) for the app in Cloud Monitoring Suite. These are targets you expect to meet in 1-2 months after making a few improvements to the app.
+This challenge is about setting up **Achievable** Service Level Objectives (SLOs) for the app in **Cloud Monitoring Suite**. These are targets you expect to meet in 1-2 months after making a few improvements to the app.
 
 #### Description
 
 1. **Create a service in the UI**
-    > **Note**: You can also create these via the API. Check **Tips** in **Learning Resources** for creating services via the API.
+    > **Note**: You can also create these via the API. Check [Tips](#tips) in **Learning Resources** for creating services via the API.
 
    - Go to the **SLOs** tab in the monitoring suite. This is where you'll define and manage your SLOs.
    - Click create **new service**.
@@ -436,18 +437,18 @@ This challenge is about setting up **Achievable** Service Level Objectives (SLOs
 
 2. **Create 4 SLOs**
   
-   Use the values you defined in the previous challenge.
+   **Use the values you defined in the previous challenge.**
 
    - Chat Latency:
      - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the **prometheus targets > movieguru** section)
    - Chat Engagement:
      - Metric: **movieguru_chat_outcome_counter_total** (Filter: **Outcome=Engaged**)
-     - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Accepted** to indicate that the user finds the response relevant, but we will stick to just **Engaged** for now.
+     - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Acknowledged** to indicate that the user finds the response relevant, but we will stick to just **Engaged** for now.
      - [Optional] If you want to use a filter that incorporates both **Engaged** and **Acknowledged**, use the monitoring API to create the SLO (see example).
    - Main Page Load Latency:
      - Metric: **movieguru_startup_latency_milliseconds_bucket** (measured at the **startup** endpoint)
    - Main Page Load Success Rate:
-     - Metric: This requires combining two metrics: **movieguru_startup_success_total** and **movieguru_startup_attempts_total**.
+     - Metric: This requires finding the ratio of two metrics: **movieguru_startup_success_total** and **movieguru_startup_attempts_total**.
      - Remarks: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO.
 
 ### Success Criteria
@@ -578,7 +579,7 @@ This challenge guides you through monitoring the four SLOs created in the previo
 
 - View the **Error Budget** (EB) charts for each SLO.
 - **Create Burn Rate Alerts**
-  - Create **SLO alerts** from the UI for all 4 SLOs
+  - Create **SLO alerts** from the UI for all 4 SLOs.
     - **Slow burn rate alert** (1.5-2.0x): Indicates minor issues or gradual degradation.
     - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
 - **Observe burn rates for different SLOs**:
@@ -681,18 +682,19 @@ $BACKEND_ADDRESS/phase
 
 - Look at your SLO dashboards to spot issues (wait a few minutes).
 
-- Investigate the Issue
+- Investigate the Issue:
   - To get to the bottom of this mystery, open a new **incognito/private** browser window and navigate to the Movie Guru frontend.
   - Refresh the page a few times and see if you spot something wrong.
 - Compare your observations with the data displayed on the dashboards. What discrepancies do you notice?
-- Explain the reason for the difference between what users are reporting and what the dashboards are showing.  - How can you improve your monitoring to better reflect the actual user experience?
+- Explain the reason for the difference between what users are reporting and what the dashboards are showing.
+- How can you improve your monitoring to better reflect the actual user experience?
 
 ### Success Criteria
 
 - Identify the monitoring gap
 - Pinpoint the potential cause
+- Propose solutions to improve monitoring
 - [Optional] Dive deeper: Investigate further and discover the root cause
-- Propose solutions
 
 ### Learning Resources
 
