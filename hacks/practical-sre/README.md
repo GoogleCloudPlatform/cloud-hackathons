@@ -53,7 +53,7 @@ Before we start our first day as SREs, we are going to start up metrics collecti
 
 - The values will be provided to you by the coach. Each team has its own set of values.
 - Copy the values (after replacing the placeholders) into a notepad to be able to re-run when needed.
-- You might need to re-run them before running command-line commands for all challenges.
+- You might need to re-apply them before running command-line commands for all challenges.
 
   ```sh
   FRONTEND_ADDRESS=<your frontend address>
