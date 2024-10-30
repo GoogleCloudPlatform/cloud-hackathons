@@ -47,7 +47,7 @@ In this hack you will learn how to:
 
 ### Prerequisites
 
-Before we start our first day as SREs, we are going to start up metrics collection so that we have a nice load of metrics to work with in later challenges. The load generator is preprovisioned and the address is provided to you as by the coach.
+Before we start our first day as SREs, we are going to start up metrics collection so that we have a nice load of metrics to work with in later challenges. The load generator is preprovisioned and the address is provided to you by the coach.
 
 #### Step 1: Make note of the necessary environment variables
 
