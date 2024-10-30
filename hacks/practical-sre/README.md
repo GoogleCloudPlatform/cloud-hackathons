@@ -638,10 +638,10 @@ Burn rate measures how quickly you're using up your error budget.  It acts as an
 - Connect to the GKE cluster from the **Cloud Shell terminal** by running the following command.
 
 ```sh
-$GKE_CONNECTION_STRING
+$GKE_CONNECTION_STRING ## This should print out the connection string command that will give your terminal credentials to connect to the GKE cluster
 ```
 
-- Deploy a new frontend version
+- Deploy a new frontend version (your devs have made a change and you want to have a new version running alongside the old one)
 
 ```sh
 kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/refs/heads/ghack-sre/k8s/frontend-v2.yaml)
@@ -689,13 +689,13 @@ $BACKEND_ADDRESS/phase
 
 **The Calm Before the Storm**: You settle in for another day of SRE serenity, casually monitoring the dashboards and basking in the glow of Movie Guru's stable performance.  Suddenly, your peaceful morning is shattered by a frantic colleague from customer support.
 
-**"Mayday! Mayday!"** they exclaim, bursting into your cubicle. "*Users are reporting that Movie Guru is acting up! They can't seem to use the website properly!*"
+*"Mayday! Mayday!"* they exclaim, bursting into your cubicle. "*Users are reporting that Movie Guru is acting up! They can't seem to use the website properly!*"
 
 ### Description
 
 - **Look at your dashboards**
 
-  - Check the SLO dashboards, if the backend server has been reset correctly (prerequisite step), and a few minutes have passed, you should see that the **Startup SLOs** are well within expected range.
+  - Check the SLO dashboards, if the backend server has been reset correctly (prerequisite step), and a few minutes have passed, you should see that the **Main Page Load SLOs** are well within expected range.
 
 - **Investigate the Issue**
 
