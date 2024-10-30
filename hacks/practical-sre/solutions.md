@@ -11,12 +11,13 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 ## Coach's Guides
 
 - Challenge 1: Your first day as SRE
-- Challenge 2: There are others
-- Challenge 3: Your first set of SLOs
+- Challenge 2: Yes, there are others
+- Challenge 3: SLOs: Not Just Another Acronym
 - Challenge 4: Let the monitoring begin
-- Challenge 5: Implementing SLOs on the dashboard
-- Challenge 6: Stay alert
-- Challenge 7: What's really UP, doc?!
+- Challenge 5: Setting Priorities for Reliability
+- Challenge 6: SLOs on the dashboard
+- Challenge 7: Stay alert
+- Challenge 8: What's really UP, doc?
 
 ## Coach Prerequisites
 
@@ -42,7 +43,7 @@ Always refer students to the [gHacks website](https://ghacks.dev) for the studen
 
 This hack requires students to have access to Google Cloud project where they can create and consume Google Cloud resources. These requirements should be shared with a stakeholder in the organization that will be providing the Google Cloud project that will be used by the students.
 
-- Access to Cloud Observability Suite. 
+- Access to Cloud Observability Suite.
 - IAM Monitoring metrics editor role.
 - Ability to create VMs with public IPs
 - Ability to created unshielded VMs.
@@ -52,11 +53,12 @@ This hack requires students to have access to Google Cloud project where they ca
 
 - Challenge 1 (30 mins)
 - Challenge 2 (20 mins) [Optional]
-- Challenge 3 (30 mins)
-- Challenge 4 (45 mins)
-- Challenge 5 (60 mins)
-- Challenge 6 (30 mins)
-- Challenge 7 (20 mins)
+- Challenge 3 (30 mins) [Optional]
+- Challenge 4 (30 mins)
+- Challenge 5 (15 mins)
+- Challenge 6 (60 mins)
+- Challenge 7 (30 mins)
+- Challenge 8 (20 mins)
 
 ## Repository Contents
 
@@ -267,18 +269,7 @@ The students should notice how bad the performance and imagine what the user exp
 - **Availability:** Measured as the percentage of successful attempts to load the main interface of the Movie Guru app. (The availability is measured by the ratio of successful startups recorded as a ratio of **movieguru_startup_success_total** to the total startup attempts in **movieguru_startup_attempts_total**.)
 - **Latency:** Calculated as the combined latency of the login endpoint and the startup endpoint, both measured at the server. (The startup latency, measured by the **movieguru_startup_latency_milliseconds_bucket** metric, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.)
 
-**Achievable SLO:**
 
-- SLO 1a: `99.95%` of users should be able to access the main page after logging in,  measured over a `7`-day rolling window.  
-- SLO 1b: `99%` of users should be able to access the main page after logging in, within `3` seconds measured over a `7`-day rolling window.
-- Rationale:
-
-    This SLO focuses on the app's availability and initial load time, which are crucial for a positive first impression.  The 99.95% target ensures high availability, while the 3-second threshold aims for a responsive and quick-loading interface. The 7-day rolling window provides a balance between capturing short-term trends and allowing for some variability in daily traffic patterns.
-
-**Aspirational SLO:**
-
-- SLO 1a: `99.95%` of users should be able to access the Movie Guru app measured over a `7`-day rolling window.  (No change here)
-- SLO 1b: `99%` of users should be able to access the Movie Guru app within `1` seconds measured over a `7`-day rolling window.
 
 #### SLO for Movie Guru Chatbot Responsiveness
 
@@ -287,21 +278,43 @@ The students should notice how bad the performance and imagine what the user exp
 - **Relevance:** Measured by the `Chat_Outcome_Counter` metric. A response is considered relevant if the outcome is registered as "engaged". (Engagement is measured by the ratio of engaged outcomes in **movieguru_chat_outcome_counter_total**—where the outcome is either **Engaged** or **Acknowledged**—to the total outcomes recorded in **movieguru_chat_outcome_counter_total**.)
 - **Latency:**  Calculated as the time difference between the server receiving the user's message and sending the response. (The chat latency, measured by the **movieguru_chat_latency_milliseconds_bucket** metric, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.)
 
+## Challenge 5: Setting Priorities for Reliability
+
+### Notes and Guidance
+
+This challenge focusses on students crafting SLOs (both short-term and long-term) to match the business goals they encountered in the previous challenge. The short-term SLOs have to be informed by the current SLIs (they have to be achievable in the short term). The long-term SLOs can be more ambitious, but still grounded in good business reasons or hypotheses.
+
+#### Business Goal 1 SLOs
+
+The main page should be accessible and load quickly for users.
+
+**Achievable SLO:**
+
+- SLO 1a: `90%` of users should be able to access the main page after logging in,  measured over a `7`-day rolling window.  
+- SLO 1b: `99%` of users should be able to access the main page after logging in, within `3` seconds measured over a `7`-day rolling window.
+- Rationale: This SLO focuses on the app's availability and initial load time, which are crucial for a positive first impression.  The 90% target ensures better availability than the current situation, while the 3-second threshold aims for a responsive and quick-loading interface. The 7-day rolling window provides a balance between capturing short-term trends and allowing for some variability in daily traffic patterns.
+
+**Aspirational SLO:**
+
+- SLO 1a: `99.5%` of users should be able to access the Movie Guru app measured over a `7`-day rolling window. 
+- SLO 1b: `99%` of users should be able to access the Movie Guru app within `1` seconds measured over a `7`-day rolling window.
+
+#### Business Goal 2 SLOs
+
+The chatbot should respond quickly to users and keep them engaged.
+
 **Achievable SLO:**
 
 - SLO 2a: `70%` of user messages should receive a relevant response from the Movie Guru chatbot measured over a `24`-hour rolling window.
 - SLO 2b: `99%` should recieve a response within `5` seconds, measured over a `24`-hour rolling window.
-
-**Rationale:**
-
-This starting SLO acknowledges that the chatbot is still under development and may not yet be able to provide highly relevant responses in all cases. The 70% target allows for some room for improvement while still ensuring a reasonable level of user satisfaction. The aspirational SLO sets a higher bar for the future, aiming for both improved relevance and reduced latency.
+- Rationale: This starting SLO acknowledges that the chatbot is still under development and may not yet be able to provide highly relevant responses in all cases. The 70% target allows for some room for improvement while still ensuring a reasonable level of user satisfaction. The aspirational SLO sets a higher bar for the future, aiming for both improved relevance and reduced latency.
 
 **Aspirational SLO:**
 
 - SLO 2a: `90%` of user messages should receive a relevant response from the Movie Guru chatbot measured over a `24`-hour rolling window.
 - SLO 2b: `99%` should recieve a response within `3` seconds, measured over a `24`-hour rolling window.
 
-## Challenge 5: SLOs on the dashboard
+## Challenge 6: SLOs on the dashboard
 
 ### Notes & Guidance
 
@@ -454,7 +467,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 
 ```
 
-## Challenge 6: Stay alert
+## Challenge 7: Stay alert
 
 ### Notes & Guidance
 
@@ -463,23 +476,21 @@ The new values posted simulate the **Movie Guru** app suddenly having issues wit
 
 The students should within a few minutes notice the two chat related SLOs are degrading. The latency SLO is degrading quickly, while the engagement query is degrading slightly less quickly.
 
-The goal is for them to create burn rate alerts for the SLOs (ideally one creates at the SLO creation and not after things start slowly.)
+The goal is for them to identify which SLOs are burning quickly by estimating the burn rate values.
 
-This challenge focuses on monitoring SLOs and using burn rate alerts to identify and prioritize service issues. Guide students to:
+This challenge focuses on monitoring SLOs and using burn rates to identify and prioritize service issues. Guide students to:
 
 - Verify initial SLO health: Confirm all SLIs are initially within the acceptable range on the dashboard.
 Analyze error budget: Discuss the "Startup Success Rate" SLO's error budget, its meaning, and how it allows for feature development and maintenance.
-- Observe SLO degradation: Point out the declining performance of the "Chat Latency" and "Chat Engagement Rate" SLOs.
+- Observe SLO degradation: Point out the declining performance of the "Chat Latency" and "Chat Engagement Rate" SLOs. Also observe the error budget decline. The Chat latency is declining rapidly, while Chat engagement is declining more slowly.
 - Create burn rate alerts: Instruct students to create slow (1.5-2.0x) and fast (10x) burn rate alerts for both failing SLOs, emphasizing the importance of proactive alert creation in real-world scenarios.
-- Discuss burn rate concept: Explain that burn rate indicates how quickly the error budget is being consumed, like overspending a monthly allowance.
-- Monitor alert triggers: Have students observe which alerts fire and discuss how the burn rate helps prioritize issues.
-- Highlight the lookback window: Remind students that alerts will trigger only after the lookback period (5 minutes in this case) has elapsed.
-- Verify success criteria: Ensure students have created at least four burn rate alerts and that at least one alert fires for the "Chat Latency" SLO.
+- [Optional] Monitor alert triggers: Have students observe which alerts fire and discuss how the burn rate helps prioritize issues. In the lab setting, the alerts might not trigger, so don't be alarmed if they don't see alerts.
+- Verify success criteria: Ensure students have created at least four burn rate alerts and identified the SLOs which need immediate attention.
 - Example view of firing alerts
   
   ![Alerts firing](images/Alerts-firing.png)
 
-## Challenge 7: What's Really UP, Doc?
+## Challenge 8: What's Really UP, Doc?
 
 ### Notes & Guidance
 

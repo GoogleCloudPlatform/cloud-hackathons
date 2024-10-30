@@ -26,9 +26,10 @@ In this hack you will learn how to:
 - Challenge 2: Yes, there are others
 - Challenge 3: SLOs: Not Just Another Acronym
 - Challenge 4: Let the monitoring begin
-- Challenge 5: SLOs on the dashboard
-- Challenge 6: Stay alert
-- Challenge 7: What's really UP, doc?
+- Challenge 5: Setting Priorities for Reliability
+- Challenge 6: SLOs on the dashboard
+- Challenge 7: Stay alert
+- Challenge 8: What's really UP, doc?
 
 ## Prerequisites
 
@@ -185,6 +186,8 @@ Steps:
 
 ## Challenge 2: Yes, there are others
 
+### Introduction
+
 Your second day as an SRE at **The Movie Advisory Company** started with a bang. The CEO, clearly fueled by an excessive amount of coffee, stormed into your workspace, ranting about Movie Guru's unreliable performance.  **"Users are complaining about the site not always being reachable!" he yelled, "This is unacceptable! Movie Guru needs to be up 100% of the time!"** He demanded a solution immediately. With a panicked look in his eyes, he pointed you towards the platform team (a single, overworked engineer) and the application team (known for their eccentric work habits).
 
 Your challenge:  figure out how to improve the app's stability, manage the CEO's expectations, and prevent a complete meltdown.  Welcome to the world of SRE!
@@ -268,6 +271,8 @@ Once you've identified the key stakeholders, consider what specific information 
 
 ## Challenge 3: SLOs: Not Just Another Acronym
 
+### Introduction
+
 In the previous challenge, you dove deep into Movie Guru's reliability landscape, discovering a young app with room to grow. You learned that the company currently lacks a robust way to measure and define user experience, relying instead on the unsustainable goal of constant uptime.
 
 Armed with the insights gained from exploring the app, collaborating with stakeholders, and understanding the system's design, challenges, and user feedback, it's time to take a crucial step: defining SLIs and SLOs for User Journeys. If you need a refresher on SLIs or SLOs, see the **Learning Resources**.
@@ -339,33 +344,18 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
      - Example Availability SLI: The availability of `service abc` is measured by the ratio of successful startups recorded as a ratio of `metric x` to the total attempts in `metric y`.
      - Example Latency SLI: The latency of `service abc`, measured by the `metric x`, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.
    - **Tips**:
-     - Look at the **Business Goals** below to narrow down your search to just a few SLIs relevant for this exercise.
+     - Look at the **Business Goals** below to narrow down your search to just a few SLIs relevant for this and the upcoming exercises.
      - If you aren't sure of the difference between an **SLI** and a **metric**, look at the **Learning Resources**.
 
-1. Define **Achievable** objectives for the **SLO templates** below.
-    - Fill in realistic, **Achievable** values that you would like the app to meet in the short term (around 1 month). Let the current performance indicators be a guide.
-1. [Optional] Define **Aspirational** SLOs (for the **SLO templates** below).
-   - Imagine **Movie Guru** one year from now, a finely-tuned, user-pleasing machine (but still not perfect, because unicorns don't exist, and 100% is never the right target). It's so good that users are delighted with its performance and reliability. What would the SLOs look like in this ideal scenario? Fill those values in. These are targets that your company can work towards in the upcoming year or so.
-
-#### SLO templates
+#### Business goals
 
 - **Business goal 1:** The main page should be accessible and load quickly for users.
-
-  - **SLO 1a:** `xx%` of users should successfully access the main page after logging in, measured over a `zz`-day rolling window.  
-
-  - **SLO 1b:** `xx%` of users should access the main page after logging in within `yy` seconds, measured over a `zz`-day rolling window.
-
 - **Business goal 2:** The chatbot should respond quickly to users and keep them engaged.
-
-  - **SLO 2a:** `xx%` of users should be engaged by the chatbot, measured over a `zz`-hour rolling window.
-
-  - **SLO 2b:** `xx%` of users should receive responses within `yy` seconds, measured over a `zz`-hour rolling window.
 
 ### Success Criteria
 
 - You've chosen SLI based on the metrics that are being collected from the server.
-- You’ve set realistic SLO objectives for the two cases that are achievable in the short term.
-- [Optional] You set aspirational SLOs based on what your users would expect in the long term.
+- These SLIs can measure the health of the app based on the two business goals.
 
 ### Learning Resources
 
@@ -381,7 +371,41 @@ Metrics and Service Level Indicators (SLIs) both provide valuable data about a s
 - The dashboard displays several percentiles of login latency (10th, 50th, 90th, 95th, 99th), giving you a comprehensive view of the login speed distribution.
 - This metric is also displayed as a line chart, allowing you to track changes in latency over time and identify any performance degradations.
 
-## Challenge 5: SLOs on the dashboard
+## Challenge 5: Setting Priorities for Reliability
+
+### Introduction
+
+Now that you’re familiar with the business goals and the SLIs that measure them, and you know your app's current performance, it's time to set improvement goals. We'll be setting achievable short-term targets and aspirational long-term objectives for the app.
+
+### Description
+
+> **Note**: For this exercise, make educated guesses if exact data isn’t available.
+
+1. Define **Achievable** objectives in the SLO templates below.
+   - Set realistic, achievable values that you’d like the app to reach in the next month. Use the app’s current performance as a reference point.
+
+2. Define **Aspirational** SLOs in the templates below.
+   - Picture Movie Guru a year from now: an efficient, user-delighting tool (but still short of perfection—since unicorns and 100% targets are rare in the real world). These SLOs should represent goals your team can work toward in the coming year.
+
+#### SLO Templates
+
+**Business Goal 1**: Ensure users can access the main page quickly and reliably.
+
+SLO 1a: xx% of users should successfully access the main page after logging in, measured over a zz-day rolling window.
+SLO 1b: xx% of users should access the main page after logging in within yy seconds, measured over a zz-day rolling window.
+
+**Business Goal 2**: Ensure the chatbot responds quickly and keeps users engaged.
+
+SLO 2a: xx% of users should be engaged by the chatbot, measured over a zz-hour rolling window.
+SLO 2b: xx% of users should receive responses within yy seconds, measured over a zz-hour rolling window.
+
+### Success Criteria
+
+- You’ve established realistic short-term SLO objectives that are achievable within the current month.
+- You’ve set aspirational SLOs based on an ideal user experience to aim for over the next year.
+- Your objectives are backed by logical business assumptions.
+
+## Challenge 6: SLOs on the dashboard
 
 ### Prerequisites
 
@@ -427,17 +451,17 @@ $BACKEND_ADDRESS/phase
 
 This challenge is about up the short-term Service Level Objectives (SLOs) for the app in Cloud Monitoring Suite. SLOs help you define and track the performance targets for your service, ensuring a positive user experience.
 
-#### Steps
+#### Description
 
 1. **Create a service in the UI**
+    > **Note**: You can also create these via the API. Check **Tips** in **Learning Resources** for creating services via the API.
+  
     In the context of GCP SLOs and services, *creating* a service doesn't mean building the service itself from scratch. It means defining the service as a monitored entity within Cloud Monitoring.
 
    - Go to the **SLOs** tab in the monitoring suite. This is where you'll define and manage your SLOs.
    - Click create **new service**.
    - Under **service candidates**, select **mockserver-service** This links your SLOs to the correct service for monitoring.
    - Give it a **Display name**. It can be anything. Use **mockserver-service** if you can't think of anything else.
-
-    > **Note**: You can also create these via the API. Check **Tips** in **Learning Resources** for creating services via the API.
 
     ![SLO UI](images/SLO_Success.png)
 
@@ -454,7 +478,8 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
      - Metric: **movieguru_chat_outcome_counter_total** (Filter: Outcome=Engaged)
      - Target: 70% of chat interactions should result in an "Engaged" outcome.
      - Time Window: **24-hour** rolling window
-     - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Accepted** to indicate that the user finds the response relevant, but we will stick to just Engaged for now. [Optional] If you want to use a filter that incorporates both **Engaged** and **Acknowledged**, use the monitoring API to create the SLO.
+     - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Accepted** to indicate that the user finds the response relevant, but we will stick to just Engaged for now. 
+     - [Optional] If you want to use a filter that incorporates both **Engaged** and **Acknowledged**, use the monitoring API to create the SLO (see example).
 
    - Main Page Load Latency:
      - Metric: **movieguru_startup_latency_milliseconds_bucket** (measured at the **startup** endpoint)
@@ -465,8 +490,6 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
      - Metric: This requires combining two metrics: **movieguru_startup_success_total** and **movieguru_startup_attempts_total**.
      - Target: 90% success rate over a 7-day rolling window.
      - Remarks: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO. This allows for more complex SLO configurations (see **Learning Resources**).
-
-> **Note**: You can also create these via the API. Check **Tips** in **Learning Resources** for creating  SLOs via the API.
 
 ### Success Criteria
 
@@ -539,73 +562,10 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 
 ```
 
-## Challenge 6: Stay alert
+## Challenge 7: Stay alert
 
 ### Prerequisites
 
-Run this command in the terminal (**Cloud Shell terminal**).
-
-> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
-
-```sh
-## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
-
-curl -X POST \
-  -H "Content-Type: application/json" \
-  -d '{
-  "ChatSuccess": 0.95,
-  "ChatSafetyIssue": 0.1,
-  "ChatEngaged": 0.40,
-  "ChatAcknowledged": 0.10,
-  "ChatRejected": 0.05,
-  "ChatUnclassified": 0.2,
-  "ChatSPositive": 0.6,
-  "ChatSNegative": 0.1,
-  "ChatSNeutral": 0.2,
-  "ChatSUnclassified": 0.1,
-  "LoginSuccess": 0.999,
-  "StartupSuccess": 0.95,
-  "PrefUpdateSuccess": 0.99,
-  "PrefGetSuccess": 0.999,
-  "LoginLatencyMinMS": 10,
-  "LoginLatencyMaxMS": 200,
-  "ChatLatencyMinMS": 4500,
-  "ChatLatencyMaxMS": 8000,
-  "StartupLatencyMinMS": 400,
-  "StartupLatencyMaxMS": 1000,
-  "PrefGetLatencyMinMS": 153,
-  "PrefGetLatencyMaxMS": 348,
-  "PrefUpdateLatencyMinMS": 363,
-  "PrefUpdateLatencyMaxMS": 645
-}' \
-$BACKEND_ADDRESS/phase
-```
-
-### Introduction
-
-This challenge guides you through monitoring the four SLOs created in the previous challenge.
-
-- **Perform an Initial Observation**: Initially, all Service Level Indicators (SLIs) should be within the acceptable range of the objective. Minor, short-term dips below the objective are normal and not a cause for concern, as long as the SLO is met within the specified time window. (Verify this on your SLO dashboard)
-
-- **Error Budget and Maintenance**: Examine the error budget for the Startup Success Rate SLO. The error budget represents the allowed deviation from the SLO. (Check out Learning Resources if you need a refresher on **Error budgets** or **Burn Rates**)
-
-- This is how a healthy SLO would look like (it isn’t required to be always above the line)
-
-   ![Short dips in SLI are OK](images/short_dips_are_ok.png)
-
-### Description
-
-- Click on the **Error Budget** view for each SLO to view the error budget and burn rate.
-  - The burn rate is the rate at which this error budget line is changing.
-  - If there were no issues, or planned maintainence events and everything operated perfectly, the error budget would remain at 100%.
-  - A healthy burn rate is beneficial, indicating that you are utilizing your error budgets effectively for improvements and planned maintenance. If you error budget is near 100% at the end of the compliance period, then you're likely wasting these windows.
-  - While you established the SLOs in Challenge 5, it's important to note that the error budgets are calculated from the beginning of the lab, as metrics collection commenced in Challenge 1.
-- **Create Burn Rate Alerts**
-  Let’s be honest—you can’t just sit there staring at dashboards all day without turning into a zombie! So, give your setup a little pizzazz by creating alerts to let you know when things start to go awry. Make sure to have one for those *bad* moments and another for *really really bad* moments.
-  - Create **SLO alerts** from the UI for all the SLOs
-  - To differentiate between the severity of issues, set two alerts for each SLO (use a 15 minute lookback window):
-    - **Slow burn rate alert** (1.5-2.0x): Indicates minor issues or gradual degradation.
-    - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
 - Run this command in the terminal (**Cloud Shell terminal**). This simulates your app team making some changes to the app.
 
   ```sh
@@ -642,18 +602,35 @@ This challenge guides you through monitoring the four SLOs created in the previo
   $BACKEND_ADDRESS/phase
   ```
 
-- **Observing Alert Triggers**:  
-  - Wait for about 5-10 minutes.
+### Introduction
+
+This challenge guides you through monitoring the four SLOs created in the previous challenge.
+
+- **The devs have pushed a change**: You've learnt that the app team just made a change to the backend a short while ago.
+- **Perform an Initial Observation**: Initially, all Service Level Indicators (SLIs) should be within the acceptable range of the objective. Minor, short-term dips below the objective are normal and not a cause for concern, as long as the SLO is met within the specified time window. (Verify this on your SLO dashboard)
+- This is how a healthy SLO would look like (it isn’t required to be always above the target line)
+
+   ![Short dips in SLI are OK](images/short_dips_are_ok.png)
+
+### Description
+
+- Click on the **Error Budget** (EB) view for each SLO to view the error budget and burn rate.
+  - The burn rate is the rate at which this error budget line is changing.
+  - As an SRE, what would an ideal burn rate be?
+- **Create Burn Rate Alerts**
+  - Create **SLO alerts** from the UI for all 4 SLOs
+  - To differentiate between the severity of issues, set two alerts for each SLO:
+    - **Slow burn rate alert** (1.5-2.0x): Indicates minor issues or gradual degradation.
+    - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
+- **Observe burn rates for different SLOs**:
+  - Keep an eye on the burn rates for the 4 SLOs for 5-10 minutes.
+  - Has the recent app change introduced any issues. If so, where?
+  - Estimate the burn rate for each SLO and identify which ones require immediate action.
+- [Optional] **Observing Alert Triggers**:  
   - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives.
   - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
 
-> **Warning**: Having trouble triggering alerts? Don't worry, it might just be due to the lab setting! Keep in mind that the SLIs were performing very badly at the start of the lab, eating into the error budgets even after an "improvement" was simulated. You might have just missed the window at which the burn rates would have triggered alerts. Instead, look at the error budgets burn rates in the graph and figure out which SLOs require immediate attention, and which ones are being slightly problematic.
-
-```text
-Simplified formula to estimate Burn Rate = 
-((Error Budget at Start of look back window − Current Error Budget)/Window Length) x 100 %
-
-```
+> **Warning**: The lab setting makes it difficult to trigger alerts! Keep in mind that the SLIs were performing very badly at the start of the lab, eating into the error budgets from the very start. You might have just missed the window at which the burn rates would have triggered alerts. You might have also created the alerts after the burn rate hit the alert thresholds.
 
 ### Success Criteria
 
@@ -661,7 +638,8 @@ To verify successful completion of this exercise, check the following:
 
 - **Burn Rate Triggers**: Ensure you have created 2 burn rate alerts for all your SLOs (8 in total).
   - These alerts should be configured to trigger at different burn rates (e.g., 1.5-2.0x for slow burn, 10x for fast burn) to capture varying levels of degradation.
-- **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, you should expect 3 alerts. Both burn rate alerts should fire for the "Chat Latency" SLO, and the slow burn rate alert should fire for the "Chat Engagement SLO".
+- You've identified 2 problematic SLOs.
+- [Optional] **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, you should expect 3 alerts. Both burn rate alerts should fire for the "Chat Latency" SLO, and the slow burn rate alert should fire for the "Chat Engagement SLO".
 
 ### Learning Resources
 
@@ -671,14 +649,17 @@ An error budget is the acceptable amount of time your service can fail to meet i
 
 #### What is a **burn rate**
 
-Informal Formula: (Error budget at start of window - Error budge now)/window length x 100
-
 Burn rate measures how quickly you're using up your error budget.  It acts as an early warning system for SLO violations, helping you prioritize and respond to issues before they impact users. Calculated as a multiple of your error budget consumption, a high burn rate (e.g., 10x) signals a major problem needing immediate action. A slow burn rate (generally configured over a longer interval) alerts you if you are likely to exhaust your error budget before the end of the compliance period. It is less urgent than a fast burn, but signals something may be wrong, but not urgent. Setting alerts for different burn rates (e.g., 2x for slow burn, 10x for fast burn) allows you to proactively manage service reliability and keep users happy. By monitoring burn rate, you can ensure your services meet their SLOs and avoid "overspending" your error budget.
+
+- If there were no issues, or planned maintainence events and everything operated perfectly, the error budget would remain at 100%.
+- A healthy burn rate is beneficial, indicating that you are utilizing your error budgets effectively for improvements and planned maintenance. If you error budget is consistently near 100% at the end of the compliance period, then you're likely wasting these windows.
+- A burn rate of 1x means that your error budget will be fully consumed by the end of the compliance period.
+- While you established the SLOs in Challenge 5, it's important to note that the error budgets are calculated from the beginning of the lab, as metrics collection commenced in Challenge 1.
 
 - [SLO alerting on Burn Rate](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/alerting-on-budget-burn-rate)
 - [Creating alerting policies with the UI](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-alert)
 
-## Challenge 7: What's really UP, doc?
+## Challenge 8: What's really UP, doc?
 
 ### Prerequisites
 
@@ -734,9 +715,7 @@ $BACKEND_ADDRESS/phase
 
 ### Introduction
 
-**The Calm Before the Storm**
-
-You settle in for another day of SRE serenity, casually monitoring the dashboards and basking in the glow of Movie Guru's stable performance.  Suddenly, your peaceful morning is shattered by a frantic colleague from customer support.
+**The Calm Before the Storm**: You settle in for another day of SRE serenity, casually monitoring the dashboards and basking in the glow of Movie Guru's stable performance.  Suddenly, your peaceful morning is shattered by a frantic colleague from customer support.
 
 **"Mayday! Mayday!"** they exclaim, bursting into your cubicle. "*Users are reporting that Movie Guru is acting up! They can't seem to use the website properly!*"
 
