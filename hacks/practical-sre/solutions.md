@@ -94,10 +94,45 @@ For our metrics generation, we utilize a separate backend (henceforth called **f
 We're starting the load generator although the students don't need to understand the loadtest at all.
 The **fake backend** is primed to create responses that are suboptimal. This is to create the idea that at the start of the workshop, the **Movie Guru** app is performing suboptimally.
 
+> **Note**: If the students are going back to challenge 1 from other challenges, make them run this command in the **Cloud Shell terminal**
+
+```sh
+## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+  "ChatSuccess": 0.7,
+  "ChatSafetyIssue": 0.2,
+  "ChatEngaged": 0.5,
+  "ChatAcknowledged": 0.15,
+  "ChatRejected": 0.25,
+  "ChatUnclassified": 0.1,
+  "ChatSPositive": 0.4,
+  "ChatSNegative": 0.3,
+  "ChatSNeutral": 0.1,
+  "ChatSUnclassified": 0.2,
+  "LoginSuccess": 0.99,
+  "StartupSuccess": 0.75,
+  "PrefUpdateSuccess": 0.84,
+  "PrefGetSuccess": 0.99,
+  "LoginLatencyMinMS": 10,
+  "LoginLatencyMaxMS": 200,
+  "ChatLatencyMinMS": 1607,
+  "ChatLatencyMaxMS": 7683,
+  "StartupLatencyMinMS": 456,
+  "StartupLatencyMaxMS": 1634,
+  "PrefGetLatencyMinMS": 153,
+  "PrefGetLatencyMaxMS": 348,
+  "PrefUpdateLatencyMinMS": 463,
+  "PrefUpdateLatencyMaxMS": 745
+}' \
+$BACKEND_ADDRESS/phase 
+```
+
 #### Getting Started
 
-1. **Start Metrics Collection:** Begin by launching the load tester tool to collect background metrics. This data will be used in later challenges.
-2. **Explore the App:**  Each student should access the Movie Guru app on their own machine using the provided frontend IP address. Take 10 minutes to explore the app individually.
+1. **Start Metrics Collection:** Begin by launching the load tester tool to collect background metrics. This data will be used in later challenges. Confirm this is running for the students.
+2. **Explore the App:**  Each student should access the Movie Guru app on their own machine using the provided frontend IP address. Take 10 minutes to explore the app individually. If the front end isn't working properly due to GenAI api ratelimits, then make them watch the video instead.
 
 #### Identifying User Journeys
 
@@ -230,7 +265,7 @@ Latency: Calculated as the combined latency of the login endpoint and the startu
 #### SLO for Movie Guru Chatbot Responsiveness
 
 SLO part 1: 80% of users should be engaged while chatting with Movie Guru chatbot measured over a 24-hour rolling window.
-SLO part 2: 99% of users should recieve a response within 5 seconds, measured over a 24-hour rolling window.x
+SLO part 2: 99% of users should recieve a response within 5 seconds, measured over a 24-hour rolling window.
 
 SLIs:
 

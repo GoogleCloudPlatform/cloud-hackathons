@@ -47,11 +47,12 @@ In this hack you will learn how to:
 
 ### Prerequisites
 
-Before we start our first day as SREs, we are going to start up metrics collection so that we have a nice load of metrics to work with in later challenges.
+Before we start our first day as SREs, we are going to start up metrics collection so that we have a nice load of metrics to work with in later challenges. The load generator is preprovisioned and the address is provided to you as by the coach.
 
 #### Step 1: Make note of the 3 IP addresses from your environment
 
-- Copy the values (after replacing the placeholders) into a notepad to be able to re-run when needed. Your coach will provide you the values of these variables.
+- The following values will be provided to you by the coach. Each team has its own set of values.
+- Copy the values (after replacing the placeholders) into a notepad to be able to re-run when needed.
 - You might need to re-run them before running command-line commands for all challenges.
 
   ```sh
@@ -60,7 +61,6 @@ Before we start our first day as SREs, we are going to start up metrics collecti
   LOCUST_ADDRESS=<your locust address>
   PROJECT_ID=<your project id>
   GKE_CONNECTION_STRING=<your GKE connection string> # Don't worry you don't need to have any GKE knowledge.
-
   ```
 
 #### Step 2: Generate Load on the Application
@@ -81,47 +81,6 @@ Before we start our first day as SREs, we are going to start up metrics collecti
 - Once the load test begins, Locust will swarm various backend endpoints, simulating traffic as users interact with the application. You should see something similar to this:
 
   ![Locust Swarming](images/locust-swarming.png)
-
-- Confirm this is running as expected and start challenge 1.
-
-#### [Optional] Step 3: If you are repeating Challenge 1, reset the metrics generator
-
-> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
-
-Run the following in the **Cloud Shell terminal**
-
-```sh
-## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
-curl -X POST \
-  -H "Content-Type: application/json" \
-  -d '{
-  "ChatSuccess": 0.7,
-  "ChatSafetyIssue": 0.2,
-  "ChatEngaged": 0.5,
-  "ChatAcknowledged": 0.15,
-  "ChatRejected": 0.25,
-  "ChatUnclassified": 0.1,
-  "ChatSPositive": 0.4,
-  "ChatSNegative": 0.3,
-  "ChatSNeutral": 0.1,
-  "ChatSUnclassified": 0.2,
-  "LoginSuccess": 0.99,
-  "StartupSuccess": 0.75,
-  "PrefUpdateSuccess": 0.84,
-  "PrefGetSuccess": 0.99,
-  "LoginLatencyMinMS": 10,
-  "LoginLatencyMaxMS": 200,
-  "ChatLatencyMinMS": 1607,
-  "ChatLatencyMaxMS": 7683,
-  "StartupLatencyMinMS": 456,
-  "StartupLatencyMaxMS": 1634,
-  "PrefGetLatencyMinMS": 153,
-  "PrefGetLatencyMaxMS": 348,
-  "PrefUpdateLatencyMinMS": 463,
-  "PrefUpdateLatencyMaxMS": 745
-}' \
-$BACKEND_ADDRESS/phase 
-```
 
 ### Introduction
 
@@ -180,9 +139,59 @@ Steps:
 - Click the "Add to Cart" button.
 - View the updated shopping cart with the added item.
 
-**Compare your journeys to the examples below:**  See how your ideas align with the user journeys provided below. The examples below cover some common interactions, but there will be other ways users interact with the app. There is no perfect answer.
+**Compare your journeys to the example below:**  See how your ideas align with the user journeys provided. The examples cover some common interactions, but there will be other ways users interact with the app. There is no perfect answer.
 
 **User journeys are hypotheses:** They are your best guess about how users will interact with the app.  These journeys will need to be refined over time based on real user data and feedback.
+
+### Example User Journeys for Movie Guru
+
+Here are a few examples of user journeys for the Movie Guru app:
+
+#### UJ 1: Access the App
+
+**Goal:**  Start using the Movie Guru app and view the main interface.
+
+**Steps:**
+
+1. Go to the Movie Guru login page.
+1. The user enters their username.
+1. Click the "Login" button.
+1. View the main page. This contains the chatbot, with any chat history loaded (if it exists), and a view of featured films, and profile info (if it exists).
+
+#### UJ 2: Get Useful Responses
+
+Goal: Receive helpful and relevant responses from the Movie Guru chatbot.
+
+Steps:
+
+1. Initiate Chat: The user opens the chat interface in the Movie Guru app.
+    - The app may have an initial profile with some initial preferences to guide the interaction.
+2. User Receives a Response:
+    - Movie Guru provides an initial response based on the user's input or previous interactions.
+3. User Explores the Response:
+    - The user reads and interprets the information provided.
+    - The user may ask follow-up questions or request clarification.
+4. User Provides Feedback:
+    - The user provides explicit feedback (e.g., "This is helpful!" or "I need more information on this").
+    - The user may rephrase their query or ask for alternative suggestions.
+5. User Receives Refined Response:
+    - Movie Guru refines its response based on the user's feedback, providing more relevant and helpful information.
+6. Repeat Steps 2-5 (Optional): The user can continue to interact and provide feedback to further refine the conversation.
+7. End Chat: The user ends the chat session.
+
+#### UJ 3: Update Preferences
+
+**Goal:** Update invalid preferences to personalize future recommendations.
+
+**Steps:**
+
+1. Access Preferences: The user navigates to the "Preferences" or "Profile" section of the home page.
+1. View Existing Preferences (Optional): The app displays any existing preferences the user has previously saved. This could include:
+   - Liked/dislikes genres
+   - Liked/disliked actors
+   - Liked/disliked directors
+1. Delete Wrong/Invalid Items: The user interacts with the interface to adjust their preferences. This might involve:
+1. Receive Confirmation (Optional): The app provides feedback to the user that their preferences have been successfully saved by not rendering the preference again.
 
 ## Challenge 2: Yes, there are others
 
@@ -220,54 +229,13 @@ To successfully complete this challenge, you should be able to demonstrate the f
 
 ### Learning Resources
 
-By systematically identifying your stakeholders and gathering the necessary information, you gain a holistic view of Movie Guru's reliability. This sets the stage for effective improvements that balance business needs, user expectations, current system design, and technical debt—all without chasing the mirage of 100% uptime
+- Realistic Expectations on Reliability: It's essential to communicate that 100% uptime is neither feasible nor necessary. Regularly reinforcing this helps align stakeholders with a balanced, achievable reliability strategy.
 
-#### Initial Response
+- Stakeholder Engagement: Involve key technical and business stakeholders, such as development, platform, QA teams, and product managers. Each provides crucial insights into stability, user needs, and resource constraints.
 
-Realistically, as an SRE, it is common for stakeholders to expect the application to deliver 100% uptime and flawless performance. However, it's essential to communicate professionally why this expectation is *unachievable* and *unnecessary*.
+- Gathering Critical Information: Collect performance data, architecture diagrams, deployment processes, capacity planning information, and incident response details. This helps build a clear picture of the current system's strengths and areas for improvement.
 
-Understanding the inherent complexities and uncertainties in systems, we must educate stakeholders about the trade-offs involved in achieving high availability. Given that these discussions are likely to arise several times, being able to handle them with confidence and clarity is crucial.
-
-By pushing back against unrealistic expectations, we foster a more informed dialogue, helping stakeholders appreciate the balance between ambition and practicality. Ultimately, it's our responsibility to advocate for achievable service level objectives (SLOs) that ensure both reliability and a sustainable operational model while meeting user requirements. By articulating these points fluently, we can build trust and alignment with our stakeholders while driving continuous improvement in our systems."
-
-You have effectively addressed the CEO's demand for 100% uptime by:
-
-- **Challenging the feasibility of 100% reliability:** You clearly explained why achieving perfect uptime is practically impossible and highlighted the exponential relationship between reliability and cost.
-- **Emphasizing user needs:**  You highlighted the importance of aligning reliability targets with user expectations and business needs, rather than blindly pursuing an arbitrary number.
-- **Balancing reliability with other priorities:** You emphasized the need to balance reliability investments with other crucial factors like innovation and new feature development. Overachieving on reliability (providing more than what the user expects) is also not a good thing.
-
-**Key takeaway:**  You successfully communicated that 100% is the wrong target for everything and that a balanced approach to reliability is essential for the long-term success of Movie Guru.
-
-#### Information Gathering
-
-As the SRE responsible for improving Movie Guru's stability, you need to collaborate with various stakeholders within the organization. You are there to **break down silos** and not solve everthing on your own.
-Remember, there's no single "right answer" to this challenge.
-The goal is to encourage you to think critically about who you need to involve and what information you need to gather.
-
-To guide your thinking, consider these two key aspects:
-
-**Identify Key Stakeholders:**
-
- **Technical Teams:**
-    - **Development Team:** Responsible for the application code. They can provide insights into potential bugs, performance bottlenecks, and upcoming releases.
-    - **Platform Team:** Manages the underlying infrastructure (servers, databases, etc.). They can offer information about system architecture, resource allocation, potential infrastructure limitations, incident history, monitoring tools, and existing alerting mechanisms.
-    - **QA Team:** (If one exists) Responsible for testing the application. They can offer insights into known issues, testing procedures, and potential areas of fragility.
-
- **Business and Product Stakeholders:**
-    - **Product Owner/Product Manager:** Can provide crucial information about user needs and expectations regarding reliability, the product roadmap, and how stability fits into the overall business strategy.
-    - **Other Business Stakeholders:** Consider departments like marketing, sales, and customer support. They can offer insights into how reliability impacts their work, provide valuable user feedback, and clarify budget constraints.
-
-**Gather Essential Information:**
-
-Once you've identified the key stakeholders, consider what specific information you need from each of them. This might include:
-
-- **Current Performance Data:** Uptime history, error rates, latency metrics.
-- **System Architecture Diagrams:** Visual representations of the app's components and their interactions.
-- **Deployment Processes:** How new code is released and deployed to production.
-- **Monitoring and Alerting:** What tools and systems are used to monitor the app's health, and what alerts are in place?
-- **Incident Response Procedures:** How are incidents handled, and what are the communication channels? Also think about capacity plans, disaster recovery plans, backup/restore procedures etc.
-
-**Collaboration is Key:** Remember that achieving reliability is a shared responsibility. Building strong relationships with these teams is essential for success.
+- Balanced Reliability Goals: By aligning SLOs with both user needs and practical limits, we can drive improvements that support long-term stability and innovation, fostering trust and a sustainable reliability model.
 
 ## Challenge 3: SLOs: Not Just Another Acronym
 
@@ -281,9 +249,9 @@ Armed with the insights gained from exploring the app, collaborating with stakeh
 
 **Make guesses for this exercise whenever you don't have real information to go on.**
 
-1. **Choose Your Journeys:** Select two key user journeys for **Movie Guru**. These could be the ones you identified in Challenge 1 or the examples provided.
-1. **Choose Your SLIs:** What SLIs would you use to see that your application is healthy (as experienced by the user)?
-1. **Craft Your SLOs:** Define relevant SLOs for each chosen user journey using the SLIs identified above.
+1. **Choose Your Journeys:** Select two key user journeys for **Movie Guru**.
+2. **Choose Your SLIs:** What SLIs would you use to see that your application is healthy (as experienced by the user)?
+3. **Craft Your SLOs:** Define relevant SLOs for each chosen user journey using the SLIs identified above.
    - Consider what aspects of reliability matter most to users in each journey and how you can measure success.
    - See **Learning Resources** for an example.
 
@@ -296,6 +264,8 @@ Armed with the insights gained from exploring the app, collaborating with stakeh
   - **Service Level Indicator (SLI):**  A metric used to assess the service's performance against the objective (e.g., availability, latency,  quality, throughput, timeliness). Make your best guess here.
 
 ### Learning Resources
+
+- [The Google SRE book](https://sre.google/sre-book/table-of-contents/)
 
 #### What are SLIs?
 
@@ -375,33 +345,37 @@ Metrics and Service Level Indicators (SLIs) both provide valuable data about a s
 
 ### Introduction
 
-Now that you’re familiar with the business goals and the SLIs that measure them, and you know your app's current performance, it's time to set improvement goals. We'll be setting achievable short-term targets and aspirational long-term objectives for the app.
+Now that you’re familiar with the business goals and the SLIs that measure them, and you know your app's current performance, it's time to set improvement goals. We'll be setting achievable targets for your teams to achieve in 1 month and aspirational long-term objectives for the app.
 
 ### Description
 
 > **Note**: For this exercise, make educated guesses if exact data isn’t available.
 
-1. Define **Achievable** objectives in the SLO templates below.
-   - Set realistic, achievable values that you’d like the app to reach in the next month. Use the app’s current performance as a reference point.
+1. Define **Achievable** SLOs (on paper) for the business goals below.
+   - Set realistic, achievable values that you’d like the app to reach in the next month. Use the app’s current performance as a reference point. Your application needs to walk before it can run.
 
-2. Define **Aspirational** SLOs in the templates below.
+2. Define **Aspirational** SLOs (on paper) for the business goals below.
    - Picture Movie Guru a year from now: an efficient, user-delighting tool (but still short of perfection—since unicorns and 100% targets are rare in the real world). These SLOs should represent goals your team can work toward in the coming year.
 
-#### SLO Templates
+#### Business goals
 
 **Business Goal 1**: Ensure users can access the main page quickly and reliably.
 
-SLO 1a: xx% of users should successfully access the main page after logging in, measured over a zz-day rolling window.
-SLO 1b: xx% of users should access the main page after logging in within yy seconds, measured over a zz-day rolling window.
+Define SLO 1a: Availability SLO
+Define SLO 1b: Latency SLO
 
 **Business Goal 2**: Ensure the chatbot responds quickly and keeps users engaged.
 
-SLO 2a: xx% of users should be engaged by the chatbot, measured over a zz-hour rolling window.
-SLO 2b: xx% of users should receive responses within yy seconds, measured over a zz-hour rolling window.
+Define SLO 2a: Quality SLO (based on user engagement)
+Define SLO 2b: Latency SLO
 
 ### Success Criteria
 
-- You’ve established realistic short-term SLO objectives that are achievable within the current month.
+- You’ve established **Achievable** SLO objectives that are to be met within the current month.
+  - Each SLO has a target value and a compliance period (see examples below)
+  - Example SLOs for a fictional shopping cart service:
+    - Availability: 99.9% of the users are able to visit the shopping cart measured over a 24-hour rolling window.
+    - Latency:  99% of users should be able to load the shopping cart within 600 milliseconds, measured over a 24-hour rolling window.
 - You’ve set aspirational SLOs based on an ideal user experience to aim for over the next year.
 - Your objectives are backed by logical business assumptions.
 
@@ -411,7 +385,7 @@ SLO 2b: xx% of users should receive responses within yy seconds, measured over a
 
 Run the following command in the **Cloud Shell terminal**.
 
-> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
+> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way. You're simulating fixes made to the app after 1-2 months work.
 
 ```sh
 ## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
@@ -449,7 +423,7 @@ $BACKEND_ADDRESS/phase
 
 ### Introduction
 
-This challenge is about up the short-term Service Level Objectives (SLOs) for the app in Cloud Monitoring Suite. SLOs help you define and track the performance targets for your service, ensuring a positive user experience.
+This challenge is about setting up **Achievable** Service Level Objectives (SLOs) for the app in Cloud Monitoring Suite. These are targets you expect to meet in 1-2 months after making a few improvements to the app.
 
 #### Description
 
@@ -467,7 +441,7 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 
 1. **Create 4 SLOs**
   
-   Now, let's create the specific SLOs for your service:
+   Now, let's create the specific SLOs for your service. Feel free to use the values you defined in the previous challenge.
 
    - Chat Latency:
      - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the **prometheus targets > movieguru** section)
