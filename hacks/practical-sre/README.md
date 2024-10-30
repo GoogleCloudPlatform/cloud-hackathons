@@ -1,12 +1,12 @@
 # Practical SRE
 
-Welcome to the Practical SRE (Site Reliability Engineering) Workshop! In this hands-on session, you’ll step into the role of SREs and Product Owners for the **Movie Guru** GenAI app—a cutting-edge application that helps users find movies using natural language queries powered by AI. Your mission is to ensure that Movie Guru delivers a smooth, reliable, and responsive experience for its users.
+Welcome to the Practical SRE (Site Reliability Engineering) gHack! In this hands-on session, you’ll step into the role of SREs and Product Owners for the **Movie Guru** GenAI app—a cutting-edge application that helps users find movies using natural language queries powered by AI. Your mission is to ensure that Movie Guru delivers a smooth, reliable, and responsive experience for its users.
 
 The Movie Guru app's backend is currently running in your cloud environments and has been pre-instrumented to silently generate a wealth of metrics through the use of a load generator. This means that as you work on these challenges, you’ll have access to valuable data reflecting its performance and user interactions, allowing you to make informed decisions throughout the workshop.
 
 By the end of this workshop, you’ll have developed a comprehensive reliability framework for Movie Guru, gaining practical SRE skills that can be applied to real-world systems.
 
-Remember, if there is a term being used in the challenge you don't understand, there **Learning Resources** section at the bottom of the challenge probably explains it. Otherwise, there is always **Google**.
+Remember, if there is a term being used in the challenge you don’t understand, look at the **Learning Resources** section at the bottom of the challenge text. Otherwise, **Google** can be your best friend.
 
 ## Learning Objectives
 
@@ -34,8 +34,9 @@ In this hack you will learn how to:
 ## Prerequisites
 
 - Your own GCP project with Editor IAM role.
-- Kubectl
-- gcloud command line tool
+- `kubectl` command line tool
+- `gcloud` command line tool
+- **Note** We recommend using the Cloud Shell to run the challenges as it has all the necessary tooling already installed.
 
 ## Contributors
 
@@ -50,7 +51,7 @@ Before we start our first day as SREs, we are going to start up metrics collecti
 
 #### Step 1: Make note of the 3 IP addresses from your environment
 
-- Copy the values (after replacing the placeholders) into a notepad to be able to re-run when needed.
+- Copy the values (after replacing the placeholders) into a notepad to be able to re-run when needed. Your coach will provide you the values of these variables.
 - You might need to re-run them before running command-line commands for all challenges.
 
   ```sh
@@ -87,7 +88,7 @@ Before we start our first day as SREs, we are going to start up metrics collecti
 
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
 
-Run the following in the terminal (**Cloud Shell terminal**)
+Run the following in the **Cloud Shell terminal**
 
 ```sh
 ## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
@@ -141,8 +142,7 @@ This challenge involves exploring the Movie Guru app and documenting typical use
     - Check your user profile to see if the app remembers your preferences.
     - Log out and log in again to understand the app's behavior.
   
-> **Warning**: AI platform rate limits in qwiklabs environments can be very low (around 10 per minute). This
-    might cause the app to fail (Oops.. Something went wrong). If that is the case, then watch this video with sound turned down to understand the working of the app.
+> **Warning**: AI platform rate limits in qwiklabs environments can be very low (around 10 per minute). This might cause the app to fail (Oops.. Something went wrong). If that is the case, then watch this video with sound turned down to understand the working of the app.
 
 [![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
 
@@ -154,7 +154,7 @@ This challenge involves exploring the Movie Guru app and documenting typical use
     - Goal: [What does the user want to achieve?]
     - Steps: [List the specific actions the user takes to achieve the goal]
 
-> **Note**: If you need a refresher on what a user journey is, visit the section on **What is a user journey?** (in **Learning Resources**).
+> **Note**: If you need a refresher on what a user journey is, visit the section on [What is a user journey?](#what-is-a-user-journey) (in **Learning Resources**).
 
 ### Success Criteria
 
@@ -170,7 +170,7 @@ In the context of SRE (Site Reliability Engineering), a user journey (UJ) descri
 
 Here is an example UJ for a typical online webshop:
 
-#### Example: Adding an Item to an Online Shopping Cart
+##### Example: Adding an Item to an Online Shopping Cart
 
 Goal: Add a desired product to their shopping cart.
 Steps:
@@ -194,7 +194,7 @@ Your challenge:  figure out how to improve the app's stability, manage the CEO's
 
 ### Description
 
-1. **Initial Response to CEO:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with a teammate or coach. Optionally you and your team do a short role-play with one of you acting as the CEO.
+1. **Initial Response to CEO:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with your teammates and coach. You can also do a short role-play with one of you acting as the CEO.
 
    > **Note**: The focus on the role-play should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
 
@@ -297,11 +297,11 @@ Armed with the insights gained from exploring the app, collaborating with stakeh
 
 ### Learning Resources
 
-### What are SLIs?
+#### What are SLIs?
 
 Service Level Indicators (SLIs) are specific measurements that show how well a service is performing. They help teams understand if they are meeting their goals for reliability and quality. For example, one SLI might measure how often a website is available to users, while another could track how quickly the website responds to requests. An SLI can also look at the number of errors or failures compared to total requests. These indicators are important because they help teams see where they can improve their services.
 
-### What are SLOs?
+#### What are SLOs?
 
 Based on Google's SRE framework, Service Level Objectives (SLOs) are target values or ranges for a service's reliability, measured by Service Level Indicators (SLIs). SLOs help you define the desired user experience and guide decisions about reliability investments. They act as a key communication tool between technical teams and business stakeholders, ensuring everyone is aligned on what level of reliability is acceptable and achievable.  Crucially, SLOs should be based on what matters most to users, not arbitrary targets like 100% uptime.
 
@@ -338,7 +338,7 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
     - **Going Well:** Areas with good performance.  
     - **Need Improvement:** Areas with minor performance issues.  
     - **Need Improvement Urgently:** Areas with significant performance issues impacting user experience.
-1. **Choose Your SLIs:** Create 4 SLIs from metrics that are already available. 
+1. **Choose Your SLIs:** Create 4 SLIs from metrics that are already available.
    - Define SLIs (on paper) by examining the dashboards to identify relevant metrics. In many cases, the dashboards already display key SLIs.
    - Write them down in definition form.
      - Example Availability SLI: The availability of `service abc` is measured by the ratio of successful startups recorded as a ratio of `metric x` to the total attempts in `metric y`.
@@ -359,11 +359,11 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
 
 ### Learning Resources
 
-### How do metrics differ from SLIs?
+#### How do metrics differ from SLIs?
 
 Metrics and Service Level Indicators (SLIs) both provide valuable data about a system’s performance, but they serve distinct roles. Metrics are broad measurements that capture various aspects of system activity, such as CPU usage, latency, and error rates. They form the foundational data used to observe, monitor, and troubleshoot a system. SLIs, on the other hand, are carefully selected metrics that directly reflect the quality of service experienced by users. Focusing on factors like availability, latency, or error rate, SLIs gauge how well a service is meeting specific reliability targets known as Service Level Objectives (SLOs). While metrics provide a comprehensive view of system health, SLIs narrow the focus to measure the specific qualities that most affect user satisfaction, aligning system performance with business objectives.
 
-### Latency Metrics
+#### Latency Metrics
 
 - These metrics (for all dashboards) measures how long it takes for users to get a successful response from the server.
 - It provides insights into the speed and efficiency of a specific server process (eg: login, chat, etc).
@@ -409,7 +409,7 @@ SLO 2b: xx% of users should receive responses within yy seconds, measured over a
 
 ### Prerequisites
 
-Run the following command on a terminal (**Cloud Shell terminal**).
+Run the following command in the **Cloud Shell terminal**.
 
 > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way.
 
@@ -478,7 +478,7 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
      - Metric: **movieguru_chat_outcome_counter_total** (Filter: Outcome=Engaged)
      - Target: 70% of chat interactions should result in an "Engaged" outcome.
      - Time Window: **24-hour** rolling window
-     - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Accepted** to indicate that the user finds the response relevant, but we will stick to just Engaged for now. 
+     - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Accepted** to indicate that the user finds the response relevant, but we will stick to just Engaged for now.
      - [Optional] If you want to use a filter that incorporates both **Engaged** and **Acknowledged**, use the monitoring API to create the SLO (see example).
 
    - Main Page Load Latency:
@@ -494,7 +494,7 @@ This challenge is about up the short-term Service Level Objectives (SLOs) for th
 ### Success Criteria
 
 - You have all the SLOs created.
-- You have created atleast 1 SLO through the Monitoring API.
+- You have created at least 1 SLO through the Monitoring API.
 
 ### Learning Resources
 
@@ -634,8 +634,6 @@ This challenge guides you through monitoring the four SLOs created in the previo
 
 ### Success Criteria
 
-To verify successful completion of this exercise, check the following:
-
 - **Burn Rate Triggers**: Ensure you have created 2 burn rate alerts for all your SLOs (8 in total).
   - These alerts should be configured to trigger at different burn rates (e.g., 1.5-2.0x for slow burn, 10x for fast burn) to capture varying levels of degradation.
 - You've identified 2 problematic SLOs.
@@ -738,8 +736,6 @@ $BACKEND_ADDRESS/phase
   - **Consider:**  What are the implications of this discrepancy for your monitoring and alerting strategy? How can you improve your monitoring to better reflect the actual user experience?
 
 ### Success Criteria
-
-To successfully complete this challenge, you should be able to:
 
 - **Identify the monitoring gap:**  Explain that the current dashboards only track server-side metrics and lack visibility into the frontend performance, leading to a blind spot in monitoring.
 - **Pinpoint the potential cause:**  Deduce that a recent change likely broke the connection between the frontend and backend, causing the user-facing issues.
