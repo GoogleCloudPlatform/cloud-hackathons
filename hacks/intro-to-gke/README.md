@@ -25,22 +25,22 @@ In this gHack you will experience what a cloud developer needs to go through to 
 ## Challenges
 
 - Challenge 1: Provision a GKE Cluster
-   - Create a new GKE cluster that you'll use to deploy, scale and update your application
+  - Create a new GKE cluster that you'll use to deploy, scale and update your application
 - Challenge 2: Containerizing your Application
-   - Run your application in a stand alone fashion and then containerize it to prepare it for deployment to GKE
+  - Run your application in a stand alone fashion and then containerize it to prepare it for deployment to GKE
 - Challenge 3: Deploy and Expose the Application
-   - Using your containerized app in Artifact Registry, deploy it to GKE and expose it to the public internet
+  - Using your containerized app in Artifact Registry, deploy it to GKE and expose it to the public internet
 - Challenge 4: Scale the Application to Handle Increased Traffic
-   - Now that the application is deployed and out there, we've noticed an increase in traffic and need to scale out to handle the new load
+  - Now that the application is deployed and out there, we've noticed an increase in traffic and need to scale out to handle the new load
 - Challenge 5: Update and Release with Zero Downtime
-   - Change is inevitable, but new releases need to be deployed smoothly. Here we learn how to do that with zero downtime
+  - Change is inevitable, but new releases need to be deployed smoothly. Here we learn how to do that with zero downtime
 
 ## Prerequisites
 
 - Your own GCP project with Owner IAM role
-- A basic understanding of Docker and Kubernetes 
-   - If you lack a basic understanding, you can review [Docker](https://docs.docker.com/) and [Kubernetes](https://kubernetes.io/docs/home/) now.
-- Access to an environment with the following 
+- A basic understanding of Docker and Kubernetes
+  - If you lack a basic understanding, you can review [Docker](https://docs.docker.com/) and [Kubernetes](https://kubernetes.io/docs/home/) now.
+- Access to an environment with the following
   - gcloud (>= 410.0.0)
   - node.js (>= v19.1.0)
   - **Note** Cloud Shell has these pre-installed
@@ -49,7 +49,7 @@ In this gHack you will experience what a cloud developer needs to go through to 
 
 - Gino Filicetti
 
-## Challenge 1: 
+## Challenge 1: Provision a GKE Cluster
 
 ### Introduction
 
@@ -81,7 +81,7 @@ In this challenge, you will create a single *Standard* GKE cluster as per these 
 
 - Keep in mind that you need to get the credentials to connect `kubectl` to your cluster.
 
-## Challenge 2: 
+## Challenge 2: Containerizing your Application
 
 ### Introduction
 
@@ -91,16 +91,17 @@ Now that our cluster is ready for action, we need to work on our monolithic appl
 
 In this challenge, you will begin by installing the application and making sure it works standalone first, before starting any work on it.
 
-We've made the application available on github as a [zip file at this link](https://github.com/gfilicetti/monolith-to-microservices/archive/refs/heads/master.zip). Download the zip and extract its contents into your Cloud Shell (or local dev) environment. 
+We've made the application available on github as a [zip file at this link](https://github.com/gfilicetti/monolith-to-microservices/archive/refs/heads/master.zip). Download the zip and extract its contents into your Cloud Shell (or local dev) environment.
 
 To set up required node.js libraries in a fresh download, run the `setup.sh` script. Afterwards, you need to start the node.js application in the `monolith` folder and pull up the home page of your app to make sure it is working.
 
 Now that we've confirmed it is working, we need to containerize the application and deploy it to a Docker repository.
 
 You'll need to do the following:
+
 - Create a new standard Artifact Registry to store docker containers (choose a region near you)
 - Using Google Cloud Build, issue a single `gcloud` command that will build a container and push it up to your new Artifact Registry.
-   - **NOTE:** You will need to run this command in the global region
+  - **NOTE:** You will need to run this command in the global region
 
 ### Success Criteria
 
@@ -119,7 +120,7 @@ You'll need to do the following:
 - If using the Cloud Shell as recommended, there is an easy way to open a browser window to a port of your choice running in the Cloud Shell.
 - A `Dockerfile` is already provided for you in the git repository you cloned.
 
-## Challenge 3: 
+## Challenge 3: Deploy and Expose the Application
 
 ### Introduction
 
@@ -142,12 +143,14 @@ In this challenge you will create a Deployment resource for your application and
 We will create yaml files describing the Deployment and Service resources you will need to create to achieve this.
 
 Your Deployment resource will need to:
+
 - Use the container image that we built and pushed to your docker repository in Artifact Registry.
 - Deploy only 1 replica of our container
 - Expose the container on port 8080
 - Use an appropriate label to identify the pod
 
 Your Service resource will need to:
+
 - Be exposed externally on port 80
 - Send requests to the application on the port it uses
 - Use a selector that matches the label on the application's pod
@@ -175,10 +178,11 @@ Lastly, simulate a Pod crash by deleting a Pod with a `kubectl` command. Immedia
 - [Service Overview](https://kubernetes.io/docs/concepts/services-networking/service/)
 
 ### Tips
-- You can view your Kubernetes deployments, pods and services via the Cloud Console. 
+
+- You can view your Kubernetes deployments, pods and services via the Cloud Console.
 - If you see unexpected errors or statuses, then you can debug your resources by using the `describe` command in `kubectl` for the various resources.
 
-## Challenge 4: 
+## Challenge 4: Scale the Application to Handle Increased Traffic
 
 ### Introduction
 
@@ -188,7 +192,7 @@ Now that you have a running instance of your app in GKE and exposed it to the in
 
 Using `kubectl`, issue a command to scale your deployment from 1 to 3 instances. Confirm that new Pods were created by looking at all resources.
 
-Although we can issue `kubectl` commands like the above to scale our deployment, it is better practice to do this declaratively. Update your Deployment yaml file and change it to deploy **5** instances. 
+Although we can issue `kubectl` commands like the above to scale our deployment, it is better practice to do this declaratively. Update your Deployment yaml file and change it to deploy **5** instances.
 
 Apply the new yaml file and confirm that new Pods were created by looking at all resources.
 
@@ -198,11 +202,11 @@ Apply the new yaml file and confirm that new Pods were created by looking at all
 - Show your coach that you've scaled to 3 instances by using a `kubectl` command
 - Show your coach that you've scaled to 5 instances by modifying your Deployment yaml file
 
-## Challenge 5: 
+## Challenge 5: Update and Release with Zero Downtime
 
 ### Introduction
 
-Your marketing team has asked you to change your application's homepage. They think that it should be more informative by explaining what your company is and what you actually sell. In this section, you'll add some text to the homepage to make the marketing team happy. 
+Your marketing team has asked you to change your application's homepage. They think that it should be more informative by explaining what your company is and what you actually sell. In this section, you'll add some text to the homepage to make the marketing team happy.
 
 To ensure seamless and uninterrupted service to your customers, we need to update your application with zero downtime using Kubernetes' rolling updates functionality.
 
@@ -213,11 +217,12 @@ It looks like one of our helpful developers has already created the changes with
 Now that we've changed the application it needs to be rebuilt and a new container image needs to be created and pushed to the Artifact Registry with a new label to distinguish it from the original image.
 
 > **Note** Since this isn't a ReactJS gHack, we will give you the command to run from the root folder of the React app (ie: `./react-app`):
-> ```bash
+>
+> ```shell
 >  npm run build:monolith
 > ```
 
-Now that the React app has been rebuilt, you can build and push a new container image. 
+Now that the React app has been rebuilt, you can build and push a new container image.
 
 Once we have a new container image ready, we need to roll it out to production.
 

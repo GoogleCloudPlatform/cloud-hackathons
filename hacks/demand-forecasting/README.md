@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this hack, you’ll implement a state of the art deep learning forecasting model in just a few hours thanks to Vertex AI AutoML. We’ll provide you with a sample notebook and you’ll work on extending that notebook to train a model, run inference and see results. 
+In this hack, you’ll implement a state of the art deep learning forecasting model in just a few hours thanks to Vertex AI AutoML. We’ll provide you with a sample notebook and you’ll work on extending that notebook to train a model, run inference and see results.
 
 ## Learning Objectives
 
@@ -17,7 +17,7 @@ This hack will help you explore:
 
 - Challenge 1: Let’s start importing data!
 - Challenge 2: How quickly can you start training?
-- Challenge 3: Getting the evaluation results 
+- Challenge 3: Getting the evaluation results
 - Challenge 4: Time for batch prediction
 
 ## Prerequisites
@@ -46,19 +46,17 @@ Create a Managed Notebook on Vertex AI. We’ve prepared [a sample project on Gi
 
 ### Tips
 
-- You can use the terminal in VertexAI Workbench to clone the repository. If you prefer a UI, [here](https://cloud.google.com/vertex-ai/docs/workbench/user-managed/save-to-github) is a tutorial on how to do it. 
-
+- You can use the terminal in VertexAI Workbench to clone the repository. If you prefer a UI, [here](https://cloud.google.com/vertex-ai/docs/workbench/user-managed/save-to-github) is a tutorial on how to do it.
 
 ### Learning Resources
 
 - Documentation on [Vertex AI Workbench](https://cloud.google.com/vertex-ai/docs/workbench/managed/introduction)
 
-
 ## Challenge 2: How quickly can you start training?
 
 ### Introduction
 
-The objective of this challenge is to create an AutoML forecasting model for the next 30 days using the dataset from the first challenge. Instead of a point forecast we want you to output quantile forecasts so you can fine tune your results based on your business use case.  We already provided you the skeleton of the function but you need to fill it in. 
+The objective of this challenge is to create an AutoML forecasting model for the next 30 days using the dataset from the first challenge. Instead of a point forecast we want you to output quantile forecasts so you can fine tune your results based on your business use case.  We already provided you the skeleton of the function but you need to fill it in.
 
 ### Success Criteria
 
@@ -67,7 +65,7 @@ The objective of this challenge is to create an AutoML forecasting model for the
 
 ### Tips
 
-- Be careful on which metric you choose as an optimization objective. Quantile predictions require a specific parameter. 
+- Be careful on which metric you choose as an optimization objective. Quantile predictions require a specific parameter.
 - Training  will take ~2.5 hours to complete.
 
 ### Learning Resources
@@ -75,7 +73,7 @@ The objective of this challenge is to create an AutoML forecasting model for the
 Training documentation is [here](https://cloud.google.com/python/docs/reference/aiplatform/latest/google.cloud.aiplatform.AutoMLForecastingTrainingJob) & tabular training kick-off documentation is [here](https://cloud.google.com/python/docs/reference/aiplatform/latest/google.cloud.aiplatform.AutoMLTabularTrainingJob).
 Read optimization objectives for forecast models [here](https://cloud.google.com/vertex-ai/docs/tabular-data/forecasting/train-model#optimization-objectives).
 
-## Challenge 3: Getting the evaluation results 
+## Challenge 3: Getting the evaluation results
 
 ### Introduction
 
@@ -93,11 +91,11 @@ You might need to make some minor changes to the code base to have a successful 
 
 Here is a [pointer](https://cloud.google.com/vertex-ai/docs/samples/aiplatform-list-model-evaluation-slices-sample) to help you get started.
 
-## Challenge 4: Time for batch prediction 
+## Challenge 4: Time for batch prediction
 
 ### Introduction
 
-What good is a model if you don’t run inference against it? We’ll use the model generated in the  previous challenge to run batch prediction against it. Again, we have the code skeleton ready for you. 
+What good is a model if you don’t run inference against it? We’ll use the model generated in the  previous challenge to run batch prediction against it. Again, we have the code skeleton ready for you.
 
 ### Success Criteria
 
@@ -107,4 +105,3 @@ What good is a model if you don’t run inference against it? We’ll use the mo
 
 - You can get started with batch predictions [here](https://cloud.google.com/vertex-ai/docs/predictions/overview).
 - You’re done with the challenge, you can now either clean up your resources or move forward to take home challenge!
-

@@ -3,6 +3,7 @@
 Before we can get started hacking, we need to set up our environment using a script provided by your gHack to provision all the needed resources.
 
 This document has two sections, pick the one that corresponds to where you're running this gHack:
+
 - [My Own Environment](#setting-up-your-own-environment)
 - [A Qwiklabs Environment](#setting-up-a-qwiklabs-environment)
 
@@ -30,28 +31,30 @@ Although you can use the Google Cloud command line interface locally on your mac
 
 You've been given a set of files that you will need through-out this gHack. We need to copy them into the right places.
 
-- In the Google Space for this gHack Event, go to the **Files** tab and download **ALL** available files to your computer. 
-	> **Note** Your hack may not come with all of these files, that's ok.
+- In the Google Space for this gHack Event, go to the **Files** tab and download **ALL** available files to your computer.
+  > **Note** Your hack may not come with all of these files, that's ok.
 
-	![Files Tab](images/setup-space-files.png)
+  ![Files Tab](images/setup-space-files.png)
 
 - Now go to the Cloud Shell, click the 3 vertical dots and select **Upload**.
 
-	![Cloud Shell Upload](images/setup-cloud-shell-upload.png)
+  ![Cloud Shell Upload](images/setup-cloud-shell-upload.png)
 
 - If `student-files.zip` exists for your gHack you need to:
-	- Upload it to the Cloud Shell
-	- Run this command in the Cloud Shell to unzip it:
-		```bash
-		unzip student-files.zip -d ~/student-files
-		```
+  - Upload it to the Cloud Shell
+  - Run this command in the Cloud Shell to unzip it:
+  
+    ```bash
+    unzip student-files.zip -d ~/student-files
+    ```
 
 - If `ghacks-setup.zip` exists for your gHack you need to:
-	- Upload it to the Cloud Shell
-	- Run this command in the Cloud Shell to unzip it:
-		```bash
-		unzip ghacks-setup.zip -d ~/ghacks-setup
-		```
+  - Upload it to the Cloud Shell
+  - Run this command in the Cloud Shell to unzip it:
+
+    ```bash
+    unzip ghacks-setup.zip -d ~/ghacks-setup
+    ```
 
 - Leave the unzipped student files where they are, we will be using them in various challenges throughout this gHack.
 
@@ -86,18 +89,18 @@ terraform output
 
 Qwiklabs provide isolated sandbox environments to run gHacks. In principle a sandbox environment will include a single Google Cloud Project configured for 5 users (students). The *Terraform* scripts from the *artifacts* directory are executed automatically when the lab is started, so the participants don't have to do that themselves.
 
-In order to get access to these environments, each team will pick **one** participant as the _Team Lead_. The Team Lead will create an account on the special [Qwiklabs instance for gHacks](https://explore.qwiklabs.com). Once this is set up, the Lead Coach will add the Team Lead's email account to the created _Classroom_.
+In order to get access to these environments, each team will pick **one** participant as the *Team Lead*. The Team Lead will create an account on the special [Qwiklabs instance for gHacks](https://explore.qwiklabs.com). Once this is set up, the Lead Coach will add the Team Lead's email account to the created *Classroom*.
 
 ### Qwiklabs Instance
 
-When the _Classroom_ is started (on the day of the event), the participant that has created the account (Team Lead) can log in to the [Qwiklabs instance](https://explore.qwiklabs.com) and will see the lab displayed on the home page.
+When the *Classroom* is started (on the day of the event), the participant that has created the account (Team Lead) can log in to the [Qwiklabs instance](https://explore.qwiklabs.com) and will see the lab displayed on the home page.
 
 > **Warning**  
-> Only the Team Lead needs to join the Qwiklabs instance and follow the instructions below to start the lab. 
+> Only the Team Lead needs to join the Qwiklabs instance and follow the instructions below to start the lab.
 
 ![Qwiklabs Home](images/setup-qwiklabs-home.png)
 
-Once the Team Lead clicks on the course, and picks the lab, the lab can be started by clicking on the _Start_ button.
+Once the Team Lead clicks on the course, and picks the lab, the lab can be started by clicking on the *Start* button.
 
 ![Qwiklabs Start](images/setup-qwiklabs-start.png)
 
@@ -105,7 +108,7 @@ After the lab has started, on the left side of the screen, there will be a set o
 
 ![Qwiklabs Users](images/setup-qwiklabs-users.png)
 
-Although the passwords are the same, the user names will be different. The Team Lead will need to distribute this information to the rest of the team so that everybody can log in to the same project as _different_ users. 
+Although the passwords are the same, the user names will be different. The Team Lead will need to distribute this information to the rest of the team so that everybody can log in to the same project as *different* users.
 
 ### Google Cloud Console
 
@@ -113,22 +116,22 @@ Next step is to open the [Google Cloud Console](https://console.cloud.google.com
 
 ![GCP Welcome](images/setup-qwiklabs-welcome-account.png)
 
-Once you've logged in, you'll need to accept the _Terms of Service_
+Once you've logged in, you'll need to accept the *Terms of Service*
 
 ![GCP ToS](images/setup-qwiklabs-welcome-tos.png)
 
-And pick the right project by clicking on _Select a Project_
+And pick the right project by clicking on *Select a Project*
 
 ![GCP Select Project](images/setup-qwiklabs-select-project.png)
 
-And choose the project that starts with _qwiklabs-gcp_
+And choose the project that starts with *qwiklabs-gcp*
 
 ![GCP Project](images/setup-qwiklabs-ql-project.png)
 
 If your gHack requires you to set up student resources, you'll be provided a `student-files.zip`. In that case follow the instructions in [this](#upload-and-unzip-all-student-files) section to complete the setup. In Qwiklabs mode you can ignore the `ghacks-setup.zip` as that has been executed automatically for you.
 
 > **Note**  
-Since every team member will have access to the same Google Cloud Project, we recommend assigning a different _driver_ for each challenge so that everybody gets to participate hands-on. The _driver_ can share their screen so that the rest can see what's going on.
+Since every team member will have access to the same Google Cloud Project, we recommend assigning a different *driver* for each challenge so that everybody gets to participate hands-on. The *driver* can share their screen so that the rest can see what's going on.
 
 > **Warning**
 > Although the Qwiklabs lab will include the instructions for the hack, we recommend you to follow the instructions on the [gHacks website](https://ghacks.dev) as those are accessible to **all** students (only the Team Lead will be logged into the Qwiklabs instance) and have a better layout.
@@ -138,7 +141,7 @@ Since every team member will have access to the same Google Cloud Project, we re
 - You have a project for your hacking
 - You've confirmed that Cloud Shell is working for you
 - You've uploaded and unzip student resources if they were provided
-- You've run the Terraform script to install all needed pre-requisites if you're not using Qwiklabs 
+- You've run the Terraform script to install all needed pre-requisites if you're not using Qwiklabs
 
 ## Learning Resources
 

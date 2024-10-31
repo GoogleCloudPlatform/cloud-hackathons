@@ -9,15 +9,15 @@ Remember that this hack includes a [lecture presentation](resources/lectures.pdf
 ## Coach's Guides
 
 - Challenge 1: Getting started
-   - Get yourself ready to develop our FastFresh solution
+  - Get yourself ready to develop our FastFresh solution
 - Challenge 2: Replicating Oracle Data Using Datastream
-   - Backfill the Oracle FastFresh schema and replicate updates to Cloud Storage in real time.
+  - Backfill the Oracle FastFresh schema and replicate updates to Cloud Storage in real time.
 - Challenge 3: Creating a Dataflow Job using the Datastream to BigQuery Template
-   - Now it’s time to create a Dataflow job which will read from GCS and update BigQuery. You will deploy the pre-built Datastream to BigQuery Dataflow streaming template to capture these changes and replicate them into BigQuery.
+  - Now it’s time to create a Dataflow job which will read from GCS and update BigQuery. You will deploy the pre-built Datastream to BigQuery Dataflow streaming template to capture these changes and replicate them into BigQuery.
 - Challenge 4: Building a Demand Forecast
-   - In this challenge you will use BigQuery ML to build a model to forecast the demand for products in store.
+  - In this challenge you will use BigQuery ML to build a model to forecast the demand for products in store.
 - Challenge 5: Visualizing the results
-   - In this challenge you will use your favourite visualization tool to display the predictions from the previous challenge
+  - In this challenge you will use your favourite visualization tool to display the predictions from the previous challenge
 
 ## Challenge 1: Getting started
 
@@ -25,7 +25,7 @@ Remember that this hack includes a [lecture presentation](resources/lectures.pdf
 
 Create a Cloud Storage bucket to store the replicated data
 
-```bash
+```shell
 gsutil mb -l ${REGION} gs://${PROJECT_ID}
 ```
 
@@ -52,20 +52,22 @@ bq mk --location ${REGION} --dataset ${PROJECT_ID}:retail
 ### Notes & Guidance
 
 In Cloud Console, navigate to Datastream and click **Create Stream**. A form is generated. Populate the form as follows and click **Continue**:
-   - **Stream name**: `oracle-cdc`
-   - **Stream ID**: `oracle-cdc`
-   - **Source type**: `Oracle`
-   - **Destination Type**: `Cloud Storage`
-   - **All other fields**: `Keep the default value`
+
+- **Stream name**: `oracle-cdc`
+- **Stream ID**: `oracle-cdc`
+- **Source type**: `Oracle`
+- **Destination Type**: `Cloud Storage`
+- **All other fields**: `Keep the default value`
 
 In the **Define & Test Source** section, select **Create new connection profile**. A form is generated. Populate the form as follows:
-   - **Connection profile name**: `oracle-src`
-   - **Connection profile ID**: `oracle-src`
-   - **Hostname**: `See TF outputs, IP of the VM`
-   - **Port**: `1521`
-   - **Username**: `See TF outputs`
-   - **Password**: `See TF outputs`
-   - **System Identifier (SID)**: `See TF outputs`
+
+- **Connection profile name**: `oracle-src`
+- **Connection profile ID**: `oracle-src`
+- **Hostname**: `See TF outputs, IP of the VM`
+- **Port**: `1521`
+- **Username**: `See TF outputs`
+- **Password**: `See TF outputs`
+- **System Identifier (SID)**: `See TF outputs`
 
 Choose the connectivity method **IP allowlisting**, and then click **Continue**.
 
@@ -122,7 +124,7 @@ Required parameters for the template *Datastream to BigQuery*
 | Datastream output file format (avro/json) | json |
 | Name or template for the dataset to contain staging tables | retail |
 | Template for the dataset to contain replica table | retail |
-| Dead letter queue directory | gs://${PROJECT_ID}-other/dlq
+| Dead letter queue directory | gs://${PROJECT_ID}-other/dlq |
 
 The following optional parameters must be set too.
 
@@ -225,6 +227,7 @@ SELECT * FROM `retail.training_data` LIMIT 10;
 ![Training Query Results](images/training-query-results.png)
 
 #### Forecast Demand
+
 Still In BigQuery, execute the following SQL to create a time-series model that uses the ARIMA_PLUS algorithm:
 
 ```sql
@@ -259,7 +262,6 @@ FROM
 Because the training data is hourly, the horizon value will use the same unit of time when forecasting (hours). A horizon value of 48 hours will return forecast results over the next 2 days.
 
 > **Note** Since this is a small sample dataset, further investigation into the accuracy of the model is out of scope for this tutorial.
-
 
 ## Challenge 5: Visualizing the results - Coach's Guide
 

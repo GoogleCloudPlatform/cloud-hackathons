@@ -284,7 +284,7 @@ Latency: Calculated as the time it takes for the app to successfully save the up
 
 ## Challenge 4: Let the monitoring begin
 
-#### Notes & Guidance
+### Notes & Guidance
 
 This is the first challenge where students look at the metrics generated thus far.
 The **fake backend** is expected to generate metrics that show that the app is behaving suboptimally. Slow responses, frequent errors etc should be seen by looking at the dahsboard.
@@ -303,8 +303,6 @@ The students should notice how bad the performance and imagine what the user exp
 
 - **Availability:** Measured as the percentage of successful attempts to load the main interface of the Movie Guru app. (The availability is measured by the ratio of successful startups recorded as a ratio of **movieguru_startup_success_total** to the total startup attempts in **movieguru_startup_attempts_total**.)
 - **Latency:** Calculated as the combined latency of the login endpoint and the startup endpoint, both measured at the server. (The startup latency, measured by the **movieguru_startup_latency_milliseconds_bucket** metric, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.)
-
-
 
 #### SLO for Movie Guru Chatbot Responsiveness
 
@@ -331,7 +329,7 @@ The main page should be accessible and load quickly for users.
 
 **Aspirational SLO:**
 
-- SLO 1a: `99.5%` of users should be able to access the Movie Guru app measured over a `7`-day rolling window. 
+- SLO 1a: `99.5%` of users should be able to access the Movie Guru app measured over a `7`-day rolling window.
 - SLO 1b: `99%` of users should be able to access the Movie Guru app within `1` seconds measured over a `7`-day rolling window.
 
 #### Business Goal 2 SLOs

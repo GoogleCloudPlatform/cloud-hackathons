@@ -210,6 +210,8 @@ From this challenge onwards you'll have the option to either do online inferenci
 
 ### Online Inferencing
 
+<!-- markdownlint-disable-file  no-duplicate-heading -->
+
 ### Description
 
 So, you've chosen for online inferencing. In order to use the model to serve predictions in an online fashion it has to be deployed to an endpoint. Luckily Vertex AI provides exactly what we need, a managed service for serving predictions, called Online Prediction.

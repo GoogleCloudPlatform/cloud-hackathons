@@ -8,7 +8,7 @@ See below for the solutions as code snippets.
 
 - Challenge 1: Let’s start importing data!
 - Challenge 2: How quickly can you start training?
-- Challenge 3: Getting the evaluation results 
+- Challenge 3: Getting the evaluation results
 - Challenge 4: Time for batch prediction
 
 ## Challenge 1: Let’s start importing data!

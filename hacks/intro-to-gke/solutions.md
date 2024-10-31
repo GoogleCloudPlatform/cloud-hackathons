@@ -9,15 +9,15 @@ Welcome to the coach's guide for the Intro to GKE gHack. Here you will find link
 ## Coach's Guides
 
 - Challenge 1: Provision a GKE Cluster
-   - Create a new GKE cluster that you'll use to deploy, scale and update your application
+  - Create a new GKE cluster that you'll use to deploy, scale and update your application
 - Challenge 2: Containerizing your Application
-   - Run your application in a stand alone fashion and then containerize it to prepare it for deployment to GKE
+  - Run your application in a stand alone fashion and then containerize it to prepare it for deployment to GKE
 - Challenge 3: Deploy and Expose the Application
-   - Using your containerized app in Artifact Registry, deploy it to GKE and expose it to the public internet
+  - Using your containerized app in Artifact Registry, deploy it to GKE and expose it to the public internet
 - Challenge 4: Scale the Application to Handle Increased Traffic
-   - Now that the application is deployed and out there, we've noticed an increase in traffic and need to scale out to handle the new load
+  - Now that the application is deployed and out there, we've noticed an increase in traffic and need to scale out to handle the new load
 - Challenge 5: Update and Release with Zero Downtime
-   - Change is inevitable, but new releases need to be deployed smoothly. Here we learn how to do that with zero downtime
+  - Change is inevitable, but new releases need to be deployed smoothly. Here we learn how to do that with zero downtime
 
 ## Coach Prerequisites
 
@@ -27,11 +27,12 @@ The guide covers the common preparation steps a coach needs to do before any gHa
 
 ### Student Resources
 
-Before the hack, it is the Coach's responsibility create and make available needed resources including: 
+Before the hack, it is the Coach's responsibility create and make available needed resources including:
+
 - Files for students
 - Terraform scripts for setup (if running this gHack in a customer's environment)
 
-Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available) to create the zip files needed and upload them to your gHack's Google Space's Files area. 
+Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available) to create the zip files needed and upload them to your gHack's Google Space's Files area.
 
 Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
 
@@ -43,11 +44,12 @@ Always refer students to the [gHacks website](https://ghacks.dev) for the studen
 
 This is a pretty simple challenge, students just need to create a 3 node cluster, nothing special on top of it.
 
-You might want to suggest that they try to use the `gcloud` CLI to get a taste of how it would be done for real. 
+You might want to suggest that they try to use the `gcloud` CLI to get a taste of how it would be done for real.
 
 > **Warning** We have seen capacity issues creating clusters or kicking off Cloud Builds in this gHack. It seemed to affect certain regions so if you run into issues, try different regions. Also if SSD disks were used in creating the clusters, this will probably fail. Finally, make sure students don't create more than 3 nodes.
 
 ### Step By Step Walk-through
+
 Follow the steps below to create a cluster named **fancy-cluster** with **3** nodes of VM type: `n1-standard-2`:
 
 ```bash
@@ -62,7 +64,7 @@ gcloud compute instances list
 
 **Output:**
 
-```
+```text
 NAME: gke-fancy-cluster-default-pool-ca5667e3-89zl
 ZONE: us-central1-c
 MACHINE_TYPE: e2-medium
@@ -114,6 +116,7 @@ It might be worth explaining to the students why the Artifact Registry has super
 > **Note** The docs for Cloud Build will have an example where a specific region is specified in the command. This can be problematic because we don't have quota in some regions. If it causes an error, have them change the region.
 
 ### Step By Step Walk-through
+
 Because this is an existing website, you only need to clone the source from the repository so that you can focus on creating Docker images and deploying to GKE.
 
 Run the following commands to download the application to your home directory and unzip it and run the setup script to install the Node.js dependencies so that you can test your application before deploying it. It may take a few minutes for the setup script to run.
@@ -135,7 +138,7 @@ npm start
 
 **Output:**
 
-```
+```text
 Monolith listening on port 8080!
 ```
 
@@ -179,7 +182,7 @@ gcloud builds submit --region global --tag us-central1-docker.pkg.dev/${GOOGLE_C
 
 This process takes a few minutes, but after it's completed, you can see the following output in the terminal:
 
-```
+```text
 ID: 24d512cb-dbeb-40d2-8e45-21fa7a129137
 CREATE_TIME: 2023-07-05T13:27:13+00:00
 DURATION: 1M21S
@@ -198,12 +201,11 @@ On the build details page, you can see the tarball that was created and moved to
 
 ![Build Details](images/build-details.png)
 
-
 ## Challenge 3: Deploy and Expose the Application
 
 ### Notes & Guidance
 
-You'll need to gauge if your students are Kubernetes experts or completely new to it. There will be some minimal text about Pods and Deployments and Services but you should think about supplementing this with even more explanation about how K8S works. 
+You'll need to gauge if your students are Kubernetes experts or completely new to it. There will be some minimal text about Pods and Deployments and Services but you should think about supplementing this with even more explanation about how K8S works.
 
 Encourage students to use the Learning Resources. This is where they will find examples for all YAML files needed.
 
@@ -263,7 +265,7 @@ kubectl get all
 
 **Output:**
 
-```
+```text
 NAME                            READY   STATUS    RESTARTS   AGE
 pod/monolith-675bff5d7b-d46zv   1/1     Running   0          12m
 
@@ -325,7 +327,7 @@ kubectl get all
 
 **Output:**
 
-```
+```text
 NAME                            READY   STATUS        RESTARTS   AGE
 pod/monolith-675bff5d7b-qqw4t   1/1     Running       0          2s
 pod/monolith-675bff5d7b-w5zgf   1/1     Terminating   0          71s
@@ -381,12 +383,12 @@ kubectl get service
 
 **Output:**
 
-```bash
+```text
 NAME         CLUSTER-IP      EXTERNAL-IP     PORT(S)          AGE
 monolith     10.3.251.122    203.0.113.0     80:30877/TCP     3d
 ```
 
-After you determine the external IP address for your app, copy it. Point your browser to that URL (such as http://203.0.113.0) to check whether your app is accessible.
+After you determine the external IP address for your app, copy it. Point your browser to that URL (such as `http://203.0.113.0`) to check whether your app is accessible.
 
 ![Fancy Store](images/fancy-store-original.png)
 
@@ -426,7 +428,7 @@ kubectl get all
 
 **Output:**
 
-```bash
+```text
 NAME                            READY   STATUS    RESTARTS   AGE
 pod/monolith-7d8bc7bf68-2bxts   1/1     Running   0          36m
 pod/monolith-7d8bc7bf68-7ds7q   1/1     Running   0          45s
@@ -446,6 +448,7 @@ replicaset.apps/monolith-7d8bc7bf68   3         3         3       61m
 You should see three instances of your Pod running. Also, note that your Deployment and ReplicaSet now have a desired count of three.
 
 #### Scaling Declaratively
+
 Although we can issue `kubectl` commands like the above to scale our deployment, it is better practice to do this declaratively. We will update our Deployment yaml file and change it to the new desired number of replicas that we want and then feed it into Kubernetes so that it can make the necessary changes.
 
 In this case we will increase the number of replicas again, from 3 to 5 by editing our `monolith-deploy.yaml` yaml file and increasing the `replicas` to `5`:
@@ -488,7 +491,7 @@ kubectl get pods
 
 **Output:**
 
-```
+```text
 NAME                        READY   STATUS              RESTARTS   AGE
 monolith-675bff5d7b-9qtlk   0/1     ContainerCreating   0          13s
 monolith-675bff5d7b-gxmxg   1/1     Running             0          13s
@@ -498,7 +501,6 @@ monolith-675bff5d7b-wjv2c   0/1     ContainerCreating   0          13s
 ```
 
 Once all the containers start then you'll see `STATUS: Running` for all the pods.
-
 
 ## Challenge 5: Update and Release with Zero Downtime
 
@@ -593,7 +595,7 @@ The changes are completed and the marketing team is happy with your updates. It'
 
 Kubernetes' rolling updates feature ensures that your application remains up and available even when the system replaces instances of your old container image with your new one across all the running replicas.
 
-Although we can use `kubectl` to directly tell the deployment to update to a new version, as before the best practice is to update your Deployment yaml file and re-apply it. 
+Although we can use `kubectl` to directly tell the deployment to update to a new version, as before the best practice is to update your Deployment yaml file and re-apply it.
 
 In this case we will change the `image` line to point to the new version tag of our container in the docker repository: `monolith:2.0.0`:
 
@@ -637,7 +639,7 @@ kubectl get pods
 
 Output:
 
-```
+```text
 NAME                        READY   STATUS        RESTARTS   AGE
 monolith-675bff5d7b-9qtlk   1/1     Terminating   0          21m
 monolith-675bff5d7b-gxmxg   1/1     Terminating   0          21m

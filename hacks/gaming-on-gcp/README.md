@@ -19,21 +19,21 @@ The objectives of this gHack are:
 ## Challenges
 
 - Challenge 1: Deploy the Agones Game Server Deployment Platform on Kubernetes
-   - Deploy Agones, a library for hosting, running and scaling dedicated game servers on Kubernetes.
+  - Deploy Agones, a library for hosting, running and scaling dedicated game servers on Kubernetes.
 - Challenge 2: Deploy GameServers - Space Agon
-   - Deploy a dedicated server to your Agones cluster and demonstrate its functionality.
+  - Deploy a dedicated server to your Agones cluster and demonstrate its functionality.
 - Challenge 3: Deploy and manage a Fleet
-   - Deploy a Fleet of GameServers to your Agones cluster and manage it.
+  - Deploy a Fleet of GameServers to your Agones cluster and manage it.
 - Challenge 4: Deploy your own frontend web client and Service
-   - Deploy your own web client to connect to your GameServers.
+  - Deploy your own web client to connect to your GameServers.
 - Challenge 5: Matchmaking with Open Match
-   - Implement Open Match and customize your matchmaking function.
+  - Implement Open Match and customize your matchmaking function.
 
 ## Prerequisites
 
 - Your own GCP project with Owner IAM role.
-- A basic understanding of Docker and Kubernetes. 
-   - If you lack a basic understanding, you can review [Docker](https://docs.docker.com/) and [Kubernetes](https://kubernetes.io/docs/home/) now.
+- A basic understanding of Docker and Kubernetes.
+  - If you lack a basic understanding, you can review [Docker](https://docs.docker.com/) and [Kubernetes](https://kubernetes.io/docs/home/) now.
 - Access to an environment with the following:
   - gcloud (>= 410.0.0)
   - node.js (>= v19.1.0)
@@ -61,37 +61,40 @@ Your task is to deploy an Agones game server in Google Cloud, that will include 
 - Install Agones using Helm on a freshly provisioned Google Kubernetes Engine (GKE) Autopilot cluster using the CLI.
 
 - Install Open Match v1.8.1 to your cluster and apply an evaluator.
-Writing the evaluator customizations doesn’t fit within the time constraints for this challenge, so the code has been provided. You can install Open Match and apply the evaluator with the following command: 
-```
-export OM_NS=open-match
-export OM_VER=1.8.1
-helm repo add $OM_NS https://open-match.dev/chart/stable
-helm repo update
-helm install $OM_NS \
-	--create-namespace --namespace $OM_NS $OM_NS/open-match \
-	--version $OM_VER \
-	--set open-match-customize.enabled=true \
-	--set open-match-customize.evaluator.enabled=true \
-	--set open-match-customize.evaluator.replicas=1 \
-	--set open-match-override.enabled=true \
-	--set open-match-core.swaggerui.enabled=false \
-	--set global.kubernetes.horizontalPodAutoScaler.frontend.maxReplicas=1 \
-	--set global.kubernetes.horizontalPodAutoScaler.backend.maxReplicas=1 \
-	--set global.kubernetes.horizontalPodAutoScaler.query.minReplicas=1 \
-	--set global.kubernetes.horizontalPodAutoScaler.query.maxReplicas=1 \
-	--set global.kubernetes.horizontalPodAutoScaler.evaluator.maxReplicas=1 \
-	--set query.replicas=1 \
-	--set frontend.replicas=1 \
-	--set backend.replicas=1 \
-	--set redis.master.resources.requests.cpu=0.1 \
-	--set redis.replica.replicaCount=0 \
-	--set redis.metrics.enabled=false
-```
+Writing the evaluator customizations doesn’t fit within the time constraints for this challenge, so the code has been provided. You can install Open Match and apply the evaluator with the following command:
+
+  ```shell
+  export OM_NS=open-match
+  export OM_VER=1.8.1
+  helm repo add $OM_NS https://open-match.dev/chart/stable
+  helm repo update
+  helm install $OM_NS \
+   --create-namespace --namespace $OM_NS $OM_NS/open-match \
+   --version $OM_VER \
+   --set open-match-customize.enabled=true \
+   --set open-match-customize.evaluator.enabled=true \
+   --set open-match-customize.evaluator.replicas=1 \
+   --set open-match-override.enabled=true \
+   --set open-match-core.swaggerui.enabled=false \
+   --set global.kubernetes.horizontalPodAutoScaler.frontend.maxReplicas=1 \
+   --set global.kubernetes.horizontalPodAutoScaler.backend.maxReplicas=1 \
+   --set global.kubernetes.horizontalPodAutoScaler.query.minReplicas=1 \
+   --set global.kubernetes.horizontalPodAutoScaler.query.maxReplicas=1 \
+   --set global.kubernetes.horizontalPodAutoScaler.evaluator.maxReplicas=1 \
+   --set query.replicas=1 \
+   --set frontend.replicas=1 \
+   --set backend.replicas=1 \
+   --set redis.master.resources.requests.cpu=0.1 \
+   --set redis.replica.replicaCount=0 \
+   --set redis.metrics.enabled=false
+  ```
+
 - Deploy a simple game server to verify your Agones installation.
 - Test the deployment by ensuring that the game server is running and accessible. To test, you will need to install `nc` to your Cloud Shell with:
-```
-sudo apt-get -y install netcat
-``` 
+
+  ```shell
+  sudo apt-get -y install netcat
+  ```
 
 > **Note** Although you can create this cluster using the Google Cloud Console UI, we encourage you to explore and figure out how to create clusters using the gcloud CLI tool.
 
@@ -103,11 +106,11 @@ sudo apt-get -y install netcat
 
 - A GKE Autopilot cluster has been provisioned.
 - Agones is successfully installed on the GKE cluster.
-- Open Match is installed and its associated pods are running. Pods being in the `READY` state is not required at this time. 
+- Open Match is installed and its associated pods are running. Pods being in the `READY` state is not required at this time.
 - A game server is created and running without errors.
 - The game server is accessible and functioning as expected.
-   - Use the nc commands given in the Agones docs to show the game server working.
-   - Exit the server using nc and use kubectl to show that it is no longer running.
+  - Use the nc commands given in the Agones docs to show the game server working.
+  - Exit the server using nc and use kubectl to show that it is no longer running.
 
 ### Tips
 
@@ -140,23 +143,25 @@ Before we can start playing on a real game server, we are first going to need a 
 - Clone the [Space Agon repo](https://github.com/TheLanceLord/space-agon-ghack) into your Cloud Shell so you can work with the files contained in that repo:
 - Create an Artifact Registry repository for Docker images.
 - Build a Docker image for the Space Agon web client frontend and push it to your project’s Artifact Registry with the following code:
-```
-export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
-docker build . -f Frontend.Dockerfile -t $REGISTRY/space-agon-frontend:0.1
-docker push $REGISTRY/space-agon-frontend:0.1
-```
+
+  ```shell
+  export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
+  docker build . -f Frontend.Dockerfile -t $REGISTRY/space-agon-frontend:0.1
+  docker push $REGISTRY/space-agon-frontend:0.1
+  ```
+
 - Create and apply a frontend.yaml file for Space Agon containing a Deployment and a Service for the frontend container you build using the following specifications:
-   - Replicas: 2
-   - Container port: 8080
-   - Service type: LoadBalancer
-   - Service port: 80
-   - Set resource requests and limits of:
-      - Memory: 100Mi
-      - CPU: 100m
+  - Replicas: 2
+  - Container port: 8080
+  - Service type: LoadBalancer
+  - Service port: 80
+  - Set resource requests and limits of:
+    - Memory: 100Mi
+    - CPU: 100m
 
 At this point, you don’t have any game servers to connect to, so you still can’t play anything, but we will fix that in the next challenge.
 
-> **Note** If you’re running an Autopilot cluster and see some errors, it might be because the cluster needs to scale before it can run your container. Be patient and give it some time. 
+> **Note** If you’re running an Autopilot cluster and see some errors, it might be because the cluster needs to scale before it can run your container. Be patient and give it some time.
 
 > **Note** Epilepsy warning for Mac users. Mac users with non-Intel chips using Chrome or Safari will see a lot of flashing large boxes on the screen. You will need to download and install Firefox and use it as your browser for this gHack.
 
@@ -191,17 +196,19 @@ Deploy a 'Dedicated Gaming Server' to your Agones cluster and demonstrate its fu
 Your task is to deploy an Agones GameServer of Space Agon in Google Cloud and play test it with your team. This will require you to do the following:
 
 - Build a Docker image for the Space Agon dedicated server and push it to your project’s Artifact Registry with the following code:
-```
-export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
-docker build . -f Dedicated.Dockerfile -t $REGISTRY/space-agon-dedicated:0.1
-docker push $REGISTRY/space-agon-dedicated:0.1
-```
+
+  ```shell
+  export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
+  docker build . -f Dedicated.Dockerfile -t $REGISTRY/space-agon-dedicated:0.1
+  docker push $REGISTRY/space-agon-dedicated:0.1
+  ```
+
 - Write and apply a gameserver.yaml file for Space Agon with the following specifications:
-   - Container Port: 2156
-   - Protocol: TCP
-   - Set resource requests and limits of:
-      - Memory: 200Mi
-      - CPU: 500m
+  - Container Port: 2156
+  - Protocol: TCP
+  - Set resource requests and limits of:
+    - Memory: 200Mi
+    - CPU: 500m
 
 ### Success Criteria
 
@@ -271,24 +278,29 @@ Implement Open Match, which allows for automated matching of connecting players 
 So far, the Find Game feature hasn’t been working because your cluster’s matchmaking service isn’t set up to handle it. To get this feature working, you will need to:
 
 - Build a Docker image for the Matchmaking Function and push it to your project’s Artifact Registry with the following code:
-```
-export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
-docker build . -f Mmf.Dockerfile -t $REGISTRY/space-agon-mmf:0.1
-docker push $REGISTRY/space-agon-mmf:0.1
-```
+
+  ```shell
+  export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
+  docker build . -f Mmf.Dockerfile -t $REGISTRY/space-agon-mmf:0.1
+  docker push $REGISTRY/space-agon-mmf:0.1
+  ```
+
 - Write and apply a mmf.yaml, creating a deployment of your Matchmaking Function and a service to access it.
 - Build a Docker image for the Director and push it to your project’s Artifact Registry with the following code:
-```
-docker build . -f Director.Dockerfile -t $REGISTRY/space-agon-director:0.1
-docker push $REGISTRY/space-agon-director:0.1
-```
+
+  ```shell
+  docker build . -f Director.Dockerfile -t $REGISTRY/space-agon-director:0.1
+  docker push $REGISTRY/space-agon-director:0.1
+  ```
+
 - Write and apply a director.yaml which includes RBAC.
 - Modify the Matchmaking Function to support a single game with your entire gHack team(including coach), or at least 4 players.
 
-> **Note** The Director is a backend component in the Online Game Service that typically performs the following tasks:
-   - Fetch Matches from Open Match for each MatchProfile.
-   - Fetch game allocations from a DGS (Dedicated Game Server) system.
-   - Establish connections from players to game servers and set Assignments based on connections in Open Match.
+  > **Note** The Director is a backend component in the Online Game Service that typically performs the following tasks:
+
+- Fetch Matches from Open Match for each MatchProfile.
+- Fetch game allocations from a DGS (Dedicated Game Server) system.
+- Establish connections from players to game servers and set Assignments based on connections in Open Match.
 
 ### Success Criteria
 

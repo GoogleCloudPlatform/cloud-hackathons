@@ -25,7 +25,7 @@ If participants have chosen to work from their local environments (instead of Cl
 > **Note**  
 > The easiest option is to use Cloud Shell as it has everything that's needed, it will provide a smooth experience. The only downside of using Cloud Shell is that the participants won't typically use Cloud Shell in their day-to-day workflow.
 
-You can download and upload the zip file to Cloud Shell through the UI, but it's easier to use `wget`. 
+You can download and upload the zip file to Cloud Shell through the UI, but it's easier to use `wget`.
 
 ```shell
 wget https://github.com/meken/speedrun/archive/refs/heads/main.zip
@@ -46,7 +46,7 @@ You can start the application by running the following command in the same direc
 npm start
 ```
 
-The app should be available on `http://localhost:8080`. 
+The app should be available on `http://localhost:8080`.
 
 The *Team Name* in the welcome message can be configured in `service/routes/index.js` file.
 
@@ -139,7 +139,7 @@ First step is to create the default database in the *Native* mode. All you have 
 > **Warning**  
 > The mode you select is permanent for the project, so make sure that you're choosing the right one.
 
-Once the default database is there, click on **+Start collection** button to create a new collection called *cities* and add *Amsterdam* as the document with a sample field, for example `country` and set its value to `NL`. 
+Once the default database is there, click on **+Start collection** button to create a new collection called *cities* and add *Amsterdam* as the document with a sample field, for example `country` and set its value to `NL`.
 
 The Cloud Run service account needs to have the `Cloud Datastore User` role to be able to access the database (only relevant if people choose any other service account than the Compute Engine default service account, which has been initialized with the proper roles through Terraform scripts for this hack).
 
@@ -169,7 +169,6 @@ Now set the following as environment variables:
 | SQL_PASSWORD      | `my-precious`      |
 | SQL_DATABASE      | `database`         |
 | SQL_INSTANCE_NAME | `$CONNECTION_NAME` |
-
 
 ```shell
 gcloud run services update $APP_NAME --region=$REGION \

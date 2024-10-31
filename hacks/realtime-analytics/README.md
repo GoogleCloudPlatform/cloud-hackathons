@@ -32,15 +32,15 @@ You'll be using a variety of Google Cloud offerings to achieve this including:
 ## Challenges
 
 - Challenge 1: Getting started
-   - Get yourself ready to develop our FastFresh solution
+  - Get yourself ready to develop our FastFresh solution
 - Challenge 2: Replicating Oracle Data Using Datastream
-   - Backfill the Oracle FastFresh schema and replicate updates to Cloud Storage in real time.
+  - Backfill the Oracle FastFresh schema and replicate updates to Cloud Storage in real time.
 - Challenge 3: Creating a Dataflow Job using the Datastream to BigQuery Template
-   - Now it’s time to create a Dataflow job which will read from GCS and update BigQuery. You will deploy the pre-built Datastream to BigQuery Dataflow streaming template to capture these changes and replicate them into BigQuery.
+  - Now it’s time to create a Dataflow job which will read from GCS and update BigQuery. You will deploy the pre-built Datastream to BigQuery Dataflow streaming template to capture these changes and replicate them into BigQuery.
 - Challenge 4: Building a Demand Forecast
-   - In this challenge you will use BigQuery ML to build a model to forecast the demand for products in store.
+  - In this challenge you will use BigQuery ML to build a model to forecast the demand for products in store.
 - Challenge 5: Visualizing the results
-   - In this challenge you will use your favourite visualization tool to display the predictions from the previous challenge
+  - In this challenge you will use your favourite visualization tool to display the predictions from the previous challenge
 
 ## Prerequisites
 
@@ -61,7 +61,7 @@ Throughout this hack, you will be using a number of different tools and products
 
 ### Description
 
-We'll need to stage the Change Data Capture (CDC) stream from the Oracle database into a Google Cloud Storage bucket. Create a new bucket that minimizes egress costs. 
+We'll need to stage the Change Data Capture (CDC) stream from the Oracle database into a Google Cloud Storage bucket. Create a new bucket that minimizes egress costs.
 
 In order to trigger Dataflow processing we'll use Pub/Sub notifications for Cloud Storage, so go ahead and turn on Pub/Sub notifications for the newly created bucket. Once the topic is ready, add a subscription to it.
 
@@ -131,7 +131,7 @@ You can also extend the functionality of this template by including User Defined
 
 We've already prepared a some transformation logic that masks a column in the data, you can download it from [here](https://raw.githubusercontent.com/caugusto/datastream-bqml-looker-tutorial/main/udf/retail_transform.js).
 
-Configure a Dataflow job that reads from the Pub/Sub notifications using the pre-built Datastream template with the target as the BQ dataset that's been created in the very first challenge. Use the provided UDF to process the data before it's stored in BQ. 
+Configure a Dataflow job that reads from the Pub/Sub notifications using the pre-built Datastream template with the target as the BQ dataset that's been created in the very first challenge. Use the provided UDF to process the data before it's stored in BQ.
 
 Use the `sub-retail` subnet in the `vpc-retail` network and limit the maximum number of workers to `5`.
 
@@ -185,7 +185,6 @@ Once the model is ready use it to forecast the sales for all the products for th
 - [Creating and Using BigQuery Tables](https://cloud.google.com/bigquery/docs/tables)
 - [BQ timestamp functions](https://cloud.google.com/bigquery/docs/reference/standard-sql/timestamp_functions)
 - [Creating ARIMA_PLUS Model](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-create-time-series)
-
 
 ## Challenge 5: Visualizing the results
 

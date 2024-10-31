@@ -12,6 +12,11 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+    - name: Markdown lint
+      uses: DavidAnson/markdownlint-cli2-action@v17
+      with:
+        globs: |
+          **/*.md
     - name: Split the files 
       run: |
         tools/setup-pages.sh

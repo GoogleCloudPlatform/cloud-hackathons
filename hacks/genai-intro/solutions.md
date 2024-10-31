@@ -2,7 +2,6 @@
 
 ## Introduction
 
-
 ## Coach's Guides
 
 - Challenge 1: Automatic triggers
@@ -31,6 +30,7 @@ gsutil mb -l $REGION $STAGING
 TOPIC=documents
 gcloud storage buckets notifications create --event-types=OBJECT_FINALIZE --topic=$TOPIC $BUCKET
 ```
+
 Since the topic already exists, this command will emit a warning, indicating that the topic is already there, you can safely ignore it.
 
 If the participants miss the `OBJECT_FINALIZE` event type when they configure the notifications, things will fail when files are deleted from the bucket. Also, it's possible to have multiple triggers, so if they've made a mistake, the best course for action would be to delete all notification configurations and recreate it properly (as indicated above).
@@ -101,7 +101,7 @@ And then make sure to provide the `summary` as context and `page` as text in the
 prompt = rolling_prompt_template.format(context=summary, text=page)
 ```
 
-The prompts listed here are just examples, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should in this case reflect the main points from the summary in _Success Criteria_.
+The prompts listed here are just examples, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should in this case reflect the main points from the summary in *Success Criteria*.
 
 > **Note**  If participants mention that they could have used models with a much larger context window instead of chaining, remind them that these models sometimes have issues extracting relevant bits when given very large contexts (see for example [Lost in the Middle](https://arxiv.org/pdf/2307.03172.pdf) paper) although better prompt engineering sometimes can help. In addition, chaining might still be more memory efficient (processing chunks individually instead of whole documents) and more flexible (by integrating data from diverse information sources & tools within a single workflow) in some cases. Although the expanding context windows of LLMs are gradually reducing the need for this technique, it remains relevant in specific use cases. The optimal approach depends on the specific requirements of the task and the available resources.
 
@@ -180,7 +180,7 @@ FROM
 ORDER BY 2
 ```
 
-The prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should be the corresponding category from the _Success Criteria_ for each paper.
+The prompt listed here is just an example, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should be the corresponding category from the *Success Criteria* for each paper.
 
 In order to compare things, the results must be sorted. If the students don't flatten the JSON outputs, they'll have to use the `JSON_VALUE` function on the column that contains the categories, to be able to sort.
 
@@ -326,6 +326,7 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKE
 In case students use different methods to generate the text embeddings for the summaries and the query, they should be aware that they should be using the same version of the model.
 
 See below a Python version of the same code:
+
 ```python
 from google.cloud import aiplatform
 from vertexai.language_models import TextEmbeddingModel
@@ -349,4 +350,4 @@ resp = index_endpoint.find_neighbors(
 print(resp[0][0].id)
 ```
 
-Note that _Deployed index info_ page on the console gives examples of `curl` as well as `Python` code.
+Note that *Deployed index info* page on the console gives examples of `curl` as well as `Python` code.

@@ -11,11 +11,11 @@ Remember that this hack includes a [lecture presentation](resources/lecture.pdf)
 ## Coach's Guides
 
 - Challenge 1: Containerize the web application
-   - Write a Dockerfile to create your container and then push it to Artifact Registry.
+  - Write a Dockerfile to create your container and then push it to Artifact Registry.
 - Challenge 2: Deploying on GKE
-   - Create a cluster and deploy the containerized web application on it. Fine tune your pod and node sizes, and play test the game to make sure everything is working!
+  - Create a cluster and deploy the containerized web application on it. Fine tune your pod and node sizes, and play test the game to make sure everything is working!
 - Challenge 3: Speedrun - containerize and deploy the load testing application
-   - Use what you learned from challenges 1 and 2 to containerize the test client application and scale it up on GKE to test your servers
+  - Use what you learned from challenges 1 and 2 to containerize the test client application and scale it up on GKE to test your servers
 
 ## Coach Prerequisites
 
@@ -25,12 +25,13 @@ The guide covers the common preparation steps a coach needs to do before any gHa
 
 ### Student Resources
 
-Before the hack, it is the Coach's responsibility create and make available needed resources including: 
+Before the hack, it is the Coach's responsibility create and make available needed resources including:
+
 - Files for students
 - Lecture presentation
 - Terraform scripts for setup (if running in the customer's own environment)
 
-Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available) to create the zip files needed and upload them to your gHack's Google Space's Files area. 
+Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available) to create the zip files needed and upload them to your gHack's Google Space's Files area.
 
 Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
 
@@ -95,10 +96,12 @@ This hack requires students to have access to Google Cloud project where they ca
 
 - Participants will want the [synthetic_player.py](https://github.com/TheLanceLord/crawl/blob/master/load-testing/synthetic_player.py), a Dockerfile, and the requirements.txt file in the same folder
   - requirements.txt
-    ```
+
+    ```text
     selenium==4.11.2
     webdriver-manager==4.0.0
     ```
+
 - [Test client Dockerfile](./solutions/challenge-3/Dockerfile)
 - Useful Docker commands (may need to use `sudo`):
   - `docker build .` creates the image
@@ -112,3 +115,4 @@ This hack requires students to have access to Google Cloud project where they ca
   - Create the deployment `kubectl apply -f <FILENAME>`
   - Check on the deployment with `kubectl get deployments --namespace=<NAMESPACE>`
   - Check on the pods with `kubectl get pods --namespace=<NAMESPACE>`
+  

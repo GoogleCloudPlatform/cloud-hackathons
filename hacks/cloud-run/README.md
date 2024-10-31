@@ -2,7 +2,7 @@
 
 ## Introduction
 
-We'll be using Cloud Run to quickly configure, deploy and troubleshoot a web service. During the process we'll introduce different ways to store data for the web service and learn about how to discover and fix issues. 
+We'll be using Cloud Run to quickly configure, deploy and troubleshoot a web service. During the process we'll introduce different ways to store data for the web service and learn about how to discover and fix issues.
 
 ## Learning Objectives
 
@@ -26,7 +26,7 @@ This is going to be an introduction to running apps on Cloud Run. We'll dive int
 ## Prerequisites
 
 - Your own GCP project with Owner IAM role
-- Access to an environment with the following 
+- Access to an environment with the following
   - gcloud (>= 410.0.0)
   - node.js (>= v19.1.0)
   - docker (>= 20.10.22)
@@ -41,7 +41,7 @@ This is going to be an introduction to running apps on Cloud Run. We'll dive int
 
 ## Challenge 1: Building and deoploying a web service
 
-### Introduction 
+### Introduction
 
 Before we can deploy the app, we need its source code. So, the first step is to get the code for the web service and run it locally to verify that everything is running smoothly.
 
@@ -71,7 +71,7 @@ Once the service is running locally, deploy it to Cloud Run *from source code* u
 
 ## Challenge 2: A faster feedback loop
 
-### Introduction 
+### Introduction
 
 Waiting for a slow deployment is stressful. Some might argue that it is just as stressful as watching [2001: A Space Odyssey](https://en.wikipedia.org/wiki/2001:_A_Space_Odyssey_(film)#Critical_response) from start to finish. Let's fix that using the *Artifact Registry*.
 
@@ -100,7 +100,7 @@ Although the previous step already created a container registry managed by Cloud
 
 ## Challenge 3: Logging and Monitoring
 
-### Introduction 
+### Introduction
 
 Tracing, profiling, and debugging are essential tools for any programmer, but even the most experienced programmers can't live without `console.log` or `System.out.println`. On Cloud Run, all the logs your app writes to stdout (and [more](https://cloud.google.com/run/docs/logging#container-logs)) ends up in *Cloud Logging*.
 
@@ -118,7 +118,7 @@ Browse to `/logging` on your deployed service. This should be generating some lo
 
 ## Challenge 4: Firestore
 
-### Introduction 
+### Introduction
 
 *Cloud Firestore* is a flexible, scalable database for mobile, web, and server development. Our app is also using this very useful service, but something is off.
 
@@ -147,7 +147,7 @@ Similar to the previous challenge, browse to `/firestore` and fix the issue.
 
 ## Challenge 5: Cloud SQL
 
-### Introduction 
+### Introduction
 
 We know, Firestore is a great product with an incredibly high service level agreement (SLA), but it's a proprietary database, and it's a *document store*.
 
@@ -180,7 +180,7 @@ We've already deployed a Cloud SQL instance for you. If you browse to `/sql`, yo
 
 ## Challenge 6: Keeping secrets safe
 
-### Introduction 
+### Introduction
 
 In the previous challenge we've passed the password using an environment variable. The implication is that everyone with Viewer permissions to the Google Cloud project can read that password, which is not desirable. A better option is to use *Secret Manager*.
 
@@ -210,7 +210,7 @@ Add the database password to the Secret Manager, and configure Cloud Run to refe
 
 ## Challenge 7: Memorystore
 
-### Introduction 
+### Introduction
 
 If you need fast (under 10ms) access to shared data, Memorystore is a great option.
 

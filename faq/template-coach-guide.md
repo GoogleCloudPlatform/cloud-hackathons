@@ -11,13 +11,13 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 ## Coach's Guides
 
 - Challenge 1: Provision an IoT environment
-   - Create an IoT Hub and run tests to ensure it can ingest telemetry
+  - Create an IoT Hub and run tests to ensure it can ingest telemetry
 - Challenge 2: Your First Device
-   - Make the connection to your Edge device and see that it is properly provisioned.
+  - Make the connection to your Edge device and see that it is properly provisioned.
 - Challenge 3: Connecting the World
-   - Connect your device and make sure it can see all other devices in your team.
+  - Connect your device and make sure it can see all other devices in your team.
 - Challenge 4: Scalable Monitoring of Telemetry
-   - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
+  - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
 
 ## Coach Prerequisites
 
@@ -27,12 +27,13 @@ The guide covers the common preparation steps a coach needs to do before any gHa
 
 ### Student Resources
 
-Before the hack, it is the Coach's responsibility create and make available needed resources including: 
+Before the hack, it is the Coach's responsibility create and make available needed resources including:
+
 - Files for students
 - Lecture presentation
 - Terraform scripts for setup (if running in the customer's own environment)
 
-Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available) to create the zip files needed and upload them to your gHack's Google Space's Files area. 
+Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available) to create the zip files needed and upload them to your gHack's Google Space's Files area.
 
 Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
 
@@ -84,8 +85,8 @@ _The default files & folders are listed below. You may add to this if you want t
 ## Environment
 
 - Setting Up the Environment (if not on Qwiklabs)
-   - Before we can hack, you will need to set up a few things.
-   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
+  - Before we can hack, you will need to set up a few things.
+  - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 
 ## Challenge 1: Provision an IoT environment
 
@@ -94,12 +95,14 @@ _The default files & folders are listed below. You may add to this if you want t
 This is the only section you need to include.
 
 Use general non-bulleted text for the beginning of a solution area for this challenge
+
 - Then move into bullets
-    - And sub-bullets and even
-        - sub-sub-bullets
+  - And sub-bullets and even
+    - sub-sub-bullets
 
 Break things apart with more than one bullet list
-- Like this 
+
+- Like this
 - One
 - Right
 - Here

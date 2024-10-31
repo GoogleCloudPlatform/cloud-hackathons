@@ -442,6 +442,8 @@ Genkit Tools UI: http://localhost:4000
 > **Warning**  
 > **Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens,  go to **chat_server_go/cmd/standaloneFlows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
 
+<!-- markdownlint-disable-file  no-duplicate-heading -->
+
 ##### Challenge-steps
 
 1. Go to **chat_server_go/cmd/standaloneFlows/main.go**. You should see code that looks like this in the method **getPrompts()**.
