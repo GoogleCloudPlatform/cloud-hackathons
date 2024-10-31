@@ -1,12 +1,12 @@
 # Practical SRE
 
-Welcome to the Practical SRE (Site Reliability Engineering) gHack! In this hands-on session, you’ll step into the role of SREs and Product Owners for the **Movie Guru** GenAI app—a cutting-edge application that helps users find movies using natural language queries powered by AI. Your mission is to ensure that Movie Guru delivers a smooth, reliable, and responsive experience for its users.
+Welcome to the Practical SRE (Site Reliability Engineering) gHack! In this hands-on session, you'll step into the role of SREs and Product Owners for the **Movie Guru** GenAI app—a cutting-edge application that helps users find movies using natural language queries powered by AI. Your mission is to ensure that Movie Guru delivers a smooth, reliable, and responsive experience for its users.
 
-The Movie Guru app's backend is currently running in your cloud environments and has been pre-instrumented to silently generate a wealth of metrics through the use of a load generator. This means that as you work on these challenges, you’ll have access to valuable data reflecting its performance and user interactions, allowing you to make informed decisions throughout the workshop.
+The Movie Guru app's backend is currently running in your cloud environments and has been pre-instrumented to silently generate a wealth of metrics through the use of a load generator. This means that as you work on these challenges, you'll have access to valuable data reflecting its performance and user interactions, allowing you to make informed decisions throughout the workshop.
 
-By the end of this workshop, you’ll have developed a comprehensive reliability framework for Movie Guru, gaining practical SRE skills that can be applied to real-world systems.
+By the end of this workshop, you'll have developed a comprehensive reliability framework for Movie Guru, gaining practical SRE skills that can be applied to real-world systems.
 
-Remember, if there is a term being used in the challenge you don’t understand, look at the **Learning Resources** section at the bottom of the challenge text. Otherwise, **Google** can be your best friend.
+Remember, if there is a term being used in the challenge you don't understand, look at the **Learning Resources** section at the bottom of the challenge text. Otherwise, **Google** can be your best friend.
 
 ## Learning Objectives
 
@@ -294,7 +294,7 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
 - **Startup Dashboard**: Monitors the performance of the post-login, **Main Page Load** process, ensuring users get into the app quickly.
 - **Chat Dashboard**: Provides a comprehensive view of user interactions with the chatbot, including engagement, sentiment, and response times.
 
-> **Note**: Metrics in the dashboards may appear blocky because we’re simulating load with only a few users. Achieving smoother graphs generally requires a larger user load.
+> **Note**: Metrics in the dashboards may appear blocky because we're simulating load with only a few users. Achieving smoother graphs generally requires a larger user load.
 
 ### Description
 
@@ -328,7 +328,7 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
 
 #### How do metrics differ from SLIs?
 
-Metrics and Service Level Indicators (SLIs) both provide valuable data about a system’s performance, but they serve distinct roles. Metrics are broad measurements that capture various aspects of system activity, such as CPU usage, latency, and error rates. They form the foundational data used to observe, monitor, and troubleshoot a system. SLIs, on the other hand, are carefully selected metrics that directly reflect the quality of service experienced by users. Focusing on factors like availability, latency, or error rate, SLIs gauge how well a service is meeting specific reliability targets known as Service Level Objectives (SLOs). While metrics provide a comprehensive view of system health, SLIs narrow the focus to measure the specific qualities that most affect user satisfaction, aligning system performance with business objectives.
+Metrics and Service Level Indicators (SLIs) both provide valuable data about a system's performance, but they serve distinct roles. Metrics are broad measurements that capture various aspects of system activity, such as CPU usage, latency, and error rates. They form the foundational data used to observe, monitor, and troubleshoot a system. SLIs, on the other hand, are carefully selected metrics that directly reflect the quality of service experienced by users. Focusing on factors like availability, latency, or error rate, SLIs gauge how well a service is meeting specific reliability targets known as Service Level Objectives (SLOs). While metrics provide a comprehensive view of system health, SLIs narrow the focus to measure the specific qualities that most affect user satisfaction, aligning system performance with business objectives.
 
 #### Latency Metrics
 
@@ -342,15 +342,15 @@ Metrics and Service Level Indicators (SLIs) both provide valuable data about a s
 
 ### Introduction
 
-Now that you’re familiar with the business goals and the SLIs that measure them, and you know your app's current performance, it's time to set improvement goals.
+Now that you're familiar with the business goals and the SLIs that measure them, and you know your app's current performance, it's time to set improvement goals.
 We'll be setting achievable targets for your teams to achieve in the short-term (a few months) and aspirational long-term objectives for the app.
 
 ### Description
 
-> **Note**: For this exercise, make educated guesses if exact data isn’t available.
+> **Note**: For this exercise, make educated guesses if exact data isn't available.
 
 1. Define **Achievable** SLOs (on paper) for the [business goals](#business-goals-1) below.
-   - Set realistic, achievable values that you’d like the app to reach in the next month. Use the app’s current performance as a reference point. Your application needs to walk before it can run.
+   - Set realistic, achievable values that you'd like the app to reach in the next month. Use the app's current performance as a reference point. Your application needs to walk before it can run.
 
 2. Define **Aspirational** SLOs (on paper) for the [business goals](#business-goals-1) below.
    - Picture Movie Guru a year from now: an efficient, user-delighting tool (but still short of perfection—since unicorns and 100% targets are rare in the real world). These SLOs should represent goals your team can work toward in the coming year.
@@ -369,12 +369,12 @@ Define SLO 2b: Latency SLO
 
 ### Success Criteria
 
-- You’ve established **Achievable** SLO objectives for the short-term.
+- You've established **Achievable** SLO objectives for the short-term.
   - Each SLO has a target value and a compliance period (see examples below)
   - Example SLOs for a fictional shopping cart service:
     - Availability: 99.9% of the users are able to visit the shopping cart measured over a 24-hour rolling window.
     - Latency:  99% of users should be able to load the shopping cart within 600 milliseconds, measured over a 24-hour rolling window.
-- You’ve set **Aspirational** SLOs based on an ideal user experience to aim for over the next year.
+- You've set **Aspirational** SLOs based on an ideal user experience to aim for over the next year.
 - Your objectives are backed by logical business assumptions.
 
 ## Challenge 6: SLOs on the dashboard

@@ -14,12 +14,12 @@
 schema_version: 2
 default_locale: en
 title: "[gHacks] Practical SRE"
-description: ""
+description: "In this hands-on session, you'll step into the role of SREs and Product Owners for a cutting-edge app. Your mission is to ensure that this app delivers a smooth, reliable, and responsive experience for its users."
 instruction:
   type: md
   uri: instructions/en.md
-duration: 480
-max_duration: 600
+duration: 420
+max_duration: 420
 credits: 0
 level: fundamental
 tags:
