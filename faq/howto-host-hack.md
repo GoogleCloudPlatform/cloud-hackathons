@@ -440,7 +440,7 @@ Once everyone is settled, the format and interactions are the same whether virtu
 - While the team works together to solve challenges, it is expected that each individual contributes meaningfully to the group and completes the challenge on their own workstation.
 - To ensure each individual is contributing to the team effort, we recommend one person be the "designated driver" for each challenge and share their screen with the team as they work through the challenge for all to observe. The rest of the team may be doing research or implementing the solution in parallel on their own workstation.
 - As people get stuck the coaches should encourage them to talk through the issues with the team and share their screen to work through the challenge. Group collaboration is a very effective learning tool.  
-- If a person within the team is having a problem that requires individual attention, the coach can ask the person to go to the coach’s dedicated channel where they can start a channel meeting and work together to resolve the issues.
+- If a person within the team is having a problem that requires individual attention, the coach can ask the person to go to the coach's dedicated channel where they can start a channel meeting and work together to resolve the issues.
 - Sharing is caring. As individuals or teams find useful tips and tricks, or solve roadblocks, the coaches should encourage them to share those items in the Google Space chat for everyone to see.
 - Teams should not be beholden to the clock as they progress through the challenges. Therefore, they control their own schedule during the event and can decide to take breaks as needed outside of any scheduled meal breaks.
 
@@ -467,11 +467,11 @@ During the hack, a coach's responsibilities include:
   - Always and repeatedly encourage team members to unblock each other first
   - Provide hints, but not answers
 - Repeat and confirm the challenge goals if there is ambiguity
-  - If a coach observes an individual is blocked for a long time, help them get moving so they don’t lose interest and disengage.
+  - If a coach observes an individual is blocked for a long time, help them get moving so they don't lose interest and disengage.
 - Be a technical advisor and subject matter expert
 - Provide hints/pointers to the teams on how to solve problems and where to find information.
-  - Use the solutions in the Coach’s guide to provide guidance, but do not share the guide with the participants
-  - The Coach’s guide will not be comprehensive. As subject matter experts, coaches should share their knowledge and explain key concepts to help the participants
+  - Use the solutions in the Coach's guide to provide guidance, but do not share the guide with the participants
+  - The Coach's guide will not be comprehensive. As subject matter experts, coaches should share their knowledge and explain key concepts to help the participants
 - Notify the lead coach of unexpected blockers that arise during the event so they can be communicated to all teams and recorded for future reference.
 - Verify that a team has completed each challenge by checking that they have met all of the success criteria.
 - Solicit continuous feedback from the participants on their experience, the content, and what can be done to improve it. Encourage them to use the Google Space chat to share with all of the coaches and participants.
@@ -536,4 +536,3 @@ It is possible to host a "hybrid" event that has some participants and coaches i
   - This does require volunteers to be designated as facilitators in the physical venue. The facilitators are responsible for the A/V connectivity to the remote coaches and raising questions from participants in the venue to the online coaches.
 - Hosting an event where individual teams work together in person, but distributed and remote from other teams.
   - For example, teams can work together in New York, Chicago, and Seattle. The lead coach may be in Chicago leading all three groups online.
-  

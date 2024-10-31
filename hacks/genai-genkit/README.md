@@ -318,7 +318,7 @@ There are instructions and hints in the file to help you proceed.
 - [GenKit Indexer JS](https://firebase.google.com/docs/genkit/rag#define_an_indexer)
 - [GenKit PGVector JS](https://firebase.google.com/docs/genkit/templates/pgvector)
 
-## Challenge 2: Your first flow that analyses the user’s input
+## Challenge 2: Your first flow that analyses the user's input
 
 ### Introduction
 

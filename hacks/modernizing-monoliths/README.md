@@ -13,7 +13,7 @@ In this hack you will be taking on the role of a DevOps engineer tasked with con
     - Using multi-stage builds
   - Building images
   - Running containers with Docker
-  - SSH’ing into Docker containers
+  - SSH'ing into Docker containers
   - Pushing and Pulling Docker images
 - **GKE**
   - Creating a cluster
@@ -22,7 +22,7 @@ In this hack you will be taking on the role of a DevOps engineer tasked with con
     - Creating an ingress
   - Deploying your application
   - Creating deployments
-  - SSH’ing into pods
+  - SSH'ing into pods
   - Implementing Vertical Pod Autoscaling
   - Implementing Horizontal Pod Autoscaling
   - Creating a kubeconfig file
@@ -50,7 +50,7 @@ In this hack you will be taking on the role of a DevOps engineer tasked with con
 
 ### Introduction
 
-You’ve just started working as a DevOps Engineer for a company that hosts servers for different games. The company has been running game servers in Google Compute Engine across different Managed Instance Groups which has been working great so far, but occasionally the Testing team fails to setup their local environments correctly and end up approving bad code. The teams have been learning about containers, and are excited to start using them so they no longer have to deal with environment issues.
+You've just started working as a DevOps Engineer for a company that hosts servers for different games. The company has been running game servers in Google Compute Engine across different Managed Instance Groups which has been working great so far, but occasionally the Testing team fails to setup their local environments correctly and end up approving bad code. The teams have been learning about containers, and are excited to start using them so they no longer have to deal with environment issues.
 
 You have been assigned the *Dungeon Crawl Stone Soup* workload. Your team is looking to you to containerize the latest version of the game with Docker, verify that it plays, and host it in Artifact Registry.
 

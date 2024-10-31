@@ -13,7 +13,7 @@ Remember that this hack includes a [lecture presentation](resources/lectures.pdf
 - Challenge 2: Replicating Oracle Data Using Datastream
   - Backfill the Oracle FastFresh schema and replicate updates to Cloud Storage in real time.
 - Challenge 3: Creating a Dataflow Job using the Datastream to BigQuery Template
-  - Now it’s time to create a Dataflow job which will read from GCS and update BigQuery. You will deploy the pre-built Datastream to BigQuery Dataflow streaming template to capture these changes and replicate them into BigQuery.
+  - Now it's time to create a Dataflow job which will read from GCS and update BigQuery. You will deploy the pre-built Datastream to BigQuery Dataflow streaming template to capture these changes and replicate them into BigQuery.
 - Challenge 4: Building a Demand Forecast
   - In this challenge you will use BigQuery ML to build a model to forecast the demand for products in store.
 - Challenge 5: Visualizing the results

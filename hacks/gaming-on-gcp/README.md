@@ -61,7 +61,7 @@ Your task is to deploy an Agones game server in Google Cloud, that will include 
 - Install Agones using Helm on a freshly provisioned Google Kubernetes Engine (GKE) Autopilot cluster using the CLI.
 
 - Install Open Match v1.8.1 to your cluster and apply an evaluator.
-Writing the evaluator customizations doesn’t fit within the time constraints for this challenge, so the code has been provided. You can install Open Match and apply the evaluator with the following command:
+Writing the evaluator customizations doesn't fit within the time constraints for this challenge, so the code has been provided. You can install Open Match and apply the evaluator with the following command:
 
   ```shell
   export OM_NS=open-match
@@ -100,7 +100,7 @@ Writing the evaluator customizations doesn’t fit within the time constraints f
 
 > **Note** The reason we are installing Agones with Helm and not YAML is because this is more representative of a production scenario. The Agones documentation for this type of installation is also more detailed and explanatory.
 
-> **Note** Open Match isn’t used until Challenge 5, and is not a requirement for Agones functionality. Open Match can sometimes take time to enter a ready state which is why we are installing it now. We are installing with Helm because it makes it easy to see the customizations that are being made to the default install.
+> **Note** Open Match isn't used until Challenge 5, and is not a requirement for Agones functionality. Open Match can sometimes take time to enter a ready state which is why we are installing it now. We are installing with Helm because it makes it easy to see the customizations that are being made to the default install.
 
 ### Success Criteria
 
@@ -142,7 +142,7 @@ Before we can start playing on a real game server, we are first going to need a 
 
 - Clone the [Space Agon repo](https://github.com/TheLanceLord/space-agon-ghack) into your Cloud Shell so you can work with the files contained in that repo:
 - Create an Artifact Registry repository for Docker images.
-- Build a Docker image for the Space Agon web client frontend and push it to your project’s Artifact Registry with the following code:
+- Build a Docker image for the Space Agon web client frontend and push it to your project's Artifact Registry with the following code:
 
   ```shell
   export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
@@ -159,9 +159,9 @@ Before we can start playing on a real game server, we are first going to need a 
     - Memory: 100Mi
     - CPU: 100m
 
-At this point, you don’t have any game servers to connect to, so you still can’t play anything, but we will fix that in the next challenge.
+At this point, you don't have any game servers to connect to, so you still can't play anything, but we will fix that in the next challenge.
 
-> **Note** If you’re running an Autopilot cluster and see some errors, it might be because the cluster needs to scale before it can run your container. Be patient and give it some time.
+> **Note** If you're running an Autopilot cluster and see some errors, it might be because the cluster needs to scale before it can run your container. Be patient and give it some time.
 
 > **Note** Epilepsy warning for Mac users. Mac users with non-Intel chips using Chrome or Safari will see a lot of flashing large boxes on the screen. You will need to download and install Firefox and use it as your browser for this gHack.
 
@@ -170,12 +170,12 @@ At this point, you don’t have any game servers to connect to, so you still can
 ### Success Criteria
 
 - GKE shows your frontend deployment and service are both running.
-- Demonstrate you can connect to your frontend via your Service’s IP address by using your browser to connect to `http://<YOUR-FRONTEND-IP>`.
+- Demonstrate you can connect to your frontend via your Service's IP address by using your browser to connect to `http://<YOUR-FRONTEND-IP>`.
 
 ### Tips
 
 - The skeleton of a frontend.yaml file has been provided in the GitHub repository.
-- If you aren’t a fan of command line text editors, such as vi, emacs or nano, click the `Open Editor` button (pencil icon) in the Cloud Shell to get a web-based editor that you can use for the entire gHack.
+- If you aren't a fan of command line text editors, such as vi, emacs or nano, click the `Open Editor` button (pencil icon) in the Cloud Shell to get a web-based editor that you can use for the entire gHack.
 
 ### Learning Resources
 
@@ -195,7 +195,7 @@ Deploy a 'Dedicated Gaming Server' to your Agones cluster and demonstrate its fu
 
 Your task is to deploy an Agones GameServer of Space Agon in Google Cloud and play test it with your team. This will require you to do the following:
 
-- Build a Docker image for the Space Agon dedicated server and push it to your project’s Artifact Registry with the following code:
+- Build a Docker image for the Space Agon dedicated server and push it to your project's Artifact Registry with the following code:
 
   ```shell
   export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
@@ -275,9 +275,9 @@ Implement Open Match, which allows for automated matching of connecting players 
 
 ### Description
 
-So far, the Find Game feature hasn’t been working because your cluster’s matchmaking service isn’t set up to handle it. To get this feature working, you will need to:
+So far, the Find Game feature hasn't been working because your cluster's matchmaking service isn't set up to handle it. To get this feature working, you will need to:
 
-- Build a Docker image for the Matchmaking Function and push it to your project’s Artifact Registry with the following code:
+- Build a Docker image for the Matchmaking Function and push it to your project's Artifact Registry with the following code:
 
   ```shell
   export REGISTRY=<YOUR-ARTIFACT-REGISTRY-REPO>
@@ -286,7 +286,7 @@ So far, the Find Game feature hasn’t been working because your cluster’s mat
   ```
 
 - Write and apply a mmf.yaml, creating a deployment of your Matchmaking Function and a service to access it.
-- Build a Docker image for the Director and push it to your project’s Artifact Registry with the following code:
+- Build a Docker image for the Director and push it to your project's Artifact Registry with the following code:
 
   ```shell
   docker build . -f Director.Dockerfile -t $REGISTRY/space-agon-director:0.1
