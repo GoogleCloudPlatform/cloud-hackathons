@@ -318,7 +318,7 @@ There are instructions and hints in the file to help you proceed.
 - [GenKit Indexer JS](https://firebase.google.com/docs/genkit/rag#define_an_indexer)
 - [GenKit PGVector JS](https://firebase.google.com/docs/genkit/templates/pgvector)
 
-## Challenge 2: Your first flow that analyses the user’s input
+## Challenge 2: Your first flow that analyses the user's input
 
 ### Introduction
 
@@ -441,6 +441,8 @@ Genkit Tools UI: http://localhost:4000
 
 > **Warning**  
 > **Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens,  go to **chat_server_go/cmd/standaloneFlows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
+
+<!-- markdownlint-disable-file  no-duplicate-heading -->
 
 ##### Challenge-steps
 

@@ -3,6 +3,7 @@
 Developing a new gHack is a great way to get your content out to the world. Chances are that if you've done workshops, PoCs or pilots in the past, you already have the material on which to build a gHack.
 
 ## Quick Start
+
 The following checklist summarizes all the steps required to author a new gHack with links to the relevant sections in this guide.
 
 > **Note** This is the general order you will work on things, but a lot of these items can be done in parallel.
@@ -36,9 +37,9 @@ In essence a gHack needs to satisfy the following criteria.
 
 ## Getting Started
 
-Alright, you decided to author a new gHack, welcome to the club! The first thing you need to do is to fork this repository on Github. 
+Alright, you decided to author a new gHack, welcome to the club! The first thing you need to do is to fork this repository on Github.
 
-Navigate to [this repository](https://github.com/GoogleCloudPlatform/cloud-hackathons) on Github, and click on the *Fork* button on the top right. 
+Navigate to [this repository](https://github.com/GoogleCloudPlatform/cloud-hackathons) on Github, and click on the *Fork* button on the top right.
 
 ![Screenshot for the fork button](images/author-create-new-fork.png)
 
@@ -82,9 +83,9 @@ tools/setup-newhack.sh -h century-of-iot -a me@google.com -t "IoT hack of the ce
 ```
 
 > **Note**  
-> The title of your hack is the _visible_ title, and should be human readable, it will be used to link to your hack from the front page (the catalog). Also make sure to use "snake-case" for your hack name, ie: use dashes between words
+> The title of your hack is the *visible* title, and should be human readable, it will be used to link to your hack from the front page (the catalog). Also make sure to use "snake-case" for your hack name, ie: use dashes between words
 
-This command will create a new folder in the `hacks` directory with placeholders for the content. You can then start editing those. In principle, the most important and possibly the only file to edit is the `README.md` in your new hack folder. But if you need any setup or additional capabilities you'll need to edit other files as well. See for an overview the [Anatomy of a gHack section](#the-anatomy-of-a-ghack).
+This command will create a new folder in the `hacks` directory with placeholders for the content. You can then start editing those. In principle, the most important and possibly the only file to edit is the `README.md` in your new hack folder. But if you need any setup or additional capabilities you'll need to edit other files as well. See for an overview the [Details of a gHack section](#the-details-of-a-ghack).
 
 Once you're done with (the first version of) your content you can commit your changes. You can either choose to create a branch (recommended) or do it on your main branch.
 
@@ -112,13 +113,13 @@ git checkout new-iot-hack  # the hack id which is used as the remote branch name
 
 ### Verifying the Rendering
 
-Once a hack is wrapped up, it will end up in the original repository and will be rendered on the gHacks [website](https://ghacks.dev). But, if there's something wrong with the content, things can get horribly wrong. In order to prevent surprises, you can render it yourself using _Github Pages_. First step is to enable _Github Pages_ in your fork and choose for *Source* the _Github Actions_ option in the _Build and deployment_ section.
+Once a hack is wrapped up, it will end up in the original repository and will be rendered on the gHacks [website](https://ghacks.dev). But, if there's something wrong with the content, things can get horribly wrong. In order to prevent surprises, you can render it yourself using *Github Pages*. First step is to enable *Github Pages* in your fork and choose for *Source* the *Github Actions* option in the *Build and deployment* section.
 
 ![Screenshot for the Pages settings through Actions](images/author-pages-settings.png)
 
 #### Branch Protections
 
-The default configuration for Github Pages only works with the *main* branch. If you're planning to use branches for development you need to modify the protection rules. Go to the *Environments* settings and click on *github-pages* 
+The default configuration for Github Pages only works with the *main* branch. If you're planning to use branches for development you need to modify the protection rules. Go to the *Environments* settings and click on *github-pages*
 
 ![Screenshot for environments](images/author-pages-environments.png)
 
@@ -147,7 +148,7 @@ git switch new-iot-hack  # or main if you're not using branches
 git rebase upstream/main
 ```
 
-If you get any conflicts you'll need to resolve those and commit your changes. Then you can push your changes to your origin. Since rebasing changes the Git history, you will need to force push your changes. 
+If you get any conflicts you'll need to resolve those and commit your changes. Then you can push your changes to your origin. Since rebasing changes the Git history, you will need to force push your changes.
 
 ```shell
 git push -f 
@@ -182,7 +183,7 @@ git reset --hard origin/new-iot-hack  # or any other branch that you want to syn
 
 ## GCP Project Setup
 
-Some hacks will need certain resources to be created in GCP projects, before the hack starts. These could be enabling APIs, assigning permissions, creating buckets, databases etc. We expect these things to be automated through **Terraform**. 
+Some hacks will need certain resources to be created in GCP projects, before the hack starts. These could be enabling APIs, assigning permissions, creating buckets, databases etc. We expect these things to be automated through **Terraform**.
 
 By default the scaffolding process creates empty placeholders for the Terraform configuration. You can edit those anyway you want to create the things required for your hack.
 
@@ -198,7 +199,7 @@ See [Event Preparation](howto-host-hack.md#event-preparation) details to ensure 
 
 As mentioned in the previous section we'd like gHacks to be executed in customer environments. That way the resources created can stay behind and people can carry on even after the event. However, we're aware of the challenges of getting sandboxes available at customers, so gHacks are supported on a **special Qwiklabs instance** available on [go/ceqwiklabs](http://go/ceqwiklabs), where we can create our own labs and host events.
 
-By default when a gHack is included in the official repository a new Qwiklabs lab is created in this special Qwiklabs instance. 
+By default when a gHack is included in the official repository a new Qwiklabs lab is created in this special Qwiklabs instance.
 
 If you don't need anything special, the default Qwiklabs lab configuration `qwiklabs.yaml`, provided by the scaffolding tool, should be sufficient. If you need to edit that file, make sure that you've read the document available on [go/ql-scripts](http://go/ql-scripts).
 
@@ -217,7 +218,7 @@ The Terraform configuration when used by Qwiklabs has some pre-requisites. You'l
 - `gcp_region`
 - `gcp_zone`
 
-If you've used the scaffolding tool, this is done for you automatically. 
+If you've used the scaffolding tool, this is done for you automatically.
 
 Another thing to keep in mind is that all Qwiklabs projects come with a default network including a subnet for all regions. If you want your hacks to be available outside of Qwiklabs environments, make sure that either those environments have a default network configured as well, or just use a different specific network created and managed by your configuration.
 
@@ -233,7 +234,7 @@ It's also possible to create labs directly in the special Qwiklabs instance to t
 
 Once you've run the `setup-newhack.sh` scaffolding script as mentioned previously, it will create this directory structure and template files within:
 
-```
+```text
 hacks
 ├── century-of-iot
 │   ├── artifacts  # (Optional) Terraform setup 
@@ -257,9 +258,10 @@ hacks
 │   └── qwiklabs.yaml  # (Required for qwiklabs) Qwiklab configuration
 └── ...
 ```
+
 ## Student Guide
 
-Why should someone take the time to deliver or participate in your hack?  This is the main question you need to answer in order to define your hack. Every gHack needs to have a good executive summary that quickly describes your hack to those who will host or attend your hack. Think of this as your marketing pitch. 
+Why should someone take the time to deliver or participate in your hack?  This is the main question you need to answer in order to define your hack. Every gHack needs to have a good executive summary that quickly describes your hack to those who will host or attend your hack. Think of this as your marketing pitch.
 
 The **Student Guide** is the README.md that lives in the root of your hack's top level folder.
 
@@ -273,7 +275,7 @@ Give your hack name. Keep it short, but consider giving it a "fun" name that is 
 
 This is your chance to sell the casual reader on why they should consider your hack. In a paragraph or two, consider answering the following questions:
 
-- What technologies or solutions will it cover? 
+- What technologies or solutions will it cover?
 - Why are these technologies or solutions important or relevant to the industry?
 - What real world scenarios can these technologies or solutions be applied to?
 
@@ -291,7 +293,7 @@ Because this is a table of contents, we recommend that you create links to the c
 
 Provide a list of technical prerequisites for your hack here.  List out assumed knowledge attendees should have to be successful with the hack. For example, if the hack is an "Introduction to Kubernetes", the attendee should have a basic understanding of containers.  However, if it is an "Advanced Kubernetes" hack, then the attendee should know the basics of Kubernetes and not ask you what a "pod" or "deployment" is.
 
-Provide a list of tools/software that the attendee needs to install on their machine to complete the hack. 
+Provide a list of tools/software that the attendee needs to install on their machine to complete the hack.
 
 ### Contributors
 
@@ -300,18 +302,20 @@ Finally, give yourself and your fellow hack authors some credit. List the names 
 ### Student Guide Template
 
 To help you get started, we have provided a sample template for the Student Guide here:
-- [Student Guide Template](template-student-guide.md). 
+
+- [Student Guide Template](template-student-guide.md).
 
 Please copy this template into your hack's root folder, rename it to **README.md**, and customize it for your hack.
 > **Note** It is a good idea to read through the example markdown in the template to familiarize yourself with the various sections. The sections marked as "(Optional)" do **NOT** need to be in your Student Guide if you don't have content for those sections.
 
 ## Challenge Design
 
-Challenges are at the heart of the gHack format. Designing challenges is what a hack author should spend the majority of their time focusing on. 
+Challenges are at the heart of the gHack format. Designing challenges is what a hack author should spend the majority of their time focusing on.
 
 There are different approaches to designing a hackathon. If you are familiar with the Marvel Comic Universe movies, you know that they follow one of two patterns:
+
 - "Origin Story" - A movie focused on the back story of a SINGLE superhero that lets the audience get to know that character in depth (perhaps with a sidekick character or two included).
-- "Avengers Story" - A movie with an ensemble cast of superhero characters working together to solve a mega problem, with each character getting varying amounts of screen time. 
+- "Avengers Story" - A movie with an ensemble cast of superhero characters working together to solve a mega problem, with each character getting varying amounts of screen time.
 
 You can use the same patterns when designing a gHack.
 
@@ -324,10 +328,10 @@ Once you have decided what type of hack you want to create, you should follow th
 - Challenge descriptions should be shorter than this section on how to design challenges. Keep it to a couple of sentences or bullet points stating the goal(s) and perhaps a hint at the skill(s) needed.
 - Think through what skills/experience you want attendees to walk away with by completing each challenge
 - Challenges should be cumulative, building upon each other and they should:
-    - Establish Confidence – Start small and simple (think "Hello World")
-    - Build Competence – By having successively more complex challenges.	
+  - Establish Confidence – Start small and simple (think "Hello World")
+  - Build Competence – By having successively more complex challenges.
 - Each challenge should provide educational value.  
-    - For example, if an attendee completes only 3 out of 7 challenges, they should still walk away feeling satisfied that they have learned something valuable.
+  - For example, if an attendee completes only 3 out of 7 challenges, they should still walk away feeling satisfied that they have learned something valuable.
 - Take into consideration that a challenge might have more than one way to solve it and that's OK.
 - Provide verifiable success criteria for each challenge that lets the coaches and attendees know they have completed it.
 - Provide relevant links to learning resources that should lead the attendees toward the knowledge they need to complete the challenge.
@@ -340,12 +344,13 @@ To help you get started, we have provided a sample markdown template for an indi
 
 If you haven't already, please copy this template into your hack's root folder and rename it to `README.md`.
 
-For each of your challenges, you will add to the end of your Student Guide a new copy of the challenge template markdown that starts with: 
+For each of your challenges, you will add to the end of your Student Guide a new copy of the challenge template markdown that starts with:
+
 ```markdown
 ## Challenge <#>: <Challenge Name>
 ```
 
-Keep in mind that we're using [Github Flavored Markdown](https://github.github.com/gfm/) and support highlighting of blockquotes that start with `> **Note**` or `> **Warning**`. In addition any line that ends with two spaces and a newline will cause renderer to emit a linebreak. 
+Keep in mind that we're using [Github Flavored Markdown](https://github.github.com/gfm/) and support highlighting of blockquotes that start with `> **Note**` or `> **Warning**`. In addition any line that ends with two spaces and a newline will cause renderer to emit a linebreak.
 
 ## Student Resources Folder
 
@@ -379,16 +384,16 @@ Please publish any presentations in your hack's `resources` folder as a PDF file
 
 ## Coach's Guide
 
-Every gHack should come with a Coach's guide. The simple way to think of the Coach's guide is that should be the document with all of "the answers". The reality is, doing so would turn it into a giant step-by-step document loaded with detailed commands, screenshots, and other resources that are certain to be obsolete the minute you publish it. No one wants to maintain a document like that. 
+Every gHack should come with a Coach's guide. The simple way to think of the Coach's guide is that should be the document with all of "the answers". The reality is, doing so would turn it into a giant step-by-step document loaded with detailed commands, screenshots, and other resources that are certain to be obsolete the minute you publish it. No one wants to maintain a document like that.
 
-Instead of treating the Coach's guide like a step-by-step document, treat it as the "owner's manual" you would want to provide to future coaches so they can host and deliver your gHack to others. 
+Instead of treating the Coach's guide like a step-by-step document, treat it as the "owner's manual" you would want to provide to future coaches so they can host and deliver your gHack to others.
 
 The Coach's guide should include the following:
 
 - List of high-level solution steps to each challenge
 - List of known blockers (things attendees will get hung up on) and recommended hints for solving them. For example:
-    - Resources that will take a long time to deploy in GCP: Go get a coffee.
-    - Permission issues to be aware of, etc
+  - Resources that will take a long time to deploy in GCP: Go get a coffee.
+  - Permission issues to be aware of, etc
 - List of key concepts that should be explained to/understood by attendees before a given challenge (perhaps with a presentation lecture)
 - List of reference links/articles/documentation that can be shared if attendees get stuck
 - Estimated time it would take an attendee to complete each challenge. This will help coaches track progress against expectation. It should NOT to be shared with attendees.
@@ -408,16 +413,17 @@ Please copy this template into your hack's top folder, rename it to `solutions.m
 
 ## Coach Solutions Folder
 
-This is where you can put any completed scripts/templates/code files for the coach's reference. It is understood that the solutions you provide here will be example solutions that represent **ONE** way to solve the challenges. 
+This is where you can put any completed scripts/templates/code files for the coach's reference. It is understood that the solutions you provide here will be example solutions that represent **ONE** way to solve the challenges.
 
-The solution resources might include a full working application, configuration files, populated templates, or other resources that can be used to demonstrate how to solve the challenges. 
+The solution resources might include a full working application, configuration files, populated templates, or other resources that can be used to demonstrate how to solve the challenges.
 
 Examples of Coach solutions resources are:
-- Prerequisites for the GCP environment if needed. 
-    - Example: A VM image with Visual Studio or ML tools pre-installed. 
-    - Example: A Terraform template and/or script that builds out an environment that saves time on solving a challenge
+
+- Prerequisites for the GCP environment if needed.
+  - Example: A VM image with Visual Studio or ML tools pre-installed.
+  - Example: A Terraform template and/or script that builds out an environment that saves time on solving a challenge
 - Scripts/templates/etc for some challenges that can be shared with attendees if they get really stuck
-    - Example: If challenges 1 through 3 build something (i.e. a GKE cluster) that is needed for challenge 4, you could “give” a stuck team the scripts so they could skip to challenge 4.
+  - Example: If challenges 1 through 3 build something (i.e. a GKE cluster) that is needed for challenge 4, you could “give” a stuck team the scripts so they could skip to challenge 4.
 
 > **Note**  
 > This content is NOT intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.

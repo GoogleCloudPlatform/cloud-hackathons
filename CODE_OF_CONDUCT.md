@@ -14,21 +14,21 @@ race, religion, or sexual identity and orientation.
 Examples of behavior that contributes to creating a positive environment
 include:
 
-*   Using welcoming and inclusive language
-*   Being respectful of differing viewpoints and experiences
-*   Gracefully accepting constructive criticism
-*   Focusing on what is best for the community
-*   Showing empathy towards other community members
+* Using welcoming and inclusive language
+* Being respectful of differing viewpoints and experiences
+* Gracefully accepting constructive criticism
+* Focusing on what is best for the community
+* Showing empathy towards other community members
 
 Examples of unacceptable behavior by participants include:
 
-*   The use of sexualized language or imagery and unwelcome sexual attention or
+* The use of sexualized language or imagery and unwelcome sexual attention or
     advances
-*   Trolling, insulting/derogatory comments, and personal or political attacks
-*   Public or private harassment
-*   Publishing others' private information, such as a physical or electronic
+* Trolling, insulting/derogatory comments, and personal or political attacks
+* Public or private harassment
+* Publishing others' private information, such as a physical or electronic
     address, without explicit permission
-*   Other conduct which could reasonably be considered inappropriate in a
+* Other conduct which could reasonably be considered inappropriate in a
     professional setting
 
 ## Our Responsibilities
@@ -60,7 +60,7 @@ negative impact on the project or its community.
 
 We do not believe that all conflict is bad; healthy debate and disagreement
 often yield positive results. However, it is never okay to be disrespectful or
-to engage in behavior that violates the project’s code of conduct.
+to engage in behavior that violates the project's code of conduct.
 
 If you see someone violating the code of conduct, you are encouraged to address
 the behavior directly with those involved. Many issues can be resolved quickly
@@ -70,12 +70,12 @@ behavior is threatening or harassing, report it. We are dedicated to providing
 an environment where participants feel welcome and safe.
 
 Reports should be directed to *[PROJECT STEWARD NAME(s) AND EMAIL(s)]*, the
-Project Steward(s) for *[PROJECT NAME]*. It is the Project Steward’s duty to
+Project Steward(s) for *[PROJECT NAME]*. It is the Project Steward's duty to
 receive and address reported violations of the code of conduct. They will then
 work with a committee consisting of representatives from the Open Source
 Programs Office and the Google Open Source Strategy team. If for any reason you
 are uncomfortable reaching out to the Project Steward, please email
-opensource@google.com.
+<opensource@google.com>.
 
 We will investigate every complaint, but you may not receive a direct response.
 We will use our discretion in determining when and how to follow up on reported
@@ -90,4 +90,4 @@ harassment or threats to anyone's safety, we may take action without notice.
 
 This Code of Conduct is adapted from the Contributor Covenant, version 1.4,
 available at
-https://www.contributor-covenant.org/version/1/4/code-of-conduct/
+<https://www.contributor-covenant.org/version/1/4/code-of-conduct/>

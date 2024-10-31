@@ -11,7 +11,7 @@ Introduction to GenAI will challenge you to build a system that catalogues scien
 This hack will help you explore the following tasks:
 
 - Using Vertex AI Foundational models for text understanding
-- Prompt engineering 
+- Prompt engineering
 - Using BigQuery to run LLMs
 - How to use text embeddings for semantic search in BigQuery
 - Vertex AI Vector Search for storing and searching text embeddings
@@ -38,7 +38,7 @@ This hack will help you explore the following tasks:
 
 ## Challenge 1: Automatic triggers
 
-### Introduction 
+### Introduction
 
 This challenge is all about configuring the pre-requisites for the system we're building.
 
@@ -64,18 +64,17 @@ We'll trigger the summary generation automatically when a document is uploaded t
 - Check the provided Cloud Function's configuration to see the details on how it's being triggered
 - You can test things by uploading a [PDF file](https://arxiv.org/pdf/2301.02230.pdf) to the first Cloud Storage Bucket and watching the logs of the Cloud Function
 
-
 ## Challenge 2: First steps into the LLM realm
 
 ### Introduction
 
-Let's get started with a simple objective; we're going to _extract_ the title of a document using LLMs. In order to work with LLMs we need textual data, so the first step in our process is to extract text data from PDF documents. We've already implemented that functionality for you using Cloud Vision APIs in the provided Cloud Function. Go ahead and have a look at the `extract_text_from_document` function to understand where and how the results are stored. Now, with those results we can look into extracting the title from the text content of the document.
+Let's get started with a simple objective; we're going to *extract* the title of a document using LLMs. In order to work with LLMs we need textual data, so the first step in our process is to extract text data from PDF documents. We've already implemented that functionality for you using Cloud Vision APIs in the provided Cloud Function. Go ahead and have a look at the `extract_text_from_document` function to understand where and how the results are stored. Now, with those results we can look into extracting the title from the text content of the document.
 
 ### Description
 
 For this challenge we'll use Gemini to determine what the title (including any subtitle) of the uploaded document is, *in a cost effective way*. We've already provided the skeleton of the function `extract_title_from_text`, all you need to do is come up with the correct prompt and set the right values for the placeholder (in the `format` function) to pass the document content to your prompt.  Once you've made your changes re-deploy the Cloud Function.
 
-> **Warning**  Beware of some of the quirks of Cloud Function source editor UI! When you click on _Save and redeploy_ button, the editor will show the code for the previous version of the function, which looks like your changes were lost. But that's only temporay, when the function is redeployed, the changes will be shown again. If there were any syntax errors though, the changes will be lost, so make a copy of your changes before you save and redeploy the code. Also, before editing the function make sure that you have the latest version of the code. If you're editing a previous version, the editor won't warn you about that.
+> **Warning**  Beware of some of the quirks of Cloud Function source editor UI! When you click on *Save and redeploy* button, the editor will show the code for the previous version of the function, which looks like your changes were lost. But that's only temporay, when the function is redeployed, the changes will be shown again. If there were any syntax errors though, the changes will be lost, so make a copy of your changes before you save and redeploy the code. Also, before editing the function make sure that you have the latest version of the code. If you're editing a previous version, the editor won't warn you about that.
 
 ### Success Criteria
 
@@ -84,8 +83,8 @@ For this challenge we'll use Gemini to determine what the title (including any s
 
   | Paper                                           | Title |
   | ---                                             | ---   |
-  | [LOFAR paper](https://arxiv.org/pdf/2309.00102) | _The LOFAR Two-Metre Sky Survey (LOTSS) VI. Optical identifications for the second data release_|
-  | [PEARL paper](https://arxiv.org/pdf/2309.00031) | _PEARLS: Near Infrared Photometry in the JWST North Ecliptic Pole Time Domain Field_ |
+  | [LOFAR paper](https://arxiv.org/pdf/2309.00102) | *The LOFAR Two-Metre Sky Survey (LOTSS) VI. Optical identifications for the second data release*|
+  | [PEARL paper](https://arxiv.org/pdf/2309.00031) | *PEARLS: Near Infrared Photometry in the JWST North Ecliptic Pole Time Domain Field* |
 
 ### Learning Resources
 
@@ -102,26 +101,26 @@ For this challenge we'll use Gemini to determine what the title (including any s
 
 ### Introduction
 
-The objective of this challenge is to try to get a summary of a complete paper. For the title it's okay to just look at a part of the document, but generating a summary for the complete document requires an alternative approach, namely LLM _chains_. 
+The objective of this challenge is to try to get a summary of a complete paper. For the title it's okay to just look at a part of the document, but generating a summary for the complete document requires an alternative approach, namely LLM *chains*.
 
 > **Note**  
 > Although the expanding context windows of LLMs are gradually reducing the need for this technique, it remains relevant in specific use cases. In our case there are papers like [this](https://arxiv.org/pdf/1511.08771), with more than 10K pages and 10s of millions of characters, exceeding well beyond the context window of current models. Also keep in mind that in some cases chaining might still be more memory efficient (processing chunks individually instead of whole documents) and more flexible (by integrating data from diverse information sources & tools within a single workflow). So, the optimal approach depends on the specific requirements of the task and the available resources.
 
-There's roughly 3 different approaches we can take; _Stuffing_ is the most basic approach where the full content (possibly from multiple documents) is provided as the context. However this only works with smaller documents due to the context length limits.
+There's roughly 3 different approaches we can take; *Stuffing* is the most basic approach where the full content (possibly from multiple documents) is provided as the context. However this only works with smaller documents due to the context length limits.
 
-The _Map-Reduce_ chain is an alternative approach that's designed to handle large/multiple documents. In essence it makes multiple calls to an LLM for chunks of content (usually in parallel). It first applies an LLM to each document/chunk individually (the _Map_ phase), then the results (outputs of the LLM) are combined and sent to an LLM again to get a single output (the _Reduce_ phase). Typically different prompts are used for the Map and Reduce phases. 
+The *Map-Reduce* chain is an alternative approach that's designed to handle large/multiple documents. In essence it makes multiple calls to an LLM for chunks of content (usually in parallel). It first applies an LLM to each document/chunk individually (the *Map* phase), then the results (outputs of the LLM) are combined and sent to an LLM again to get a single output (the *Reduce* phase). Typically different prompts are used for the Map and Reduce phases.
 
-The _Refine_ chain approach also makes multiple calls to an LLM, but it does that in an iterative fashion. It starts with the first document/chunk, passes its content and gets a response, and then gets to the second document/chunk passing that content plus the response from the previous call, iterating until the last document/chunk and then passing the last (rolling) response and getting a final answer.
+The *Refine* chain approach also makes multiple calls to an LLM, but it does that in an iterative fashion. It starts with the first document/chunk, passes its content and gets a response, and then gets to the second document/chunk passing that content plus the response from the previous call, iterating until the last document/chunk and then passing the last (rolling) response and getting a final answer.
 
 ### Description
 
-In order to get the summaries, we'll implement the _Refine_ approach for this challenge. Most of the code is already provided in the `extract_summary_from_text` method in Cloud Function. Similar to the previous challenge, you're expected to design the prompt and provide the right values to the placeholders.
+In order to get the summaries, we'll implement the *Refine* approach for this challenge. Most of the code is already provided in the `extract_summary_from_text` method in Cloud Function. Similar to the previous challenge, you're expected to design the prompt and provide the right values to the placeholders.
 
 ### Success Criteria
 
 - For this [paper](https://arxiv.org/pdf/2310.01473) we expect a summary like this:
 
-  ```
+  ```text
   The author argues that the standard cosmological model is incorrect and that there is no dark matter. The author provides several arguments for this, including:
 
   * The observed properties of galaxies are consistent with them being self-regulated, largely isolated structures that sometimes interact.
@@ -150,9 +149,10 @@ Before we start using the LLMs you'll need to store the outputs of the Cloud Fun
 
 We've already provided the code in the Cloud Function to store the results in the newly created table, just uncomment the call to `store_results_in_bq`.
 
-Once the table is there, configure BigQuery to use an LLM and run a query that categorizes each paper that's in the `articles.summaries` table using their `summary`. Make sure that the LLM generates one of the following categories: `Astrophysics`, `Mathematics`, `Computer Science`, `Economics` and `Quantitative Biology`. 
+Once the table is there, configure BigQuery to use an LLM and run a query that categorizes each paper that's in the `articles.summaries` table using their `summary`. Make sure that the LLM generates one of the following categories: `Astrophysics`, `Mathematics`, `Computer Science`, `Economics` and `Quantitative Biology`.
 
 Upload the following papers to Cloud Storage Bucket and run your SQL query in BigQuery to show the title and category of each paper
+
 - [Astrophysics](https://arxiv.org/pdf/2310.00044)
 - [Astrophysics](https://arxiv.org/pdf/2310.01062)
 - [Computer Science](https://arxiv.org/pdf/2310.08243)
@@ -192,13 +192,13 @@ Upload the following papers to Cloud Storage Bucket and run your SQL query in Bi
 ### Tips
 
 - You could download and upload the papers manually, but you can also consider  using `wget` and `gsutil` from Cloud Shell.
-- If you get errors when using `wget`, change its _user-agent_ parameter.
+- If you get errors when using `wget`, change its *user-agent* parameter.
 
 ## Challenge 5: Simple semantic search
 
 ### Introduction
 
-Embeddings are a way of representing data as points in space where the locations of those points in space are semantically meaningful. Data could be a word, a piece of text, an image, a video etc. The idea is once these entities are converted to _embedding vectors_, the entities that are similar (for instance in meaning), end up closer to each other in that vector space.
+Embeddings are a way of representing data as points in space where the locations of those points in space are semantically meaningful. Data could be a word, a piece of text, an image, a video etc. The idea is once these entities are converted to *embedding vectors*, the entities that are similar (for instance in meaning), end up closer to each other in that vector space.
 
 The objective of this challenge is to build a search system that goes beyond keyword search. We'll convert our summaries to text embeddings and then run a query, a natural language sentence, to search within the summaries to find the paper that comes the closest. And all of that is possible within BigQuery.
 
@@ -206,13 +206,13 @@ The objective of this challenge is to build a search system that goes beyond key
 
 Similarly to the previous challenge, create a remote model in BigQuery for text embeddings. Run that model on the `summaries` table and store the results in a new table with the following columns: `uri`, `title`, `summary`, `text_embedding`.
 
-Once the table is there, do a SQL search by `COSINE` distance for every row of the newly generated table and the query _Which paper is about characteristics of living organisms in alien worlds?_ and show only the row with the closest distance.
+Once the table is there, do a SQL search by `COSINE` distance for every row of the newly generated table and the query *Which paper is about characteristics of living organisms in alien worlds?* and show only the row with the closest distance.
 
-> **Note**  BigQuery has recently introduced _vector search_ and _vector indexes_ to make these type of searches more efficient. We'll keep to the naive approach for this challenge (as the next challenge will introduce the concepts of vector search and indexes), so **do not** create _vector indexes_ and stick to `ML.DISTANCE` for the search.
+> **Note**  BigQuery has recently introduced *vector search* and *vector indexes* to make these type of searches more efficient. We'll keep to the naive approach for this challenge (as the next challenge will introduce the concepts of vector search and indexes), so **do not** create *vector indexes* and stick to `ML.DISTANCE` for the search.
 
 ### Success Criteria
 
-- Running the SQL query for the provided query returns the following paper: _Solvent constraints for biopolymer folding and evolution in extraterrestrial environments_
+- Running the SQL query for the provided query returns the following paper: *Solvent constraints for biopolymer folding and evolution in extraterrestrial environments*
 
 ### Learning Resources
 
@@ -233,21 +233,21 @@ This challenge is all about implementing the 2nd & 3rd step of this process to b
 
 ### Description
 
-Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON Lines format. 
+Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON Lines format.
 
 > **Note** You'll need to pick an single region for the bucket since Vector Search index needs to be co-located with it and doesn't work with Multi-Region.
 
-Once the embeddings have been exported, create a new Vector Search index. Choose **small** as the _Shard size_, and **5** as the _Approximate neighbours count_, find out the right number of _Dimensions_ to set it, and stick to the defaults for the rest of the parameters.
+Once the embeddings have been exported, create a new Vector Search index. Choose **small** as the *Shard size*, and **5** as the *Approximate neighbours count*, find out the right number of *Dimensions* to set it, and stick to the defaults for the rest of the parameters.
 
 > **Note** JSON Lines is a text format that stores JSON objects, one per line, with each line terminated by a newline character. Typically the `.jsonl` extension is used to denote these files, but both BigQuery and Vector Search use and expect the `.json` extension.
 
-Once the index is ready (should take less than a minute; refresh the page if _Status_ is not _Ready_ yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). Deploying the index to the endpoint will take about 15 minutes (start working on how to use the endpoint while the index is being deployed).
+Once the index is ready (should take less than a minute; refresh the page if *Status* is not *Ready* yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). Deploying the index to the endpoint will take about 15 minutes (start working on how to use the endpoint while the index is being deployed).
 
-Now run the same query as the previous challenge, _Which paper is about characteristics of living organisms in alien worlds?_ through the REST API. You should get the `uri` of the corresponding paper.
+Now run the same query as the previous challenge, *Which paper is about characteristics of living organisms in alien worlds?* through the REST API. You should get the `uri` of the corresponding paper.
 
 ### Success Criteria
 
-- Running the query returns the `uri` of the paper with the title _Solvent constraints for biopolymer folding and evolution in extraterrestrial environments_ (the document name should be _2310.00067.pdf_) as the _datapointId_.
+- Running the query returns the `uri` of the paper with the title *Solvent constraints for biopolymer folding and evolution in extraterrestrial environments* (the document name should be *2310.00067.pdf*) as the *datapointId*.
 
 ### Learning Resources
 

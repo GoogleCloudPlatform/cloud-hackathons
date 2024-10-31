@@ -66,7 +66,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "4.57.0"
+      version = "6.9.0"
     }
   }
 }
@@ -111,7 +111,7 @@ EOF
 cat <<EOF > $BASEDIR/artifacts/runtime.yaml
 $LICENSE
 runtime: terraform
-version: 1.0.1
+version: 1.4.6
 EOF
 
 TAB="$(printf '\t')"
@@ -174,8 +174,8 @@ description: ""
 instruction:
   type: md
   uri: instructions/en.md
-duration: 480
-max_duration: 600
+duration: 420
+max_duration: 420
 credits: 0
 level: fundamental
 tags:

@@ -10,18 +10,18 @@ In this hack you will be solving the common business problem that companies in t
 
 1. Provision an IoT Hub
 1. Set up an IoT Edge device
-1. Bring Edge Computing to your solution for scale and resiliency 
+1. Bring Edge Computing to your solution for scale and resiliency
 
 ## Challenges
 
 - Challenge 1: Provision an IoT environment
-   - Create an IoT Hub and run tests to ensure it can ingest telemetry
+  - Create an IoT Hub and run tests to ensure it can ingest telemetry
 - Challenge 2: Your First Device
-   - Make the connection to your Edge device and see that it is properly provisioned.
+  - Make the connection to your Edge device and see that it is properly provisioned.
 - Challenge 3: Connecting the World
-   - Connect your device and make sure it can see all other devices in your team.
+  - Connect your device and make sure it can see all other devices in your team.
 - Challenge 4: Scalable Monitoring of Telemetry
-   - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
+  - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
 
 ## Prerequisites
 
@@ -39,14 +39,13 @@ In this hack you will be solving the common business problem that companies in t
 
 ## Challenge 1: Provision an IoT environment
 
-***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section.  You should remove all italicized & sample text and replace with your content.***
+***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section. You should remove all italicized & sample text and replace with your content.***
 
-_You can use these two specific blockquote styles to emphasize your text as needed and they will be specially rendered to be more noticeable_
 > **Note**  
-> Sample informational blockquote
+> *Use this format for sample informational blockquote, the Note part is case sensitive*
 
 > **Warning**  
-> Sample warning blockquote
+> *Use this format for sample warning blockquote, the Warning part is case sensitive*
 
 ### Pre-requisites (Optional)
 
@@ -56,13 +55,14 @@ _You can use these two specific blockquote styles to emphasize your text as need
 
 *This section should provide an overview of the technologies or tasks that will be needed to complete the this challenge.  This includes the technical context for the challenge, as well as any new "lessons" the attendees should learn before completing the challenge.*
 
-*Optionally, the coach or event host is encouraged to present a mini-lesson (with the provided lectures presentation or maybe a video) to set up the context and introduction to each challenge. A summary of the content of that mini-lesson is a good candidate for this Introduction section*
+- *Optionally, the coach or event host is encouraged to present a mini-lesson (with the provided lectures presentation or maybe a video) to set up the context and introduction to each challenge. A summary of the content of that mini-lesson is a good candidate for this Introduction section*
 
 *For example:*
 
 When setting up an IoT device, it is important to understand how 'thingamajigs' work. Thingamajigs are a key part of every IoT device and ensure they are able to communicate properly with edge servers. Thingamajigs require IP addresses to be assigned to them by a server and thus must have unique MAC addresses. In this challenge, you will get hands on with a thingamajig and learn how one is configured.
 
 ### Description
+
 *This section should clearly state the goals of the challenge and any high-level instructions you want the students to follow. You may provide a list of specifications required to meet the goals. If this is more than 2-3 paragraphs, it is likely you are not doing it right.*
 
 > **Note** *Do NOT use ordered lists as that is an indicator of 'step-by-step' instructions. Instead, use bullet lists to list out goals and/or specifications.*
@@ -80,17 +80,16 @@ In this challenge, you will properly configure the thingamajig for your IoT devi
 You can find a sample `thingamajig.config` file in the Files section of this hack's Google Space provided by your coach. This is a good starting reference, but you will need to discover how to set exact settings.
 
 Please configure the thingamajig with the following specifications:
+
 - Use dynamic IP addresses
-- Only trust the following whitelisted servers: "mothership", "IoTQueenBee" 
+- Only trust the following whitelisted servers: "mothership", "IoTQueenBee"
 - Deny access to "IoTProxyShip"
 
 ### Success Criteria
 
-*Success criteria go here. The success criteria should be a list of checks so a student knows they have completed the challenge successfully. These should be things that can be demonstrated to a coach.* 
-
-*The success criteria should not be a list of instructions.*
-
-*Success criteria should always start with language like: "Validate XXX..." or "Verify YYY..." or "Show ZZZ..." or "Demonstrate VVV..."*
+- *Success criteria go here. The success criteria should be a list of checks so a student knows they have completed the challenge successfully. These should be things that can be demonstrated to a coach.*
+- *The success criteria should not be a list of instructions.*
+- *Success criteria should always start with language like: "Validate XXX..." or "Verify YYY..." or "Show ZZZ..." or "Demonstrate VVV..."*
 
 *Sample success criteria for the IoT sample challenge:*
 
