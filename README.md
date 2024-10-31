@@ -36,7 +36,7 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 - [GenAI App Development with Genkit](./hacks/genai-genkit/README.md)
   > Learn how to create and deploy a GenAI application with Google Cloud and Firebase Genkit.
 - [Practical SRE](./hacks/practical-sre/README.md)
-  > In this gHack, You'll step into the role of SREs and Product Owners for a cutting-edge app. Your mission is to ensure that this app delivers a smooth, reliable, and responsive experience for its users.
+  > In this gHack, you'll step into the role of SREs and Product Owners for a cutting-edge app. Your mission is to ensure that this app delivers a smooth, reliable, and responsive experience for its users.
 
 ### Industry Solutions
 - [Gaming on Google Cloud](./hacks/gaming-on-gcp/README.md)
