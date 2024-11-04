@@ -54,13 +54,14 @@ Before we start our first day as SREs, we are going to start up metrics collecti
 - The values will be provided to you by the coach. Each team has its own set of values.
 - Copy the values (after replacing the placeholders) into a notepad to be able to re-run when needed.
 - You might need to re-apply them before running command-line commands for all challenges.
+- The cloud console terminal times-out after around 30 minutes of inactivity.
 
   ```sh
   FRONTEND_ADDRESS=<your frontend address>
   BACKEND_ADDRESS=<your backend address>
   LOCUST_ADDRESS=<your locust address>
   PROJECT_ID=<your project id>
-  GKE_CONNECTION_STRING=<your GKE connection string> # Don't worry you don't need to have any GKE knowledge.
+  GKE_CONNECTION_STRING=<the GKE connection string> # Don't worry you don't need to have any GKE knowledge.
   ```
 
 #### Step 2: Generate Load on the Application
@@ -101,7 +102,7 @@ This challenge involves exploring the Movie Guru app and documenting typical use
     - Check your user profile to see if the app remembers your preferences.
     - Log out and log in again to understand the app's behavior.
   
-> **Warning**: AI platform rate limits in qwiklabs environments can be very low (around 10 per minute). This might cause the app to fail (Oops.. Something went wrong). If that is the case, then watch this video with sound turned down to understand the working of the app.
+> **Warning**: AI platform rate limits in qwiklabs environments can be very low. This might cause the app to fail when chatting with the bot (Oops.. Something went wrong). You can still use the backend to look at how the main page load/login process works, but view the chatbot interactions through this video (with sound turned down).
 
 [![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
 
@@ -289,12 +290,13 @@ The addition of "measured over a 30-day rolling window" specifies the timeframe 
 ### Introduction
 
 The platform team introduces you to the app's monitoring dashboards in the Google Cloud Console.
+The platform team's dashboards use metrics collected from the **movie-guru backend service**.
 
 - **Login Dashboard**: Tracks the health and efficiency of the user login process.
-- **Startup Dashboard**: Monitors the performance of the post-login, **Main Page Load** process, ensuring users get into the app quickly.
+- **Main Page Load Dashboard/ Startup Dashboard**: Monitors the performance of the post-login, **Main Page Load**.
 - **Chat Dashboard**: Provides a comprehensive view of user interactions with the chatbot, including engagement, sentiment, and response times.
 
-> **Note**: Metrics in the dashboards may appear blocky because we're simulating load with only a few users. Achieving smoother graphs generally requires a larger user load.
+> **Note**: Metrics in the dashboards may appear blocky because we’re simulating load with only a few users. Achieving smoother graphs generally requires a larger user load.
 
 ### Description
 
@@ -306,13 +308,14 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
      - Based on the metrics and your own experience, describe how users likely perceive the app's performance.  
 1. Note down which aspects of the app need serious improvement.
 1. **Choose Your SLIs:**
-   - Define SLIs (on paper) by examining the dashboards to identify relevant metrics.
-   - Write them down in definition form.
+   - SREs need to document carefully the metrics they use to construct their SLIs (referesher on [what are SLIs](#what-are-slis)).
+   - Your challenge is to first define the SLIs (on paper) by examining the dashboards to identify relevant metrics.
+   - Write them down in definition form as illustrated below.
      - Example Availability SLI: The availability of `service abc` is measured by the ratio of successful startups recorded as a ratio of `metric x` to the total attempts in `metric y`.
      - Example Latency SLI: The latency of `service abc`, measured by the `metric x`, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.
    - **Tips**:
      - Look at the [Business Goals](#business-goals) below to narrow down your search to just a few SLIs relevant for this and the upcoming exercises.
-     - If you aren't sure of the difference between an **SLI** and a **metric**, look at the [Learning Resources](#learning-resources-3).
+     - If you aren't sure of the difference between an **SLI** and a **metric**, look [here](#how-do-metrics-differ-from-slis).
 
 #### Business goals
 
@@ -328,7 +331,7 @@ The platform team introduces you to the app's monitoring dashboards in the Googl
 
 #### How do metrics differ from SLIs?
 
-Metrics and Service Level Indicators (SLIs) both provide valuable data about a system's performance, but they serve distinct roles. Metrics are broad measurements that capture various aspects of system activity, such as CPU usage, latency, and error rates. They form the foundational data used to observe, monitor, and troubleshoot a system. SLIs, on the other hand, are carefully selected metrics that directly reflect the quality of service experienced by users. Focusing on factors like availability, latency, or error rate, SLIs gauge how well a service is meeting specific reliability targets known as Service Level Objectives (SLOs). While metrics provide a comprehensive view of system health, SLIs narrow the focus to measure the specific qualities that most affect user satisfaction, aligning system performance with business objectives.
+Metrics and Service Level Indicators (SLIs) both provide valuable data about a system’s performance, but they serve distinct roles. Metrics are broad measurements that capture various aspects of system activity, such as CPU usage, latency, and error rates. They form the foundational data used to observe, monitor, and troubleshoot a system. SLIs, on the other hand, are carefully selected metrics that directly reflect the quality of service experienced by users. Focusing on factors like availability, latency, or error rate, SLIs gauge how well a service is meeting specific reliability targets known as Service Level Objectives (SLOs). While metrics provide a comprehensive view of system health, SLIs narrow the focus to measure the specific qualities that most affect user satisfaction, aligning system performance with business objectives.
 
 #### Latency Metrics
 
@@ -342,15 +345,17 @@ Metrics and Service Level Indicators (SLIs) both provide valuable data about a s
 
 ### Introduction
 
-Now that you're familiar with the business goals and the SLIs that measure them, and you know your app's current performance, it's time to set improvement goals.
-We'll be setting achievable targets for your teams to achieve in the short-term (a few months) and aspirational long-term objectives for the app.
+Now that you’re familiar with the business goals and the SLIs that measure them, and you know your app's current performance, it's time to set improvement goals.
+We'll be setting achievable targets for your teams to achieve in the short-term objectives (a few months) and aspirational long-term objectives for the app.
 
 ### Description
 
-> **Note**: For this exercise, make educated guesses if exact data isn't available.
+> **Note**: For this exercise, make educated guesses if exact information isn’t available.
 
-1. Define **Achievable** SLOs (on paper) for the [business goals](#business-goals-1) below.
-   - Set realistic, achievable values that you'd like the app to reach in the next month. Use the app's current performance as a reference point. Your application needs to walk before it can run.
+Just like SLIs, SLOs (refresher on [what are SLOs](#what-are-slos)) are also documented on paper before implementing them in monitoring tools. That's what you will do here.
+
+1. Define **Achievable** SLOs for the [business goals](#business-goals-1) below.
+   - Set realistic, achievable values that you’d like the app to reach in the next month. Use the app’s current performance as a reference point. Your application needs to walk before it can run.
 
 2. Define **Aspirational** SLOs (on paper) for the [business goals](#business-goals-1) below.
    - Picture Movie Guru a year from now: an efficient, user-delighting tool (but still short of perfection—since unicorns and 100% targets are rare in the real world). These SLOs should represent goals your team can work toward in the coming year.
@@ -359,22 +364,22 @@ We'll be setting achievable targets for your teams to achieve in the short-term 
 
 **Business Goal 1**: Ensure users can access the main page quickly and reliably.
 
-Define SLO 1a: Availability SLO
-Define SLO 1b: Latency SLO
+- Define SLO 1a: Availability SLO
+- Define SLO 1b: Latency SLO
 
 **Business Goal 2**: Ensure the chatbot responds quickly and keeps users engaged.
 
-Define SLO 2a: Quality SLO (based on user engagement)
-Define SLO 2b: Latency SLO
+- Define SLO 2a: Quality SLO (based on user engagement)
+- Define SLO 2b: Latency SLO
 
 ### Success Criteria
 
-- You've established **Achievable** SLO objectives for the short-term.
+- You’ve established **Achievable** SLO objectives for the short-term.
   - Each SLO has a target value and a compliance period (see examples below)
   - Example SLOs for a fictional shopping cart service:
     - Availability: 99.9% of the users are able to visit the shopping cart measured over a 24-hour rolling window.
     - Latency:  99% of users should be able to load the shopping cart within 600 milliseconds, measured over a 24-hour rolling window.
-- You've set **Aspirational** SLOs based on an ideal user experience to aim for over the next year.
+- You’ve set **Aspirational** SLOs based on an ideal user experience to aim for over the next year.
 - Your objectives are backed by logical business assumptions.
 
 ## Challenge 6: SLOs on the dashboard
@@ -423,21 +428,21 @@ $BACKEND_ADDRESS/phase
 
 This challenge is about setting up **Achievable** Service Level Objectives (SLOs) for the app in **Cloud Monitoring Suite**. These are targets you expect to meet in 1-2 months after making a few improvements to the app.
 
-#### Description
+### Description
 
 1. **Create a service in the UI**
     > **Note**: You can also create these via the API. Check [Tips](#tips) in **Learning Resources** for creating services via the API.
 
    - Go to the **SLOs** tab in the monitoring suite. This is where you'll define and manage your SLOs.
-   - Click create **new service**.
-   - Under **service candidates**, select **mockserver-service** This links your SLOs to the correct service for monitoring.
+   - Click on **+ Define Service > Custom Service**.
    - Give it a **Display name**.
 
-    ![SLO UI](images/SLO_Success.png)
+    ![Service Creation](images/SLO_Success.png)
 
 2. **Create 4 SLOs**
   
-   **Use the values you defined in the previous challenge.**
+   **Use the SLO targets you defined in the previous challenge.**
+    Use **Request Based** SLI calculations for now and NOT **window based**
 
    - Chat Latency:
      - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the **prometheus targets > movieguru** section)
@@ -463,7 +468,11 @@ This challenge is about setting up **Achievable** Service Level Objectives (SLOs
 
 #### Why are we creating services again?
 
- In the context of creating GCP SLOs and services, *creating* a service doesn't mean building the service itself from scratch. It means defining the service as a monitored entity within Cloud Monitoring.
+ In the context of creating GCP SLOs and services, *creating* a service doesn't mean building the service itself from scratch. It just means defining a group of SLOs under a single **service** umbrella.
+
+#### Why are some error budgets negative?
+
+The SLIs of the service are measured from the start of the lab when the app was performing badly. This means, that your error budget was eaten into even *before* the SLOs were created. The budgets will reset once the compliance window reaches an end.  
 
 ### Tips
 
@@ -478,37 +487,55 @@ Use the [Setting SLOs with API](https://cloud.google.com/stackdriver/docs/soluti
 
 #### Example
 
+If creating a new service, run this step. If reusing an existing service, skip this step.
+
 ```sh
 ## Make sure the env variable PROJECT_ID is set.
+echo $PROJECT_ID
 
 ## Get an access token
 ACCESS_TOKEN=`gcloud auth print-access-token`
 
+## Give the service a name
+SERVICE_DISPLAY_NAME="my-first-service"
+
 ## Create a custom service definition
-SERVICE_ID=movieguru-service
 CREATE_SERVICE_POST_BODY=$(cat <<EOF
 {
-  "displayName": "${SERVICE_ID}",
-  "gkeService": {
-    "projectId": "${PROJECT_ID}",
-    "location": "europe-west4",
-    "clusterName": "movie-guru-gke",
-    "namespaceName": "movie-guru",
-    "serviceName": "mockserver-service"
-  }
+  "displayName": "${SERVICE_DISPLAY_NAME}",
+   "custom": {},
+   "telemetry": {}
 }
 EOF
 )
 
 ## POST to create the service
-curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CREATE_SERVICE_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services?service_id=${SERVICE_ID}
+curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Content-Type: application/json" -X POST -d "${CREATE_SERVICE_POST_BODY}" https://monitoring.googleapis.com/v3/projects/${PROJECT_ID}/services?service_id=${SERVICE_DISPLAY_NAME}
+```
+
+- Create an SLO:
+  - Get the **unique id** of the service, by looking in the service page. This is often different from the **service display name**.
+
+  ![Service Unique ID](images/service-id-slo.png)
+
+- Run the following command.
+
+```sh
+## Make sure the env variable PROJECT_ID is set.
+echo $PROJECT_ID
+
+## Unique Service ID of an existing service
+SERVICE_ID=<service UNIQUE id>
+
+## Get an access token
+ACCESS_TOKEN=`gcloud auth print-access-token`
 
 ## Create an SLO definition
 CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
 {
-  "displayName": "70% - Chat Engagement Rate - Calendar day",
+  "displayName": "70% - Chat Engagement Rate - Rolling 24 Hour",
   "goal": 0.7,
-  "calendarPeriod": "DAY",
+  "rollingPeriod": "86400s",
   "serviceLevelIndicator": {
     "requestBased": {
       "goodTotalRatio": {
@@ -586,7 +613,7 @@ This challenge guides you through monitoring the four SLOs created in the previo
   - Keep an eye on the burn rates for the 4 SLOs for 5-10 minutes.
   - Has the recent app change introduced any issues. If so, where?
   - Estimate the burn rate for each SLO and identify which ones require immediate action.
-  - As an SRE, what would an ideal burn rate be?
+  - What would an ideal burn rate be?
 - [Optional] **Observing Alert Triggers**:  
   - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives.
   - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
@@ -602,6 +629,9 @@ This challenge guides you through monitoring the four SLOs created in the previo
 
 ### Learning Resources
 
+- [SLO alerting on Burn Rate](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/alerting-on-budget-burn-rate)
+- [Creating alerting policies with the UI](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-alert)
+
 #### What are **error budgets**
 
 An error budget is the acceptable amount of time your service can fail to meet its SLOs, helping you balance innovation and reliability. Calculated as 1 - SLO, a 99% availability SLO gives you a 1% error budget (about 7.3 hours per month) for new features, maintenance, and experimentation.  Error budgets promote proactive risk management and informed decision-making about service reliability.
@@ -615,14 +645,11 @@ Burn rate measures how quickly you're using up your error budget.  It acts as an
 - A burn rate of 1x means that your error budget will be fully consumed by the end of the compliance period.
 - While you established the SLOs in Challenge 5, it's important to note that the error budgets are calculated from the beginning of the lab, as metrics collection commenced in Challenge 1.
 
-- [SLO alerting on Burn Rate](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/alerting-on-budget-burn-rate)
-- [Creating alerting policies with the UI](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-alert)
-
 ## Challenge 8: What's really UP, doc?
 
 ### Prerequisites
 
-- Connect to the GKE cluster from the **Cloud Shell terminal** by running the following command.
+- Connect to the GKE cluster from the **Cloud Shell terminal** by pasting the following command.
 
 ```sh
 $GKE_CONNECTION_STRING ## This should print out the connection string command that will give your terminal credentials to connect to the GKE cluster
@@ -636,41 +663,41 @@ kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/re
 
 - Reset the backend server
 
-> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way. This simulates your colleagues making some changes that might have broken a few things.
+  > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way. This simulates your colleagues making some changes that might have broken/fixed a few things.
 
-```sh
-## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+  ```sh
+  ## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
 
-curl -X POST \
-  -H "Content-Type: application/json" \
-  -d '{
-  "ChatSuccess": 0.95,
-  "ChatSafetyIssue": 0.1,
-  "ChatEngaged": 0.70,
-  "ChatAcknowledged": 0.15,
-  "ChatRejected": 0.05,
-  "ChatUnclassified": 0.1,
-  "ChatSPositive": 0.6,
-  "ChatSNegative": 0.1,
-  "ChatSNeutral": 0.2,
-  "ChatSUnclassified": 0.1,
-  "LoginSuccess": 0.999,
-  "StartupSuccess": 0.95,
-  "PrefUpdateSuccess": 0.99,
-  "PrefGetSuccess": 0.999,
-  "LoginLatencyMinMS": 10,
-  "LoginLatencyMaxMS": 200,
-  "ChatLatencyMinMS": 906,
-  "ChatLatencyMaxMS": 4683,
-  "StartupLatencyMinMS": 400,
-  "StartupLatencyMaxMS": 1000,
-  "PrefGetLatencyMinMS": 153,
-  "PrefGetLatencyMaxMS": 348,
-  "PrefUpdateLatencyMinMS": 363,
-  "PrefUpdateLatencyMaxMS": 645
-}' \
-$BACKEND_ADDRESS/phase 
-```
+  curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{
+    "ChatSuccess": 0.95,
+    "ChatSafetyIssue": 0.1,
+    "ChatEngaged": 0.70,
+    "ChatAcknowledged": 0.15,
+    "ChatRejected": 0.05,
+    "ChatUnclassified": 0.1,
+    "ChatSPositive": 0.6,
+    "ChatSNegative": 0.1,
+    "ChatSNeutral": 0.2,
+    "ChatSUnclassified": 0.1,
+    "LoginSuccess": 0.999,
+    "StartupSuccess": 0.95,
+    "PrefUpdateSuccess": 0.99,
+    "PrefGetSuccess": 0.999,
+    "LoginLatencyMinMS": 10,
+    "LoginLatencyMaxMS": 200,
+    "ChatLatencyMinMS": 906,
+    "ChatLatencyMaxMS": 4683,
+    "StartupLatencyMinMS": 400,
+    "StartupLatencyMaxMS": 1000,
+    "PrefGetLatencyMinMS": 153,
+    "PrefGetLatencyMaxMS": 348,
+    "PrefUpdateLatencyMinMS": 363,
+    "PrefUpdateLatencyMaxMS": 645
+  }' \
+  $BACKEND_ADDRESS/phase 
+  ```
 
 ### Introduction
 
@@ -680,7 +707,7 @@ $BACKEND_ADDRESS/phase
 
 ### Description
 
-- Look at your SLO dashboards to spot issues (wait a few minutes).
+- Look at your SLO dashboards to spot issues (wait a few minutes before you check).
 
 - Investigate the Issue:
   - To get to the bottom of this mystery, open a new **incognito/private** browser window and navigate to the Movie Guru frontend.
