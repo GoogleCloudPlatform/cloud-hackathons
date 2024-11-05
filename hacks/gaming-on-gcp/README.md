@@ -20,12 +20,12 @@ The objectives of this gHack are:
 
 - Challenge 1: Deploy the Agones Game Server Deployment Platform on Kubernetes
   - Deploy Agones, a library for hosting, running and scaling dedicated game servers on Kubernetes.
-- Challenge 2: Deploy GameServers - Space Agon
-  - Deploy a dedicated server to your Agones cluster and demonstrate its functionality.
-- Challenge 3: Deploy and manage a Fleet
-  - Deploy a Fleet of GameServers to your Agones cluster and manage it.
-- Challenge 4: Deploy your own frontend web client and Service
+- Challenge 2: Deploy your own frontend web client and Service
   - Deploy your own web client to connect to your GameServers.
+- Challenge 3: Deploy GameServers - Space Agon
+  - Deploy a dedicated server to your Agones cluster and demonstrate its functionality.
+- Challenge 4: Deploy and manage a Fleet
+  - Deploy a Fleet of GameServers to your Agones cluster and manage it.
 - Challenge 5: Matchmaking with Open Match
   - Implement Open Match and customize your matchmaking function.
 

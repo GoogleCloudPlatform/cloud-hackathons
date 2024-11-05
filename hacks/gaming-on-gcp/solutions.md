@@ -10,12 +10,12 @@ Welcome to the coach's guide for Gaming on Google Cloud. Here you will find link
 
 - Challenge 1: Deploy the Agones Game Server Deployment Platform on Kubernetes
   - Deploy Agones, a library for hosting, running and scaling dedicated game servers on Kubernetes.
-- Challenge 2: Deploy GameServers - Space Agon
-  - Deploy a dedicated server to your Agones cluster and demonstrate its functionality.
-- Challenge 3: Deploy and manage a Fleet
-  - Deploy a Fleet of GameServers to your Agones cluster and manage it.
-- Challenge 4: Deploy your own frontend web client and Service
+- Challenge 2: Deploy your own frontend web client and Service
   - Deploy your own web client to connect to your GameServers.
+- Challenge 3: Deploy GameServers - Space Agon
+  - Deploy a dedicated server to your Agones cluster and demonstrate its functionality.
+- Challenge 4: Deploy and manage a Fleet
+  - Deploy a Fleet of GameServers to your Agones cluster and manage it.
 - Challenge 5: Matchmaking with Open Match
   - Implement OpenMatch and customize your matchmaking function.
 
@@ -55,7 +55,7 @@ In this challenge, participants will learn how to deploy Agones, an open-source,
    gcloud compute firewall-rules create gke-game-server-firewall \
      --allow udp:7000-8000 \
      --target-tags game-server \
-     --description "Firewall to allow game server tcp traffic"
+     --description "Firewall to allow game server udp traffic"
    ```
 
 1. **Install Agones:** Install Agones with helm (YAML has run into issues when testing). These instructions are found [here](https://agones.dev/site/docs/installation/install-agones/helm) so learners should find them if they are reading the resources provided in the gHack doc:
