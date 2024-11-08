@@ -45,7 +45,7 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 - [Practical SRE](./hacks/practical-sre/README.md)
   > In this gHack, you'll step into the role of SREs and Product Owners for a cutting-edge app. Your mission is to ensure that this app delivers a smooth, reliable, and responsive experience for its users.
 - [Gemini Code Assist](./hacks/gemini-code-assist/README.md)
-  > Gemini CodeAssist guides participants through enhancing a Java and Spring Boot serverless application using Google Cloud's Gemini Code Assist. Participants will learn to use test-driven development, build and deploy the application to Cloud Run, and finally, enhance the application with GenAI.
+  > Gemini Code Assist guides participants through enhancing a Java and Spring Boot serverless application using Google Cloud's Gemini Code Assist. Participants will learn to use test-driven development, build and deploy the application to Cloud Run, and finally, enhance the application with GenAI.
 
 ### Industry Solutions
 

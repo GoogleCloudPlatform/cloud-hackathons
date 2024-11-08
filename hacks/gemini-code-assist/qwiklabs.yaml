@@ -13,13 +13,15 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "[gHacks] hacking with Gemini CodeAssist"
-description: ""
+title: "[gHacks] Gemini Code Assist"
+description: "Gemini Code Assist guides participants through enhancing a Java and Spring Boot serverless application 
+              using Google Cloud's Gemini Code Assist. Participants will learn to use test-driven development, build 
+              and deploy the application to Cloud Run, and finally, enhance the application with GenAI."
 instruction:
   type: md
   uri: instructions/en.md
-duration: 480
-max_duration: 600
+duration: 420
+max_duration: 420
 credits: 0
 level: fundamental
 tags:
