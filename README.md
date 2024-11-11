@@ -20,6 +20,8 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
   > **UPDATED FOR GEMINI** We will build a system to catalog scientific papers. Whenever new papers are uploaded to Cloud Storage a Cloud Function will be triggered and use Vertex AI Foundation Model LLM to extract the title and summarize the paper. We'll store this data in BigQuery and use an LLM directly from BigQuery to classify the papers into distinct categories and then implement semantic search using text embeddings and finally we'll use Vector Search as a scalable solution.
 - [MLOps on GCP](./hacks/mlops-on-gcp/README.md)
   > We will be implementing the full lifecycle of an ML project. We'll provide you with a sample code base and you'll work on automating continuous integration (CI), continuous delivery (CD), and continuous training (CT) for a machine learning (ML) system.
+- [Modernizing Classic Data Warehousing with BigQuery](./hacks/bq-dwh/README.md)
+  > In this hack we'll implement a classic data warehouse using modern tools, such as Cloud Storage, BigQuery, Dataform and Looker Studio. We'll start with a modified version of the well known AdventureWorks OLTP database, and we'll implement a dimensional model to report on business questions using a BI visualization tool.
 - [Real-time analytics with Change Data Capture (CDC)](./hacks/realtime-analytics/README.md)
   > We will be going through replicating and processing operational data from an Oracle database into Google Cloud in real time. You'll also figure out how to forecast future demand, and how to visualize this forecast data as it arrives.
 
@@ -48,13 +50,9 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 - [Gaming on Google Cloud](./hacks/gaming-on-gcp/README.md)
   > Learn how to deploy and manage game servers using Agones. Experience how Open Match integrates with Agones to assign players to game servers and protects servers with players from premature scale down operations.
 
-### Operations
+### Stay tuned for more
 
-- Coming soon...
-
-### Networking
-
-- Coming soon...
+We've got more hacks in development and feel free to suggest new ones...
 
 ## License
 
