@@ -2,15 +2,15 @@
 
 ## Introduction
 
-In this hack we'll implement a classic data warehouse using modern tools, such as Cloud Storage, BigQuery, Dataform, Looker Studio and Cloud Composer. We'll start with a modified version of the well known AdventureWorks OLTP database, and we'll implement a dimensional model to report on business questions using a BI visualization tool.
+In this hack we'll implement a classic data warehouse using modern tools, such as Cloud Storage, BigQuery, Dataform, Looker Studio and Cloud Composer. We'll start with a modified version of the well known *AdventureWorks* OLTP database (a sample database that contains sales data for a fictitious, multinational manufacturing company that sells bicycles and cycling accessories) and build a dimensional model to report on business questions using a BI visualization tool.
 
 ![Architecture of the solution](./images/bq-dwh-arch.png)
 
-In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make that data accessible in BigQuery. In the second challenge we'll apply some basic cleansing and transformations to load the data into staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports. In the 6th challenge we'll add some basic security to our data, the 7th challenge is for the data scientists, using interactive notebooks to analyze data and train ML models and finally, we'll automate, orchestrate and monitor the whole process by tapping into Cloud Composer and Cloud Monitoring in the last 2 challenges.
+In our scenario, the data has already been copied from the database to a landing bucket in Cloud Storage as CSV files. In the first challenge we'll create BigLake tables in BigQuery to make that data accessible in BigQuery. In the second challenge we'll apply some basic cleansing and transformations to load the data into staging tables. In the third challenge we're going to automate this process using Dataform. The fourth challenge is all about creating the dimensional model and the fact table. And in the fifth challenge we'll introduce the OBT concept and use Looker Studio to build reports. In the sixth challenge we'll add some basic security to our data, the seventh challenge is for the data scientists, using interactive notebooks to analyze data and train ML models and finally, we'll automate, orchestrate and monitor the whole process by tapping into Cloud Composer and Cloud Monitoring in the last two challenges.
 
 ## Learning Objectives
 
-This hack will help you explore the following tasks:
+In this hack, you will explore and learn about the following concepts:
 
 - BigQuery as a classic Data warehouse
 - BigLake for accesing data in an object store and applying table semantics
@@ -292,7 +292,7 @@ This challenge is all about Cloud Composer, which is basically a managed and ser
 
 ### Description
 
-We've already created a *Cloud Composer* environment for you. You need to configure and run [this pre-configured DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.0/dags/etlflow.py) (which is basically a collection of tasks organized with dependencies and relationships) on that environment. The DAG is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning and stores the predictions in a new BigQuery table.
+We've already created a *Cloud Composer* environment for you. You need to configure and run [this pre-configured DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.0/dags/etlflow.py) (which is basically a collection of tasks organized with dependencies and relationships) on that environment. The DAG (Directed Acyclic Graph) is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning and stores the predictions in a new BigQuery table.
 
 Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the *environment variables* of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0.2` as the Git reference.
 

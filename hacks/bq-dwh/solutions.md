@@ -218,6 +218,8 @@ Total number of rows for this table should be: **121317**
 
 ### Notes & Guidance
 
+See below for the OBT definition.
+
 ```sql
 config {
     type: "table",
@@ -267,6 +269,8 @@ LEFT JOIN
 ON
   ${ref("fact_sales")}.order_date_key = ${ref("dim_date")}.date_key
 ```
+
+#### Looker Studio
 
 Create a new *calculated field* in Looker Studio (through `Add a field`) using the following formula:
 
