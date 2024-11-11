@@ -4,6 +4,8 @@
 
 This hack will be an introduction to the world of Contact Center modernization and will teach you how to build a robust chat agent using Google's DialogFlow CX platform.
 
+![Architecture](./images/architecture.png)
+
 You will be building a virtual agent for the HR department of a company called PipedPiper. Your agent will be the central place for employees to find authoritative answers  on company policies as well as place to get data from other internal systems (eg. Workday). This agent will demonstrate how a company can increase employee productivity by centralizing access to knowledge - data stored in internal data sets as well as API driven systems - all accessed using natural language from a single chat.
 
 ## Learning Objectives
