@@ -108,18 +108,18 @@ resource "time_sleep" "wait_until_functions_sa_ready" {
   ]
 }
 
-resource "google_project_iam_member" "gce_default_iam" {
-  project = var.gcp_project_id
-  for_each = toset([
-    "roles/logging.logWriter",
-    "roles/storage.objectAdmin"
-  ])
-  role   = each.key
-  member = "serviceAccount:${data.google_compute_default_service_account.gce_default.email}"
-  depends_on = [
-    google_project_service.iam_api
-  ]
-}
+# resource "google_project_iam_member" "gce_default_iam" {
+#   project = var.gcp_project_id
+#   for_each = toset([
+#     "roles/logging.logWriter",
+#     "roles/storage.objectAdmin"
+#   ])
+#   role   = each.key
+#   member = "serviceAccount:${data.google_compute_default_service_account.gce_default.email}"
+#   depends_on = [
+#     google_project_service.iam_api
+#   ]
+# }
 
 data "archive_file" "source" {
   type        = "zip"
@@ -147,20 +147,13 @@ resource "google_cloudfunctions_function" "function" {
   name    = "vacation-days"
   runtime = "python311"
 
-  entry_point           = "on_post"
-  available_memory_mb   = "512"
-  timeout               = "300"
+  entry_point           = "on_request"
   source_archive_bucket = google_storage_bucket.bucket.name
   source_archive_object = google_storage_bucket_object.zip.name
   ingress_settings      = "ALLOW_INTERNAL_AND_GCLB"
   max_instances         = 4
 
   service_account_email = data.google_compute_default_service_account.gce_default.email
-
-  environment_variables = {
-    GCP_REGION     = var.gcp_region
-    GCP_PROJECT_ID = var.gcp_project_id
-  }
 
   trigger_http                 = true
   https_trigger_security_level = "SECURE_ALWAYS"
