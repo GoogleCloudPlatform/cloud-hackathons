@@ -122,6 +122,7 @@ resource "google_project_iam_member" "gce_default_iam" {
   project = var.gcp_project_id
   for_each = toset([
     "roles/logging.logWriter",
+    "roles/artifactregistry.writer",
     "roles/storage.objectAdmin"
   ])
   role   = each.key
