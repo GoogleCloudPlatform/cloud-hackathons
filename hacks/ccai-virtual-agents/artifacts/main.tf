@@ -31,13 +31,18 @@ resource "google_project_service" "iam_api" {
   disable_on_destroy = false
 }
 
-resource "google_project_service" "functions_api" {
-  service            = "cloudfunctions.googleapis.com"
+resource "google_project_service" "build_api" {
+  service            = "cloudbuild.googleapis.com"
   disable_on_destroy = false
 }
 
 resource "google_project_service" "artifacts_api" {
   service            = "artifactregistry.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "functions_api" {
+  service            = "cloudfunctions.googleapis.com"
   disable_on_destroy = false
 }
 
