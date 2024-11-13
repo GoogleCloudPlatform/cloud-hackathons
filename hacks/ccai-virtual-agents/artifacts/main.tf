@@ -118,18 +118,18 @@ resource "time_sleep" "wait_until_functions_sa_ready" {
   ]
 }
 
-# resource "google_project_iam_member" "gce_default_iam" {
-#   project = var.gcp_project_id
-#   for_each = toset([
-#     "roles/logging.logWriter",
-#     "roles/storage.objectAdmin"
-#   ])
-#   role   = each.key
-#   member = "serviceAccount:${data.google_compute_default_service_account.gce_default.email}"
-#   depends_on = [
-#     google_project_service.iam_api
-#   ]
-# }
+resource "google_project_iam_member" "gce_default_iam" {
+  project = var.gcp_project_id
+  for_each = toset([
+    "roles/logging.logWriter",
+    "roles/storage.objectAdmin"
+  ])
+  role   = each.key
+  member = "serviceAccount:${data.google_compute_default_service_account.gce_default.email}"
+  depends_on = [
+    google_project_service.iam_api
+  ]
+}
 
 data "archive_file" "source" {
   type        = "zip"
