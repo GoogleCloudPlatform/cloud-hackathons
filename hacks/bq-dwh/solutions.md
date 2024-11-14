@@ -152,7 +152,9 @@ EXECUTE IMMEDIATE FORMAT("""
 
 Configuring the Git connection should be trivial through the UI, you should click on the link `CONNECT WITH GIT` in the `SETTINGS` tab. In that settings tab you can also set the *Google Cloud Project ID* by editing `Workspace compilation overrides`.
 
-Once the development workspace has been created, navigate to `workflow_settings.yaml` and click on `INSTALL PACKAGES` button to install the required packages. And then `START EXECUTION` and pick Tag *staging*. Don't forget to include the dependencies.
+After creating the workspace you can then click on `START EXECUTION` and pick Tag *staging*. Don't forget to include the dependencies.
+
+> **Note** Although this is probably not required anymore, in case you get package not found errors, you'll need to navigate to the `workflow_settings.yaml` and click on `INSTALL PACKAGES` button to install the required packages so that the compilation works.
 
 ## Challenge 4: Dimensional modeling
 
@@ -166,6 +168,8 @@ bq mk --location=$REGION -d $BQ_DATASET
 See below for an example, but just like the previous examples, there are multiple options (left joins are fine, and probably better, too). This might be good moment to explain partitioning and clustering if participants are not familiar with the concepts. We're using `order_date` which is a date column as the partition column in this table. We could've used the `order_date_key` too, but then we'd have to use integer range partitioning and bucket things, which (for dates, and certainly for hash values) is not very efficient as there's a maximum of 10K partitions per table. For clustering, it's important to note that typically columns that are often used for joins for lookups are selected and the order matters! You should use the most often used column as the first cluster column. For this challenge we're just using `product_key` as the example.
 
 Also note that BigQuery doesn't enforce primary & foreign key constraints, but they're used as hints for optimizing joins.
+
+> **Note** At the time of this writing creating foreign key constraints through Dataform raises the following error: `Exceeded rate limits: too many table update operations for this table.`. So, for now we're not including foreign keys in the challenge.
 
 ```sql
 config {
@@ -201,15 +205,16 @@ WHERE
   sod.sales_order_id = soh.sales_order_id
   AND sod.product_id = p.product_id
 
-post_operations {
-  ${keys.primary(ctx, "sales_key")}
-  ${keys.foreign(ctx, ref("dim_product"), "product_key")}
-  ${keys.foreign(ctx, ref("dim_customer"), "customer_key")}
-  ${keys.foreign(ctx, ref("dim_credit_card"), "credit_card_key")}
-  ${keys.foreign(ctx, ref("dim_address"), "address_key", "ship_address_key")}
-  ${keys.foreign(ctx, ref("dim_order_status"), "order_status_key")}
-  ${keys.foreign(ctx, ref("dim_date"), "date_key", "order_date_key")}
-}
+-- This is causing an error: *Exceeded rate limits: too many table update operations*, disabling it for now
+--post_operations {
+--  ${keys.primary(ctx, "sales_key")}
+--  ${keys.foreign(ctx, ref("dim_product"), "product_key")}
+--  ${keys.foreign(ctx, ref("dim_customer"), "customer_key")}
+--  ${keys.foreign(ctx, ref("dim_credit_card"), "credit_card_key")}
+--  ${keys.foreign(ctx, ref("dim_address"), "address_key", "ship_address_key")}
+--  ${keys.foreign(ctx, ref("dim_order_status"), "order_status_key")}
+--  ${keys.foreign(ctx, ref("dim_date"), "date_key", "order_date_key")}
+--}
 ```
 
 Total number of rows for this table should be: **121317**
@@ -224,7 +229,7 @@ See below for the OBT definition.
 config {
     type: "table",
     schema: "dwh",
-    tags: ["obt"]
+    tags: ["obt"],
     bigquery: {
       partitionBy: "order_date"
     }
@@ -272,7 +277,9 @@ ON
 
 #### Looker Studio
 
-Create a new *calculated field* in Looker Studio (through `Add a field`) using the following formula:
+You can get the quarter information through the *Data Type* in the *Dimension* selection section (and choosing Date Time -> Year Quarter). Display format should be set to the *Custom value* of `yQ`.
+
+Alternatively you can create a new *calculated field* in Looker Studio (through `Add a field`) using the following formula:
 
 ```sql
 CONCAT("Y", year, "Q", quarter_of_year)

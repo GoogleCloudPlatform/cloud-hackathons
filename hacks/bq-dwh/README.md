@@ -132,10 +132,6 @@ After configuring the Dataform repository, create a new *Development Workspace*,
 - [Configuring Dataform workflow settings](https://cloud.google.com/dataform/docs/configure-dataform)
 - [Creating a development workspace](https://cloud.google.com/dataform/docs/create-workspace)
 
-### Tips
-
-- You need to install packages to solve the errors about `npm` packages not found. This can be done from the UI if you open the `workflow_settings.yaml` file.
-
 ## Challenge 4: Dimensional modeling
 
 ### Introduction
@@ -163,8 +159,6 @@ We have already provided the code for the dimension tables, first run the pipeli
 - `gross_revenue` (calculated by multiplying `unit_price` with `order_quantity`)
 - `gross_profit` (calculated by subtracting discounts and costs of goods sold from `gross_revenue`)
 
-Add the `sales_key` as the primary key and create foreign key references for all of the dimensions referenced through the surrogate keys.
-
 Once the configuration is complete run the Dataform pipeline with the tag `fact` and commit your changes.
 
 > **Note** If you've created the fact table with no or a different partition column, you'll have to drop it first manually before you can run the Dataform pipeline with the `fact` tag.
@@ -174,7 +168,6 @@ Once the configuration is complete run the Dataform pipeline with the tag `fact`
 - There is a new BigQuery dataset `dwh` in the same region as the other datasets.
 - There's a successful execution of the provided Dataform pipeline for the `fact` tag.
 - There are dimension tables and a new partitioned and clustered fact table, `fact_sales` in the `dwh` dataset, with the columns as specified above having in total **121317** rows.
-- The new fact table has `sales_key` as its primary key, and foreign keys for all of the referenced dimension tables.
 
 ### Learning Resources
 
@@ -183,13 +176,11 @@ Once the configuration is complete run the Dataform pipeline with the tag `fact`
 - [Defining additional table configurations with Dataform](https://cloud.google.com/dataform/docs/table-settings#execute-sql-after-table)
 - [Introduction to partitioned tables](https://cloud.google.com/bigquery/docs/partitioned-tables)
 - [Introduction to clustered tables](https://cloud.google.com/bigquery/docs/clustered-tables)
-- [More information on primary keys and foreign keys](https://cloud.google.com/blog/products/data-analytics/join-optimizations-with-bigquery-primary-and-foreign-keys)
 
 ### Tips
 
 - Find out which staging tables have the `sales_order_id` and `sales_order_details_id` as their *id* columns. Those tables will be the basis of your fact table (and you'll need *one* more table to complete your join).
 - Note that the discount column is a factor between 0 and 1 (0 being no discount and 1 being a 100% discount).
-- Check the dimension table configurations and the `keys.js` file for inspiration on how to set up the primary and foreign key constraints.
 
 ## Challenge 5: Business Intelligence
 
@@ -220,11 +211,12 @@ Once the table is created, create a new Looker Studo report using the new table 
 - [BigQuery explained: Working with joins and more](https://cloud.google.com/blog/topics/developers-practitioners/bigquery-explained-working-joins-nested-repeated-data)
 - [Using Looker Studio with BigQuery](https://cloud.google.com/bigquery/docs/visualize-looker-studio)
 - [Calculated fields in Looker Studio](https://support.google.com/looker-studio/answer/6299685)
+- [Looker Studio Data Types for Date Time](https://support.google.com/looker-studio/answer/6401549?hl=en#date-and-time-data-types)
 
 ### Tips
 
 - There are different types of joins you can do with BigQuery, choose the correct one.
-- You'll need to create a calculated field in Looker Studio to get the *quarter* information in proper format.
+- You can use *Data Types* or calculated fields in Looker Studio to get the *quarter* information in proper format, as usual in Google Cloud there's more than one way to skin a cat :)
 
 ## Challenge 6: Access control
 
@@ -294,7 +286,7 @@ This challenge is all about Cloud Composer, which is basically a managed and ser
 
 We've already created a *Cloud Composer* environment for you. You need to configure and run [this pre-configured DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.0/dags/etlflow.py) (which is basically a collection of tasks organized with dependencies and relationships) on that environment. The DAG (Directed Acyclic Graph) is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning and stores the predictions in a new BigQuery table.
 
-Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the *environment variables* of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0.2` as the Git reference.
+Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the *environment variables* of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0.3` as the Git reference.
 
 > **Note** It might take a few minutes for the DAG to be discovered by Airflow, be patient :) Once the DAG is discovered it will be started automatically, make sure to configure the environment variables before you upload the DAG.
 
