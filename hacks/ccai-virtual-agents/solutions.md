@@ -9,17 +9,20 @@
 
 ## Challenge 1 
 > Goal: Create and initialize a Dialogflow agent
+1. Download the zip file containing all files we'll use in this gHack from [this link](https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip).
 1. Open the [Diaglogflow CX](https://dialogflow.cloud.google.com/cx/projects) Console
-2. Create a new Agent (choose "**build your own**") (use defaults for everything)
-3. Open the "Test Agent" panel and post a 'hello' message to the new agent (use defaults for everything)
+1. Create a new Agent (choose "**build your own**") (use defaults for everything)
+1. Open the "Test Agent" panel and post a 'hello' message to the new agent (use defaults for everything)
 
 > At this point you have a new agent that can process simple Intents for greetings
 
-4. Download the [sample HTML page](./resources/page.html).
-5. In the Console, go to "Manage -> Integrations" and connect "DiaglogFlow Messenger". Accept all defaults and click "Enable the unauthenticated API". 
-6. The DialogFlow Messenger will generate HTML code. Copy that code and add it to the page.html that you've downloaded on your local machine. 
-7. **TODO**: upload the page.html to the webserver (or is it OK to run locally?). **Note:** If the user is running locally, then they'll have to know how to setup a simple http server, otherwise it's unlikely that this will  work if they just double-click on the page.html and open it in their browser.  
-> At this point we have the agent testable in the Console or via the webpage (for end users)
+1. In the Console, go to "Manage -> Integrations" and connect "DiaglogFlow Messenger". Accept all defaults and click "Enable the unauthenticated API". 
+1. The DialogFlow Messenger will generate HTML code. Copy that code and add it to the `agent-page.html` file that was in the zip file you downloaded.
+1. We will use a simple python http server to serve up the `agent-page.html` file. 
+    1. Go to the Cloud Shell, click the 3 dots and select **Upload** to upload `agent-page.html` to the root of your home directory
+    1. Run the webserver with this command: `python3 -m http.server 8080` 
+    1. Click on the **Web Preview** and select **Preview on Port 8080**. This will open a new browser window and show a list of all the files in your home directory. Find and click on `agent-page.html`.
+> At this point we have the agent testable in the Console and via the webpage for end users
 
 ## Challenge 2
 > Goal: Set up a basic Q&A steering using Intents and Event handlers 

@@ -52,27 +52,31 @@ This challenge is all about setting up and getting our agent configured.
 
 ### Description
 
+First download the files we'll be using in the rest of this gHack from [this link](https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip). Unzip the zip file and keep the files handy, they will be needed in various challenges.
+
 Create a new agent in the Dialogflow CX Console. Test your agent with a simple "hello" message.
 
-Use the DialogFlow Messenger Integration to create a chat bubble on the provided `page.html` page so that your agent is reachable via a web page.
+Use the DialogFlow Messenger Integration to create a chat bubble on the provided `agent-page.html` page so that your agent is reachable via a web page.
 
-Host the webpage and test it in a browser.
+Host the webpage on a webserver running in CloudShell and test it in a browser to make sure the chat bubble appears and works.
 
 ### Success Criteria
 
 - An agent is created in your project
-- The agent can respond to an "hello" message
-- Dialogflow Messenger agent widget is responding similarly to "hello" messages on a webpage
+- The agent can respond to an "Hello" message
+- Dialogflow Messenger agent widget is responding similarly to "Hello" messages on a webpage
 
 ### Tips
 
-- None :\
+- Don't forget! You can upload files to your Cloud Shell and even expose ports to make it available in your browser.
 
 ### Learning Resources
 
 - [Dialogflow Basics](https://cloud.google.com/dialogflow/cx/docs/basics)
 - [Testing Agents](https://cloud.google.com/dialogflow/cx/docs/concept/test-case)
+- [CloudShell - Manage Files](https://cloud.google.com/shell/docs/uploading-and-downloading-files)
 - [Running a Webserver](https://realpython.com/python-http-server/)
+- [CloudShell - Preview Webservers](https://cloud.google.com/shell/docs/using-web-preview)
 
 
 ## Challenge 2: What's -YOUR- intent?
