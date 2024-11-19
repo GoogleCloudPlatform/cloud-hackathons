@@ -40,8 +40,9 @@
 5. Open up Routes and Add the new route
     1. Choose the "Escalate to human" intent
     2. Add an Agent Response of "Sending you to an agent now"
-    3. Save!!!
+    3. Save
 6. Open "Test Agent" and test both Intents
+
 > At this point agent can respond to the two intents (hello and escalate)
 
 ## Challenge 3

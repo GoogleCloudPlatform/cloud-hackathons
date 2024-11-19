@@ -88,16 +88,17 @@ In this challenge we will train our agent on "Intents" - things we want it to un
 ### Description
 
 Create a new Intent for the agent to handle escalations. We want to train the agent on certain phrases that would cause it to 'understand' that the human in the chat wants help from a live agent. 
+
 > **NOTE:** Try to use at least 6 training phrases when creating the intent 
 
-> **NOTE:** It could take a few minutes for the new training phrases to get picked up by the agent
+> **NOTE:** It could take a few minutes for the new training phrases to be picked up by the agent
 
 Create a new Route to hold the escalation intent with the appropriate agent response
 
 ### Success Criteria
 
 - A new escalation Intent is created
-- A new Route is created for the esclaation Intent 
+- A new Route is created for the esclation Intent 
 - The Agent responds to the new escalation Intent
 - The agent continues to respond to "hello" messages
 
@@ -106,8 +107,6 @@ Create a new Route to hold the escalation intent with the appropriate agent resp
 - None :\
 
 ### Learning Resources
-
-TODO
 
 - [Dialogflow Intents](https://cloud.google.com/dialogflow/cx/docs/concept/intent)
 - [Dialogflow Fulfillments](https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment)
