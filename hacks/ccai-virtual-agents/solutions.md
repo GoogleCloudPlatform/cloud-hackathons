@@ -10,6 +10,7 @@
 ## Challenge 1 
 > Goal: Create and initialize a Dialogflow agent
 1. Download the zip file containing all files we'll use in this gHack from [this link](https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip).
+1. **TODO** add the wget command for this
 1. Open the [Diaglogflow CX](https://dialogflow.cloud.google.com/cx/projects) Console
 1. Create a new Agent (choose "**build your own**") (use defaults for everything)
 1. Open the "Test Agent" panel and post a 'hello' message to the new agent (use defaults for everything)
