@@ -30,7 +30,7 @@
 
 1. Go to "Manage Agent -> Intents"
 2. Create a new Intent called "Escalate to human"
-3. Add a 6 training phrases like:
+3. Add a 6 training phrases such as:
     1. "I want to talk to an agent"
     2. "I want to talk to a person."
     3. "Agent NOW"
@@ -50,48 +50,49 @@
 > Goal: Give Agent access to PDF documents to use in chat answers
 
 1. Create a bucket and a folder and upload PDF files into it
-1. In the DF Console, agent "Start Page" click "Add State Handler" and select "Data Store"
-2. Select to Add Data Store (the "+") the click "Create Vertex AI Search and Conversation app"
-3. This opens up [agent builder](www.link.com) where you can create the data store by uploading documents
+1. In the DialogFlow Console agent "Start Page" click "Add State Handler" and select "Data Store"
+2. Click the `+` to Add Data Store then click "Create Vertex AI Search and Conversation app"
+3. **TODO: get the right link** This opens up the [agent builder](www.link.com) where you can create the data store by uploading documents
 4. Give the agent a name and hit next
-5. Select "Create New Data store" and select the folder in GCS
+5. Select "Create New Data Store" and select the folder in GCS
 6. Give the Data Store a name and create it
-7. Go back to DF Console and repeat steps 2 and 3. You should now see the option to select your document DS from a dropdown
+7. Go back to the DialogFlow Console and repeat steps 2 and 3. You should now see the option to select your document Data Store from a dropdown
 
-    > At this point you have created a Data Store that is processing your PDFs, indexing them and making them available for searching and summarization 
+> At this point you have created a Data Store that is processing your PDFs, indexing them and making them available for searching and summarization 
 
-    > Indexing can take about 5-10 minutes for the given documents 
+> **NOTE:** Indexing can take about 5-10 minutes for the given documents  
 
 9. Test the agent with some questions from the documents, for example:
-    1. "How much time off do i get?" 
-    2. "what is our vacation policy?" 
-    3. "what is our parental leave?"
+    1. "What is our vacation policy?" 
+    1. "What types of termination are there?"
+    1. "What is our leave policy?"
 
-    You can also ask followup questions as the VA keeps the conversation context
+You can also ask followup questions as the Agent keeps the conversation context.
 
 ## Challenge 4
 > Goal: Update our agent flow to include answers based on generator 
 
 1. From the Start Page, go to the Default Welcome Intent. Under Fulfillment open Generators and select "+ New generator" 
-2. Give it a name like "Gen Welcome"
-3. Under prompt suggest it greet the users based on the previous message. For example: 
+2. Give it a name like "Generator - Welcome"
+3. Under prompt suggest that it greet the users based on the previous message. For example: 
 
     ```
-    A user started a conversation with you, a chat bot, greet them politely and tell them something helpful about your ability to answer questions for a worker at Piped Piper Co. The last thing they said was $last-user-utterance
+    A user started a conversation with you, a chat bot, greet them politely and tell them something helpful about your ability to answer questions for a worker at Piped Piper. The last thing they said was $last-user-utterance
     ```
+
 4. Give the Output parameter a name, for example `$request.generative.mygreeting`
-
 5. Remove the hardcoded agent responses and replace them with the output parameter name from step #4 above
 6. Test the agent with different welcome phrases
 
 ## Challenge 5
 > Goal: Call external system for knowledge
+**NOTE:** need actual testing to finish the text here
 
 1. Create a new intent for answering a question about vacation days. Use the steps in Challenge 1 to create it.
-
-2. create a webhook
+2. Create a Webhook
     1. Go to Manage -> Webhooks -> Create new
-    2. Fill in a name and set Subtype -> Flexible, Method -> GET
+    1. Name it "Get Vacation Days"
+    2. Set Subtype -> Flexible, Method -> GET
     3. Webhook URL -> TBD **TODO: create cloud function \ stub for this** 
     4. Fill in request parameters:
         1. $flow.vacation variable to store the result
