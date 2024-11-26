@@ -161,7 +161,7 @@ In this challenge we see how to use Gemini to translate between natural language
 
 ### Description
 
-Create a new Intent for answering a question about Piped Piper's vacation days policy. Create a webhook that will get answers from the `get_vacation_days` Cloud Function (acting as a placeholder for a real CRM). Create two generators; one for translating the user question into an API call to the webhook, the other for translating the response JSON and answering the initial user question.
+Create a new Intent for answering a question about Piped Piper's vacation days policy. Create a webhook that will get answers from the `vacation-days` Cloud Function (acting as a placeholder for a real CRM). Create two generators; one for translating the user question into an API call to the webhook, the other for translating the response JSON and answering the initial user question.
 
 ### Success Criteria 
 
