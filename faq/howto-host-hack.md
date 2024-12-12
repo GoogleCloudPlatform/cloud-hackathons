@@ -131,9 +131,13 @@ It will require at least one person from the team to sign up for the gHacks Qwik
 
 In order to organize a gHack event with Qwiklabs, you'll need a *Classroom Template* and a *Classroom*. You'll need *Authoring* permissions on the special Qwiklabs instance to create those. Please follow the instructions on [go/ceqwiklabstraining](http://go/ceqwiklabstraining) to become an author.
 
+If you run into any issues during lab startup make sure to follow the [troubleshooting guide](howto-troubleshoot.md).
+
 ##### Classrooms
 
 You need to create *Classroom* instances for every event you want to organize (including any dry-runs you want to do with coaches before the real event). A *Classroom* has a start and an end date and references the *Classroom Template* which determines which lab is used.
+
+> **Note** *Labs for Sales* has recently introduced a formal process for creating *Classrooms*. Before you can set up a *Classroom*, you'll have to complete and submit the form for capacity request through go/lfs-capacity-request. You'll be provided a code that you need to add to the *Classroom* as a tag. I
 
 You'll need to add the coach for each team as a *student* to the classroom so that they can see the lab when they log into the Qwiklabs instance.
 
