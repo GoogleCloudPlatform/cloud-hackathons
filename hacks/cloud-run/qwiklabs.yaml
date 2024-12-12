@@ -20,8 +20,8 @@ description: "We'll be using Cloud Run to quickly configure, deploy and troubles
 instruction:
   type: md
   uri: instructions/en.md
-duration: 480
-max_duration: 600
+duration: 420
+max_duration: 420
 credits: 0
 level: fundamental
 tags:
