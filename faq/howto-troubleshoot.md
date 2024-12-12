@@ -1,8 +1,8 @@
-# How To Troubleshoot a gHack
+# How To Troubleshoot a gHack Lab
 
 ## Introduction
 
-Although all gHacks are thoroughly reviewed and tested before they are added to the catalog, there have been a few incidents where a lab wasn't starting just before an event 😬. Although in all those cases the culprit was referencing the *latest version* of a 3rd party dependency from the Terraform setup scripts (nowadays we expect and scrutinize authors to fix the versions of their 3rd party dependencies), you can follow the steps laid out in this document to investigate and potentially solve a potential problem in the unlikely event that you might still encounter it.
+Although all gHacks are thoroughly reviewed and tested before they are added to the catalog, there have been a few incidents where a lab wasn't starting just before an event 😬. Even though in all those cases the culprit was referencing the *latest version* of a 3rd party dependency from the Terraform setup scripts and we nowadays expect and scrutinize authors to fix the versions of their 3rd party dependencies, you can follow the steps laid out in this document to investigate and potentially solve a potential problem in the unlikely event that you might still encounter it.
 
 ## Labs
 
