@@ -34,7 +34,7 @@ docker pull wnameless/oracle-xe-11g-r2
 docker run -d -p 0.0.0.0:1521:1521 -e ORACLE_ALLOW_REMOTE=true wnameless/oracle-xe-11g-r2
 
 # Prepare the sample transactions
-git clone https://github.com/caugusto/datastream-bqml-looker-tutorial.git
+git clone https://github.com/meken/gcp-realtime-analytics-db-setup.git setup
 
 DOCKER_ID=`docker ps -a|grep wnameless|grep Up| awk '{print $1}'`
 docker exec -i -e USER=oracle -u oracle $DOCKER_ID bash << 'EOF'
@@ -61,9 +61,9 @@ exit;
 EOFSQL
 EOF
 
-docker cp datastream-bqml-looker-tutorial $DOCKER_ID:/u01/app/oracle
+docker cp setup $DOCKER_ID:/u01/app/oracle
 docker exec -i $DOCKER_ID bash << EOF
-chown -R oracle:dba /u01/app/oracle/datastream-bqml-looker-tutorial 
+chown -R oracle:dba /u01/app/oracle/setup 
 EOF
 
 docker exec -i -e USER=oracle -u oracle $DOCKER_ID bash << 'EOF'
@@ -98,8 +98,8 @@ exit;
 EOFSQL
 
 echo "Will load the FASTFRESH.ORDERS table next ... This will take about 10 minutes to complete ..."
-bunzip2 /u01/app/oracle/datastream-bqml-looker-tutorial/sample_data/oracle_data.csv.bz2
-cd /u01/app/oracle/datastream-bqml-looker-tutorial/sqlloader
+bunzip2 /u01/app/oracle/setup/sample_data/oracle_data.csv.bz2
+cd /u01/app/oracle/setup/sqlloader
 ./load_fastfresh_data.sh
 EOF
 
