@@ -11,80 +11,47 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-resource "google_project_service" "serviceusage_api" {
-  service            = "serviceusage.googleapis.com"
-  disable_on_destroy = false
+
+locals {
+  # Services needed
+  service_apis_list = [
+    "serviceusage.googleapis.com",
+    "compute.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "iam.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "artifactregistry.googleapis.com",
+    "cloudfunctions.googleapis.com",
+    "logging.googleapis.com",
+    "dialogflow.googleapis.com",
+    "speech.googleapis.com",
+    "storage-component.googleapis.com",
+    "datalabeling.googleapis.com",
+  ]
 }
 
-resource "google_project_service" "compute_api" {
-  service            = "compute.googleapis.com"
-  disable_on_destroy = false
-}
+resource "google_project_service" "all" {
+  project  = var.gcp_project_id
+  for_each = toset(local.service_apis_list)
+  service = each.key
 
-resource "google_project_service" "resource_manager_api" {
-  service            = "cloudresourcemanager.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "iam_api" {
-  service            = "iam.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "build_api" {
-  service            = "cloudbuild.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "artifacts_api" {
-  service            = "artifactregistry.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "functions_api" {
-  service            = "cloudfunctions.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "logging_api" {
-  service            = "logging.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "dialogflow_api" {
-  service            = "dialogflow.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "speech_api" {
-  service            = "speech.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "storage_component_api" {
-  service            = "storage-component.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "datalabeling_api" {
-  service            = "datalabeling.googleapis.com"
+  # Don't disable the service if the resource block is removed by accident.
   disable_on_destroy = false
 }
 
 data "google_project" "project" {
   depends_on = [
-    google_project_service.resource_manager_api
+    google_project_service.all
   ]
 }
 
 data "google_compute_default_service_account" "gce_default" {
   depends_on = [
-    google_project_service.compute_api
+    google_project_service.all
   ]
 }
 
 data "google_storage_project_service_account" "gcs_default" {
-
 }
 
 resource "google_project_service_identity" "functions_default_sa" {
@@ -94,7 +61,7 @@ resource "google_project_service_identity" "functions_default_sa" {
   service = "cloudfunctions.googleapis.com"
 
   depends_on = [
-    google_project_service.functions_api
+    google_project_service.all
   ]
 }
 
@@ -106,15 +73,7 @@ resource "google_project_iam_member" "functions_default_iam" {
   role   = each.key
   member = "serviceAccount:${google_project_service_identity.functions_default_sa.email}"
   depends_on = [
-    google_project_service.functions_api,
-    google_project_service.iam_api
-  ]
-}
-
-resource "time_sleep" "wait_until_functions_sa_ready" {
-  create_duration = "90s"
-  depends_on = [
-    google_project_iam_member.functions_default_iam
+    google_project_service.all
   ]
 }
 
@@ -128,7 +87,7 @@ resource "google_project_iam_member" "gce_default_iam" {
   role   = each.key
   member = "serviceAccount:${data.google_compute_default_service_account.gce_default.email}"
   depends_on = [
-    google_project_service.iam_api
+    google_project_service.all
   ]
 }
 
@@ -173,3 +132,11 @@ resource "google_cloudfunctions_function" "function" {
     time_sleep.wait_until_functions_sa_ready
   ]
 }
+
+resource "time_sleep" "wait_until_functions_sa_ready" {
+  create_duration = "90s"
+  depends_on = [
+    google_project_iam_member.functions_default_iam
+  ]
+}
+
