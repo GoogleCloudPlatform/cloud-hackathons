@@ -11,7 +11,7 @@
 
 1. Download the zip file containing all files we'll use in this gHack from [this link](https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip).
     1. You can use this command in Cloud Shell to download it:
-    ```
+    ```bash
     wget https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip
     ```
 1. Open the [Diaglogflow CX](https://dialogflow.cloud.google.com/cx/projects) Console and select your project.
@@ -36,7 +36,7 @@
 
 
 ## Challenge 2
-> **GOAL**: Set up a basic Q&A steering using Intents and Event handlers 
+> **GOAL**: Set up a basic Q&A steering using Intents and Routes
 
 1. Back in the Console go to the **Manage** panel and select Intents at the top"
 1. Create a new Intent named **Escalate to Human**
@@ -62,42 +62,49 @@
 
 
 ## Challenge 3
-> Goal: Give Agent access to PDF documents to use in chat answers
+> **GOAL**: Give the Agent access to PDF documents to use in chat answers
 
-1. Create a bucket and a folder and upload PDF files into it
-1. In the DialogFlow Console agent "Start Page" click "Add State Handler" and select "Data Store"
-2. Click the `+` to Add Data Store then click "Create Vertex AI Search and Conversation app"
-3. **TODO: get the right link** This opens up the [agent builder](www.link.com) where you can create the data store by uploading documents
-4. Give the agent a name and hit next
-5. Select "Create New Data Store" and select the folder in GCS
-6. Give the Data Store a name and create it
-7. Go back to the DialogFlow Console and repeat steps 2 and 3. You should now see the option to select your document Data Store from a dropdown
+1. Create a Google Cloud Storage bucket and a folder and upload the PDF files from the zip file you downloaded.
+    1. You can run these commands in the Cloud Shell if you unzipped your files there:
+        ```bash
+        gsutil mb gs://$(gcloud config get project)-documents
+        gsutil cp ./piped-piper/documents/*.pdf gs://$(gcloud config get project)-documents/HR-Policies 
+        ```
+1. In the DialogFlow Console go to the **Build** panel on the left and click on **Start Page**. Then click **Add State Handler** and select **Data Store** and then click **Apply**
+1. Click the `+` icon to add a Data Store then click **Create Vertex AI Search and Conversation app**
+1. This opens up the [Vertex AI Agent Builder](https://console.cloud.google.com/gen-app-builder/engines/create) where you can create the data store by pointing to your GCS bucket
+1. Enter our company name: "Piped Piper"
+1. Your agent name will be pre-populated with the value you gave earlier. Click Continue.
+1. Click **Create New Data Store** and select **Cloud Storage**. Click on **Browse** and find the folder in GCS where the PDFs were uploaded. Click Continue.
+1. Give the Data Store a name and click **Create**
 
-> At this point you have created a Data Store that is processing your PDFs, indexing them and making them available for searching and summarization 
+> **NOTE**: At this point you have created a Data Store that is processing your PDFs, indexing them and making them available for searching and summarization 
 
 > **NOTE:** Indexing can take about 5-10 minutes for the given documents  
 
-9. Test the agent with some questions from the documents, for example:
+10. Test the agent with some questions from the documents, for example:
     1. "What is our vacation policy?" 
     1. "What types of termination are there?"
     1. "What is our leave policy?"
 
-You can also ask followup questions as the Agent keeps the conversation context.
+You can also ask follow up questions as the Agent keeps the conversation context.
+
 
 ## Challenge 4
-> Goal: Update our agent flow to include answers based on generator 
+> **GOAL**: Update our agent flow to include answers based on a generator 
 
 1. From the Start Page, go to the Default Welcome Intent. Under Fulfillment open Generators and select "+ New generator" 
-2. Give it a name like "Generator - Welcome"
-3. Under prompt suggest that it greet the users based on the previous message. For example: 
+1. Give it a name like "Generator - Welcome"
+1. Under prompt suggest that it greet the users based on the previous message. For example: 
 
     ```
     A user started a conversation with you, a chat bot, greet them politely and tell them something helpful about your ability to answer questions for a worker at Piped Piper. The last thing they said was $last-user-utterance
     ```
 
-4. Give the Output parameter a name, for example `$request.generative.mygreeting`
-5. Remove the hardcoded agent responses and replace them with the output parameter name from step #4 above
-6. Test the agent with different welcome phrases
+1. Give the Output parameter a name, for example `$request.generative.mygreeting`
+1. Remove the hardcoded agent responses and replace them with the output parameter name from step #4 above
+1. Test the agent with different welcome phrases
+
 
 ## Challenge 5
 > Goal: Call external system for knowledge
