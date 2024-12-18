@@ -34,26 +34,32 @@
 
 > **NOTE:** At this point we have the agent testable in the Console and via the webpage for end users
 
+
 ## Challenge 2
-> Goal: Set up a basic Q&A steering using Intents and Event handlers 
+> **GOAL**: Set up a basic Q&A steering using Intents and Event handlers 
 
-1. Go to "Manage Agent -> Intents"
-2. Create a new Intent called "Escalate to human"
-3. Add a 6 training phrases such as:
-    1. "I want to talk to an agent"
-    2. "I want to talk to a person."
-    3. "Agent NOW"
-    4. "Can I talk to a human"
-    5. "connect me to a person"
-    6. "Representative now!!!"
-4. Open the Start Page of the Agent
-5. Open up Routes and Add the new route
-    1. Choose the "Escalate to human" intent
-    2. Add an Agent Response of "Sending you to an agent now"
-    3. Save
-6. Open "Test Agent" and test both Intents
+1. Back in the Console go to the **Manage** panel and select Intents at the top"
+1. Create a new Intent named **Escalate to Human**
+1. Add 6 training phrases such as:
+    1. *I want to talk to an agent*
+    1. *I want to talk to a person.*
+    1. *Agent NOW*
+    1. *Can I talk to a human*
+    1. *Connect me to a person*
+    1. *Representative now!!!*
+1. Click **Save**
+1. Go to the **Build** panel at the left of the screen and click on the **Start Page**
+1. Click on **Routes** to open the Routes panel and add the new route
+    1. Choose the **Escalate to Human** intent
+    1. Add a few agent dialogue entries such as:
+        1. *Sending you to an agent now*
+        1. *Please wait for an agent to assist you*
+        1. *Let me get someone for you*
+    1. **Save** at the top
+1. Open the **Test Agent** panel and test your new intent and routes.
 
-> At this point agent can respond to the two intents (hello and escalate)
+> **NOTE**: At this point agent can respond to the two intents: **Default Welcome Intent** and **Escalate to Human**.
+
 
 ## Challenge 3
 > Goal: Give Agent access to PDF documents to use in chat answers
