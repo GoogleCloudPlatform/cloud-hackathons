@@ -6,24 +6,33 @@
 3. Data Store = DS
 4. Virtual Agent = VA
 
-
 ## Challenge 1 
-> Goal: Create and initialize a Dialogflow agent
+> **GOAL**: Create and initialize a Dialogflow agent
+
 1. Download the zip file containing all files we'll use in this gHack from [this link](https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip).
-1. **TODO** add the wget command for this
-1. Open the [Diaglogflow CX](https://dialogflow.cloud.google.com/cx/projects) Console
-1. Create a new Agent (choose "**build your own**") (use defaults for everything)
-1. Open the "Test Agent" panel and post a 'hello' message to the new agent (use defaults for everything)
+    1. You can use this command in Cloud Shell to download it:
+    ```
+    wget https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip
+    ```
+1. Open the [Diaglogflow CX](https://dialogflow.cloud.google.com/cx/projects) Console and select your project.
+1. Create a new Agent (choose "**Build your own**") 
+    1. Give it a name and then use defaults for everything
+    1. Open the "Test Agent" panel and select **Test agent in environment** 
+    1. Post a 'Hello' message to the new agent and note its generic reply
 
-> At this point you have a new agent that can process simple Intents for greetings
+> **NOTE**: At this point you have a new agent that can process simple Intents for greetings
 
-1. In the Console, go to "Manage -> Integrations" and connect "DiaglogFlow Messenger". Accept all defaults and click "Enable the unauthenticated API". 
-1. The DialogFlow Messenger will generate HTML code. Copy that code and add it to the `agent-page.html` file that was in the zip file you downloaded.
+1. In the Console, go to **Manage** on the panel at the left side of the screen.
+1. On the Manage panel select **Integrations** near the bottom.
+1. Click on **DiaglogFlow Messenger**. Keep all of the defaults and click the **Enable the unauthenticated API** button. 
+1. The DialogFlow Messenger will generate HTML code. Copy that code and find the file: `agent-page.html` that was in the zip file you downloaded. Paste the code into the `<head>` section of the HTML file.
 1. We will use a simple python http server to serve up the `agent-page.html` file. 
-    1. Go to the Cloud Shell, click the 3 dots and select **Upload** to upload `agent-page.html` to the root of your home directory
-    1. Run the webserver with this command: `python3 -m http.server 8080` 
-    1. Click on the **Web Preview** and select **Preview on Port 8080**. This will open a new browser window and show a list of all the files in your home directory. Find and click on `agent-page.html`.
-> At this point we have the agent testable in the Console and via the webpage for end users
+    1. Go to the Cloud Shell, click the 3 dots near the top right and select **Upload** to upload `agent-page.html` to the root of your home directory
+    1. Run a webserver with this command: `python3 -m http.server 8080` 
+    1. Click on the **Web Preview** icon (next to the pencil icon) and select **Preview on Port 8080**. This will open a new browser window and show a list of all the files in your home directory. Find and click on `agent-page.html`.
+    1. You can now chat with the agent just as you did in the Console. Click on the agent chat icon at the bottom right of the page. Post a 'Hello' message again to see how it answers.
+
+> **NOTE:** At this point we have the agent testable in the Console and via the webpage for end users
 
 ## Challenge 2
 > Goal: Set up a basic Q&A steering using Intents and Event handlers 
