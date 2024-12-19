@@ -11,9 +11,11 @@
 
 1. Download the zip file containing all files we'll use in this gHack from [this link](https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip).
     1. You can use this command in Cloud Shell to download it:
-    ```bash
-    wget https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip
-    ```
+
+        ```bash
+        wget https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip
+        ```
+
 1. Open the [Diaglogflow CX](https://dialogflow.cloud.google.com/cx/projects) Console and select your project.
 1. Create a new Agent (choose "**Build your own**") 
     1. Give it a name and then use defaults for everything
