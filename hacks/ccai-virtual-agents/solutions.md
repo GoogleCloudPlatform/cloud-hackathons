@@ -84,6 +84,12 @@
 
 > **NOTE:** Indexing can take about 5-10 minutes for the given documents  
 
+---
+---
+**START HERE, NEED TO FIGURE OUT WHY PDF DOCS AREN'T WORKING**
+---
+---
+
 10. Test the agent with some questions from the documents, for example:
     1. "What is our vacation policy?" 
     1. "What types of termination are there?"
@@ -93,24 +99,25 @@ You can also ask follow up questions as the Agent keeps the conversation context
 
 
 ## Challenge 4
-> **GOAL**: Update our agent flow to include answers based on a generator 
+> **GOAL**: Update our dialogue flow to include answers based on a generator 
 
-1. From the Start Page, go to the Default Welcome Intent. Under Fulfillment open Generators and select "+ New generator" 
-1. Give it a name like "Generator - Welcome"
-1. Under prompt suggest that it greet the users based on the previous message. For example: 
+1. On the canvas, click on the **Start Page** and click on **Default Welcome Intent**. 
+1. In the Fulfillment section, open the Generators section and click **Add generator**
+1. Give it a name such as **Generator - Welcome**
+1. In the Text Prompt field, suggest that it greet the users based on the previous message. For example: 
 
     ```
     A user started a conversation with you, a chat bot, greet them politely and tell them something helpful about your ability to answer questions for a worker at Piped Piper. The last thing they said was $last-user-utterance
     ```
 
-1. Give the Output parameter a name, for example `$request.generative.mygreeting`
-1. Remove the hardcoded agent responses and replace them with the output parameter name from step #4 above
-1. Test the agent with different welcome phrases
+1. Give the Output parameter a name, for example `$request.generative.welcomegreeting`
+1. In the **Agent responses** section underneath Generators, remove the hardcoded agent responses and replace them with only 1 response using the `$request.generative.welcomegreeting` parameter name we created above
+1. Click the **Save** button at the top middle of the panel.
+1. Test the agent with different welcome phrases and make sure you get a response conforming to the prompt we're using for this Intent
 
 
 ## Challenge 5
-> Goal: Call external system for knowledge
-**NOTE:** need actual testing to finish the text here
+**GOAL**: Call an external system for data we can use in responses
 
 1. Create a new intent for answering a question about vacation days. Use the steps in Challenge 1 to create it.
 2. Create a Webhook
