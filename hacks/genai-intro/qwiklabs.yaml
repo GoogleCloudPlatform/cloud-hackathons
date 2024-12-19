@@ -22,8 +22,8 @@ description: "Introduction to GenAI will challenge you to build a system that su
 instruction:
   type: md
   uri: instructions/en.md
-duration: 480
-max_duration: 600
+duration: 420
+max_duration: 420
 credits: 0
 level: fundamental
 tags:
