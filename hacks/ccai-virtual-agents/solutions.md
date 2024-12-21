@@ -117,19 +117,19 @@ You can also ask follow up questions as the Agent keeps the conversation context
 
 
 ## Challenge 5
-**GOAL**: Call an external system for data we can use in responses
+> **GOAL**: Call an external system for data we can use in responses
 
-1. Create a new intent for answering a question about vacation days. Use the steps in Challenge 1 to create it.
-2. Create a Webhook
-    1. Go to Manage -> Webhooks -> Create new
-    1. Name it "Get Vacation Days"
-    2. Set Subtype -> Flexible, Method -> GET
-    3. Webhook URL -> TBD **TODO: create cloud function \ stub for this** 
-    4. Fill in request parameters:
-        1. $flow.vacation variable to store the result
-        2. $.fulfillment_response.messages[0].text.days to store the response from the JSON
-    5. Go to Start Page and create a new Route ("+" sign )
-    6. Select vacation days Intent
-    7. Under Fulfillment select Webhook Settings -> Enable Webhook and select the vacation days webhook
-3. **TODO** Use webhook response to the user question
+1. Create a new Intent called **Vacation Days Query** for answering questions about vacation days remaining. Use the steps in Challenge 1 as your guide.
+1. Create a Webhook by going to the **Manage** panel, select **Webhooks** and click the **Create new** button.
+1. Name it **Get Vacation Days**
+1. Set Subtype to **Flexible**, set Method to **Get**
+1. For the webhook URL, enter the URL from the Cloud Function that was pre-created for you named: `vacation-days`
+    1. It should look like this: `https://us-central1-my-project-id.cloudfunctions.net/vacation-days`
+1. Fill in request parameters:
+    1. $flow.vacation variable to store the result
+    1. $.fulfillment_response.messages[0].text.days to store the response from the JSON
+1. Go to Start Page and create a new Route ("+" sign )
+1. Select vacation days Intent
+1. Under Fulfillment select Webhook Settings -> Enable Webhook and select the vacation days webhook
+1. **TODO** Use webhook response to the user question
 
