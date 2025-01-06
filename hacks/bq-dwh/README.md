@@ -257,7 +257,7 @@ BigQuery Studio and SQL are great tools for data analytics, but data scientists 
 
 ### Description
 
-We've already designed a [Python notebook](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.3/notebooks/churn-analysis.ipynb) for this challenge. Upload that to BigQuery, run the notebook interactively until you get to the cell for creating the model. Edit the cell and add the necessary SQL to create a BigQuery ML model, and run the notebook to completion.
+We've already designed a [Python notebook](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.4/notebooks/churn-analysis.ipynb) for this challenge. Upload that to BigQuery, run the notebook interactively until you get to the cell for creating the model. Edit the cell and add the necessary SQL to create a BigQuery ML model, and run the notebook to completion.
 
 > **Warning**  
 > Since notebooks on BigQuery use *End User Credentials*, make sure that you're running this notebook as a user that doesn't have the row level security filter applied to limit the data.
