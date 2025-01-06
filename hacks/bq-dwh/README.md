@@ -55,11 +55,12 @@ This first step is all about getting started with the source data. Typically dat
 
 ### Description
 
-We have already copied the data from the underlying database to a specific Cloud Storage bucket. Go ahead and find that bucket, and have a look at its contents. Create a new BigQuery dataset called `raw` in the same region as that storage bucket, and create **BigLake** tables for the following entities: `person`, `sales_order_header` and `sales_order_detail`. You can ignore the other files for now.
+We have already copied the data from the underlying database to a specific Cloud Storage bucket. Go ahead and find that bucket, and have a look at its contents. Create a new BigQuery dataset called `raw` in the same region as that storage bucket, and create **BigLake** tables for the following entities: `person`, `sales_order_header` and `sales_order_detail`. You can ignore the other files for now. Make sure to name the *Cloud Resource* connection **conn** and to create it in the same region as the storage bucket.
 
 ### Success Criteria
 
 - There is a new BigQuery dataset `raw` in the same region as the landing bucket.
+- There is a new *Cloud Resource* connection with the id **conn** in the same region as the landing bucket.
 - There are 3 BigLake tables with content in the `raw` dataset: `person`, `sales_order_header` and `sales_order_detail`.
 
 ### Learning Resources
@@ -286,7 +287,7 @@ This challenge is all about Cloud Composer, which is basically a managed and ser
 
 We've already created a *Cloud Composer* environment for you. You need to configure and run [this pre-configured DAG](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.0/dags/etlflow.py) (which is basically a collection of tasks organized with dependencies and relationships) on that environment. The DAG (Directed Acyclic Graph) is scheduled to run daily at midnight, pulls source data from different source systems (although in our case it's using a dummy operator to illustrate the idea), runs the Dataform pipeline to generate all of the required tables, and finally runs the latest version of our churn model on our customer base to predict which customers will be churning and stores the predictions in a new BigQuery table.
 
-Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the *environment variables* of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0.3` as the Git reference.
+Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the *environment variables* of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0.4` as the Git reference.
 
 > **Note** It might take a few minutes for the DAG to be discovered by Airflow, be patient :) Once the DAG is discovered it will be started automatically, make sure to configure the environment variables before you upload the DAG.
 
