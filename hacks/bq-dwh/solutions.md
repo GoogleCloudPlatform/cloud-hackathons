@@ -171,6 +171,8 @@ Also note that BigQuery doesn't enforce primary & foreign key constraints, but t
 
 > **Note** At the time of this writing creating foreign key constraints through Dataform raises the following error: `Exceeded rate limits: too many table update operations for this table.`. So, for now we're not including foreign keys in the challenge.
 
+Another thing to be aware of is that the gross profit can be negative.
+
 ```sql
 config {
     type: "table",
@@ -196,7 +198,7 @@ SELECT
   p.standard_cost AS cost_of_goods_sold,
   sod.order_qty AS order_quantity,
   sod.order_qty * sod.unit_price AS gross_revenue,
-  (sod.order_qty * sod.unit_price * (1 - sod.unit_price_discount)) - (p.standard_cost) AS gross_profit
+  sod.order_qty * (sod.unit_price * (1 - sod.unit_price_discount) - p.standard_cost) AS gross_profit
 FROM
   ${ref("stg_sales_order_detail")} sod,
   ${ref("stg_sales_order_header")} soh,
@@ -277,7 +279,7 @@ ON
 
 #### Looker Studio
 
-You can get the quarter information through the *Data Type* in the *Dimension* selection section (and choosing Date Time -> Year Quarter). Display format should be set to the *Custom value* of `yQ`.
+You can get the quarter information through the *Data Type* in the *Dimension* selection section (and choosing Date Time -> Year Quarter). Display format should be set to the *Custom value* of `'Y'yQ`.
 
 Alternatively you can create a new *calculated field* in Looker Studio (through `Add a field`) using the following formula:
 
