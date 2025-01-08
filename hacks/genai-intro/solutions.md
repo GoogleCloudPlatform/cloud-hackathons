@@ -156,7 +156,7 @@ This is the SQL statement to create a link to the LLM (you need to replace `$REG
 ```sql
 CREATE OR REPLACE MODEL
   articles.llm REMOTE
-WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'gemini-1.5-flash-001')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'gemini-1.5-flash')
 ```
 
 Finally, we can use the linked model to make predictions.
@@ -193,7 +193,7 @@ We don't need to create another connection, we can reuse the existing one. Run t
 ```sql
 CREATE OR REPLACE MODEL
   articles.embeddings REMOTE
-WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'textembedding-gecko@latest')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'text-embedding-005')
 ```
 
 Next step is to apply that model to get the embeddings for every summary.
