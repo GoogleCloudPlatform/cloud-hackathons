@@ -127,7 +127,7 @@ Required parameters for the template *Datastream to BigQuery*
 | Template for the dataset to contain replica table | `retail` |
 | Dead letter queue directory | `gs://${PROJECT_ID}-other/dlq` |
 
-> **Note** It used to be possible to use a top level bucket as the *File location for Datastream file output in Cloud Storage* parameter. However, the most recent versions of the template requires nowadays a root path, a folder that must exist in that bucket. In that case just create a new `cdc` folder in the bucket, update the Datastream Destination configuration to use that as the prefix (`/cdc`) and use that as the parameter in the Dataflow job configuration (`gs://${PROJECT_ID}/cdc/`).
+> **Note** It used to be possible to use a top level bucket as the *File location for Datastream file output in Cloud Storage* parameter. However, the most recent version of the template now requires a root path, a folder that must exist in that bucket. In that case just create a new `cdc` folder in the bucket, update the Datastream Destination configuration to use that as the prefix (`/cdc`) and use that as the parameter in the Dataflow job configuration (`gs://${PROJECT_ID}/cdc/`).
 
 The following optional parameters must be set too.
 
