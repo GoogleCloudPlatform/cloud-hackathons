@@ -129,7 +129,7 @@ You can also extend the functionality of this template by including User Defined
 
 ### Description
 
-We've already prepared a some transformation logic that masks a column in the data, you can download it from [here](https://raw.githubusercontent.com/caugusto/datastream-bqml-looker-tutorial/main/udf/retail_transform.js).
+We've already prepared a some transformation logic that masks a column in the data, you can download it from [here](https://raw.githubusercontent.com/meken/gcp-realtime-analytics-db-setup/main/udf/retail_transform.js).
 
 Configure a Dataflow job that reads from the Pub/Sub notifications using the pre-built Datastream template with the target as the BQ dataset that's been created in the very first challenge. Use the provided UDF to process the data before it's stored in BQ.
 
