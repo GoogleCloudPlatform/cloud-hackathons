@@ -124,8 +124,7 @@ bq mk -t "$BQ_DATASET.$BQ_TABLE" uri:STRING,name:STRING,title:STRING,summary:STR
 You could download and upload the papers one by one, or use the following to automate that:
 
 ```shell
-URLS="https://arxiv.org/pdf/2310.00044 https://arxiv.org/pdf/2310.01062 https://arxiv.org/pdf/2310.08243 https://arxiv.org/pdf/2310.09196 https://arxiv.org/pdf/2310.00446 https://arxiv.org/pdf/2310.02081 https://arxiv.org/pdf/2310.00245 https://arxiv.org/pdf/2310.01303 https://arxiv.org/pdf/2310.00067 https://arxiv.org/pd
-f/2310.02553"
+URLS="https://arxiv.org/pdf/2310.00044 https://arxiv.org/pdf/2310.01062 https://arxiv.org/pdf/2310.08243 https://arxiv.org/pdf/2310.09196 https://arxiv.org/pdf/2310.00446 https://arxiv.org/pdf/2310.02081 https://arxiv.org/pdf/2310.00245 https://arxiv.org/pdf/2310.01303 https://arxiv.org/pdf/2310.00067 https://arxiv.org/pdf/2310.02553"
 
 for URL in $URLS; do
     wget --user-agent="Mozilla" -O "${URL##*/}.pdf" $URL
