@@ -93,9 +93,10 @@ The **Select Objects to Include** defines the objects to replicate, specific sch
 To load existing records, set the **Backfill mode** to Automatic,  and then click **Continue**.
 
 In the **Define Destination** section, select **Create new connection profile**. A form is generated. Populate the form as follows, and then click **Create & Continue**:
-    - **Connection Profile Name**: `gcs-dst`
-    - **Connection Profile ID**: `gcs-dst`
-    - **Bucket Name**: *The equivalent to `gs://${PROJECT_ID}`. This is the bucket you created earlier*
+
+- **Connection Profile Name**: `gcs-dst`
+- **Connection Profile ID**: `gcs-dst`
+- **Bucket Name**: *The equivalent to `gs://${PROJECT_ID}`. This is the bucket you created earlier*
 
 Leave the Stream path prefix blank and select **JSON** for **Output format**. Click **Continue**.
 
@@ -108,7 +109,7 @@ Click **Run Validation** and, assuming no issues were found, click **Create**.
 Create a new bucket to hold additional stuff and copy the transformation logic there
 
 ```shell
-wget https://raw.githubusercontent.com/caugusto/datastream-bqml-looker-tutorial/main/udf/retail_transform.js
+wget https://raw.githubusercontent.com/meken/gcp-realtime-analytics-db-setup/main/udf/retail_transform.js
 gsutil mb -l ${REGION} gs://${PROJECT_ID}-other
 gsutil cp retail_transform.js gs://${PROJECT_ID}-other/js/
 ```
@@ -119,22 +120,24 @@ Required parameters for the template *Datastream to BigQuery*
 
 | Parameter | Value |
 | ---       | ---   |
-| File location for Datastream file output in Cloud Storage | gs://${PROJECT_ID} |
-| The Pub/Sub subscription on the Cloud Storage bucket | projects/${PROJECT_ID}/subscriptions/cdc_sub |
-| Datastream output file format (avro/json) | json |
-| Name or template for the dataset to contain staging tables | retail |
-| Template for the dataset to contain replica table | retail |
-| Dead letter queue directory | gs://${PROJECT_ID}-other/dlq |
+| File location for Datastream file output in Cloud Storage | `gs://${PROJECT_ID}` |
+| The Pub/Sub subscription on the Cloud Storage bucket | `projects/${PROJECT_ID}/subscriptions/cdc_sub` |
+| Datastream output file format (avro/json) | `JSON` |
+| Name or template for the dataset to contain staging tables | `retail` |
+| Template for the dataset to contain replica table | `retail` |
+| Dead letter queue directory | `gs://${PROJECT_ID}-other/dlq` |
+
+> **Note** It used to be possible to use a top level bucket as the *File location for Datastream file output in Cloud Storage* parameter. However, the most recent version of the template now requires a root path, a folder that must exist in that bucket. In that case just create a new `cdc` folder in the bucket, update the Datastream Destination configuration to use that as the prefix (`/cdc`) and use that as the parameter in the Dataflow job configuration (`gs://${PROJECT_ID}/cdc/`).
 
 The following optional parameters must be set too.
 
 | Parameter | Value |
 | ---       | ---   |
-| Cloud Storage location of your Javascript UDF | gs://${PROJECT_ID}-other/js/retail_transform.js |
-| The name of the JavaScript function you wish to call as your UDF | process |
-| Max workers | 5 |
-| Network | vpc-retail |
-| Subnetwork | regions/${REGION}/subnetworks/sub-retail |
+| Cloud Storage location of your Javascript UDF | `gs://${PROJECT_ID}-other/js/retail_transform.js` |
+| The name of the JavaScript function you wish to call as your UDF | `process` |
+| Max workers | `5` |
+| Network | `vpc-retail` |
+| Subnetwork | `regions/${REGION}/subnetworks/sub-retail` |
 
 And then hit *Run Job*.
 
@@ -152,40 +155,22 @@ Because this task is an initial load, Datastream reads from the `ORDERS` object.
 
 After a few minutes, your backfilled data replicates into BigQuery. Any new incoming data streams into your datasets in (near) real-time. Each record  is processed by the UDF logic that you defined as part of the Dataflow template.
 
-A real time view of the operational data is now available in BigQuery. You can run queries such as  comparing the sales of a particular product across stores in real time, or to combine sales and customer data to analyze the spending habits of customers in particular stores.
-
-The following two new tables in the retail dataset are created by the Dataflow job:
-
-- `ORDERS`: This output table is a replica of the Oracle table and include the transformations applied to the data as part of the Dataflow template:
-- `ORDERS_log`: This staging table records all the changes from your Oracle source. The table is partitioned, and stores the updated record alongside some metadata change information, such as whether the change is an update, insert, or delete.
-
-In BigQuery Console, run the following SQL to query the top three selling products:
-
-```sql
-SELECT
-  product_name,
-  SUM(quantity) AS total_sales
-FROM
-  `retail.ORDERS`
-GROUP BY
-  product_name
-ORDER BY
-  total_sales DESC
-LIMIT
-  3
-```
-
-The output should be similar to the following:
-
-![Query results](images/query-results.png)
-
-In BigQuery, execute the following SQL statements to query the number of rows on both the `ORDERS` and `ORDERS_log` tables:
+You can execute the following SQL statements to query the number of rows on both the `ORDERS` and `ORDERS_log` tables:
 
 ```sql
 SELECT count(*) FROM `retail.ORDERS`;
 ```
 
-> **Note** With the backfill completed, this statement will return the number `520217`. Please wait until the backfill is done before closing this challenge.
+With the backfill completed, this statement will return the number `520217`. Be patient as it might take up to ~10 minutes before all the records are replicated in BigQuery.
+
+> **Note** If for whatever reason things fail, you can always delete BQ tables, clear the bucket with the JSON files, recreate the Dataflow job (after stopping/canceling the original one) and re-initiate the backfill from Datastream.
+
+A real time view of the operational data is now available in BigQuery. You can run queries such as comparing the sales of a particular product across stores in real time, or to combine sales and customer data to analyze the spending habits of customers in particular stores.
+
+The following two new tables in the retail dataset are created by the Dataflow job:
+
+- `ORDERS`: This output table is a replica of the Oracle table and include the transformations applied to the data as part of the Dataflow template:
+- `ORDERS_log`: This staging table records all the changes from your Oracle source. The table is partitioned, and stores the updated record alongside some metadata change information, such as whether the change is an update, insert, or delete.
 
 ## Challenge 4: Building a Demand Forecast - Coach's Guide
 

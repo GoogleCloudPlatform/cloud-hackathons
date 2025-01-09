@@ -103,6 +103,7 @@ resource "helm_release" "locust" {
   name      = "locust"
   chart     = "oci://ghcr.io/deliveryhero/helm-charts/locust"
   namespace = "locust"
+  version   = "0.31.6"
 
   set {
     name  = "loadtest.name"

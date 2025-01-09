@@ -1,4 +1,4 @@
-google-cloud-aiplatform
-google-cloud-storage
-google-cloud-vision
-google-cloud-bigquery
+google-cloud-aiplatform==1.74.0
+google-cloud-storage==2.19.0
+google-cloud-vision==3.8.1
+google-cloud-bigquery==3.27.0

@@ -34,6 +34,7 @@ environment:
   resources:
   - type: gcp_project
     id: project
+    variant: gcp_medium_extra
     startup_script:
       type: qwiklabs
       path: artifacts

@@ -124,8 +124,7 @@ bq mk -t "$BQ_DATASET.$BQ_TABLE" uri:STRING,name:STRING,title:STRING,summary:STR
 You could download and upload the papers one by one, or use the following to automate that:
 
 ```shell
-URLS="https://arxiv.org/pdf/2310.00044 https://arxiv.org/pdf/2310.01062 https://arxiv.org/pdf/2310.08243 https://arxiv.org/pdf/2310.09196 https://arxiv.org/pdf/2310.00446 https://arxiv.org/pdf/2310.02081 https://arxiv.org/pdf/2310.00245 https://arxiv.org/pdf/2310.01303 https://arxiv.org/pdf/2310.00067 https://arxiv.org/pd
-f/2310.02553"
+URLS="https://arxiv.org/pdf/2310.00044 https://arxiv.org/pdf/2310.01062 https://arxiv.org/pdf/2310.08243 https://arxiv.org/pdf/2310.09196 https://arxiv.org/pdf/2310.00446 https://arxiv.org/pdf/2310.02081 https://arxiv.org/pdf/2310.00245 https://arxiv.org/pdf/2310.01303 https://arxiv.org/pdf/2310.00067 https://arxiv.org/pdf/2310.02553"
 
 for URL in $URLS; do
     wget --user-agent="Mozilla" -O "${URL##*/}.pdf" $URL
@@ -156,7 +155,7 @@ This is the SQL statement to create a link to the LLM (you need to replace `$REG
 ```sql
 CREATE OR REPLACE MODEL
   articles.llm REMOTE
-WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'gemini-1.5-flash-001')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'gemini-1.5-flash')
 ```
 
 Finally, we can use the linked model to make predictions.
@@ -193,7 +192,7 @@ We don't need to create another connection, we can reuse the existing one. Run t
 ```sql
 CREATE OR REPLACE MODEL
   articles.embeddings REMOTE
-WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'textembedding-gecko@latest')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'text-embedding-005')
 ```
 
 Next step is to apply that model to get the embeddings for every summary.
