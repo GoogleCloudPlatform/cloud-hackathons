@@ -1,6 +1,6 @@
 # CCAI GHACK COACH GUIDE
 
-## Acrynoms
+## Acronyms
 1. Dialogflow = DF
 2. Dialogflow CX Console = Console
 3. Data Store = DS
@@ -73,29 +73,29 @@
         gsutil cp ./piped-piper/documents/*.pdf gs://$(gcloud config get project)-documents/HR-Policies 
         ```
 1. In the DialogFlow Console go to the **Build** panel on the left and click on **Start Page**. Then click **Add State Handler** and select **Data Store** and then click **Apply**
-1. Click the `+` icon to add a Data Store then click **Create Vertex AI Search and Conversation app**
-1. This opens up the [Vertex AI Agent Builder](https://console.cloud.google.com/gen-app-builder/engines/create) where you can create the data store by pointing to your GCS bucket
-1. Enter our company name: "Piped Piper"
-1. Your agent name will be pre-populated with the value you gave earlier. Click Continue.
-1. Click **Create New Data Store** and select **Cloud Storage**. Click on **Browse** and find the folder in GCS where the PDFs were uploaded. Click Continue.
-1. Give the Data Store a name and click **Create**
+1. Click the **+** icon to add a Data Store and a new **Data stores** panel will open up on the right.
+1. Click in the drop down list for type **Unstructured Documents**
+1. Select **+ Create data store** 
+1. This will open up a new browser tab with the Agent Builder console:
+    1. Click **SELECT** for Cloud Storage
+    1. On the next page, select **Unstructured documents** and browse to the `HR-Policies` folder in GCS where you unzipped all the PDFs documents at the beginning of this challenge.
+    1. Click **CONTINUE**
+    1. Give your data store a name such as `piped-piper-hr-docs` 
+    1. Click **CREATE**
 
-> **NOTE**: At this point you have created a Data Store that is processing your PDFs, indexing them and making them available for searching and summarization 
+> **NOTE**: Your new data store can take 10+ minutes to fully ingest all of the PDF documents. If you click into the data store on the Agent Builder page, you can watch its progress.
 
-> **NOTE:** Indexing can take about 5-10 minutes for the given documents  
-
----
----
-**START HERE, NEED TO FIGURE OUT WHY PDF DOCS AREN'T WORKING**
----
----
-
-10. Test the agent with some questions from the documents, for example:
-    1. "What is our vacation policy?" 
+1. When your data store is ready, go back to the **Build** panel, select the **Start Page**, click the **+** next to **Data stores** 
+1. Click in the drop down list for type **Unstructured Documents**
+1. Select the new `piped-piper-hr-docs` data store.
+    1. **NOTE:** Until your data store is fully ingested, it will not show up in the drop down box. If you still don't see it, try refreshing the browser.
+1. Click **Save** at the top of the panel.
+1. Test the agent with some questions from the documents, for example:
+    1. "What is our paid time off policy?" 
     1. "What types of termination are there?"
     1. "What is our leave policy?"
 
-You can also ask follow up questions as the Agent keeps the conversation context.
+You can also ask follow up questions because the Agent keeps the conversation context.
 
 
 ## Challenge 4
@@ -119,17 +119,34 @@ You can also ask follow up questions as the Agent keeps the conversation context
 ## Challenge 5
 > **GOAL**: Call an external system for data we can use in responses
 
-1. Create a new Intent called **Vacation Days Query** for answering questions about vacation days remaining. Use the steps in Challenge 1 as your guide.
-1. Create a Webhook by going to the **Manage** panel, select **Webhooks** and click the **Create new** button.
+1. Create a new Intent called **Vacation Days Query** for answering questions about vacation days remaining.
+    1. **NOTE:** If you have a well worded description for this intent, you can use the "x newly generated AI phrases" to create training phrases for you!
+1. Create a Webhook by going to the **Manage** panel, select **Webhooks** and click the **+ Create** button.
 1. Name it **Get Vacation Days**
 1. Set Subtype to **Flexible**, set Method to **Get**
 1. For the webhook URL, enter the URL from the Cloud Function that was pre-created for you named: `vacation-days`
     1. It should look like this: `https://us-central1-my-project-id.cloudfunctions.net/vacation-days`
-1. Fill in request parameters:
-    1. $flow.vacation variable to store the result
-    1. $.fulfillment_response.messages[0].text.days to store the response from the JSON
-1. Go to Start Page and create a new Route ("+" sign )
-1. Select vacation days Intent
-1. Under Fulfillment select Webhook Settings -> Enable Webhook and select the vacation days webhook
-1. **TODO** Use webhook response to the user question
-
+1. In the **Response configuration** section fill in:
+    1. Parameter name: `vacation_days_left`
+    1. Field path: `vacation_days_left`
+1. In the **Request Headers** section fill in:
+    1. Key: `Authorization`
+    2. Value: `bearer xxxxxx`
+        1. Where `xxxxxx` is the output of this command: `gcloud auth print-identity-token`
+1. Finish by clicking **Save** at the top of the Webhook panel
+1. Go to the **Build** panel and in the **Start Page** click the **+** button beside **Routes**.
+    1. In the **Intent** section, select the **Vacation Days Query** intent that you created earlier.
+    1. In the **Fulfillment** section, open the **Webhook settings** section and fill in:
+        1. Check the **Enable Webhook** checkbox
+        1. Webhook: **Get Vacation Days** 
+        1. Tag: { any string you want, it just can't be blank }
+    1. In the **Transition** section select **Page**
+        1. In the drop down select **+ new Page**
+        1. Call the new page: **Vacation Page**
+        1. This will create a new page in the **Build** panel's editor.
+1. Click on **Vacation Page** on the canvas of the **Build** panel.
+    1. Click on **Entry Fulfillment** field to open the **Fulfillment** panel
+    1. In the **Agent Responses / Agent Says** section enter the text you want to use to communicate the answer back to the user. eg:
+        1. **You have $session.params.vacation_days_left days left**
+        1. **NOTE:** The `$session.params.vacation_days_left` string maps to the output of the webhook that ran before we came to this page.
+    1. **NOTE**: Just like we did in Challenge 4, we could use a Generator to communicate the number of vacation days and have an LLM create the response.
