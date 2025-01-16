@@ -56,7 +56,7 @@ In this challenge, you will set up the provided repository in your own GCP proje
 Clone [this repo](https://github.com/ddobrin/quotes-workshop) and follow the instructions in `README.md` to install Java 21 (at the time of this writing Cloud Shell comes with Java 17) and run it locally. Open the repo in Cloud Shell Editor and enable Gemini Code Assist.
 
 > **Note**  
-> Ensure that `JAVA_HOME` is set properly, otherwise Maven will fail.
+> Ensure that `JAVA_HOME` is set properly, otherwise Maven will fail. You can use the command "export JAVA_HOME=$HOME/.sdkman/java/current".
 
 ### Success Criteria
 
@@ -129,7 +129,7 @@ Finally, let's build and deploy the image so that your team can use it.
 
 ### Description
 
-In this challenge, you will use Cloud Build to build and deploy your container image to Cloud Run. Cloud Build supports a simple build, tag, push process in a single YAML file, named `cloudbuild.yaml`. The YAML file is available in the repository. You'll need to fill in the missing methods, and then submit the build to Cloud Build. Finally, you'll need to deploy your container image to Cloud Run.
+In this challenge, you will use Cloud Build to build and deploy your container image to Cloud Run. Cloud Build supports a simple build, tag, push process in a single YAML file, named `cloudbuild.yaml` (not -docker or -native). The YAML file is available in the repository. You'll need to fill in the missing methods, and then submit the build to Cloud Build. Finally, you'll need to deploy your container image to Cloud Run.
 
 Remember that Gemini Code Assist can always help out if you're unfamiliar with a file or need some suggestions on how to get started with or improve your code.
 
