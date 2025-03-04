@@ -87,7 +87,7 @@
 
 > **NOTE**: Your new data store can take 10+ minutes to fully ingest all of the PDF documents. If you click into the data store on the Agent Builder page and click on the Activity tab you can watch its progress.
 
-1. When your data store is ready, go back to the Tools screen, select your new **HR Policy Documents** tool and you will see a new section at the bottom.
+9. When your data store is ready, go back to the Tools screen, select your new **HR Policy Documents** tool and you will see a new section at the bottom.
 1. In the drop down on the left of **Unstructured documents** select your new data store.
 1. Leave all other defaults and click **Save** at the top middle of the screen.
 1. Go back to your Default Playbook 
@@ -106,34 +106,55 @@
 ## Challenge 4
 > **GOAL**: Call an external system for data we can use in responses
 
-1. Create a new Intent called **Vacation Days Query** for answering questions about vacation days remaining.
-    1. **NOTE:** If you have a well worded description for this intent, you can use the "x newly generated AI phrases" to create training phrases for you!
-1. Create a Webhook by going to the **Manage** panel, select **Webhooks** and click the **+ Create** button.
-1. Name it **Get Vacation Days**
-1. Set Subtype to **Flexible**, set Method to **Get**
-1. For the webhook URL, enter the URL from the Cloud Function that was pre-created for you named: `vacation-days`
-    1. It should look like this: `https://us-central1-my-project-id.cloudfunctions.net/vacation-days`
-1. In the **Response configuration** section fill in:
-    1. Parameter name: `vacation_days_left`
-    1. Field path: `vacation_days_left`
-1. In the **Request Headers** section fill in:
-    1. Key: `Authorization`
-    2. Value: `bearer xxxxxx`
-        1. Where `xxxxxx` is the output of this command: `gcloud auth print-identity-token`
-1. Finish by clicking **Save** at the top of the Webhook panel
-1. Go to the **Build** panel and in the **Start Page** click the **+** button beside **Routes**.
-    1. In the **Intent** section, select the **Vacation Days Query** intent that you created earlier.
-    1. In the **Fulfillment** section, open the **Webhook settings** section and fill in:
-        1. Check the **Enable Webhook** checkbox
-        1. Webhook: **Get Vacation Days** 
-        1. Tag: { any string you want, it just can't be blank }
-    1. In the **Transition** section select **Page**
-        1. In the drop down select **+ new Page**
-        1. Call the new page: **Vacation Page**
-        1. This will create a new page in the **Build** panel's editor.
-1. Click on **Vacation Page** on the canvas of the **Build** panel.
-    1. Click on **Entry Fulfillment** field to open the **Fulfillment** panel
-    1. In the **Agent Responses / Agent Says** section enter the text you want to use to communicate the answer back to the user. eg:
-        1. **You have $session.params.vacation_days_left days left**
-        1. **NOTE:** The `$session.params.vacation_days_left` string maps to the output of the webhook that ran before we came to this page.
-    1. **NOTE**: Just like we did in Challenge 4, we could use a Generator to communicate the number of vacation days and have an LLM create the response.
+1. In the [Conversational Agents Console](https://dialogflow.cloud.google.com/v2/projects/) select **Tools** from the left-hand panel.  Click on the **+ Create** button.
+    1. Name the new tool: **Vacation Days Query** for answering questions about how many vacation days an employee has remaining.
+    1. Type: **OpenAPI**
+    1. Give it a description
+    1. In the **Schema** section, select **YAML**. 
+    1. Paste in the following YAML into the text box. Make sure to replace the clound function URL with your own:
+
+```yaml
+openapi: 3.0.0
+info:
+  title: Vacation Days API
+  version: 1.0.0
+servers:
+  - url: https://us-central1-ccai-ghacks.cloudfunctions.net # Replace with your root Cloud Run URL
+paths:
+  /vacation-days: # Matches the function name in your URL
+    get:
+      summary: Get remaining vacation days
+      operationId: getVacationDays
+      responses:
+        '200':
+          description: Number of vacation days remaining
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vacation_days_left:
+                    type: integer
+                    description: The number of vacation days left.
+                    example: 15 # Example value
+```
+
+6. In the **Authentication** section, select **Bearer Token**.
+1. Get your Bearer token from the command line with the following command and paste it into the text field:
+
+    ```bash
+    gcloud auth print-identity-token
+    ```
+1. Leave the defaults for everything else and click **Save** at the top middle of the screen.
+
+1. Now we have to add this new tool to our Playbook so that it will be used by the agent.
+1. Select **Playbooks** from the left hand panel and open the playbook we've been working on.
+1. Add a new bullet point in the middle of the list like this:
+
+    ```bash
+    - Use ${TOOL:Vacation Days Query} to help answer questions about vacation days
+    ```
+
+1. Now you can test if this works in the Agent preview/test window. Ask it something like **How many vacation days do I have left?**
+
+> **NOTE**: The bearer token will expire every 12 hours or so. Make sure that you are getting a new token and changing it in the Vacation Days Query tool.
