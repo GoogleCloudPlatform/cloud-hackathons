@@ -13,7 +13,7 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "[gHacks] Formula E: Accident analysis"
+title: "[gHacks] Formula E: Crash data analysis with Gemini"
 description: "We'll analyze multimodal data to detect accidents and try to do a root cause analysis, 
   comparing driving lines and telemetry with ideal driving lines"
 instruction:
