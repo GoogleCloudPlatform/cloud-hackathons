@@ -1,10 +1,12 @@
-# Formula E: Accident analysis
+# Formula E: Crash data analysis with Gemini
 
 ## Introduction
 
 Given the close proximity racing, varying track conditions, and high speeds of electric cars, incidents in Formula E are virtually inevitable. The series' aggressive, unpredictable nature combined with street circuits often leads to crashes and collisions.
 
 In this gHack we'll analyze multimodal data to detect accidents and try to do a root cause analysis, comparing driving lines and telemetry with ideal driving lines.
+
+![Overview](./images/genai-rag-overview.png)
 
 We'll start with using a RAG like approach to detect accidents from video footage. Once we have found the accidents we'll correlate that with telemetry data for the involved drivers and compare that with the ideal data to find out any discrepancies. Then we'll build an agent that brings all that information in a summary.
 
