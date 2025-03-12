@@ -1,4 +1,4 @@
-# Formula E: Accident analysis
+# Formula E: Crash data analysis with Gemini
 
 ## Introduction
 

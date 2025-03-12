@@ -88,7 +88,7 @@ Now the source data is available in BigQuery, use BigQuery ML capabilities to ge
 
 ### Tips
 
-- flatten_json_output & interval_seconds
+- The method for creating multimodal embeddings supports a few different arguments, pay attention to `flatten_json_output` and `interval_seconds`.
 
 ## Challenge 3: Semantic search
 
