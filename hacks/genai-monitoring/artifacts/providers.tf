@@ -15,7 +15,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "6.13.0"
+      version = "~>5.27.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 5.0"
     }
   }
 }
@@ -24,4 +28,16 @@ provider "google" {
   project = var.gcp_project_id
   region  = var.gcp_region
   zone    = var.gcp_zone
+}
+
+# Configures the provider to use the resource block's specified project for quota checks.
+provider "google-beta" {
+  user_project_override = true
+}
+
+# Configures the provider to not use the resource block's specified project for quota checks.
+# This provider should only be used during project creation and initializing services.
+provider "google-beta" {
+  alias                 = "no_user_project_override"
+  user_project_override = false
 }

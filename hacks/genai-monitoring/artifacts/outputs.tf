@@ -11,7 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-resource "google_project_service" "compute_api" {
-  service            = "compute.googleapis.com"
-  disable_on_destroy = false  
+output "project_id" {
+  value = var.gcp_project_id
+}
+
+output "service_account_email" {
+  value = google_service_account.default.email
 }
