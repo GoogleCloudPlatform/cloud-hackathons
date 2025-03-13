@@ -25,16 +25,10 @@ resource "google_project_service" "default" {
     "cloudresourcemanager.googleapis.com",
     "firebase.googleapis.com",
     "serviceusage.googleapis.com",
-    "servicenetworking.googleapis.com",
-    "cloudbuild.googleapis.com",
     "storage.googleapis.com",
     "aiplatform.googleapis.com",
-    "artifactregistry.googleapis.com",
     "storage-api.googleapis.com",
-    "sql-component.googleapis.com",
-    "run.googleapis.com",
     "iam.googleapis.com",
-    "firebase.googleapis.com",
   ])
   service = each.key
 
@@ -56,18 +50,6 @@ resource "google_project_iam_member" "vertex-user" {
   member  = "serviceAccount:${google_service_account.default.email}"
 }
 
-resource "google_project_iam_member" "sql-user" {
-  project = var.gcp_project_id
-  role    = "roles/cloudsql.client"
-  member  = "serviceAccount:${google_service_account.default.email}"
-}
-
-resource "google_project_iam_member" "redis-user" {
-  project = var.gcp_project_id
-  role    = "roles/redis.editor"
-  member  = "serviceAccount:${google_service_account.default.email}"
-}
-
 resource "google_project_iam_member" "monitoring-writer" {
   project = var.gcp_project_id
   role    = "roles/monitoring.metricWriter"
@@ -85,4 +67,26 @@ resource "google_project_iam_member" "log-writer" {
   role    = "roles/logging.logWriter"
   member  = "serviceAccount:${google_service_account.default.email}"
 }
+
+resource "google_storage_bucket" "static" {
+ name          = "${var.gcp_project_id}_posters"
+ location      = var.gcp_location
+ storage_class = "STANDARD"
+
+ uniform_bucket_level_access = true
+}
+
+// TODO: Set up a Storage Bucket and copy across with the posters zip file
+// Solve where the hosting of the zip file should be.... maybe Github, Hosting, Kaggle, something...
+
+# Upload a photos file as an object
+# to the storage bucket
+
+# resource "google_storage_bucket_object" "default" {
+#  name         = "OBJECT_NAME"
+#  source       = "OBJECT_PATH"
+#  content_type = "text/plain"
+#  bucket       = google_storage_bucket.static.id
+# }
+
 

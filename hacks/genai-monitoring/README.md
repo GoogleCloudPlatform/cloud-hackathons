@@ -29,9 +29,31 @@ This is going to be an introduction to running apps on Cloud Run. We'll dive int
 
 Note - to capture the nuance of some of these features (like user feedback) where advanced use cases will require more analysis on the customers behalf, we want to add a Food for Thought section to the challenge to highlight some of these instances
 
+
+## Challenge 1: Set up your environment and interact with the app - 40 min
+
 ## Prerequisites
 
+In your Google Cloud project, open an instance of Cloud Shell Editor.
 
+//TODO: Check Service Account inpersonation for creds for local Docker (§GOOGLE_IMPERSONATE_SERVICE_ACCOUNT maybe?)
+//TODO: Check the Vertex Generate requests quota and if this can be raised either on Cloud Skills provisioning, or during the lab as a task. 30QPM would be enough.
+
+## Introduction
+
+Follow the instructions to install Genkit.
+
+## Description
+
+Genkit is an open source framework, geared torwards developers (like you!). Check out https://genkit.dev/docs/get-started for more.
+
+### Success Criteria
+
+After installation, run the following command to ensure that Genkit is installed correctly.
+
+```bash
+	genkit --version
+```
 
 ## Contributors
 
@@ -78,6 +100,7 @@ Note any unfamiliar concepts and open up documentation to check your understandi
 ### Learning resources
 Genkit Monitoring Documentation
 Documentation for underlying monitoring tools (Cloud Metrics, Logging, and Trace)
+
 ## Challenge 3: Troubleshooting code failures [DRAFTED]
 
 ### Prerequisites
