@@ -1,8 +1,6 @@
 # Production monitoring of GenAI Features with Firebase Genkit
 
-
-
-## Introduction [DRAFT DONE]
+## Introduction
 
 Want to master the art of keeping Firebase Genkit LLM applications alive and thriving in the real world? This hackathon puts you in the driver's seat of production monitoring for Large Language Model (LLM) powered applications. Using Firebase Genkit Monitoring, you'll tackle the critical challenges of ensuring LLMs perform flawlessly in production. You'll dive deep into troubleshooting live issues, optimizing performance bottlenecks, and guaranteeing a smooth user experience for a movie recommendation app. 
 
@@ -39,7 +37,7 @@ Note - to capture the nuance of some of these features (like user feedback) wher
 
 Manasa Kandula Esther Lloyd Cleo Schneider Polina Govorkova
 
-## Challenge 2: Exploring Monitoring dashboard [DRAFTED]
+## Challenge 2: Exploring Monitoring dashboard
 
 ### Prerequisites
 
