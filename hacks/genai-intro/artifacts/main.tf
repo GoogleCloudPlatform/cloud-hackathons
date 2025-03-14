@@ -39,6 +39,11 @@ resource "google_project_service" "pubsub_api" {
   ]
 }
 
+resource "google_project_service" "eventarc_api" {
+  service            = "eventarc.googleapis.com"
+  disable_on_destroy = false
+}
+
 resource "google_project_service" "build_api" {
   service            = "cloudbuild.googleapis.com"
   disable_on_destroy = false
@@ -54,6 +59,11 @@ resource "google_project_service" "functions_api" {
   disable_on_destroy = false
 }
 
+resource "google_project_service" "run_api" {
+  service            = "run.googleapis.com"
+  disable_on_destroy = false
+}
+
 resource "google_project_service" "logging_api" {
   service            = "logging.googleapis.com"
   disable_on_destroy = false
@@ -63,7 +73,7 @@ resource "google_project_service" "vision_api" {
   service            = "vision.googleapis.com"
   disable_on_destroy = false
 
-  depends_on = [ google_project_service.resource_manager_api ]
+  depends_on = [google_project_service.resource_manager_api]
 }
 
 resource "google_project_service" "vertex_api" {
@@ -101,18 +111,21 @@ resource "google_project_service_identity" "functions_default_sa" {
   provider = google-beta
 
   project = data.google_project.project.project_id
-  service = "cloudfunctions.googleapis.com"
+  service = "run.googleapis.com"
 }
 
 resource "google_project_iam_member" "functions_default_iam" {
   project = var.gcp_project_id
   for_each = toset([
-    "roles/cloudfunctions.serviceAgent"
+    "roles/run.serviceAgent"
   ])
   role   = each.key
   member = "serviceAccount:${google_project_service_identity.functions_default_sa.email}"
   depends_on = [
     google_project_service.functions_api,
+    google_project_service.build_api,
+    google_project_service.artifacts_api,
+    google_project_service.run_api,
     google_project_service.iam_api
   ]
 }
@@ -139,7 +152,9 @@ resource "google_project_iam_member" "gce_default_iam" {
     "roles/artifactregistry.writer",
     "roles/bigquery.dataEditor",
     "roles/bigquery.user",
+    "roles/cloudbuild.builds.builder",
     "roles/logging.logWriter",
+    "roles/run.invoker",
     "roles/storage.objectAdmin",
     "roles/storage.insightsCollectorService"
   ])
@@ -172,28 +187,36 @@ resource "google_storage_bucket_object" "zip" {
   bucket = google_storage_bucket.bucket.name
 }
 
-resource "google_cloudfunctions_function" "function" {
-  name    = "process-document"
-  runtime = "python311"
+resource "google_cloudfunctions2_function" "function" {
+  name     = "process-document"
+  location = var.gcp_region
 
-  entry_point           = "on_document_added"
-  available_memory_mb   = "512"
-  timeout               = "300"
-  source_archive_bucket = google_storage_bucket.bucket.name
-  source_archive_object = google_storage_bucket_object.zip.name
-  ingress_settings      = "ALLOW_INTERNAL_AND_GCLB"
-  max_instances         = 4
+  build_config {
+    runtime     = "python312"
+    entry_point = "on_document_added"
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket.name
+        object = google_storage_bucket_object.zip.name
+      }
+    }
+  }
 
-  service_account_email = data.google_compute_default_service_account.gce_default.email
-
-  environment_variables = {
-    GCP_REGION     = var.gcp_region
-    GCP_PROJECT_ID = var.gcp_project_id
+  service_config {
+    available_memory   = "512M"
+    timeout_seconds    = "300"
+    ingress_settings   = "ALLOW_INTERNAL_AND_GCLB"
+    max_instance_count = 4
+    environment_variables = {
+      GCP_REGION     = var.gcp_region
+      GCP_PROJECT_ID = var.gcp_project_id
+    }
+    service_account_email = data.google_compute_default_service_account.gce_default.email
   }
 
   event_trigger {
-    event_type = "providers/cloud.pubsub/eventTypes/topic.publish"
-    resource   = google_pubsub_topic.pubsub_topic.id
+    event_type   = "google.cloud.pubsub.topic.v1.messagePublished"
+    pubsub_topic = google_pubsub_topic.pubsub_topic.id
   }
 
   depends_on = [
