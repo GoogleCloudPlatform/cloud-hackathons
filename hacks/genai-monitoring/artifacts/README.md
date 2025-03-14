@@ -64,7 +64,7 @@ The primary goals of this Terraform code are to:
     * Genkit CLI installed.
 
 2.  **Configuration:**
-    *   Update `variables.tf` with your project ID or pass them in as command-line arguments.
+    *   Copy `terraform.tfvars.example` to `terraform.tfvars` and provide configuration or pass variables in as command-line arguments.
 
 3.  **Deployment:**
     *   Run `terraform init` to initialize the Terraform working directory.
