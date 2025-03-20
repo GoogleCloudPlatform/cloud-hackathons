@@ -1,4 +1,4 @@
-# Formula E: Crash data analysis with Gemini
+# Crash Course in AI: Formula E Edition
 
 ## Introduction
 
@@ -8,12 +8,12 @@ Welcome to the coach's guide for the *Formula E: Accident analysis* gHack. Here 
 
 ## Coach's Guides
 
-- Challenge 1: Loading the data
-- Challenge 2: Generating multimodal embeddings
-- Challenge 3: Semantic search
-- Challenge 4: Basic RAG
+- Challenge 1: Getting in gear
+- Challenge 2: Formula E-mbed
+- Challenge 3: Formula E RAG-ing
+- Challenge 4: Telemetry to the rescue!
 
-## Challenge 1: Loading the data
+## Challenge 1: Getting in gear
 
 ### Notes & Guidance
 
@@ -57,7 +57,7 @@ OPTIONS(
 )
 ```
 
-## Challenge 2: Generating multimodal embeddings
+## Challenge 2: Formula E-mbed
 
 ### Notes & Guidance
 
@@ -95,7 +95,7 @@ FROM
   )
 ```
 
-## Challenge 3: Semantic search
+## Challenge 3: Formula E RAG-ing
 
 ### Notes & Guidance
 
@@ -144,11 +144,7 @@ ORDER BY distance
 LIMIT 1
 ```
 
-## Challenge 4: Basic RAG
-
-### Notes & Guidance
-
-Prompt:
+#### Prompt for Vertex AI Studio
 
 ```text
 If there's a car crash in the following CCTV footage, please indicate the exact timestamp. 
@@ -157,3 +153,27 @@ The corresponding frames already have this information in dd/mm/yyyy * HH:MM:SS 
 ```
 
 Response should be: *11/05/2024 15:42:06*
+
+## Challenge 4: Telemetry to the rescue!
+
+### Notes & Guidance
+
+The following SQL statement should provide the required information. Please note that the timestamp filtering has been updated for UTC.
+
+```sql
+%%bigquery telemetry
+SELECT
+  car_number, driver_name, avg(tv_brake) as brake, avg(tv_speed) as speed
+FROM $BQ_DATASET.telemetry
+WHERE
+  time_utc > "2024-05-11T13:42:05" AND time_utc < "2024-05-11T13:42:06"
+GROUP BY
+  car_number
+  driver_name
+```
+
+Once the correct SQL has been determined, the following prompt should give, in most cases :), the correct answer.
+
+```text
+Given the following telemetry data from Formula E cars for a second, an accident has happened, could you please identify the two drivers who were involved in that accident and explain why you think that
+```
