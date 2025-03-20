@@ -27,14 +27,16 @@ gsutil mb -l $REGION $BUCKET
 gsutil -m cp {...} $BUCKET/ 
 ```
 
-Create a new BigQuery dataset
+> **Note** It's okay if particpants only copy the video files for this challenge. The telemetry data will be needed for the final challenge, but it can also be accessed from its source (without copying it to the new bucket).
+
+Create a new BigQuery dataset.
 
 ```shell
 BQ_DATASET=fe
 bq mk --location=$REGION -d $BQ_DATASET
 ```
 
-Create a connection and give permission to access buckets.
+Create a connection and give permission to access the bucket.
 
 ```shell
 CONN_ID=conn
@@ -46,14 +48,14 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAc
     --role="roles/storage.objectUser" --condition=None
 ```
 
-Now, create the object table (replace the variables with literals)
+Now, create the object table (replace the variables with literals) (`uris` might be different if the participants only copied the video files without the *cctv* prefix).
 
 ```sql
 CREATE OR REPLACE EXTERNAL TABLE `$BQ_DATASET.videos`
 WITH CONNECTION `$REGION.$CONN_ID`
 OPTIONS(
   object_metadata = 'SIMPLE',
-  uris = ['gs://$BUCKET/*.mp4']
+  uris = ['gs://$BUCKET/cctv/*.mp4']
 )
 ```
 
@@ -78,7 +80,7 @@ OPTIONS (
 )
 ```
 
-Generate the embeddings
+Generate the embeddings, note that flattening the JSON output is not required, but makes things easier for the next challenge.
 
 ```sql
 CREATE OR REPLACE TABLE `$BQ_DATASET.cctv_embeddings`
@@ -94,6 +96,8 @@ FROM
     )
   )
 ```
+
+> **Note** Without the `interval_seconds` set to 120, there will be multiple embeddings per video segment. There might be cases that this is more desirable, but since we'll be providng the full segment to Gemini in the next challenge, and for the sake simplicity (we seem to have too many false positives with the increased number of embeddings), we're sticking to a single embedding per segment.
 
 ## Challenge 3: Formula E RAG-ing
 
@@ -146,13 +150,19 @@ LIMIT 1
 
 #### Prompt for Vertex AI Studio
 
+In the Vertex AI Studio, Free Form, it's possible to add the video segment (`cam_15_07.mp4`) to the prompt through clicking on `Insert Media` and choosing `Import from Cloud Storage` option.
+
+The *Prompt* should be something like the following.
+
 ```text
 If there's a car crash in the following CCTV footage, please indicate the exact timestamp. 
 The corresponding frames already have this information in dd/mm/yyyy * HH:MM:SS on the top left corner.
 [cam_15_07.mp4]
 ```
 
-Response should be: *11/05/2024 15:42:06*
+And the correct response will be: *11/05/2024 15:42:06* (obviously the exact wording might differ).
+
+We've succesfully tested this with `gemini-2.0-flash-001` using the default settings, but participants are free to experiment with different models and settings to get the correct answer.
 
 ## Challenge 4: Telemetry to the rescue!
 
@@ -172,7 +182,7 @@ GROUP BY
   driver_name
 ```
 
-Once the correct SQL has been determined, the following prompt should give, in most cases :), the correct answer.
+Once the correct SQL has been determined, the following prompt should, in most cases :), give the correct answer.
 
 ```text
 Given the following telemetry data from Formula E cars for a second, an accident has happened, could you please identify the two drivers who were involved in that accident and explain why you think that
