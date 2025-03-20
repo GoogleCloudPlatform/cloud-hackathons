@@ -53,7 +53,7 @@ This first step is all about getting started with the source data, which is a co
 
 ### Description
 
-Create a new bucket, and copy the sample videos from `TBD` to the newly created bucket.
+Create a new bucket, and copy the sample videos from `gs://ghacks-genai-fe/cctv/` to the newly created bucket.
 
 > **Note**  
 > You should navigate to your Cloud Storage bucket and preview the videos to familiarize yourself with the content.
@@ -123,7 +123,7 @@ Now we have detected the timestamp of the accident, let's see if we can find out
 
 ### Description
 
-The telemetry data is available here: `TBD`. Go ahead and load that into BigQuery.
+The telemetry data is available here: `gs://ghacks-genai-fe/telemetry/`. Go ahead and load that into BigQuery.
 
 We've already designed a [Python notebook](https://raw.githubusercontent.com/meken/gcp-genai-fe/refs/heads/main/notebooks/Formula-E-Challenge-4.ipynb) for this challenge. Upload that to BigQuery, and complete the two cells that have a `TODO` comment:
 

@@ -21,10 +21,10 @@ Create a GCS bucket and copy sample files to that bucket.
 
 ```shell
 REGION=... 
-BUCKET="gs://$GOOGLE_CLOUD_PROJECT-videos"
+BUCKET="gs://$GOOGLE_CLOUD_PROJECT"
 
 gsutil mb -l $REGION $BUCKET
-gsutil -m cp {...} $BUCKET/ 
+gsutil -m cp -r gs://ghacks-genai-fe/ $BUCKET/ 
 ```
 
 > **Note** It's okay if particpants only copy the video files for this challenge. The telemetry data will be needed for the final challenge, but it can also be accessed from its source (without copying it to the new bucket).
@@ -168,7 +168,16 @@ We've succesfully tested this with `gemini-2.0-flash-001` using the default sett
 
 ### Notes & Guidance
 
-The following SQL statement should provide the required information. Please note that the timestamp filtering has been updated for UTC.
+There are multiple ways of loading the telemetry data, *BigLake* might be an option if the participants have copied the telemetry data to their own bucket. Otherwise, just a simple import with the `bq` CLI or BigQuery Studio should work too. The key thing to notice is that the data is in multiple files, so the uri should reference those through a wildcard.
+
+```shell
+bq load \
+    --source_format=PARQUET \
+    $BQ_DATASET.telemetry \
+    gs://ghacks-genai-fe/telemetry/*.parquet # or $BUCKET/telemetry/*.parquet if everything was copied to the bucket
+```
+
+Once the data is loaded and the notebook has been uploaded, the following SQL statement should provide the required information to determine the drivers involved in the accident. Please note that the timestamp filtering has been updated for UTC.
 
 ```sql
 %%bigquery telemetry
@@ -182,8 +191,10 @@ GROUP BY
   driver_name
 ```
 
-Once the correct SQL has been determined, the following prompt should, in most cases :), give the correct answer.
+After determining and running the correct SQL, the following prompt should, in most cases :), give the correct answer.
 
 ```text
 Given the following telemetry data from Formula E cars for a second, an accident has happened, could you please identify the two drivers who were involved in that accident and explain why you think that
 ```
+
+If participants don't get the right answer, you can suggest them to play with the prompt and or settings (temperature/model etc.).
