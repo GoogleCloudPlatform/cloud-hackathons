@@ -24,7 +24,7 @@ REGION=...
 BUCKET="gs://$GOOGLE_CLOUD_PROJECT"
 
 gsutil mb -l $REGION $BUCKET
-gsutil -m cp -r gs://ghacks-genai-fe/ $BUCKET/ 
+gsutil -m cp -r gs://ghacks-genai-fe/* $BUCKET/ 
 ```
 
 > **Note** It's okay if particpants only copy the video files for this challenge. The telemetry data will be needed for the final challenge, but it can also be accessed from its source (without copying it to the new bucket).
@@ -36,7 +36,7 @@ BQ_DATASET=fe
 bq mk --location=$REGION -d $BQ_DATASET
 ```
 
-Create a connection and give permission to access the bucket.
+Create a connection and give permission to access the bucket. We're providing here the CLI command, but participants will likely use the console for that, which is fine.
 
 ```shell
 CONN_ID=conn
@@ -59,16 +59,24 @@ OPTIONS(
 )
 ```
 
+In order to get the number of rows, a simple count query would suffice.
+
+```sql
+SELECT COUNT(*) FROM `$BQ_DATASET.videos`
+```
+
 ## Challenge 2: Formula E-mbed
 
 ### Notes & Guidance
 
-In principle the same connection can be used to access Vertex AI models as long as it has the correct permissions, so we're now adding the additional permissions.
+In principle the same connection can be used to access Vertex AI models as long as it has the correct permissions, so we're now adding the additional permissions (can be done through the Console too). If participants want to use another connection/service account, that's fine too.
 
 ```shell
 gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAccount:$SA_CONN" \
     --role="roles/aiplatform.user" --condition=None
 ```
+
+> **Note** It takes a while (1-2 minutes) before the IAM changes are propagated, so if the model creation fails due to lack of permissions even after granting the correct role, just retry after some time.
 
 Now, create the model
 
@@ -97,7 +105,13 @@ FROM
   )
 ```
 
-> **Note** Without the `interval_seconds` set to 120, there will be multiple embeddings per video segment. There might be cases that this is more desirable, but since we'll be providng the full segment to Gemini in the next challenge, and for the sake simplicity (we seem to have too many false positives with the increased number of embeddings), we're sticking to a single embedding per segment.
+> **Note** Without the `interval_seconds` set to 120, there will be multiple embeddings per video segment. There might be cases that this is more desirable, but since we'll be providng the full segment to Gemini in the next challenge (to illustrate the RAG concept), and for the sake simplicity (we seem to have too many false positives with the increased number of embeddings), we're sticking to a single embedding per segment.
+
+In order to get the number rows, participants could check the `Details` tab (when clicked on the table in BigQuery Studio Explorer pane) and `Storage info` section, or run a query.
+
+```sql
+SELECT COUNT(*) FROM `$BQ_DATASET.cctv_embeddings`
+```
 
 ## Challenge 3: Formula E RAG-ing
 
@@ -113,12 +127,12 @@ SELECT
   distance
 FROM
   VECTOR_SEARCH( 
-    TABLE embeddings.video_embeddings,
+    TABLE $BQ_DATASET.cctv_embeddings,
     'ml_generate_embedding_result',
     (
       SELECT ml_generate_embedding_result AS query
       FROM ML.GENERATE_EMBEDDING( 
-        MODEL embeddings.multimodal_embedding_model,
+        MODEL $BQ_DATASET.multimodal_embedding_model,
         (SELECT "car crash" AS content) 
       )
     ),
@@ -134,12 +148,12 @@ SELECT
   distance
 FROM
   VECTOR_SEARCH( 
-    TABLE embeddings.video_embeddings,
+    TABLE $BQ_DATASET.cctv_embeddings,
     'ml_generate_embedding_result',
     (
       SELECT ml_generate_embedding_result AS query
       FROM ML.GENERATE_EMBEDDING( 
-        MODEL embeddings.multimodal_embedding_model,
+        MODEL $BQ_DATASET.multimodal_embedding_model,
         (SELECT "car crash" AS content) 
       )
     )
@@ -190,6 +204,8 @@ GROUP BY
   car_number
   driver_name
 ```
+
+> **Note** Some OS's append a `.txt` extension to the notebook file when downloaded, that needs to be fixed before uploading the file to BigQuery Studio.
 
 After determining and running the correct SQL, the following prompt should, in most cases :), give the correct answer.
 

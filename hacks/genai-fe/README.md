@@ -64,6 +64,7 @@ Once the data is in the bucket, create an *Object table* in BigQuery on that dat
 
 - There is a new Cloud Storage Bucket with the sample video files.
 - There is an Object table that makes the sample video files available in BigQuery.
+- There are *14* rows in the newly created Object table.
 
 ### Learning Resources
 
@@ -102,7 +103,9 @@ Once we have determined the correct segment, we'll use that for RAG. Retrieval a
 
 ### Description
 
-Design a SQL query that retrieves the **top result** from the embeddings table given the phrase `car crash`. Once you have found the correct video segment use Vertex AI Studio to get the exact timestamp of the crash, using that segment in your prompt.
+Design a SQL query that retrieves the **top result** from the embeddings table given the phrase `car crash`. Once you have found the correct video segment, you'll use Vertex AI Studio to extract the exact timestamp of the accident from that video segment.
+
+Navivate to Vertex AI Studio, Freeform option, and design a prompt to get the exact timestamp of the crash, using the video segment in your prompt.
 
 ### Success Criteria
 
@@ -114,6 +117,10 @@ Design a SQL query that retrieves the **top result** from the embeddings table g
 - [Generate and search multimodal embeddings](https://cloud.google.com/bigquery/docs/generate-multimodal-embeddings)
 - [What is RAG?](https://cloud.google.com/use-cases/retrieval-augmented-generation)
 - [Using multimodal prompts in Gemini](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/video-understanding)
+
+### Tips
+
+- In Vertex AI Studio you can use different words to describe the accident (crash/collision), experiment with those as well as different models/settings. And in case you need additional help with your prompt design, consider the [AI-powered prompt writing](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/ai-powered-prompt-writing).
 
 ## Challenge 4: Telemetry to the rescue!
 
