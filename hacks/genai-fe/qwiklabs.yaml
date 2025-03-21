@@ -13,9 +13,9 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "[gHacks] Formula E: Crash data analysis with Gemini"
-description: "We'll analyze multimodal data to detect accidents and try to do a root cause analysis, 
-  comparing driving lines and telemetry with ideal driving lines"
+title: "[gHacks] Crash Course in AI: Formula E Edition"
+description: "We'll analyze multimodal data to detect accidents and find the drivers that are involved 
+  in the accident with help from Gemini"
 instruction:
   type: md
   uri: instructions/en.md
