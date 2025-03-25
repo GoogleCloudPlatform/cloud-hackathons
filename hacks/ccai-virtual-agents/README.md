@@ -1,37 +1,34 @@
-# Intro to CCAI and Virtual Agents
+# Intro to CCAI and Conversational Agents
 
 ## Introduction
 
-This hack will be an introduction to the world of Contact Center modernization and will teach you how to build a robust chat agent using Google's DialogFlow CX platform.
+This hack will be an introduction to the world of Contact Center modernization and will teach you how to build a robust chat agent using Google's Conversational Agents platform.
 
 ![Architecture](./images/architecture.png)
 
-You will be building a virtual agent for the HR department of a company called Piped Piper. Your agent will be the central place for employees to find authoritative answers  on company policies as well as place to get data from other internal systems (eg. Workday). This agent will demonstrate how a company can increase employee productivity by centralizing access to knowledge - data stored in internal data sets as well as API driven systems - all accessed using natural language from a single chat.
+You will be building a virtual agent for the HR department of a company called Piped Piper. Your agent will be the central place for employees to find authoritative answers on company policies as well as place to get data from other internal systems (eg. Workday for PTO days balance). This agent will demonstrate how a company can increase employee productivity by centralizing access to knowledge - data stored in internal data sets as well as API driven systems - all accessed using natural language from a single chat.
 
 ## Learning Objectives
 
-In this hack you will be solving a common problem of standing up a virtual chat agent - useful in many instances to help a companies internal as well as external users. More specifically we will be exploring the foundations for Google's platform called Contact Center AI (CCAI) and the tool for building agents called DialogFlow CX (DF CX).
+In this hack you will be solving a common problem of standing up a virtual chat agent - useful in many instances to help a company's internal as well as external users. More specifically we will be exploring the foundations for Google's Contact Center AI (CCAI) and the tool for building agents called Conversational Agents (formerly DialogFlow CX).
 
 In this hack you will:
 
-1. Create you first agent 
-1. Configure the agent to answer basic questions 
-1. Set up a authoritative knowledge set based on which the agent can provide answers
-1. Allow the agent to provide GenAI based answers
-1. Incorporate an external system API call to answer questions 
+1. Create your first agent 
+1. Set up a basic Playbook to detect an escalation scenario
+1. Set up an authoritative knowledge base using internal HR policy documentes to help answer questions
+1. Create an external system API call for data we can use in responses
 
 ## Challenges
 
 - Challenge 1: First Agent On The Scene
    - Create and initialize a Dialogflow agent
-- Challenge 2: What's -YOUR- Intent?
-   - Set up a basic Q&A steering using Intents and Event handlers 
+- Challenge 2: What's the Game Plan?
+   - Set up a basic Playbook to detect an escalation scenario
 - Challenge 3: Getting Smarter
-   - Give Agent access to PDF documents to use in chat answers
-- Challenge 4: GenAI Time
-   - Update our agent flow to include answers based on generator 
-- Challenge 5: Agent Phone Home
-   - Call external system for knowledge
+   - Give the agent access to PDF documents to use in chat answers
+- Challenge 4: Agent Phone Home
+   - Call an external system's API for knowledge
 
 ## Prerequisites
 
@@ -42,6 +39,7 @@ In this hack you will:
 
 - Roman Mezhibovski
 - Gino Filicetti
+- Lexi Flynn
 
 ## Challenge 1: First Agent On The Scene
 
