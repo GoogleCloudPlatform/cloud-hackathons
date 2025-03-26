@@ -22,7 +22,7 @@ In this hack you will:
 ## Challenges
 
 - Challenge 1: First Agent On The Scene
-   - Create and initialize a Dialogflow agent
+   - Create and initialize a Conversational Agent
 - Challenge 2: What's the Game Plan?
    - Set up a basic Playbook to detect an escalation scenario
 - Challenge 3: Getting Smarter
