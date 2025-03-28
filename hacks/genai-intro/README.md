@@ -59,7 +59,7 @@ We'll trigger the summary generation automatically when a document is uploaded t
 ### Learning Resources
 
 - [Creating new Cloud Storage Buckets](https://cloud.google.com/storage/docs/creating-buckets)
-- [Pub/Sub notifications for Cloud Storage Notifications](https://cloud.google.com/storage/docs/pubsub-notifications)
+- [Pub/Sub notifications for Cloud Storage](https://cloud.google.com/storage/docs/reporting-changes)
 
 ### Tips
 
