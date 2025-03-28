@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to the coach's guide for the *Formula E: Accident analysis* gHack. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for the *Crash Course in AI: Formula E Edition* gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
 > **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
@@ -191,7 +191,7 @@ bq load \
     gs://ghacks-genai-fe/telemetry/*.parquet # or $BUCKET/telemetry/*.parquet if everything was copied to the bucket
 ```
 
-Once the data is loaded and the notebook has been uploaded, the following SQL statement should provide the required information to determine the drivers involved in the accident. Please note that the timestamp filtering has been updated for UTC.
+Once the data is loaded and the notebook has been uploaded, the following SQL statement should provide the required information to determine the drivers involved in the crash. Please note that the timestamp filtering has been updated for UTC.
 
 ```sql
 %%bigquery telemetry
@@ -210,7 +210,7 @@ GROUP BY
 After determining and running the correct SQL, the following prompt should, in most cases :), give the correct answer.
 
 ```text
-Given the following telemetry data from Formula E cars for a second, an accident has happened, could you please identify the two drivers who were involved in that accident and explain why you think that
+Given the following telemetry data from Formula E cars for a second, an crash has happened, could you please identify the two drivers who were involved in that crash and explain why you think that
 ```
 
 If participants don't get the right answer, you can suggest them to play with the prompt and or settings (temperature/model etc.).

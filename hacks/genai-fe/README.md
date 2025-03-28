@@ -103,7 +103,7 @@ Once we have determined the correct segment, we'll use that for RAG. Retrieval a
 
 ### Description
 
-Design a SQL query that retrieves the **top result** from the embeddings table given the phrase `car crash`. Once you have found the correct video segment, you'll use Vertex AI Studio to extract the exact timestamp of the accident from that video segment.
+Design a SQL query that retrieves the **top result** from the embeddings table given the phrase `car crash`. Once you have found the correct video segment, you'll use Vertex AI Studio to extract the exact timestamp of the crash from that video segment.
 
 Navivate to Vertex AI Studio, Freeform option, and design a prompt to get the exact timestamp of the crash, using the video segment in your prompt.
 
@@ -134,14 +134,14 @@ The telemetry data is available here: `gs://ghacks-genai-fe/telemetry/`. Go ahea
 
 We've already designed a [Python notebook](https://raw.githubusercontent.com/meken/gcp-genai-fe/refs/heads/main/notebooks/Formula-E-Challenge-4.ipynb) for this challenge. Upload that to BigQuery, and complete the two cells that have a `TODO` comment:
 
-1. Provide the SQL that returns the average speed and brake information per driver for the timeframe between 1 second before the accident and the accident timestamp
-1. Use the result of that query as part of the prompt to Gemini to get back the drivers involved in the accident.
+1. Provide the SQL that returns the average speed and brake information per driver for the timeframe between 1 second before the crash and the crash timestamp
+1. Use the result of that query as part of the prompt to Gemini to get back the drivers involved in the crash.
 
 ### Success Criteria
 
 - The telemetry data is available as a table in BigQuery.
-- There's a SQL query that returns the average brake and speed from telemetry for each driver, aggregated over a second just before the accident.
-- There's a prompt that uses the output of the SQL query as input to Gemini to determine the drivers that were involved in the accident.
+- There's a SQL query that returns the average brake and speed from telemetry for each driver, aggregated over a second just before the crash.
+- There's a prompt that uses the output of the SQL query as input to Gemini to determine the drivers that were involved in the crash.
 - Gemini outputs the correct drivers and a brief explanation of why.
 
 ### Learning Resources
