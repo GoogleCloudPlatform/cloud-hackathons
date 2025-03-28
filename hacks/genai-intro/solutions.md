@@ -93,8 +93,8 @@ def get_prompt_for_page_summary_with_context() -> str:
         New chunk delimited by triple backquotes:
         ```{page}```
 
-        Given the new chunk, refine the original summary but keep it very concise and limited to the key concepts. 
-        Remove semantically equivalent parts. Output only the summary. Do not format.    
+        Given the new chunk, refine the original summary but keep it very concise and limited to the key concepts.
+        Remove semantically equivalent parts. Output only the summary. Do not format.
     """
 ```
 
@@ -175,7 +175,7 @@ FROM
     (
       SELECT
         title,
-        CONCAT('''Multi-choice problem: Define the category of the text. Output only the category. Do not format. 
+        CONCAT('''Multi-choice problem: Define the category of the text. Output only the category. Do not format.
                   Categories: Astrophysics, Mathematics, Computer Science,Quantitative Biology, Economics
                   Text:''', summary, '\nCategory:') AS prompt
       FROM
@@ -343,7 +343,7 @@ from vertexai.language_models import TextEmbeddingModel
 index_endpoint_name = aiplatform.MatchingEngineIndexEndpoint.list()[0].name
 index_endpoint = aiplatform.MatchingEngineIndexEndpoint(index_endpoint_name=index_endpoint_name)
 
-# embed the query, note that the model version is an example, use whatever is latest/ga, but make sure that version 
+# embed the query, note that the model version is an example, use whatever is latest/ga, but make sure that version
 # matches the version which was used from BigQuery to generate the embeddings for the summaries
 model = TextEmbeddingModel.from_pretrained("textembedding-005")  # make sure that the version matches
 query = "Which paper is about characteristics of living organisms in alien worlds?"

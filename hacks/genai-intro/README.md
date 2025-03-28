@@ -121,17 +121,17 @@ In order to get the summaries, we'll implement the *Refine* approach for this ch
 - For this [paper](https://arxiv.org/pdf/2310.01473) we expect a summary containing the following points:
 
   ```text
-  The author argues that the standard cosmological model (SMoC) is incorrect and that there is no dark matter. 
+  The author argues that the standard cosmological model (SMoC) is incorrect and that there is no dark matter.
   The author provides several arguments for this, including:
 
-  * The observed properties of galaxies are consistent with them being self-regulated, largely isolated 
+  * The observed properties of galaxies are consistent with them being self-regulated, largely isolated
     structures that sometimes interact.
   * The observed uniformity of the galaxy population is evidence against the standard cosmological model.
-  * The large observed ratio of star-forming galaxies over elliptical galaxies is evidence against 
+  * The large observed ratio of star-forming galaxies over elliptical galaxies is evidence against
     the standard cosmological model.
 
-  The author concludes that understanding galaxies purely as baryonic, self-gravitating systems becomes 
-  simple and predictive. The author criticizes the cosmological community's negative reactions to evidence 
+  The author concludes that understanding galaxies purely as baryonic, self-gravitating systems becomes
+  simple and predictive. The author criticizes the cosmological community's negative reactions to evidence
   against dark matter and to the Integrated Galactic IMF (IGIMF) theory.
   ```
 
