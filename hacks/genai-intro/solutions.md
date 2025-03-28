@@ -189,6 +189,8 @@ In order to compare things, the results must be sorted. If the students don't fl
 
 We don't need to create another connection, we can reuse the existing one. Run the following command to create the model (you need to replace `$REGION` with the correct value).
 
+> **Note** We're using `text-embedding-005` here as an example, which is the latest GA model by the time of this writing. You could use any other model version that's not discontinued.
+
 ```sql
 CREATE OR REPLACE MODEL
   articles.embeddings REMOTE
@@ -334,8 +336,9 @@ from vertexai.language_models import TextEmbeddingModel
 index_endpoint_name = aiplatform.MatchingEngineIndexEndpoint.list()[0].name
 index_endpoint = aiplatform.MatchingEngineIndexEndpoint(index_endpoint_name=index_endpoint_name)
 
-# embed the query
-model = TextEmbeddingModel.from_pretrained("textembedding-gecko@001")  # make sure that the version matches
+# embed the query, note that the model version is an example, use whatever is latest/ga, but make sure that version 
+# matches the version which was used from BigQuery to generate the embeddings for the summaries
+model = TextEmbeddingModel.from_pretrained("textembedding-005")  # make sure that the version matches
 query = "Which paper is about characteristics of living organisms in alien worlds?"
 query_embeddings = model.get_embeddings([query])[0]
 

@@ -35,7 +35,7 @@ STAGING_BUCKET=f"{PROJECT_ID}-staging"
 BQ_DATASET="articles"
 BQ_TABLE="summaries"
 
-MODEL_NAME="gemini-1.5-flash"
+MODEL_NAME="gemini-2.0-flash"
 
 vertexai.init(project=PROJECT_ID, location=REGION)
 
