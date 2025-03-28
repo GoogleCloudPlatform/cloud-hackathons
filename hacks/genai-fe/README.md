@@ -1,14 +1,14 @@
-# Formula E: Crash data analysis with Gemini
+# Crash Course in AI: Formula E Edition
 
 ## Introduction
 
 Given the close proximity racing, varying track conditions, and high speeds of electric cars, incidents in Formula E are virtually inevitable. The series' aggressive, unpredictable nature combined with street circuits often leads to crashes and collisions.
 
-In this gHack we'll analyze multimodal data to detect accidents and try to do a root cause analysis, comparing driving lines and telemetry with ideal driving lines.
+In this gHack we'll analyze multimodal data to detect crashes and find the drivers that were involved by using Gemini.
 
 ![Overview](./images/genai-rag-overview.png)
 
-We'll start with using a RAG like approach to detect accidents from video footage. Once we have found the accidents we'll correlate that with telemetry data for the involved drivers and compare that with the ideal data to find out any discrepancies. Then we'll build an agent that brings all that information in a summary.
+We'll start with semantic search to detect crashes from video footage. Once we have found a crash we'll correlate that with telemetry data and determine the involved drivers.
 
 ## Learning Objectives
 
@@ -21,10 +21,10 @@ During the process we'll learn about
 
 ## Challenges
 
-- Challenge 1: Loading the data
-- Challenge 2: Generating multimodal embeddings
-- Challenge 3: Semantic search
-- Challenge 4: Basic RAG
+- Challenge 1: Getting in gear
+- Challenge 2: Formula E-mbed
+- Challenge 3: Formula E RAG-ing
+- Challenge 4: Telemetry to the rescue!
 
 ## Prerequisites
 
@@ -40,7 +40,7 @@ During the process we'll learn about
 - Deb Lee
 - Gino Filicetti
 
-## Challenge 1: Loading the data
+## Challenge 1: Getting in gear
 
 ### Introduction
 
@@ -53,7 +53,7 @@ This first step is all about getting started with the source data, which is a co
 
 ### Description
 
-Create a new bucket, and copy the sample videos from `TBD` to the newly created bucket.
+Create a new bucket, and copy the sample videos from the bucket `gs://ghacks-genai-fe/cctv/` to the newly created bucket.
 
 > **Note**  
 > You should navigate to your Cloud Storage bucket and preview the videos to familiarize yourself with the content.
@@ -64,13 +64,14 @@ Once the data is in the bucket, create an *Object table* in BigQuery on that dat
 
 - There is a new Cloud Storage Bucket with the sample video files.
 - There is an Object table that makes the sample video files available in BigQuery.
+- There are *14* rows in the newly created Object table.
 
 ### Learning Resources
 
 - [Creating new Cloud Storage Buckets](https://cloud.google.com/storage/docs/creating-buckets)
 - [Object tables in BigQuery](https://cloud.google.com/bigquery/docs/object-tables)
 
-## Challenge 2: Generating multimodal embeddings
+## Challenge 2: Formula E-mbed
 
 ### Introduction
 
@@ -82,7 +83,7 @@ Now the source data is available in BigQuery, use BigQuery ML capabilities to ge
 
 ### Success Criteria
 
-- There is a new BigQuery table with 26 rows of multimodal embeddings for the sample video files.
+- There is a new BigQuery table with 14 rows of multimodal embeddings for the sample video files.
 
 ### Learning Resources
 
@@ -92,46 +93,62 @@ Now the source data is available in BigQuery, use BigQuery ML capabilities to ge
 
 - The method for creating multimodal embeddings supports a few different arguments, pay attention to `flatten_json_output` and `interval_seconds`.
 
-## Challenge 3: Semantic search
+## Challenge 3: Formula E RAG-ing
 
 ### Introduction
 
 In order to find semantically similar items we need to measure the distance between vectors in the embedding space. We could implement that ourselves by calculating the distance between each embedding, but BigQuery already provides a function, `VECTOR_SEARCH`, that simplifies this process.
 
+Once we have determined the correct segment, we'll use that for RAG. Retrieval augmented generation (RAG) is a popular approach for enabling LLMs to access external data and provides a mechanism to mitigate against hallucinations. The main idea is to provide the LLM more context to get reliable answers. This is typically done by looking up relevant information from a (vector) database and adding that information to the prompt of the LLM.
+
 ### Description
 
-Design a SQL query that retrieves the **top result** from the embeddings table given the phrase `car crash`.
+Design a SQL query that retrieves the **top result** from the embeddings table given the phrase `car crash`. Once you have found the correct video segment, you'll use Vertex AI Studio to extract the exact timestamp of the crash from that video segment.
+
+Navivate to Vertex AI Studio, Freeform option, and design a prompt to get the exact timestamp of the crash, using the video segment in your prompt.
 
 ### Success Criteria
 
 - The SQL query returns the uri for `cam_15_07.mp4`.
-
-### Learning Resources
-
-- [Generate and search multimodal embeddings](https://cloud.google.com/bigquery/docs/generate-multimodal-embeddings)
-- [Deploying Cloud Functions from the Console](https://cloud.google.com/functions/docs/deploy#from-inline-editor)
-
-## Challenge 4: Basic RAG
-
-### Introduction
-
-Retrieval augmented generation (RAG) is a popular approach for enabling LLMs to access external data and provides a mechanism to mitigate against hallucinations. The main idea is to provide the LLM more context to get reliable answers. This is typically done by looking up relevant information from a (vector) database and adding that information to the prompt of the LLM.
-
-In the previous challenge we've done the lookup from a vector database, we're now going to use that in our prompt to get the exact timestamp for the crash.
-
-### Description
-
-Use Vertex AI Studio to get the exact timestamp of the crash from the video segment that was found in the previous challenge.
-
-### Success Criteria
-
 - Vertex AI Studio outputs the exact timestamp for the crash covered in the video segment.
 
 ### Learning Resources
 
+- [Generate and search multimodal embeddings](https://cloud.google.com/bigquery/docs/generate-multimodal-embeddings)
 - [What is RAG?](https://cloud.google.com/use-cases/retrieval-augmented-generation)
 - [Using multimodal prompts in Gemini](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/video-understanding)
 
 ### Tips
 
-- Note that the CCTV footage contains the timestamp information in `dd/mm/yyyy * HH:MM:SS` format on the top left corner of each frame.
+- In Vertex AI Studio you can use different words to describe the crash (e.g. collision), experiment with those as well as different models/settings. And in case you need additional help with your prompt design, consider the [AI-powered prompt writing](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/ai-powered-prompt-writing).
+
+## Challenge 4: Telemetry to the rescue!
+
+### Introduction
+
+Now that we have detected the timestamp of the crash, let's see if we can find out which drivers were involved. Using only visual data can be difficult so we'll use the available telemetry data to determine the drivers. And this time we'll use Python Notebooks from BigQuery Studio to run the analysis.
+
+### Description
+
+The telemetry data is available here: `gs://ghacks-genai-fe/telemetry/`. Go ahead and load that into BigQuery.
+
+We've already designed a [Python notebook](https://raw.githubusercontent.com/meken/gcp-genai-fe/refs/heads/main/notebooks/Formula-E-Challenge-4.ipynb) for this challenge. Upload that to BigQuery, and complete the two cells that have a `TODO` comment:
+
+1. Provide the SQL that returns the average speed and brake information per driver for the timeframe between 1 second before the crash and the crash timestamp
+1. Use the result of that query as part of the prompt to Gemini to get back the drivers involved in the crash.
+
+### Success Criteria
+
+- The telemetry data is available as a table in BigQuery.
+- There's a SQL query that returns the average brake and speed from telemetry for each driver, aggregated over a second just before the crash.
+- There's a prompt that uses the output of the SQL query as input to Gemini to determine the drivers that were involved in the crash.
+- Gemini outputs the correct drivers and a brief explanation of why.
+
+### Learning Resources
+
+- [Loading Parquet data from Cloud Storage](https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet)
+- [BigQuery Python Notebooks](https://cloud.google.com/bigquery/docs/create-notebooks#upload_notebooks)
+
+### Tips
+
+- Note that the timestamp from the CCTV footage is in local time (CEST, which is UTC+2) whereas the telemetry data is in UTC.

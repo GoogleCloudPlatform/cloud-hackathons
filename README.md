@@ -20,11 +20,11 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
   > **UPDATED FOR GEMINI** We will build a system to catalog scientific papers. Whenever new papers are uploaded to Cloud Storage a Cloud Function will be triggered and use Vertex AI Foundation Model LLM to extract the title and summarize the paper. We'll store this data in BigQuery and use an LLM directly from BigQuery to classify the papers into distinct categories and then implement semantic search using text embeddings and finally we'll use Vector Search as a scalable solution.
 - [MLOps on GCP](./hacks/mlops-on-gcp/README.md)
   > We will be implementing the full lifecycle of an ML project. We'll provide you with a sample code base and you'll work on automating continuous integration (CI), continuous delivery (CD), and continuous training (CT) for a machine learning (ML) system.
-- [Formula E: Crash data analysis with Gemini](./hacks/genai-fe/README.md)
-  > We'll analyze multimodal data to detect accidents and try to do a root cause analysis, comparing driving lines and telemetry with ideal driving lines.
+- [Crash Course in AI: Formula E Edition](./hacks/genai-fe/README.md)
+  > We'll analyze multimodal data to detect crashes and find the drivers that were involved by using Gemini.
 - [Modernizing Classic Data Warehousing with BigQuery](./hacks/bq-dwh/README.md)
   > In this hack we'll implement a classic data warehouse using modern tools, such as Cloud Storage, BigQuery, Dataform and Looker Studio. We'll start with a modified version of the well known AdventureWorks OLTP database, and we'll implement a dimensional model to report on business questions using a BI visualization tool.
-- [Real-time analytics with Change Data Capture (CDC)](./hacks/realtime-analytics/README.md)
+- [Real-time Analytics with Change Data Capture (CDC)](./hacks/realtime-analytics/README.md)
   > We will be going through replicating and processing operational data from an Oracle database into Google Cloud in real time. You'll also figure out how to forecast future demand, and how to visualize this forecast data as it arrives.
 
 ### Infrastructure
