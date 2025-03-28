@@ -36,7 +36,7 @@ BQ_DATASET=fe
 bq mk --location=$REGION -d $BQ_DATASET
 ```
 
-Create a connection and give permission to access the bucket. We're providing here the CLI command, but participants will likely use the console for that, which is fine.
+Create a connection and give permission to access the bucket. We're providing the CLI command here, but participants will likely use the console for that, which is fine.
 
 ```shell
 CONN_ID=conn
@@ -174,7 +174,7 @@ The corresponding frames already have this information in dd/mm/yyyy * HH:MM:SS 
 [cam_15_07.mp4]
 ```
 
-And the correct response will be: *11/05/2024 15:42:06* (obviously the exact wording might differ).
+And the correct response will be: *11/05/2024 15:42:06* (the exact wording might differ).
 
 We've succesfully tested this with `gemini-2.0-flash-001` using the default settings, but participants are free to experiment with different models and settings to get the correct answer.
 

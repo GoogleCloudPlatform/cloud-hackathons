@@ -4,11 +4,11 @@
 
 Given the close proximity racing, varying track conditions, and high speeds of electric cars, incidents in Formula E are virtually inevitable. The series' aggressive, unpredictable nature combined with street circuits often leads to crashes and collisions.
 
-In this gHack we'll analyze multimodal data to detect accidents and find the drivers that are involved in the accident with help from Gemini.
+In this gHack we'll analyze multimodal data to detect crashes and find the drivers that were involved by using Gemini.
 
 ![Overview](./images/genai-rag-overview.png)
 
-We'll start with semantic search to detect accidents from video footage. Once we have found the accident we'll correlate that with telemetry data and determine the involved drivers.
+We'll start with semantic search to detect crashes from video footage. Once we have found a crash we'll correlate that with telemetry data and determine the involved drivers.
 
 ## Learning Objectives
 
@@ -53,7 +53,7 @@ This first step is all about getting started with the source data, which is a co
 
 ### Description
 
-Create a new bucket, and copy the sample videos from `gs://ghacks-genai-fe/cctv/` to the newly created bucket.
+Create a new bucket, and copy the sample videos from the bucket `gs://ghacks-genai-fe/cctv/` to the newly created bucket.
 
 > **Note**  
 > You should navigate to your Cloud Storage bucket and preview the videos to familiarize yourself with the content.
@@ -120,13 +120,13 @@ Navivate to Vertex AI Studio, Freeform option, and design a prompt to get the ex
 
 ### Tips
 
-- In Vertex AI Studio you can use different words to describe the accident (crash/collision), experiment with those as well as different models/settings. And in case you need additional help with your prompt design, consider the [AI-powered prompt writing](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/ai-powered-prompt-writing).
+- In Vertex AI Studio you can use different words to describe the crash (e.g. collision), experiment with those as well as different models/settings. And in case you need additional help with your prompt design, consider the [AI-powered prompt writing](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/ai-powered-prompt-writing).
 
 ## Challenge 4: Telemetry to the rescue!
 
 ### Introduction
 
-Now we have detected the timestamp of the accident, let's see if we can find out which drivers were involved. Using just visual data can be difficult so we'll use the available telemetry data to determine the drivers. And this time we'll use Python Notebooks from BigQuery Studio to run the analysis.
+Now that we have detected the timestamp of the crash, let's see if we can find out which drivers were involved. Using only visual data can be difficult so we'll use the available telemetry data to determine the drivers. And this time we'll use Python Notebooks from BigQuery Studio to run the analysis.
 
 ### Description
 

@@ -21,7 +21,7 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 - [MLOps on GCP](./hacks/mlops-on-gcp/README.md)
   > We will be implementing the full lifecycle of an ML project. We'll provide you with a sample code base and you'll work on automating continuous integration (CI), continuous delivery (CD), and continuous training (CT) for a machine learning (ML) system.
 - [Crash Course in AI: Formula E Edition](./hacks/genai-fe/README.md)
-  > We'll analyze multimodal data to detect accidents and find the drivers that are involved in the accident with help from Gemini.
+  > We'll analyze multimodal data to detect crashes and find the drivers that were involved by using Gemini.
 - [Modernizing Classic Data Warehousing with BigQuery](./hacks/bq-dwh/README.md)
   > In this hack we'll implement a classic data warehouse using modern tools, such as Cloud Storage, BigQuery, Dataform and Looker Studio. We'll start with a modified version of the well known AdventureWorks OLTP database, and we'll implement a dimensional model to report on business questions using a BI visualization tool.
 - [Real-time Analytics with Change Data Capture (CDC)](./hacks/realtime-analytics/README.md)
