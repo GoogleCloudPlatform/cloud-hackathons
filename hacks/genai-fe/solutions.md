@@ -38,6 +38,8 @@ bq mk --location=$REGION -d $BQ_DATASET
 
 Create a connection and give permission to access the bucket. We're providing the CLI command here, but participants will likely use the console for that, which is fine.
 
+> **Note** It's possible to create the *connection* from the Console, but it can be confusing as (per the docs) you need to create a Vertex AI connection, which can be used for BigLake and Object Table entities. The creation of the table needs to happen either through `bq` CLI or the SQL editor.
+
 ```shell
 CONN_ID=conn
 bq mk --connection --location=$REGION --connection_type=CLOUD_RESOURCE $CONN_ID
@@ -48,7 +50,7 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAc
     --role="roles/storage.objectUser" --condition=None
 ```
 
-Now, create the object table (replace the variables with literals) (`uris` might be different if the participants only copied the video files without the *cctv* prefix).
+Now, create the Object Table (replace the variables with literals) (`uris` might be different if the participants only copied the video files without the *cctv* prefix).
 
 ```sql
 CREATE OR REPLACE EXTERNAL TABLE `$BQ_DATASET.videos`
@@ -117,7 +119,7 @@ SELECT COUNT(*) FROM `$BQ_DATASET.cctv_embeddings`
 
 ### Notes & Guidance
 
-There are multiple ways to get this information, the below two are the most straightforward.
+The first part is all about getting the correct video segment by doing a semantic search in the embeddings table. There are multiple ways to do that in BigQuery, the below two queries are the most straightforward.
 
 #### Option 1 - Using `top_k`
 
@@ -162,6 +164,8 @@ ORDER BY distance
 LIMIT 1
 ```
 
+> **Note** If you're wondering about the prefix `base` in the example queries above, it's one of the outputs of the `VECTOR_SEARCH` function that contains all columns from the `base_table` (which is the first argument,`$BQ_DATASET.cctv_embeddings` in this case).
+
 #### Prompt for Vertex AI Studio
 
 In the Vertex AI Studio, Free Form, it's possible to add the video segment (`cam_15_07.mp4`) to the prompt through clicking on `Insert Media` and choosing `Import from Cloud Storage` option.
@@ -175,6 +179,8 @@ The corresponding frames already have this information in dd/mm/yyyy * HH:MM:SS 
 ```
 
 And the correct response will be: *11/05/2024 15:42:06* (the exact wording might differ).
+
+> **Warning** The footage is from a European race, so the time format in the video is `dd/mm/yyyy` and not `mm/dd/yyyy`.
 
 We've succesfully tested this with `gemini-2.0-flash-001` using the default settings, but participants are free to experiment with different models and settings to get the correct answer.
 
@@ -193,24 +199,29 @@ bq load \
 
 Once the data is loaded and the notebook has been uploaded, the following SQL statement should provide the required information to determine the drivers involved in the crash. Please note that the timestamp filtering has been updated for UTC.
 
+> **Note** Participants can either first download the notebook and upload it or directly import through URL. Note that some OS's append a `.txt` extension to the notebook file when downloaded, that needs to be fixed before uploading the file to BigQuery Studio.
+
 ```sql
-%%bigquery telemetry
+%%bigquery telemetry_during_crash
 SELECT
   car_number, driver_name, avg(tv_brake) as brake, avg(tv_speed) as speed
 FROM $BQ_DATASET.telemetry
 WHERE
   time_utc > "2024-05-11T13:42:05" AND time_utc < "2024-05-11T13:42:06"
 GROUP BY
-  car_number
+  car_number,
   driver_name
 ```
 
-> **Note** Some OS's append a `.txt` extension to the notebook file when downloaded, that needs to be fixed before uploading the file to BigQuery Studio.
+> **Note** If the participants use a timestamp that's too early, the averages will be more homogeneous as there's a turn just before the crash where all cars slow down, so it won't be possible to detect the drivers that were involved in the crash.
 
 After determining and running the correct SQL, the following prompt should, in most cases :), give the correct answer.
 
 ```text
-Given the following telemetry data from Formula E cars for a second, an crash has happened, could you please identify the two drivers who were involved in that crash and explain why you think that
+Given the following telemetry data from Formula E cars for a second, a crash has happened, 
+could you please identify the two drivers who were involved in that crash and explain why you think that
 ```
+
+The response should include only the drivers *Jake Hughes* and *Maximilian Günther*.
 
 If participants don't get the right answer, you can suggest them to play with the prompt and or settings (temperature/model etc.).
