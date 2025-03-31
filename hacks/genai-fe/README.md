@@ -69,6 +69,7 @@ Once the data is in the bucket, create an *Object table* in BigQuery on that dat
 ### Learning Resources
 
 - [Creating new Cloud Storage Buckets](https://cloud.google.com/storage/docs/creating-buckets)
+- [Creating Cloud Resource Connections in BigQuery](https://cloud.google.com/bigquery/docs/create-cloud-resource-connection)
 - [Object tables in BigQuery](https://cloud.google.com/bigquery/docs/object-tables)
 
 ## Challenge 2: Formula E-mbed
@@ -105,22 +106,23 @@ Once we have determined the correct segment, we'll use that for RAG. Retrieval a
 
 Design a SQL query that retrieves the **top result** from the embeddings table given the phrase `car crash`. Once you have found the correct video segment, you'll use Vertex AI Studio to extract the exact timestamp of the crash from that video segment.
 
-Navivate to Vertex AI Studio, Freeform option, and design a prompt to get the exact timestamp of the crash, using the video segment in your prompt.
+Navigate to Vertex AI Studio, Freeform option, and design a prompt to get the exact timestamp of the crash, using the video segment in your prompt.
 
 ### Success Criteria
 
 - The SQL query returns the uri for `cam_15_07.mp4`.
-- Vertex AI Studio outputs the exact timestamp for the crash covered in the video segment.
+- Vertex AI Studio outputs the exact timestamp of the crash covered in the video segment in `dd/mm/yyyy * HH:MM:SS` format.
 
 ### Learning Resources
 
 - [Generate and search multimodal embeddings](https://cloud.google.com/bigquery/docs/generate-multimodal-embeddings)
-- [What is RAG?](https://cloud.google.com/use-cases/retrieval-augmented-generation)
 - [Using multimodal prompts in Gemini](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/video-understanding)
+- [What is RAG?](https://cloud.google.com/use-cases/retrieval-augmented-generation)
 
 ### Tips
 
 - In Vertex AI Studio you can use different words to describe the crash (e.g. collision), experiment with those as well as different models/settings. And in case you need additional help with your prompt design, consider the [AI-powered prompt writing](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/ai-powered-prompt-writing).
+- The video has the timestamp information in the right format in the top left corner of each frame.
 
 ## Challenge 4: Telemetry to the rescue!
 
@@ -134,15 +136,15 @@ The telemetry data is available here: `gs://ghacks-genai-fe/telemetry/`. Go ahea
 
 We've already designed a [Python notebook](https://raw.githubusercontent.com/meken/gcp-genai-fe/refs/heads/main/notebooks/Formula-E-Challenge-4.ipynb) for this challenge. Upload that to BigQuery, and complete the two cells that have a `TODO` comment:
 
-1. Provide the SQL that returns the average speed and brake information per driver for the timeframe between 1 second before the crash and the crash timestamp
+1. Provide the SQL that returns the average speed and brake information per driver for the timeframe between the second before the crash and the crash timestamp
 1. Use the result of that query as part of the prompt to Gemini to get back the drivers involved in the crash.
 
 ### Success Criteria
 
 - The telemetry data is available as a table in BigQuery.
-- There's a SQL query that returns the average brake and speed from telemetry for each driver, aggregated over a second just before the crash.
+- There's a SQL query that returns the average brake and speed from telemetry for each driver, aggregated over the second just before the crash.
 - There's a prompt that uses the output of the SQL query as input to Gemini to determine the drivers that were involved in the crash.
-- Gemini outputs the correct drivers and a brief explanation of why.
+- Gemini outputs the correct drivers (Maximilian Günther and Jake Hughes) and a brief explanation of why.
 
 ### Learning Resources
 
