@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Introduction to GenAI will challenge you to build a system that catalogues scientific papers. Whenever a new paper is uploaded to a specific Cloud Storage Bucket, a Cloud Function will be triggered to do OCR, then extract the title and summary of the paper using an LLM and store all that information in BigQuery. Then we'll run an LLM from BigQuery to classify the papers into distinct categories. Next we'll add semantic search capabilities in BigQuery using text embeddings and finally, implement a more scalable version of that using Vector Search.
+Introduction to GenAI will challenge you to build a system that catalogues scientific papers. Whenever a new paper is uploaded to a specific Cloud Storage Bucket, a Cloud Run Function will be triggered to do OCR, then extract the title and summary of the paper using an LLM and store all that information in BigQuery. Then we'll run an LLM from BigQuery to classify the papers into distinct categories. Next we'll add semantic search capabilities in BigQuery using text embeddings and finally, implement a more scalable version of that using Vector Search.
 
 ![Architecture of the system](./images/genai-intro-arch.png)
 
@@ -46,40 +46,40 @@ This challenge is all about configuring the pre-requisites for the system we're 
 
 Create two Cloud Storage Buckets, one for uploading documents and another one for staging. You can choose any name for the first bucket, but call the staging bucket `{YOUR PROJECT ID}-staging`.
 
-We'll trigger the summary generation automatically when a document is uploaded to the first Cloud Storage Bucket. We've already provided you with a(n incomplete) Cloud Function, make sure that this function is triggered whenever a new document is uploaded to the Cloud Storage Bucket.
+We'll trigger the summary generation automatically when a document is uploaded to the first Cloud Storage Bucket. We've already provided you with a(n incomplete) Cloud Run Function, `process-document`, make sure that this function is triggered whenever a new document is uploaded to the Cloud Storage Bucket.
+
+> **Note** The provided Cloud Run Function is configured to be triggered when a message is sent to an already existing Pub/Sub topic. You'll need to configure the correct Cloud Storage Bucket to send a message to that topic whenever a new document is added.
 
 ### Success Criteria
 
 - There are two Cloud Storage Buckets, one for uploading the documents and another one for staging with the required name.
-- The provided Cloud Function is triggered **only** when a file is uploaded.
+- The provided Cloud Run Function is triggered **only** when a file is uploaded.
 - No code was modified.
 
 ### Learning Resources
 
 - [Creating new Cloud Storage Buckets](https://cloud.google.com/storage/docs/creating-buckets)
-- [Pub/Sub notifications for Cloud Storage Notifications](https://cloud.google.com/storage/docs/pubsub-notifications)
+- [Pub/Sub notifications for Cloud Storage](https://cloud.google.com/storage/docs/reporting-changes)
 
 ### Tips
 
-- Check the provided Cloud Function's configuration to see the details on how it's being triggered
-- You can test things by uploading a [PDF file](https://arxiv.org/pdf/2301.02230.pdf) to the first Cloud Storage Bucket and watching the logs of the Cloud Function
+- Check the provided Cloud Run Function's configuration to see the details on how it's being triggered (name of the Pub/Sub topic)
+- You can test things by uploading a [PDF file](https://arxiv.org/pdf/2301.02230.pdf) to the first Cloud Storage Bucket and watching the logs of the Cloud Run Function
 
 ## Challenge 2: First steps into the LLM realm
 
 ### Introduction
 
-Let's get started with a simple objective; we're going to *extract* the title of a document using LLMs. In order to work with LLMs we need textual data, so the first step in our process is to extract text data from PDF documents. We've already implemented that functionality for you using Cloud Vision APIs in the provided Cloud Function. Go ahead and have a look at the `extract_text_from_document` function to understand where and how the results are stored. Now, with those results we can look into extracting the title from the text content of the document.
+Let's get started with a simple objective; we're going to *extract* the title of a document using LLMs. In order to work with LLMs we need textual data, so the first step in our process is to extract text data from PDF documents. We've already implemented that functionality for you using Cloud Vision APIs in the provided Cloud Run Function. Go ahead and have a look at the `extract_text_from_document` function to understand where and how the results are stored. Now, with those results we can look into extracting the title from the text content of the document.
 
 ### Description
 
-For this challenge we'll use Gemini to determine what the title (including any subtitle) of the uploaded document is, *in a cost effective way*. We've already provided the skeleton of the function `extract_title_from_text`, all you need to do is come up with the correct prompt and set the right values for the placeholder (in the `format` function) to pass the document content to your prompt.  Once you've made your changes re-deploy the Cloud Function.
-
-> **Warning**  Beware of some of the quirks of Cloud Function source editor UI! When you click on *Save and redeploy* button, the editor will show the code for the previous version of the function, which looks like your changes were lost. But that's only temporay, when the function is redeployed, the changes will be shown again. If there were any syntax errors though, the changes will be lost, so make a copy of your changes before you save and redeploy the code. Also, before editing the function make sure that you have the latest version of the code. If you're editing a previous version, the editor won't warn you about that.
+For this challenge we'll use Gemini to determine what the title (including any subtitle) of the uploaded document is, *in a cost effective way*. We've already provided the skeleton of the function `extract_title_from_text`, all you need to do is come up with the correct prompt and set the right values for the placeholder (in the `format` function) to pass the document content to your prompt. Once you've made your changes re-deploy the Cloud Run Function.
 
 ### Success Criteria
 
 - Less than 2500 tokens are used to determine the title.
-- The following papers should yield the corresponding titles, you can see those in the `Logs` section of the Cloud Function. Make sure that only the title is output:
+- The following papers should yield the corresponding titles, you can see those in the `Logs` section of the Cloud Run Function. Make sure that only the title is output:
 
   | Paper                                           | Title |
   | ---                                             | ---   |
@@ -93,7 +93,7 @@ For this challenge we'll use Gemini to determine what the title (including any s
 
 ### Tips
 
-- You can edit and redeploy the Cloud Function from the Console.
+- You can edit and redeploy the Cloud Run Function from the Console.
 - You can test your prompts using [Vertex AI Studio](https://cloud.google.com/vertex-ai/docs/generative-ai/text/test-text-prompts#generative-ai-test-text-prompt-console).
 - You could get the content from PDF files by opening them in PDF reader and copying the text (or if you're very familiar with the CLI and love experimenting with `jq` you can do that by using `gsutil cat` & `jq` commands from Cloud Shell by accessing the JSON files in the staging bucket).
 
@@ -114,20 +114,25 @@ The *Refine* chain approach also makes multiple calls to an LLM, but it does tha
 
 ### Description
 
-In order to get the summaries, we'll implement the *Refine* approach for this challenge. Most of the code is already provided in the `extract_summary_from_text` method in Cloud Function. Similar to the previous challenge, you're expected to design the prompt and provide the right values to the placeholders.
+In order to get the summaries, we'll implement the *Refine* approach for this challenge. Most of the code is already provided in the `extract_summary_from_text` method in Cloud Run Function. Similar to the previous challenge, you're expected to design the prompt and provide the right values to the placeholders.
 
 ### Success Criteria
 
-- For this [paper](https://arxiv.org/pdf/2310.01473) we expect a summary like this:
+- For this [paper](https://arxiv.org/pdf/2310.01473) we expect a summary containing the following points:
 
   ```text
-  The author argues that the standard cosmological model is incorrect and that there is no dark matter. The author provides several arguments for this, including:
+  The author argues that the standard cosmological model (SMoC) is incorrect and that there is no dark matter.
+  The author provides several arguments for this, including:
 
-  * The observed properties of galaxies are consistent with them being self-regulated, largely isolated structures that sometimes interact.
+  * The observed properties of galaxies are consistent with them being self-regulated, largely isolated
+    structures that sometimes interact.
   * The observed uniformity of the galaxy population is evidence against the standard cosmological model.
-  * The large observed ratio of star-forming galaxies over elliptical galaxies is evidence against the standard cosmological model.
+  * The large observed ratio of star-forming galaxies over elliptical galaxies is evidence against
+    the standard cosmological model.
 
-  The author concludes that understanding galaxies purely as baryonic, self-gravitating systems becomes simple and predictive.
+  The author concludes that understanding galaxies purely as baryonic, self-gravitating systems becomes
+  simple and predictive. The author criticizes the cosmological community's negative reactions to evidence
+  against dark matter and to the Integrated Galactic IMF (IGIMF) theory.
   ```
 
   > **Note** By their nature, LLM results can vary, this is something to expect so your exact text may not match the above, but the intent should be the same.
@@ -145,9 +150,9 @@ So far we've used the Gemini APIs from the Vertex AI Python SDK. It's also possi
 
 ### Description
 
-Before we start using the LLMs you'll need to store the outputs of the Cloud Function in BigQuery. The first step is to create a BigQuery dataset called `articles` (in multi-region US) and a table `summaries` with the following columns, `uri`, `name`, `title` and `summary`.
+Before we start using the LLMs you'll need to store the outputs of the Cloud Run Function in BigQuery. The first step is to create a BigQuery dataset called `articles` (in multi-region US) and a table `summaries` with the following columns, `uri`, `name`, `title` and `summary`.
 
-We've already provided the code in the Cloud Function to store the results in the newly created table, just uncomment the call to `store_results_in_bq`.
+We've already provided the code in the Cloud Run Function to store the results in the newly created table, just uncomment the call to `store_results_in_bq`.
 
 Once the table is there, configure BigQuery to use an LLM and run a query that categorizes each paper that's in the `articles.summaries` table using their `summary`. Make sure that the LLM generates one of the following categories: `Astrophysics`, `Mathematics`, `Computer Science`, `Economics` and `Quantitative Biology`.
 

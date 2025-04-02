@@ -26,6 +26,8 @@ gsutil mb -l $REGION $BUCKET
 gsutil mb -l $REGION $STAGING
 ```
 
+The following command enables the required notifications from the bucket to the Pub/Sub topic. Note that this can only be configured from the CLI, there's no option to do this via the Console.
+
 ```shell
 TOPIC=documents
 gcloud storage buckets notifications create --event-types=OBJECT_FINALIZE --topic=$TOPIC $BUCKET
@@ -39,11 +41,13 @@ If the participants miss the `OBJECT_FINALIZE` event type when they configure th
 gcloud storage buckets notifications delete $BUCKET  # delete all notification configurations
 ```
 
+> **Warning** Cloud Run Functions nowadays also support Cloud Storage triggers directly (through Eventarc), however there's a few issues with that at the moment (related to lack of control of retries and acknowledgment deadlines of the underlying assets, from the Cloud Run Functions UI), so we're sticking to Pub/Sub triggers for now. Make sure that the participants don't edit the configuration of the Cloud Run Function to use Cloud Storage triggers (instead of the already defined Pub/Sub trigger).
+
 ## Challenge 2: First steps into the LLM realm
 
 ### Notes & Guidance
 
-If students are new to Python, it might be helpful to explain the structure of the code. We've recently added [docstrings](https://peps.python.org/pep-0257/) to each function, make sure that they understand that it is the Pythonic way to document code. They only need to edit the parts where there's a TODO, they shouldn't modify the code in any other way.
+If students are new to Python, it might be helpful to explain the structure of the code. We've recently added [docstrings](https://peps.python.org/pep-0257/) to each function, make sure that they understand that it is the Pythonic way to document code. They only need to edit the parts where there's a `TODO`, they shouldn't modify the code in any other way.
 
 Note that these prompts are examples and until we have the `seed` parameter available in the API, we can't have a deterministic prompt that always works, so consider this as a good starting point.
 
@@ -66,7 +70,7 @@ prompt = prompt_template.format(text=text[:5000])
 
 Some participants might want to use string concatenation (instead of `prompt.format`, something like `prompt + text`) which could work, but that's less elegant and limits things (text can only be put at the end). Since for the next challenge the `format` function is going to be more important, it's good to stick to that for this challenge. The linked documentation for `str.format` is quite helpful.
 
-If you want to use gsutil & jq to get the contents, this is the command to use:
+If you want to use `gsutil` & `jq` to get the contents, this is the command to use:
 
 ```shell
 gsutil cat $STAGING/2309.00031.pdf/output-1-to-2.json | jq -r .responses[].fullTextAnnotation.text
@@ -85,20 +89,23 @@ See below for the complete code, although there could be slight deviations, ther
 ```python
 def get_prompt_for_page_summary_with_context() -> str:
     return """
-        Taking the following context delimited by triple backquotes into consideration:
+        Your task is to summarize scientific documents concisely. You'll be provided the content in chunks,
+        and will keep refining the summary.
+        Summary up to this point (will be empty for the first chunk) delimited by triple backquotes:
+        ```{summary}```
 
-        ```{context}```
+        New chunk delimited by triple backquotes:
+        ```{page}```
 
-        Write a concise summary of the following text delimited by triple backquotes. Output only the summary. Do not format.
-
-        ```{text}```
+        Given the new chunk, refine the original summary but keep it very concise and limited to the key concepts.
+        Remove semantically equivalent parts. Output only the summary. Do not format.
     """
 ```
 
 And then make sure to provide the `summary` as context and `page` as text in the `extract_summary_from_text` method.
 
 ```python
-prompt = rolling_prompt_template.format(context=summary, text=page)
+prompt = rolling_prompt_template.format(summary=summary, page=page)
 ```
 
 The prompts listed here are just examples, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should in this case reflect the main points from the summary in *Success Criteria*.
@@ -155,26 +162,30 @@ This is the SQL statement to create a link to the LLM (you need to replace `$REG
 ```sql
 CREATE OR REPLACE MODEL
   articles.llm REMOTE
-WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'gemini-1.5-flash')
+WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'gemini-2.0-flash')
 ```
+
+> **Note** We're using `gemini-2.0-flash` here as an example, which is one of the latest GA models by the time of this writing. You could use any other model version that's not discontinued.
 
 Finally, we can use the linked model to make predictions.
 
 ```sql
 SELECT
   title,
-  ml_generate_text_llm_result
+  ml_generate_text_llm_result as category
 FROM
   ML.GENERATE_TEXT( 
     MODEL `articles.llm`,
     (
       SELECT
         title,
-        CONCAT('Multi-choice problem: Define the category of the text. Output only the category. Do not format. Categories: Astrophysics, Mathematics, Computer Science,Quantitative Biology, Economics\nText:', summary, '\nCategory:') AS prompt
+        CONCAT('''Multi-choice problem: Define the category of the text. Output only the category. Do not format.
+                  Categories: Astrophysics, Mathematics, Computer Science,Quantitative Biology, Economics
+                  Text:''', summary, '\nCategory:') AS prompt
       FROM
         `articles.summaries` 
     ),
-    STRUCT( 0.2 AS temperature, 64 AS max_output_tokens, TRUE AS flatten_json_output)
+    STRUCT(0.2 AS temperature, 64 AS max_output_tokens, TRUE AS flatten_json_output)
   )
 ORDER BY 2
 ```
@@ -188,6 +199,8 @@ In order to compare things, the results must be sorted. If the students don't fl
 ### Notes & Guidance
 
 We don't need to create another connection, we can reuse the existing one. Run the following command to create the model (you need to replace `$REGION` with the correct value).
+
+> **Note** We're using `text-embedding-005` here as an example, which is the latest GA model by the time of this writing. You could use any other model version that's not discontinued.
 
 ```sql
 CREATE OR REPLACE MODEL
@@ -208,7 +221,7 @@ CREATE OR REPLACE TABLE articles.summary_embeddings AS (
 )
 ```
 
-And finally here's the SQL query to get the results, although any variation (temp tables etc. for the query) is also fine. Emphasize that none of the words from the query occurs in the summary, so it's a far better search than a keyword search.
+And finally here's the SQL query to get the results, although any variation (temp tables for the query) is also fine. Emphasize that none of the words from the query occurs in the summary, so it's a far better search than a keyword search.
 
 ```sql
 WITH query_embeddings AS (
@@ -334,8 +347,9 @@ from vertexai.language_models import TextEmbeddingModel
 index_endpoint_name = aiplatform.MatchingEngineIndexEndpoint.list()[0].name
 index_endpoint = aiplatform.MatchingEngineIndexEndpoint(index_endpoint_name=index_endpoint_name)
 
-# embed the query
-model = TextEmbeddingModel.from_pretrained("textembedding-gecko@001")  # make sure that the version matches
+# embed the query, note that the model version is an example, use whatever is latest/ga, but make sure that version
+# matches the version which was used from BigQuery to generate the embeddings for the summaries
+model = TextEmbeddingModel.from_pretrained("textembedding-005")  # make sure that the version matches
 query = "Which paper is about characteristics of living organisms in alien worlds?"
 query_embeddings = model.get_embeddings([query])[0]
 

@@ -18,6 +18,7 @@ import os
 from itertools import islice
 from typing import Iterator
 
+import functions_framework
 import vertexai
 
 from google.cloud import bigquery
@@ -34,7 +35,7 @@ STAGING_BUCKET=f"{PROJECT_ID}-staging"
 BQ_DATASET="articles"
 BQ_TABLE="summaries"
 
-MODEL_NAME="gemini-1.5-flash"
+MODEL_NAME="gemini-2.0-flash"
 
 vertexai.init(project=PROJECT_ID, location=REGION)
 
@@ -233,7 +234,8 @@ def store_results_in_bq(dataset: str, table: str, columns: dict[str, str]) -> bo
     return not errors
 
 
-def on_document_added(event, context):
+@functions_framework.cloud_event
+def on_document_added(event):
     """Triggered from a message on a Cloud Pub/Sub topic.
 
     Do not edit until Challenge 4.
@@ -242,10 +244,10 @@ def on_document_added(event, context):
         event: event payload
         context: metadata for the event.
     """
-    pubsub_message = json.loads(base64.b64decode(event["data"]).decode("utf-8"))
+    pubsub_message = json.loads(base64.b64decode(event.data["message"]["data"]).decode("utf-8"))
     src_bucket = pubsub_message["bucket"]
     src_fname = pubsub_message["name"]
-    print("Processing file:", src_fname)
+    print(f"Processing file: {src_fname}")
 
     if pubsub_message["contentType"] != "application/pdf":
         raise ValueError("Only PDF files are supported, aborting")
@@ -255,13 +257,13 @@ def on_document_added(event, context):
     print("Completed the text extraction")
 
     complete_text = collate_pages(dst_bucket, dst_folder)
-    print("Completed collation, #characters:", len(complete_text))
+    print(f"Completed collation, #characters: {len(complete_text)}")
 
     title = extract_title_from_text(complete_text)
-    print("Title:", title)
+    print(f"Title: {title}")
 
     summary = extract_summary_from_text(complete_text)
-    print("Summary:", summary)
+    print(f"Summary: {summary}")
 
     # TODO Challenge 4, uncomment the next two lines
     # columns = {"uri": f"gs://{src_bucket}/{src_fname}", "name": src_fname, "title": title, "summary": summary}
