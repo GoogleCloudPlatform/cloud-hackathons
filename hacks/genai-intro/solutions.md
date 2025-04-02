@@ -26,6 +26,8 @@ gsutil mb -l $REGION $BUCKET
 gsutil mb -l $REGION $STAGING
 ```
 
+The following command enables the required notifications from the bucket to the Pub/Sub topic.
+
 ```shell
 TOPIC=documents
 gcloud storage buckets notifications create --event-types=OBJECT_FINALIZE --topic=$TOPIC $BUCKET
@@ -38,6 +40,8 @@ If the participants miss the `OBJECT_FINALIZE` event type when they configure th
 ```shell
 gcloud storage buckets notifications delete $BUCKET  # delete all notification configurations
 ```
+
+> **Warning** Cloud Run Functions nowadays also support Cloud Storage triggers directly (through Eventarc), however there's a few issues with that at the moment (related to lack of control of retries and acknowledgment deadlines of the underlying assets, from the Cloud Run Functions UI), so we're sticking to Pub/Sub triggers for now. Make sure that the participants don't edit the configuration of the Cloud Run Function to use Cloud Storage triggers (instead of the already defined Pub/Sub trigger).
 
 ## Challenge 2: First steps into the LLM realm
 
