@@ -46,9 +46,9 @@ This challenge is all about configuring the pre-requisites for the system we're 
 
 Create two Cloud Storage Buckets, one for uploading documents and another one for staging. You can choose any name for the first bucket, but call the staging bucket `{YOUR PROJECT ID}-staging`.
 
-We'll trigger the summary generation automatically when a document is uploaded to the first Cloud Storage Bucket. We've already provided you with a(n incomplete) Cloud Run Function, make sure that this function is triggered whenever a new document is uploaded to the Cloud Storage Bucket.
+We'll trigger the summary generation automatically when a document is uploaded to the first Cloud Storage Bucket. We've already provided you with a(n incomplete) Cloud Run Function, `process-document`, make sure that this function is triggered whenever a new document is uploaded to the Cloud Storage Bucket.
 
-> **Note** The Cloud Run Function is configured to be triggered when a message is sent to an already existing Pub/Sub topic. You'll need to configure the correct Cloud Storage Bucket to send a message to that topic whenever a new document is added.
+> **Note** The provided Cloud Run Function is configured to be triggered when a message is sent to an already existing Pub/Sub topic. You'll need to configure the correct Cloud Storage Bucket to send a message to that topic whenever a new document is added.
 
 ### Success Criteria
 

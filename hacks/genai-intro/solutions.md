@@ -26,7 +26,7 @@ gsutil mb -l $REGION $BUCKET
 gsutil mb -l $REGION $STAGING
 ```
 
-The following command enables the required notifications from the bucket to the Pub/Sub topic.
+The following command enables the required notifications from the bucket to the Pub/Sub topic. Note that this can only be configured from the CLI, there's no option to do this via the Console.
 
 ```shell
 TOPIC=documents
