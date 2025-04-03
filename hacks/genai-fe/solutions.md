@@ -92,7 +92,7 @@ OPTIONS (
 )
 ```
 
-Generate the embeddings, note that flattening the JSON output is not required, but makes things easier for the next challenge.
+Generate the embeddings, note that flattening the JSON output will ensure that the embeddings are in `ARRAY<FLOAT64>` format (rather than JSON which complicates things for the further challenges).
 
 ```sql
 CREATE OR REPLACE TABLE `$BQ_DATASET.cctv_embeddings`
