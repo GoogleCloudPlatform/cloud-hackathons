@@ -4,11 +4,11 @@
 
 Given the close proximity racing, varying track conditions, and high speeds of electric cars, incidents in Formula E are virtually inevitable. The series' aggressive, unpredictable nature combined with street circuits often leads to crashes and collisions.
 
-In this gHack we'll analyze multimodal data to detect crashes and find the drivers that were involved by using Gemini.
+In this gHack we'll analyze Formula E CCTV footage and telemetry data to identify crashes and determine the drivers involved using Gemini.
 
 ![Overview](./images/genai-rag-overview.png)
 
-We'll start with semantic search to detect crashes from video footage. Once we have found a crash we'll correlate that with telemetry data and determine the involved drivers.
+We'll start with loading the video files into BigQuery. Following this, video embeddings will be generated, enabling RAG-based semantic search to pinpoint the precise timestamp of any potential crash. Finally, telemetry data will be ingested, filtered, and aggregated around the crash timestamp to identify the drivers involved in the crash.
 
 ## Learning Objectives
 
