@@ -213,7 +213,7 @@ FROM FILES (
 
 After loading the data, the notebook needs to be uploaded. You can click on the vertical ellipsis (3 dots) next to *Notebooks* in BigQuery Explorer pane and select *Upload to Notebooks*. Participants can either first download the notebook and upload it or, directly import it through its [URL](https://raw.githubusercontent.com/meken/gcp-genai-fe/refs/heads/main/notebooks/Formula-E-Challenge-4.ipynb). Note that some OS's append a `.txt` extension to the notebook file when downloaded, that needs to be fixed before uploading the file to BigQuery Studio, if they choose for that option.
 
-The following SQL statement should provide the required information to determine the drivers involved in the crash. Please note that the timestamp filtering has been updated for UTC in this solution, if the participants forget about that updating the timezone information they will get empty results.
+The following SQL statement should provide the required information to determine the drivers involved in the crash. Please note that the timestamp filtering has been updated for UTC in this solution, if the participants forget about updating the timezone information they will get empty results.
 
 > **Note** It's probably easier if the participants start experimenting with the SQL in BigQuery Studio (SQL Editor). You can recommend using Gemini from the SQL Editor. Entering the content of the cell where we explain the SQL to be designed, yields pretty impressive results.
 
