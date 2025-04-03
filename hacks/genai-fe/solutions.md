@@ -61,6 +61,8 @@ OPTIONS(
 )
 ```
 
+> **Note** If the wildcard is left out, the table will be empty.
+
 In order to get the number of rows, a simple count query would suffice.
 
 ```sql
@@ -170,7 +172,7 @@ LIMIT 1
 
 In the Vertex AI Studio, Free Form, it's possible to add the video segment (`cam_15_07.mp4`) to the prompt through clicking on `Insert Media` and choosing `Import from Cloud Storage` option.
 
-The *Prompt* should be something like the following.
+The *Prompt* should be something like the following, (where `[cam_15_07.mp4]` is the video segment inserted into the prompt).
 
 ```text
 If there's a car crash in the following CCTV footage, please indicate the exact timestamp. 
@@ -197,9 +199,25 @@ bq load \
     gs://ghacks-genai-fe/telemetry/*.parquet # or $BUCKET/telemetry/*.parquet if everything was copied to the bucket
 ```
 
-Once the data is loaded and the notebook has been uploaded, the following SQL statement should provide the required information to determine the drivers involved in the crash. Please note that the timestamp filtering has been updated for UTC.
+See below for an alternative way of loading the data from the SQL Editor:
 
-> **Note** Participants can either first download the notebook and upload it or directly import through URL. Note that some OS's append a `.txt` extension to the notebook file when downloaded, that needs to be fixed before uploading the file to BigQuery Studio.
+```sql
+LOAD DATA OVERWRITE $BQ_DATASET.telemetry
+FROM FILES (
+  format = 'PARQUET',
+  uris = ['gs://ghacks-genai-fe/telemetry/*']  -- or $BUCKET/telemetry/*.parquet if everything was copied to the bucket
+)
+```
+
+> **Note** For both options, if the wildcard is left out, the table will be empty.
+
+Once the data is loaded and the notebook needs to be uploaded. You can click on the vertical ellipsis (3 dots) next to *Notebooks* in BigQuery Explorer pane and select *Upload to Notebooks*.
+
+> **Note** Participants can either first download the notebook and upload it or directly import it through its URL. Note that some OS's append a `.txt` extension to the notebook file when downloaded, that needs to be fixed before uploading the file to BigQuery Studio.
+
+The following SQL statement should provide the required information to determine the drivers involved in the crash. Please note that the timestamp filtering has been updated for UTC in this solution, if the participants forget about that updating the timezone information they will get empty results.
+
+> **Note** It's probably easier if the participants start experimenting with the SQL in BigQuery Studio (SQL Editor). You can recommend using Gemini from the SQL Editor. Entering the content of the cell where we explain the SQL to be designed, yields pretty impressive results.
 
 ```sql
 %%bigquery telemetry_during_crash

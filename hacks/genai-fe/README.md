@@ -80,15 +80,16 @@ Embeddings are high-dimensional numerical vectors representing entities like tex
 
 ### Description
 
-Now the source data is available in BigQuery, use BigQuery ML capabilities to generate multimodal embeddings and store those embeddings in a new BigQuery table. Make sure that there's *only one* embedding vector *per 2 minute segment*.
+Now the source data is available in BigQuery, use BigQuery ML capabilities to generate multimodal embeddings and store those embeddings in a new BigQuery table. Make sure that there's *only one* embedding vector *per 2 minute segment* with the type `ARRAY<FLOAT64>`.
 
 ### Success Criteria
 
-- There is a new BigQuery table with 14 rows of multimodal embeddings for the sample video files.
+- There is a new BigQuery table with *14 rows* of multimodal embeddings for the sample video files.
 
 ### Learning Resources
 
 - [Generate multimodal embeddings](https://cloud.google.com/bigquery/docs/generate-multimodal-embeddings)
+- [The ML.GENERATE_EMBEDDING function](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-embedding)
 
 ### Tips
 
@@ -107,6 +108,8 @@ Once we have determined the correct segment, we'll use that for RAG. Retrieval a
 Design a SQL query that retrieves the **top result** from the embeddings table given the phrase `car crash`. Once you have found the correct video segment, you'll use Vertex AI Studio to extract the exact timestamp of the crash from that video segment.
 
 Navigate to Vertex AI Studio, Freeform option, and design a prompt to get the exact timestamp of the crash, using the video segment in your prompt.
+
+> **Note** Have a look at the video segment to confirm when the crash happened.
 
 ### Success Criteria
 
