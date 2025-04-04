@@ -4,11 +4,11 @@
 
 Given the close proximity racing, varying track conditions, and high speeds of electric cars, incidents in Formula E are virtually inevitable. The series' aggressive, unpredictable nature combined with street circuits often leads to crashes and collisions.
 
-In this gHack we'll analyze multimodal data to detect crashes and find the drivers that were involved by using Gemini.
+In this gHack we'll analyze Formula E CCTV footage and telemetry data to identify crashes and determine the drivers involved using Gemini.
 
 ![Overview](./images/genai-rag-overview.png)
 
-We'll start with semantic search to detect crashes from video footage. Once we have found a crash we'll correlate that with telemetry data and determine the involved drivers.
+We'll start with loading the video files into BigQuery. Following this, video embeddings will be generated, enabling RAG-based semantic search to pinpoint the precise timestamp of any potential crash. Finally, telemetry data will be ingested, filtered, and aggregated around the crash timestamp to identify the drivers involved in the crash.
 
 ## Learning Objectives
 
@@ -80,15 +80,16 @@ Embeddings are high-dimensional numerical vectors representing entities like tex
 
 ### Description
 
-Now the source data is available in BigQuery, use BigQuery ML capabilities to generate multimodal embeddings and store those embeddings in a new BigQuery table. Make sure that there's *only one* embedding vector *per 2 minute segment*.
+Now the source data is available in BigQuery, use BigQuery ML capabilities to generate multimodal embeddings and store those embeddings in a new BigQuery table. Make sure that there's *only one* embedding vector *per 2 minute segment* with the type `ARRAY<FLOAT64>`.
 
 ### Success Criteria
 
-- There is a new BigQuery table with 14 rows of multimodal embeddings for the sample video files.
+- There is a new BigQuery table with *14 rows* of multimodal embeddings for the sample video files.
 
 ### Learning Resources
 
 - [Generate multimodal embeddings](https://cloud.google.com/bigquery/docs/generate-multimodal-embeddings)
+- [The ML.GENERATE_EMBEDDING function](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-embedding)
 
 ### Tips
 
@@ -107,6 +108,8 @@ Once we have determined the correct segment, we'll use that for RAG. Retrieval a
 Design a SQL query that retrieves the **top result** from the embeddings table given the phrase `car crash`. Once you have found the correct video segment, you'll use Vertex AI Studio to extract the exact timestamp of the crash from that video segment.
 
 Navigate to Vertex AI Studio, Freeform option, and design a prompt to get the exact timestamp of the crash, using the video segment in your prompt.
+
+> **Note** Have a look at the video segment to confirm when the crash happened. You can preview the videos in the Console, just browse to the specific video through Cloud Storage Bucket browser and there will be a button for *Preview*.
 
 ### Success Criteria
 
