@@ -107,7 +107,7 @@ Once we have determined the correct segment, we'll use that for RAG. Retrieval a
 
 Design a SQL query that retrieves the **top result** from the embeddings table given the phrase `car crash`. Once you have found the correct video segment, you'll use Vertex AI Studio to extract the exact timestamp of the crash from that video segment.
 
-Navigate to Vertex AI Studio, Freeform option, and design a prompt to get the exact timestamp of the crash, using the video segment in your prompt.
+Navigate to Vertex AI Studio, *Create Prompt* section, and design a prompt to get the exact timestamp of the crash, using the video segment in your prompt.
 
 > **Note** Have a look at the video segment to confirm when the crash happened. You can preview the videos in the Console, just browse to the specific video through Cloud Storage Bucket browser and there will be a button for *Preview*.
 
