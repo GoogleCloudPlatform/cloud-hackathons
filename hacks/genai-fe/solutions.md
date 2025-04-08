@@ -170,7 +170,7 @@ LIMIT 1
 
 #### Prompt for Vertex AI Studio
 
-In the Vertex AI Studio, Free Form, it's possible to add the video segment (`cam_15_07.mp4`) to the prompt through clicking on `Insert Media` and choosing `Import from Cloud Storage` option.
+In the Vertex AI Studio, in *Create Prompt* section (used to be called Free form), it's possible to add the video segment (`cam_15_07.mp4`) to the prompt through clicking on the media icon (bottom right corner) and choosing `Import from Cloud Storage` option.
 
 The *Prompt* should be something like the following, (where `[cam_15_07.mp4]` is the video segment inserted into the prompt).
 
