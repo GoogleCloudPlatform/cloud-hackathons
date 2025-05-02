@@ -11,7 +11,7 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 ## Coach's Guides
 
 - Challenge 1: Set up your environment and interact with the app
-- Challenge 2: Master the Genkit Monitoring Dashboard
+- Challenge 2: Exploring Monitoring dashboard
 - Challenge 3: Troubleshooting failures
 - Challenge 4: Optimizing latency
 
