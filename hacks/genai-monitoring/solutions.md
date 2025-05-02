@@ -80,17 +80,13 @@ _The default files & folders are listed below. You may add to this if you want t
 
 ### Notes & Guidance
 
-This is the only section you need to include.
+This goal of this challenge is to set up the app locally and test it out.
 
-Use general non-bulleted text for the beginning of a solution area for this challenge
+All studetns should execute the step **Clone the Repository and set the environment variables** in their own cloud accounts.
 
-- Then move into bullets
-  - And sub-bullets and even
-    - sub-sub-bullets
+There are couple of points where things *may* go wrong:
 
-Break things apart with more than one bullet list
-
-- Like this
-- One
-- Right
-- Here
+1. Ensure your Google Cloud credentials are set up correctly in your local environment. This typically involves having a `key.json` file configured. (This is configured by the `setup_local.sh` script).
+1. Please be aware that the application's performance may be slow, particularly within the Quicklab environment. We recommend that users do not concurrently interact with the app.
+1. If you encounter issues such as no response or extremely slow responses, please try submitting your query again.
+1. The app's vector search functionality works best with *genre*-based (semantic) queries, which leverage its vector search capabilities to find relevant recommendations efficiently. Queries based on specific *ratings* (are not semantic) are less suited for this vector approach. For any query, the *retriever* fetches potential results; however, with *rating* queries, the vector search often retrieves many irrelevant movies that must then be filtered out by the RAG portion of the application before being displayed. This is why there are fewer *rating* based results. The students only need to notice that there are fewer *rating*-based results than *genre*-based results. They will realise the reason behind this in a later challenge.

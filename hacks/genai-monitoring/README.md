@@ -95,7 +95,7 @@ The app uses PostgreSQL with the pgvector extension to store movie description e
     docker network create db-shared-network
     ```
 
-2. Setup local *pgvector* DB
+1. Setup local *pgvector* DB
 
     ```sh
     chmod +x setup_local.sh
@@ -146,14 +146,17 @@ Manasa Kandula Esther Lloyd Cleo Schneider Polina Govorkova
 
 ### Prerequisites
 
-Before beginning this challenge, complete [Challenge 1: Set up your environment and interact with the app]() to seed data in the dashboard.
+1. Make sure you have completed the steps *Clone the Repository and set the environment variables* on the machine which is executing this challenge.
+1. If you want to run the application locally, also run the *Database Setup* and the *Run the Application* steps.
 
 ### Introduction
 
 Before we dive into troubleshooting, it's essential to get familiar with the tools we'll be using. In this challenge, you'll explore the Genkit monitoring dashboard. This will involve navigating its different sections, understanding the types of data it displays, and learning how to interpret the information presented. This foundational knowledge is crucial for effectively diagnosing and resolving issues in the subsequent challenges.
 
 ### Description
-The Genkit monitoring dashboard provides a wealth of information about our application's performance. Your task is to explore the dashboard and familiarize yourself with its key components.
+
+The Genkit monitoring dashboard provides a wealth of information about our application's performance. 
+Your task is to explore the dashboard and familiarize yourself with its key components.
 Navigate to the Genkit monitoring dashboard for your deployed application.
 Identify the key sections of the dashboard, such as:
 Aggregate stability metrics for the project broken down by features (requests, success rate, latency).
