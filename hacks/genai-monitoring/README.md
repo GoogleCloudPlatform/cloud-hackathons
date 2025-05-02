@@ -12,16 +12,16 @@ Why is this crucial? Because in the age of AI, those who can effectively monitor
 
 This is going to be an introduction to running apps on Cloud Run. We'll dive into various aspects of app development using cloud native tooling on GCP.
 
-1. Understand your GenAI app health in production 
-1. Troubleshoot different types of GenAI issues that might arise like model limitations, latency, hallucinations, …
-1. Find and address issues associated with the quality of your generated content
+- Understand your GenAI app health in production 
+- Troubleshoot different types of GenAI issues that might arise like model limitations, latency, hallucinations, …
+- Find and address issues associated with the quality of your generated content
 
 ## Challenges
 
 - Challenge 1: Set up your environment and interact with the app
 - Challenge 2: Exploring Monitoring dashboard
 - Challenge 3: Troubleshooting failures
-- Challenge 4: Optimizing latency
+- Challenge 4: Improving performance
 
 ## Contributors
 
@@ -37,13 +37,13 @@ Welcome to the Movie Guru team! Let's get started by getting your development en
 
 To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in Firebase.
 
-1. Go to the **Firebase Console** and create a new Firebase Web App in the *existing* project.
+- Go to the **Firebase Console** and create a new Firebase Web App in the *existing* project.
 
 ### Clone the Repository and set the environment variables
 
 > **Note** Run this step on the computers of all your team mates.
 
-1. Open the **Cloud Shell Editor** and type the following commands.
+- Open the **Cloud Shell Editor** and type the following commands.
 
 ```sh
 git clone https://github.com/MKand/movie-guru.git
@@ -51,13 +51,13 @@ cd movie-guru
 git checkout ghack-genkit-monitoring
 ```
 
-1. Update the **set_env_vars.sh** to reflect your environment.
+- Update the **set_env_vars.sh** to reflect your environment.
 
 ### Cloud setup
 
 The following script enables the required APIs, creates the necessary service account with roles, and uploads movie poster images to a GCP bucket on your behalf.
 
-1. Run setup script.
+- Run setup script.
 
     ```sh
     chmod +x setup_cloud.sh
@@ -68,13 +68,13 @@ The following script enables the required APIs, creates the necessary service ac
 
 The app uses PostgreSQL with the pgvector extension to store movie description embeddings and structured data (title, plot, release date, etc.)
 
-1. Create a shared docker network for all the app containers we will use to run this application.
+- Create a shared docker network for all the app containers we will use to run this application.
 
     ```sh
     docker network create db-shared-network
     ```
 
-1. Setup local *pgvector* DB
+- Setup local *pgvector* DB
 
     ```sh
     chmod +x setup_local.sh
@@ -84,7 +84,7 @@ The app uses PostgreSQL with the pgvector extension to store movie description e
 
 ### Run the Application
 
-1. Start the application services. This can take a few minutes as we are building many docker images for all the application containers (frontend, webserver, Genkit flows).
+- Start the application services. This can take a few minutes as we are building many docker images for all the application containers (frontend, webserver, Genkit flows).
 
     ```sh
     source set_env_vars.sh
@@ -94,44 +94,44 @@ The app uses PostgreSQL with the pgvector extension to store movie description e
 In the meantime, think through these questions with your group:
 [Some questions about it]
 
-1. Access the Frontend Application Open <http://localhost:8080> in your browser. If you are using the cloud shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
+- Access the Frontend Application Open <http://localhost:8080> in your browser. If you are using the cloud shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
 
 > **Note** Please note that we are running this in the lab environment which makes the application a lot slower and more unpredictable due to the rate limits.
 
 ### Test the app
 
-1. Login using your name (without spaces).
+- Login using your name (without spaces).
 
-2. Interact with the app and get your first movie recommendation. Then spend time getting to know the Movie Guru application by sending it different prompts.
+- Interact with the app and get your first movie recommendation. Then spend time getting to know the Movie Guru application by sending it different prompts.
 
-- Does it respond in the ways you expect?
-- Does it give reasonable recommendations?
+  - Does it respond in the ways you expect?
+  - Does it give reasonable recommendations?
 
-1. Run the following two queries:
+- Run the following two queries:
 
-- “Show me some funny films” (or another genre)
-- “Show me movies with ratings greater than 3”. (or another rating)
-- Is there a difference in the number of recommendations you get for these two types of queries? Can you figure out where this difference comes from.
+  - “Show me some funny films” (or another genre)
+  - “Show me movies with ratings greater than 3”. (or another rating)
+  - Is there a difference in the number of recommendations you get for these two types of queries? Can you figure out where this difference comes from.
 
 ### Success Criteria
 
-1. Your local environment is set up in Cloud Shell.
-1. All your teammates have clone the code repo into their own enviroments.
-1. You are able interact with the Movie Guru app running on your local Cloud Shell instance.
-1. You notice that the genre based query has more results than the rating based query.
+- Your local environment is set up in Cloud Shell.
+- All your teammates have clone the code repo into their own enviroments.
+- You are able interact with the Movie Guru app running on your local Cloud Shell instance.
+- You notice that the genre based query has more results than the rating based query.
 
 ### Learning Resources
 
-1. (Genkit)[https://firebase.google.com/docs/genkit]
-1. (Setting up firebase web app)[(https://firebase.google.com/docs/projects/use-firebase-with-existing-cloud-project#how-to-add-firebase_console)]
+- [Genkit](https://firebase.google.com/docs/genkit)
+- [Setting up firebase web app](https://firebase.google.com/docs/projects/use-firebase-with-existing-cloud-project#how-to-add-firebase_console)
 
 
 ## Challenge 2: Exploring Monitoring dashboard
 
 ### Prerequisites
 
-1. Make sure you have completed the steps *Clone the Repository and set the environment variables* on the machine which is executing this challenge.
-1. If you want to run the application locally, also run the *Database Setup* and the *Run the Application* steps.
+- Make sure you have completed the steps *Clone the Repository and set the environment variables* on the machine which is executing this challenge.
+- If you want to run the application locally, also run the *Database Setup* and the *Run the Application* steps.
 
 ### Introduction
 
@@ -143,28 +143,40 @@ The Genkit monitoring dashboard provides essential insights into your applicatio
 
 Use the Genkit monitoring dashboard to understand the performance and behavior of your application by achieving the following goals:
 
-1. Access and navigate to the Genkit monitoring dashboard for your deployed application.
-1. Identify the key aggregate stability metrics displayed for the entire project and interpret what they indicate about the overall health of your application.
-1. What are the individual GenAI **features** in your app and what are the performance indicators (metrics) shown for each.
-1. What is the specific feature that handles the *core user interactions* in the MovieGuru app and what metrics can you find about it?
-1. By examining an individual execution (a trace) of the user interaction feature, what information can you identify about the sequence of steps that occurred and the specific details recorded for each step?
-1. What are the most notable differences in the execution paths of user queries (e.g., a question requiring a movie recommendation versus a simple greeting)?
-1. From the detailed view of a trace, discover how to access the related data within Google Cloud Logging and Google Cloud Trace, and observe any differences or similarities in how the data is presented across these various tools.
+- Access and navigate to the Genkit monitoring dashboard for your deployed application.
+- Identify the key aggregate stability metrics displayed for the entire project and interpret what they indicate about the overall health of your application.
+- What are the individual GenAI **features** in your app and what are the performance indicators (metrics) shown for each.
+- What is the specific feature that handles the *core user interactions* in the MovieGuru app and what metrics can you find about it?
+- By examining an individual execution (a trace) of the user interaction feature, what information can you identify about the sequence of steps that occurred and the specific details recorded for each step?
+- What are the most notable differences in the execution paths of user queries (e.g., a question requiring a movie recommendation versus a simple greeting)?
+- From the detailed view of a trace, discover how to access the related data within Google Cloud Logging and Google Cloud Trace, and observe any differences or similarities in how the data is presented across these various tools.
 
 ### Success Criteria
 
-1. You are now familiar with key sections of Firebase Genkit Monitoring dashboard
-1. You know the different features that comprise the **movieguru** app and what they do.
-1. You know the different steps that the app takes to answer a user's query.
-1. You know how the steps differ when the user makes a query that requires a search versus one that doesn't.
-1. You can correlate data in the monitoring dashboard with data in Cloud
+- You are now familiar with key sections of Firebase Genkit Monitoring dashboard
+- You know the different features that comprise the **movieguru** app and what they do.
+- You know the different steps that the app takes to answer a user's query.
+- You know how the steps differ when the user makes a query that requires a search versus one that doesn't.
+- You can correlate data in the monitoring dashboard with data in Cloud
 
 ### Learning Resources
 
-1. (Genkit Monitoring)[https://firebase.google.com/docs/genkit/observability/getting-started]
-1. (Tracing)[https://opentelemetry.io/docs/concepts/signals/traces/] 
-1. (Observability on Google Cloud [https://cloud.google.com/stackdriver/docs])
+- [Genkit Monitoring](https://firebase.google.com/docs/genkit/observability/getting-started)
+- [Tracing](https://opentelemetry.io/docs/concepts/signals/traces/)
+- [Observability on Google Cloud](https://cloud.google.com/stackdriver/docs)
+- **Genkit Feature**
 
+    In the context of Genkit monitoring and observability, a **feature** represents a distinct, identifiable functional component or capability within your Genkit application.
+
+    These features serve as logical units for which performance metrics (such as request count, success rate, and latency) and execution traces are aggregated and displayed in the Genkit monitoring dashboard.
+
+    Think of a feature as a specific task or workflow segment that you want to observe and analyze independently. Examples in an application could include:
+
+    - Handling a specific type of user query (e.g., "Movie Search").
+    - Executing a particular agentic step or tool use.
+    - Processing a specific data loading or transformation task.
+
+    By breaking down your application's execution into features, the monitoring dashboard allows you to quickly assess the health and performance of individual components.
 
 ## Challenge 3: Troubleshooting failures
 
@@ -203,7 +215,7 @@ Additionally, you noticed in *challenge 1* that queries for movies based on *rat
 
     So, you execute a flow, and within the flow's steps, prompts are used to interact with AI models. They differ because the flow is the action that runs, while the prompt is the content exchanged during a specific step involving an AI model. 
 
-## Challenge 4: Troubleshooting code failures [DRAFTED]
+## Challenge 4: Improving performance
 
 ### Prerequisites
 
@@ -216,6 +228,7 @@ complete [Challenge 2: Exploring Monitoring dashboard] to familiarize yourself w
 Now that you're familiar with the Genkit monitoring dashboard, it's time to put those skills to the test. Our movie recommendation app is showing a low success rate, indicating that errors are occurring. In this challenge, you'll use your knowledge of the dashboard to investigate these errors that are disrupting the application's functionality.
 
 ### Description
+
 The movie recommendation app is experiencing a high volume of errors, impacting its success rate. Your task is to use the Genkit monitoring dashboard to pinpoint the main cause of these failures.
 Investigate the aggregate metrics on the project-level monitoring page to identify all failing features.
 First, identify the most problematic feature. 
