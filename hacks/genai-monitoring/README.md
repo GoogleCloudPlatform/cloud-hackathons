@@ -2,9 +2,11 @@
 
 ## Introduction
 
-Want to master the art of keeping Firebase Genkit LLM applications alive and thriving in the real world? This hackathon puts you in the driver's seat of production monitoring for Large Language Model (LLM) powered applications. Using Firebase Genkit Monitoring, you'll tackle the critical challenges of ensuring LLMs perform flawlessly in production. You'll dive deep into troubleshooting live issues, optimizing performance bottlenecks, and guaranteeing a smooth user experience for a movie recommendation app. 
+Want to master the art of keeping Firebase Genkit LLM applications alive and thriving in the real world? This hackathon puts you in the driver's seat of operating Large Language Model (LLM) powered applications.
+Using Genkit, you will optimse some of the LLM-based features of your app, and using Firebase Genkit Monitoring, you'll tackle the critical challenges of ensuring LLMs perform flawlessly in production. 
+You'll dive deep into troubleshooting live issues, optimizing performance bottlenecks, and guaranteeing a smooth user experience for a movie recommendation app.
 
-Why is this crucial? Because in the age of AI, those who can effectively monitor and manage LLM applications in production are the ones who will build the future. 
+Why is this crucial? Because in the age of AI, those who can effectively monitor and manage LLM applications in production are the ones who will build the future.
 
 “GenAI App Development with Genkit” is a recommended pre-requisite.
 
@@ -12,48 +14,129 @@ Why is this crucial? Because in the age of AI, those who can effectively monitor
 
 This is going to be an introduction to running apps on Cloud Run. We'll dive into various aspects of app development using cloud native tooling on GCP.
 
-1. Understand your GenAI app health in production 
-1. Troubleshoot different types of GenAI issues that might arise like model limitations, latency, hallucinations, …
-1. Find and address issues associated with the quality of your generated content
+1. Understand your GenAI app health in production.
+1. Troubleshoot different types of GenAI issues that might arise like model limitations, latency, hallucinations, etc.
+1. Find and address issues associated with the quality of your generated content.
 
 ## Challenges
 
-- Challenge 1: Set up your environment and interact with the app - 40 min
-	We should make sure that set up instructions have a section where we ask folks to send through a good amount of data so that we can do the challenges before
+- Challenge 1: Set up your environment and interact with the app
 - Challenge 2: Get familiar with the dashboard - 20 min
 - Challenge 3: Troubleshooting failures - 30 min
 - Challenge 4: Optimizing latency - 30 min
-- Challenge 6: Digging into user engagement - 30 min
-- Challenge 7: Leverage problematic traces to improve prompts - 40 min
-- Challenge 8: CloudOps - 20 min
 
-Note - to capture the nuance of some of these features (like user feedback) where advanced use cases will require more analysis on the customers behalf, we want to add a Food for Thought section to the challenge to highlight some of these instances
-
-
-## Challenge 1: Set up your environment and interact with the app - 40 min
+## Challenge 1: Set up your environment and interact with the app
 
 ## Prerequisites
 
-In your Google Cloud project, open an instance of Cloud Shell Editor.
-
-//TODO: Check Service Account inpersonation for creds for local Docker (§GOOGLE_IMPERSONATE_SERVICE_ACCOUNT maybe?)
-//TODO: Check the Vertex Generate requests quota and if this can be raised either on Cloud Skills provisioning, or during the lab as a task. 30QPM would be enough.
+- Google Cloud Project with atleast Editor role.
+- Basic knowledge of docker (it's not crucial, but we use docker to run the app containers).
+- Basic coding knowledge (some node.js or other programming knowledge)
 
 ## Introduction
 
-Follow the instructions to install Genkit.
+Welcome to the Movie Guru team! Let's get started by getting your development environment up and running.
+You'll be using the Cloud Shell editor to build and deploy your the app in a cloud virtual environment and interact with it there.
+
+## Learning Objectives
+
+Today, you will join the Movie Guru team that has just launched the first version of their app to production. What is Movie Guru? It's the next generation of movie recommendations, forget filtering down by genre or actor. Describe what you are hoping to get out of your next movie watching experience and let Movie Guru do the rest.
+
+You'll be using the Cloud Shell to emulate a production environment and get a sense for how you might troubleshoot real world problems. You'll dive deep into troubleshooting live issues, optimizing performance bottlenecks, and guaranteeing a smooth user experience for a movie recommendation app. At the end of this lab, you will: 
+
+1. Understand how to use Firebase Genkit Monitoring to monitor Genkit app health in production
+1. Find the issue plaguing your user base most with helpful quick filters and an in-depth trace viewer
+1. Troubleshoot different types of GenAI issues that might arise like prompt inefficiency, model limitations, and high latency requests
 
 ## Description
 
-Genkit is an open source framework, geared torwards developers (like you!). Check out https://genkit.dev/docs/get-started for more.
+### Introduction
+
+Welcome to the Movie Guru team! Let's get started by getting your development environment up and running. You'll be using the Cloud Shell editor to build the app in a cloud virtual environment and interact with it there.
+
+### Firebase setup
+
+To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in Firebase.
+
+1. Go to the **Firebase Console** and create a new Firebase Web App in the *existing* project.
+
+### Clone the Repository and set the environment variables
+
+> **Note** Run this step on the computers of all your team mates.
+
+1. Open the **Cloud Shell Editor** and type the following commands.
+
+```sh
+git clone https://github.com/MKand/movie-guru.git
+cd movie-guru
+git checkout ghack-genkit-monitoring
+```
+
+1. Update the **set_env_vars.sh** to reflect your environment.
+
+### Cloud setup
+
+The following script enables the required APIs, creates the necessary service account with roles, and uploads movie poster images to a GCP bucket on your behalf.
+
+1. Run setup script.
+
+    ```sh
+    chmod +x setup_cloud.sh
+    ./setup_local.sh --skip-infra #gHack creates the infra for you
+    ```
+
+### Database Setup
+
+The app uses PostgreSQL with the pgvector extension to store movie description embeddings and structured data (title, plot, release date, etc.)
+
+1. Create a shared docker network for all the app containers we will use to run this application.
+
+    ```sh
+    docker network create db-shared-network
+    ```
+
+2. Setup local *pgvector* DB
+
+    ```sh
+    chmod +x setup_local.sh
+    source setup_local.sh
+    docker compose -f docker-compose-pgvector.yaml up -d
+    ```
+
+### Run the Application
+
+1. Start the application services. This can take a few minutes as we are building many docker images for all the application containers (frontend, webserver, Genkit flows).
+
+    ```sh
+    source set_env_vars.sh
+    docker compose up --build
+    ```
+
+In the meantime, think through these questions with your group:
+[Some questions about it]
+
+1. Access the Frontend Application Open http://localhost:8080 in your browser. If you are using the cloud shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
+
+> **Note** Please note that we are running this in the lab environment which makes the application a lot slower and more unpredictable due to the rate limits.
+
+### Test the app
+
+Use your name (without spaces) to log in.
+
+1. Interact with the app and get your first movie recommendation. Then spend time getting to know the Movie Guru application by sending it different prompts.
+
+- Does it respond in the ways you expect?
+- Does it give reasonable recommendations?
+
+1. Run the following two queries:
+
+- “Show me some funny films” (or another genre)
+- “Show me movies with ratings greater than 3”. (or another rating)
+- Is there a difference in the number of recommendations you get for these two types of queries? Can you figure out where this difference comes from.
 
 ### Success Criteria
 
 After installation, run the following command to ensure that Genkit is installed correctly.
-
-```bash
-	genkit --version
-```
 
 ## Contributors
 

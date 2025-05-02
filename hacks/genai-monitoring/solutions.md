@@ -10,8 +10,8 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 
 ## Coach's Guides
 
-- Challenge 1: Provision an IoT environment
-  - Create an IoT Hub and run tests to ensure it can ingest telemetry
+- Challenge 1: Set up your environment and interact with the app - 40 mins
+  - Get the application running and test it out in the local environment.
 - Challenge 2: Your First Device
   - Make the connection to your Edge device and see that it is properly provisioned.
 - Challenge 3: Connecting the World
@@ -54,18 +54,6 @@ _For example:_
 - Google Cloud resources that will be consumed by a student implementing the hack's challenges
 - Google Cloud permissions required by a student to complete the hack's challenges.
 
-## Suggested Hack Agenda (Optional)
-
-_This section is optional. You may wish to provide an estimate of how long each challenge should take for an average squad of students to complete and/or a proposal of how many challenges a coach should structure each session for a multi-session hack event. For example:_
-
-- Sample Day 1
-  - Challenge 1 (1 hour)
-  - Challenge 2 (30 mins)
-  - Challenge 3 (2 hours)
-- Sample Day 2
-  - Challenge 4 (45 mins)
-  - Challenge 5 (1 hour)
-  - Challenge 6 (45 mins)
 
 ## Repository Contents
 
@@ -88,7 +76,7 @@ _The default files & folders are listed below. You may add to this if you want t
   - Before we can hack, you will need to set up a few things.
   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 
-## Challenge 1: Provision an IoT environment
+## Challenge 1: Set up your environment and interact with the app
 
 ### Notes & Guidance
 
