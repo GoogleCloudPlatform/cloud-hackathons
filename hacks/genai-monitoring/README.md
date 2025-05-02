@@ -57,11 +57,14 @@ git checkout ghack-genkit-monitoring
 
 The following script enables the required APIs, creates the necessary service account with roles, and uploads movie poster images to a GCP bucket on your behalf.
 
+- Edit the **set_env_vars.sh** to replace project_id.
+
+
 - Run setup script.
 
     ```sh
     chmod +x setup_cloud.sh
-    ./setup_local.sh --skip-infra #the qwiklab environment has already created the infra for you
+    ./setup_cloud.sh --skip-infra #the qwiklab environment has already created the infra for you
     ```
 
 ### Database Setup
@@ -232,33 +235,30 @@ Additionally, you noticed in *challenge 1* that queries for movies based on *rat
 
 ### Prerequisites
 
-Before beginning this challenge, 
-complete [Challenge 1: Set up your environment and interact with the app] to seed data in the dashboard.
-complete [Challenge 2: Exploring Monitoring dashboard] to familiarize yourself with the monitoring dashboard.
+- Make sure you have completed the steps *Clone the Repository and set the environment variables* on the machine which is executing this challenge.
+- If you want to run the application locally, also run the *Database Setup* and the *Run the Application* steps.
 
 ### Introduction
 
-Now that you're familiar with the Genkit monitoring dashboard, it's time to put those skills to the test. Our movie recommendation app is showing a low success rate, indicating that errors are occurring. In this challenge, you'll use your knowledge of the dashboard to investigate these errors that are disrupting the application's functionality.
+Now that you are familiar with the Firebase Genkit Monitoring dashboard, and have dealt with a major cause of failures, your users can finally chat with the chatbot with no trouble, but is it the best experience? Even with code failures gone, users may get frustrated and leave the app if it is painfully slow, or doesn't give enough recommendations (like with queries based on ratings). Let's fix these issues here.
+
 
 ### Description
 
-The movie recommendation app is experiencing a high volume of errors, impacting its success rate. Your task is to use the Genkit monitoring dashboard to pinpoint the main cause of these failures.
-Investigate the aggregate metrics on the project-level monitoring page to identify all failing features.
-First, identify the most problematic feature. 
-Understand the impact of addressing this issue. How much will your overall success rate improve if you solved the errors for that feature?
-View feature details, which now has a “Failed paths” section to help you identify all trace variations that led to the bad response. What insight does the feature path give you?
-Filter traces down to failures and examine feature outputs, which display error traces. 
-Identify the issue. Through your analysis of the traces, pinpoint the location and nature of the schema mismatch.
-Implement a fix in the application code to correct the schema mismatch.
-For this, copy full input directly from the monitoring dashboard within a trace-centric view.
-Now, let’s look at the second feature that’s causing problems.
-Use the same techniques to narrow down the failing feature traces and examine errors in the feature output to diagnose problems. 
-You may not always have control over quota handling. In your code, implement graceful handling of the issue by hard-coding the following joke as a response: [JOKE GOES HERE]
-Validate your fix by running input from the failed traces.
+Let's inspect the performance of the Movie Guru app using Firebase Genkit Monitoring.
+
+- What is the slowest feature in our app? What is the P50 and P90 latency for that feature and what does that mean?
+- Inspect individual traces in that feature and identify areas for improvement.
+- Come up with ideas for how to improve latency and implement them.
+- Are there ways you can improve the number of results on searches based on rating? If so, try and implement them.
+
 ### Success criteria
+
 You can now  use the Genkit monitoring dashboard to compare feature success rate and identify failed paths.
 You understand how to use failed paths filtering to find relevant failed traces.
+
 ### Tips
+
 Look for clues in error messages, data types, or data formats within the traces.
 Use the filtering and search capabilities of the monitoring dashboard to efficiently locate relevant information.
 Remember that schema mismatches often occur when data is exchanged between different parts of the application or between the application and external services (like an LLM API).

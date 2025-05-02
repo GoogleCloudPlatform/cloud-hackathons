@@ -13,7 +13,7 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 - Challenge 1: Set up your environment and interact with the app
 - Challenge 2: Exploring Monitoring dashboard
 - Challenge 3: Troubleshooting failures
-- Challenge 4: Optimizing latency
+- Challenge 4: Improving performance
 
 ## Coach Prerequisites
 
