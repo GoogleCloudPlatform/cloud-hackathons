@@ -2,9 +2,7 @@
 
 ## Introduction
 
-Want to master the art of keeping Firebase Genkit LLM applications alive and thriving in the real world? This hackathon puts you in the driver's seat of operating Large Language Model (LLM) powered applications.
-Using Genkit, you will optimse some of the LLM-based features of your app, and using Firebase Genkit Monitoring, you'll tackle the critical challenges of ensuring LLMs perform flawlessly in production. 
-You'll dive deep into troubleshooting live issues, optimizing performance bottlenecks, and guaranteeing a smooth user experience for a movie recommendation app.
+Want to master the art of keeping Firebase Genkit LLM applications alive and thriving in the real world? This hackathon puts you in the driver's seat of production monitoring for Large Language Model (LLM) powered applications. Using Firebase Genkit Monitoring, you'll tackle the critical challenges of ensuring LLMs perform flawlessly in production. You'll dive deep into troubleshooting live issues, optimizing performance bottlenecks, and guaranteeing a smooth user experience for a movie recommendation app.
 
 Why is this crucial? Because in the age of AI, those who can effectively monitor and manage LLM applications in production are the ones who will build the future.
 
@@ -14,41 +12,22 @@ Why is this crucial? Because in the age of AI, those who can effectively monitor
 
 This is going to be an introduction to running apps on Cloud Run. We'll dive into various aspects of app development using cloud native tooling on GCP.
 
-1. Understand your GenAI app health in production.
-1. Troubleshoot different types of GenAI issues that might arise like model limitations, latency, hallucinations, etc.
-1. Find and address issues associated with the quality of your generated content.
+1. Understand your GenAI app health in production 
+1. Troubleshoot different types of GenAI issues that might arise like model limitations, latency, hallucinations, …
+1. Find and address issues associated with the quality of your generated content
 
 ## Challenges
 
 - Challenge 1: Set up your environment and interact with the app
-- Challenge 2: Get familiar with the dashboard - 20 min
-- Challenge 3: Troubleshooting failures - 30 min
-- Challenge 4: Optimizing latency - 30 min
+- Challenge 2: Get familiar with the dashboard
+- Challenge 3: Troubleshooting failures
+- Challenge 4: Optimizing latency
+
+## Contributors
+
+Manasa Kandula Esther Lloyd Cleo Schneider Polina Govorkova
 
 ## Challenge 1: Set up your environment and interact with the app
-
-## Prerequisites
-
-- Google Cloud Project with atleast Editor role.
-- Basic knowledge of docker (it's not crucial, but we use docker to run the app containers).
-- Basic coding knowledge (some node.js or other programming knowledge)
-
-## Introduction
-
-Welcome to the Movie Guru team! Let's get started by getting your development environment up and running.
-You'll be using the Cloud Shell editor to build and deploy your the app in a cloud virtual environment and interact with it there.
-
-## Learning Objectives
-
-Today, you will join the Movie Guru team that has just launched the first version of their app to production. What is Movie Guru? It's the next generation of movie recommendations, forget filtering down by genre or actor. Describe what you are hoping to get out of your next movie watching experience and let Movie Guru do the rest.
-
-You'll be using the Cloud Shell to emulate a production environment and get a sense for how you might troubleshoot real world problems. You'll dive deep into troubleshooting live issues, optimizing performance bottlenecks, and guaranteeing a smooth user experience for a movie recommendation app. At the end of this lab, you will: 
-
-1. Understand how to use Firebase Genkit Monitoring to monitor Genkit app health in production
-1. Find the issue plaguing your user base most with helpful quick filters and an in-depth trace viewer
-1. Troubleshoot different types of GenAI issues that might arise like prompt inefficiency, model limitations, and high latency requests
-
-## Description
 
 ### Introduction
 
@@ -82,7 +61,7 @@ The following script enables the required APIs, creates the necessary service ac
 
     ```sh
     chmod +x setup_cloud.sh
-    ./setup_local.sh --skip-infra #gHack creates the infra for you
+    ./setup_local.sh --skip-infra #the qwiklab environment has already created the infra for you
     ```
 
 ### Database Setup
@@ -121,9 +100,9 @@ In the meantime, think through these questions with your group:
 
 ### Test the app
 
-Use your name (without spaces) to log in.
+1. Login using your name (without spaces).
 
-1. Interact with the app and get your first movie recommendation. Then spend time getting to know the Movie Guru application by sending it different prompts.
+2. Interact with the app and get your first movie recommendation. Then spend time getting to know the Movie Guru application by sending it different prompts.
 
 - Does it respond in the ways you expect?
 - Does it give reasonable recommendations?
@@ -136,11 +115,17 @@ Use your name (without spaces) to log in.
 
 ### Success Criteria
 
-After installation, run the following command to ensure that Genkit is installed correctly.
+1. Your local environment is set up in Cloud Shell.
+1. All your teammates have clone the code repo into their own enviroments.
+1. You are able interact with the Movie Guru app running on your local Cloud Shell instance.
+1. You notice that the genre based query has more results than the rating based query.
 
-## Contributors
+### Learning Resources
 
-Manasa Kandula Esther Lloyd Cleo Schneider Polina Govorkova
+1. (Genkit)[https://firebase.google.com/docs/genkit]
+2. (Genkit Monitoring)[https://firebase.google.com/docs/genkit/observability/getting-started] 
+3. (Setting up firebase web app)[(https://firebase.google.com/docs/projects/use-firebase-with-existing-cloud-project#how-to-add-firebase_console)]
+
 
 ## Challenge 2: Exploring Monitoring dashboard
 
