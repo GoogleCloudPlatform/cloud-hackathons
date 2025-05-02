@@ -172,13 +172,18 @@ Use the Genkit monitoring dashboard to understand the performance and behavior o
 
     Think of a feature as a specific task or workflow segment that you want to observe and analyze independently. Examples in an application could include:
 
-    - Handling a specific type of user query (e.g., "Movie Search").
-    - Executing a particular agentic step or tool use.
-    - Processing a specific data loading or transformation task.
+  - Handling a specific type of user query (e.g., "Movie Search").
+  - Executing a particular agentic step or tool use.
+  - Processing a specific data loading or transformation task.
 
     By breaking down your application's execution into features, the monitoring dashboard allows you to quickly assess the health and performance of individual components.
 
 ## Challenge 3: Troubleshooting failures
+
+### Prerequisites
+
+- Make sure you have completed the steps *Clone the Repository and set the environment variables* on the machine which is executing this challenge.
+- If you want to run the application locally, also run the *Database Setup* and the *Run the Application* steps.
 
 ### Introduction
 
@@ -207,13 +212,21 @@ Additionally, you noticed in *challenge 1* that queries for movies based on *rat
 
 - [Input and Output schemas in genkit prompts](https://firebase.google.com/docs/genkit/dotprompt#schemas)
 - [Input and Output schemas in genkit flows](https://firebase.google.com/docs/genkit/flows#input_and_output_schemas)
-- *Prompts* and flows in *Genkit*:
+- [RAG and Retrievers](https://firebase.google.com/docs/genkit/rag)
+- **Prompts and Flows in Genkit**:
   
-    A *flow* is the executable unit – it defines and orchestrates a sequence of steps (the process).
+    A *flow* is the executable unit – it defines and orchestrates a sequence of steps (the process) and can contain multiple sub-steps like other flows, prompts, retrievers, tools, etc.
 
-    A prompt is data – the input sent to an AI model plugin within a step of that flow, and the output received from the model in that step.
+    A *prompt* is data – the input sent to an AI model plugin within a step of that flow, and the output received from the model in that step.
 
-    So, you execute a flow, and within the flow's steps, prompts are used to interact with AI models. They differ because the flow is the action that runs, while the prompt is the content exchanged during a specific step involving an AI model. 
+    So, you execute a flow, and within the flow's steps, prompts are used to interact with AI models. They differ because the flow is the action that runs, while the prompt is the content exchanged during a specific step involving an AI model.
+
+    Both flows and prompts can have their own input and output data schemas.
+- **Useful docker compose commands**
+  - To build and run containers defined in a dockercompose.yaml file, use `docker compose up --build`. Find more info [here](https://docs.docker.com/compose/reference/up/).
+
+  - To bring down running containers defined in a dockercompose.yaml file, use `docker compose down`. Find more info [here](https://docs.docker.com/compose/reference/down/).
+
 
 ## Challenge 4: Improving performance
 
