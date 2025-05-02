@@ -19,7 +19,7 @@ This is going to be an introduction to running apps on Cloud Run. We'll dive int
 ## Challenges
 
 - Challenge 1: Set up your environment and interact with the app
-- Challenge 2: Get familiar with the dashboard
+- Challenge 2: Exploring Monitoring dashboard
 - Challenge 3: Troubleshooting failures
 - Challenge 4: Optimizing latency
 
@@ -94,7 +94,7 @@ The app uses PostgreSQL with the pgvector extension to store movie description e
 In the meantime, think through these questions with your group:
 [Some questions about it]
 
-1. Access the Frontend Application Open http://localhost:8080 in your browser. If you are using the cloud shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
+1. Access the Frontend Application Open <http://localhost:8080> in your browser. If you are using the cloud shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
 
 > **Note** Please note that we are running this in the lab environment which makes the application a lot slower and more unpredictable due to the rate limits.
 
@@ -123,8 +123,7 @@ In the meantime, think through these questions with your group:
 ### Learning Resources
 
 1. (Genkit)[https://firebase.google.com/docs/genkit]
-2. (Genkit Monitoring)[https://firebase.google.com/docs/genkit/observability/getting-started] 
-3. (Setting up firebase web app)[(https://firebase.google.com/docs/projects/use-firebase-with-existing-cloud-project#how-to-add-firebase_console)]
+1. (Setting up firebase web app)[(https://firebase.google.com/docs/projects/use-firebase-with-existing-cloud-project#how-to-add-firebase_console)]
 
 
 ## Challenge 2: Exploring Monitoring dashboard
@@ -140,36 +139,36 @@ Before we dive into troubleshooting, it's essential to get familiar with the too
 
 ### Description
 
-The Genkit monitoring dashboard provides a wealth of information about our application's performance. 
-Your task is to explore the dashboard and familiarize yourself with its key components.
-Navigate to the Genkit monitoring dashboard for your deployed application.
-Identify the key sections of the dashboard, such as:
-Aggregate stability metrics for the project broken down by features (requests, success rate, latency).
-Features table, which includes information about individual features
-Explore the concept of the feature by digging deeper into the `[NAME OF THE FEATURE]`: click into a single feature within the table to open a feature-centric view and identify the key sections, such as:
-Aggregate metrics, including consumption metrics
-Failed paths table
-Traces table, which includes information about individual traces
-Explore the concept of the trace by digging deeper into the one of the traces: click into a single trace within the table to open a trace-centric view and identify the key sections, such as:
-Trace span tree
-Span details
-After exploring all this data, try to answer the following questions
-What is a feature?
-What is a trace?
-Compare your answers to those officially shown in the documentation.
-In the trace view, open up the hamburger menu to reveal “Open in Cloud Logging” and “Open in Cloud Trace” menu options. Navigate to both to observe the same data in the CloudOps. Your Cloud project is the place Genkit stores your data, which is then queried into the Genkit Monitoring dashboard.
+### Challenge: Master the Genkit Monitoring Dashboard
+
+The Genkit monitoring dashboard provides essential insights into your application's performance and execution. This challenge asks you to explore the dashboard and achieve specific goals based on your discoveries.
+
+Your challenge goals are:
+
+### Challenge: Explore and Analyze Genkit Monitoring
+
+Use the Genkit monitoring dashboard to understand the performance and behavior of your application by achieving the following goals:
+
+1. Access and navigate to the Genkit monitoring dashboard for your deployed application.
+1. Identify the key aggregate stability metrics displayed for the entire project and interpret what they indicate about the overall health of your application.
+1. What are the individual GenAI **features** in your app and what are the performance indicators (metrics) shown for each.
+1. What is the specific feature that handles the *core user interactions* in the MovieGuru app and what metrics can you find about it?
+1. By examining an individual execution (a trace) of the user interaction feature, what information can you identify about the sequence of steps that occurred and the specific details recorded for each step?
+1. What are the most notable differences in the execution paths of user queries (e.g., a question requiring a movie recommendation versus a simple greeting)?
+1. From the detailed view of a trace, discover how to access the related data within Google Cloud Logging and Google Cloud Trace, and observe any differences or similarities in how the data is presented across these various tools.
+
 ### Success Criteria
 
-You are now familiar with key sections of Genkit Monitoring dashboard
-You now understand what kind and how information is organized in the dashboard
-You can correlate data in the monitoring dashboard with data in the Cloud
-### Tips
-Hover on question marks next to elements to reveal more details
-Note any unfamiliar concepts and open up documentation to check your understanding.
+1. You are familiar with key sections of Genkit Monitoring dashboard.
+1. You understand what a GenAI feature is in Genkit.
+1. You know the different features in this GenAI app.
+1. You know the different steps the app needs to take while fulfilling a user's chat query and how it differs when a search is required.
+1. You can correlate data in the monitoring dashboard with data in the Cloud
 
 
 ### Learning resources
-Genkit Monitoring Documentation
+
+1. (Genkit Monitoring)[https://firebase.google.com/docs/genkit/observability/getting-started] 
 Documentation for underlying monitoring tools (Cloud Metrics, Logging, and Trace)
 
 ## Challenge 3: Troubleshooting code failures [DRAFTED]

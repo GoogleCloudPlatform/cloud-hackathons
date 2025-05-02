@@ -10,14 +10,10 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 
 ## Coach's Guides
 
-- Challenge 1: Provision an IoT environment
-  - Create an IoT Hub and run tests to ensure it can ingest telemetry
-- Challenge 2: Your First Device
-  - Make the connection to your Edge device and see that it is properly provisioned.
-- Challenge 3: Connecting the World
-  - Connect your device and make sure it can see all other devices in your team.
-- Challenge 4: Scalable Monitoring of Telemetry
-  - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
+- Challenge 1: Set up your environment and interact with the app
+- Challenge 2: Master the Genkit Monitoring Dashboard
+- Challenge 3: Troubleshooting failures
+- Challenge 4: Optimizing latency
 
 ## Coach Prerequisites
 
@@ -54,18 +50,6 @@ _For example:_
 - Google Cloud resources that will be consumed by a student implementing the hack's challenges
 - Google Cloud permissions required by a student to complete the hack's challenges.
 
-## Suggested Hack Agenda (Optional)
-
-_This section is optional. You may wish to provide an estimate of how long each challenge should take for an average squad of students to complete and/or a proposal of how many challenges a coach should structure each session for a multi-session hack event. For example:_
-
-- Sample Day 1
-  - Challenge 1 (1 hour)
-  - Challenge 2 (30 mins)
-  - Challenge 3 (2 hours)
-- Sample Day 2
-  - Challenge 4 (45 mins)
-  - Challenge 5 (1 hour)
-  - Challenge 6 (45 mins)
 
 ## Repository Contents
 
@@ -88,7 +72,7 @@ _The default files & folders are listed below. You may add to this if you want t
   - Before we can hack, you will need to set up a few things.
   - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
 
-## Challenge 1: Provision an IoT environment
+## Challenge 1: Set up your environment and interact with the app
 
 ### Notes & Guidance
 
@@ -102,3 +86,8 @@ There are couple of points where things *may* go wrong:
 1. Please be aware that the application's performance may be slow, particularly within the Quicklab environment. We recommend that users do not concurrently interact with the app.
 1. If you encounter issues such as no response or extremely slow responses, please try submitting your query again.
 1. The app's vector search functionality works best with *genre*-based (semantic) queries, which leverage its vector search capabilities to find relevant recommendations efficiently. Queries based on specific *ratings* (are not semantic) are less suited for this vector approach. For any query, the *retriever* fetches potential results; however, with *rating* queries, the vector search often retrieves many irrelevant movies that must then be filtered out by the RAG portion of the application before being displayed. This is why there are fewer *rating* based results. The students only need to notice that there are fewer *rating*-based results than *genre*-based results. They will realise the reason behind this in a later challenge.
+
+## Challenge 2: Exploring Monitoring dashboard
+
+### Notes & Guidance
+
