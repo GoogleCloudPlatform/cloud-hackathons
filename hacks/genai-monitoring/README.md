@@ -159,8 +159,15 @@ Use the Genkit monitoring dashboard to understand the performance and behavior o
 1. You know how the steps differ when the user makes a query that requires a search versus one that doesn't.
 1. You can correlate data in the monitoring dashboard with data in Cloud
 
+### Learning Resources
 
-### Challenge 3: Explore and Analyze Genkit Monitoring
+1. (Genkit Monitoring)[https://firebase.google.com/docs/genkit/observability/getting-started]
+1. (Tracing)[https://opentelemetry.io/docs/concepts/signals/traces/] 
+1. (Observability on Google Cloud [https://cloud.google.com/stackdriver/docs])
+
+
+### Challenge
+## Challenge 3: Explore and Analyze Genkit Monitoring
 
 Use the Genkit monitoring dashboard to understand the performance and behavior of your application by achieving the following goals:
 
