@@ -305,12 +305,11 @@ Follow the instructions to set up the developer UI.
 
 On the cloud shell environment running this challenge:
 
-- *Clone the Repository and set* the environment variables* from *Challenge 1*.
 - Setup the **Genkit Developer UI**.
 
 ### Introduction
 
-TThe **MovieGuru** team is evolving the app's search capabilities. To potentially reduce operational costs, we're moving towards a more streamlined approach. The current system utilizes a mixed search strategy, combining traditional keyword search with vector (semantic) search.
+TThe **MovieGuru** Product team is evolving the app's search capabilities. To potentially reduce operational costs, we're moving towards a more streamlined approach. The current system utilizes a mixed search strategy, combining traditional keyword search with vector (semantic) search.
 
 The new "V2" configuration switches to purely vector-based search.
 
@@ -321,12 +320,12 @@ As SREs, your task is to manage the rollout of this change, observe its effect o
 To isolate the effect of this change, you will perform controlled tests using the **Genkit Developer UI**.
 
 - **Baseline Test (Mixed Search)**: In the **Genkit Developer UI**, navigate to the *chatFlow* flow.
-  - Run the following queries and note down the results: "Show me movies with ratings greater than 3". And "Show me some funny films"."
+  - Run the following queries and note down the results: "Show me movies with ratings greater than 3". And "Show me some funny films".
 - **Implement Search Switch**: Modify the application code to adopt the new search strategy.
   - Update the **MovieSearchPromptFlow** (defined in the **docRetriever.ts** file) to use the **v2** version of the **docSearch.prompt**, which implements the vector-only search logic.
 - **Reload Genkit UI**: Restart the **Genkit Developer UI** to allow it to pick up the updated code changes.
 - **Post-Change Test (Vector Search)**: In the **Genkit Developer UI**, re-run the two queries in the **chatFlow** flow.
-- **Analyze Impact & Diagnose**: Compare the number of recommendations from your two test runs. Then, examine the traces generated in the **Genkit Developer UI** (focusing on the retriever output) and review the differences between the original and v2 prompt instructions to determine why the vector-only search impacted quality for *some* queries and not others.
+- **Analyze Impact & Diagnose**: Compare the results of the two tests and their traces in the **Genkit Developer UI** (Hint: focus on the **movieDocFlow**). Review the differences between the prompt instructions to determine why the vector-only search impacted quality for *some* queries and not others.
 
 ### Success Criteria
 
