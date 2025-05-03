@@ -288,7 +288,7 @@ Let's inspect the performance of the Movie Guru app using Firebase Genkit Monito
   - Navigate to <http://localhost:4000> (using the webpreview feature of cloudshell).
   - Implement your potential fix. Then, use the Genkit developer UI to run the flow locally and verify the change. Analyze the traces produced in the Dev UI to evaluate the impact on performance (e.g., reduced span durations).
   
-> **Note**: Changes made directly within the Genkit Developer UI (like editing flows or prompts) are temporary for that test run only and do not save back to your source code files. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
+> **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
 ### Success criteria
 
