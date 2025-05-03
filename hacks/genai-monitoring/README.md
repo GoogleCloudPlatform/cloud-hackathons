@@ -266,19 +266,24 @@ Let's inspect the performance of the Movie Guru app using Firebase Genkit Monito
 
 - **Analyze Feature Latency**: Check P50 and P90 latency for the **chatFlow** feature. Interpret what these metrics indicate about typical and worst-case performance.
 - **Inspect Trace Spans**: Inspect traces and analyze individual spans (stages) within the chatFlow. Identify the longest-running spans.
-- **Pinpoint Bottlenecks**: Based on your span analysis, pinpoint which spans are the primary performance bottlenecks. Hint: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
-- **Identify Optimization**: Based on your findings, identify one specific way to improve latency. Hint: If you identified a disproportionately slow span for a simple task, consider if there is a way to speed it up with a small change.
-- **Implement & Test**: Implement your optimization in the code. Use the **Genkit Developer UI** for local testing before you deploy the fixed app Follow the instructions to set up the developer UI.
-  - Navigate in the *terminal* to the *flows* folder.
-  - Run the following command
+- **Pinpoint Bottlenecks**: Pinpoint which spans are the primary performance bottlenecks.
+  - Hint: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
+- **Identify Optimization**: Identify one specific way to improve overall latency for the flow.
+  - Hint: If you identified a disproportionately slow span for a simple task, consider if there is a way to speed it up with a small change.
+- **Implement & Test**: Implement your optimization in the code. Use the **Genkit Developer UI** for local testing before you deploy the fixed app 
 
-    ```sh
-    npm install .
-    npx genkit start -- npm run dev
-    ```
+Follow the instructions to set up the developer UI.
 
-  - Navigate to <http://localhost:4000> (using the webpreview feature of cloudshell).
-  - Implement your potential fix. Then, use the Genkit developer UI to run the flow locally and verify the change. Analyze the traces produced in the Dev UI to evaluate the impact on performance (e.g., reduced span durations).
+- Navigate in the *terminal* to the *flows* folder.
+- Run the following command
+
+  ```sh
+  npm install .
+  npx genkit start -- npm run dev
+  ```
+
+- Navigate to <http://localhost:4000> (using the **WebPreview** feature of cloudshell).
+- Implement your potential fix. Then, use the Genkit developer UI to run the flow locally and verify the change.
   
 > **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
