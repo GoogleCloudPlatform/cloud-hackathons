@@ -19,9 +19,10 @@ This is going to be an introduction to running apps on Cloud Run. We'll dive int
 ## Challenges
 
 - Challenge 1: Set up your environment and interact with the app
-- Challenge 2: Exploring Monitoring dashboard
-- Challenge 3: Troubleshooting failures
-- Challenge 4: Improving performance
+- Challenge 2: Explore Monitoring dashboard
+- Challenge 3: Troubleshoote failures
+- Challenge 4: Improve performance
+- Challenge 5: Roll out an upgrade
 
 ## Contributors
 
@@ -98,7 +99,10 @@ The app uses PostgreSQL with the pgvector extension to store movie description e
 In the meantime, explore how the application operates by examining this architecture diagram and corelating it with the codebase contents:
 ![Architecture diagram](images/architecture-diagram.png)
 
-- Access the Frontend Application Open <http://localhost:8080> in your browser. If you are using the cloud shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
+    - What are the primary components of this system, and what seems to be the role of each? Associate each of those components with the elements within the codebase (i.e. folders, files).
+    - Open the js folder within the codebase. Find where the application (1) establishes connection with the database, (2) configures Genkit, (3) defines prompts for interacting with the LLM.
+
+- Once your application is running, access it by opening <http://localhost:8080> in your browser. If you are using the Cloud Shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
 
 > **Note** Please note that we are running this in the lab environment which makes the application a lot slower and more unpredictable due to the rate limits.
 
@@ -115,7 +119,7 @@ In the meantime, explore how the application operates by examining this architec
 
   - “Show me some funny films” (or another genre)
   - “Show me movies with ratings greater than 3”. (or another rating)
-  - Is there a difference in the number of recommendations you get for these two types of queries? Can you figure out where this difference comes from.
+  - Is there a difference in the number of recommendations you get for these two types of queries? Why or why not?
 
 ### Success Criteria
 
@@ -129,8 +133,7 @@ In the meantime, explore how the application operates by examining this architec
 - [Genkit](https://firebase.google.com/docs/genkit)
 - [Setting up firebase web app](https://firebase.google.com/docs/projects/use-firebase-with-existing-cloud-project#how-to-add-firebase_console)
 
-
-## Challenge 2: Exploring Monitoring dashboard
+## Challenge 2: Explore Monitoring dashboard
 
 ### Prerequisites
 
@@ -139,7 +142,7 @@ In the meantime, explore how the application operates by examining this architec
 
 ### Introduction
 
-Before we dive into troubleshooting, it's essential to get familiar with the tools we'll be using. In this challenge, you'll explore the Genkit monitoring dashboard. This will involve navigating its different sections, understanding the types of data it displays, and learning how to interpret the information presented. This foundational knowledge is crucial for effectively diagnosing and resolving issues in the subsequent challenges.
+As SREs, maintaining the reliability and performance hinges hinges on having a clear and comprehensive understanding of its behavior in the live, production environment. In this challenge, you'll explore the Genkit monitoring dashboard. This will involve navigating its different sections, understanding the types of data it displays, and learning how to interpret the information presented. This foundational knowledge is crucial for effectively diagnosing and resolving issues in the subsequent challenges.
 
 ### Description
 
@@ -149,7 +152,7 @@ Use the Genkit monitoring dashboard to understand the performance and behavior o
 
 - Access and navigate to the Genkit monitoring dashboard for your deployed application.
 - Identify the key aggregate stability metrics displayed for the entire project and interpret what they indicate about the overall health of your application.
-- What are the individual GenAI **features** in your app and what are the performance indicators (metrics) shown for each.
+- What are the individual GenAI **features** in your app and what are the performance indicators (metrics) shown for each?
 - What is the specific feature that handles the *core user interactions* in the MovieGuru app and what metrics can you find about it?
 - By examining an individual execution (a trace) of the user interaction feature, what information can you identify about the sequence of steps that occurred and the specific details recorded for each step?
 - What are the most notable differences in the execution paths of user queries (e.g., a question requiring a movie recommendation versus a simple greeting)?
@@ -182,7 +185,7 @@ Use the Genkit monitoring dashboard to understand the performance and behavior o
 
     By breaking down your application's execution into features, the monitoring dashboard allows you to quickly assess the health and performance of individual components.
 
-## Challenge 3: Troubleshooting failures
+## Challenge 3: Troubleshoot failures
 
 ### Prerequisites
 
@@ -232,7 +235,7 @@ Additionally, you noticed in *challenge 1* that queries for movies based on *rat
   - To bring down running containers defined in a dockercompose.yaml file, use `docker compose down`. Find more info [here](https://docs.docker.com/compose/reference/down/).
 
 
-## Challenge 4: Improving performance
+## Challenge 4: Improve performance
 
 ### Prerequisites
 
@@ -322,4 +325,57 @@ The code modifications have resulted in lower latency requests for the "INSERT F
 Generally any model interaction is going to be the most expensive part of your request
 Using smaller models can yield better performance but sometimes comes at the cost of high quality responses. Playing around with different models for your use case and comparing them in Firebase Genkit Monitoring can help you figure out the right balance.
 
-## Challenge 6: Digging into user engagement 
+## Challenge 5: Roll out an upgrade
+
+### Prerequisites
+
+- Make sure you have completed the steps *Clone the Repository and set the environment variables* on the machine which is executing this challenge.
+- If you want to run the application locally, also run the *Database Setup* and the *Run the Application* steps.
+
+### Introduction
+
+You now learn that the Product team has been experimenting with different search strategies to optimize the Movie Guru application. The Movie Guru app currently utilizes a mixed search strategy, combining traditional keyword matching with vector search (also known as semantic search). The new "V2" configuration uses purely vector-based search. As SREs, your task is to rollout the switch, observe its impact on the search quality, and investigate the underlying reasons for any degradation.
+
+### Description
+
+### Switch to the new search strategy
+
+Identify the Prompt Configurations:
+- Navigate to the directory containing the prompt files and locate the original `docSearch.prompt` file and its second version. Compare the versions. As SREs, understanding the intended behavior of different configurations is crucial. What are the key differences in how the search query is processed and how the LLM is instructed to use the retrieved information?
+- Locate the `docRetriever.ts` file that defines which prompt should be used for file retrieval and update it to "V2".
+
+### Interact with the updated application
+
+- Restart the application services. When the application is up again, interact with it by running the following two queries again:
+
+  - “Show me some funny films” (or another genre)
+  - “Show me movies with ratings greater than 3”. (or another rating)
+  - Is there any difference in performace between before and after the search strategy switch? Why are the results for the genre-based query still acceptable, but the results for the rating-based query fewer or less relevant than before?
+ 
+### Examine the difference in the recommentation process
+
+- Access the Firebase Genkit Monitoring dashboard for your deployed application and navigate to the traces for the movie search feature.
+- Analyze the traces for the "Find me movies with rating > 3" query before and after switching to the "V2" search. Hint: focus specifically on the output of the **retriever** step.
+
+### (Optional) Implement a Rollback:
+
+As a crucial SRE practice for mitigating issues, consider rolling back to the original configuration (`docSearch.prompt`).
+
+- Modify `docRetriever.ts` again to point back to the original prompt configuration.
+- Restart the application.
+- Run the same queries to confirm that the search quality for the rating-based query is restored.
+
+### Success Criteria
+
+- You can now identify and compare different prompt configurations
+- You can observe and compare application performance after a configuration change
+- You can utilize Genkit Monitoring to examine the detailed steps of a user request
+
+### Learning Resources
+
+- [Managing prompts with Dotprompt](https://firebase.google.com/docs/genkit/dotprompt)
+- **Useful docker compose commands**
+  - To build and run containers defined in a dockercompose.yaml file, use `docker compose up --build`. Find more info [here](https://docs.docker.com/compose/reference/up/).
+
+  - To bring down running containers defined in a dockercompose.yaml file, use `docker compose down`. Find more info [here](https://docs.docker.com/compose/reference/down/).
+
