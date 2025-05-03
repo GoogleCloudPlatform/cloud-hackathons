@@ -2,9 +2,9 @@
 
 ## Introduction
 
-Want to master the art of keeping Firebase Genkit LLM applications alive and thriving in the real world? This hackathon puts you in the driver's seat of production monitoring for Large Language Model (LLM) powered applications. Using Firebase Genkit Monitoring, you'll tackle the critical challenges of ensuring LLMs perform flawlessly in production. You'll dive deep into troubleshooting live issues, optimizing performance bottlenecks, and guaranteeing a smooth user experience for a movie recommendation app.
+Want to master the art of keeping Firebase Genkit LLM applications alive and thriving in the real world? This hackathon puts you in the driver's seat of production monitoring for Large Language Model (LLM) powered applications. Assuming the role of a Site Reliability Engineer (SRE) on a fictional Movie Guru app team, you will use Firebase Genkit Monitoring to tackle the critical challenges of ensuring LLMs perform flawlessly in production. You'll dive deep into troubleshooting live issues, optimizing performance bottlenecks, and guaranteeing a smooth user experience for a movie recommendation app. 
 
-Why is this crucial? Because in the age of AI, those who can effectively monitor and manage LLM applications in production are the ones who will build the future.
+Why is this crucial? Because in the age of AI, those who can effectively monitor and manage LLM applications in production are the ones who will build the future. The GenAI monitoring, debugging, and optimization skills you'll gain are universally applicable for a modern SRE and are transferable to a wide range of systems beyond Genkit Monitoring.
 
 “GenAI App Development with Genkit” is a recommended pre-requisite.
 
@@ -31,7 +31,8 @@ Manasa Kandula Esther Lloyd Cleo Schneider Polina Govorkova
 
 ### Introduction
 
-Welcome to the Movie Guru team! Let's get started by getting your development environment up and running. You'll be using the Cloud Shell editor to build the app in a cloud virtual environment and interact with it there.
+Welcome to the Movie Guru team! In your role as a Site Reliability Engineer on this team, you will work through the challenges to ensure that the app is reliable and performant. 
+Your first task is to get the application running smoothly in your local environment. You'll set up your development environment using the Cloud Shell editor and interact with the initial version of the Movie Guru application, ensuring a stable starting point for the system.
 
 ### Firebase setup
 
@@ -94,8 +95,8 @@ The app uses PostgreSQL with the pgvector extension to store movie description e
     docker compose up --build
     ```
 
-In the meantime, think through these questions with your group:
-[Some questions about it]
+In the meantime, explore how the application operates by examining this architecture diagram and corelating it with the codebase contents:
+![Architecture diagram](images/architecture-diagram.png)
 
 - Access the Frontend Application Open <http://localhost:8080> in your browser. If you are using the cloud shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
 
