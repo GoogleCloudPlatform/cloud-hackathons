@@ -131,9 +131,9 @@ The Genkit monitoring dashboard provides essential insights into your applicatio
 Your **objective** is to explore the Genkit monitoring dashboard and understand application performance and execution.
 
 - **Assess Overall Health**: Review key aggregate stability metrics across the project. Based on this high-level view, what potential areas look like they might need attention?
-- **Deconstruct by Feature**: Identify individual GenAI *features* in the app. Examine their specific performance indicators (success rate, latency, etc.). Which features stand out as potential hotspots or areas for optimization?
-- **Focus Critical Path**: Isolate the feature handling core user interactions (the main chat flow). Deeply analyze its metrics. How healthy is our primary user path, and where might bottlenecks exist?
-- **Inspect Individual Requests**: Interact with the app to generate fresh traces. Select representative traces and examine their details. Examine a user interaction trace. Identify the specific GenAI steps performed (e.g., model calls, data retrieval) and their sequence?
+- **Deconstruct by Feature**: Identify individual GenAI *features* in the app.
+- **Focus Critical Path**: Isolate the feature handling core user interactions. Analyze its metrics. How healthy is this feature, and where might bottlenecks exist?
+- **Inspect Individual Requests**: Interact with the app to generate fresh traces. Select representative traces in the dashboard and examine their details. Identify the specific GenAI steps performed to respond to a user (e.g., model calls, data retrieval)?
 - **Leverage Integrated Observability**: From detailed traces, access related logs and traces in *Google Cloud Logging* and *Google Cloud Trace*. Compare the depth and presentation of information. What additional context do these tools provide that helps pinpoint improvement areas?
 
 ### Success Criteria
