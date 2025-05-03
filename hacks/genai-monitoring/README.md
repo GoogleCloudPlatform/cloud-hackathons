@@ -266,90 +266,43 @@ On the cloud shell environment running this challenge:
 
 ### Introduction
 
-NYou've fixed a major problem, but your work isn't done yet. Users are still complaining that the chat experience is slow. Let's fix this issue here.
+You've fixed a major problem, but your work isn't done yet. Users are still complaining that the chat experience is slow. Let's fix this issue here.
 
 ### Description
 
 Let's inspect the performance of the Movie Guru app using Firebase Genkit Monitoring.
 
-- **Analyze Feature Latency**: Check P50 and P90 latency for the chatFlow feature. Interpret what these metrics indicate about typical and worst-case performance.
+- **Analyze Feature Latency**: Check P50 and P90 latency for the **chatFlow** feature. Interpret what these metrics indicate about typical and worst-case performance.
 - **Inspect Trace Spans**: Inspect traces and analyze individual spans (stages) within the chatFlow. Identify the longest-running spans.
 - **Pinpoint Bottlenecks**: Based on your span analysis, pinpoint which spans are the primary performance bottlenecks. Hint: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
 - **Identify Optimization**: Based on your findings, identify one specific way to improve latency. Hint: If you identified a disproportionately slow span for a simple task, consider if there is a way to speed it up with a small change.
-- **Implement & Test**: Implement your optimization in the code. Use the **Genkit developer UI** for local testing before you deploy the fixed app.
+- **Implement & Test**: Implement your optimization in the code. Use the **Genkit Developer UI** for local testing before you deploy the fixed app Follow the instructions to set up the developer UI.
+  - Navigate in the *terminal* to the *flows* folder.
+  - Run the following command
+
+    ```sh
+    npm install .
+    npx genkit start -- npm run dev
+    ```
+
+  - Navigate to <http://localhost:4000> (using the webpreview feature of cloudshell).
+  - Implement your potential fix. Then, use the Genkit developer UI to run the flow locally and verify the change. Analyze the traces produced in the Dev UI to evaluate the impact on performance (e.g., reduced span durations).
+  
+> **Note**: Changes made directly within the Genkit Developer UI (like editing flows or prompts) are temporary for that test run only and do not save back to your source code files. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
 ### Success criteria
 
-You can now  use the Genkit monitoring dashboard to compare feature success rate and identify failed paths.
-You understand how to use failed paths filtering to find relevant failed traces.
-
+- You found a span that is much slower than its peers.
+- You examined and tested out potential fixes using the **Genkit Developer UI**.
+- You applied the fix in the code and redeployed the app.
+- Interactions with the updated app are faster.
 
 ### Learning resources
 
 - [Genkit Developer Tools and Developer UI](https://firebase.google.com/docs/genkit/devtools)
-- HINTs:
+- [Gemini Models on VertexAI](https://cloud.google.com/vertex-ai/generative-ai/docs/models)
 
-  - Install **Genkit CLI**
-  - Navigate to the **js/flows** folder to start the developer UI using `npx genkit start -- npm run dev`
-  - Test out flows, and prompts in the dev UI. 
-
-## Challenge 4: Optimizing request latency
-
-### Prerequisites
-
-Before beginning this challenge, complete [Challenge 1: Set up your environment and interact with the app]() and [Challenge 2: Troubleshooting code failures]() which will seed data in the dashboard and help you get familiar with monitoring concepts in Firebase Genkit Monitoring.
-
-### Introduction
-
-Now that you are familiar with the Firebase Genkit Monitoring dashboard, and have dealt with a major cause of failures, your users can finally chat with the chatbot with no trouble, but is it the best experience?
-
-Even with code failures gone, users may get frustrated and leave the app if it is painfully slow. Let's use Firebase Genkit Monitoring to investigate whether latency could be impacting customers. Each question a user asks the chatbot requires the application to make several underlying calls to the LLM using a Retrieval Augmented Generation (RAG) architecture. When a user sends a request for a movie recommendation to our chatbot, the chat bot: 
-Analyzes the request to figure out if there are new preferences expressed.
-Fetches additional context from our vector DB, our relational DB, or both
-Sends a prompt to the LLM that has been hydrated with the original request and fetched context
-
-### Description
-
-Navigate to the Firebase Genkit Monitoring dashboard for the "INSERT FEATURE NAME" feature.
-
-To investigate this issue, you'll need to:
-Look at the P50 (average) and P90 (90th percentile) latency for this feature
-Use the filter bar to find traces that are >X ms
-Inspect individual traces and compare high latency traces to lower latency traces
-
-As you are investigating, you will be looking for two main issues:
-Find the model step that is taking the longest amount of time
-Identify steps where we could parallelize requests to make things more efficient
-
-Once you have identified the problem areas –
-Update the model step with a smaller model using this code 
-
-```
-imports
-
-ai.generate(flashModel)
-```
-Update the retrieval step to retrieve in parallel
-
-```
-<TODO create code snippet>
-```
-Rerun your app and interact with the chatbot to send new traces
-Validate that you are seeing better performance
-
-### Success Criteria
-
-You are now familiar with latency graphs in Firebase Genkit Monitoring.
-You understand how to use the latency filters in the trace table to find high latency traces.
-You can use the trace viewer to dig deeper into which steps are areas for improvement.
-The code modifications have resulted in lower latency requests for the "INSERT FEATURE NAME" feature.
-
-### Tips
-
-Generally any model interaction is going to be the most expensive part of your request
-Using smaller models can yield better performance but sometimes comes at the cost of high quality responses. Playing around with different models for your use case and comparing them in Firebase Genkit Monitoring can help you figure out the right balance.
-
-## Challenge 5: Roll out an upgrade
+## Challenge 5: Improving search quality
 
 ### Prerequisites
 
