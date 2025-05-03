@@ -73,6 +73,7 @@ The following script enables the required APIs, creates the necessary service ac
     ```sh
     chmod +x setup_local.sh
     ./setup_local.sh    
+    source set_env_vars.sh
     docker compose up --build
     ```
 
@@ -84,11 +85,12 @@ The following script enables the required APIs, creates the necessary service ac
 
 ### Test the app
 
-- Once your application is running, access it by opening <http://localhost:8080> in your browser. If you are using the Cloud Shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
+- Once all the containers are running, access it by opening <http://localhost:8080> in your browser. If you are using the Cloud Shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
 
 - Login using your name.
 
 - Interact with the app and get your first movie recommendation. Then spend time getting to know the **Movie Guru** application by sending it different prompts.
+  
 - Run the following two queries:
 
   - “Show me some funny films” (or another genre)
@@ -100,15 +102,15 @@ The following script enables the required APIs, creates the necessary service ac
 ### Success Criteria
 
 - Your local environment is set up in Cloud Shell.
-- All your teammates have clone the code repo into their own enviroments.
-- You are able interact with the Movie Guru app running on your local Cloud Shell instance.
+- All your teammates have cloned the code repo into their own enviroments.
+- You are able interact with the **Movie Guru** app running on your local Cloud Shell instance.
 - You note down the approx number results for the two types of queries.
 
 ### Learning Resources
 
 - [Genkit](https://firebase.google.com/docs/genkit)
 - [Setting up firebase web app](https://firebase.google.com/docs/projects/use-firebase-with-existing-cloud-project#how-to-add-firebase_console)
-- Application Architecture:
+- **MovieGuru Application Architecture**:
 
   - The user interface: A Vue frontend (code found in **frontend**).
   - The application logic layer: A GoLang backend server (code found in **chat_server_go**).
