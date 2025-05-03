@@ -21,7 +21,7 @@ This is going to be an introduction to running apps on Cloud Run. We'll dive int
 - Challenge 1: Set up your environment and interact with the app
 - Challenge 2: Explore Monitoring dashboard
 - Challenge 3: Troubleshoot failures
-- Challenge 4: Improve performance
+- Challenge 4: Improve Performance
 - Challenge 5: Improve search quality
 
 ## Contributors
@@ -306,53 +306,39 @@ Let's inspect the performance of the Movie Guru app using Firebase Genkit Monito
 
 ### Prerequisites
 
-- Make sure you have completed the steps *Clone the Repository and set the environment variables* on the machine which is executing this challenge.
-- If you want to run the application locally, also run the *Database Setup* and the *Run the Application* steps.
+On the cloud shell environment running this challenge:
+
+- *Clone the Repository and set* the environment variables* from *Challenge 1*.
+- Setup the **Genkit Developer UI**.
 
 ### Introduction
 
-You now learn that the Product team has been experimenting with different search strategies to optimize the Movie Guru application. The Movie Guru app currently utilizes a mixed search strategy, combining traditional keyword matching with vector search (also known as semantic search). The new "V2" configuration uses purely vector-based search. As SREs, your task is to rollout the switch, observe its impact on the search quality, and investigate the underlying reasons for any degradation.
+TThe **MovieGuru** team is evolving the app's search capabilities. To potentially reduce operational costs, we're moving towards a more streamlined approach. The current system utilizes a mixed search strategy, combining traditional keyword search with vector (semantic) search.
+
+The new "V2" configuration switches to purely vector-based search.
+
+As SREs, your task is to manage the rollout of this change, observe its effect on search quality, and investigate the underlying technical reasons for any observed degradation.
 
 ### Description
 
-### Switch to the new search strategy
+To isolate the effect of this change, you will perform controlled tests using the **Genkit Developer UI**.
 
-Identify the Prompt Configurations:
-- Navigate to the directory containing the prompt files and locate the original `docSearch.prompt` file and its second version. Compare the versions. As SREs, understanding the intended behavior of different configurations is crucial. What are the key differences in how the search query is processed and how the LLM is instructed to use the retrieved information?
-- Locate the `docRetriever.ts` file that defines which prompt should be used for file retrieval and update it to "V2".
-
-### Interact with the updated application
-
-- Restart the application services. When the application is up again, interact with it by running the following two queries again:
-
-  - “Show me some funny films” (or another genre)
-  - “Show me movies with ratings greater than 3”. (or another rating)
-  - Is there any difference in performace between before and after the search strategy switch? Why are the results for the genre-based query still acceptable, but the results for the rating-based query fewer or less relevant than before?
- 
-### Examine the difference in the recommentation process
-
-- Access the Firebase Genkit Monitoring dashboard for your deployed application and navigate to the traces for the movie search feature.
-- Analyze the traces for the "Find me movies with rating > 3" query before and after switching to the "V2" search. Hint: focus specifically on the output of the **retriever** step.
-
-### (Optional) Implement a Rollback:
-
-As a crucial SRE practice for mitigating issues, consider rolling back to the original configuration (`docSearch.prompt`).
-
-- Modify `docRetriever.ts` again to point back to the original prompt configuration.
-- Restart the application.
-- Run the same queries to confirm that the search quality for the rating-based query is restored.
+- **Baseline Test (Mixed Search)**: In the **Genkit Developer UI**, navigate to the *chatFlow* flow.
+  - Run the following queries and note down the results: "Show me movies with ratings greater than 3". And "Show me some funny films"."
+- **Implement Search Switch**: Modify the application code to adopt the new search strategy.
+  - Update the **MovieSearchPromptFlow** (defined in the **docRetriever.ts** file) to use the **v2** version of the **docSearch.prompt**, which implements the vector-only search logic.
+- **Reload Genkit UI**: Restart the **Genkit Developer UI** to allow it to pick up the updated code changes.
+- **Post-Change Test (Vector Search)**: In the **Genkit Developer UI**, re-run the two queries in the **chatFlow** flow.
+- **Analyze Impact & Diagnose**: Compare the number of recommendations from your two test runs. Then, examine the traces generated in the **Genkit Developer UI** (focusing on the retriever output) and review the differences between the original and v2 prompt instructions to determine why the vector-only search impacted quality for *some* queries and not others.
 
 ### Success Criteria
 
-- You can now identify and compare different prompt configurations
-- You can observe and compare application performance after a configuration change
-- You can utilize Genkit Monitoring to examine the detailed steps of a user request
+- Successfully update the application code to use the new version of the search prompt.
+- Observe and compare the search results from before and after implementing the change.
+- Identify which types of queries result in degraded search quality after the switch and which remain unaffected.
+- Articulate the technical reason behind the quality impact.
+- Demonstrate to the **Product Team** the reason for the quality degradation by referencing specific differences observed in the monitoring traces.
 
 ### Learning Resources
 
-- [Managing prompts with Dotprompt](https://firebase.google.com/docs/genkit/dotprompt)
-- **Useful docker compose commands**
-  - To build and run containers defined in a dockercompose.yaml file, use `docker compose up --build`. Find more info [here](https://docs.docker.com/compose/reference/up/).
-
-  - To bring down running containers defined in a dockercompose.yaml file, use `docker compose down`. Find more info [here](https://docs.docker.com/compose/reference/down/).
-
+- [Search Strategies](https://cloud.google.com/vertex-ai/docs/vector-search/about-hybrid-search#why-does-hybrid-search-matter)
