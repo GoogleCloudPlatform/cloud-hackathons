@@ -193,7 +193,7 @@ Follow these steps:
   - Find the hints in the code files *js/flows/src/userProfileFlow.ts* and *js/flows/src/userProfileTypes.ts*.
   - If you're really stuck, check the **Learning Resources** for more hints.
   
-- Implement the Fix: Apply the necessary code change in the application files and restart the application.
+- Apply the necessary code fix and restart the application.
   
   - Stop the application.
 
