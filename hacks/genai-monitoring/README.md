@@ -71,7 +71,8 @@ The following script enables the required APIs, creates the necessary service ac
 - Start the application services that run locally in a set of docker containers. This can take a few minutes as we are building many docker images for all the application containers (frontend, webserver, Genkit flows).
 
     ```sh
-    source set_env_vars.sh
+    chmod +x setup_local.sh
+    ./setup_local.sh    
     docker compose up --build
     ```
 
