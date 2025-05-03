@@ -266,7 +266,7 @@ On the cloud shell environment running this challenge:
 
 ### Introduction
 
-Now that you are familiar with the Firebase Genkit Monitoring dashboard, and have dealt with a major cause of failures, your users can finally chat with the chatbot with no trouble. But, users are still complaining that the chat is a slow experience. Even with code failures gone, users may get frustrated and leave the app if it is painfully slow. Let's fix this issue here.
+NYou've fixed a major problem, but your work isn't done yet. Users are still complaining that the chat experience is slow. Let's fix this issue here.
 
 ### Description
 
