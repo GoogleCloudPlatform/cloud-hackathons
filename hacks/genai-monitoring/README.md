@@ -20,7 +20,7 @@ This is going to be an introduction to running apps on Cloud Run. We'll dive int
 
 - Challenge 1: Set up your environment and interact with the app
 - Challenge 2: Explore Monitoring dashboard
-- Challenge 3: Troubleshoote failures
+- Challenge 3: Troubleshoot failures
 - Challenge 4: Improve performance
 - Challenge 5: Roll out an upgrade
 
@@ -53,19 +53,17 @@ cd movie-guru
 git checkout ghack-genkit-monitoring
 ```
 
-- Update the **set_env_vars.sh** to reflect your environment.
-
 ### Cloud setup
 
 The following script enables the required APIs, creates the necessary service account with roles, and uploads movie poster images to a GCP bucket on your behalf.
 
-- Edit the **set_env_vars.sh** to replace project_id.
+- Edit the **set_env_vars.sh** to replace *project_id*, and *firebase config* values.
 
 - Run setup script.
 
     ```sh
     chmod +x setup_cloud.sh
-    ./setup_cloud.sh --skip-infra #the qwiklab environment has already created the infra for you
+    ./setup_cloud.sh
     ```
 
 ### Local Environment Setup
@@ -226,7 +224,6 @@ Follow these steps:
 - [Prompts and dotPrompts](https://firebase.google.com/docs/genkit/dotprompt)
 - [Input and Output schemas in genkit prompts](https://firebase.google.com/docs/genkit/dotprompt#schemas)
 - [Input and Output schemas in genkit flows](https://firebase.google.com/docs/genkit/flows#input_and_output_schemas)
-<!-- - [RAG and Retrievers](https://firebase.google.com/docs/genkit/rag) -->
 
 - **Prompts and Flows in Genkit**:
   
@@ -259,35 +256,39 @@ Follow these steps:
 
 ### Prerequisites
 
-- Make sure you have completed the steps *Clone the Repository and set the environment variables* on the machine which is executing this challenge.
-- If you want to run the application locally, also run the *Database Setup* and the *Run the Application* steps.
+On the cloud shell environment running this challenge:
+
+- *Clone the Repository and set the environment variables* from *Challenge 1*.
+- *Local Environment Setup* from *Challenge 1*.
 
 ### Introduction
 
-Now that you are familiar with the Firebase Genkit Monitoring dashboard, and have dealt with a major cause of failures, your users can finally chat with the chatbot with no trouble, but is it the best experience? Even with code failures gone, users may get frustrated and leave the app if it is painfully slow, or doesn't give enough recommendations (like with queries based on ratings). Let's fix these issues here.
-
+Now that you are familiar with the Firebase Genkit Monitoring dashboard, and have dealt with a major cause of failures, your users can finally chat with the chatbot with no trouble. But, users are still complaining that the chat is a slow experience. Even with code failures gone, users may get frustrated and leave the app if it is painfully slow. Let's fix this issue here.
 
 ### Description
 
 Let's inspect the performance of the Movie Guru app using Firebase Genkit Monitoring.
 
-- What is the slowest feature in our app? What is the P50 and P90 latency for that feature and what does that mean?
-- Inspect individual traces in that feature and identify areas for improvement.
-- Come up with ideas for how to improve latency and implement them.
-- Are there ways you can improve the number of results on searches based on rating? If so, try and implement them.
+- **Analyze Feature Latency**: Check P50 and P90 latency for the chatFlow feature. Interpret what these metrics indicate about typical and worst-case performance.
+- **Inspect Trace Spans**: Inspect traces and analyze individual spans (stages) within the chatFlow. Identify the longest-running spans.
+- **Pinpoint Bottlenecks**: Based on your span analysis, pinpoint which spans are the primary performance bottlenecks. Hint: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
+- **Identify Optimization**: Based on your findings, identify one specific way to improve latency. Hint: If you identified a disproportionately slow span for a simple task, consider if there is a way to speed it up with a small change.
+- **Implement & Test**: Implement your optimization in the code. Use the **Genkit developer UI** for local testing before you deploy the fixed app.
 
 ### Success criteria
 
 You can now  use the Genkit monitoring dashboard to compare feature success rate and identify failed paths.
 You understand how to use failed paths filtering to find relevant failed traces.
 
-### Tips
 
-Look for clues in error messages, data types, or data formats within the traces.
-Use the filtering and search capabilities of the monitoring dashboard to efficiently locate relevant information.
-Remember that schema mismatches often occur when data is exchanged between different parts of the application or between the application and external services (like an LLM API).
 ### Learning resources
-Documentation on running DevUI
+
+- [Genkit Developer Tools and Developer UI](https://firebase.google.com/docs/genkit/devtools)
+- HINTs:
+
+  - Install **Genkit CLI**
+  - Navigate to the **js/flows** folder to start the developer UI using `npx genkit start -- npm run dev`
+  - Test out flows, and prompts in the dev UI. 
 
 ## Challenge 4: Optimizing request latency
 
