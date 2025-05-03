@@ -333,4 +333,5 @@ To isolate the effect of this change, you will perform controlled tests using th
 
 ### Learning Resources
 
+- [Managing prompt versions](https://firebase.google.com/docs/genkit/dotprompt#prompt_variants)
 - [Search Strategies](https://cloud.google.com/vertex-ai/docs/vector-search/about-hybrid-search#why-does-hybrid-search-matter)
