@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Want to master the art of keeping Firebase Genkit LLM applications alive and thriving in the real world? This hackathon puts you in the driver's seat of production monitoring for Large Language Model (LLM) powered applications. Assuming the role of a Site Reliability Engineer (SRE) on a fictional Movie Guru app team, you will use Firebase Genkit Monitoring to tackle the critical challenges of ensuring LLMs perform flawlessly in production. You'll dive deep into troubleshooting live issues, optimizing performance bottlenecks, and guaranteeing a smooth user experience for a movie recommendation app. 
+Want to master the art of keeping Firebase Genkit LLM applications alive and thriving in the real world? This hackathon puts you in the driver's seat of production monitoring for Large Language Model (LLM) powered applications. Assuming the role of a Site Reliability Engineer (SRE) on a fictional Movie Guru app team, you will use Firebase Genkit Monitoring to tackle the critical challenges of ensuring LLMs perform flawlessly in production. You'll dive deep into troubleshooting live issues, optimizing performance bottlenecks, and guaranteeing a smooth user experience for a movie recommendation app.
 
 Why is this crucial? Because in the age of AI, those who can effectively monitor and manage LLM applications in production are the ones who will build the future. The GenAI monitoring, debugging, and optimization skills you'll gain are universally applicable for a modern SRE and are transferable to a wide range of systems beyond Genkit Monitoring.
 
@@ -12,8 +12,8 @@ Why is this crucial? Because in the age of AI, those who can effectively monitor
 
 This is going to be an introduction to running apps on Cloud Run. We'll dive into various aspects of app development using cloud native tooling on GCP.
 
-- Understand your GenAI app health in production 
-- Troubleshoot different types of GenAI issues that might arise like model limitations, latency, hallucinations, …
+- Understand your GenAI app health in production.
+- Troubleshoot different types of GenAI issues that might arise like model limitations, latency, etc
 - Find and address issues associated with the quality of your generated content
 
 ## Challenges
@@ -61,7 +61,6 @@ The following script enables the required APIs, creates the necessary service ac
 
 - Edit the **set_env_vars.sh** to replace project_id.
 
-
 - Run setup script.
 
     ```sh
@@ -69,76 +68,63 @@ The following script enables the required APIs, creates the necessary service ac
     ./setup_cloud.sh --skip-infra #the qwiklab environment has already created the infra for you
     ```
 
-### Database Setup
+### Local Environment Setup
 
-The app uses PostgreSQL with the pgvector extension to store movie description embeddings and structured data (title, plot, release date, etc.)
-
-- Create a shared docker network for all the app containers we will use to run this application.
-
-    ```sh
-    docker network create db-shared-network
-    ```
-
-- Setup local *pgvector* DB
-
-    ```sh
-    chmod +x setup_local.sh
-    source setup_local.sh
-    docker compose -f docker-compose-pgvector.yaml up -d
-    ```
-
-### Run the Application
-
-- Start the application services. This can take a few minutes as we are building many docker images for all the application containers (frontend, webserver, Genkit flows).
+- Start the application services that run locally in a set of docker containers. This can take a few minutes as we are building many docker images for all the application containers (frontend, webserver, Genkit flows).
 
     ```sh
     source set_env_vars.sh
     docker compose up --build
     ```
 
-In the meantime, explore how the application operates by examining this architecture diagram and corelating it with the codebase contents:
+- In the meantime, explore how the application operates by examining this architecture diagram and corelating it with the codebase contents.
+
 ![Architecture diagram](images/architecture-diagram.png)
 
-    - What are the primary components of this system, and what seems to be the role of each? Associate each of those components with the elements within the codebase (i.e. folders, files).
-    - Open the js folder within the codebase. Find where the application (1) establishes connection with the database, (2) configures Genkit, (3) defines prompts for interacting with the LLM.
-
-- Once your application is running, access it by opening <http://localhost:8080> in your browser. If you are using the Cloud Shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
-
-> **Note** Please note that we are running this in the lab environment which makes the application a lot slower and more unpredictable due to the rate limits.
+- Open the *js/flows* folder within the codebase. Find where the application (1) establishes connection with the database, (2) configures Genkit, (3) defines prompts for interacting with the LLM.
 
 ### Test the app
 
-- Login using your name (without spaces).
+- Once your application is running, access it by opening <http://localhost:8080> in your browser. If you are using the Cloud Shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor and selecting port **8080**.
 
-- Interact with the app and get your first movie recommendation. Then spend time getting to know the Movie Guru application by sending it different prompts.
+- Login using your name.
 
-  - Does it respond in the ways you expect?
-  - Does it give reasonable recommendations?
-
+- Interact with the app and get your first movie recommendation. Then spend time getting to know the **Movie Guru** application by sending it different prompts.
 - Run the following two queries:
 
   - “Show me some funny films” (or another genre)
   - “Show me movies with ratings greater than 3”. (or another rating)
-  - Is there a difference in the number of recommendations you get for these two types of queries? Why or why not?
+  - Note down the number of recommnedations the app returns for each query.
+
+> **Note** Please note that we are running this in the lab environment which makes the application a lot slower and more unpredictable due to the rate limits.
 
 ### Success Criteria
 
 - Your local environment is set up in Cloud Shell.
 - All your teammates have clone the code repo into their own enviroments.
 - You are able interact with the Movie Guru app running on your local Cloud Shell instance.
-- You notice that the genre based query has more results than the rating based query.
+- You note down the approx number results for the two types of queries.
 
 ### Learning Resources
 
 - [Genkit](https://firebase.google.com/docs/genkit)
 - [Setting up firebase web app](https://firebase.google.com/docs/projects/use-firebase-with-existing-cloud-project#how-to-add-firebase_console)
+- Application Architecture:
+
+  - The user interface: A Vue frontend (code found in **frontend**).
+  - The application logic layer: A GoLang backend server (code found in **chat_server_go**).
+  - The GenAI core: Genkit flows, which handle the conversational and recommendation logic. These flows communicate directly with Gemini models on Vertex AI to leverage large language model capabilities (code found in **js/flows**).
+  - Data Storage: PostgreSQL with the pgvector extension, used for storing both structured movie data (title, plot, etc.) and vector embeddings for semantic search.
+  - Session Management: A Redis cache for storing user session information and conversation history.
 
 ## Challenge 2: Explore Monitoring dashboard
 
 ### Prerequisites
 
-- Make sure you have completed the steps *Clone the Repository and set the environment variables* on the machine which is executing this challenge.
-- If you want to run the application locally, also run the *Database Setup* and the *Run the Application* steps.
+On the cloud shell environment running this challenge:
+
+- *Clone the Repository and set the environment variables* from *Challenge 1*.
+- *Local Environment Setup* from *Challenge 1*.
 
 ### Introduction
 
@@ -148,22 +134,19 @@ As SREs, maintaining the reliability and performance hinges hinges on having a c
 
 The Genkit monitoring dashboard provides essential insights into your application's performance and execution. This challenge asks you to explore the dashboard and achieve specific goals based on your discoveries.
 
-Use the Genkit monitoring dashboard to understand the performance and behavior of your application by achieving the following goals:
+Your **objective** is to explore the Genkit monitoring dashboard and understand application performance and execution.
 
-- Access and navigate to the Genkit monitoring dashboard for your deployed application.
-- Identify the key aggregate stability metrics displayed for the entire project and interpret what they indicate about the overall health of your application.
-- What are the individual GenAI **features** in your app and what are the performance indicators (metrics) shown for each?
-- What is the specific feature that handles the *core user interactions* in the MovieGuru app and what metrics can you find about it?
-- By examining an individual execution (a trace) of the user interaction feature, what information can you identify about the sequence of steps that occurred and the specific details recorded for each step?
-- What are the most notable differences in the execution paths of user queries (e.g., a question requiring a movie recommendation versus a simple greeting)?
-- From the detailed view of a trace, discover how to access the related data within Google Cloud Logging and Google Cloud Trace, and observe any differences or similarities in how the data is presented across these various tools.
+- **Assess Overall Health**: Review key aggregate stability metrics across the project. Based on this high-level view, what potential areas look like they might need attention?
+- **Deconstruct by Feature**: Identify individual GenAI *features* in the app. Examine their specific performance indicators (success rate, latency, etc.). Which features stand out as potential hotspots or areas for optimization?
+- **Focus Critical Path**: Isolate the feature handling core user interactions (the main chat flow). Deeply analyze its metrics. How healthy is our primary user path, and where might bottlenecks exist?
+- **Inspect Individual Requests**: Interact with the app to generate fresh traces. Select representative traces and examine their details. Examine a user interaction trace. Identify the specific GenAI steps performed (e.g., model calls, data retrieval) and their sequence?
+- **Leverage Integrated Observability**: From detailed traces, access related logs and traces in *Google Cloud Logging* and *Google Cloud Trace*. Compare the depth and presentation of information. What additional context do these tools provide that helps pinpoint improvement areas?
 
 ### Success Criteria
 
 - You are now familiar with key sections of Firebase Genkit Monitoring dashboard
-- You know the different features that comprise the **movieguru** app and what they do.
+- You know the different features that comprise the **Movie Guru** app and what they do.
 - You know the different steps that the app takes to answer a user's query.
-- You know how the steps differ when the user makes a query that requires a search versus one that doesn't.
 - You can correlate data in the monitoring dashboard with data in Cloud
 
 ### Learning Resources
@@ -189,37 +172,62 @@ Use the Genkit monitoring dashboard to understand the performance and behavior o
 
 ### Prerequisites
 
-- Make sure you have completed the steps *Clone the Repository and set the environment variables* on the machine which is executing this challenge.
-- If you want to run the application locally, also run the *Database Setup* and the *Run the Application* steps.
+On the cloud shell environment running this challenge:
+
+- *Clone the Repository and set the environment variables* from *Challenge 1*.
+- *Local Environment Setup* from *Challenge 1*.
 
 ### Introduction
 
-Now that you're familiar with the Genkit monitoring dashboard, it's time to put those skills to the test. Our movie recommendation app is having a few issues. In this challenge, you'll use your knowledge of the dashboard to investigate these errors that are disrupting the application's functionality and try and fix them.
+You're now familiar with the Genkit monitoring dashboard. It's time to apply those skills to a real incident. Our Movie Guru app is experiencing issues, and your team has received a report: User preferences aren't being saved.
+
+To see how preference saving is expected to work, watch this video:
+
+[![Movie Guru](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
 
 ### Description
 
-A feature of the *MovieGuru* app is experiencing a high volume of errors, impacting its success rate.
-Your tasks are to use the Genkit monitoring dashboard and the code (*/js/flows*) to pinpoint the main cause of these failures.
-Additionally, you noticed in *challenge 1* that queries for movies based on *ratings* yeilds fewer results than queries based on *genre*. You will also figure out why this is happening.
+While exploring stability metrics earlier, you might have observed a specific feature with a concerningly low success rate. This incident confirms users are experiencing problems potentially related to that instability.
 
-- Identify the feature most failures.
-- Identify what these failures have in common? Hint: use feature paths table.
-- Identify the underlying cause of each of these failures?
-- Implement a fix for these failures (hint: look through the code to find the source of the issue).
-- Identify why there are fewer results for the *ratings* based search.
+Your task is to use the Genkit monitoring dashboard and the application code (/js/flows/) to pinpoint and resolve the root cause of these preference saving failures.
+
+Follow these steps:
+
+- Examine the failed traces for this feature. What do the error messages and trace details reveal?
+- Identify commonalities among the failures. Hint: The **Failed Features** table can help reveal common error patterns.
+- Determine the underlying cause of the failures based on your trace analysis by exploring the code for the **UserProfile flow**.
+
+  - Find the hints in the code files *js/flows/src/userProfileFlow.ts* and *js/flows/src/userProfileTypes.ts*.
+  - If you're really stuck, check the **Learning Resources** for more hints.
+  
+- Implement the Fix: Apply the necessary code change in the application files and restart the application.
+  
+  - Stop the application.
+
+    ```sh
+    docker compose down
+    ```
+  
+  - Restart the application after fixing it.
+  
+    ```sh
+    docker compose up --build
+    ```
 
 ### Success criteria
 
 - You have idenfified the feature with the most failures.
 - You understand the root case of these failures.
-- You have implemented a fix, restarted the application, and retried search queries to show that the error no longer occurs
-- You understand why there are fewer results for the *ratings* based search.
+- You have implemented a fix, restarted the application.
+- Queries such as "I love horror movies" ensure that "horror" is added to your preferences in the app.
 
 ### Learning resources
 
+- [Prompts and dotPrompts](https://firebase.google.com/docs/genkit/dotprompt)
 - [Input and Output schemas in genkit prompts](https://firebase.google.com/docs/genkit/dotprompt#schemas)
 - [Input and Output schemas in genkit flows](https://firebase.google.com/docs/genkit/flows#input_and_output_schemas)
-- [RAG and Retrievers](https://firebase.google.com/docs/genkit/rag)
+<!-- - [RAG and Retrievers](https://firebase.google.com/docs/genkit/rag) -->
+
 - **Prompts and Flows in Genkit**:
   
     A *flow* is the executable unit – it defines and orchestrates a sequence of steps (the process) and can contain multiple sub-steps like other flows, prompts, retrievers, tools, etc.
@@ -229,11 +237,23 @@ Additionally, you noticed in *challenge 1* that queries for movies based on *rat
     So, you execute a flow, and within the flow's steps, prompts are used to interact with AI models. They differ because the flow is the action that runs, while the prompt is the content exchanged during a specific step involving an AI model.
 
     Both flows and prompts can have their own input and output data schemas.
+
 - **Useful docker compose commands**
   - To build and run containers defined in a dockercompose.yaml file, use `docker compose up --build`. Find more info [here](https://docs.docker.com/compose/reference/up/).
 
   - To bring down running containers defined in a dockercompose.yaml file, use `docker compose down`. Find more info [here](https://docs.docker.com/compose/reference/down/).
 
+- **Hints for finding the error cause**
+  The error you're seeing is a *schema mismatch error*. This indicates a discrepancy between the data structure the *userProfileFlow* expects to receive from the model, and the structure the model is *actually* producing based on the prompt's (*userProfile.prompt*) instructions.
+
+  Compare the schema defined in *js/flows/src/userprofiletypes.ts* (which the flow definition *js/flows/src/userprofileflow.ts* relies on) with the output specified (or described) in */js/flows/prompts/userprofile.prompt*. Pay close attention to both the formal *outputSchema* definition of the  file and the system instructions given to the model in the prompt text.
+
+  To fix the issue you can do one of the following:
+
+  - Fix the prompt and add an output schema definition to the prompt (*userProfile.prompt*). OR
+  - Upgrade the flow to use *userProfile.v2.prompt*.
+  
+  If you are unsure of the difference between a *flow* and a *prompt*, check out the section **Prompts and Flows in Genkit**.
 
 ## Challenge 4: Improve performance
 
