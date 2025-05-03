@@ -22,7 +22,7 @@ This is going to be an introduction to running apps on Cloud Run. We'll dive int
 - Challenge 2: Explore Monitoring dashboard
 - Challenge 3: Troubleshoot failures
 - Challenge 4: Improve performance
-- Challenge 5: Roll out an upgrade
+- Challenge 5: Improve search quality
 
 ## Contributors
 
@@ -32,7 +32,7 @@ Manasa Kandula Esther Lloyd Cleo Schneider Polina Govorkova
 
 ### Introduction
 
-Welcome to the Movie Guru team! In your role as a Site Reliability Engineer on this team, you will work through the challenges to ensure that the app is reliable and performant. 
+Welcome to the Movie Guru team! In your role as a Site Reliability Engineer on this team, you will work through the challenges to ensure that the app is reliable and performant.
 Your first task is to get the application running smoothly in your local environment. You'll set up your development environment using the Cloud Shell editor and interact with the initial version of the Movie Guru application, ensuring a stable starting point for the system.
 
 ### Firebase setup
@@ -93,8 +93,8 @@ The following script enables the required APIs, creates the necessary service ac
   
 - Run the following two queries:
 
-  - “Show me some funny films” (or another genre)
-  - “Show me movies with ratings greater than 3”. (or another rating)
+  - Show me movies with ratings greater than 3 (or another rating).
+  - “Show me some funny films” (or another genre).
   - Note down the number of recommnedations the app returns for each query.
 
 > **Note** Please note that we are running this in the lab environment which makes the application a lot slower and more unpredictable due to the rate limits.
@@ -180,7 +180,7 @@ On the cloud shell environment running this challenge:
 
 ### Introduction
 
-You're now familiar with the Genkit monitoring dashboard. It's time to apply those skills to a real incident. Our Movie Guru app is experiencing issues, and your team has received a report: User preferences aren't being saved.
+Users are reporting that the **MovieGuru** app is experiencing issues: *User preferences aren't being saved*.
 
 To see how preference saving is expected to work, watch this video:
 
@@ -190,7 +190,7 @@ To see how preference saving is expected to work, watch this video:
 
 While exploring stability metrics earlier, you might have observed a specific feature with a concerningly low success rate. This incident confirms users are experiencing problems potentially related to that instability.
 
-Your task is to use the Genkit monitoring dashboard and the application code (/js/flows/) to pinpoint and resolve the root cause of these preference saving failures.
+Your task is to use the Genkit monitoring dashboard and the application code to pinpoint and resolve the root cause of these preference saving failures.
 
 Follow these steps:
 
@@ -246,7 +246,7 @@ Follow these steps:
 - **Hints for finding the error cause**
   The error you're seeing is a *schema mismatch error*. This indicates a discrepancy between the data structure the *userProfileFlow* expects to receive from the model, and the structure the model is *actually* producing based on the prompt's (*userProfile.prompt*) instructions.
 
-  Compare the schema defined in *js/flows/src/userprofiletypes.ts* (which the flow definition *js/flows/src/userprofileflow.ts* relies on) with the output specified (or described) in */js/flows/prompts/userprofile.prompt*. Pay close attention to both the formal *outputSchema* definition of the  file and the system instructions given to the model in the prompt text.
+  The *userProfileFlow* uses the output schema definition found in *userProfileTypes.ts*. Compare the output schema defined in *userprofiletypes.ts* with the output specified in *userprofile.prompt*. Pay close attention to both the formal schema definitions of the prompt file and the *system instructions* given to the model in the prompt text.
 
   To fix the issue you can do one of the following:
 
