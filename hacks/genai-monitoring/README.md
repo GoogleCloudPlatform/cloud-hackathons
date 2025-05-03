@@ -1,4 +1,4 @@
-# Production monitoring of GenAI Features with Firebase Genkit
+# Monitor GenAI apps with Firebase Genkit
 
 ## Introduction
 
