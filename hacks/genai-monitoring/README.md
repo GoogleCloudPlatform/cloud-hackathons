@@ -43,7 +43,7 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ### Clone the Repository and set the environment variables
 
-> **Note** Run this step on the computers of all your team mates.
+> **Note** Run this step on the computers of **all** your team mates.
 
 - Open the **Cloud Shell Editor** and type the following commands.
 
@@ -90,12 +90,6 @@ The following script enables the required APIs, creates the necessary service ac
 - Login using your name.
 
 - Interact with the app and get your first movie recommendation. Then spend time getting to know the **Movie Guru** application by sending it different prompts.
-  
-- Run the following two queries:
-
-  - Show me movies with ratings greater than 3 (or another rating).
-  - “Show me some funny films” (or another genre).
-  - Note down the number of recommnedations the app returns for each query.
 
 > **Note** Please note that we are running this in the lab environment which makes the application a lot slower and more unpredictable due to the rate limits.
 
@@ -104,7 +98,6 @@ The following script enables the required APIs, creates the necessary service ac
 - Your local environment is set up in Cloud Shell.
 - All your teammates have cloned the code repo into their own enviroments.
 - You are able interact with the **Movie Guru** app running on your local Cloud Shell instance.
-- You note down the approx number results for the two types of queries.
 
 ### Learning Resources
 
@@ -124,7 +117,7 @@ The following script enables the required APIs, creates the necessary service ac
 
 On the cloud shell environment running this challenge:
 
-- *Clone the Repository and set the environment variables* from *Challenge 1*.
+
 - *Local Environment Setup* from *Challenge 1*.
 
 ### Introduction
@@ -175,7 +168,6 @@ Your **objective** is to explore the Genkit monitoring dashboard and understand 
 
 On the cloud shell environment running this challenge:
 
-- *Clone the Repository and set the environment variables* from *Challenge 1*.
 - *Local Environment Setup* from *Challenge 1*.
 
 ### Introduction
@@ -261,7 +253,7 @@ Follow these steps:
 
 On the cloud shell environment running this challenge:
 
-- *Clone the Repository and set the environment variables* from *Challenge 1*.
+
 - *Local Environment Setup* from *Challenge 1*.
 
 ### Introduction
