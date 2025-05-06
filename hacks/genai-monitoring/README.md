@@ -18,17 +18,17 @@ This is going to be an introduction to running apps on Cloud Run. We'll dive int
 
 ## Challenges
 
-- Challenge 1: Set up your environment and interact with the app
-- Challenge 2: Explore Monitoring dashboard
+- Challenge 1: Set up your environment
+- Challenge 2: Explore Firebase Genkit Monitoring
 - Challenge 3: Troubleshoot failures
-- Challenge 4: Improve Performance
+- Challenge 4: Improve performance
 - Challenge 5: Improve search quality
 
 ## Contributors
 
 Manasa Kandula Esther Lloyd Cleo Schneider Polina Govorkova
 
-## Challenge 1: Set up your environment and interact with the app
+## Challenge 1: Set up your environment
 
 ### Introduction
 
@@ -53,18 +53,18 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 - Go to the **Firebase Console** and create a new Firebase Web App in the *existing* project.
 - Edit the **set_env_vars.sh** to replace *project_id*, and *firebase config* values.
-  - Hint: During app setup, you will find these values in a code block during the `Add Firebase SDK` step
-  - Hint: If you have already continued to the console, these values can be found by clicking the settings cog next to `Project Overview` in the left-hand nav.
+
+  > **Hint**: During app setup, you will find these values in a code block during the `Add Firebase SDK` step
+  
+  > **Hint**: If you have already continued to the console, these values can be found by clicking the settings cog next to `Project Overview` in the left-hand nav.
 
 ### Local Environment Setup
 
 - Start the application services that run locally in a set of docker containers. This can take a few minutes as we are building many docker images for all the application containers (frontend, webserver, Genkit flows).
 
-    NOTE: This script will need to be run by each person if sharing with a group.
+    > **Note**: This script will need to be run by each person if sharing with a group.
 
     ```sh
-    source set_env_vars.sh
-
     chmod +x start_app.sh
 
     # This step takes several minutes to spin up all services
@@ -78,9 +78,9 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 - Open the *js/flows* folder within the codebase. Find where the application (1) establishes connection with the database, (2) configures Genkit, (3) defines prompts for interacting with the LLM.
 
-  > Hint: The Movie Guru team uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage their prompt variants.
+  > **Hint**: The Movie Guru team uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage their prompt variants.
 
-  > Hint: The Movie Guru team uses [flows](https://firebase.google.com/docs/genkit/flows) to encapsulate AI workflows.
+  > **Hint**: The Movie Guru team uses [flows](https://firebase.google.com/docs/genkit/flows) to encapsulate AI workflows.
 
 ### Test the app
 
@@ -108,7 +108,7 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
   - Data Storage: PostgreSQL with the pgvector extension, used for storing both structured movie data (title, plot, etc.) and vector embeddings for semantic search.
   - Session Management: A Redis cache for storing user session information and conversation history.
 
-## Challenge 2: Explore the Genkit Monitoring dashboard
+## Challenge 2: Explore Firebase Genkit Monitoring
 
 ### Prerequisites
 
@@ -118,7 +118,7 @@ On the cloud shell environment running this challenge:
 
 ### Introduction
 
-As SREs, maintaining the reliability and performance of your application hinges on having tooling to give you visibility into the behavior of a live, production environment. In this challenge, you'll explore the Genkit monitoring dashboard to understand the reliability and performance of the Movie Guru app. This will involve navigating its different sections, understanding the types of data it displays, and learning how to interpret the information presented. This foundational knowledge is crucial for effectively diagnosing and resolving issues in the subsequent challenges.
+As SREs, maintaining the reliability and performance of your application hinges on having tooling to give you visibility into the behavior of a live, production environment. In this challenge, you'll explore the Firebase Genkit monitoring dashboard to understand the reliability and performance of the Movie Guru app. This will involve navigating its different sections, understanding the types of data it displays, and learning how to interpret the information presented. This foundational knowledge is crucial for effectively diagnosing and resolving issues in the subsequent challenges.
 
 ### Description
 
@@ -128,7 +128,7 @@ Your **objective** is to explore the Genkit monitoring dashboard and understand 
   - Based on this high-level view, what potential areas look like they might need attention?
 - **Inspect by feature**: Identify individual GenAI *features* in the app.
 
-  > Hint: There should be 4
+  > **Hint**: There should be 4
 - **Find the critical path**: Isolate the feature handling core user interactions. Analyze its metrics.
   - How healthy is this feature?
   - Where might bottlenecks exist?
@@ -177,9 +177,9 @@ On the cloud shell environment running this challenge:
 
 ### Introduction
 
-The Movie Guru team just released a new version of the app, and since that release, customers have reported that they aren't always seeing their preferences saved correctly.
+The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, *user preferences aren't being saved*. 
 
-Users are reporting that the **MovieGuru** app is experiencing issues: *User preferences aren't being saved*.
+> **Hint**: Maybe we introduced a regression in this release?
 
 To see how preference saving is expected to work, watch this video:
 
@@ -195,7 +195,7 @@ Follow these steps:
 - Examine the failed traces for this feature. What do the error messages and trace details reveal?
 - Identify commonalities among the failures.
 
-> Hint: The **Failed paths** table can help reveal common error patterns.
+> **Hint**: The **Failed paths** table can help reveal common error patterns.
 
 - Determine the underlying cause of the failures based on your trace analysis by exploring the code for the feature you identified.
 
@@ -214,7 +214,6 @@ Follow these steps:
   - Restart the application after fixing it.
   
     ```sh
-    source set_env_vars.sh # Optional: Required if running in a new terminal window
     chmod +x start_app.sh # Optional: Required if first time running the script
     ./start_app.sh
     ```
@@ -223,7 +222,7 @@ Follow these steps:
 
 - You have idenfified the feature with the most failures.
 - You understand the root case of these failures.
-- You have implemented a fix, restarted the application.
+- You have implemented a fix and restarted the application.
 - Queries such as "I love horror movies" consistently adds "horror" to your preferences in the app.
 
 ### Learning resources
@@ -282,11 +281,11 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 - **Inspect trace spans**: Inspect traces and analyze individual spans (stages) within the chatFlow. Identify the longest-running spans.
 - **Pinpoint bottlenecks**: Pinpoint which spans are the primary performance bottlenecks.
 
-  > Hint: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
+  > **Hint**: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
 
 - **Optimize**: Identify one specific way to improve overall latency for the flow. Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
 
-  > Hint: Look at the input to the model call to see what movies are being provided as context.
+  > **Hint**: Look at the input to the model call to see what movies are being provided as context.
 
 - **Implement & Test**: Implement your optimization in the code and restart your app.
 
@@ -295,7 +294,7 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 ### Success criteria
 
 - You found a span that is much slower than its peers.
-- You examined and tested out potential fixes using the **Genkit Developer UI**.
+- You examined and tested out potential fixes (maybe using the **Genkit Developer UI**).
 - You applied the fix in the code and redeployed the app.
 - Interactions with the updated app are faster.
 
@@ -348,7 +347,7 @@ Perform a series of controlled tests to see how the new prompt variant performs.
 - Where does document search happen in the **chatFlow**?
 - Where are the results of that document search used?
 - Find the corresponding code
-  > Hint: Both the prompt and the flow include the term "docSearch" in them
+  > **Hint**: Both the prompt and the flow include the term "docSearch" in them
 
 Now let's do some comparative analysis of the existing version and the new version of the prompt.
 
@@ -359,10 +358,12 @@ Now let's do some comparative analysis of the existing version and the new versi
     - "Show me movies that are shorter than 2 hours"
     - "Show me some funny films"
     - "Show me some movies with dogs in them"
+   
   - How many movies were returned and used as context in the input to the model call?
   
 - **Implement Search Switch**: Modify the application code to adopt the new search strategy.
   - Update the **DocSearchFlow** (defined in the **docRetriever.ts** file) to use the **v2** version of the **docSearch.prompt**, which implements the vector-only search logic.
+
 - **Restart**: Restart the app (or the **Genkit Developer UI**) to allow it to pick up the updated code changes.
 - **Post-Change Test (Vector Search)**: Re-run the test queries in the **chatFlow** flow.
   
@@ -374,8 +375,8 @@ Now let's do some comparative analysis of the existing version and the new versi
 - **Analyze Impact & Diagnose**: Compare the results of the two tests and their traces. Review the differences between the prompt instructions to determine why the vector-only search impacted quality for *some* queries and not others.
   
   - Review the differences between the prompt instructions to better understand what the LLM is being asked 
-  > Hint: focus on the **docSearchFlow**
-  > Hint: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**
+  > **Hint**: focus on the **docSearchFlow**
+  > **Hint**: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**
 
 - **Make a recommendation**: Write up a recommendation as to whether we should roll out this change or stick with the current mixed search.
 
