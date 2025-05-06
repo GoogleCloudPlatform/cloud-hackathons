@@ -276,7 +276,7 @@ You've fixed a major problem, but your work isn't done yet. Users are complainin
 
 ### Description
 
-Inspect the performance of the Movie Guru app using Firebase Genkit Monitoring.
+Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitoring**.
 
 - **Analyze feature latency**: Check P50 and P90 latency for the **chatFlow** feature. Interpret what these metrics indicate about typical and worst-case performance.
 - **Inspect trace spans**: Inspect traces and analyze individual spans (stages) within the chatFlow. Identify the longest-running spans.
@@ -284,10 +284,9 @@ Inspect the performance of the Movie Guru app using Firebase Genkit Monitoring.
 
   > Hint: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
 
-- **Optimize**: Identify one specific way to improve overall latency for the flow.
-  - Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
+- **Optimize**: Identify one specific way to improve overall latency for the flow. Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
 
-  > Hint: Look at the input to the model call to see what movies are being provided as context. 
+  > Hint: Look at the input to the model call to see what movies are being provided as context.
 
 - **Implement & Test**: Implement your optimization in the code and restart your app.
 
@@ -355,23 +354,29 @@ Now let's do some comparative analysis of the existing version and the new versi
 
 - **Baseline Test (Mixed Search)**: Establish baseline performance for the existing mixed search.
   - Run the following queries and note down the results:
+
     - "Show me movies with ratings greater than 3"
     - "Show me movies that are shorter than 2 hours"
     - "Show me some funny films"
     - "Show me some movies with dogs in them"
   - How many movies were returned and used as context in the input to the model call?
+  
 - **Implement Search Switch**: Modify the application code to adopt the new search strategy.
   - Update the **DocSearchFlow** (defined in the **docRetriever.ts** file) to use the **v2** version of the **docSearch.prompt**, which implements the vector-only search logic.
 - **Restart**: Restart the app (or the **Genkit Developer UI**) to allow it to pick up the updated code changes.
 - **Post-Change Test (Vector Search)**: Re-run the test queries in the **chatFlow** flow.
-    - "Show me movies with ratings greater than 3"
-    - "Show me movies that have a runtime shorter than 2 hours"
-    - "Show me some funny films"
-    - "Show me some movies with dogs in them"
+  
+  - "Show me movies with ratings greater than 3"
+  - "Show me movies that have a runtime shorter than 2 hours"
+  - "Show me some funny films"
+  - "Show me some movies with dogs in them"
+
 - **Analyze Impact & Diagnose**: Compare the results of the two tests and their traces. Review the differences between the prompt instructions to determine why the vector-only search impacted quality for *some* queries and not others.
+  
   - Review the differences between the prompt instructions to better understand what the LLM is being asked 
   > Hint: focus on the **docSearchFlow**
   > Hint: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**
+
 - **Make a recommendation**: Write up a recommendation as to whether we should roll out this change or stick with the current mixed search.
 
 ### Success Criteria
