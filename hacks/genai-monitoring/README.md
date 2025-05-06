@@ -207,14 +207,15 @@ Follow these steps:
   - Stop the application. Press Ctrl+C to stop the running containers in the terminal where they are running.
 
     ```sh
-    chmod +x stop_app.sh
+    chmod +x stop_app.sh # Optional: Required if first time running the script
     ./stop_app.sh
     ```
   
   - Restart the application after fixing it.
   
     ```sh
-    source set_env_vars.sh
+    source set_env_vars.sh # Optional: Required if running in a new terminal window
+    chmod +x start_app.sh # Optional: Required if first time running the script
     ./start_app.sh
     ```
 
@@ -242,6 +243,9 @@ Follow these steps:
     Both flows and prompts can have their own input and output data schemas.
 
 - **Useful docker compose commands**
+
+  The application runs inside docker containers. The start_app.sh and stop_app.sh script wrap docker compose commands (and other boilerplate code):
+
   - To build and run containers defined in a dockercompose.yaml file, use `docker compose up --build`. Find more info [here](https://docs.docker.com/compose/reference/up/).
 
   - To bring down running containers defined in a dockercompose.yaml file, use `docker compose down`. Find more info [here](https://docs.docker.com/compose/reference/down/).
