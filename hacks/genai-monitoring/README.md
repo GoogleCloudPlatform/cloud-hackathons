@@ -204,16 +204,18 @@ Follow these steps:
   
 - Apply the necessary code fix and restart the application.
   
-  - Stop the application.
+  - Stop the application. Press Ctrl+C to stop the running containers in the terminal where they are running.
 
     ```sh
-    docker compose down
+    chmod +x stop_app.sh
+    ./stop_app.sh
     ```
   
   - Restart the application after fixing it.
   
     ```sh
-    docker compose up --build
+    source set_env_vars.sh
+    ./start_app.sh
     ```
 
 ### Success criteria
