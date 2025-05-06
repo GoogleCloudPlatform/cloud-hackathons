@@ -56,32 +56,20 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
   - Hint: During app setup, you will find these values in a code block during the `Add Firebase SDK` step
   - Hint: If you have already continued to the console, these values can be found by clicking the settings cog next to `Project Overview` in the left-hand nav.
 
-### Cloud setup
-
-The following script enables the required APIs, creates the necessary service account with roles, and uploads movie poster images to a GCP bucket on your behalf.
-
-- Run setup script. 
-
-    NOTE: This script only needs to be run by one person if shared with a group.
-    ```sh
-    chmod +x setup_cloud.sh
-    ./setup_cloud.sh
-    ```
-
 ### Local Environment Setup
 
 - Start the application services that run locally in a set of docker containers. This can take a few minutes as we are building many docker images for all the application containers (frontend, webserver, Genkit flows).
 
     NOTE: This script will need to be run by each person if sharing with a group.
+
     ```sh
-    chmod +x setup_local.sh
     source set_env_vars.sh
 
-    # Downloads credentials and initializes the database to run in your local environment
-    ./setup_local.sh
+    chmod +x start_app.sh
 
     # This step takes several minutes to spin up all services
-    docker compose up --build
+    ./start_app.sh
+
     ```
 
 - While waiting for services to start, explore how the application operates by examining this architecture diagram and corelating it with the codebase contents.
