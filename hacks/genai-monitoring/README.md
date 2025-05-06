@@ -128,7 +128,7 @@ Your **objective** is to explore the Genkit monitoring dashboard and understand 
   - Based on this high-level view, what potential areas look like they might need attention?
 - **Inspect by feature**: Identify individual GenAI *features* in the app.
 
-  > **Hint**: There should be 4
+  > **Hint**: There should be 3
 - **Find the critical path**: Isolate the feature handling core user interactions. Analyze its metrics.
   - How healthy is this feature?
   - Where might bottlenecks exist?
