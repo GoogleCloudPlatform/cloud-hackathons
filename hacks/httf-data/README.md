@@ -24,8 +24,9 @@ During the process we'll learn about
 - Challenge 1: Migration
 - Challenge 2: Federation
 - Challenge 3: Automation
-- Challenge 4: Semantic search
-- Challenge 5: Generating images
+- Challenge 4: Generating text and embeddings
+- Challenge 5: Semantic search
+- Challenge 6: Generating images
 
 ## Prerequisites
 
@@ -142,29 +143,52 @@ Once the *Application Integration* is available in the Google Cloud Console, ope
 - In principle you could install the `integrationcli` tool on any VM, but the Cloud Shell is the easiest option.
 - If you've installed the tool on Cloud Shell, you can use the `--default-token` option to authenticate.
 
-## Challenge 4: Semantic search
+## Challenge 4: Generating text and embeddings
 
 ### Introduction
 
-In this challenge we'll create enhanced product descriptions and text embeddings for the products table in BigQuery and then use reverse ETL to transfer them over to Spanner.
+In this challenge we'll create enhanced product descriptions and text embeddings for the products table in BigQuery to prepare for semantic search.
 
 ### Description
 
-Add the following two columns `product_description (STRING)` and `product_description_embeddings (ARRAY<FLOAT64>)` to the `products` table in BigQuery. Using an LLM from BigQuery, generate product descriptions based on the product `name`, `brand`, `category`, `department` and `retail_price` information (for the top 100 products? TBD) and store that in the new `product_descriptions` column.
+Add the following two columns `product_description (STRING)` and `product_description_embeddings (ARRAY<FLOAT64>)` to the `products` table in BigQuery. Using an LLM from BigQuery, generate product descriptions based on the product `name`, `brand`, `category`, `department` and `retail_price` information for at least 100 products and store that in the new `product_descriptions` column.
 
-Then using an embeddings model again from BigQuery, generate embeddings for the `product_description` and store it in the new `product_description_embeddings` column.
+> **Note** We're only generating the descriptions for 100 products, as doing it for the complete dataset would take too long.
 
-Once the descriptions and embeddings have been completed, add the same columns `product_description` and `product_description_embeddings` to the `products` table in Spanner, export the data from BigQuery to Spanner through *reverse ETL*, and create the same embeddings model in Spanner.
+Then using an embeddings model again from BigQuery, generate embeddings for the `product_description` column (for the 100 product descriptions that have been generated) and store it in the new `product_description_embeddings` column.
+
+### Success Criteria
+
+- There are two new columns in the BigQuery `products` table: `product_descriptions` and `product_description_embeddings`.
+- The column `product_description` contains the LLM generated product descriptions for at least 100 products.
+- The column `product_description_embbedings` contains the embeddings for the product descriptions.
+  
+### Learning Resources
+
+- [Modifying table schemas in BigQuery](http://cloud.google.com/bigquery/docs/managing-table-schemas)
+- [Generating text using an LLM from BigQuery](https://cloud.google.com/bigquery/docs/generate-text)
+- [Generating text embeddings from BigQuery](https://cloud.google.com/bigquery/docs/generate-text-embedding)
+
+## Challenge 5: Semantic search
+
+### Introduction
+
+In this challenge we'll use reverse ETL to transfer the product descriptions and embeddings over to Spanner. Once the information is available in Spanner we'll implement semantic search through Spanner's embddings capabilities.
+
+### Description
+
+Before we start copying the data from BigQuery to Spanner, let's complete the product descriptions for the whole table. We've prepared a *Worfklow* called `prep-semantic-search`, look it up, execute it with the parameter `embeddings_model_name` value set to the name of the *embeddings model* that was created in the previous challenge. Once this workflow succesfully completes, all products should have descriptions and embeddings.
+
+Now, add the following two columns `product_description` of type `STRING(MAX)` and `product_description_embeddings` of type `ARRAY<FLOAT64>` to the `products` table in Spanner. Export the data from BigQuery to Spanner through *reverse ETL*, and create the same embeddings model in Spanner.
 
 Using the embeddings model in Spanner do a search for the query *Luxury items for women* and return back top 5 items.
 
 ### Success Criteria
 
-- There are two new columns in the BigQuery `products` table: `product_descriptions` and `product_description_embeddings`.
-- The column `product_description` contains the LLM generated product descriptions.
-- The column `product_description_embbedings` contains the embeddings for the product descriptions.
-- The same columns and contents are in the Spanner database.
-- The semantic search on Spanner returns the following products:
+- There are two new columns in the Spanner `products` table: `product_descriptions` and `product_description_embeddings`.
+- The column `product_description` contains the LLM generated product descriptions for all products.
+- The column `product_description_embbedings` contains the embeddings for the product descriptions for all products.
+- The semantic search for *Luxury items for women* on Spanner returns the following products:
 
   - P1
   - P2
@@ -174,14 +198,12 @@ Using the embeddings model in Spanner do a search for the query *Luxury items fo
   
 ### Learning Resources
 
-- [Modifying table schemas in BigQuery](http://cloud.google.com/bigquery/docs/managing-table-schemas)
-- [Generating text using an LLM from BigQuery](https://cloud.google.com/bigquery/docs/generate-text)
-- [Generating text embeddings from BigQuery](https://cloud.google.com/bigquery/docs/generate-text-embedding)
+- [Executing a Workflow](https://cloud.google.com/workflows/docs/executing-workflow#execute_a_workflow)
 - [Making schema updates in Spanner](https://cloud.google.com/spanner/docs/schema-updates)
 - [Exporting data to Spanner (reverse ETL)](https://cloud.google.com/bigquery/docs/export-to-spanner)
 - [Text embeddings in Spanner](https://cloud.google.com/spanner/docs/ml-tutorial-embeddings)
 
-## Challenge 5: Generating images
+## Challenge 6: Generating images
 
 ### Introduction
 
@@ -191,7 +213,7 @@ Now we have product descriptions, we can generate images based on these descript
 
 Create a new Cloud Storage bucket and name it `{YOUR PROJECT ID}-images`.  Update the BigQuery `products` table to include `image_uri` and `image_url` columns.
 
-We've already prepared a the Vertex AI Pipeline code, download it and install its dependencies. Then run the code, it will create a `yaml` file. Navigate to Vertex AI Pipelines and *Create run* with that `yaml` file, provide the required parameters and submit the job.
+We've already prepared a the Vertex AI Pipeline code, download it from `TBD` and install its dependencies. Then run the code, it will create a `yaml` file. Navigate to Vertex AI Pipelines and *Create run* with that `yaml` file, provide the required parameters and submit the job.
 
 ### Success Criteria
 
