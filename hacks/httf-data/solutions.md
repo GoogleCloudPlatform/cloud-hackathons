@@ -22,11 +22,12 @@ Welcome to the coach's guide for the *Hack to the Future: Data Track* gHack. Her
 This will be probably done from the UI, but for the sake of simplicity we'll be documenting the CLI commands here. The following command creates a new Spanner instance with the required configuration.
 
 ```shell
-REGION=...
 MYSQL=`gcloud sql instances list --format='value(NAME)'`
+REGION=`gcloud sql instances describe $MYSQL --format='value(REGION)'`
 SPANNER=onlineboutique
 
 gcloud spanner instances create $SPANNER \
+    --description="Cymbal Online Boutique" \
     --config=regional-$REGION \
     --edition=ENTERPRISE \
     --processing-units=100
@@ -61,11 +62,13 @@ Alternatively the following CLI command would do the same:
 
 ```shell
 MYSQL_IP=`gcloud sql instances describe $MYSQL --format='value(ipAddresses[0].ipAddress)'`
+MYSQL_USR="migration-admin"
+MYSQL_PWD=... # should be provided by coach
 
 gcloud alpha spanner migrate schema-and-data \
     --source=mysql \
     --source-profile="host=$MYSQL_IP,port=3306,user=$MYSQL_USR,dbName=ecom,password=$MYSQL_PWD" \
-    --target-profile="instance=$SPANNER,dbName=ecom"
+    --target-profile="project=$GOOGLE_CLOUD_PROJECT,instance=$SPANNER,dbName=ecom"
 ```
 
 In order to verify the contents, the following SQL in the Spanner Studio can be used.
@@ -149,6 +152,7 @@ integrationcli integrations apply \
     -f hackathon-application-integration \
     -e dev \
     --default-token \
+    --grant-permissions \
     --wait
 ```
 
@@ -273,9 +277,7 @@ FROM ML.GENERATE_EMBEDDING(
       LIMIT 100 
     ),
     STRUCT(
-      TRUE AS flatten_json_output,
-      'SEMANTIC_SIMILARITY' as task_type,
-      768 AS output_dimensionality
+      TRUE AS flatten_json_output
     )
 ) AS t2
 WHERE t1.id = t2.id;
@@ -392,7 +394,7 @@ python3 genai-imagen-pipeline.py
 Easiest option to make the generated `yaml` file to Vertex AI Pipelines is to upload it to the newly created bucket.
 
 ```shell
-gsutil cp genai-imagen-pipeline.yaml $BUCKET
+gsutil cp image-generation-pipeline.yaml $BUCKET
 ```
 
 Now you can pick the `yaml` file from the UI, and provide the following parameters (replace the variables with their values).
@@ -406,5 +408,31 @@ Now you can pick the `yaml` file from the UI, and provide the following paramete
 | table_id | products |
 | record_limit | 1 |
 | token_limit | 480 |
+
+If you want to do this from the command line, you can use the following.
+
+```shell
+cat <<EOF > submit.py
+from google.cloud import aiplatform
+job = aiplatform.PipelineJob(
+    display_name="generate-product-images",
+    template_path="image-generation-pipeline.yaml",
+    pipeline_root="$BUCKET/pipelines",
+    project="$GOOGLE_CLOUD_PROJECT",
+    location="$REGION",
+    parameter_values={
+        "project_id": "$GOOGLE_CLOUD_PROJECT",
+        "location": "$REGION",
+        "dataset_id": "$BQ_DATASET",
+        "table_id": "products",
+        "output_bucket": "$BUCKET"
+    },
+    enable_caching=False
+)
+job.submit()
+EOF
+python3 submit.py
+
+```
 
 > **Note** Running this to completion will take >30 minutes, however first results should be visible in the output bucket after 5 minutes if everything goes well.

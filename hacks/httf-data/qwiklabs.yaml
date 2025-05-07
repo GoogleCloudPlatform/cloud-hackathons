@@ -31,6 +31,7 @@ environment:
   resources:
   - type: gcp_project
     id: project
+    variant: gcp_medium_extra
     startup_script:
       type: qwiklabs
       path: artifacts
@@ -88,6 +89,11 @@ environment:
     reference: user_5.username
   - label: Password 5
     reference: user_5.password
-
+  - label: MySQL Instance
+    reference: project.startup_script.database_name
+  - label: MySQL Database User
+    reference: project.startup_script.database_user
+  - label: MySQL Database Password
+    reference: project.startup_script.database_password
   - label: Project ID
     reference: project.project_id

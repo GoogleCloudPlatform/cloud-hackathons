@@ -48,7 +48,7 @@ This first challenge is all about migrating the legacy database containing the h
 
 ### Description
 
-The legacy MySQL database has already been migrated to Google Cloud as a MySQL instance in your project. Find it and explore its details & contents.
+The legacy MySQL database has already been migrated to Google Cloud as a MySQL instance in your project. Find it and explore its details & contents. The user name and password for the database should be provided to you by your coach.
 
 Create a new *Spanner Enterprise edition* instance called `onlineboutique` with *100 Processing Units* in the same region as the MySQL instance. Then create a new Spanner database with the name `ecom` in the new instance. Once the Spanner database is created, migrate the `ecom` *schema and data* from the MySQL instance to the new Spanner database using the Spanner Migration Tool. Make sure to choose *POC Migration* as the migration type.
 
@@ -123,7 +123,7 @@ Application Integration is an Integration-Platform-as-a-Service (iPaaS) solution
 
 We'll use the `integrationcli` tool to configure the pipeline for removing the historical data from Spanner. Go ahead and follow the [instructions](https://github.com/GoogleCloudPlatform/application-integration-management-toolkit) to install it.
 
-We've already prepared the *Application Integration* pipeline for you at `TBD`, download that to the VM where you installed the `integrationcli` and publish it. Use the same region as the Spanner instance and make sure to set the environment name for the scaffolding to `dev`.
+We've already prepared the *Application Integration* pipeline for you at `TBD`, download that to the VM where you installed the `integrationcli` and publish it. Use the same region as the Spanner instance and make sure to set the environment name for the scaffolding to `dev` and grant permissions.
 
 Once the *Application Integration* is available in the Google Cloud Console, open it and run it by clicking on the *Test* button, and choosing the *Delete Order Items* task (keep the default parameters).
 
@@ -190,11 +190,13 @@ Using the embeddings model in Spanner do a search for the query *Luxury items fo
 - The column `product_description_embbedings` contains the embeddings for the product descriptions for all products.
 - The semantic search for *Luxury items for women* on Spanner returns the following products:
 
-  - P1
-  - P2
-  - P3
-  - P4
-  - P5
+  | id | name | department |
+  | --- | --- | --- |
+  | 13981 | Super Soft Black 3m Insulated Leather Women's Gloves | Women |
+  | 13896 | Black Fleur Di Lis Rhinestone Western Bling Belt | Women |
+  | 13869 | WARMEN Luxury Gift Women Genuine Nappa Soft Leather Lined Long Elbow Gloves | Women |
+  | 13967 | Women's Italian Leather Gloves Lined in Cashmere in Many Colors. Simple By Solo Classe | Women |
+  | 14085 | Luxury Lane Women's Cashmere Lined Lambskin Leather Long Gloves in Black Chocolate or Tobacco | Women |
   
 ### Learning Resources
 
