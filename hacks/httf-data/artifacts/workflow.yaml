@@ -1,0 +1,72 @@
+main:
+    params: [input]
+    steps:
+    - init:
+        assign:
+            - model: ${input.embeddings_model_name}
+    - getProject:
+        call: sys.get_env
+        args:
+            name: GOOGLE_CLOUD_PROJECT_ID
+        result: projectId
+    - loadDescriptions:
+        call: googleapis.bigquery.v2.jobs.query
+        args:
+            projectId: ${projectId}
+            body:
+                useLegacySql: false
+                query: >
+                    ${"
+                    LOAD DATA OVERWRITE cymbal_analytics.product_descriptions
+                    FROM FILES (
+                        format = 'JSON',
+                        uris = ['gs://pr-public-demo-data/tech-immersion-hackathon/exports/product_descriptions.json']
+                    )
+                    "}
+    - insertDescriptions:
+        call: googleapis.bigquery.v2.jobs.query
+        args:
+            projectId: ${projectId}
+            body:
+                useLegacySql: false
+                query: >
+                    ${"
+                    UPDATE cymbal_analytics.products p
+                    SET p.product_description = pd.product_description
+                    FROM cymbal_analytics.product_descriptions pd
+                    WHERE p.id = pd.id AND p.product_description IS NULL
+                    "}
+    - generateEmbeddings:
+        call: googleapis.bigquery.v2.jobs.query
+        args:
+            projectId: ${projectId}
+            body:
+                useLegacySql: false
+                query: >
+                    ${"
+                    UPDATE cymbal_analytics.products AS t1
+                    SET product_description_embeddings = t2.ml_generate_embedding_result
+                    FROM ML.GENERATE_EMBEDDING(
+                        MODEL cymbal_analytics." + model + ",
+                        (SELECT id, product_description as content FROM cymbal_analytics.products WHERE product_description IS NOT NULL),
+                        STRUCT(TRUE AS flatten_json_output)
+                    ) AS t2
+                    WHERE t1.id = t2.id;
+                    "}
+    - verifyCounts:
+        call: googleapis.bigquery.v2.jobs.query
+        args:
+            projectId: ${projectId}
+            body:
+                useLegacySql: false
+                query: >
+                    ${"
+                    SELECT 
+                        COUNT(product_description) as product_description_count, 
+                        COUNT(product_description_embeddings) product_description_embeddings_count 
+                    FROM 
+                        cymbal_analytics.products
+                    "}
+        result: queryResult
+    - returnResults:
+        return: ${queryResult.rows}

@@ -12,5 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 output "project_id" {
-    value = var.gcp_project_id
+  value = var.gcp_project_id
+}
+
+output "database_name" {
+  value = google_sql_database_instance.mysql_source_db.name
+}
+
+output "database_user" {
+  value = google_sql_user.sql_user.name
+}
+
+output "database_password" {
+  value     = google_sql_user.sql_user.password
+  sensitive = true
 }

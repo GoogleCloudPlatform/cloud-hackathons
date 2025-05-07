@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export MYSQL_DB=${mysql_db}
+
+gcloud sql import sql $MYSQL_DB gs://cloud-training/ti25/hackathon-mysql-instance-export.sql --quiet
