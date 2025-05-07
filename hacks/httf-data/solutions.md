@@ -11,8 +11,9 @@ Welcome to the coach's guide for the *Hack to the Future: Data Track* gHack. Her
 - Challenge 1: Migration
 - Challenge 2: Federation
 - Challenge 3: Automation
-- Challenge 4: Semantic search
-- Challenge 5: Generating images
+- Challenge 4: Generating text and embeddings
+- Challenge 5: Semantic search
+- Challenge 6: Generating images
 
 ## Challenge 1: Migration
 
@@ -151,7 +152,7 @@ integrationcli integrations apply \
     --wait
 ```
 
-Running the pipeline from the UI should be trivial, just make sure to stick to the default parameters. See below for the alternative CLI command to run it.
+Running the pipeline from the UI should be straight-forward, just make sure to stick to the default parameters. See below for the alternative CLI command to run it.
 
 ```shell
 URL="https://integrations.googleapis.com/v1/projects/$GOOGLE_CLOUD_PROJECT/locations/$REGION/integrations/cleanup-spanner:execute"
@@ -187,7 +188,7 @@ ORDER BY
   table_name;
 ```
 
-## Challenge 4: Semantic search
+## Challenge 4: Generating text and embeddings
 
 ### Notes & Guidance
 
@@ -280,53 +281,33 @@ FROM ML.GENERATE_EMBEDDING(
 WHERE t1.id = t2.id;
 ```
 
-Once the embeddings are ready, we can do a search.
+Verifying things could be done by doing a basic count on the number of non-empty rows, which should be greater than or equal to 100 for both columns.
 
 ```sql
-SELECT
-  distance,
-  base.id,
-  base.category,
-  base.department,
-  base.name,
-  base.product_description,
-  base.brand,
-  base.retail_price,
-  base.cost
-FROM VECTOR_SEARCH(
-  -- base table or subquery
-  (SELECT * FROM $BQ_DATASET.products WHERE product_description IS NOT NULL),
-  -- embedding column to search in base table
-  'product_description_embeddings',
-  -- query table or subquery - this is where you generate the search embedding
-  (
-    SELECT ml_generate_embedding_result, content AS query
-    FROM ML.GENERATE_EMBEDDING(
-      MODEL `$BQ_DATASET.text_embeddings`,
-        (
-          -- Modify search term here to look for other products
-          SELECT "Luxury items for men" AS content
-        ),
-        STRUCT(
-          TRUE AS flatten_json_output,
-          'SEMANTIC_SIMILARITY' as task_type,
-          768 AS output_dimensionality
-        )
-    )
-  ),
-  top_k => 5, -- Number of results
-  distance_type => 'COSINE'
-)
+SELECT COUNT(*) FROM cymbal_analytics.products WHERE product_description IS NOT NULL;
+SELECT COUNT(*) FROM cymbal_analytics.products WHERE ARRAY_LENGTH(product_description_embeddings) > 0;
 ```
 
-Next task is to do the reverse ETL, before we copy the data, let's create the corresponding columns in the products table.
+## Challenge 5: Semantic search
+
+### Notes & Guidance
+
+You can run the workflow from the UI, but again for the sake of simplicity we'll be using CLI commands. Keep in mind that the parameter `embeddings_model_name` is how the embeddings model has been named in BigQuery (without the dataset name).
+
+```shell
+gcloud workflows run prep-semantic-search \
+  --location=$REGION \
+  --data='{"embeddings_model_name": "text_embeddings"}'
+```
+
+Next task is to do the reverse ETL. Before we copy the data we need to create the corresponding columns in the products table.
 
 ```sql
 ALTER TABLE products ADD COLUMN product_description STRING(MAX);
 ALTER TABLE products ADD COLUMN product_description_embeddings ARRAY<FLOAT64>;
 ```
 
-Now we can export the data.
+Now we can export the data (note that this requires a BigQuery Enterprise Edition configuration, but the setup scripts should have taken care of that).
 
 ```sql
 EXPORT DATA OPTIONS (
@@ -337,7 +318,7 @@ EXPORT DATA OPTIONS (
   AS SELECT * FROM `$BQ_DATASET.products`;
 ```
 
-This should replicate the data in Spanner, let's create the model in Spanner (make sure that the model versions match with what was chosen in BigQuery).
+This should replicate the data in Spanner. Let's create the model in Spanner (make sure that the model versions match with what was chosen in BigQuery).
 
 ```sql
 CREATE MODEL IF NOT EXISTS text_embeddings 
@@ -350,7 +331,7 @@ CREATE MODEL IF NOT EXISTS text_embeddings
     )
 ```
 
-With the model you can then query for natural language.
+With the model you can then do searches using natural language.
 
 ```sql
 WITH embedding AS (
@@ -358,7 +339,7 @@ WITH embedding AS (
     FROM ML.PREDICT(
         MODEL text_embeddings, 
         (
-            SELECT 'Luxury items for men' as content
+            SELECT 'Luxury items for women' as content
         )
     )
 ) 
@@ -375,7 +356,7 @@ ORDER BY dist
 LIMIT 5;
 ```
 
-## Challenge 5: Generating images
+## Challenge 6: Generating images
 
 ### Notes & Guidance
 
