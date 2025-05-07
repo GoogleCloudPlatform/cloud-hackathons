@@ -132,8 +132,6 @@ Your **objective** is to explore the Genkit monitoring dashboard and understand 
 - **Find the critical path**: Isolate the feature handling core user interactions. Analyze its metrics.
   - How healthy is this feature?
   - Where might bottlenecks exist?
-  - Where is the code for this feature?
-  - Where is the prompt template for this feature?
 - **Inspect individual requests**: Interact with the app to generate a fresh trace.
   - Find the specific trace for this new interaction.
   - What information went into generating the response you saw in the app?
@@ -243,7 +241,7 @@ Follow these steps:
 
 - **Useful docker compose commands**
 
-  The application runs inside docker containers. The start_app.sh and stop_app.sh script wrap docker compose commands (and other boilerplate code):
+  The application runs inside docker containers. The start_app.sh and stop_app.sh scripts wrap docker compose commands (and other boilerplate code):
 
   - To build and run containers defined in a dockercompose.yaml file, use `docker compose up --build`. Find more info [here](https://docs.docker.com/compose/reference/up/).
 
@@ -338,18 +336,16 @@ As SREs, your task is to manage the rollout of this change, observe its effect o
 
 ### Description
 
-Perform a series of controlled tests to see how the new prompt variant performs.
-
 > Note: If using the **Genkit Developer UI**, navigate to the *chatFlow* in the flows section of the left nav.
 
-**chatFlow** uses several other flows to create a complex AI workflow. First, let's orient ourselves to where vector-search comes into play.
+**chatFlow** uses several other flows to create a complex AI workflow. First, orient yourselves to where vector-search comes into play.
 
 - Where does document search happen in the **chatFlow**?
 - Where are the results of that document search used?
 - Find the corresponding code
   > **Hint**: Both the prompt and the flow include the term "docSearch" in them
 
-Now let's do some comparative analysis of the existing version and the new version of the prompt.
+Do some comparative analysis of the existing version and the new version of the prompt.
 
 - **Baseline Test (Mixed Search)**: Establish baseline performance for the existing mixed search.
   - Run the following queries and note down the results:
@@ -358,7 +354,7 @@ Now let's do some comparative analysis of the existing version and the new versi
     - "Show me movies that are shorter than 2 hours"
     - "Show me some funny films"
     - "Show me some movies with dogs in them"
-   
+
   - How many movies were returned and used as context in the input to the model call?
   
 - **Implement Search Switch**: Modify the application code to adopt the new search strategy.
@@ -374,11 +370,11 @@ Now let's do some comparative analysis of the existing version and the new versi
 
 - **Analyze Impact & Diagnose**: Compare the results of the two tests and their traces. Review the differences between the prompt instructions to determine why the vector-only search impacted quality for *some* queries and not others.
   
-  - Review the differences between the prompt instructions to better understand what the LLM is being asked 
+  - Review the differences between the prompt instructions to better understand what the LLM is being asked.
   > **Hint**: focus on the **docSearchFlow**
   > **Hint**: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**
 
-- **Make a recommendation**: Write up a recommendation as to whether we should roll out this change or stick with the current mixed search.
+- **Make a recommendation**: Give a recommendation to the product team as to whether we should roll out this change or stick with the current mixed search.
 
 ### Success Criteria
 
