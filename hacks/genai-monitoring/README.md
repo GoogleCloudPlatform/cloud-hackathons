@@ -181,8 +181,6 @@ On the cloud shell environment running this challenge:
 
 The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, _user preferences aren't being saved_.
 
-> **Hint**: Maybe we introduced a regression in this release?
-
 To see how preference saving is expected to work, watch this video:
 
 [![Movie Guru](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)

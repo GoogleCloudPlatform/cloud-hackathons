@@ -91,31 +91,86 @@ There are couple of points where things *may* go wrong:
 
 ### Notes & Guidance
 
-In this challenge users will use the firebase monitoring dashboard to understand the reliability and performance of the app.
+In this challenge, users will use the Firebase Genkit monitoring dashboard to understand the reliability and performance of the app.
 
-The genkit monitoring dashboard can be found in the [firebase console](https://console.firebase.google.com/) > the qwiklab project > product categories > AI > Genkit tab. See ![here](./images/genkit_monitoring.png).
+The Genkit monitoring dashboard can be found in the [Firebase console](https://console.firebase.google.com/) by navigating to:
+Your Qwiklab project > **Product categories** (sidebar) > **AI** > **Genkit** tab.
 
-Once the metrics start trikling in, the dashboard should look like the following.
-![this](./images/genkit_dash.png)
+Here's an example of where to find it:
+![Firebase console navigation to Genkit monitoring](./images/genkit_monitoring.png)
+
+Once the metrics start trickling in, the dashboard should look similar to this:
+![Genkit monitoring dashboard overview](./images/genkit_dash.png)
 
 > **Note** Until the metrics come in, the **Genkit Monitoring** page might look like a documentation page without any dashboards. Don't panic. Give it a few minutes and refresh.
 
-The users might notice that there are 3 dashboards **Requests**, **Success Rate**, and **Latency**. The Success Rate dashboard might show that one feature (UserProfileFlow) have a low success rate.
+Users might notice three main dashboards:
+- **Requests**
+- **Success Rate**
+- **Latency**
+The **Success Rate** dashboard might show that one feature (e.g., `UserProfileFlow`) has a low success rate.
 
-There are about 4 features in the dashboard (chatFlow, docSearchFlow, userPreferenceFlow, qualityFlow). While chatFlow is our most important feature, the other 3 features also require monitoring.
-Features can be thought of as monitoring scopes, so every independantly invoked Genkit flow (orchestration) creates a new feature.
+There are approximately four key features displayed in the dashboard:
+- `chatFlow`
+- `docSearchFlow`
+- `userPreferenceFlow`
+- `qualityFlow`
+While `chatFlow` is a critical feature, the others also require monitoring. Features can be thought of as monitoring scopes, so every independently invoked Genkit flow (orchestration) creates a new feature entry.
 
-The **chatFlow** handles core user interactions. Clicking on this feature should show individual metrics for that feature. 
+The **chatFlow** handles core user interactions. Clicking on this feature will display individual metrics for that specific flow.
+!chatFlow Dashboard
 
-![chatFlow Dashboard](./images/chatFlow_dashboard.png)
+Individual traces will provide a detailed breakdown of a flow's execution, similar to the example below.
 
-Individual traces should look like the following
+When a user gets recommendations, a trace might typically include the following steps (or spans):
+- `safetyIssueFlow`
+- `queryTransformFlow`
+- `docSearchFlow`
+- `movieQAFlow`
+If no search is required for a particular query, the `docSearchFlow` span will be absent.
+Each step (or span) in the trace will show its latency.
+ !chatFlow Trace
+ 
+ By clicking on the tri-dot menu (three vertical dots) next to a trace or span, users can access related logs and traces in Google Cloud Logging and Google Cloud Trace for more in-depth observability.
 
-There should be 4 steps in a trace where a user gets recommendations: the safetyIssueFlow, queryTransformFlow, docSearchFlow, and movieQAFlow. If there is no search required, the docSearchFlow will be absent.
-Each step (or span) in the trace should show the latency of the trace.
+## Challenge 3: Troubleshoot failures
 
-![chatFlow Trace](./images/chatFlow_Trace.png)
+### Notes & Guidance
 
-By clicking on the tri-dot menu, they should be able to find the same information in Google Cloud Observability.
+In this challenge we see that the **MovieGuru** app doesn't always store the user's strong preferences when they express it (eg: I love horror movies, I hate drama films etc).
 
+To see how preference saving is expected to work, watch this video:
+
+[![Movie Guru](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
+
+The user's need to identify that the flow that has issues is the userPreferencesFlow defined in  _js/flows/src/userPreferenceFlow.ts_. 
+
+The user's will see the following error message if they inspect a failed trace in the dashboard. Users can use the **failed paths** table (aggregates failures of the same nature in a feature) to find the reason. The dashboard should look like the following.
+
+![UserPreferencesFlow Failed Traces](./images/userPreferencesFlow_failedPaths.png)
+
+Clicking on a individual failed trace also shows the error. 
+
+![UserPreferencesFlow Error](./images/userPreferencesFlow_error.png)
+
+```
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "justification",
+      "safetyIssue",
+      "items"
+    ],
+    "path": [],
+    "message": "Unrecognized key(s) in object: 'justification', 'safetyIssue', 'items'"
+  }
+]
+```
+
+The error is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's instructiSons. 
+
+The app is currently using the experimental prompt (_js/flows/prompts/userPreference.experimental.prompt_). This prompt has an error as it provides conficting information. In the prompt text, it asks the model to return a list of items of type **string**, while the Flow expects a list of items of type **profileChangeRecommendations**
+
+```
 
