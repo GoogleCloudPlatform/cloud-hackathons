@@ -370,4 +370,5 @@ Now you are ready to do some comparative analysis of the existing version and th
 - [Managing prompt versions](https://firebase.google.com/docs/genkit/dotprompt#prompt_variants)
 - [Search Strategies](https://cloud.google.com/vertex-ai/docs/vector-search/about-hybrid-search#why-does-hybrid-search-matter)
 
- > **Hint**: focus on the **docSearchFlow** > **Hint**: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**
+ > **Hint**: focus on the **docSearchFlow** > **Hint**: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**.
+ 
