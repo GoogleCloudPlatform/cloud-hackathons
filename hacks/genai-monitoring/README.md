@@ -51,32 +51,38 @@ git checkout ghack-genkit-monitoring
 
 To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in Firebase.
 
-- Go to the **Firebase Console** and create a new Firebase Web App in the *existing* project.
-- Edit the **set_env_vars.sh** to replace *project_id*, and *firebase config* values.
+- Go to the **Firebase Console** and create a new Firebase Web App in the _existing_ project.
+- Edit the **set_env_vars.sh** to replace _project_id_, and _firebase config_ values.
 
   > **Hint**: During app setup, you will find these values in a code block during the `Add Firebase SDK` step
-  
+
   > **Hint**: If you have already continued to the console, these values can be found by clicking the settings cog next to `Project Overview` in the left-hand nav.
 
 ### Local Environment Setup
 
-- Start the application services that run locally in a set of docker containers. This can take a few minutes as we are building many docker images for all the application containers (frontend, webserver, Genkit flows).
+- Start the application
 
-    > **Note**: This script will need to be run by each person if sharing with a group.
+  > **Note**: This script will need to be run by each person if sharing with a group.
 
-    ```sh
-    chmod +x start_app.sh
+  ```sh
+  chmod +x start_app.sh
 
-    # This step takes several minutes to spin up all services
-    ./start_app.sh
+  # This step takes several minutes to spin up all docker
+  # images for the application containers (frontend, webserver,
+  # and Genkit flows).
+  ./start_app.sh
 
-    ```
+  ```
 
-- While waiting for services to start, explore how the application operates by examining this architecture diagram and corelating it with the codebase contents.
+- While waiting for services to start, explore the application architecture and connect it to the codebase.
 
 ![Architecture diagram](images/architecture-diagram.png)
 
-- Open the *js/flows* folder within the codebase. Find where the application (1) establishes connection with the database, (2) configures Genkit, (3) defines prompts for interacting with the LLM.
+- Open the _js/flows_ folder within the codebase. Find where the application -
+
+  1. Establishes connection with the database
+  1. Configures Genkit
+  1. Defines prompts for interacting with the LLM.
 
   > **Hint**: The Movie Guru team uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage their prompt variants.
 
@@ -84,11 +90,11 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ### Test the app
 
-- Once all the containers are running, access it by opening <http://localhost:8080> in your browser. If you are using the Cloud Shell editor, view the website by clicking on the **WebPreview** button on the top right of the editor (it looks like a browser icon with a diamond in it) and selecting port **8080**.
+- Access the Movie Guru app on <http://localhost:8080> by clicking the **WebPreview** button on the top right of the editor (it looks like a browser icon with a diamond in it) and selecting port **8080**.
 
 - Login using your name.
 
-- Interact with the app and get your first movie recommendation. Then spend time getting to know the **Movie Guru** application by chatting with it.
+- Get to know the **Movie Guru** application by chatting with it.
 
 ### Success Criteria
 
@@ -114,30 +120,28 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 On the cloud shell environment running this challenge:
 
-- *Local Environment Setup* from *Challenge 1*.
+- _Local Environment Setup_ from _Challenge 1_.
 
 ### Introduction
 
-As SREs, maintaining the reliability and performance of your application hinges on having tooling to give you visibility into the behavior of a live, production environment. In this challenge, you'll explore the Firebase Genkit monitoring dashboard to understand the reliability and performance of the Movie Guru app. This will involve navigating its different sections, understanding the types of data it displays, and learning how to interpret the information presented. This foundational knowledge is crucial for effectively diagnosing and resolving issues in the subsequent challenges.
+As SREs, maintaining the reliability and performance of your application hinges on having tooling to give you visibility into the behavior of a live, production environment.
+
+In this challenge, you'll explore the Firebase Genkit monitoring dashboard to understand the reliability and performance of the Movie Guru app by navigating to difference sections, understanding the types of data it displays, and learning how to interpret the information presented. This foundational knowledge is crucial for effectively diagnosing and resolving issues in the subsequent challenges.
 
 ### Description
 
 Your **objective** is to explore the Genkit monitoring dashboard and understand application performance and execution.
 
-- **Assess overall health**: Review key aggregate stability metrics across the project.
-  - Based on this high-level view, what potential areas look like they might need attention?
-- **Inspect by feature**: Identify individual GenAI *features* in the app.
-
-  > **Hint**: There should be 3
-- **Find the critical path**: Isolate the feature handling core user interactions. Analyze its metrics.
-  - How healthy is this feature?
-  - Where might bottlenecks exist?
-- **Inspect individual requests**: Interact with the app to generate a fresh trace.
-  - Find the specific trace for this new interaction.
-  - What information went into generating the response you saw in the app?
-  - Identify the specific steps that were performed to respond to a user (e.g., model calls, data retrieval). Where is the code for each step?
-- **Leverage integrated observability**: From the trace details, use the tri-dot menu to access related logs and traces in *Google Cloud Logging* and *Google Cloud Trace*.
-  - What additional context do these tools provide?
+1. **Assess overall health**: Based on this high-level view, what potential areas look like they might need attention?
+1. **Inspect by feature**: Identify individual GenAI _features_ in the app.
+1. **Find the critical path**: Isolate the feature handling core user interactions. Analyze its metrics.
+   - How healthy is this feature?
+   - Where might bottlenecks exist?
+1. **Inspect individual requests**: Interact with the app to generate a fresh trace.
+   - Find the specific trace for this new interaction.
+   - Identify the specific steps that were performed to respond to a user (e.g., model calls, data retrieval). Where is the code for each step?
+1. **Leverage integrated observability**: From the trace details, use the tri-dot menu to access related logs and traces in _Google Cloud Logging_ and _Google Cloud Trace_.
+   - What additional context do these tools provide?
 
 ### Success Criteria
 
@@ -153,11 +157,11 @@ Your **objective** is to explore the Genkit monitoring dashboard and understand 
 - [Observability on Google Cloud](https://cloud.google.com/stackdriver/docs)
 - **Genkit Feature**
 
-    In the context of Genkit monitoring and observability, a **feature** represents a distinct, identifiable functional component or capability within your Genkit application.
+  In the context of Genkit monitoring and observability, a **feature** represents a distinct, identifiable functional component or capability within your Genkit application.
 
-    These features serve as logical units for which performance metrics (such as request count, success rate, and latency) and execution traces are aggregated and displayed in the Genkit monitoring dashboard.
+  These features serve as logical units for which performance metrics (such as request count, success rate, and latency) and execution traces are aggregated and displayed in the Genkit monitoring dashboard.
 
-    Think of a feature as a specific task or workflow segment that you want to observe and analyze independently. Examples in an application could include:
+  Think of a feature as a specific task or workflow segment that you want to observe and analyze independently. Examples in an application could include:
 
   - Handling a specific type of user query (e.g., "Movie Search").
   - Executing a particular agentic step or tool use.
@@ -171,11 +175,11 @@ Your **objective** is to explore the Genkit monitoring dashboard and understand 
 
 On the cloud shell environment running this challenge:
 
-- *Local Environment Setup* from *Challenge 1*.
+- _Local Environment Setup_ from _Challenge 1_.
 
 ### Introduction
 
-The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, *user preferences aren't being saved*. 
+The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, _user preferences aren't being saved_.
 
 > **Hint**: Maybe we introduced a regression in this release?
 
@@ -187,34 +191,32 @@ To see how preference saving is expected to work, watch this video:
 
 Your task is to use the Genkit monitoring dashboard and the application code to pinpoint and resolve the root cause of these preference saving failures.
 
-Follow these steps:
+1. Identify the feature and corresponding Genkit flow that is responsible for handling user preference updates.
+1. Examine the failed traces for this feature. What do the error messages and trace details reveal?
+1. Identify commonalities among the failures.
+   > **Hint**: The **Failed paths** table can help reveal common error patterns.
+1. Determine the underlying cause of the failures based on your trace analysis by exploring the code for the feature you identified.
+   - Find the hints in the code files _js/flows/src/userPreferenceFlow.ts_ and _js/flows/src/userPreferenceTypes.ts_.
+   - If you're really stuck, check the **Learning Resources** for more hints.
+1. Apply the necessary code fix and restart the application.
 
-- Identify the feature and corresponding Genkit flow that is responsible for handling user preference updates.
-- Examine the failed traces for this feature. What do the error messages and trace details reveal?
-- Identify commonalities among the failures.
+   - Stop the application. Press Ctrl+C to stop the running containers in the terminal where they are running.
 
-> **Hint**: The **Failed paths** table can help reveal common error patterns.
+     ```sh
+     # Optional: Required if first time running the script
+     chmod +x stop_app.sh
 
-- Determine the underlying cause of the failures based on your trace analysis by exploring the code for the feature you identified.
+     ./stop_app.sh
+     ```
 
-  - Find the hints in the code files *js/flows/src/userPreferenceFlow.ts* and *js/flows/src/userPreferenceTypes.ts*.
-  - If you're really stuck, check the **Learning Resources** for more hints.
-  
-- Apply the necessary code fix and restart the application.
-  
-  - Stop the application. Press Ctrl+C to stop the running containers in the terminal where they are running.
+   - Restart the application after fixing it.
 
-    ```sh
-    chmod +x stop_app.sh # Optional: Required if first time running the script
-    ./stop_app.sh
-    ```
-  
-  - Restart the application after fixing it.
-  
-    ```sh
-    chmod +x start_app.sh # Optional: Required if first time running the script
-    ./start_app.sh
-    ```
+     ```sh
+     # Optional: Required if first time running the script
+     chmod +x start_app.sh
+
+     ./start_app.sh
+     ```
 
 ### Success criteria
 
@@ -230,14 +232,14 @@ Follow these steps:
 - [Input and Output schemas in genkit flows](https://firebase.google.com/docs/genkit/flows#input_and_output_schemas)
 
 - **Prompts and Flows in Genkit**:
-  
-    A *flow* is the executable unit – it defines and orchestrates a sequence of steps (the process) and can contain multiple sub-steps like other flows, prompts, retrievers, tools, etc.
 
-    A *prompt* is data – the input sent to an AI model plugin within a step of that flow, and the output received from the model in that step.
+  A _flow_ is the executable unit – it defines and orchestrates a sequence of steps (the process) and can contain multiple sub-steps like other flows, prompts, retrievers, tools, etc.
 
-    So, you execute a flow, and within the flow's steps, prompts are used to interact with AI models. They differ because the flow is the action that runs, while the prompt is the content exchanged during a specific step involving an AI model.
+  A _prompt_ is data – the input sent to an AI model plugin within a step of that flow, and the output received from the model in that step.
 
-    Both flows and prompts can have their own input and output data schemas.
+  So, you execute a flow, and within the flow's steps, prompts are used to interact with AI models. They differ because the flow is the action that runs, while the prompt is the content exchanged during a specific step involving an AI model.
+
+  Both flows and prompts can have their own input and output data schemas.
 
 - **Useful docker compose commands**
 
@@ -248,16 +250,16 @@ Follow these steps:
   - To bring down running containers defined in a dockercompose.yaml file, use `docker compose down`. Find more info [here](https://docs.docker.com/compose/reference/down/).
 
 - **Hints for finding the error cause**
-  The error you're seeing is a *schema mismatch error*. This indicates a discrepancy between the data structure the *userPreferenceFlow* expects to receive from the model, and the structure the model is *actually* producing based on the prompt's (*userPreference.prompt*) instructions.
+  The error you're seeing is a _schema mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
 
-  The *UserPreferenceFlow* uses the output schema definition found in *userProfileTypes.ts*. Compare the output schema defined in *UserPreferenceTypes.ts* with the output specified in *userPreference.prompt* and its variants. Pay close attention to both the formal schema definitions of the prompt file and the *system instructions* given to the model in the prompt text.
+  The _UserPreferenceFlow_ uses the output schema definition found in _userProfileTypes.ts_. Compare the output schema defined in _UserPreferenceTypes.ts_ with the output specified in _userPreference.prompt_ and its variants. Pay close attention to both the formal schema definitions of the prompt file and the _system instructions_ given to the model in the prompt text.
 
   To fix the issue you can do one of the following:
 
-  - Fix the prompt and add an output schema definition to the prompt (*userProfile.v2.prompt*). OR
-  - Downgrade the flow to use *userProfile.prompt*.
-  
-  If you are unsure of the difference between a *flow* and a *prompt*, check out the section **Prompts and Flows in Genkit**.
+  - Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_). OR
+  - Downgrade the flow to use _userProfile.prompt_.
+
+  If you are unsure of the difference between a _flow_ and a _prompt_, check out the section **Prompts and Flows in Genkit**.
 
 ## Challenge 4: Improve performance
 
@@ -265,7 +267,7 @@ Follow these steps:
 
 On the cloud shell environment running this challenge:
 
-- *Local Environment Setup* from *Challenge 1*.
+- _Local Environment Setup_ from _Challenge 1_.
 
 ### Introduction
 
@@ -275,19 +277,14 @@ You've fixed a major problem, but your work isn't done yet. Users are complainin
 
 Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitoring**.
 
-- **Analyze feature latency**: Check P50 and P90 latency for the **chatFlow** feature. Interpret what these metrics indicate about typical and worst-case performance.
-- **Inspect trace spans**: Inspect traces and analyze individual spans (stages) within the chatFlow. Identify the longest-running spans.
-- **Pinpoint bottlenecks**: Pinpoint which spans are the primary performance bottlenecks.
-
-  > **Hint**: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
-
-- **Optimize**: Identify one specific way to improve overall latency for the flow. Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
-
-  > **Hint**: Look at the input to the model call to see what movies are being provided as context.
-
-- **Implement & Test**: Implement your optimization in the code and restart your app.
-
-  > Extra: Genkit provides local tooling called the Developer UI to help you iterate on prompts and flows more quickly. See the learning resources below to give it a try.
+1. **Analyze feature latency**: Check P50 and P90 latency for the **chatFlow** feature. Interpret what these metrics indicate about typical and worst-case performance.
+1. **Inspect trace spans**: Inspect traces and analyze individual spans (stages) within the chatFlow. Identify the longest-running spans.
+1. **Pinpoint bottlenecks**: Pinpoint which spans are the primary performance bottlenecks.
+   > **Hint**: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
+1. **Optimize**: Identify one specific way to improve overall latency for the flow.
+   - Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
+1. **Implement & Test**: Implement your optimization in the code and restart your app.
+   > Extra: Genkit provides local tooling called the Developer UI to help you iterate on prompts and flows more quickly. See the learning resources below to give it a try.
 
 ### Success criteria
 
@@ -303,7 +300,7 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 
 Testing locally with the Genkit Developer UI can help you iterate more quickly on prompts and flows. If you want to set this up, follow the instructions below:
 
-- Navigate in the *terminal* to the *flows* folder.
+- Navigate in the _terminal_ to the _flows_ folder.
 - Run the following command
 
   ```sh
@@ -314,7 +311,7 @@ Testing locally with the Genkit Developer UI can help you iterate more quickly o
 
 - Navigate to <http://localhost:4000> (using the **WebPreview** feature of cloudshell).
 - Change the code. Then, use the Genkit developer UI to run the flow locally and verify the change.
-  
+
 > **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
 ## Challenge 5: Improving search quality
@@ -323,8 +320,8 @@ Testing locally with the Genkit Developer UI can help you iterate more quickly o
 
 On the cloud shell environment running this challenge:
 
-- *Local Environment Setup* from *Challenge 1*.
-- (Optional) Setup the **Genkit Developer UI** in *Challenge 4*.
+- _Local Environment Setup_ from _Challenge 1_.
+- (Optional) Setup the **Genkit Developer UI** in _Challenge 4_.
 
 ### Introduction
 
@@ -332,49 +329,40 @@ The **MovieGuru** Product team is evolving the app's search capabilities. To pot
 
 The new "V2" configuration switches to purely vector-based search.
 
-As SREs, your task is to manage the rollout of this change, observe its effect on search quality, and investigate the underlying technical reasons for any observed degradation in performance.
-
 ### Description
 
-> Note: If using the **Genkit Developer UI**, navigate to the *chatFlow* in the flows section of the left nav.
+Your task is to manage the rollout of this change, observe its effect on search quality, and investigate the underlying technical reasons for any observed degradation in performance.
 
-**chatFlow** uses several other flows to create a complex AI workflow. First, orient yourselves to where vector-search comes into play.
+> Note: If using the **Genkit Developer UI**, navigate to the _chatFlow_ in the flows section of the left nav.
+
+#### Find the relevant code
+
+**chatFlow** uses several other flows to create a complex AI workflow.
 
 - Where does document search happen in the **chatFlow**?
 - Where are the results of that document search used?
 - Find the corresponding code
   > **Hint**: Both the prompt and the flow include the term "docSearch" in them
 
-Do some comparative analysis of the existing version and the new version of the prompt.
+#### Perform comparative analysis
 
-- **Baseline Test (Mixed Search)**: Establish baseline performance for the existing mixed search.
-  - Run the following queries and note down the results:
+Now you are ready to do some comparative analysis of the existing version and the new version of the prompt.
 
-    - "Show me movies with ratings greater than 3"
-    - "Show me movies that are shorter than 2 hours"
-    - "Show me some funny films"
-    - "Show me some movies with dogs in them"
-
-  - How many movies were returned and used as context in the input to the model call?
-  
-- **Implement Search Switch**: Modify the application code to adopt the new search strategy.
-  - Update the **DocSearchFlow** (defined in the **docRetriever.ts** file) to use the **v2** version of the **docSearch.prompt**, which implements the vector-only search logic.
-
-- **Restart**: Restart the app (or the **Genkit Developer UI**) to allow it to pick up the updated code changes.
-- **Post-Change Test (Vector Search)**: Re-run the test queries in the **chatFlow** flow.
-  
-  - "Show me movies with ratings greater than 3"
-  - "Show me movies that have a runtime shorter than 2 hours"
-  - "Show me some funny films"
-  - "Show me some movies with dogs in them"
-
-- **Analyze Impact & Diagnose**: Compare the results of the two tests and their traces. Review the differences between the prompt instructions to determine why the vector-only search impacted quality for *some* queries and not others.
-  
-  - Review the differences between the prompt instructions to better understand what the LLM is being asked.
-  > **Hint**: focus on the **docSearchFlow**
-  > **Hint**: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**
-
-- **Make a recommendation**: Give a recommendation to the product team as to whether we should roll out this change or stick with the current mixed search.
+1. **Baseline Test (Mixed Search)**: Establish baseline performance for the existing mixed search by running the following queries and note down the results:
+   - "Show me movies with ratings greater than 3"
+   - "Show me movies that are shorter than 2 hours"
+   - "Show me some funny films"
+   - "Show me some movies with dogs in them"
+1. **Examine retrieval performance**: How many movies were returned and used as context in the input to the model call?
+1. **Implement Search Switch**: Modify the application code to adopt the new search strategy.
+   - Update the **DocSearchFlow** (defined in the **docRetriever.ts** file) to use the **v2** version of the **docSearch.prompt**, which implements the vector-only search logic.
+1. **Restart**: Restart the app (or the **Genkit Developer UI**) to allow it to pick up the updated code changes.
+1. **Post-Change Test (Vector Search)**: Re-run the test queries above and note down the results.
+1. **Analyze Impact & Diagnose**: Compare the results of the two tests and their traces.
+   - Review the differences between the prompt instructions to determine why the vector-only search impacted quality for _some_ queries and not others.
+   - Review the differences between the prompt instructions to better understand what the LLM is being asked.
+     > **Hint**: focus on the **docSearchFlow** > **Hint**: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**
+1. **Make a recommendation**: Form a recommendation for the product team as to whether we should roll out this change or stick with the current mixed search.
 
 ### Success Criteria
 
