@@ -259,8 +259,7 @@ Your task is to use the Genkit monitoring dashboard and the application code to 
 
   If you are unsure of the difference between a _flow_ and a _prompt_, check out the section **Prompts and Flows in Genkit**.
 
-> **Hint**: Maybe we introduced a regression in this release?
-
+  > **Hint**: Maybe we introduced a regression in this release?
 
 ## Challenge 4: Improve performance
 
