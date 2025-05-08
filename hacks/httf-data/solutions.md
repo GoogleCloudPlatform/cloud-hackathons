@@ -140,16 +140,18 @@ curl -L https://raw.githubusercontent.com/GoogleCloudPlatform/application-integr
 Once it's installed, clone/download/unzip the pipeline definition.
 
 ```shell
-# TBD
+wget https://github.com/meken/gcp-httf-data-app-int/archive/refs/heads/main.zip
+unzip main.zip
 ```
 
 And publish it.
 
 ```shell
+cd cp-httf-data-app-int-main
 integrationcli integrations apply \
     -p $GOOGLE_CLOUD_PROJECT \
     -r $REGION \
-    -f hackathon-application-integration \
+    -f cleanup-integration \
     -e dev \
     --default-token \
     --grant-permissions \
@@ -381,12 +383,14 @@ ALTER TABLE `$BQ_DATASET.products`
 If the Python code is not available download/clone/unzip it.
 
 ```shell
-#TBD
+wget https://github.com/meken/gcp-httf-data-kfp/archive/refs/heads/main.zip
+unzip main.zip
 ```
 
-Now you can install the dependencies and run it.
+Now you can install the dependencies and run it (you could optionally create and activate a virtual environment first).
 
 ```shell
+cd gcp-httf-data-kfp-main
 pip install -r requirements.txt
 python3 genai-imagen-pipeline.py
 ```

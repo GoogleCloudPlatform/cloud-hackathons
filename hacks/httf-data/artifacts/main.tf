@@ -204,6 +204,8 @@ resource "google_workflows_workflow" "prep_semantic_search" {
   service_account = data.google_compute_default_service_account.gce_default.id
   source_contents = file("workflow.yaml")
 
+  deletion_protection = false
+
   depends_on = [
     google_project_service.workflows_api
   ]
