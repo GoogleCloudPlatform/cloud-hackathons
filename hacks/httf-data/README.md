@@ -123,7 +123,7 @@ Application Integration is an Integration-Platform-as-a-Service (iPaaS) solution
 
 We'll use the `integrationcli` tool to configure the pipeline for removing the historical data from Spanner. Go ahead and follow the [instructions](https://github.com/GoogleCloudPlatform/application-integration-management-toolkit) to install it.
 
-We've already prepared the *Application Integration* pipeline for you at `TBD`, download that to the VM where you installed the `integrationcli` and publish it. Use the same region as the Spanner instance and make sure to set the environment name for the scaffolding to `dev` and grant permissions.
+We've already prepared the *Application Integration* pipeline for you [here](https://github.com/meken/gcp-httf-data-app-int/archive/refs/heads/main.zip), download that to the VM where you installed the `integrationcli` and publish it. Use the same region as the Spanner instance and make sure to set the environment name for the scaffolding to `dev` and grant permissions.
 
 Once the *Application Integration* is available in the Google Cloud Console, open it and run it by clicking on the *Test* button, and choosing the *Delete Order Items* task (keep the default parameters).
 
@@ -215,7 +215,7 @@ Now we have product descriptions, we can generate images based on these descript
 
 Create a new Cloud Storage bucket and name it `{YOUR PROJECT ID}-images`.  Update the BigQuery `products` table to include `image_uri` and `image_url` columns.
 
-We've already prepared a the Vertex AI Pipeline code, download it from `TBD` and install its dependencies. Then run the code, it will create a `yaml` file. Navigate to Vertex AI Pipelines and *Create run* with that `yaml` file, provide the required parameters and submit the job.
+We've already prepared a the Vertex AI Pipeline code, download it from [here](https://github.com/meken/gcp-httf-data-kfp/archive/refs/heads/main.zip) and install its dependencies. Then run the code, it will create a `yaml` file. Navigate to Vertex AI Pipelines and *Create run* with that `yaml` file, provide the required parameters and submit the job.
 
 ### Success Criteria
 
