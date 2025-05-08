@@ -91,3 +91,31 @@ There are couple of points where things *may* go wrong:
 
 ### Notes & Guidance
 
+In this challenge users will use the firebase monitoring dashboard to understand the reliability and performance of the app.
+
+The genkit monitoring dashboard can be found in the [firebase console](https://console.firebase.google.com/) > the qwiklab project > product categories > AI > Genkit tab. See ![here](./images/genkit_monitoring.png).
+
+Once the metrics start trikling in, the dashboard should look like the following.
+![this](./images/genkit_dash.png)
+
+> **Note** Until the metrics come in, the **Genkit Monitoring** page might look like a documentation page without any dashboards. Don't panic. Give it a few minutes and refresh.
+
+The users might notice that there are 3 dashboards **Requests**, **Success Rate**, and **Latency**. The Success Rate dashboard might show that one feature (UserProfileFlow) have a low success rate.
+
+There are about 4 features in the dashboard (chatFlow, docSearchFlow, userPreferenceFlow, qualityFlow). While chatFlow is our most important feature, the other 3 features also require monitoring.
+Features can be thought of as monitoring scopes, so every independantly invoked Genkit flow (orchestration) creates a new feature.
+
+The **chatFlow** handles core user interactions. Clicking on this feature should show individual metrics for that feature. 
+
+![chatFlow Dashboard](./images/chatFlow_dashboard.png)
+
+Individual traces should look like the following
+
+There should be 4 steps in a trace where a user gets recommendations: the safetyIssueFlow, queryTransformFlow, docSearchFlow, and movieQAFlow. If there is no search required, the docSearchFlow will be absent.
+Each step (or span) in the trace should show the latency of the trace.
+
+![chatFlow Trace](./images/chatFlow_Trace.png)
+
+By clicking on the tri-dot menu, they should be able to find the same information in Google Cloud Observability.
+
+
