@@ -110,6 +110,7 @@ resource "google_compute_firewall" "default_allow_custom_created" {
 resource "google_compute_firewall" "allow_iap" {
   name          = "allow-iap"
   network       = google_compute_network.default_network_created[0].self_link
+  count         = var.create_default_network ? 1 : 0
   source_ranges = ["35.235.240.0/20"]
   allow {
     protocol = "tcp"
