@@ -20,7 +20,7 @@ main:
                     LOAD DATA OVERWRITE cymbal_analytics.product_descriptions
                     FROM FILES (
                         format = 'JSON',
-                        uris = ['gs://pr-public-demo-data/tech-immersion-hackathon/exports/product_descriptions.json']
+                        uris = ['gs://ghacks-httf-data/product_descriptions.json']
                     )
                     "}
     - insertDescriptions:
