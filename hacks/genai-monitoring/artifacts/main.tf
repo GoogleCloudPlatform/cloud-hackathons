@@ -76,17 +76,3 @@ resource "google_storage_bucket" "static" {
  uniform_bucket_level_access = true
 }
 
-// TODO: Set up a Storage Bucket and copy across with the posters zip file
-// Solve where the hosting of the zip file should be.... maybe Github, Hosting, Kaggle, something...
-
-# Upload a photos file as an object
-# to the storage bucket
-
-# resource "google_storage_bucket_object" "default" {
-#  name         = "OBJECT_NAME"
-#  source       = "OBJECT_PATH"
-#  content_type = "text/plain"
-#  bucket       = google_storage_bucket.static.id
-# }
-
-
