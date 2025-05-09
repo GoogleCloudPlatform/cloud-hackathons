@@ -10,8 +10,6 @@ Why is this crucial? Because in the age of AI, those who can effectively monitor
 
 ## Learning Objectives
 
-This is going to be an introduction to running apps on Cloud Run. We'll dive into various aspects of app development using cloud native tooling on GCP.
-
 - Understand your GenAI app health in production.
 - Troubleshoot different types of GenAI issues that might arise like model limitations, latency, etc
 - Find and address issues associated with the quality of your generated content
