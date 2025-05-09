@@ -20,7 +20,7 @@ terraform {
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "~> 6.24.0"
+      version = "~> 6.25.0"
     }
   }
 }
@@ -33,5 +33,4 @@ provider "google" {
 
 # Configures the provider to use the resource block's specified project for quota checks.
 provider "google-beta" {
-  user_project_override = true
 }
