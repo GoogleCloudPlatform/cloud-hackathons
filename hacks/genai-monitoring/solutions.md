@@ -56,7 +56,10 @@ Once the metrics start trickling in, the dashboard should look similar to this:
 
 <img src="./images/genkit_dash.png" alt="Genkit monitoring dashboard overview" width="550" height="300">
 
-> **Note** Until the metrics come in, the **Genkit Monitoring** page might show zero state. Don't panic. Give it a few minutes and then refresh.
+> **Note** Until the metrics come in, the **Genkit Monitoring** page might show zero state like this:
+> <img src="./images/genkit_zero_state.png" alt="chatFlow trace" width="550" height="300">
+>
+> Don't panic. Give it a few minutes and then refresh.
 
 1. The dashboard shows three project-level metrics:
 - **Requests**
@@ -159,4 +162,43 @@ Currently the setting for making the movie recommendation in the movieFlow on _m
 ```
 > **Note** Participants may attempt to manually override model in the prompt file directly. It will not result in a good model response. Every model interacts uniquely, and updating a model typically also requires adjustments to the prompting. Participants may expore the difference in the prompt definitions between movie.v2.prompt and movie.prompt driven by the model change.
 
+## Challenge 5: Improve performance
 
+### Notes & Guidance
+
+In this challenge we attempt to reduce operational costs of the app by switching from a mixed search strategy to a to purely vector-based search within chatFlow.
+
+chatFlow uses 
+
+Where does document search happen in the chatFlow?
+Where are the results of that document search used?
+Find the corresponding code
+Hint: Both the prompt and the flow include the term "docSearch" in them
+
+Perform comparative analysis
+Now you are ready to do some comparative analysis of the existing version and the new version of the prompt.
+
+Baseline Test (Mixed Search): Establish baseline performance for the existing mixed search by running the following queries and note down the results:
+"Show me movies with ratings greater than 3"
+"Show me movies that are shorter than 2 hours"
+"Show me some funny films"
+"Show me some movies with dogs in them"
+Examine retrieval performance: How many movies were returned and used as context in the input to the model call?
+Implement Search Switch: Modify the application code to adopt the new search strategy.
+Update the DocSearchFlow (defined in the docRetriever.ts file) to use the v2 version of the docSearch.prompt, which implements the vector-only search logic.
+Restart: Restart the app (or the Genkit Developer UI) to allow it to pick up the updated code changes.
+Post-Change Test (Vector Search): Re-run the test queries above and note down the results.
+Analyze Impact & Diagnose: Compare the results of the two tests and their traces.
+Review the differences between the prompt instructions to determine why the vector-only search impacted quality for some queries and not others.
+Review the differences between the prompt instructions to better understand what the LLM is being asked.
+Hint: focus on the docSearchFlow > Hint: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of movieQAFlow
+
+Make a recommendation: Form a recommendation for the product team as to whether we should roll out this change or stick with the current mixed search.
+Success Criteria
+You successfully update the application code to use the new variant of the search prompt.
+You can compare the quality and performance before and after making a change to the prompt.
+You identified which types of queries resulted in degraded search quality and can articulate the likely cause.
+You have evidence for the Product Team to support or nor support rolling out the change in prompt variant.
+Learning Resources
+Managing prompt versions
+Search Strategies
