@@ -54,7 +54,7 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
   > **Hint**: During app setup, you will find these values in a code block during the `Add Firebase SDK` step
 
-  > **Hint**: If you have already continued to the console, these values can be found by clicking the settings cog next to `Project Overview` in the left-hand nav.
+  > **Hint**: If you have already continued to the console, these values can be found by clicking the settings icon next to `Project Overview` in the left-hand nav.
 
 ### Local Environment Setup
 
