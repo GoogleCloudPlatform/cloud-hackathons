@@ -321,7 +321,6 @@ Now you are ready to do some comparative analysis of the existing version and th
 
 1. **Baseline Test (Hybrid Search)**: Establish baseline performance for the existing mixed search by running the following queries and note down the results:
    - "Show me movies with ratings greater than 3"
-   - "Show me movies that are shorter than 2 hours"
    - "Show me some funny films"
    - "Show me some movies with dogs in them"
 1. **Examine retrieval performance**: How many movies were returned and used as context in the input to the model call?
