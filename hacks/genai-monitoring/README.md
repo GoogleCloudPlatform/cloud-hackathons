@@ -271,7 +271,6 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 
 ### Tips
 
-- As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
 - Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
 
 ### Learning resources
