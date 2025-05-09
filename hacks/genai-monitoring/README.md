@@ -98,11 +98,6 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 - You can find the firebase config values in the `Project Settings` page by clicking the settings cog next to `Project Overview` in the left-hand nav of the firebase console.
 - The **Movie Guru** app uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage its prompt variants.
 - The **Movie Guru** app uses [flows](https://firebase.google.com/docs/genkit/flows) to encapsulate AI workflows.
-
-### Learning Resources
-
-- [Genkit](https://firebase.google.com/docs/genkit)
-- [Setting up firebase web app](https://firebase.google.com/docs/projects/use-firebase-with-existing-cloud-project#how-to-add-firebase_console)
 - **MovieGuru Application Architecture**:
 
   - The user interface: A Vue frontend (code found in **frontend**).
@@ -110,6 +105,11 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
   - The GenAI core: Genkit flows, which handle the conversational and recommendation logic. These flows communicate directly with Gemini models on Vertex AI to leverage large language model capabilities (code found in **js/flows**).
   - Data Storage: PostgreSQL with the pgvector extension, used for storing both structured movie data (title, plot, etc.) and vector embeddings for semantic search.
   - Session Management: A Redis cache for storing user session information and conversation history.
+
+### Learning Resources
+
+- [Genkit](https://firebase.google.com/docs/genkit)
+- [Setting up firebase web app](https://firebase.google.com/docs/projects/use-firebase-with-existing-cloud-project#how-to-add-firebase_console)
 
 ## Challenge 2: Explore Firebase Genkit Monitoring
 
@@ -140,13 +140,7 @@ Explore the Firebase Genkit Monitoring and understand the application's performa
 - You know the different features that comprise the **Movie Guru** app and what they do.
 - You are able to name the key metrics displayed on the Genkit Monitoring Dashbord, per feature.
 - You know the different steps that the app takes to answer a user's query.
-- You can correlate data in the monitoring dashboard with data in Cloud
-
-### Learning Resources
-
-- [Genkit Monitoring](https://firebase.google.com/docs/genkit/observability/getting-started)
-- [Tracing](https://opentelemetry.io/docs/concepts/signals/traces/)
-- [Observability on Google Cloud](https://cloud.google.com/stackdriver/docs)
+- You can correlate data in the monitoring dashboard with data in Cloud.
 - **Genkit Feature**
 
   In the context of Genkit monitoring and observability, a **feature** represents a distinct, identifiable functional component or capability within your Genkit application.
@@ -160,6 +154,12 @@ Explore the Firebase Genkit Monitoring and understand the application's performa
   - Processing a specific data loading or transformation task.
 
     By breaking down your application's execution into features, the monitoring dashboard allows you to quickly assess the health and performance of individual components.
+
+### Learning Resources
+
+- [Genkit Monitoring](https://firebase.google.com/docs/genkit/observability/getting-started)
+- [Tracing](https://opentelemetry.io/docs/concepts/signals/traces/)
+- [Observability on Google Cloud](https://cloud.google.com/stackdriver/docs)
 
 ## Challenge 3: Troubleshoot failures
 
@@ -208,7 +208,9 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
 ### Tips
 
 - The **Failed paths** table can help reveal common error patterns among traces.
-- Finding the error cause: Our team has seemingly introduced a regression in this release. The error you're seeing is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects
+
+- **Finding the error cause**
+  Our team has seemingly introduced a regression in this release. The error you're seeing is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects
   to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
   
   The error you're seeing is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
@@ -222,14 +224,7 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
 
     If you are unsure of the difference between a _flow_ and a _prompt_, check out the section **Prompts and Flows in Genkit**.
 
-### Learning resources
-
-- [Prompts and dotPrompts](https://firebase.google.com/docs/genkit/dotprompt)
-- [Input and Output schemas in genkit prompts](https://firebase.google.com/docs/genkit/dotprompt#schemas)
-- [Input and Output schemas in genkit flows](https://firebase.google.com/docs/genkit/flows#input_and_output_schemas)
-
-- **Prompts and Flows in Genkit**:
-
+- **Prompts and Flows in Genkit**
   A _flow_ is the executable unit – it defines and orchestrates a sequence of steps (the process) and can contain multiple sub-steps like other flows, prompts, retrievers, tools, etc.
 
   A _prompt_ is data – the input sent to an AI model plugin within a step of that flow, and the output received from the model in that step.
@@ -239,12 +234,16 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
   Both flows and prompts can have their own input and output data schemas.
 
 - **Useful docker compose commands**
-
   The application runs inside docker containers. The start_app.sh and stop_app.sh scripts wrap docker compose commands (and other boilerplate code):
 
   - To build and run containers defined in a dockercompose.yaml file, use `docker compose up --build`. Find more info [here](https://docs.docker.com/compose/reference/up/).
-
   - To bring down running containers defined in a dockercompose.yaml file, use `docker compose down`. Find more info [here](https://docs.docker.com/compose/reference/down/).
+
+### Learning resources
+
+- [Prompts and dotPrompts](https://firebase.google.com/docs/genkit/dotprompt)
+- [Input and Output schemas in genkit prompts](https://firebase.google.com/docs/genkit/dotprompt#schemas)
+- [Input and Output schemas in genkit flows](https://firebase.google.com/docs/genkit/flows#input_and_output_schemas)
 
 ## Challenge 4: Improve performance
 
@@ -273,11 +272,6 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 ### Tips
 
 - Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
-
-### Learning resources
-
-- [Genkit Developer Tools and Developer UI](https://firebase.google.com/docs/genkit/devtools)
-- [Gemini Models on VertexAI](https://cloud.google.com/vertex-ai/generative-ai/docs/models)
 - **Genkit Developer UI**: Testing locally with the Genkit Developer UI can help you iterate more quickly on prompts and flows. If you want to set this up, follow the instructions below:
 
   - Navigate in the _terminal_ to the _flows_ folder.
@@ -291,6 +285,11 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 
   - Navigate to <http://localhost:4000> (using the **WebPreview** feature of cloudshell).
   - Change the code. Then, use the Genkit developer UI to run the flow locally and verify the change.
+
+### Learning resources
+
+- [Genkit Developer Tools and Developer UI](https://firebase.google.com/docs/genkit/devtools)
+- [Gemini Models on VertexAI](https://cloud.google.com/vertex-ai/generative-ai/docs/models)
 
 > **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
