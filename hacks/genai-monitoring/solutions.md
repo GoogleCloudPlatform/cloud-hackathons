@@ -37,7 +37,6 @@ There are couple of points where students may ask for your guidance:
 1. Please be aware that the application's performance may be slow, particularly within the Quicklab environment. We recommend that users do not concurrently interact with the same app.
 1. If you encounter issues such as no response or an extremely slow response, please try submitting the query again.
 1. Movie suggestions are _intentionally_ not saved. This functionality will be fixed in Challenge 2. 
-1. The app's vector search functionality works best with *genre*-based (semantic) queries, which leverages its vector search capabilities to find relevant recommendations efficiently. Queries based on specific *ratings* (are not semantic) are less suited for this vector approach. For any query, the *retriever* fetches potential results. However, with *rating* queries, the vector search often retrieves many irrelevant movies that must then be filtered out by the RAG portion of the application before being displayed. This is why there are fewer *rating* based results. The students only need to notice that there are fewer *rating*-based results than *genre*-based results. They will understand the reason behind this in a later challenge.
 
 ## Challenge 2: Exploring Monitoring dashboard
 
@@ -168,37 +167,13 @@ Currently the setting for making the movie recommendation in the movieFlow on _m
 
 In this challenge we attempt to reduce operational costs of the app by switching from a mixed search strategy to a to purely vector-based search within chatFlow.
 
-chatFlow uses 
+Participants should examine _docSearch.prompt_ and _docSearch.v2.prompt_ files to understand what role docSearch plays chatFlow. DocSearchFlow and its corresponding prompt are used to analyze user's query adainst the database and summarize it into a concise request and a search category, which is then passed to the movieFlow responds to any movie-related questions.
 
-Where does document search happen in the chatFlow?
-Where are the results of that document search used?
-Find the corresponding code
-Hint: Both the prompt and the flow include the term "docSearch" in them
+After evaluating existing functionality, participants should roll out the change by updating line 65 in the _docRetriever.ts_ file:
+```
+  export const makeMovieRecommendation = ai.prompt('docSearch', {variant: 'v2'});
+```
 
-Perform comparative analysis
-Now you are ready to do some comparative analysis of the existing version and the new version of the prompt.
+After examining both, the participants should notice that the app's vector search functionality works best with *genre*-based (semantic) queries, which leverages its vector search capabilities to find relevant recommendations efficiently. Queries based on specific *ratings* (are not semantic) are less suited for this vector approach. For any query, the *retriever* fetches potential results. However, with *rating* queries, the vector search often retrieves many irrelevant movies that must then be filtered out by the RAG portion of the application before being displayed. This is why there are fewer *rating* based results. The students only need to notice that there are fewer *rating*-based results than *genre*-based results.
 
-Baseline Test (Mixed Search): Establish baseline performance for the existing mixed search by running the following queries and note down the results:
-"Show me movies with ratings greater than 3"
-"Show me movies that are shorter than 2 hours"
-"Show me some funny films"
-"Show me some movies with dogs in them"
-Examine retrieval performance: How many movies were returned and used as context in the input to the model call?
-Implement Search Switch: Modify the application code to adopt the new search strategy.
-Update the DocSearchFlow (defined in the docRetriever.ts file) to use the v2 version of the docSearch.prompt, which implements the vector-only search logic.
-Restart: Restart the app (or the Genkit Developer UI) to allow it to pick up the updated code changes.
-Post-Change Test (Vector Search): Re-run the test queries above and note down the results.
-Analyze Impact & Diagnose: Compare the results of the two tests and their traces.
-Review the differences between the prompt instructions to determine why the vector-only search impacted quality for some queries and not others.
-Review the differences between the prompt instructions to better understand what the LLM is being asked.
-Hint: focus on the docSearchFlow > Hint: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of movieQAFlow
-
-Make a recommendation: Form a recommendation for the product team as to whether we should roll out this change or stick with the current mixed search.
-Success Criteria
-You successfully update the application code to use the new variant of the search prompt.
-You can compare the quality and performance before and after making a change to the prompt.
-You identified which types of queries resulted in degraded search quality and can articulate the likely cause.
-You have evidence for the Product Team to support or nor support rolling out the change in prompt variant.
-Learning Resources
-Managing prompt versions
-Search Strategies
+Participants should **not** roll out the new feature because transitioning purely to the vector-based search significantly impedes the quality of the output of the model.
