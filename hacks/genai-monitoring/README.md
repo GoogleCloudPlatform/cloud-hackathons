@@ -175,7 +175,7 @@ You are running the application in Cloud Shell by completing _Local Environment 
 
 ### Introduction
 
-The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, _user preferences aren't being saved_.
+The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, _user preferences aren't being saved_ (eg: "I love horror movies", "I hate drama films etc").
 
 To see how preference saving is expected to work, watch this video:
 
@@ -188,7 +188,7 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
 1. Identify the feature and corresponding Genkit flow that is responsible for handling user preference updates.
 1. Examine the failed traces for this feature. What do the error messages and trace details reveal?
 1. Identify commonalities among the failures.
-   > **Hint**: The **Failed paths** table can help reveal common error patterns.
+   > **Hint**: The **Failed paths** table under "Traces" can help reveal common error patterns.
 1. Determine the underlying cause of the failures based on your trace analysis by exploring the code for the feature you identified.
    - Find the hints in the code files _js/flows/src/userPreferenceFlow.ts_ and _js/flows/src/userPreferenceTypes.ts_.
    - If you're really stuck, check the **Learning Resources** for more hints.
