@@ -308,7 +308,7 @@ Testing locally with the Genkit Developer UI can help you iterate more quickly o
 
 > **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
-## Challenge 5: Improving search quality
+## Challenge 5: Improve search quality
 
 ### Prerequisites
 
