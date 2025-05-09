@@ -163,10 +163,6 @@ Explore the Firebase Genkit Monitoring and understand the application's performa
 
 ## Challenge 3: Troubleshoot failures
 
-### Prerequisites
-
-You are running the application in Cloud Shell by completing _Local Environment Setup_ from _Challenge 1_.
-
 ### Introduction
 
 The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, _user preferences aren't always being saved_ (eg: "I love horror movies", "I hate drama films etc").
@@ -251,10 +247,6 @@ To fix the issue, you can do one of the following:
 
 ## Challenge 4: Improve performance
 
-### Prerequisites
-
-You are running the application in Cloud Shell by completing _Local Environment Setup_ from _Challenge 1_.
-
 ### Introduction
 
 You've fixed a major problem, but your work isn't done yet. Users are complaining that the chat experience is slow. Let's see if we can find the root cause of this issue.
@@ -303,13 +295,6 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 > **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
 ## Challenge 5: Improve search quality
-
-### Prerequisites
-
-On the cloud shell environment running this challenge:
-
-- _Local Environment Setup_ from _Challenge 1_.
-- (Optional) Setup the **Genkit Developer UI** in _Challenge 4_.
 
 ### Introduction
 
