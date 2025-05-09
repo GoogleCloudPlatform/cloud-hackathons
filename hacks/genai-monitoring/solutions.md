@@ -62,6 +62,13 @@ Once the metrics start trickling in, the dashboard should look similar to this:
 >
 > Don't panic. Give it a few minutes and then refresh.
 
+> **Warning** If even after 5 minutes there are no traces, check the docker compose log for the following error:
+> ![Genkit unable to send traces](./images/telemetry_error.png)
+>
+> Then navigate to js/flows/src/genkitConfig.ts and update remove the settings for
+> **metricExportIntervalMillis** and **metricExportTimeoutMillis** in the **enableFirebaseTelemetry**
+> section of the code and restart the app.
+
 The following points correspond to the exploration steps in the challenge description:
 
 **1. Assess overall health:**
