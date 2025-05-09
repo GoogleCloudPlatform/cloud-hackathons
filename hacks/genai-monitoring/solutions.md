@@ -105,6 +105,63 @@ To see how preference saving is expected to work, watch this video:
 
 <img src="./images/userPreferencesFlow_failedPaths.png" alt="userPreferencesFlow Failed Traces" width="450" height="300">
 
+Clicking on a individual failed trace shows more details about the error in the trace viewer: 
+
+<img src="./images/userPreferencesFlow_error.png" alt="userPreferencesFlow Error" width="450" height="300">
+
+```
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "justification",
+      "safetyIssue",
+      "items"
+    ],
+    "path": [],
+    "message": "Unrecognized key(s) in object: 'justification', 'safetyIssue', 'items'"
+  }
+]
+```
+
+3. The error is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's instructions. 
+
+4. The app is currently using the experimental prompt (_js/flows/prompts/userPreference.experimental.prompt_). This prompt has an error as it provides conficting information. In the prompt text, it asks the model to return a list of items of type **string**, while the flow expects a list of items of type **profileChangeRecommendations**.
+
+  To fix the issue, the participants can do one of the following:
+
+  - Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_). OR
+  - Downgrade the flow to use _userProfile.prompt_.
+
+To fix the issue with the current prompt, the participants need to 
+
+[TODO]
+
+To downgrade the flow, the participants need to open the _userPreferencesFlow.ts_ file (in _js/flows/src_) and modify line 60 to replace _extractUserPreferencesExperimental_ with _extractUserPreferencesV1_.
+```
+  const response = await extractUserPreferencesV1({...});
+```
+## Challenge 4: Improve performance
+
+### Notes & Guidance
+
+In this challenge we see that the **MovieGuru** app's performance is quite slow and work on improving it.
+
+The participants should look at the latency chart for **chatFlow**. P50, also known as the median, represents the response time below which 50% of requests are completed. P90 indicates the response time below which 90% of requests are completed. [TODO what do the users actually see?]
+
+Upon inspecting individual traces with high latency in the trace viewer, participants will see that the bulk of execution time is spen on the model interactions, specifically the ones that include the usage of the gemini-2.5-pro-preview-03-25 model. While newer and "bigger" models can boost the quality of the output, there is a tradeoff between the size of the model and the latency of the interaction. Participants should inspect the codebase to understand where and how this model is being used. 
+
+**gemini-2.5-pro-preview-03-25** is used in the _movie.v2.prompt_ file, which is used in the **movieFlow**. Participants may further explore that chatFlow uses movieFlow to take the original user input, user preferences, relevant documents, and conversation history to make the final recommendation to the user. 
+
+Currently the setting for making the movie recommendation in the movieFlow on _movie.v2.prompt_, which is a variant of the movie.prompt. movie.v2.prompt is using **gemini-2.5-pro-preview-03-25**, while the original movie.prompt is defined with **gemini-2.0-flash-lite**, a much lighter and faster version. Considering poor performance of the v2 variant, the participants should roll back the prompt update by setting the prompt on line 37 of the _movieFlow.ts_ file as follows:
+```
+  export const makeMovieRecommendation = ai.prompt('movie');
+```
+
+2. Participants should find a failed trace for this feature and inspect the output. They can use the **Failed paths** table (aggregates failures of the same nature in a feature) to understand the impact and help filter to failing traces. Alternatively, they could filter to failed traces directly and compare trace outputs. They would notice that failed traces have the same error message in the output. The dashboard should look like the following:
+
+<img src="./images/userPreferencesFlow_failedPaths.png" alt="userPreferencesFlow Failed Traces" width="450" height="300">
+
 Clicking on a individual failed trace shows more details about the error: 
 
 <img src="./images/userPreferencesFlow_error.png" alt="userPreferencesFlow Error" width="450" height="300">
@@ -134,6 +191,8 @@ ZodError: [
   - Downgrade the flow to use _userProfile.prompt_.
 
 To fix the issue with the current prompt, the participants need to 
+
+[TODO]
 
 To downgrade the flow, the participants need to open the _userPreferencesFlow.ts_ file (in _js/flows/src_) and modify line 60 to replace _extractUserPreferencesExperimental_ with _extractUserPreferencesV1_.
 ```
