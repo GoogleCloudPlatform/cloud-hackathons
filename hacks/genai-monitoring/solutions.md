@@ -124,7 +124,11 @@ ZodError: [
 ]
 ```
 
-3. The error is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's instructiSons. 
+3. The error is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's instructions. 
 
 4. The app is currently using the experimental prompt (_js/flows/prompts/userPreference.experimental.prompt_). This prompt has an error as it provides conficting information. In the prompt text, it asks the model to return a list of items of type **string**, while the Flow expects a list of items of type **profileChangeRecommendations**.
 
+  To fix the issue, the participants can do one of the following:
+
+  - Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_). OR
+  - Downgrade the flow to use _userProfile.prompt_.
