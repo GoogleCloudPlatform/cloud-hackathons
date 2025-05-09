@@ -125,11 +125,11 @@ On the cloud shell environment running this challenge:
 
 As SREs, maintaining the reliability and performance of your application hinges on having tooling to give you visibility into the behavior of a live, production environment.
 
-In this challenge, you'll explore the Firebase Genkit monitoring dashboard to understand the reliability and performance of the Movie Guru app by navigating to difference sections, understanding the types of data it displays, and learning how to interpret the information presented. This foundational knowledge is crucial for effectively diagnosing and resolving issues in the subsequent challenges.
+In this challenge, you'll explore Firebase Genkit Monitoring to understand the reliability and performance of the Movie Guru app by navigating to different sections, understanding the types of data each of them displays, and learning how to interpret the information presented. This foundational knowledge is crucial for effectively diagnosing and resolving issues in the subsequent challenges.
 
 ### Description
 
-Your **objective** is to explore the Genkit monitoring dashboard and understand application performance and execution.
+Your **objective** is to explore the Firebase Genkit Monitoring and understand the application's performance and execution. Navigate to the Genkit monitoring dashboard by selecting "Genkit" in the left-side panel under "AI" product categoty.
 
 1. **Assess overall health**: Based on this high-level view, what potential areas look like they might need attention?
 1. **Inspect by feature**: Identify individual GenAI _features_ in the app.
