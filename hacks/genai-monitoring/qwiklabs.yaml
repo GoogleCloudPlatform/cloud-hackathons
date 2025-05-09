@@ -13,7 +13,7 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "Monitor GenAI apps with Firebase Genkit"
+title: "[gHacks] Monitor GenAI apps with Firebase Genkit"
 description: "We will be mastering operating Large Language Model applications using Firebase Genkit, and Genkit Monitoring by stepping into the role of Site Reliability Engineers for a fictional GenAI app. We will dive into troubleshooting live issues, fixing issues, and optimizing performance to ensure our GenAI app runs flawlessly."
 instruction:
   type: md

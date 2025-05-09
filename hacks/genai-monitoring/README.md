@@ -36,9 +36,15 @@ Why is this crucial? Because in the age of AI, those who can effectively monitor
 Welcome to the Movie Guru team! In your role as a Site Reliability Engineer on this team, you will work through the challenges to ensure that the app is reliable and performant.
 Your first task is to get the application running smoothly in your local environment. You'll set up your development environment using the Cloud Shell editor and interact with the initial version of the Movie Guru application, ensuring a stable starting point for the system.
 
-### Clone the Repository and set the environment variables
+### Step 1: Firebase setup
 
-> **Note**: _All_ participants will need to clone the repo in their own cloud shell environment.
+To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in Firebase.
+
+- Go to the **Firebase Console** and create a new Firebase Web App in the _existing_ project.
+
+### Step 2: Clone the Repository and set the environment variables
+
+> **Note**: _All_ participants will need to do Step 2 in their own environments.
 
 - Open the **Cloud Shell Editor** and type the following commands.
 
@@ -48,14 +54,9 @@ cd movie-guru
 git checkout ghack-genkit-monitoring
 ```
 
-### Firebase setup
-
-To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in Firebase.
-
-- Go to the **Firebase Console** and create a new Firebase Web App in the _existing_ project.
 - Edit the **set_env_vars.sh** to replace _PROJECT_ID, _FIREBASE_API_KEY, and _FIREBASE_APP_ID_ values.
 
-### Local Environment Setup
+### Step 3: Run the app
 
 - Start the application on your cloud shell instance.
 
@@ -72,13 +73,13 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ![Architecture diagram](images/architecture_diagram.png)
 
-- Open the _js/flows_ folder within the codebase. Find where the application -
+- Open the _js/flows_ folder within the codebase. Find where the application:
 
   1. Establishes connection with the database
   1. Configures Genkit.
   1. Defines prompts for interacting with the LLM.
 
-### Test the app
+### Step 4: Test the app
 
 - Access the Movie Guru app on <http://localhost:8080> by clicking the **Web Preview** button on the top right of the Cloud Shell window and selecting "Preview on port 8080". The icon for Web Preview looks like the following.
 
@@ -134,13 +135,8 @@ Explore the Firebase Genkit Monitoring and understand the application's performa
 1. **Leverage integrated observability**: From the trace details, use the tri-dot menu to access related logs and traces in _Google Cloud Logging_ and _Google Cloud Trace_.
    - What additional context do these tools provide?
 
-### Success Criteria
+### Tips
 
-- You are able to name the key metrics displayed on the Genkit Monitoring Dashbord.
-- You know the different features that comprise the **Movie Guru** app and what they do.
-- You are able to name the key metrics displayed on the Genkit Monitoring Dashbord, per feature.
-- You know the different steps that the app takes to answer a user's query.
-- You can correlate data in the monitoring dashboard with data in Cloud.
 - **Genkit Feature**
 
   In the context of Genkit monitoring and observability, a **feature** represents a distinct, identifiable functional component or capability within your Genkit application.
@@ -154,6 +150,14 @@ Explore the Firebase Genkit Monitoring and understand the application's performa
   - Processing a specific data loading or transformation task.
 
     By breaking down your application's execution into features, the monitoring dashboard allows you to quickly assess the health and performance of individual components.
+
+### Success Criteria
+
+- You are able to name the key metrics displayed on the Genkit Monitoring Dashbord.
+- You know the different features that comprise the **Movie Guru** app and what they do.
+- You are able to name the key metrics displayed on the Genkit Monitoring Dashbord, per feature.
+- You know the different steps that the app takes to answer a user's query.
+- You can correlate data in the monitoring dashboard with data in Cloud.
 
 ### Learning Resources
 
@@ -190,7 +194,7 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
      ./stop_app.sh
      ```
 
-   - Restart the application after fixing it.
+   - Restart the application after fixing it (make sure **set_env.vars.sh** is up to date).
 
      ```sh
      chmod +x start_app.sh # Optional: Required if first time running the script
