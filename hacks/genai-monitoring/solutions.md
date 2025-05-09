@@ -36,7 +36,7 @@ There are couple of points where students may ask for your guidance:
 1. After cloning the repo, ensure Google Cloud credentials are set up correctly in each student's environment. The credentials are specified within `key.json` (this is configured by the `setup_local.sh` script).
 1. Please be aware that the application's performance may be slow, particularly within the Quicklab environment. We recommend that users do not concurrently interact with the same app.
 1. If you encounter issues such as no response or an extremely slow response, please try submitting the query again.
-1. Movie suggestions are _intentionally_ not saved. This functionality will be fixed in Challenge 2. 
+1. Movie suggestions are _intentionally_ not saved. This functionality will be fixed in Challenge 2.
 
 ## Challenge 2: Exploring Monitoring dashboard
 
@@ -45,10 +45,11 @@ There are couple of points where students may ask for your guidance:
 In this challenge, users will use the Firebase Genkit monitoring dashboard to understand the reliability and performance of the Movie Guru app.
 
 To access the dashboard:
+
 1. Go to the [Firebase console](https://console.firebase.google.com/).
-2. Select your Qwiklab project.
-3. In the left-side panel, under **Product categories**, click on **AI**.
-4. Select the **Genkit** tab.
+1. Select your Qwiklab project.
+1. In the left-side panel, under **Product categories**, click on **AI**.
+1. Select the **Genkit** tab.
 
 Here's an example of where to find it:
 ![Firebase console navigation to Genkit monitoring](./images/genkit_nav.png)
@@ -65,6 +66,7 @@ The following points correspond to the exploration steps in the challenge descri
 
 **1. Assess overall health:**
 The main dashboard displays three project-level metrics:
+
 - **Requests**: Total number of invocations.
 - **Success Rate**: Percentage of successful invocations.
 - **Latency**: Time taken for invocations (e.g., P50, P90).
@@ -72,7 +74,8 @@ The main dashboard displays three project-level metrics:
 The **Success Rate** chart might highlight that a specific feature (e.g., `userPreferenceFlow`) has a notably low success rate, indicating an area needing attention.
 
 **2. Inspect by feature:**
-The dashboard lists several Genkit *features*. The exact list might vary based on app interaction during Challenge 1, but typically includes:
+The dashboard lists several Genkit _features_. The exact list might vary based on app interaction during Challenge 1, but typically includes:
+
 - `chatFlow`
 - `docSearchFlow`
 - `userPreferenceFlow`
@@ -86,6 +89,7 @@ The `chatFlow` feature handles the core user interactions. Clicking on this feat
 
 **4. Inspect individual requests (traces):**
 Individual traces offer a detailed breakdown of a single flow's execution. For example, when a user requests movie recommendations, a trace for `chatFlow` might include these steps (spans):
+
 - `safetyIssueFlow`
 - `queryTransformFlow`
 - `docSearchFlow` (this span will be absent if no document search was needed for the query)
@@ -93,9 +97,10 @@ Individual traces offer a detailed breakdown of a single flow's execution. For e
 
 Each step (span) within the trace displays its individual latency, helping to pinpoint bottlenecks.
 !Example of a chatFlow trace with spans
- 
+
 **5. Leverage integrated observability:**
 By clicking the tri-dot menu (⋮) next to any trace or a specific span within a trace, users can directly navigate to:
+
 - **Google Cloud Logging**: To view detailed logs associated with that execution.
 - **Google Cloud Trace**: To see a distributed trace view, which can be helpful for understanding interactions across multiple services if applicable.
 These integrations provide deeper context for troubleshooting.
@@ -110,17 +115,17 @@ To see how preference saving is expected to work, watch this video:
 
 [![Movie Guru](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
 
-1. The participants should interact with the app to make sure the monitoring tool captures the (silent) error. Have the users try this out a few times by trying various statements (the error is sporadic, so sometimes the preferences may be captured correctly, sometimes not). Then, the users should inspect the monitoring dashboard, looking for features with **low success rate**. Even if they haven't identified it already via Step 1 of Challenge 2, by now the participants should see that userPreferenceFlow is failing a lot. The flow is defined in  _js/flows/src/userPreferenceFlow.ts_. 
+1. The participants should interact with the app to make sure the monitoring tool captures the (silent) error. Have the users try this out a few times by trying various statements (the error is sporadic, so sometimes the preferences may be captured correctly, sometimes not). Then, the users should inspect the monitoring dashboard, looking for features with **low success rate**. Even if they haven't identified it already via Step 1 of Challenge 2, by now the participants should see that userPreferenceFlow is failing a lot. The flow is defined in  _js/flows/src/userPreferenceFlow.ts_.
 
 1. Participants should find a failed trace for this feature and inspect the output. They can use the **Failed paths** table (aggregates failures of the same nature within a feature) to understand the impact and help filter to failing traces. Alternatively, they could filter to failed traces directly and compare trace outputs. They would notice that failed traces have the same error message in the output. The dashboard should look like the following:
 
-<img src="./images/userPreferencesFlow_failedPaths.png" alt="userPreferencesFlow Failed Traces" width="450" height="300">
+![userPreferencesFlow Failed Traces](./images/userPreferencesFlow_failedPaths.png)
 
-Clicking on a individual failed trace shows more details about the error in the trace viewer: 
+Clicking on a individual failed trace shows more details about the error in the trace viewer:
 
-<img src="./images/userPreferencesFlow_error.png" alt="userPreferencesFlow Error" width="450" height="300">
+![userPreferencesFlow Error](./images/userPreferencesFlow_error.png)
 
-```
+```text
 ZodError: [
   {
     "code": "unrecognized_keys",
@@ -135,15 +140,15 @@ ZodError: [
 ]
 ```
 
-3. The error is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's instructions. 
+1. The error is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's instructions.
 
-4. The app currently uses a canary strategy for this flow and switches between a stable prompt (_userProfile.prompt_) and an experimental prompt (_userPreference.experimental.prompt_). This experimental prompt has an error as it provides conficting information. In the prompt text, it asks the model to return a list of items of type **string**, while the flow expects a list of items of type **profileChangeRecommendations**.
+1. The app currently uses a canary strategy for this flow and switches between a stable prompt (_userProfile.prompt_) and an experimental prompt (_userPreference.experimental.prompt_). This experimental prompt has an error as it provides conficting information. In the prompt text, it asks the model to return a list of items of type **string**, while the flow expects a list of items of type **profileChangeRecommendations**.
 
   To fix the issue, the participants can do one of the following:
 
-  - Fix the prompt and add an output schema definition to the prompt (_userPreference.experimental.prompt_). 
+- Fix the prompt and add an output schema definition to the prompt (_userPreference.experimental.prompt_).
 
-    ```
+    ```text
     ---
     model: vertexai/gemini-2.0-flash
     config:
@@ -192,7 +197,7 @@ ZodError: [
 
 - OR: Downgrade the flow to use only _userPreference.prompt_.
 
-  ```
+  ```ts
   // Partial code
   async (input) => {
       const defaultOutput = UserPreferenceFlowOutputSchema.parse({})
@@ -219,13 +224,13 @@ The participants should look at the latency chart for **chatFlow**. P50, also kn
 
 Upon inspecting individual traces with high latency in the trace viewer, participants will see that the bulk of execution time is spen on the model interactions, specifically the ones that include the usage of the gemini-2.5-pro-preview-03-25 model. While newer and "bigger" models can boost the quality of the output, there is a tradeoff between the size of the model and the latency of the interaction. Participants should inspect the codebase to understand where and how this model is being used.
 
-<img src="./images/genkit_spans_with_latencies.png" alt="Spans with latencies" width="230" height="400">
+![Spans with latencies](./images/genkit_spans_with_latencies.png)
 
-**gemini-2.5-pro-preview-03-25** is used in the _movie.v2.prompt_ file, which is used in the **movieQAFlow**. Participants may further explore that chatFlow uses movieFlow to take the original user input, user preferences, relevant documents, and conversation history to make the final recommendation to the user. 
+**gemini-2.5-pro-preview-03-25** is used in the _movie.v2.prompt_ file, which is used in the **movieQAFlow**. Participants may further explore that chatFlow uses movieFlow to take the original user input, user preferences, relevant documents, and conversation history to make the final recommendation to the user.
 
 Currently app uses _movie.v2.prompt_, which is a variant of the movie.prompt for making movie recommendations. _movie.v2.prompt_ is using **gemini-2.5-pro-preview-03-25**, while the original movie.prompt is defined with **gemini-2.0-flash-lite**, a much lighter and faster version. Considering poor performance of the v2 variant, the participants should roll back the prompt update by setting the prompt in the _movieFlow.ts_ file as follows:
 
-```
+```ts
   export const makeMovieRecommendation = ai.prompt('movie'); # will use movie.prompt
 ```
 
@@ -241,15 +246,15 @@ Participants should examine _docSearch.prompt_ and _docSearch.v2.prompt_ files t
 
 In the original version, the app used a **hybrid search model** where queries could either be **vector** queries (eg: I want to watch a fun movie -> **fun movies**), or **keyword** queries (eg: find me movies that were released after 2000 -> **WHERE release_year > 2000**), or mixed queries (eg: Find me fun movies that were released after 2000).
 
-In the new version, all queries are forced to be **vector** queries. 
+In the new version, all queries are forced to be **vector** queries.
 
 After evaluating existing functionality by querying the app, participants should roll out the **new** version by updating the _docRetriever.ts_ file to use the new prompt variant:
 
-```
+```ts
   export const makeMovieRecommendation = ai.prompt('docSearch', {variant: 'v2'});
 ```
 
-After testing the new version, the participants should notice that the app's vector search functionality works best with **genre**-based (semantic) queries, which leverages its vector search capabilities to find relevant recommendations efficiently. Queries based on specific values, such as **ratings** (are not semantic) are less suited for this vector approach. For any query, the *retriever* fetches potential results. However, with **rating** queries, the vector search often retrieves many irrelevant movies that are then filtered out by the _MovieQAFlow_ before being returned to the user. This is why there are fewer **rating** based results than **genre** based results. The students only need to notice that there are fewer **rating**-based results than **genre**-based results.
+After testing the new version, the participants should notice that the app's vector search functionality works best with **genre**-based (semantic) queries, which leverages its vector search capabilities to find relevant recommendations efficiently. Queries based on specific values, such as **ratings** (are not semantic) are less suited for this vector approach. For any query, the _retriever_ fetches potential results. However, with **rating** queries, the vector search often retrieves many irrelevant movies that are then filtered out by the _MovieQAFlow_ before being returned to the user. This is why there are fewer **rating** based results than **genre** based results. The students only need to notice that there are fewer **rating**-based results than **genre**-based results.
 
 Participants recommend to the Product team that they should roll back to the original version because transitioning purely to the vector-based search significantly impedes the quality of the results returned by the app and will likely impact user experience.
 
