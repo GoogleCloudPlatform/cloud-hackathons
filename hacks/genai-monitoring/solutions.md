@@ -157,44 +157,6 @@ Currently the setting for making the movie recommendation in the movieFlow on _m
 ```
   export const makeMovieRecommendation = ai.prompt('movie');
 ```
+> **Note** Participants may attempt to manually override model in the prompt file directly. It will not result in a good model response because every model interacts uniquely and updating a model typically also requires adjustments to the prompting. Participants may expore the difference in the prompt definitions between movie.v2.prompt and movie.prompt driven by the model change.
 
-2. Participants should find a failed trace for this feature and inspect the output. They can use the **Failed paths** table (aggregates failures of the same nature in a feature) to understand the impact and help filter to failing traces. Alternatively, they could filter to failed traces directly and compare trace outputs. They would notice that failed traces have the same error message in the output. The dashboard should look like the following:
 
-<img src="./images/userPreferencesFlow_failedPaths.png" alt="userPreferencesFlow Failed Traces" width="450" height="300">
-
-Clicking on a individual failed trace shows more details about the error: 
-
-<img src="./images/userPreferencesFlow_error.png" alt="userPreferencesFlow Error" width="450" height="300">
-
-```
-ZodError: [
-  {
-    "code": "unrecognized_keys",
-    "keys": [
-      "justification",
-      "safetyIssue",
-      "items"
-    ],
-    "path": [],
-    "message": "Unrecognized key(s) in object: 'justification', 'safetyIssue', 'items'"
-  }
-]
-```
-
-3. The error is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's instructions. 
-
-4. The app is currently using the experimental prompt (_js/flows/prompts/userPreference.experimental.prompt_). This prompt has an error as it provides conficting information. In the prompt text, it asks the model to return a list of items of type **string**, while the flow expects a list of items of type **profileChangeRecommendations**.
-
-  To fix the issue, the participants can do one of the following:
-
-  - Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_). OR
-  - Downgrade the flow to use _userProfile.prompt_.
-
-To fix the issue with the current prompt, the participants need to 
-
-[TODO]
-
-To downgrade the flow, the participants need to open the _userPreferencesFlow.ts_ file (in _js/flows/src_) and modify line 60 to replace _extractUserPreferencesExperimental_ with _extractUserPreferencesV1_.
-```
-  const response = await extractUserPreferencesV1({...});
-```
