@@ -50,11 +50,11 @@ git checkout ghack-genkit-monitoring
 To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in Firebase.
 
 - Go to the **Firebase Console** and create a new Firebase Web App in the _existing_ project.
-- Edit the **set_env_vars.sh** to replace _project_id_, and _firebase config_ values.
+- Edit the **set_env_vars.sh** to replace _PROJECT_ID, _FIREBASE_API_KEY, and _FIREBASE_APP_ID_ values.
 
   > **Hint**: During app setup, you will find these values in a code block during the `Add Firebase SDK` step
 
-  > **Hint**: If you have already continued to the console, these values can be found by clicking the settings icon next to `Project Overview` in the left-hand nav.
+  > **Hint**: If you have already continued to the console, these values can be found within General tab in the Project settings (click the settings icon at the top of the left-side panel).
 
 ### Local Environment Setup
 
@@ -72,7 +72,7 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
   ```
 
-- While waiting for services to start, explore the application architecture and connect it to the codebase.
+- While waiting for services to start, explore the application architecture and connect it to what you see in the codebase.
 
 ![Architecture diagram](images/architecture-diagram.png)
 
@@ -80,7 +80,7 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
   1. Establishes connection with the database
   1. Configures Genkit
-  1. Defines prompts for interacting with the LLM.
+  1. Defines prompts for interacting with the LLM
 
   > **Hint**: The Movie Guru team uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage their prompt variants.
 
