@@ -286,12 +286,12 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
   - Navigate to <http://localhost:4000> (using the **WebPreview** feature of cloudshell).
   - Change the code. Then, use the Genkit developer UI to run the flow locally and verify the change.
 
+  > **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make sure to save your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
+
 ### Learning resources
 
 - [Genkit Developer Tools and Developer UI](https://firebase.google.com/docs/genkit/devtools)
 - [Gemini Models on VertexAI](https://cloud.google.com/vertex-ai/generative-ai/docs/models)
-
-> **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
 ## Challenge 5: Improve search quality
 
