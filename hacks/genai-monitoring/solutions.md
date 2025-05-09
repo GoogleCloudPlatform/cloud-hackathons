@@ -149,7 +149,7 @@ ZodError: [
 
 1. The error is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's instructions.
 
-1. The app currently uses a canary strategy for this flow and switches between a stable prompt (_userProfile.prompt_) and an experimental prompt (_userPreference.experimental.prompt_). This experimental prompt has an error as it provides conficting information. In the prompt text, it asks the model to return a list of items of type **string**, while the flow expects a list of items of type **profileChangeRecommendations**.
+1. The app currently uses a canary strategy for this flow and switches between a stable prompt (_userProfile.prompt_) and an experimental prompt (_userPreference.experimental.prompt_). This experimental prompt has an error as it provides conficting information. In the prompt text, it asks the model to return a list of items of type **string**, while the flow expects a list of items of type **profileChangeRecommendations**. Also the fields **justification** and **safetyIssue** are expected to be nested properties in the **modelOutputMetadata** field and are not expected to be present in the root of the object.
 
   To fix the issue, the participants can do one of the following:
 
