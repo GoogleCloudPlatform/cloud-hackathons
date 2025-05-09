@@ -35,7 +35,7 @@ Your first task is to get the application running smoothly in your local environ
 
 ### Clone the Repository and set the environment variables
 
-> **Note** Run this step on the computers of **all** your team mates.
+> **Note** Run this step on the computers of **all** your teammates.
 
 - Open the **Cloud Shell Editor** and type the following commands.
 
@@ -88,7 +88,7 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ### Success Criteria
 
-- Your cloud environment is set up with the correct service accounts and credentials.
+- All your team mates have cloned the source code into their own cloud shell environments.
 - Your local environment is set up in Cloud Shell for all group members.
 - You are able interact with the **Movie Guru** app running on your local Cloud Shell instance.
 
@@ -106,9 +106,9 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
   > **Hint**: You can find the firebase config values in the `Project Settings` page by clicking the settings cog next to `Project Overview` in the left-hand nav of the firebase console.
 
-  > **Hint**: The Movie Guru App uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage its prompt variants.
+  > **Hint**: The **Movie Guru** app uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage its prompt variants.
 
-  > **Hint**: The Movie Guru app uses [flows](https://firebase.google.com/docs/genkit/flows) to encapsulate AI workflows.
+  > **Hint**: The **Movie Guru** app uses [flows](https://firebase.google.com/docs/genkit/flows) to encapsulate AI workflows.
 
 ## Challenge 2: Explore Firebase Genkit Monitoring
 
@@ -171,7 +171,7 @@ You are running the application in Cloud Shell by completing _Local Environment 
 
 ### Introduction
 
-The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, _user preferences aren't being saved_ (eg: "I love horror movies", "I hate drama films etc").
+The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, _user preferences aren't always being saved_ (eg: "I love horror movies", "I hate drama films etc").
 
 To see how preference saving is expected to work, watch this video:
 
@@ -182,8 +182,8 @@ To see how preference saving is expected to work, watch this video:
 Your task is to use Firebase Genkit Monitoring and the application code to pinpoint and resolve the root cause of these preference saving failures.
 
 1. Identify the feature and corresponding Genkit flow that is responsible for handling user preference updates.
-1. Examine the failed traces for this feature and identify common patterns. What do the error messages and trace details reveal?
-1. Determine the underlying cause of the failures based on your trace analysis by exploring the code for the feature you identified.
+1. Examine the failed traces for this feature and identify common failure patterns.
+1. Determine the underlying cause by exploring the code for the feature you identified.
    - Find the hints in the code files _js/flows/src/userPreferenceFlow.ts_ and _js/flows/src/userPreferenceTypes.ts_.
    - If you're _really_ stuck, check the **Learning Resources** for more hints.
 1. Apply the necessary code fix and restart the application.
@@ -191,8 +191,7 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
    - Stop the application. Press Ctrl+C to stop the running containers in the terminal where they are running.
 
      ```sh
-     # Optional: Required if first time running the script
-     chmod +x stop_app.sh
+     chmod +x stop_app.sh # Optional: Required if first time running the script
 
      ./stop_app.sh
      ```
@@ -200,8 +199,7 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
    - Restart the application after fixing it.
 
      ```sh
-     # Optional: Required if first time running the script
-     chmod +x start_app.sh
+     chmod +x start_app.sh # Optional: Required if first time running the script
 
      ./start_app.sh
      ```
@@ -272,9 +270,8 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 1. **Inspect trace spans**: Inspect traces and analyze individual spans (stages) within the chatFlow. Identify the longest-running spans.
 1. **Pinpoint bottlenecks**: Pinpoint which spans are the primary performance bottlenecks.
 1. **Optimize**: Identify one specific way to improve overall latency for the flow.
-   - Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
 1. **Implement & Test**: Implement your optimization in the code and restart your app.
-   > Extra: Genkit provides local tooling called the Developer UI to help you iterate on prompts and flows more quickly. See the learning resources below to give it a try.
+   > Optional: Genkit provides local tooling called the Developer UI to help you iterate on prompts and flows more quickly during the development process. See the learning resources below to give it a try.
 
 ### Success criteria
 
@@ -302,6 +299,8 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
   - Change the code. Then, use the Genkit developer UI to run the flow locally and verify the change.
 
 > **Hint**: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
+
+>**Hint**: Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
 
 > **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
@@ -338,7 +337,7 @@ Your task is to manage the rollout of this change, observe its effect on search 
 
 Now you are ready to do some comparative analysis of the existing version and the new version of the prompt.
 
-1. **Baseline Test (Mixed Search)**: Establish baseline performance for the existing mixed search by running the following queries and note down the results:
+1. **Baseline Test (Hybrid Search)**: Establish baseline performance for the existing mixed search by running the following queries and note down the results:
    - "Show me movies with ratings greater than 3"
    - "Show me movies that are shorter than 2 hours"
    - "Show me some funny films"
