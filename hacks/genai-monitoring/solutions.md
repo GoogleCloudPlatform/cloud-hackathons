@@ -157,6 +157,6 @@ Currently the setting for making the movie recommendation in the movieFlow on _m
 ```
   export const makeMovieRecommendation = ai.prompt('movie');
 ```
-> **Note** Participants may attempt to manually override model in the prompt file directly. It will not result in a good model response because every model interacts uniquely and updating a model typically also requires adjustments to the prompting. Participants may expore the difference in the prompt definitions between movie.v2.prompt and movie.prompt driven by the model change.
+> **Note** Participants may attempt to manually override model in the prompt file directly. It will not result in a good model response. Every model interacts uniquely, and updating a model typically also requires adjustments to the prompting. Participants may expore the difference in the prompt definitions between movie.v2.prompt and movie.prompt driven by the model change.
 
 
