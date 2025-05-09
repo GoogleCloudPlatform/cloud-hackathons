@@ -52,10 +52,6 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 - Go to the **Firebase Console** and create a new Firebase Web App in the _existing_ project.
 - Edit the **set_env_vars.sh** to replace _PROJECT_ID, _FIREBASE_API_KEY, and _FIREBASE_APP_ID_ values.
 
-  > **Hint**: During app setup, you will find these values in a code block during the `Add Firebase SDK` step
-
-  > **Hint**: If you have already continued to the console, these values can be found within General tab in the Project settings (click the settings icon at the top of the left-side panel).
-
 ### Local Environment Setup
 
 - Start the application
@@ -69,7 +65,6 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
   # images for the application containers (frontend, webserver,
   # and Genkit flows).
   ./start_app.sh
-
   ```
 
 - While waiting for services to start, explore the application architecture and connect it to what you see in the codebase.
@@ -79,12 +74,8 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 - Open the _js/flows_ folder within the codebase. Find where the application -
 
   1. Establishes connection with the database
-  1. Configures Genkit
-  1. Defines prompts for interacting with the LLM
-
-  > **Hint**: The Movie Guru team uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage their prompt variants.
-
-  > **Hint**: The Movie Guru team uses [flows](https://firebase.google.com/docs/genkit/flows) to encapsulate AI workflows.
+  1. Configures Genkit.
+  1. Defines prompts for interacting with the LLM.
 
 ### Test the app
 
@@ -112,6 +103,12 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
   - The GenAI core: Genkit flows, which handle the conversational and recommendation logic. These flows communicate directly with Gemini models on Vertex AI to leverage large language model capabilities (code found in **js/flows**).
   - Data Storage: PostgreSQL with the pgvector extension, used for storing both structured movie data (title, plot, etc.) and vector embeddings for semantic search.
   - Session Management: A Redis cache for storing user session information and conversation history.
+
+  > **Hint**: You can find the firebase config values in the `Project Settings` page by clicking the settings cog next to `Project Overview` in the left-hand nav of the firebase console.
+
+  > **Hint**: The Movie Guru App uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage its prompt variants.
+
+  > **Hint**: The Movie Guru app uses [flows](https://firebase.google.com/docs/genkit/flows) to encapsulate AI workflows.
 
 ## Challenge 2: Explore Firebase Genkit Monitoring
 
@@ -185,8 +182,7 @@ To see how preference saving is expected to work, watch this video:
 Your task is to use Firebase Genkit Monitoring and the application code to pinpoint and resolve the root cause of these preference saving failures.
 
 1. Identify the feature and corresponding Genkit flow that is responsible for handling user preference updates.
-1. Examine the failed traces for this feature. What do the error messages and trace details reveal?
-   > **Hint**: The **Failed paths** table under "Traces" can help reveal common error patterns.
+1. Examine the failed traces for this feature and identify common patterns. What do the error messages and trace details reveal?
 1. Determine the underlying cause of the failures based on your trace analysis by exploring the code for the feature you identified.
    - Find the hints in the code files _js/flows/src/userPreferenceFlow.ts_ and _js/flows/src/userPreferenceTypes.ts_.
    - If you're _really_ stuck, check the **Learning Resources** for more hints.
@@ -242,6 +238,8 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
   - To bring down running containers defined in a dockercompose.yaml file, use `docker compose down`. Find more info [here](https://docs.docker.com/compose/reference/down/).
 
 - **Hints for finding the error cause**
+  We introduced a regression in this release.
+  The error you're seeing is a _schema mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
 
 The error you're seeing is a _schema mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
 
@@ -253,8 +251,8 @@ The error you're seeing is a _schema mismatch error_. This indicates a discrepan
   1. **OR**, Downgrade the flow to use _userProfile.prompt_.
 
   If you are unsure of the difference between a _flow_ and a _prompt_, check out the section **Prompts and Flows in Genkit**.
-
-  > **Hint**: Maybe we introduced a regression in this release?
+  
+  > **Hint**: The **Failed paths** table can help reveal common error patterns.
 
 ## Challenge 4: Improve performance
 
@@ -273,7 +271,6 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 1. **Analyze feature latency**: Check P50 and P90 latency for the **chatFlow** feature. Interpret what these metrics indicate about typical and worst-case performance.
 1. **Inspect trace spans**: Inspect traces and analyze individual spans (stages) within the chatFlow. Identify the longest-running spans.
 1. **Pinpoint bottlenecks**: Pinpoint which spans are the primary performance bottlenecks.
-   > **Hint**: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
 1. **Optimize**: Identify one specific way to improve overall latency for the flow.
    - Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
 1. **Implement & Test**: Implement your optimization in the code and restart your app.
@@ -290,20 +287,21 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 
 - [Genkit Developer Tools and Developer UI](https://firebase.google.com/docs/genkit/devtools)
 - [Gemini Models on VertexAI](https://cloud.google.com/vertex-ai/generative-ai/docs/models)
+- **Genkit Developer UI**: Testing locally with the Genkit Developer UI can help you iterate more quickly on prompts and flows. If you want to set this up, follow the instructions below:
 
-Testing locally with the Genkit Developer UI can help you iterate more quickly on prompts and flows. If you want to set this up, follow the instructions below:
+  - Navigate in the _terminal_ to the _flows_ folder.
+  - Run the following command
 
-- Navigate in the _terminal_ to the _flows_ folder.
-- Run the following command
+    ```sh
+    cd movie-guru/js/flows
+    npm install .
+    npx genkit start -- npm run dev
+    ```
 
-  ```sh
-  cd movie-guru/js/flows
-  npm install .
-  npx genkit start -- npm run dev
-  ```
+  - Navigate to <http://localhost:4000> (using the **WebPreview** feature of cloudshell).
+  - Change the code. Then, use the Genkit developer UI to run the flow locally and verify the change.
 
-- Navigate to <http://localhost:4000> (using the **WebPreview** feature of cloudshell).
-- Change the code. Then, use the Genkit developer UI to run the flow locally and verify the change.
+> **Hint**: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
 
 > **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
@@ -334,8 +332,7 @@ Your task is to manage the rollout of this change, observe its effect on search 
 
 - Where does document search happen in the **chatFlow**?
 - Where are the results of that document search used?
-- Find the corresponding code
-  > **Hint**: Both the prompt and the flow include the term "docSearch" in them
+- Find the corresponding code.
 
 #### Perform comparative analysis
 
@@ -347,14 +344,13 @@ Now you are ready to do some comparative analysis of the existing version and th
    - "Show me some funny films"
    - "Show me some movies with dogs in them"
 1. **Examine retrieval performance**: How many movies were returned and used as context in the input to the model call?
-1. **Implement Search Switch**: Modify the application code to adopt the new search strategy.
+1. **Implement Search Switch and restart the app**: Modify the application code to adopt the new search strategy.
    - Update the **DocSearchFlow** (defined in the **docRetriever.ts** file) to use the **v2** version of the **docSearch.prompt**, which implements the vector-only search logic.
-1. **Restart**: Restart the app (or the **Genkit Developer UI**) to allow it to pick up the updated code changes.
+   - Restart the app (or the **Genkit Developer UI**) to allow it to pick up the updated code changes.
 1. **Post-Change Test (Vector Search)**: Re-run the test queries above and note down the results.
 1. **Analyze Impact & Diagnose**: Compare the results of the two tests and their traces.
-   - Review the differences between the prompt instructions to determine why the vector-only search impacted quality for _some_ queries and not others.
    - Review the differences between the prompt instructions to better understand what the LLM is being asked.
-     > **Hint**: focus on the **docSearchFlow** > **Hint**: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**
+   - Determine why the vector-only search impacted quality for _some_ queries and not others.
 1. **Make a recommendation**: Form a recommendation for the product team as to whether we should roll out this change or stick with the current mixed search.
 
 ### Success Criteria
@@ -368,3 +364,6 @@ Now you are ready to do some comparative analysis of the existing version and th
 
 - [Managing prompt versions](https://firebase.google.com/docs/genkit/dotprompt#prompt_variants)
 - [Search Strategies](https://cloud.google.com/vertex-ai/docs/vector-search/about-hybrid-search#why-does-hybrid-search-matter)
+
+ > **Hint**: focus on the **docSearchFlow** > **Hint**: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**.
+ 
