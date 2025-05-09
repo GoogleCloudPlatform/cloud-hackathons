@@ -264,7 +264,7 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 
 ### Success criteria
 
-- You found a span that is much slower than its peers.
+- You found a span that is much slower than its peers and are able to interpret what the P50 and P90 are telling you.
 - You examined and tested out potential fixes (maybe using the **Genkit Developer UI**).
 - You applied the fix in the code and redeployed the app.
 - Interactions with the updated app are faster.
