@@ -235,7 +235,7 @@ Upon inspecting individual traces with high latency in the trace viewer, partici
 
 **gemini-2.5-pro-preview-03-25** is used in the _movie.v2.prompt_ file, which is used in the **movieQAFlow**. Participants may further explore that chatFlow uses movieFlow to take the original user input, user preferences, relevant documents, and conversation history to make the final recommendation to the user.
 
-Currently app uses _movie.v2.prompt_, which is a variant of the movie.prompt for making movie recommendations. _movie.v2.prompt_ is using **gemini-2.5-pro-preview-03-25**, while the original movie.prompt is defined with **gemini-2.0-flash-lite**, a much lighter and faster version. Considering poor performance of the v2 variant, the participants should roll back the prompt update by setting the prompt in the _movieFlow.ts_ file as follows:
+Currently, the app uses _movie.v2.prompt_, which is a variant of the movie.prompt for making movie recommendations. _movie.v2.prompt_ is using **gemini-2.5-pro-preview-03-25**, while the original movie.prompt is defined with **gemini-2.0-flash-lite**, a much lighter and faster version. Considering poor performance of the v2 variant, the participants should roll back the prompt update by setting the prompt in the _movieFlow.ts_ file as follows:
 
 ```ts
   export const makeMovieRecommendation = ai.prompt('movie'); # will use movie.prompt
