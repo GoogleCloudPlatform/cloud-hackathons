@@ -10,8 +10,6 @@ Why is this crucial? Because in the age of AI, those who can effectively monitor
 
 ## Learning Objectives
 
-This is going to be an introduction to running apps on Cloud Run. We'll dive into various aspects of app development using cloud native tooling on GCP.
-
 - Understand your GenAI app health in production.
 - Troubleshoot different types of GenAI issues that might arise like model limitations, latency, etc
 - Find and address issues associated with the quality of your generated content
@@ -52,11 +50,11 @@ git checkout ghack-genkit-monitoring
 To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in Firebase.
 
 - Go to the **Firebase Console** and create a new Firebase Web App in the _existing_ project.
-- Edit the **set_env_vars.sh** to replace _project_id_, and _firebase config_ values.
+- Edit the **set_env_vars.sh** to replace _PROJECT_ID, _FIREBASE_API_KEY, and _FIREBASE_APP_ID_ values.
 
   > **Hint**: During app setup, you will find these values in a code block during the `Add Firebase SDK` step
 
-  > **Hint**: If you have already continued to the console, these values can be found by clicking the settings cog next to `Project Overview` in the left-hand nav.
+  > **Hint**: If you have already continued to the console, these values can be found within General tab in the Project settings (click the settings icon at the top of the left-side panel).
 
 ### Local Environment Setup
 
@@ -74,15 +72,15 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
   ```
 
-- While waiting for services to start, explore the application architecture and connect it to the codebase.
+- While waiting for services to start, explore the application architecture and connect it to what you see in the codebase.
 
-![Architecture diagram](images/architecture-diagram.png)
+![Architecture diagram](images/architecture_diagram.png)
 
 - Open the _js/flows_ folder within the codebase. Find where the application -
 
   1. Establishes connection with the database
   1. Configures Genkit
-  1. Defines prompts for interacting with the LLM.
+  1. Defines prompts for interacting with the LLM
 
   > **Hint**: The Movie Guru team uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage their prompt variants.
 
@@ -90,7 +88,8 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ### Test the app
 
-- Access the Movie Guru app on <http://localhost:8080> by clicking the **WebPreview** button on the top right of the editor (it looks like a browser icon with a diamond in it) and selecting port **8080**.
+- Access the Movie Guru app on <http://localhost:8080> by clicking the **Web Preview** button on the top right of the Cloud Shell window and selecting "Preview on port 8080". The icon for Web Preview looks like this: <img src="images/web_preview.png" alt="Web Preview icon" width="30" height="25">.
+
 
 - Login using your name.
 
@@ -118,23 +117,21 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ### Prerequisites
 
-On the cloud shell environment running this challenge:
-
-- _Local Environment Setup_ from _Challenge 1_.
+You are running the application in Cloud Shell by completing _Local Environment Setup_ from _Challenge 1_.
 
 ### Introduction
 
 As SREs, maintaining the reliability and performance of your application hinges on having tooling to give you visibility into the behavior of a live, production environment.
 
-In this challenge, you'll explore the Firebase Genkit monitoring dashboard to understand the reliability and performance of the Movie Guru app by navigating to difference sections, understanding the types of data it displays, and learning how to interpret the information presented. This foundational knowledge is crucial for effectively diagnosing and resolving issues in the subsequent challenges.
+In this challenge, you'll explore Firebase Genkit Monitoring to understand the reliability and performance of the Movie Guru app by navigating to different sections, understanding the types of data each of them displays, and learning how to interpret the information presented. This foundational knowledge is crucial for effectively diagnosing and resolving issues in the subsequent challenges.
 
 ### Description
 
-Your **objective** is to explore the Genkit monitoring dashboard and understand application performance and execution.
+Explore the Firebase Genkit Monitoring and understand the application's performance and execution. Navigate to the Genkit monitoring dashboard by selecting "Genkit" in the left-side panel under "AI" product categoty.
 
 1. **Assess overall health**: Based on this high-level view, what potential areas look like they might need attention?
 1. **Inspect by feature**: Identify individual GenAI _features_ in the app.
-1. **Find the critical path**: Isolate the feature handling core user interactions. Analyze its metrics.
+1. **Find the critical path**: Isolate the feature that handles core user interactions. Analyze its metrics.
    - How healthy is this feature?
    - Where might bottlenecks exist?
 1. **Inspect individual requests**: Interact with the app to generate a fresh trace.
@@ -173,29 +170,27 @@ Your **objective** is to explore the Genkit monitoring dashboard and understand 
 
 ### Prerequisites
 
-On the cloud shell environment running this challenge:
+You are running the application in Cloud Shell by completing _Local Environment Setup_ from _Challenge 1_.
 
-- _Local Environment Setup_ from _Challenge 1_.
 
 ### Introduction
 
-The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, _user preferences aren't being saved_.
+The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, _user preferences aren't being saved_ (eg: "I love horror movies", "I hate drama films etc").
 
 To see how preference saving is expected to work, watch this video:
 
-[![Movie Guru](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
+[![Demo of the Movie Guru web app](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
 
 ### Description
 
-Your task is to use the Genkit monitoring dashboard and the application code to pinpoint and resolve the root cause of these preference saving failures.
+Your task is to use Firebase Genkit Monitoring and the application code to pinpoint and resolve the root cause of these preference saving failures.
 
 1. Identify the feature and corresponding Genkit flow that is responsible for handling user preference updates.
 1. Examine the failed traces for this feature. What do the error messages and trace details reveal?
-1. Identify commonalities among the failures.
-   > **Hint**: The **Failed paths** table can help reveal common error patterns.
+   > **Hint**: The **Failed paths** table under "Traces" can help reveal common error patterns.
 1. Determine the underlying cause of the failures based on your trace analysis by exploring the code for the feature you identified.
    - Find the hints in the code files _js/flows/src/userPreferenceFlow.ts_ and _js/flows/src/userPreferenceTypes.ts_.
-   - If you're really stuck, check the **Learning Resources** for more hints.
+   - If you're _really_ stuck, check the **Learning Resources** for more hints.
 1. Apply the necessary code fix and restart the application.
 
    - Stop the application. Press Ctrl+C to stop the running containers in the terminal where they are running.
@@ -248,13 +243,14 @@ Your task is to use the Genkit monitoring dashboard and the application code to 
   - To bring down running containers defined in a dockercompose.yaml file, use `docker compose down`. Find more info [here](https://docs.docker.com/compose/reference/down/).
 
 - **Hints for finding the error cause**
-  The error you're seeing is a _schema mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
 
-  The _UserPreferenceFlow_ uses the output schema definition found in _userProfileTypes.ts_. Compare the output schema defined in _UserPreferenceTypes.ts_ with the output specified in _userPreference.prompt_ and its variants. Pay close attention to both the formal schema definitions of the prompt file and the _system instructions_ given to the model in the prompt text.
+The error you're seeing is a _schema mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
 
-  To fix the issue you can do one of the following:
+  The _UserPreferenceFlow_ uses the output schema definition found in _userProfileTypes.ts_. Compare the output schema defined in _UserPreferenceTypes.ts_ with the output specified in _userPreference.prompt_ and its variants. Pay close attention to both the format schema definitions of the prompt file and the _system instructions_ given to the model in the prompt text.
 
-  - Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_). OR
+  To fix the issue, you can do one of the following:
+
+  - Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_) OR
   - Downgrade the flow to use _userProfile.prompt_.
 
   If you are unsure of the difference between a _flow_ and a _prompt_, check out the section **Prompts and Flows in Genkit**.
@@ -265,9 +261,7 @@ Your task is to use the Genkit monitoring dashboard and the application code to 
 
 ### Prerequisites
 
-On the cloud shell environment running this challenge:
-
-- _Local Environment Setup_ from _Challenge 1_.
+You are running the application in Cloud Shell by completing _Local Environment Setup_ from _Challenge 1_.
 
 ### Introduction
 
@@ -314,7 +308,7 @@ Testing locally with the Genkit Developer UI can help you iterate more quickly o
 
 > **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
-## Challenge 5: Improving search quality
+## Challenge 5: Improve search quality
 
 ### Prerequisites
 

@@ -4,73 +4,24 @@
 
 Welcome to the coach's guide for The IoT Hack of the Century gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
-Remember that this hack includes a optional [lecture presentation](resources/lecture.pdf) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
-
 > **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
 - Challenge 1: Set up your environment and interact with the app
-- Challenge 2: Exploring Monitoring dashboard
-- Challenge 3: Troubleshooting failures
-- Challenge 4: Improving performance
+- Challenge 2: Explore Monitoring dashboard
+- Challenge 3: Troubleshoot failures
+- Challenge 4: Improve performance
+- Challenge 5: Improve search quality
 
-## Coach Prerequisites
+## Suggested Hack Agenda
 
-This hack has prerequisites that a coach is responsible for understanding and/or setting up BEFORE hosting an event. Please review the [gHacks Hosting Guide](https://ghacks.dev/faq/howto-host-hack.html) for information on how to host a hack event.
-
-The guide covers the common preparation steps a coach needs to do before any gHacks event, including how to properly setup Google Meet and Chat Spaces.
-
-### Student Resources
-
-Before the hack, it is the Coach's responsibility create and make available needed resources including:
-
-- Files for students
-- Lecture presentation
-- Terraform scripts for setup (if running in the customer's own environment)
-
-Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available) to create the zip files needed and upload them to your gHack's Google Space's Files area.
-
-Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
-
-> **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
-
-### Additional Coach Prerequisites (Optional)
-
-_Please list any additional pre-event setup steps a coach would be required to set up such as, creating or hosting a shared dataset, or preparing external resources._
-
-## Google Cloud Requirements
-
-This hack requires students to have access to Google Cloud project where they can create and consume Google Cloud resources. These requirements should be shared with a stakeholder in the organization that will be providing the Google Cloud project that will be used by the students.
-
-_Please list Google Cloud project requirements._
-
-_For example:_
-
-- Google Cloud resources that will be consumed by a student implementing the hack's challenges
-- Google Cloud permissions required by a student to complete the hack's challenges.
-
-
-## Repository Contents
-
-_The default files & folders are listed below. You may add to this if you want to specify what is in additional sub-folders you may add._
-
-- `README.md`
-  - Student's Challenge Guide
-- `solutions.md`
-  - Coach's Guide and related files
-- `./resources`
-  - Resource files, sample code, scripts, etc meant to be provided to students. (Must be packaged up by the coach and provided to students at start of event)
-- `./artifacts`
-  - Terraform scripts and other files needed to set up the environment for the gHack
-- `./images`
-  - Images and screenshots used in the Student or Coach's Guide
-
-## Environment
-
-- Setting Up the Environment (if not on Qwiklabs)
-  - Before we can hack, you will need to set up a few things.
-  - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
+- Day 1
+  - Challenge 1 (~20 minutes)
+  - Challenge 2 (~20 minutes)
+  - Challenge 3 (~30 minutes)
+  - Challenge 4 (~30 minutes)
+  - Challenge 5 (~20 minutes)
 
 ## Challenge 1: Set up your environment and interact with the app
 
@@ -78,60 +29,67 @@ _The default files & folders are listed below. You may add to this if you want t
 
 This goal of this challenge is to set up the app locally and test it out.
 
-All studetns should execute the step **Clone the Repository and set the environment variables** in their own cloud accounts.
+All studetns should execute the step **Clone the Repository and set the environment variables** in their own Cloud accounts.
 
-There are couple of points where things *may* go wrong:
+There are couple of points where students may ask for your guidance:
 
-1. Ensure your Google Cloud credentials are set up correctly in your local environment. This typically involves having a `key.json` file configured. (This is configured by the `setup_local.sh` script).
-1. Please be aware that the application's performance may be slow, particularly within the Quicklab environment. We recommend that users do not concurrently interact with the app.
-1. If you encounter issues such as no response or extremely slow responses, please try submitting your query again.
-1. The app's vector search functionality works best with *genre*-based (semantic) queries, which leverage its vector search capabilities to find relevant recommendations efficiently. Queries based on specific *ratings* (are not semantic) are less suited for this vector approach. For any query, the *retriever* fetches potential results; however, with *rating* queries, the vector search often retrieves many irrelevant movies that must then be filtered out by the RAG portion of the application before being displayed. This is why there are fewer *rating* based results. The students only need to notice that there are fewer *rating*-based results than *genre*-based results. They will realise the reason behind this in a later challenge.
+1. After cloning the repo, ensure Google Cloud credentials are set up correctly in each student's environment. The credentials are specified within `key.json` (this is configured by the `setup_local.sh` script).
+1. Please be aware that the application's performance may be slow, particularly within the Quicklab environment. We recommend that users do not concurrently interact with the same app.
+1. If you encounter issues such as no response or an extremely slow response, please try submitting the query again.
+1. Movie suggestions are _intentionally_ not saved. This functionality will be fixed in Challenge 2. 
 
 ## Challenge 2: Exploring Monitoring dashboard
 
 ### Notes & Guidance
 
-In this challenge, users will use the Firebase Genkit monitoring dashboard to understand the reliability and performance of the app.
+In this challenge, users will use Firebase Genkit Monitoring to understand the reliability and performance of the app.
 
-The Genkit monitoring dashboard can be found in the [Firebase console](https://console.firebase.google.com/) by navigating to:
-Your Qwiklab project > **Product categories** (sidebar) > **AI** > **Genkit** tab.
+The dashboard can be found in the [Firebase console](https://console.firebase.google.com/) by navigating to:
+Your Qwiklab project > **Product categories** (left-side panel) > **AI** > **Genkit** tab.
 
 Here's an example of where to find it:
-![Firebase console navigation to Genkit monitoring](./images/genkit_monitoring.png)
+
+<img src="./images/genkit_nav.png" alt="Firebase console navigation to Genkit monitoring" width="200" height="330">
 
 Once the metrics start trickling in, the dashboard should look similar to this:
-![Genkit monitoring dashboard overview](./images/genkit_dash.png)
 
-> **Note** Until the metrics come in, the **Genkit Monitoring** page might look like a documentation page without any dashboards. Don't panic. Give it a few minutes and refresh.
+<img src="./images/genkit_dash.png" alt="Genkit monitoring dashboard overview" width="550" height="300">
 
-Users might notice three main dashboards:
+> **Note** Until the metrics come in, the **Genkit Monitoring** page might show zero state like this:
+> <img src="./images/genkit_zero_state.png" alt="chatFlow trace" width="550" height="300">
+>
+> Don't panic. Give it a few minutes and then refresh.
+
+1. The dashboard shows three project-level metrics:
 - **Requests**
 - **Success Rate**
 - **Latency**
-The **Success Rate** dashboard might show that one feature (e.g., `UserProfileFlow`) has a low success rate.
+The **Success Rate** dashboard might show that one feature (e.g., `userPreferenceFlow`) has a low success rate.
 
-There are approximately four key features displayed in the dashboard:
+2. There are approximately four key features displayed in the dashboard (depending how much each student interacted with the app in Challenge 1):
 - `chatFlow`
 - `docSearchFlow`
 - `userPreferenceFlow`
 - `qualityFlow`
-While `chatFlow` is a critical feature, the others also require monitoring. Features can be thought of as monitoring scopes, so every independently invoked Genkit flow (orchestration) creates a new feature entry.
 
-The **chatFlow** handles core user interactions. Clicking on this feature will display individual metrics for that specific flow.
-!chatFlow Dashboard
+While `chatFlow` is a critical feature that's responsible for the main interaction, the others also require monitoring. Features can be thought of as monitoring scopes, so every independently invoked Genkit flow (orchestration) creates a new feature entry.
 
-Individual traces will provide a detailed breakdown of a flow's execution, similar to the example below.
+3. The **chatFlow** handles core user interactions. Clicking on this feature will display its individual metrics.
+<img src="./images/chatFlow_dashboard.png" alt="chatFlow dashboard" width="450" height="300">
+
+4. Individual traces will provide a detailed breakdown of a flow's execution, similar to the example below.
 
 When a user gets recommendations, a trace might typically include the following steps (or spans):
 - `safetyIssueFlow`
 - `queryTransformFlow`
 - `docSearchFlow`
 - `movieQAFlow`
+
 If no search is required for a particular query, the `docSearchFlow` span will be absent.
 Each step (or span) in the trace will show its latency.
- !chatFlow Trace
+<img src="./images/chatFlow_Trace.png" alt="chatFlow trace" width="450" height="300">
  
- By clicking on the tri-dot menu (three vertical dots) next to a trace or span, users can access related logs and traces in Google Cloud Logging and Google Cloud Trace for more in-depth observability.
+5. By clicking on the tri-dot menu (three vertical dots) next to a trace or span, users can access related logs and traces in Google Cloud Logging and Google Cloud Trace for more in-depth observability.
 
 ## Challenge 3: Troubleshoot failures
 
@@ -143,15 +101,15 @@ To see how preference saving is expected to work, watch this video:
 
 [![Movie Guru](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
 
-The user's need to identify that the flow that has issues is the userPreferencesFlow defined in  _js/flows/src/userPreferenceFlow.ts_. 
+1. The participants should interact with the app to make sure the monitoring tool captures the misbehavior. Then, the users should inspect the monitoring dashboard, looking for features with **low success rate**. Even if they haven't identified it already via Step 1 of Challenge 2, by now the participants should see that userPreferenceFlow is failing a lot. The flow is defined in  _js/flows/src/userPreferenceFlow.ts_. 
 
-The user's will see the following error message if they inspect a failed trace in the dashboard. Users can use the **failed paths** table (aggregates failures of the same nature in a feature) to find the reason. The dashboard should look like the following.
+2. Participants should find a failed trace for this feature and inspect the output. They can use the **Failed paths** table (aggregates failures of the same nature in a feature) to understand the impact and help filter to failing traces. Alternatively, they could filter to failed traces directly and compare trace outputs. They would notice that failed traces have the same error message in the output. The dashboard should look like the following:
 
-![UserPreferencesFlow Failed Traces](./images/userPreferencesFlow_failedPaths.png)
+<img src="./images/userPreferencesFlow_failedPaths.png" alt="userPreferencesFlow Failed Traces" width="450" height="300">
 
-Clicking on a individual failed trace also shows the error. 
+Clicking on a individual failed trace shows more details about the error in the trace viewer: 
 
-![UserPreferencesFlow Error](./images/userPreferencesFlow_error.png)
+<img src="./images/userPreferencesFlow_error.png" alt="userPreferencesFlow Error" width="450" height="300">
 
 ```
 ZodError: [
@@ -168,9 +126,59 @@ ZodError: [
 ]
 ```
 
-The error is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's instructiSons. 
+3. The error is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's instructions. 
 
-The app is currently using the experimental prompt (_js/flows/prompts/userPreference.experimental.prompt_). This prompt has an error as it provides conficting information. In the prompt text, it asks the model to return a list of items of type **string**, while the Flow expects a list of items of type **profileChangeRecommendations**
+4. The app is currently using the experimental prompt (_js/flows/prompts/userPreference.experimental.prompt_). This prompt has an error as it provides conficting information. In the prompt text, it asks the model to return a list of items of type **string**, while the flow expects a list of items of type **profileChangeRecommendations**.
 
+  To fix the issue, the participants can do one of the following:
+
+  - Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_). OR
+  - Downgrade the flow to use _userProfile.prompt_.
+
+To fix the issue with the current prompt, the participants need to add the following on line 15 in the _userProfile.experimental.prompt_ file:
+```
+  output:
+    schema: UserPreferenceFlowOutputSchema
 ```
 
+To downgrade the flow, the participants need to open the _userPreferencesFlow.ts_ file (in _js/flows/src_) and modify line 60 to replace _extractUserPreferencesExperimental_ with _extractUserPreferencesV1_.
+```
+  const response = await extractUserPreferencesV1({...});
+```
+## Challenge 4: Improve performance
+
+### Notes & Guidance
+
+In this challenge we see that the **MovieGuru** app's performance is quite slow and work on improving it.
+
+The participants should look at the latency chart for **chatFlow**. P50, also known as the median, represents the response time below which 50% of requests are completed. P90 indicates the response time below which 90% of requests are completed. Participants will likely notice that both their P50 and P90 latency are _really_ high, meaning that the experience is consistently slow for all users. Using an app with such a high latency can be very frustrating and should be improved.
+
+Upon inspecting individual traces with high latency in the trace viewer, participants will see that the bulk of execution time is spen on the model interactions, specifically the ones that include the usage of the gemini-2.5-pro-preview-03-25 model. While newer and "bigger" models can boost the quality of the output, there is a tradeoff between the size of the model and the latency of the interaction. Participants should inspect the codebase to understand where and how this model is being used.
+
+<img src="./images/genkit_spans_with_latencies.png" alt="Spans with latencies" width="230" height="400">
+
+
+**gemini-2.5-pro-preview-03-25** is used in the _movie.v2.prompt_ file, which is used in the **movieFlow**. Participants may further explore that chatFlow uses movieFlow to take the original user input, user preferences, relevant documents, and conversation history to make the final recommendation to the user. 
+
+Currently the setting for making the movie recommendation in the movieFlow on _movie.v2.prompt_, which is a variant of the movie.prompt. movie.v2.prompt is using **gemini-2.5-pro-preview-03-25**, while the original movie.prompt is defined with **gemini-2.0-flash-lite**, a much lighter and faster version. Considering poor performance of the v2 variant, the participants should roll back the prompt update by setting the prompt on line 37 of the _movieFlow.ts_ file as follows:
+```
+  export const makeMovieRecommendation = ai.prompt('movie');
+```
+> **Note** Participants may attempt to manually override model in the prompt file directly. It will not result in a good model response. Every model interacts uniquely, and updating a model typically also requires adjustments to the prompting. Participants may expore the difference in the prompt definitions between movie.v2.prompt and movie.prompt driven by the model change.
+
+## Challenge 5: Improve performance
+
+### Notes & Guidance
+
+In this challenge we attempt to reduce operational costs of the app by switching from a mixed search strategy to a to purely vector-based search within chatFlow.
+
+Participants should examine _docSearch.prompt_ and _docSearch.v2.prompt_ files to understand what role docSearch plays chatFlow. DocSearchFlow and its corresponding prompt are used to analyze user's query adainst the database and summarize it into a concise request and a search category, which is then passed to the movieFlow responds to any movie-related questions.
+
+After evaluating existing functionality, participants should roll out the change by updating line 65 in the _docRetriever.ts_ file:
+```
+  export const makeMovieRecommendation = ai.prompt('docSearch', {variant: 'v2'});
+```
+
+After examining both, the participants should notice that the app's vector search functionality works best with *genre*-based (semantic) queries, which leverages its vector search capabilities to find relevant recommendations efficiently. Queries based on specific *ratings* (are not semantic) are less suited for this vector approach. For any query, the *retriever* fetches potential results. However, with *rating* queries, the vector search often retrieves many irrelevant movies that must then be filtered out by the RAG portion of the application before being displayed. This is why there are fewer *rating* based results. The students only need to notice that there are fewer *rating*-based results than *genre*-based results.
+
+Participants should **not** roll out the new feature because transitioning purely to the vector-based search significantly impedes the quality of the output of the model.
