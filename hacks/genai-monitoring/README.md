@@ -135,6 +135,14 @@ Explore the Firebase Genkit Monitoring and understand the application's performa
 1. **Leverage integrated observability**: From the trace details, use the tri-dot menu to access related logs and traces in _Google Cloud Logging_ and _Google Cloud Trace_.
    - What additional context do these tools provide?
 
+### Success Criteria
+
+- You are able to name the key metrics displayed on the Genkit Monitoring Dashbord.
+- You know the different features that comprise the **Movie Guru** app and what they do.
+- You are able to name the key metrics displayed on the Genkit Monitoring Dashbord, per feature.
+- You know the different steps that the app takes to answer a user's query.
+- You can correlate data in the monitoring dashboard with data in Cloud.
+
 ### Tips
 
 - **Genkit Feature**
@@ -150,14 +158,6 @@ Explore the Firebase Genkit Monitoring and understand the application's performa
   - Processing a specific data loading or transformation task.
 
     By breaking down your application's execution into features, the monitoring dashboard allows you to quickly assess the health and performance of individual components.
-
-### Success Criteria
-
-- You are able to name the key metrics displayed on the Genkit Monitoring Dashbord.
-- You know the different features that comprise the **Movie Guru** app and what they do.
-- You are able to name the key metrics displayed on the Genkit Monitoring Dashbord, per feature.
-- You know the different steps that the app takes to answer a user's query.
-- You can correlate data in the monitoring dashboard with data in Cloud.
 
 ### Learning Resources
 
