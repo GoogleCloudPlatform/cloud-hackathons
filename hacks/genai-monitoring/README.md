@@ -336,7 +336,7 @@ Now you are ready to do some comparative analysis of the existing version and th
 
 ### Success Criteria
 
-- You successfully update the application code to use the new variant of the search prompt.
+- You have successfully update the application code to use the new variant of the search prompt.
 - You can compare the quality and performance before and after making a change to the prompt.
 - You identified which types of queries resulted in degraded search quality and can articulate the likely cause.
 - You have evidence for the **Product Team** to support or nor support rolling out the change in prompt variant.
