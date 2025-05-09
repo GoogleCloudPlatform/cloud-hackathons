@@ -33,7 +33,7 @@ This goal of this challenge is to set up the app locally and test it out.
 
 All studetns should execute the step **Clone the Repository and set the environment variables** in their own Cloud accounts.
 
-There are couple of points where things *may* go wrong:
+There are couple of points where students may ask for your guidance:
 
 1. After cloning the repo, ensure Google Cloud credentials are set up correctly in each student's environment. The credentials are specified within `key.json` (this is configured by the `setup_local.sh` script).
 1. Please be aware that the application's performance may be slow, particularly within the Quicklab environment. We recommend that users do not concurrently interact with the same app.
@@ -45,16 +45,18 @@ There are couple of points where things *may* go wrong:
 
 ### Notes & Guidance
 
-In this challenge, users will use the Firebase Genkit monitoring dashboard to understand the reliability and performance of the app.
+In this challenge, users will use Firebase Genkit Monitoring to understand the reliability and performance of the app.
 
-The Genkit monitoring dashboard can be found in the [Firebase console](https://console.firebase.google.com/) by navigating to:
-Your Qwiklab project > **Product categories** (sidebar) > **AI** > **Genkit** tab.
+The dashboard can be found in the [Firebase console](https://console.firebase.google.com/) by navigating to:
+Your Qwiklab project > **Product categories** (left-side panel) > **AI** > **Genkit** tab.
 
 Here's an example of where to find it:
-![Firebase console navigation to Genkit monitoring](./images/genkit_monitoring.png)
+
+<img src="./images/genkit_monitoring.png" alt="Firebase console navigation to Genkit monitoring" width="200" height="330">
 
 Once the metrics start trickling in, the dashboard should look similar to this:
-![Genkit monitoring dashboard overview](./images/genkit_dash.png)
+
+<img src="./images/genkit_dash.png" alt="Genkit monitoring dashboard overview" width="400" height="300">
 
 > **Note** Until the metrics come in, the **Genkit Monitoring** page might look like a documentation page without any dashboards. Don't panic. Give it a few minutes and refresh.
 
