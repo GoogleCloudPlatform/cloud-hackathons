@@ -187,11 +187,10 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
 
 1. Identify the feature and corresponding Genkit flow that is responsible for handling user preference updates.
 1. Examine the failed traces for this feature. What do the error messages and trace details reveal?
-1. Identify commonalities among the failures.
    > **Hint**: The **Failed paths** table under "Traces" can help reveal common error patterns.
 1. Determine the underlying cause of the failures based on your trace analysis by exploring the code for the feature you identified.
    - Find the hints in the code files _js/flows/src/userPreferenceFlow.ts_ and _js/flows/src/userPreferenceTypes.ts_.
-   - If you're really stuck, check the **Learning Resources** for more hints.
+   - If you're _really_ stuck, check the **Learning Resources** for more hints.
 1. Apply the necessary code fix and restart the application.
 
    - Stop the application. Press Ctrl+C to stop the running containers in the terminal where they are running.
