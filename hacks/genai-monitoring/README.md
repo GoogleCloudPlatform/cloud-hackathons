@@ -88,10 +88,11 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ### Test the app
 
-- Access the Movie Guru app on http://localhost:8080 by clicking the **Web Preview** button on the top right of the Cloud Shell window and selecting "Preview on port 8080". The icon for Web Preview looks like this: <img src="images/web_preview.png" alt="Web Preview icon" width="30" height="25">.
+- Access the Movie Guru app on <http://localhost:8080> by clicking the **Web Preview** button on the top right of the Cloud Shell window and selecting "Preview on port 8080". The icon for Web Preview looks like the following.
+
+  ![this](./images/web_preview.png)
 
 - Login using your name.
-
 - Get to know the **Movie Guru** application by chatting with it.
 
 ### Success Criteria
