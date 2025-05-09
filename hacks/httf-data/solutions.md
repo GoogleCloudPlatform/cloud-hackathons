@@ -80,7 +80,7 @@ SELECT 'users', COUNT(*) FROM users UNION ALL
 SELECT 'events', COUNT(*) FROM events UNION ALL
 SELECT 'inventory_items', COUNT(*) FROM inventory_items UNION ALL
 SELECT 'orders', COUNT(*) FROM orders UNION ALL
-SELECT 'order_items', COUNT(*) FROM order_items;
+SELECT 'order_items', COUNT(*) FROM order_items ORDER BY table_name;
 ```
 
 ## Challenge 2: Federation
@@ -105,7 +105,10 @@ bq  --location=us mk --dataset \
 
 Copying the tables can be done through a CTAS statement.
 
-```sql
+> **Note** The snippets in this guide use the CLI for executing the SQL for BigQuery from the Cloud Shell. But we expect the participants to use the BigQuery Studio to enter the SQL statements (everything between the [heredoc](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Here-Documents) delimiters `EOF`), in which case the variables should be replaced by their literal values.
+
+```shell
+bq query --use_legacy_sql=false <<EOF
 CREATE TABLE $BQ_DATASET.distribution_centers AS SELECT * FROM spanner_external_dataset.distribution_centers; 
 CREATE TABLE $BQ_DATASET.events AS SELECT * FROM spanner_external_dataset.events; 
 CREATE TABLE $BQ_DATASET.inventory_items AS SELECT * FROM spanner_external_dataset.inventory_items; 
@@ -113,18 +116,21 @@ CREATE TABLE $BQ_DATASET.order_items AS SELECT * FROM spanner_external_dataset.o
 CREATE TABLE $BQ_DATASET.orders AS SELECT * FROM spanner_external_dataset.orders; 
 CREATE TABLE $BQ_DATASET.products AS SELECT * FROM spanner_external_dataset.products; 
 CREATE TABLE $BQ_DATASET.users AS SELECT * FROM spanner_external_dataset.users;
+EOF
 ```
 
 Once the tables have been created, the contents can be verified similarly to the previous challenge.
 
-```sql
+```shell
+bq query --use_legacy_sql=false <<EOF
 SELECT 'distribution_centers' AS table_name, COUNT(*) AS row_count FROM $BQ_DATASET.distribution_centers UNION ALL
 SELECT 'products', COUNT(*) FROM $BQ_DATASET.products UNION ALL
 SELECT 'users', COUNT(*) FROM $BQ_DATASET.users UNION ALL
 SELECT 'events', COUNT(*) FROM $BQ_DATASET.events UNION ALL
 SELECT 'inventory_items', COUNT(*) FROM $BQ_DATASET.inventory_items UNION ALL
 SELECT 'orders', COUNT(*) FROM $BQ_DATASET.orders UNION ALL
-SELECT 'order_items', COUNT(*) FROM $BQ_DATASET.order_items;
+SELECT 'order_items', COUNT(*) FROM $BQ_DATASET.order_items ORDER BY table_name;
+EOF
 ```
 
 ## Challenge 3: Automation
@@ -154,9 +160,12 @@ integrationcli integrations apply \
     -f cleanup-integration \
     -e dev \
     --default-token \
-    --grant-permissions \
+    --grant-permission \
     --wait
 ```
+
+> **Note**  
+> When the command runs, it first emits an error indicating that the connection is not found. This error can be ignored as the configuration also contains connection information that is used to create that connection.
 
 Running the pipeline from the UI should be straight-forward, just make sure to stick to the default parameters. See below for the alternative CLI command to run it.
 
@@ -200,10 +209,12 @@ ORDER BY
 
 Let's start with adding the columns to the `products` table in the BigQuery dataset.
 
-```sql
-ALTER TABLE `$BQ_DATASET.products`
+```shell
+bq query --use_legacy_sql=false <<EOF
+ALTER TABLE $BQ_DATASET.products
     ADD COLUMN product_description STRING,
     ADD COLUMN product_description_embeddings ARRAY<FLOAT64>;
+EOF
 ```
 
 Now, before we can create and use models we'll need to create a connection and set up the required roles for the underlying service account.
@@ -223,23 +234,28 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
 
 Now we can create the models (the versions in the endpoints are the latest versions at the time of writing this, you can use whatever version is the latest if those are obsolete).
 
-```sql
-CREATE OR REPLACE MODEL `$BQ_DATASET.text_embeddings`
-REMOTE WITH CONNECTION `us.vertex_ai`
+> **Note** If you're copying the SQL statements to BigQuery Studio, make sure to remove the backslashes in front of the backticks. Those backslashes are needed to escape the backticks when you run the statements from the CLI.
+
+```shell
+bq query --use_legacy_sql=false <<EOF
+CREATE OR REPLACE MODEL $BQ_DATASET.text_embeddings
+REMOTE WITH CONNECTION \`us.$CONN_ID\`
 OPTIONS (ENDPOINT = 'text-embedding-005');
 
-CREATE OR REPLACE MODEL `$BQ_DATASET.text_generation`
-REMOTE WITH CONNECTION `us.vertex_ai`
+CREATE OR REPLACE MODEL $BQ_DATASET.text_generation
+REMOTE WITH CONNECTION \`us.$CONN_ID\`
 OPTIONS (ENDPOINT = 'gemini-2.0-flash');
+EOF
 ```
 
 Generating the product description will involve designing a prompt, which is an art by itself. It's sufficient to ensure that the prompt is common sense and includes the columns mentioned in the instructions.
 
-```sql
-UPDATE `$BQ_DATASET.products` AS t1
+```shell
+bq query --use_legacy_sql=false <<EOF
+UPDATE $BQ_DATASET.products AS t1
 SET product_description = t2.ml_generate_text_llm_result
 FROM ML.GENERATE_TEXT(
-    MODEL `$BQ_DATASET.text_generation`,
+    MODEL $BQ_DATASET.text_generation,
     (
         SELECT id,
         CONCAT(
@@ -252,7 +268,7 @@ FROM ML.GENERATE_TEXT(
           '- Price: ', retail_price, ' \n\n',
           'Limit your response to 250 words or less.'
         ) AS prompt
-        FROM `$BQ_DATASET.products` p
+        FROM $BQ_DATASET.products p
         WHERE p.product_description IS NULL
         LIMIT 100 
     ),
@@ -263,18 +279,20 @@ FROM ML.GENERATE_TEXT(
     )
 ) AS t2
 WHERE t1.id = t2.id;
+EOF
 ```
 
 Run the following command to generate the embeddings for the descriptions.
 
-```sql
-UPDATE `$BQ_DATASET.products` AS t1
+```shell
+bq query --use_legacy_sql=false <<EOF
+UPDATE $BQ_DATASET.products AS t1
 SET product_description_embeddings = t2.ml_generate_embedding_result
 FROM ML.GENERATE_EMBEDDING(
-    MODEL `$BQ_DATASET.text_embeddings`,
+    MODEL $BQ_DATASET.text_embeddings,
     (
       SELECT id, product_description as content
-      FROM `$BQ_DATASET.products`
+      FROM $BQ_DATASET.products
       WHERE product_description IS NOT NULL
       LIMIT 100 
     ),
@@ -283,13 +301,16 @@ FROM ML.GENERATE_EMBEDDING(
     )
 ) AS t2
 WHERE t1.id = t2.id;
+EOF
 ```
 
 Verifying things could be done by doing a basic count on the number of non-empty rows, which should be greater than or equal to 100 for both columns.
 
-```sql
-SELECT COUNT(*) FROM cymbal_analytics.products WHERE product_description IS NOT NULL;
-SELECT COUNT(*) FROM cymbal_analytics.products WHERE ARRAY_LENGTH(product_description_embeddings) > 0;
+```shell
+bq query --use_legacy_sql=false <<EOF
+SELECT COUNT(*) FROM $BQ_DATASET.products WHERE product_description IS NOT NULL UNION ALL
+SELECT COUNT(*) FROM $BQ_DATASET.products WHERE ARRAY_LENGTH(product_description_embeddings) > 0;
+EOF
 ```
 
 ## Challenge 5: Semantic search
@@ -313,16 +334,18 @@ ALTER TABLE products ADD COLUMN product_description_embeddings ARRAY<FLOAT64>;
 
 Now we can export the data (note that this requires a BigQuery Enterprise Edition configuration, but the setup scripts should have taken care of that).
 
-```sql
+```shell
+bq query --use_legacy_sql=false <<EOF
 EXPORT DATA OPTIONS (
     uri='https://spanner.googleapis.com/projects/$GOOGLE_CLOUD_PROJECT/instances/onlineboutique/databases/ecom',
     format='CLOUD_SPANNER',
     spanner_options='{"table": "products"}'
   )
-  AS SELECT * FROM `$BQ_DATASET.products`;
+  AS SELECT * FROM $BQ_DATASET.products;
+EOF
 ```
 
-This should replicate the data in Spanner. Let's create the model in Spanner (make sure that the model versions match with what was chosen in BigQuery).
+This should replicate the data in Spanner. Let's create the model in Spanner (make sure that the model versions match with what was chosen in BigQuery, and replace the variables with their literal values).
 
 ```sql
 CREATE MODEL IF NOT EXISTS text_embeddings 
@@ -353,8 +376,8 @@ SELECT COSINE_DISTANCE(
   ) as dist,
   id,
   name, 
-  department,
-  product_description
+  department
+  --,product_description
 FROM products, embedding
 ORDER BY dist
 LIMIT 5;
@@ -374,10 +397,12 @@ gsutil mb -l $REGION $BUCKET
 
 Add the additional columns to BigQuery.
 
-```sql
-ALTER TABLE `$BQ_DATASET.products`
+```shell
+bq query --use_legacy_sql=false <<EOF
+ALTER TABLE $BQ_DATASET.products
     ADD COLUMN image_uri STRING,
     ADD COLUMN image_url STRING;
+EOF
 ```
 
 If the Python code is not available download/clone/unzip it.

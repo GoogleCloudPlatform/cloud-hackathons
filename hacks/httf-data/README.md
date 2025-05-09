@@ -52,6 +52,9 @@ The legacy MySQL database has already been migrated to Google Cloud as a MySQL i
 
 Create a new *Spanner Enterprise edition* instance called `onlineboutique` with *100 Processing Units* in the same region as the MySQL instance. Then create a new Spanner database with the name `ecom` in the new instance. Once the Spanner database is created, migrate the `ecom` *schema and data* from the MySQL instance to the new Spanner database using the Spanner Migration Tool. Make sure to choose *POC Migration* as the migration type.
 
+> **Note**  
+> Once the migration starts, it will take roughly 15 minutes to complete. While the migration is running, you can already start looking into the next challenge, but you'll need the migration to be completed in order to complete the next challenge.
+
 ### Success Criteria
 
 - There is a new Cloud Spanner instance, `onlineboutique` with *100 PU* and a new database, `ecom`.
@@ -61,12 +64,12 @@ Create a new *Spanner Enterprise edition* instance called `onlineboutique` with 
   | Table | #Rows |
   | ---   | ---   |
   | distribution_centers | 10  |
-  | products             | 29120 |
-  | users                | 100000 |
   | events               | 2438862 |
   | inventory_items      | 494254 |
-  | orders               | 125905 |
   | order_items          | 182905 |
+  | orders               | 125905 |  
+  | products             | 29120 |
+  | users                | 100000 |
 
 ### Learning Resources
 
@@ -98,12 +101,12 @@ Copy each table from the Spanner database to the newly created BigQuery dataset.
   | Table | #Rows |
   | ---   | ---   |
   | distribution_centers | 10  |
-  | products             | 29120 |
-  | users                | 100000 |
   | events               | 2438862 |
   | inventory_items      | 494254 |
-  | orders               | 125905 |
   | order_items          | 182905 |
+  | orders               | 125905 |  
+  | products             | 29120 |
+  | users                | 100000 |
 
 ### Learning Resources
 
