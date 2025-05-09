@@ -11,17 +11,19 @@ Remember that this hack includes a optional [lecture presentation](resources/lec
 ## Coach's Guides
 
 - Challenge 1: Set up your environment and interact with the app
-- Challenge 2: Exploring Monitoring dashboard
-- Challenge 3: Troubleshooting failures
-- Challenge 4: Improving performance
+- Challenge 2: Explore Monitoring dashboard
+- Challenge 3: Troubleshoot failures
+- Challenge 4: Improve performance
+- Challenge 5: Improve search quality
 
 ## Suggested Hack Agenda
 
 - Day 1
   - Challenge 1 (~20 minutes)
   - Challenge 2 (~20 minutes)
-  - Challenge 3 (~20 minutes)
-  - Challenge 4 (~20 minutes)
+  - Challenge 3 (~30 minutes)
+  - Challenge 4 (~30 minutes)
+  - Challenge 5 (~20 minutes)
 
 ## Challenge 1: Set up your environment and interact with the app
 
