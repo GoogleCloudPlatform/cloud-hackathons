@@ -250,7 +250,7 @@ The error you're seeing is a _schema mismatch error_. This indicates a discrepan
 
   To fix the issue, you can do one of the following:
 
-  - Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_). OR
+  - Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_) OR
   - Downgrade the flow to use _userProfile.prompt_.
 
   If you are unsure of the difference between a _flow_ and a _prompt_, check out the section **Prompts and Flows in Genkit**.
