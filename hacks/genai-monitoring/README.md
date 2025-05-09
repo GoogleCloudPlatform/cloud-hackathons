@@ -117,9 +117,7 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ### Prerequisites
 
-On the cloud shell environment running this challenge:
-
-- _Local Environment Setup_ from _Challenge 1_.
+You are running the application in Cloud Shell by completing _Local Environment Setup_ from _Challenge 1_.
 
 ### Introduction
 
@@ -129,11 +127,11 @@ In this challenge, you'll explore Firebase Genkit Monitoring to understand the r
 
 ### Description
 
-Your **objective** is to explore the Firebase Genkit Monitoring and understand the application's performance and execution. Navigate to the Genkit monitoring dashboard by selecting "Genkit" in the left-side panel under "AI" product categoty.
+Explore the Firebase Genkit Monitoring and understand the application's performance and execution. Navigate to the Genkit monitoring dashboard by selecting "Genkit" in the left-side panel under "AI" product categoty.
 
 1. **Assess overall health**: Based on this high-level view, what potential areas look like they might need attention?
 1. **Inspect by feature**: Identify individual GenAI _features_ in the app.
-1. **Find the critical path**: Isolate the feature handling core user interactions. Analyze its metrics.
+1. **Find the critical path**: Isolate the feature that handles core user interactions. Analyze its metrics.
    - How healthy is this feature?
    - Where might bottlenecks exist?
 1. **Inspect individual requests**: Interact with the app to generate a fresh trace.
@@ -172,9 +170,8 @@ Your **objective** is to explore the Firebase Genkit Monitoring and understand t
 
 ### Prerequisites
 
-On the cloud shell environment running this challenge:
+You are running the application in Cloud Shell by completing _Local Environment Setup_ from _Challenge 1_.
 
-- _Local Environment Setup_ from _Challenge 1_.
 
 ### Introduction
 
@@ -182,11 +179,11 @@ The Movie Guru team just released a new version of the app, and since that relea
 
 To see how preference saving is expected to work, watch this video:
 
-[![Movie Guru](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
+[![Demo of the Movie Guru web app](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
 
 ### Description
 
-Your task is to use the Genkit monitoring dashboard and the application code to pinpoint and resolve the root cause of these preference saving failures.
+Your task is to use Firebase Genkit Monitoring and the application code to pinpoint and resolve the root cause of these preference saving failures.
 
 1. Identify the feature and corresponding Genkit flow that is responsible for handling user preference updates.
 1. Examine the failed traces for this feature. What do the error messages and trace details reveal?
@@ -264,9 +261,7 @@ Your task is to use the Genkit monitoring dashboard and the application code to 
 
 ### Prerequisites
 
-On the cloud shell environment running this challenge:
-
-- _Local Environment Setup_ from _Challenge 1_.
+You are running the application in Cloud Shell by completing _Local Environment Setup_ from _Challenge 1_.
 
 ### Introduction
 
