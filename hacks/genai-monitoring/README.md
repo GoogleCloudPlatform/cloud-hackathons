@@ -88,8 +88,7 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ### Test the app
 
-- Access the Movie Guru app on <http://localhost:8080> by clicking the **Web Preview** button on the top right of the Cloud Shell window and selecting "Preview on port 8080". The icon for Web Preview looks like this: <img src="images/web_preview.png" alt="Web Preview icon" width="30" height="25">.
-
+- Access the Movie Guru app on http://localhost:8080 by clicking the **Web Preview** button on the top right of the Cloud Shell window and selecting "Preview on port 8080". The icon for Web Preview looks like this: <img src="images/web_preview.png" alt="Web Preview icon" width="30" height="25">.
 
 - Login using your name.
 
@@ -172,7 +171,6 @@ Explore the Firebase Genkit Monitoring and understand the application's performa
 
 You are running the application in Cloud Shell by completing _Local Environment Setup_ from _Challenge 1_.
 
-
 ### Introduction
 
 The Movie Guru team just released a new version of the app, and since that release, we have gotten several customer reports that the **MovieGuru** app is experiencing issues. In particular, _user preferences aren't being saved_ (eg: "I love horror movies", "I hate drama films etc").
@@ -250,8 +248,8 @@ The error you're seeing is a _schema mismatch error_. This indicates a discrepan
 
   To fix the issue, you can do one of the following:
 
-  - Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_) OR
-  - Downgrade the flow to use _userProfile.prompt_.
+  1. Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_).
+  1. **OR**, Downgrade the flow to use _userProfile.prompt_.
 
   If you are unsure of the difference between a _flow_ and a _prompt_, check out the section **Prompts and Flows in Genkit**.
 
