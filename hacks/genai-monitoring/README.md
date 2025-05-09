@@ -183,7 +183,7 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
 1. Examine the failed traces for this feature and identify common failure patterns.
 1. Determine the underlying cause by exploring the code for the feature you identified.
    - Find the hints in the code files _js/flows/src/userPreferenceFlow.ts_ and _js/flows/src/userPreferenceTypes.ts_.
-   - If you're _really_ stuck, check the **Learning Resources** for more hints.
+   - If you're _really_ stuck, check the **Tips** out.
 1. Apply the necessary code fix and restart the application.
 
    - Stop the application. Press Ctrl+C to stop the running containers in the terminal where they are running.
@@ -209,6 +209,22 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
 - You have implemented a fix and restarted the application.
 - Queries such as "I love horror movies" consistently adds "horror" to your preferences in the app.
 
+### Tips
+
+- The **Failed paths** table can help reveal common error patterns among traces.
+- Finding the error cause: Our team has seemingly introduced a regression in this release. The error you're seeing is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
+
+The error you're seeing is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
+
+The _UserPreferenceFlow_ uses the output schema definition found in _userProfileTypes.ts_. Compare the output schema defined in _UserPreferenceTypes.ts_ with the output specified in _userPreference.prompt_ and its variants. Pay close attention to both the format schema definitions of the prompt file and the _system instructions_ given to the model in the prompt text.
+
+To fix the issue, you can do one of the following:
+
+  1. Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_).
+  1. **OR**, Downgrade the flow to use _userProfile.prompt_.
+
+  If you are unsure of the difference between a _flow_ and a _prompt_, check out the section **Prompts and Flows in Genkit**.
+
 ### Learning resources
 
 - [Prompts and dotPrompts](https://firebase.google.com/docs/genkit/dotprompt)
@@ -232,23 +248,6 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
   - To build and run containers defined in a dockercompose.yaml file, use `docker compose up --build`. Find more info [here](https://docs.docker.com/compose/reference/up/).
 
   - To bring down running containers defined in a dockercompose.yaml file, use `docker compose down`. Find more info [here](https://docs.docker.com/compose/reference/down/).
-
-- **Hints for finding the error cause**
-  We introduced a regression in this release.
-  The error you're seeing is a _schema mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
-
-The error you're seeing is a _schema mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
-
-  The _UserPreferenceFlow_ uses the output schema definition found in _userProfileTypes.ts_. Compare the output schema defined in _UserPreferenceTypes.ts_ with the output specified in _userPreference.prompt_ and its variants. Pay close attention to both the format schema definitions of the prompt file and the _system instructions_ given to the model in the prompt text.
-
-  To fix the issue, you can do one of the following:
-
-  1. Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_).
-  1. **OR**, Downgrade the flow to use _userProfile.prompt_.
-
-  If you are unsure of the difference between a _flow_ and a _prompt_, check out the section **Prompts and Flows in Genkit**.
-  
-  > **Hint**: The **Failed paths** table can help reveal common error patterns.
 
 ## Challenge 4: Improve performance
 
@@ -278,6 +277,11 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 - You applied the fix in the code and redeployed the app.
 - Interactions with the updated app are faster.
 
+### Tips
+
+- As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
+- Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
+
 ### Learning resources
 
 - [Genkit Developer Tools and Developer UI](https://firebase.google.com/docs/genkit/devtools)
@@ -295,10 +299,6 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
 
   - Navigate to <http://localhost:4000> (using the **WebPreview** feature of cloudshell).
   - Change the code. Then, use the Genkit developer UI to run the flow locally and verify the change.
-
-> **Hint**: As you analyze span durations, look for any step that seems unusually slow compared to the simplicity of the task it performs.
-
->**Hint**: Model interactions usually will take the bulk of execution time and bigger models will take longer to respond. How long are we spending waiting for the model and what models are we using?
 
 > **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
@@ -357,9 +357,12 @@ Now you are ready to do some comparative analysis of the existing version and th
 - You identified which types of queries resulted in degraded search quality and can articulate the likely cause.
 - You have evidence for the **Product Team** to support or nor support rolling out the change in prompt variant.
 
+### Tips
+
+- Focus on the **docSearchFlow**
+- To see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**.
+
 ### Learning Resources
 
 - [Managing prompt versions](https://firebase.google.com/docs/genkit/dotprompt#prompt_variants)
 - [Search Strategies](https://cloud.google.com/vertex-ai/docs/vector-search/about-hybrid-search#why-does-hybrid-search-matter)
-
- > **Hint**: focus on the **docSearchFlow** > **Hint**: to see the documents that are relevant in the Firebase Genkit Monitoring trace viewer, look at the input in the model interaction of **movieQAFlow**.
