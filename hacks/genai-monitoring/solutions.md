@@ -52,11 +52,11 @@ Your Qwiklab project > **Product categories** (left-side panel) > **AI** > **Gen
 
 Here's an example of where to find it:
 
-<img src="./images/genkit_monitoring.png" alt="Firebase console navigation to Genkit monitoring" width="200" height="330">
+<img src="./images/genkit_nav.png" alt="Firebase console navigation to Genkit monitoring" width="200" height="330">
 
 Once the metrics start trickling in, the dashboard should look similar to this:
 
-<img src="./images/genkit_dash.png" alt="Genkit monitoring dashboard overview" width="400" height="300">
+<img src="./images/genkit_dash.png" alt="Genkit monitoring dashboard overview" width="550" height="300">
 
 > **Note** Until the metrics come in, the **Genkit Monitoring** page might look like a documentation page without any dashboards. Don't panic. Give it a few minutes and refresh.
 
