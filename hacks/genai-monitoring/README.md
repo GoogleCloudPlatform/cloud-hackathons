@@ -74,7 +74,7 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 - While waiting for services to start, explore the application architecture and connect it to what you see in the codebase.
 
-![Architecture diagram](images/architecture-diagram.png)
+![Architecture diagram](images/architecture_diagram.png)
 
 - Open the _js/flows_ folder within the codebase. Find where the application -
 
@@ -88,7 +88,8 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ### Test the app
 
-- Access the Movie Guru app on <http://localhost:8080> by clicking the **WebPreview** button on the top right of the editor (it looks like a browser icon with a diamond in it) and selecting port **8080**.
+- Access the Movie Guru app on <http://localhost:8080> by clicking the **Web Preview** button on the top right of the Cloud Shell window and selecting "Preview on port 8080". The icon for Web Preview looks like this: <img src="images/web_preview.png" alt="Web Preview icon" width="30" height="25">.
+
 
 - Login using your name.
 
