@@ -135,9 +135,11 @@ ZodError: [
   - Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_). OR
   - Downgrade the flow to use _userProfile.prompt_.
 
-To fix the issue with the current prompt, the participants need to 
-
-[TODO]
+To fix the issue with the current prompt, the participants need to add the following on line 15 in the _userProfile.experimental.prompt_ file:
+```
+  output:
+    schema: UserPreferenceFlowOutputSchema
+```
 
 To downgrade the flow, the participants need to open the _userPreferencesFlow.ts_ file (in _js/flows/src_) and modify line 60 to replace _extractUserPreferencesExperimental_ with _extractUserPreferencesV1_.
 ```
