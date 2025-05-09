@@ -24,7 +24,10 @@ Why is this crucial? Because in the age of AI, those who can effectively monitor
 
 ## Contributors
 
-Manasa Kandula Esther Lloyd Cleo Schneider Polina Govorkova
+- Manasa Kandula
+- Esther Lloyd
+- Cleo Schneider
+- Polina Govorkova
 
 ## Challenge 1: Set up your environment
 
@@ -35,7 +38,7 @@ Your first task is to get the application running smoothly in your local environ
 
 ### Clone the Repository and set the environment variables
 
-> **Note** Run this step on the computers of **all** your teammates.
+> **Note**: _All_ participants will need to clone the repo in their own cloud shell environment.
 
 - Open the **Cloud Shell Editor** and type the following commands.
 
@@ -54,9 +57,7 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ### Local Environment Setup
 
-- Start the application
-
-  > **Note**: This script will need to be run by each person if sharing with a group.
+- Start the application on your cloud shell instance.
 
   ```sh
   chmod +x start_app.sh
@@ -92,6 +93,12 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 - Your local environment is set up in Cloud Shell for all group members.
 - You are able interact with the **Movie Guru** app running on your local Cloud Shell instance.
 
+### Tips
+
+- You can find the firebase config values in the `Project Settings` page by clicking the settings cog next to `Project Overview` in the left-hand nav of the firebase console.
+- The **Movie Guru** app uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage its prompt variants.
+- The **Movie Guru** app uses [flows](https://firebase.google.com/docs/genkit/flows) to encapsulate AI workflows.
+
 ### Learning Resources
 
 - [Genkit](https://firebase.google.com/docs/genkit)
@@ -104,17 +111,7 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
   - Data Storage: PostgreSQL with the pgvector extension, used for storing both structured movie data (title, plot, etc.) and vector embeddings for semantic search.
   - Session Management: A Redis cache for storing user session information and conversation history.
 
-  > **Hint**: You can find the firebase config values in the `Project Settings` page by clicking the settings cog next to `Project Overview` in the left-hand nav of the firebase console.
-
-  > **Hint**: The **Movie Guru** app uses [dotprompt](https://firebase.google.com/docs/genkit/dotprompt#creating_prompt_files) to manage its prompt variants.
-
-  > **Hint**: The **Movie Guru** app uses [flows](https://firebase.google.com/docs/genkit/flows) to encapsulate AI workflows.
-
 ## Challenge 2: Explore Firebase Genkit Monitoring
-
-### Prerequisites
-
-You are running the application in Cloud Shell by completing _Local Environment Setup_ from _Challenge 1_.
 
 ### Introduction
 
@@ -139,8 +136,9 @@ Explore the Firebase Genkit Monitoring and understand the application's performa
 
 ### Success Criteria
 
-- You are now familiar with key sections of Firebase Genkit Monitoring dashboard
+- You are able to name the key metrics displayed on the Genkit Monitoring Dashbord.
 - You know the different features that comprise the **Movie Guru** app and what they do.
+- You are able to name the key metrics displayed on the Genkit Monitoring Dashbord, per feature.
 - You know the different steps that the app takes to answer a user's query.
 - You can correlate data in the monitoring dashboard with data in Cloud
 

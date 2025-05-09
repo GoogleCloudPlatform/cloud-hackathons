@@ -1,8 +1,8 @@
-# Genkit AI Monitoring
+# Monitor GenAI apps with Firebase Genkit
 
 ## Introduction
 
-Welcome to the coach's guide for The IoT Hack of the Century gHack. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for Monitor GenAI apps with Firebase Genkit. Here you will find links to specific guidance for coaches for each of the challenges.
 
 > **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
