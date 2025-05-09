@@ -149,7 +149,7 @@ To downgrade the flow, the participants need to open the _userPreferencesFlow.ts
 
 In this challenge we see that the **MovieGuru** app's performance is quite slow and work on improving it.
 
-The participants should look at the latency chart for **chatFlow**. P50, also known as the median, represents the response time below which 50% of requests are completed. P90 indicates the response time below which 90% of requests are completed. [TODO what do the users actually see?]
+The participants should look at the latency chart for **chatFlow**. P50, also known as the median, represents the response time below which 50% of requests are completed. P90 indicates the response time below which 90% of requests are completed. Participants will likely notice that both their P50 and P90 latency are _really_ high, meaning that the experience is consistently slow for all users. Using an app with such a high latency can be very frustrating and should be improved.
 
 Upon inspecting individual traces with high latency in the trace viewer, participants will see that the bulk of execution time is spen on the model interactions, specifically the ones that include the usage of the gemini-2.5-pro-preview-03-25 model. While newer and "bigger" models can boost the quality of the output, there is a tradeoff between the size of the model and the latency of the interaction. Participants should inspect the codebase to understand where and how this model is being used.
 
