@@ -146,14 +146,14 @@ curl -L https://raw.githubusercontent.com/GoogleCloudPlatform/application-integr
 Once it's installed, clone/download/unzip the pipeline definition.
 
 ```shell
-wget https://github.com/meken/gcp-httf-data-app-int/archive/refs/heads/main.zip
-unzip main.zip
+wget -O httf-data-app-int.zip https://github.com/meken/gcp-httf-data-app-int/archive/refs/heads/main.zip
+unzip httf-data-app-int.zip
 ```
 
 And publish it.
 
 ```shell
-cd cp-httf-data-app-int-main
+cd gcp-httf-data-app-int-main
 integrationcli integrations apply \
     -p $GOOGLE_CLOUD_PROJECT \
     -r $REGION \
@@ -408,8 +408,8 @@ EOF
 If the Python code is not available download/clone/unzip it.
 
 ```shell
-wget https://github.com/meken/gcp-httf-data-kfp/archive/refs/heads/main.zip
-unzip main.zip
+wget -O httf-data-kfp.zip https://github.com/meken/gcp-httf-data-kfp/archive/refs/heads/main.zip
+unzip httf-data-kfp.zip
 ```
 
 Now you can install the dependencies and run it (you could optionally create and activate a virtual environment first).

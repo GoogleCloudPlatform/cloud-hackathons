@@ -176,7 +176,7 @@ Then using an embeddings model again from BigQuery, generate embeddings for the 
 
 ### Introduction
 
-In this challenge we'll use reverse ETL to transfer the product descriptions and embeddings over to Spanner. Once the information is available in Spanner we'll implement semantic search through Spanner's embddings capabilities.
+In this challenge we'll use reverse ETL to transfer the product descriptions and embeddings over to Spanner. Once the information is available in Spanner we'll implement semantic search through Spanner's embeddings capabilities.
 
 ### Description
 
