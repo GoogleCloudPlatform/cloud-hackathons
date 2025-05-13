@@ -248,10 +248,11 @@ Currently, the app uses _movie.v2.prompt_, which is a variant of the movie.promp
 Resolving this underlying bug is **outside the scope** of any challenge in this hack.
 
 A recent model upgrade (from Gemini 1.5 Flash to 2.0 Flash) has introduced an intermittent bug in the app. This bug can cause the chatFlow to become extremely slow, sometimes taking over 40 seconds to complete.
-If you encounter this slowdown, inspecting the traces might reveal sub-flows with unusually large or "unbounded" output (refer to the example image in the original document for what this might look like).
-**Workaround:** If this should this occur, please advise students to clear their chat history in the app (using the **clear chat** button) and try their query again.
+If you encounter this slowdown, inspecting the traces might reveal sub-flows with unusually large or "unbounded" output (refer to the example image below for what this might look like).
 
 ![trace of weird behaviour](./images/weird_behaviour.png)
+
+**Workaround:** If this should this occur, please advise students to clear their chat history in the app (using the **clear chat** button) and try their query again.
 
 ![clear chat button](./images/clear_chat.png)
 
@@ -286,5 +287,3 @@ Participants recommend to the Product team that they should roll back to the ori
 - This behavior is by design, as the chatbot attempts to refine results based on the ongoing conversation.
 - Combining criteria in this way might naturally lead to fewer movie recommendations if fewer films in the database meet both conditions.
 - To ensure queries are treated independently, advise users to clear the chat history between distinct searches.
-
-
