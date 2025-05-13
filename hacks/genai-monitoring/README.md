@@ -219,12 +219,12 @@ Your task is to use Firebase Genkit Monitoring and the application code to pinpo
   
   The error you're seeing is a _type mismatch error_. This indicates a discrepancy between the data structure the _userPreferenceFlow_ expects to receive from the model, and the structure the model is _actually_ producing based on the prompt's (_userPreference.prompt_) instructions.
   
-  The _UserPreferenceFlow_ uses the output schema definition found in _userProfileTypes.ts_. Compare the output schema defined in _UserPreferenceTypes.ts_ with the output specified in _userPreference.prompt_ and its variants. Pay close attention to both the format schema definitions of the prompt file and the _system instructions_ given to the model in the prompt text.
+  The _UserPreferenceFlow_ uses the output schema definition found in _userPreferenceTypes.ts_. Compare the output schema defined in _UserPreferenceTypes.ts_ with the output specified in _userPreference.prompt_ and its variants. Pay close attention to both the format schema definitions of the prompt file and the _system instructions_ given to the model in the prompt text.
 
   To fix the issue, you can do one of the following:
 
-    1. Fix the prompt and add an output schema definition to the prompt (_userProfile.v2.prompt_).
-    1. **OR**, Downgrade the flow to use _userProfile.prompt_.
+    1. Fix the prompt and add an output schema definition to the prompt (_userPreference.experimental.prompt_).
+    1. **OR**, Downgrade the flow to use _userPreference.prompt_.
 
     If you are unsure of the difference between a _flow_ and a _prompt_, check out the section **Prompts and Flows in Genkit**.
 
@@ -340,8 +340,8 @@ Now you are ready to do some comparative analysis of the existing version and th
 ### Success Criteria
 
 - You have successfully update the application code to use the new variant of the search prompt.
-- You can compare the quality and performance before and after making a change to the prompt.
 - You identified which types of queries resulted in degraded search quality and can articulate the likely cause.
+- You have the spotted the difference in the documents the retriever outputs for the same queries before and after the change. You can examine the retriever results in traces as the input to the model in the **movieQAFlow**.
 - You have evidence for the **Product Team** to support or nor support rolling out the change in prompt variant.
 
 ### Tips

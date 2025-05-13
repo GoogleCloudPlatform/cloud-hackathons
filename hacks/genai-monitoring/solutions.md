@@ -243,6 +243,19 @@ Currently, the app uses _movie.v2.prompt_, which is a variant of the movie.promp
 
 > **Note** Participants may attempt to manually override model in the prompt file directly. It will not result in a good model response. Every model interacts uniquely, and updating a model typically also requires adjustments to the prompting. Participants may explore the difference in the prompt definitions between movie.v2.prompt and movie.prompt driven by the model change.
 
+### Important Note on a Unintended Potential Performance Bug
+
+Resolving this underlying bug is **outside the scope** of any challenge in this hack.
+
+A recent model upgrade (from Gemini 1.5 Flash to 2.0 Flash) has introduced an intermittent bug in the app. This bug can cause the chatFlow to become extremely slow, sometimes taking over 40 seconds to complete.
+If you encounter this slowdown, inspecting the traces might reveal sub-flows with unusually large or "unbounded" output (refer to the example image below for what this might look like).
+
+![trace of weird behaviour](./images/weird_behaviour.png)
+
+**Workaround:** If this should this occur, please advise students to clear their chat history in the app (using the **clear chat** button) and try their query again.
+
+![clear chat button](./images/clear_chat.png)
+
 ## Challenge 5: Improve performance
 
 ### Notes & Guidance
@@ -253,14 +266,24 @@ Participants should examine _docSearch.prompt_ and _docSearch.v2.prompt_ files t
 
 In the original version, the app used a **hybrid search model** where queries could either be **vector** queries (eg: I want to watch a fun movie -> **fun movies**), or **keyword** queries (eg: find me movies that were released after 2000 -> **WHERE release_year > 2000**), or mixed queries (eg: Find me fun movies that were released after 2000).
 
-In the new version, all queries are forced to be **vector** queries.
-
 After evaluating existing functionality by querying the app, participants should roll out the **new** version by updating the _docRetriever.ts_ file to use the new prompt variant:
 
 ```ts
-  export const makeMovieRecommendation = ai.prompt('docSearch', {variant: 'v2'});
+  export const searchForRelevantMovies = ai.prompt('docSearch', {variant: 'v2'});
 ```
 
-After testing the new version, the participants should notice that the app's vector search functionality works best with **genre**-based (semantic) queries, which leverages its vector search capabilities to find relevant recommendations efficiently. Queries based on specific values, such as **ratings** (are not semantic) are less suited for this vector approach. For any query, the _retriever_ fetches potential results. However, with **rating** queries, the vector search often retrieves many irrelevant movies that are then filtered out by the _MovieQAFlow_ before being returned to the user. This is why there are fewer **rating** based results than **genre** based results. The students only need to notice that there are fewer **rating**-based results than **genre**-based results.
+After testing the new version, participants should observe that the app's vector search still does well with genre-based (semantic) queries. This is because vector search is designed to find relevant recommendations efficiently based on meaning and context.
+
+However, queries based on specific, non-semantic values like ratings are less suitable for this vector-only approach. While the retriever will fetch potential movies for any query, with rating-based searches, it often pulls in many irrelevant films. These irrelevant movies are then filtered out by the MovieQAFlow before results are shown to the user. Consequently, users will see fewer results for rating-based queries compared to genre-based ones.
+
+Participants need to spot this difference: fewer results for rating queries than for genre queries. They can verify this by examining the movieContext input to the movieQAFlow in the trace (this movieContext contains the movies returned by the retriever). For instance, a query like "movies with rating > 3" will show movies in the movieContext that don't actually meet the rating criteria (see example below).
+
+![bad vector search](./images/bad_vector_search.png)
 
 Participants recommend to the Product team that they should roll back to the original version because transitioning purely to the vector-based search significantly impedes the quality of the results returned by the app and will likely impact user experience.
+
+**Note**: Please be aware that the chatbot uses conversation history to understand context. This means if a user first asks for "fun movies" and then, in a subsequent query, asks for "movies with rating greater than 3," the chatbot might interpret the second query as "fun movies with ratings greater than 3."
+
+- This behavior is by design, as the chatbot attempts to refine results based on the ongoing conversation.
+- Combining criteria in this way might naturally lead to fewer movie recommendations if fewer films in the database meet both conditions.
+- To ensure queries are treated independently, advise users to clear the chat history between distinct searches.
