@@ -258,6 +258,7 @@ resource "google_compute_instance" "startup_vm" {
 
   depends_on = [
     google_project_service.compute_api,
+    google_project_service.composer_api,
     google_compute_network.default_network_created
   ]
 }
