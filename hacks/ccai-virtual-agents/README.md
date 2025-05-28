@@ -49,11 +49,11 @@ This challenge is all about setting up and getting our agent configured.
 
 ### Description
 
-First download the files we'll be using in the rest of this gHack from [this link](https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip). Unzip the zip file and keep the files handy, they will be needed in various challenges.
+First download the files we'll be using in the rest of this gHack from [this link](https://github.com/gfilicetti/ces-agents-intro/archive/refs/heads/main.zip). Unzip the zip file and keep the files handy, they will be needed in various challenges.
 
-Create a new agent in the Dialogflow CX Console. Test your agent with a simple "hello" message.
+Create a new agent in the Conversational Agents Console. Test your agent with a simple "hello" message.
 
-Use the DialogFlow Messenger Integration to create a chat bubble on the provided `agent-page.html` page so that your agent is reachable via a web page.
+Use the Conversational Messenger Integration to create a chat bubble on the provided `agent-page.html` page so that your agent is reachable via a web page.
 
 Host the webpage on a webserver running in CloudShell and test it in a browser to make sure the chat bubble appears and works.
 
@@ -61,7 +61,7 @@ Host the webpage on a webserver running in CloudShell and test it in a browser t
 
 - An agent is created in your project
 - The agent can respond to an "Hello" message
-- Dialogflow Messenger agent widget is responding similarly to "Hello" messages on a webpage
+- The agent widget running on `agent-page.html` is also responding to "Hello" messages in the same way
 
 ### Tips
 
@@ -69,8 +69,7 @@ Host the webpage on a webserver running in CloudShell and test it in a browser t
 
 ### Learning Resources
 
-- [Dialogflow Basics](https://cloud.google.com/dialogflow/cx/docs/basics)
-- [Testing Agents](https://cloud.google.com/dialogflow/cx/docs/concept/test-case)
+- [Agents](https://cloud.google.com/dialogflow/cx/docs/concept/agent)
 - [CloudShell - Manage Files](https://cloud.google.com/shell/docs/uploading-and-downloading-files)
 - [Running a Webserver](https://realpython.com/python-http-server/)
 - [CloudShell - Preview Webservers](https://cloud.google.com/shell/docs/using-web-preview)
@@ -101,6 +100,7 @@ Create a new Route to hold the escalation intent with an appropriate agent respo
 
 ### Learning Resources
 
+- [Playbook Best Practices](https://cloud.google.com/dialogflow/cx/docs/concept/playbook/best-practices)
 - [Dialogflow Intents](https://cloud.google.com/dialogflow/cx/docs/concept/intent)
 - [Dialogflow Fulfillments](https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment)
 
