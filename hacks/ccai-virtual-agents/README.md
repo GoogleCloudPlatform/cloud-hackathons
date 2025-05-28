@@ -1,16 +1,16 @@
-# Intro to CCAI and Conversational Agents
+# Introduction to Conversational Agents
 
 ## Introduction
 
-This hack will be an introduction to the world of Contact Center modernization and will teach you how to build a robust chat agent using Google's Conversational Agents platform.
+This hack will be an introduction to the world of Customer Engagement modernization. We will teach you how to build a robust conversational agent using Google Cloud's Customer Engagement Suite.
 
 ![Architecture](./images/architecture.png)
 
-You will be building a virtual agent for the HR department of a company called Piped Piper. Your agent will be the central place for employees to find authoritative answers on company policies as well as place to get data from other internal systems (eg. Workday for PTO days balance). This agent will demonstrate how a company can increase employee productivity by centralizing access to knowledge - data stored in internal data sets as well as API driven systems - all accessed using natural language from a single chat.
+You will be building a conversational agent for the HR department of a company called Piped Piper. Your agent will be the central place for employees to find authoritative answers on company policies as well as place to get data from other internal systems (eg. Workday for PTO balance, etc). This agent will demonstrate how a company can increase employee productivity by centralizing access to knowledge; from data stored in internal data sets to API driven systems, all of this can be accessed using natural language from a single chat.
 
 ## Learning Objectives
 
-In this hack you will be solving a common problem of standing up a virtual chat agent - useful in many instances to help a company's internal as well as external users. More specifically we will be exploring the foundations for Google's Contact Center AI (CCAI) and the tool for building agents called Conversational Agents (formerly DialogFlow CX).
+In this hack you will be standing up a conversational chat agent and making it useful in many instances to help Piped Piper's employees. More specifically we will be exploring the foundations of Google Cloud's Customer Engagement Suite (CES) and the tool for building agents called Conversational Agents (formerly DialogFlow CX).
 
 In this hack you will:
 
@@ -28,7 +28,7 @@ In this hack you will:
 - Challenge 3: Getting Smarter
    - Give the agent access to PDF documents to use in chat answers
 - Challenge 4: Agent Phone Home
-   - Call an external system's API for knowledge
+   - Call an external system's API for even more knowledge
 
 ## Prerequisites
 

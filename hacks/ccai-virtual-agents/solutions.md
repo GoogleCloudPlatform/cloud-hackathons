@@ -1,7 +1,7 @@
-# Coach Guide | Intro to CCAI and Virtual Agents
+# Coach Guide | Introduction to Conversational Agents
 
 ## Challenge 1 
-> **GOAL**: Create and initialize a Dialogflow agent
+> **GOAL**: Create and initialize a Conversational Agent
 
 1. Download the zip file containing all files we'll use in this gHack from [this link](https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip).
     1. You can use this command in Cloud Shell to download it:
@@ -139,12 +139,26 @@ paths:
                     example: 15 # Example value
 ```
 
-6. In the **Authentication** section, select **Bearer Token**.
-1. Get your Bearer token from the command line with the following command and paste it into the text field:
+6. In the **Authentication** section, select **Service Agent Token** and then **ID Token**
+1. Now we have to give access to the Google managed service account for Conversational Agents.
+    1. It is named: `service-{PROJECT_NUMBER}@gcp-sa-dialogflow.iam.gserviceaccount.com`
+    1. You need to give it these two roles:
+        - `roles/run.invoker`
+        - `roles/cloudfunctions.invoker`
+    1. This can be done with the following commands:
 
-    ```bash
-    gcloud auth print-identity-token
-    ```
+        ```bash
+        gcloud projects add-iam-policy-binding $(gcloud config get-value project) \
+        --member="serviceAccount:service-{PROJECT_NUMBER}@gcp-sa-dialogflow.iam.gserviceaccount.com" \
+        --role="roles/run.invoker"
+        ```
+
+        ```bash
+        gcloud projects add-iam-policy-binding $(gcloud config get-value project) \
+        --member="serviceAccount:service-{PROJECT_NUMBER}@gcp-sa-dialogflow.iam.gserviceaccount.com" \
+        --role="roles/cloudfunctions.invoker"
+        ```
+
 1. Leave the defaults for everything else and click **Save** at the top middle of the screen.
 
 1. Now we have to add this new tool to our Playbook so that it will be used by the agent.
@@ -156,5 +170,3 @@ paths:
     ```
 
 1. Now you can test if this works in the Agent preview/test window. Ask it something like **How many vacation days do I have left?**
-
-> **NOTE**: The bearer token will expire every 12 hours or so. Make sure that you are getting a new token and changing it in the Vacation Days Query tool.
