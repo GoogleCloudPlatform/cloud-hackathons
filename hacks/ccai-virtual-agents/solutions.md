@@ -3,11 +3,11 @@
 ## Challenge 1 
 > **GOAL**: Create and initialize a Conversational Agent
 
-1. Download the zip file containing all files we'll use in this gHack from [this link](https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip).
+1. Download the zip file containing all files we'll use in this gHack from [this link](https://github.com/gfilicetti/ces-agents-intro/archive/refs/heads/main.zip).
     1. You can use this command in Cloud Shell to download it:
 
         ```bash
-        wget https://github.com/gfilicetti/ccai-virtual-agents/archive/refs/heads/main.zip
+        wget https://github.com/gfilicetti/ces-agents-intro/archive/refs/heads/main.zip
         ```
 
 1. Open the [Conversational Agents Console](https://dialogflow.cloud.google.com/v2/projects/) and select your project.
@@ -106,6 +106,8 @@
 ## Challenge 4
 > **GOAL**: Call an external system for data we can use in responses
 
+> **NOTE** The terraform scripts that set up this gHack have already deployed a Cloud Run Function. It is this function that we're using to simulate an external service.
+
 1. In the [Conversational Agents Console](https://dialogflow.cloud.google.com/v2/projects/) select **Tools** from the left-hand panel.  Click on the **+ Create** button.
     1. Name the new tool: **Vacation Days Query** for answering questions about how many vacation days an employee has remaining.
     1. Type: **OpenAPI**
@@ -136,7 +138,7 @@ paths:
                   vacation_days_left:
                     type: integer
                     description: The number of vacation days left.
-                    example: 15 # Example value
+                    example: 15 # Example value, this is never actually returned
 ```
 
 6. In the **Authentication** section, select **Service Agent Token** and then **ID Token**
