@@ -120,25 +120,25 @@ resource "google_storage_bucket_object" "zip" {
   bucket = google_storage_bucket.bucket.name
 }
 
-resource "google_cloudfunctions_function" "function" {
-  name    = "vacation-days"
-  runtime = "python311"
+# resource "google_cloudfunctions_function" "function" {
+#   name    = "vacation-days"
+#   runtime = "python311"
 
-  entry_point           = "on_request"
-  source_archive_bucket = google_storage_bucket.bucket.name
-  source_archive_object = google_storage_bucket_object.zip.name
-  ingress_settings      = "ALLOW_INTERNAL_AND_GCLB"
-  max_instances         = 4
+#   entry_point           = "on_request"
+#   source_archive_bucket = google_storage_bucket.bucket.name
+#   source_archive_object = google_storage_bucket_object.zip.name
+#   ingress_settings      = "ALLOW_INTERNAL_AND_GCLB"
+#   max_instances         = 4
 
-  service_account_email = data.google_compute_default_service_account.gce_default.email
+#   service_account_email = data.google_compute_default_service_account.gce_default.email
 
-  trigger_http                 = true
-  https_trigger_security_level = "SECURE_ALWAYS"
+#   trigger_http                 = true
+#   https_trigger_security_level = "SECURE_ALWAYS"
 
-  depends_on = [
-    time_sleep.wait_until_functions_sa_ready
-  ]
-}
+#   depends_on = [
+#     time_sleep.wait_until_functions_sa_ready
+#   ]
+# }
 
 resource "google_cloudfunctions2_function" "function" {
   name     = "vacation-days"
@@ -167,10 +167,10 @@ resource "google_cloudfunctions2_function" "function" {
     service_account_email = data.google_compute_default_service_account.gce_default.email
   }
 
-  event_trigger {
-    event_type   = "google.cloud.pubsub.topic.v1.messagePublished"
-    pubsub_topic = google_pubsub_topic.pubsub_topic.id
-  }
+  # event_trigger {
+  #   event_type   = "google.cloud.pubsub.topic.v1.messagePublished"
+  #   pubsub_topic = google_pubsub_topic.pubsub_topic.id
+  # }
 
   depends_on = [
     time_sleep.wait_until_functions_sa_ready
