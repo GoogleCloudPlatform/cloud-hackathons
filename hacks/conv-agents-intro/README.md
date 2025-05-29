@@ -163,7 +163,7 @@ info:
   title: Vacation Days API
   version: 1.0.0
 servers:
-  - url: https://us-central1-ccai-ghacks.cloudfunctions.net # Replace with your root Cloud Run root URL
+  - url: https://us-central1-agents-ghacks.cloudfunctions.net # Replace with your root Cloud Run root URL
 paths:
   /vacation-days: # Matches the function name in your URL
     get:

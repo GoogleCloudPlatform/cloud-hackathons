@@ -13,7 +13,7 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "[gHacks] Intro to CCAI and Virtual Agents"
+title: "[gHacks] Introduction to Conversational Agents"
 description: ""
 instruction:
   type: md
