@@ -22,6 +22,7 @@ locals {
     "cloudbuild.googleapis.com",
     "artifactregistry.googleapis.com",
     "cloudfunctions.googleapis.com",
+    "run.googleapis.com",
     "logging.googleapis.com",
     "dialogflow.googleapis.com",
     "speech.googleapis.com",
