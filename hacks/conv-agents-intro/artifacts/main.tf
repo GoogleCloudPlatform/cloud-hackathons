@@ -91,6 +91,13 @@ resource "google_project_iam_member" "gce_default_iam" {
   ]
 }
 
+resource "time_sleep" "wait_until_functions_sa_ready" {
+  create_duration = "90s"
+  depends_on = [
+    google_project_iam_member.functions_default_iam
+  ]
+}
+
 data "archive_file" "source" {
   type        = "zip"
   source_dir  = "function"
@@ -133,10 +140,39 @@ resource "google_cloudfunctions_function" "function" {
   ]
 }
 
-resource "time_sleep" "wait_until_functions_sa_ready" {
-  create_duration = "90s"
+resource "google_cloudfunctions2_function" "function" {
+  name     = "vacation-days"
+  location = var.gcp_region
+
+  build_config {
+    runtime     = "python312"
+    entry_point = "on_request"
+    source {
+      storage_source {
+        bucket = google_storage_bucket.bucket.name
+        object = google_storage_bucket_object.zip.name
+      }
+    }
+  }
+
+  service_config {
+    available_memory   = "512M"
+    timeout_seconds    = "300"
+    ingress_settings   = "ALLOW_INTERNAL_AND_GCLB"
+    max_instance_count = 4
+    environment_variables = {
+      GCP_REGION     = var.gcp_region
+      GCP_PROJECT_ID = var.gcp_project_id
+    }
+    service_account_email = data.google_compute_default_service_account.gce_default.email
+  }
+
+  event_trigger {
+    event_type   = "google.cloud.pubsub.topic.v1.messagePublished"
+    pubsub_topic = google_pubsub_topic.pubsub_topic.id
+  }
+
   depends_on = [
-    google_project_iam_member.functions_default_iam
+    time_sleep.wait_until_functions_sa_ready
   ]
 }
-
