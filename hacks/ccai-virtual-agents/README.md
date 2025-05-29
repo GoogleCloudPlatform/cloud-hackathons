@@ -69,104 +69,137 @@ Host the webpage on a webserver running in CloudShell and test it in a browser t
 
 ### Learning Resources
 
+- [Conversational Agents Console](https://dialogflow.cloud.google.com/v2/projects/)
 - [Agents](https://cloud.google.com/dialogflow/cx/docs/concept/agent)
 - [CloudShell - Manage Files](https://cloud.google.com/shell/docs/uploading-and-downloading-files)
 - [Running a Webserver](https://realpython.com/python-http-server/)
 - [CloudShell - Preview Webservers](https://cloud.google.com/shell/docs/using-web-preview)
 
 
-## Challenge 2: What's -YOUR- Intent?
+## Challenge 2: Following the Playbook...
 
 ### Introduction
 
-In this challenge we will train our agent on "Intents". These are things we want our agent to understand from human language and act on deterministically. 
+Now that we have an agent, we want to make it useful and give it some goals. This is accomplished using Playbooks.
 
 ### Description
 
-Create a new Intent for the agent to handle escalations. We want to train the agent on certain phrases that would cause it to 'understand' that the human in the chat wants help from a live agent. 
+In this challenge we will create a basic Playbook that we can use to detect an escalation scenario. 
 
-> **NOTE:** Try to use at least 6 training phrases when creating the intent 
+You will need to give it a goal and give it some instructions.
 
-> **NOTE:** It could take a few minutes for the new training phrases to be picked up by the agent
+The Playbook will need to be given some examples, create an example set called `Escalate`.
 
-Create a new Route to hold the escalation intent with an appropriate agent response.
+Whenever a user types something requiring a human, the conversation state should change to `ESCALATED`.
+
+> **NOTE** Don't forget to use the Simulator to test your agent as you go.
 
 ### Success Criteria
 
-- A new escalation Intent is created
-- A new Route is created for the esclation Intent 
-- The Agent responds appropriately to the new escalation Intent
-- The Agent continues to respond normally to "hello" messages
+- A new Playbook is created
+- The Playbook has a goal and instructions
+- The Playbook has been trained by examples in a set called `Escalate`.
+- A user typing something that obviously requires a human triggers the conversation state to change to `ESCALATED`
 
 ### Learning Resources
 
+- [Playbook Concepts](https://cloud.google.com/dialogflow/cx/docs/concept/playbook)
 - [Playbook Best Practices](https://cloud.google.com/dialogflow/cx/docs/concept/playbook/best-practices)
-- [Dialogflow Intents](https://cloud.google.com/dialogflow/cx/docs/concept/intent)
-- [Dialogflow Fulfillments](https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment)
-
 
 ## Challenge 3: Getting Smarter
 
 ### Introduction
 
-In this challenge we enable the Agent to handle questions based on Piped Piper's HR policy documents.
+In this challenge we will enable the Agent to handle questions based on Piped Piper's HR policy documents.
 
 ### Description
 
-Create a data store with the PDF HR documents provided.
+The downloaded zip from Challenge 1 contains all of Piped Piper's HR policy documents as PDFs. 
 
-> **NOTE:** Indexing the documents will take about 5-10 minutes
+Create a data store for these documents that can be used in your Playbook as a "tool". 
 
-Add the new data store to the Agent.
+> **NOTE**: Your new data store can take 10+ minutes to fully ingest all of the PDF documents. If you click into the data store on the Agent Builder page and click on the Activity tab you can watch its progress.
+
+Once your documents are ingested, you will need to add this new "tool" to your Playbook.
 
 ### Success Criteria
 
-- A data store is created and has indexed your documents
-- The Agent is connected to the data store 
-- The Agent can respond to questions answerable by the HR policy documents
+- A data store of type **Unstructured documents** is created and has indexed your documents
+- A new tool pointing to this data store has been added to your Playbook.
+- The Agent is now capable of answering questions about Piped Piper's HR Policies, such as:
+   - *What is our paid time off policy?*
+   - *Do we offer sabbaticals?*
+   - *What is our paid leave policy?*
+
+### Tips
+- Don't forget you can ask follow up questions because the Agent keeps the conversation context.
 
 ### Learning Resources
 
-- [Data Store Agents](https://cloud.google.com/dialogflow/vertex/docs/concept/data-store-agent)
+- [Data Stores](https://cloud.google.com/dialogflow/cx/docs/concept/data-store)
+- [Tools](https://cloud.google.com/dialogflow/cx/docs/concept/data-store/handler)
 
-
-## Challenge 4: Time for GenAI
+## Challenge 4: Agent Phone Home
 
 ### Introduction
 
-In this challenge we will use Google's Gemini to enhance the Agent's responses and make it more interactive.
+Now that we can answer questions about Piped Piper's HR policies, we want to enhance our agent to call external systems to get answers as well.
+
+In this challenge we will be connecting to an external system system that can be queried to get employee PTO days balance information. 
 
 ### Description
 
-Create a new Generator for the Default Welcome Intent Route. This Generator will create more human-like welcome messages and make sure that only that response is generated for this intent/route.
+A Cloud Run Function with an HTTP REST api has already been deployed for you. You will need the URL of this endpoint. This can be found in the [Google Cloud Console](https://console.cloud.google.com/).
+
+You will need to create an **OpenAPI** tool to make the call to this endpoint.
+
+You will need a YAML scheme for this tool. We have provided the YAML for you below. 
+
+> **NOTE** Make sure you read the comments as there are some substitutions you need to make.
+
+```yaml
+openapi: 3.0.0
+info:
+  title: Vacation Days API
+  version: 1.0.0
+servers:
+  - url: https://us-central1-ccai-ghacks.cloudfunctions.net # Replace with your root Cloud Run root URL
+paths:
+  /vacation-days: # Matches the function name in your URL
+    get:
+      summary: Get remaining vacation days
+      operationId: getVacationDays
+      responses:
+        '200':
+          description: Number of vacation days remaining
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vacation_days_left:
+                    type: integer
+                    description: The number of vacation days left.
+                    example: 15 # An example value (this is never actually returned)
+```
+
+For authentication to this endpoint, you need to configure a **Service Agent Token** and use **ID Token**. You then need to find the **Dialog Flow Service Agent** and give it IAM permissions to "invoke" both Cloud Run and Cloud Run Functions.
+
+Once this tool is finished, incorporate it into your Playbook so that questions about number of vacation days are answered with a number.
+
+> **NOTE** The number of vacation days is generated randomly, so it should always be changing.
 
 ### Success Criteria
 
-- There is a Generator created with a prompt that responds with human-like welcome messages
-- The Agent uses the new Generator 
-- **NOTE/TODO** - need more descriptive success critieria
+- There is a new tool for calling an HTTP REST endpoint
+- The agent uses this new endpoint to answer questions about vacation days such as:
+   - How many vacation days do I have left?
+- Questions about vacation days always return a different number.
 
 ### Learning Resources
 
-- **NOTE/TODO** - need learning resources for this challenge
-
-
-## Challenge 5: Agent Phone Home
-
-### Introduction
- 
-In this challenge we see how to use Gemini to translate between natural language questions and an API call. This will let the Agent answer questions based on data found in an external system it can only get by an API call.
-
-### Description
-
-Create a new Intent for answering a question about Piped Piper's vacation days policy. Create a webhook that will get answers from the `vacation-days` Cloud Function (acting as a placeholder for a real CRM). Create two generators; one for translating the user question into an API call to the webhook, the other for translating the response JSON and answering the initial user question.
-
-### Success Criteria 
-
-- Agent has a webhook that can call the provided cloud function code
-- Agent can send questions about vacation policy to the webhook
-- Agent can provide correct answers based on webhook's JSON response
-
-### Learning Resources
-- [Dialogflow CX Webhooks](https://cloud.google.com/dialogflow/cx/docs/concept/webhook)
-
+- [OpenAPI Tool](https://cloud.google.com/dialogflow/cx/docs/concept/playbook/tool#openapi)
+- [DialogFlow Service Agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent)
+- [Granting IAM Roles to Service Agents/Accounts](https://cloud.google.com/iam/docs/manage-access-service-accounts#single-role)
+- [Cloud Run IAM Roles](https://cloud.google.com/run/docs/reference/iam/roles)
+- [Cloud Functions IAM Roles](https://cloud.google.com/functions/docs/reference/iam/roles)
