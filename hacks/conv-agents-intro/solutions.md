@@ -153,21 +153,14 @@ paths:
 1. Leave the defaults for everything else and click **Save** at the top middle of the screen.
 1. Now we have to give access to the Google managed service account for Conversational Agents to run our function
     1. The service account is named: `service-{PROJECT_NUMBER}@gcp-sa-dialogflow.iam.gserviceaccount.com`
-    1. You need to give it these two roles:
+    1. You need to give it this role:
         - `roles/run.invoker`
-        - `roles/cloudfunctions.invoker`
-    1. This can be done with the following commands in the Cloud Shell:
+    1. This can be done with the following command in the Cloud Shell:
 
         ```bash
         gcloud projects add-iam-policy-binding $(gcloud config get-value project) \
         --member="serviceAccount:service-{PROJECT_NUMBER}@gcp-sa-dialogflow.iam.gserviceaccount.com" \
         --role="roles/run.invoker"
-        ```
-
-        ```bash
-        gcloud projects add-iam-policy-binding $(gcloud config get-value project) \
-        --member="serviceAccount:service-{PROJECT_NUMBER}@gcp-sa-dialogflow.iam.gserviceaccount.com" \
-        --role="roles/cloudfunctions.invoker"
         ```
 
 1. Now we have to add this new tool to our Playbook so that it will be used by the agent.
