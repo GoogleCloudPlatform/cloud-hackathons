@@ -6,7 +6,7 @@ This hack will be an introduction to the world of Customer Engagement modernizat
 
 ![Architecture](./images/architecture.png)
 
-You will be building a conversational agent for the HR department of a company called Piped Piper. Your agent will be the central place for employees to find authoritative answers on company policies as well as place to get data from other internal systems (eg. Workday for PTO balance, etc). This agent will demonstrate how a company can increase employee productivity by centralizing access to knowledge; from data stored in internal data sets to API driven systems, all of this can be accessed using natural language from a single chat.
+You will be building a conversational agent for the HR department of a startup named Piped Piper. Your agent will be the central place for employees to find authoritative answers on company policies as well as place to get data from other internal systems (eg. Workday for PTO balance, etc). This agent will demonstrate how a company can increase employee productivity by centralizing access to knowledge; from data stored in internal data sets to API driven systems, all of this can be accessed using natural language from a single chat.
 
 ## Learning Objectives
 

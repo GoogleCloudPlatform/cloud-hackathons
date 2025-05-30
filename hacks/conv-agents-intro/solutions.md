@@ -3,11 +3,11 @@
 ## Challenge 1 
 > **GOAL**: Create and initialize a Conversational Agent
 
-1. Download the zip file containing all files we'll use in this gHack from [this link](https://github.com/gfilicetti/ces-agents-intro/archive/refs/heads/main.zip).
+1. Download the zip file containing all files we'll use in this gHack from [this link](https://github.com/gfilicetti/conv-agents-intro/archive/refs/heads/main.zip).
     1. You can use this command in Cloud Shell to download it:
 
         ```bash
-        wget https://github.com/gfilicetti/ces-agents-intro/archive/refs/heads/main.zip
+        wget https://github.com/gfilicetti/conv-agents-intro/archive/refs/heads/main.zip
         ```
 
 1. Open the [Conversational Agents Console](https://dialogflow.cloud.google.com/v2/projects/) and select your project.
