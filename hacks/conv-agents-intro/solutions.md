@@ -19,7 +19,7 @@
 
 > **NOTE**: At this point you have a new agent that can process simple Intents for greetings
 
-1. On the left-hand panel, select **Integrations** near the bottom.
+4. On the left-hand panel, select **Integrations** near the bottom.
 1. Find the square for **Conversational Messenger** and click **Connect**. Keep all of the defaults and click **Enable Conversational Messenger** at the bottom.
 1. The Conversational Messenger will generate HTML code. Copy that code and find the file: `agent-page.html` that was in the zip file you downloaded. Paste the code at the bottom of the `<head>` section of the HTML file.
 1. We will use a simple python http server to serve up the `agent-page.html` file. 
@@ -149,13 +149,14 @@ paths:
                     example: 15 # Example value, this is never actually returned
 ```
 
-6. In the **Authentication** section, select **Service Agent Token** and then **ID Token**
-1. Now we have to give access to the Google managed service account for Conversational Agents.
-    1. It is named: `service-{PROJECT_NUMBER}@gcp-sa-dialogflow.iam.gserviceaccount.com`
+2. In the **Authentication** section, select **Service Agent Token** and then **ID Token**
+1. Leave the defaults for everything else and click **Save** at the top middle of the screen.
+1. Now we have to give access to the Google managed service account for Conversational Agents to run our function
+    1. The service account is named: `service-{PROJECT_NUMBER}@gcp-sa-dialogflow.iam.gserviceaccount.com`
     1. You need to give it these two roles:
         - `roles/run.invoker`
         - `roles/cloudfunctions.invoker`
-    1. This can be done with the following commands:
+    1. This can be done with the following commands in the Cloud Shell:
 
         ```bash
         gcloud projects add-iam-policy-binding $(gcloud config get-value project) \
@@ -169,14 +170,9 @@ paths:
         --role="roles/cloudfunctions.invoker"
         ```
 
-1. Leave the defaults for everything else and click **Save** at the top middle of the screen.
-
 1. Now we have to add this new tool to our Playbook so that it will be used by the agent.
 1. Select **Playbooks** from the left hand panel and open the playbook we've been working on.
-1. Add a new bullet point in the middle of the list like this:
-
-    ```bash
-    - Use ${TOOL:Vacation Days Query} to help answer questions about vacation days
-    ```
+1. In the prompt add a new instruction to point the agent to our external service if vacation days are requested. Add this text to the prompt:
+    - Use `${TOOL:Vacation Days Query}` to help answer questions about vacation days
 
 1. Now you can test if this works in the Agent preview/test window. Ask it something like **How many vacation days do I have left?**
