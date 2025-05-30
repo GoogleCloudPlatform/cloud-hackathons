@@ -25,7 +25,7 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 - [Modernizing Classic Data Warehousing with BigQuery](./hacks/bq-dwh/README.md)
   > In this hack we'll implement a classic data warehouse using modern tools, such as Cloud Storage, BigQuery, Dataform and Looker Studio. We'll start with a modified version of the well known AdventureWorks OLTP database, and we'll implement a dimensional model to report on business questions using a BI visualization tool.
 - [Introduction to Conversational Agents](./hacks/conv-agents-intro/README.md)
-  > This hack will be an introduction to the world of Contact Center modernization and will teach you how to build a robust agents using Google Cloud's Conversational Agents platform.
+  > This hack will be an introduction to the world of Customer Engagement modernization. We will teach you how to build a robust conversational agent using Google Cloud’s Customer Engagement Suite.
 - [Real-time analytics with Change Data Capture (CDC)](./hacks/realtime-analytics/README.md)
   > We will be going through replicating and processing operational data from an Oracle database into Google Cloud in real time. You'll also figure out how to forecast future demand, and how to visualize this forecast data as it arrives.
 
