@@ -171,8 +171,10 @@ paths:
         ```
 
 1. Now we have to add this new tool to our Playbook so that it will be used by the agent.
-1. Select **Playbooks** from the left hand panel and open the playbook we've been working on.
-1. In the prompt add a new instruction to point the agent to our external service if vacation days are requested. Add this text to the prompt:
-    - Use `${TOOL:Vacation Days Query}` to help answer questions about vacation days
+1. Go back to your Default Playbook 
+    1. At the bottom of the screen, check the box beside our new OpenAPI Tool **Vacation Days Query** 
+    1. In the prompt add a new instruction to point the agent to our external service if vacation days are requested. Add this text to the prompt:
+        - Use `${TOOL:Vacation Days Query}` to help answer questions about vacation days
+    1. Click **Save** at the top middle of the screen
 
-1. Now you can test if this works in the Agent preview/test window. Ask it something like **How many vacation days do I have left?**
+1. Now you can test if the external call works in the Agent preview/test window. Ask it something like **How many vacation days do I have left?**
