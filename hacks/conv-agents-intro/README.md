@@ -120,7 +120,7 @@ The downloaded zip from Challenge 1 contains all of Piped Piper's HR policy docu
 Create a data store for these documents that can be used in your Playbook as a "tool". 
 
 > **Note** 
-> Your new data store can take 10+ minutes to fully ingest all of the PDF documents. If you click into the data store on the Agent Builder page and click on the Activity tab you can watch its progress.
+> Your new data store can take 10+ minutes to fully ingest all of the PDF documents. Click into your new data store in the table of Data Stores, and then click on the Activity tab to watch the ingestion progress.
 
 Once your documents are ingested, you will need to add this new "tool" to your Playbook.
 
