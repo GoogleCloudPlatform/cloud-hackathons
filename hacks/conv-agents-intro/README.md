@@ -14,7 +14,7 @@ In this hack you will be standing up a conversational chat agent and making it u
 
 You will:
 
-1. Create your first agent 
+1. Create your first agent
 1. Set up a basic Playbook to detect an escalation scenario
 1. Set up an authoritative knowledge base using internal HR policy documents to help answer questions
 1. Create an external system API call for data we can use in responses
@@ -22,13 +22,13 @@ You will:
 ## Challenges
 
 - Challenge 1: First Agent On The Scene
-   - Create and initialize a Conversational Agent
-- Challenge 2: Following the Playbook...
-   - Set up a basic Playbook to detect an escalation scenario
+  - Create and initialize a Conversational Agent
+- Challenge 2: Following the Playbook
+  - Set up a basic Playbook to detect an escalation scenario
 - Challenge 3: Getting Smarter
-   - Give the agent access to PDF documents to use in chat answers
+  - Give the agent access to PDF documents to use in chat answers
 - Challenge 4: Agent Phone Home
-   - Call an external system's API for even more knowledge
+  - Call an external system's API for even more knowledge
 
 ## Prerequisites
 
@@ -75,8 +75,7 @@ Host the webpage on a webserver running in CloudShell and test it in a browser t
 - [Running a Webserver](https://realpython.com/python-http-server/)
 - [CloudShell - Preview Webservers](https://cloud.google.com/shell/docs/using-web-preview)
 
-
-## Challenge 2: Following the Playbook...
+## Challenge 2: Following the Playbook
 
 ### Introduction
 
@@ -84,7 +83,7 @@ Now that we have an agent, we want to make it useful and give it some goals. Thi
 
 ### Description
 
-In this challenge we will create a basic Playbook that we can use to detect an escalation scenario. 
+In this challenge we will create a basic Playbook that we can use to detect an escalation scenario.
 
 You will need to give it a goal and give it some instructions.
 
@@ -92,7 +91,7 @@ The Playbook will also need to be given some examples. You need to create an exa
 
 Whenever a user types something requiring a human, the conversation state should change to `ESCALATED`.
 
-> **Note** 
+> **Note**
 > Don't forget to use the Simulator to test your agent as you go.
 
 ### Success Criteria
@@ -115,11 +114,11 @@ In this challenge we will enable the Agent to handle questions based on Piped Pi
 
 ### Description
 
-The downloaded zip from Challenge 1 contains all of Piped Piper's HR policy documents as PDFs. 
+The downloaded zip from Challenge 1 contains all of Piped Piper's HR policy documents as PDFs.
 
-Create a data store for these documents that can be used in your Playbook as a "tool". 
+Create a data store for these documents that can be used in your Playbook as a "tool".
 
-> **Note** 
+> **Note**
 > Your new data store can take 10+ minutes to fully ingest all of the PDF documents. Click into your new data store in the table of Data Stores, and then click on the Activity tab to watch the ingestion progress.
 
 Once your documents are ingested, you will need to add this new "tool" to your Playbook.
@@ -129,11 +128,12 @@ Once your documents are ingested, you will need to add this new "tool" to your P
 - A data store of type **Unstructured documents** is created and has indexed your documents
 - A new tool pointing to this data store has been added to your Playbook.
 - The Agent is now capable of answering questions about Piped Piper's HR Policies, such as:
-   - *What is our paid time off policy?*
-   - *Do we offer sabbaticals?*
-   - *What is our paid leave policy?*
+  - *What is our paid time off policy?*
+  - *Do we offer sabbaticals?*
+  - *What is our paid leave policy?*
 
 ### Tips
+
 - Don't forget you can ask follow up questions because the Agent keeps the conversation context.
 
 ### Learning Resources
@@ -147,7 +147,7 @@ Once your documents are ingested, you will need to add this new "tool" to your P
 
 Now that we can answer questions about Piped Piper's HR policies, we want to enhance our agent to call external systems to get answers as well.
 
-In this challenge we will be connecting to an external system system that can be queried to get employee PTO days balance information. 
+In this challenge we will be connecting to an external system system that can be queried to get employee PTO days balance information.
 
 ### Description
 
@@ -155,9 +155,9 @@ A Cloud Run Function with an HTTP REST api has already been deployed for you. Yo
 
 You will need to create an **OpenAPI** tool to make the call to this endpoint.
 
-You will need a YAML scheme for this tool. We have provided the YAML for you below. 
+You will need a YAML scheme for this tool. We have provided the YAML for you below.
 
-> **Note** 
+> **Note**
 > Make sure you read the comments as there are some substitutions you need to make.
 
 ```yaml
@@ -190,16 +190,16 @@ For authentication to this endpoint, you need to configure a **Service Agent Tok
 
 Once this tool is finished, incorporate it into your Playbook so that questions about number of vacation days are answered with a number.
 
-> **Note** 
+> **Note**
 > The number of vacation days is generated randomly, so it should always be changing.
 
 ### Success Criteria
 
 - There is a new tool for calling an HTTP REST endpoint
 - The agent uses this new endpoint to answer questions about vacation days such as:
-   - How many vacation days do I have left?
-   - How much PTO do I have?
-   - How much vacation can I take?
+  - How many vacation days do I have left?
+  - How much PTO do I have?
+  - How much vacation can I take?
 - Questions about vacation days always return a different number.
 
 ### Learning Resources
