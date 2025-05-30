@@ -10,20 +10,20 @@ You will be building a conversational agent for the HR department of a company c
 
 ## Learning Objectives
 
-In this hack you will be standing up a conversational chat agent and making it useful in many instances to help Piped Piper's employees. More specifically we will be exploring the foundations of Google Cloud's Customer Engagement Suite (CES) and the tool for building agents called Conversational Agents (formerly DialogFlow CX).
+In this hack you will be standing up a conversational chat agent and making it useful in many instances to help Piped Piper's employees. More specifically we will be exploring the tool for building agents called Conversational Agents (formerly DialogFlow CX) which is part of Google Cloud's Customer Engagement Suite (CES).
 
-In this hack you will:
+You will:
 
 1. Create your first agent 
 1. Set up a basic Playbook to detect an escalation scenario
-1. Set up an authoritative knowledge base using internal HR policy documentes to help answer questions
+1. Set up an authoritative knowledge base using internal HR policy documents to help answer questions
 1. Create an external system API call for data we can use in responses
 
 ## Challenges
 
 - Challenge 1: First Agent On The Scene
    - Create and initialize a Conversational Agent
-- Challenge 2: What's the Game Plan?
+- Challenge 2: Following the Playbook...
    - Set up a basic Playbook to detect an escalation scenario
 - Challenge 3: Getting Smarter
    - Give the agent access to PDF documents to use in chat answers
@@ -49,7 +49,7 @@ This challenge is all about setting up and getting our agent configured.
 
 ### Description
 
-First download the files we'll be using in the rest of this gHack from [this link](https://github.com/gfilicetti/ces-agents-intro/archive/refs/heads/main.zip). Unzip the zip file and keep the files handy, they will be needed in various challenges.
+First, download the files we'll be using in the rest of this gHack from [this link](https://github.com/gfilicetti/conv-agents-intro/archive/refs/heads/main.zip). Unzip the zip file and keep the files handy, they will be needed in upcoming challenges.
 
 Create a new agent in the Conversational Agents Console. Test your agent with a simple "hello" message.
 
@@ -88,11 +88,12 @@ In this challenge we will create a basic Playbook that we can use to detect an e
 
 You will need to give it a goal and give it some instructions.
 
-The Playbook will need to be given some examples, create an example set called `Escalate`.
+The Playbook will also need to be given some examples. You need to create an example set called `Escalate`.
 
 Whenever a user types something requiring a human, the conversation state should change to `ESCALATED`.
 
-> **NOTE** Don't forget to use the Simulator to test your agent as you go.
+> **Note** 
+> Don't forget to use the Simulator to test your agent as you go.
 
 ### Success Criteria
 
@@ -118,7 +119,8 @@ The downloaded zip from Challenge 1 contains all of Piped Piper's HR policy docu
 
 Create a data store for these documents that can be used in your Playbook as a "tool". 
 
-> **NOTE**: Your new data store can take 10+ minutes to fully ingest all of the PDF documents. If you click into the data store on the Agent Builder page and click on the Activity tab you can watch its progress.
+> **Note** 
+> Your new data store can take 10+ minutes to fully ingest all of the PDF documents. If you click into the data store on the Agent Builder page and click on the Activity tab you can watch its progress.
 
 Once your documents are ingested, you will need to add this new "tool" to your Playbook.
 
@@ -155,7 +157,8 @@ You will need to create an **OpenAPI** tool to make the call to this endpoint.
 
 You will need a YAML scheme for this tool. We have provided the YAML for you below. 
 
-> **NOTE** Make sure you read the comments as there are some substitutions you need to make.
+> **Note** 
+> Make sure you read the comments as there are some substitutions you need to make.
 
 ```yaml
 openapi: 3.0.0
@@ -187,13 +190,16 @@ For authentication to this endpoint, you need to configure a **Service Agent Tok
 
 Once this tool is finished, incorporate it into your Playbook so that questions about number of vacation days are answered with a number.
 
-> **NOTE** The number of vacation days is generated randomly, so it should always be changing.
+> **Note** 
+> The number of vacation days is generated randomly, so it should always be changing.
 
 ### Success Criteria
 
 - There is a new tool for calling an HTTP REST endpoint
 - The agent uses this new endpoint to answer questions about vacation days such as:
    - How many vacation days do I have left?
+   - How much PTO do I have?
+   - How much vacation can I take?
 - Questions about vacation days always return a different number.
 
 ### Learning Resources
