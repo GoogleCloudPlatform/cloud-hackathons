@@ -14,11 +14,11 @@
 schema_version: 2
 default_locale: en
 title: "[gHacks] Introduction to Conversational Agents"
-description: ""
+description: "This hack will be an introduction to the world of Customer Engagement modernization. We will teach you how to build a robust Conversational Agent using the Google Cloud Customer Engagement Suite."
 instruction:
   type: md
   uri: instructions/en.md
-duration: 480
+duration: 420
 max_duration: 600
 credits: 0
 level: fundamental
