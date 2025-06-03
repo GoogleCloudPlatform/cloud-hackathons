@@ -93,7 +93,7 @@ Welcome to the coach's guide for the *Introduction to Conversational Agents* gHa
     1. Click the **Save** button at the top middle of the page
 1. Now, on the same page, click the **Add data stores** link in the middle of the page.
 1. A side panel will slide open, if it asks you to enable an API, click Enable.
-    1. > **NOTE**: If the panel goes blank, wait a few minutes and then refresh the browser and go back into the panel.
+    1. > **Note** If the panel goes blank, wait a few minutes and then refresh the browser and go back into the panel.
     1. Now you should see **Create new data store** link in the panel. Click that link.
 1. This will open up a new browser tab with the Agent Builder console:
     1. If this is your first time, you should see the **CONTINUE AND ACTIVATE THE API** button, go ahead and click it.
@@ -107,7 +107,7 @@ Welcome to the coach's guide for the *Introduction to Conversational Agents* gHa
     1. Click the **CREATE** button
     1. Now it brings you back to the table of Data Stores.
 
-> **NOTE**: Your new data store can take 10+ minutes to fully ingest all of the PDF documents. Click into your new data store in the table of Data Stores, and then click on the Activity tab to watch the ingestion progress.
+> **Note** Your new data store can take 10+ minutes to fully ingest all of the PDF documents. Click into your new data store in the table of Data Stores, and then click on the Activity tab to watch the ingestion progress.
 
 1. When your data store is ready, go back to the Tools screen, select your new **HR Policy Documents** tool
 1. Once again, click the **Add data stores** link in the middle of the page.
@@ -130,7 +130,7 @@ Welcome to the coach's guide for the *Introduction to Conversational Agents* gHa
 
 > **GOAL**: Call an external system for data we can use in responses
 
-> **NOTE** The terraform scripts that set up this gHack have already deployed a Cloud Run Function. It is this function that we're using to simulate an external service.
+> **Note** The terraform scripts that set up this gHack have already deployed a Cloud Run Function. It is this function that we're using to simulate an external service.
 
 1. In the [Conversational Agents Console](https://dialogflow.cloud.google.com/v2/projects/) select **Tools** from the left-hand panel.  Click on the **+ Create** button.
     1. Name the new tool: **Vacation Days Query** for answering questions about how many vacation days an employee has remaining.
