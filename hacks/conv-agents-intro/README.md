@@ -51,7 +51,9 @@ This challenge is all about setting up and getting our agent configured.
 
 First, download the files we'll be using in the rest of this gHack from [this link](https://github.com/gfilicetti/conv-agents-intro/archive/refs/heads/main.zip). Unzip the zip file and keep the files handy, they will be needed in upcoming challenges.
 
-Create a new agent in the Conversational Agents Console. Test your agent with a simple "hello" message.
+> **Note** You can even use `wget` to download the files directly to the Cloud Shell and keep everything there.
+
+Create a new agent in the Conversational Agents Console. Test your agent with a simple "Hello" message.
 
 Use the Conversational Messenger Integration to create a chat bubble on the provided `agent-page.html` page so that your agent is reachable via a web page.
 
@@ -116,7 +118,7 @@ In this challenge we will enable the Agent to handle questions based on Piped Pi
 
 The downloaded zip from Challenge 1 contains all of Piped Piper's HR policy documents as PDFs.
 
-Create a data store for these documents that can be used in your Playbook as a "tool".
+Create a data store for these documents that can be used in your Playbook as a "Tool" of type **Unstructured documents**.
 
 > **Note**
 > Your new data store can take 10+ minutes to fully ingest all of the PDF documents. Click into your new data store in the table of Data Stores, and then click on the Activity tab to watch the ingestion progress.
@@ -153,7 +155,7 @@ In this challenge we will be connecting to an external system system that can be
 
 A Cloud Run Function with an HTTP REST api has already been deployed for you. You will need the URL of this endpoint. This can be found in the [Google Cloud Console](https://console.cloud.google.com/).
 
-You will need to create an **OpenAPI** tool to make the call to this endpoint.
+You will need to create an **OpenAPI** Tool to make the call to this endpoint.
 
 You will need a YAML scheme for this tool. We have provided the YAML for you below.
 

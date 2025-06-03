@@ -18,7 +18,7 @@
     1. Open the **Toggle Simulator** by clicking the chat icon at the top right of the page
     1. Type a 'Hello' message to the new agent and note its generic reply
 
-> **NOTE**: At this point you have a new agent that can process simple Intents for greetings
+> **Note** At this point you have a new agent that can process simple Intents for greetings
 
 1. On the left-hand panel, select **Integrations** near the bottom.
 1. Find the square for **Conversational Messenger** and click **Connect**. Keep all of the defaults and click **Enable Conversational Messenger** at the bottom.
@@ -29,7 +29,7 @@
     1. At the top right of the Cloud Shell window, click on the **Web Preview** icon (next to the pencil icon) and select **Preview on Port 8080**. This will open a new browser window and show a list of all the files in your home directory. Find and click on `agent-page.html`.
     1. You can now chat with the agent just as you did in the Console. Click on the agent chat icon at the bottom right of the page. Post a 'Hello' message again to see how it answers.
 
-> **NOTE:** At this point we have the agent testable in the Console and via the webpage for end users
+> **Note** At this point we have the agent testable in the Console and via the webpage for end users
 
 ## Challenge 2
 
@@ -111,7 +111,7 @@
     1. *Do we offer sabbatical leave?*
     1. *What is our paid leave policy?*
 
-> **NOTE:** Make sure the students know you can ask follow up questions because the Agent keeps the conversation context.
+> **Note** Make sure the students know you can ask follow up questions because the Agent keeps the conversation context.
 
 ## Challenge 4
 
