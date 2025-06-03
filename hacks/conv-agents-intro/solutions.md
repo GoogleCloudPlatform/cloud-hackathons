@@ -1,6 +1,19 @@
-# Coach Guide | Introduction to Conversational Agents
+# Introduction to Conversational Agents
 
-## Challenge 1
+## Introduction
+
+Welcome to the coach's guide for the *Introduction to Conversational Agents* gHack. Here you will find a step by step walkthrough for coaches to use as guidance when necessary.
+
+> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+
+## Coach's Guides
+
+- Challenge 1: First Agent On The Scene
+- Challenge 2: Following the Playbook
+- Challenge 3: Getting Smarter
+- Challenge 4: Agent Phone Home
+
+## Challenge 1: First Agent On The Scene
 
 > **GOAL**: Create and initialize a Conversational Agent
 
@@ -31,7 +44,7 @@
 
 > **Note** At this point we have the agent testable in the Console and via the webpage for end users
 
-## Challenge 2
+## Challenge 2: Following the Playbook
 
 > **GOAL**: Set up a basic Playbook to detect an escalation scenario
 
@@ -60,7 +73,7 @@
     1. Click the save button again.
 1. Go back to the Simulator (or your web app) and have a conversation that should result in an escalation. If it is not working, you should add more examples.
 
-## Challenge 3
+## Challenge 3: Getting Smarter
 
 > **GOAL**: Give the Agent access to PDF documents to use in chat answers
 
@@ -113,7 +126,7 @@
 
 > **Note** Make sure the students know you can ask follow up questions because the Agent keeps the conversation context.
 
-## Challenge 4
+## Challenge 4: Agent Phone Home
 
 > **GOAL**: Call an external system for data we can use in responses
 
