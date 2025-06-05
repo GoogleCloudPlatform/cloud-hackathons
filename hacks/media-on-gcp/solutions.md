@@ -1,8 +1,8 @@
-# Media # [TITLE] Entertainment on Google Cloud
+# Media & Entertainment on Google Cloud
 
 ## Introduction
 
-Welcome to the coach's guide for The IoT Hack of the Century gHack. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for Media & Entertainment on Google Cloud gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
 Remember that this hack includes a optional [lecture presentation](resources/lecture.pdf) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
 

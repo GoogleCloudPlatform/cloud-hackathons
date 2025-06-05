@@ -1,43 +1,40 @@
-# Media # [TITLE] Entertainment on Google Cloud
+# Media & Entertainment on Google Cloud
 
 ## Introduction
 
-The IoT Hack of the Century will take you on a whirlwind tour in the world of IoT and how it is being used in the modern world of mineral extraction in exotic locations like the Arctic and the wilds of South Africa.
+The Media & Entertainment on Google Cloud gHack will take you on a whirlwind tour in the world of media technology and how it is being used in the modern world of cloud based and AI services.
 
 ## Learning Objectives
 
-In this hack you will be solving the common business problem that companies in the mineral extraction industry face and how IoT solutions from Google are brought to bear.
+In this hack you will be solving the common business problems that all companies in the Media & Entertainment industry are facing and how Google Cloud and our AI solutions fit in:
 
-1. Provision an IoT Hub
-1. Set up an IoT Edge device
-1. Bring Edge Computing to your solution for scale and resiliency
+1. Provision appliances
+1. Set up SRT sources
+1. Create advert visuals
 
 ## Challenges
 
-- Challenge 1: Provision an IoT environment
-  - Create an IoT Hub and run tests to ensure it can ingest telemetry
-- Challenge 2: Your First Device
-  - Make the connection to your Edge device and see that it is properly provisioned.
-- Challenge 3: Connecting the World
-  - Connect your device and make sure it can see all other devices in your team.
-- Challenge 4: Scalable Monitoring of Telemetry
-  - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
+- Challenge 1: Provision an environment
+  - Create an environments and run tests to ensure it works
+- Challenge 2: Your First Stream
+  - Make the connection to the SRT streams and properly provision and connect them
+- Challenge 3: Advertising Makes the World Go 'Round
+  - Create some ad content and insert ads into your streams
+- Challenge 4: Scalable Play-out
+  - Figure out the play-out problem in the world media. How do we had large audiences
 
 ## Prerequisites
 
-- Your own GCP project with Owner IAM role.
-- An AVNET X231 device
-- gCloud CLI
-- Visual Studio Code
+- Basic knowledge of GCP
+- Access to a GCP environment
 
 ## Contributors
 
 - Gino Filicetti
-- Murat Eken
 - Jane Q. Public
 - Joe T. Muppet
 
-## Challenge 1: Provision an IoT environment
+## Challenge 1: Provision an environment
 
 ***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section. You should remove all italicized & sample text and replace with your content.***
 
