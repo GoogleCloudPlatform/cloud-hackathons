@@ -50,6 +50,8 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
   > We will be mastering operating Large Language Model applications using Firebase Genkit, and Genkit Monitoring by stepping into the role of Site Reliability Engineers for a fictional GenAI app. We will dive into troubleshooting live issues, fixing issues, and optimizing performance to ensure our GenAI app runs flawlessly.
 - [Practical SRE](./hacks/practical-sre/README.md)
   > In this gHack, you'll step into the role of SREs and Product Owners for a cutting-edge app. Your mission is to ensure that this app delivers a smooth, reliable, and responsive experience for its users.
+- [Gemini Code Assist](./hacks/gemini-code-assist/README.md)
+  > Gemini Code Assist guides participants through enhancing a Java and Spring Boot serverless application using Google Cloud's Gemini Code Assist. Participants will learn to use test-driven development, build and deploy the application to Cloud Run, and finally, enhance the application with GenAI.
 
 ### Industry Solutions
 
