@@ -184,7 +184,7 @@ Before we start copying the data from BigQuery to Spanner, let's complete the pr
 
 Now, add the following two columns `product_description` of type `STRING(MAX)` and `product_description_embeddings` of type `ARRAY<FLOAT64>` to the `products` table in Spanner. Export the data from BigQuery to Spanner through *reverse ETL*, and create the same embeddings model in Spanner.
 
-Using the embeddings model in Spanner do a search for the query *Luxury items for women* and return back top 5 items.
+Using the embeddings model in Spanner do a search for the query *Luxury items for women* and return the top 5 items.
 
 ### Success Criteria
 
@@ -218,7 +218,7 @@ Now we have product descriptions, we can generate images based on these descript
 
 Create a new Cloud Storage bucket and name it `{YOUR PROJECT ID}-images`.  Update the BigQuery `products` table to include `image_uri` and `image_url` columns.
 
-We've already prepared a the Vertex AI Pipeline code, download it from [here](https://github.com/meken/gcp-httf-data-kfp/archive/refs/heads/main.zip) and install its dependencies. Then run the code, it will create a `yaml` file. Navigate to Vertex AI Pipelines and *Create run* with that `yaml` file, provide the required parameters and submit the job.
+We've already prepared the code for a Vertex AI Pipeline, download it from [here](https://github.com/meken/gcp-httf-data-kfp/archive/refs/heads/main.zip) and install its dependencies. Then run the code, it will create a `yaml` file. Navigate to Vertex AI Pipelines and *Create run* with that `yaml` file, provide the required parameters and submit the job.
 
 ### Success Criteria
 

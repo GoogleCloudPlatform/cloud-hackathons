@@ -16,3 +16,6 @@ MD028: false
 # MD049/emphasis-style: Emphasis style, https://github.com/DavidAnson/markdownlint/blob/v0.35.0/doc/md049.md
 MD049:
   style: consistent
+
+# MD059/descriptive-link-text Link text should be descriptive, https://github.com/DavidAnson/markdownlint/blob/main/doc/md059.md
+MD059: false
