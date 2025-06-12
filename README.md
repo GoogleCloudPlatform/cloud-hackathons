@@ -28,6 +28,8 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
   > This hack will be an introduction to the world of Customer Engagement modernization. We will teach you how to build a robust Conversational Agent using Google Cloud’s Customer Engagement Suite.
 - [Real-time analytics with Change Data Capture (CDC)](./hacks/realtime-analytics/README.md)
   > We will be going through replicating and processing operational data from an Oracle database into Google Cloud in real time. You'll also figure out how to forecast future demand, and how to visualize this forecast data as it arrives.
+- [Hack to the Future: Data Track](./hacks/httf-data/README.md)
+  > In this hack we'll help the fictitious Cymbal Shops e-commerce platform to modernize their tech stack, primarily focusing on the migration of the legacy application MySQL database to Cloud Spanner. From that point we'll create BigQuery analytics datasets to handle both historical and live data using federation, use advanced generative AI to enhance the existing dataset with descriptions and images, and finally implement semantic search on this dataset.
 
 ### Infrastructure
 
