@@ -56,12 +56,29 @@ sudo apt-get install google-cloud-cli-spanner-migration-tool
 gcloud alpha spanner migrate web
 ```
 
-Once the tool is installed and running, you can access it through port 8080 (Cloud Shell Preview button). The source database configuration details should be trivial to fill in, make sure to use the public IP of the MySQL instance as the hostname, and the port will be the default `3306`. The Spanner Dialect should be the default *Google Standard SQL Dialect*. Then enter the Spanner details (project id and Spanner instance id) and click on *Connect*. On the *Configure Schema* page you don't need to alter anything, just click on the *Prepare Migration* link in the top right corner to configure a few more details. Choose *POC Migration* as the *Migration Type* and configure the *Spanner Database* to be the newly created *ecom*. Once you're ready click on the *Migrate* button to start the migration, which will take roughly 15 minutes.
+Once the tool is installed and running, you can access it through port 8080 (Using the Cloud Shell Preview button).
+
+For the source database configuration:
+
+- Use the public IP of the MySQL instance as the hostname
+- The port will be the default `3306`.
+- The username is `migration-admin` and the password was provided by Qwiklab (or Terraform)
+- The Spanner Dialect should be the default *Google Standard SQL Dialect*.
+
+Also you need to click the pencil icon at the top right of the screen and fill in the Spanner details (project id and Spanner instance id) and click on *Connect*.
+
+On the *Configure Schema* page you don't need to alter anything, just click on the *Prepare Migration* link at the top middle of the page to configure a few more details:
+
+- *Migration Type*: POC Migration
+- *Spanner Database*: `ecom` (which we just created)
+
+Once you're ready, click on the *Migrate* button to start the migration, which will take roughly 15 minutes.
 
 Alternatively the following CLI command would do the same:
 
 ```shell
-MYSQL_IP=`gcloud sql instances describe $MYSQL --format='value(ipAddresses[0].ipAddress)'`
+MYSQL_IP=`gcloud sql instances describe $MYSQL \
+  --format='value(ipAddresses[0].ipAddress)'`
 MYSQL_USR="migration-admin"
 MYSQL_PWD=... # should be provided by coach
 
@@ -141,6 +158,7 @@ Installing the tool should be rather trivial.
 
 ```shell
 curl -L https://raw.githubusercontent.com/GoogleCloudPlatform/application-integration-management-toolkit/main/downloadLatest.sh | sh -
+export PATH=$PATH:$HOME/.integrationcli/bin
 ```
 
 Once it's installed, clone/download/unzip the pipeline definition.
@@ -151,6 +169,9 @@ unzip httf-data-app-int.zip
 ```
 
 And publish it.
+
+> **Note**  
+> When the following command runs, it first emits an error indicating that the connection is not found. This error can be ignored as the configuration also contains connection information that is used to create that connection.
 
 ```shell
 cd gcp-httf-data-app-int-main
@@ -163,9 +184,6 @@ integrationcli integrations apply \
     --grant-permission \
     --wait
 ```
-
-> **Note**  
-> When the command runs, it first emits an error indicating that the connection is not found. This error can be ignored as the configuration also contains connection information that is used to create that connection.
 
 Running the pipeline from the UI should be straight-forward, just make sure to stick to the default parameters. See below for the alternative CLI command to run it.
 
@@ -232,9 +250,13 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
     --role="roles/aiplatform.user" --condition=None
 ```
 
+> **Note**  
+> It might take up to a minute or two to propagate the IAM changes, so if after granting permissions you still get *Permission Denied* errors, try it a few more times.
+
 Now we can create the models (the versions in the endpoints are the latest versions at the time of writing this, you can use whatever version is the latest if those are obsolete).
 
-> **Note** If you're copying the SQL statements to BigQuery Studio, make sure to remove the backslashes in front of the backticks. Those backslashes are needed to escape the backticks when you run the statements from the CLI.
+> **Note**  
+> If you're copying the SQL statements to BigQuery Studio, make sure to remove the backslashes in front of the backticks. Those backslashes are needed to escape the backticks when you run the statements from the CLI.
 
 ```shell
 bq query --use_legacy_sql=false <<EOF
@@ -325,7 +347,7 @@ gcloud workflows run prep-semantic-search \
   --data='{"embeddings_model_name": "text_embeddings"}'
 ```
 
-Next task is to do the reverse ETL. Before we copy the data we need to create the corresponding columns in the products table.
+Next task is to do the reverse ETL. Before we copy the data we need to create the corresponding columns in the products table in Spanner.
 
 ```sql
 ALTER TABLE products ADD COLUMN product_description STRING(MAX);
@@ -354,7 +376,7 @@ CREATE MODEL IF NOT EXISTS text_embeddings
     ) OUTPUT(  
         embeddings STRUCT<statistics STRUCT<truncated BOOL, token_count FLOAT64>, values ARRAY<FLOAT64>>  
     ) REMOTE OPTIONS (
-        endpoint = '//aiplatform.googleapis.com/projects/$GOOGLE_PROJECT_ID/locations/$REGION/publishers/google/models/text-embedding-005'
+        endpoint = '//aiplatform.googleapis.com/projects/$GOOGLE_CLOUD_PROJECT/locations/$REGION/publishers/google/models/text-embedding-005'
     )
 ```
 
@@ -377,7 +399,6 @@ SELECT COSINE_DISTANCE(
   id,
   name, 
   department
-  --,product_description
 FROM products, embedding
 ORDER BY dist
 LIMIT 5;
@@ -391,7 +412,6 @@ Create the bucket to hold the images.
 
 ```shell
 BUCKET="gs://$GOOGLE_CLOUD_PROJECT-images"
-                                            
 gsutil mb -l $REGION $BUCKET
 ```
 
