@@ -1,0 +1,59 @@
+__layout:
+  - id: preview-2
+    x: 1312
+    y: 32
+  - id: camera3
+    x: 224
+    y: 192
+  - id: srt-listener
+    x: 1440
+    y: 576
+__globalConfig: {}
+components:
+  - type: output.preview
+    config:
+      displayName: preview
+      previewMode: image
+      showPreview: true
+      bufferDelayMs: 500
+      notes: ""
+      id: preview-2
+    subscriptions:
+      - source: camera3
+        streams:
+          type: take-first-stream
+          filter:
+            - media: video
+            - media: audio
+  - type: input.srt-listener
+    config:
+      displayName: camera3
+      port: 5003
+      host: 127.0.0.1
+      passphrase: ""
+      socketOptions: {}
+      sourceNames: permissive
+      streamIds:
+        - camera3
+      notes: ""
+      id: camera3
+    subscriptions: []
+  - type: output.srt-listener
+    config:
+      displayName: srt-listener
+      port: 5101
+      host: 0.0.0.0
+      bufferDelayMs: 1000
+      avDelayMs: 50
+      passphrase: ""
+      streamId: ""
+      socketOptions: {}
+      notes: ""
+      id: srt-listener
+    subscriptions:
+      - source: camera3
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
