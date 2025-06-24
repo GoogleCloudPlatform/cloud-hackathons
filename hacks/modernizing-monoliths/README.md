@@ -133,7 +133,7 @@ To help you be successful, here are some reminders of things you will need to do
 - Create a deployment for your application and a service to direct traffic to it. Don't forget the liveness and readiness probes!
 - Create a namespace to help keep things organized
 
-> **Note**
+> [!NOTE]
 
 - Use `e2-standard-2` nodes in your node pool as they will be the most cost effective. Don't worry about performance for this gHack!
 - The general GKE best practices are (note: there are always exceptions!):
@@ -196,7 +196,7 @@ To help you be successful, here are some reminders of things you will need to do
 - Create a deployment for your application and a service to direct traffic to it. Don't forget the liveness and readiness probes!
 - Create a namespace to help keep things organized
 
-> **Note**
+> [!NOTE]
 
 - Use `e2-standard-2` nodes in your node pool as they will be the most cost effective, and if you run out of E2, use N2. Don't worry about performance for this gHack!
 - The general GKE best practices are (note: there are always exceptions!):

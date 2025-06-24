@@ -154,7 +154,8 @@ Configuring the Git connection should be trivial through the UI, you should clic
 
 After creating the workspace you can then click on `START EXECUTION` and pick Tag *staging*. Don't forget to include the dependencies.
 
-> **Note** Although this is probably not required anymore, in case you get package not found errors, you'll need to navigate to the `workflow_settings.yaml` and click on `INSTALL PACKAGES` button to install the required packages so that the compilation works.
+> [!NOTE]  
+> Although this is probably not required anymore, in case you get package not found errors, you'll need to navigate to the `workflow_settings.yaml` and click on `INSTALL PACKAGES` button to install the required packages so that the compilation works.
 
 ## Challenge 4: Dimensional modeling
 
@@ -169,7 +170,8 @@ See below for an example, but just like the previous examples, there are multipl
 
 Also note that BigQuery doesn't enforce primary & foreign key constraints, but they're used as hints for optimizing joins.
 
-> **Note** At the time of this writing creating foreign key constraints through Dataform raises the following error: `Exceeded rate limits: too many table update operations for this table.`. So, for now we're not including foreign keys in the challenge.
+> [!NOTE]  
+> At the time of this writing creating foreign key constraints through Dataform raises the following error: `Exceeded rate limits: too many table update operations for this table.`. So, for now we're not including foreign keys in the challenge.
 
 Another thing to be aware of is that the gross profit can be negative.
 
@@ -332,7 +334,8 @@ For the data masking create a *Taxonomy* in the same region, add 2 *Policy Tags*
 If you indicate the target principal during rule creation, it will get *Masked Reader* role automatically, otherwise you'll have to configure that yourself.
 In order to let everyone else read data without masking you need to assign the *Fine Grained Reader* role to them. The roles can be assigned at the tag level (preferred and recommended) or project level.
 
-> **Note** Dynamic Data Masking will require fewer steps when the feature *Data policy directly on columns* becomes available.
+> [!NOTE]  
+> Dynamic Data Masking will require fewer steps when the feature *Data policy directly on columns* becomes available.
 
 ## Challenge 7: Notebooks for data scientists
 
@@ -351,7 +354,8 @@ OPTIONS
 SELECT * EXCEPT(customer_id) FROM exploration.churn_training
 ```
 
-> **Warning** Make sure that this is run by a user that doesn't have a row level security policy applied to limit the data.
+> [!WARNING]  
+> Make sure that this is run by a user that doesn't have a row level security policy applied to limit the data.
 
 You can ignore the warning messages in the 2nd (authenticate_user is not supported in Colab Enterprise) and 13th (BigQuery error in show operation) cells. Those cells will succeed anyways.
 
@@ -363,7 +367,8 @@ You need to set the environment variable `DATAFORM_REPOSITORY_ID` to the reposit
 
 Note that the provided Git reference points to a tag in the remote repo, which includes the working code for the fact & obt tables. So Dataform will be using our code instead of the code built by the participants in the previous challenges.
 
-> **Warning** Keep in mind that the DAG runs the Dataform pipeline which will recreate the tables. At the time of this writing, recreating tables unfortunately removes the row level security filters and data policies, although there is a bug filed to address this issue. The current alternative is to apply these measures as part of the Dataform ([post_operations](https://cloud.google.com/dataform/docs/dataform-core#define-SQL) for RLS and [policy tags](https://cloud.google.com/dataform/docs/policy-tags) for masking) or Cloud Composer pipelines.
+> [!WARNING]  
+> Keep in mind that the DAG runs the Dataform pipeline which will recreate the tables. At the time of this writing, recreating tables unfortunately removes the row level security filters and data policies, although there is a bug filed to address this issue. The current alternative is to apply these measures as part of the Dataform ([post_operations](https://cloud.google.com/dataform/docs/dataform-core#define-SQL) for RLS and [policy tags](https://cloud.google.com/dataform/docs/policy-tags) for masking) or Cloud Composer pipelines.
 
 ## Challenge 9: Monitoring the workflow
 

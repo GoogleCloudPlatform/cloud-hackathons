@@ -93,13 +93,15 @@ Datastream supports the synchronization of data to Google Cloud databases and st
 
 In this challenge, we'll configure Datastream to load the Oracle FastFresh schema and replicate updates from the Oracle database to Cloud Storage in real time.
 
-> **Note** Keep in mind that it is possible to directly stream data from Oracle to BigQuery with Datastream and do transformations within BigQuery. However, for the sake of including Dataflow jobs in the next challenges we'll stage the data in Cloud Storage first in this challenge and transform it with Dataflow before loading it in BigQuery in the next one.
+> [!NOTE]  
+> Keep in mind that it is possible to directly stream data from Oracle to BigQuery with Datastream and do transformations within BigQuery. However, for the sake of including Dataflow jobs in the next challenges we'll stage the data in Cloud Storage first in this challenge and transform it with Dataflow before loading it in BigQuery in the next one.
 
 ### Description
 
 Configure Datastream to replicate data from the *ORDERS* table in the Oracle database into the bucket created in the previous challenge in *JSON* format using the *datastream* user, validate it, but **don't start** it yet. Make sure to include existing records in the stream as well.
 
-> **Note** We have fulfilled the Oracle source and Cloud Storage destination prerequisites during setup, so you can ignore that section (and ignore the potential validation error for Cloud Storage permissions at the end).
+> [!NOTE]  
+> We have fulfilled the Oracle source and Cloud Storage destination prerequisites during setup, so you can ignore that section (and ignore the potential validation error for Cloud Storage permissions at the end).
 
 ### Success Criteria
 
@@ -137,9 +139,11 @@ Use the `sub-retail` subnet in the `vpc-retail` network and limit the maximum nu
 
 Start the Dataflow job and once it's running, then start the Datastream job.
 
-> **Warning** The template needs Cloud Storage Buckets for a few more things, these need to be different from the bucket that contains the staging data.
+> [!WARNING]  
+> The template needs Cloud Storage Buckets for a few more things, these need to be different from the bucket that contains the staging data.
 
-> **Note** It will take ~10 minutes to complete the replication.
+> [!NOTE]  
+> It will take ~10 minutes to complete the replication.
 
 ### Tips
 

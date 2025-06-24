@@ -52,7 +52,7 @@ The legacy MySQL database has already been migrated to Google Cloud as a MySQL i
 
 Create a new *Spanner Enterprise edition* instance called `onlineboutique` with *100 Processing Units* in the same region as the MySQL instance. Then create a new Spanner database with the name `ecom` in the new instance. Once the Spanner database is created, migrate the `ecom` *schema and data* from the MySQL instance to the new Spanner database using the Spanner Migration Tool. Make sure to choose *POC Migration* as the migration type.
 
-> **Note**  
+> [!NOTE]  
 > Once the migration starts, it will take roughly 15 minutes to complete. While the migration is running, you can already start looking into the next challenge, but you'll need the migration to be completed in order to complete the next challenge.
 
 ### Success Criteria
@@ -130,7 +130,8 @@ We've already prepared the *Application Integration* pipeline for you [here](htt
 
 Once the *Application Integration* is available in the Google Cloud Console, open it and run it by clicking on the *Test* button, and choosing the *Delete Order Items* task (keep the default parameters).
 
-> **Note**  The pipeline will delete the rows in multiple batches asynchronously, give it a few minutes before verifying that all the historical data is removed.
+> [!NOTE]  
+> The pipeline will delete the rows in multiple batches asynchronously, give it a few minutes before verifying that all the historical data is removed.
 
 ### Success Criteria
 
@@ -156,7 +157,8 @@ In this challenge we'll create enhanced product descriptions and text embeddings
 
 Add the following two columns `product_description (STRING)` and `product_description_embeddings (ARRAY<FLOAT64>)` to the `products` table in BigQuery. Using an LLM from BigQuery, generate product descriptions based on the product `name`, `brand`, `category`, `department` and `retail_price` information for at least 100 products and store that in the new `product_descriptions` column.
 
-> **Note** We're only generating the descriptions for 100 products, as doing it for the complete dataset would take too long.
+> [!NOTE]  
+> We're only generating the descriptions for 100 products, as doing it for the complete dataset would take too long.
 
 Then using an embeddings model again from BigQuery, generate embeddings for the `product_description` column (for the 100 product descriptions that have been generated) and store it in the new `product_description_embeddings` column.
 

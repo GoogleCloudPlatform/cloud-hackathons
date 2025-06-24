@@ -44,7 +44,8 @@ To use Firebase Genkit and Genkit Monitoring, you'll need to set up a web app in
 
 ### Step 2: Clone the Repository and set the environment variables
 
-> **Note**: _All_ participants will need to do Step 2 in their own environments.
+> [!NOTE]  
+> _All_ participants will need to do Step 2 in their own environments.
 
 - Open the **Cloud Shell Editor** and type the following commands.
 
@@ -290,7 +291,8 @@ Inspect the performance of the **MovieGuru** app using **Firebase Genkit Monitor
   - Navigate to <http://localhost:4000> (using the **WebPreview** feature of cloudshell).
   - Change the code. Then, use the Genkit developer UI to run the flow locally and verify the change.
 
-  > **Note**: Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make sure to save your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
+  > [!NOTE]  
+  > Changes made directly within the Genkit Developer UI (like editing model parameters for) are ephemeral for that test-run only and do not save back to your source code files, or effect the flows the use those prompts. Make sure to save your actual code changes in your code editor and restart the **Genkit Developer UI** and application.
 
 ### Learning resources
 

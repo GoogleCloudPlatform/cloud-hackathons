@@ -65,9 +65,11 @@ Keep the following things in mind:
 - Choose something reasonable for the VM series such as `N1`
 - Keep note of the subnet you use for networking and make sure everything you create in this gHack uses the same subnet
 - Add a network tag: `allow-health-check`
-    > **Note** The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
+    > [!NOTE]  
+    > The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
 
-    > **Note** Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
+    > [!NOTE]  
+    > Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
 
 - We need to use a start up script to install some things on a new VM. Paste this code into the **Startup Script** field:
 
@@ -155,7 +157,8 @@ Configure the Health Check making sure to:
 - Use the same port as the backend just created
 - Enable logging
 
-> **Note** Health checks determine which instances receive new connections. Your HTTP health check should poll instances every 5 seconds, waits up to 5 seconds for a response and treats 2 successful or 2 failed attempts as healthy or unhealthy, respectively.
+> [!NOTE]  
+> Health checks determine which instances receive new connections. Your HTTP health check should poll instances every 5 seconds, waits up to 5 seconds for a response and treats 2 successful or 2 failed attempts as healthy or unhealthy, respectively.
 
 #### Configure the frontend
 
@@ -171,7 +174,8 @@ Now that you created the HTTP Load Balancer for your backends, verify that traff
 Page served from: { name of your VM }
 ```
 
-> **Note** It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
+> [!NOTE]  
+> It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
 
 ### Success Criteria
 
@@ -230,7 +234,8 @@ Edit `index.html` for the gHacks+ site and embed the reCAPTCHA session token sit
 > **Tip** The session token site key is added to the `HEAD` section of the HTML page.
 
 Validate that you are able to access all the movies available on the gHacks+ site. You'll need to find the load balancer's IP for this and go to `index.html` in a browser.
-> **Note** You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the index page:
+> [!NOTE]  
+> You will be able to verify that the reCAPTCHA implementation is working when you see "protected by reCAPTCHA" at the bottom right corner of the index page:
 
 ![Protect Logo](images/recaptcha-protect-logo.png)
 
@@ -274,7 +279,8 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
 - Attach this reCAPTCHA security policy to the backend service of your Load Balancer. **Make sure it is available globally.**
 
-> **Note** Remember that since we're in testing mode, our score is fixed to 0.5. So we have to explicitly make sure we fail when going to `bad-score.html` and pass when going to `good-score.html`
+> [!NOTE]  
+> Remember that since we're in testing mode, our score is fixed to 0.5. So we have to explicitly make sure we fail when going to `bad-score.html` and pass when going to `good-score.html`
 
 #### Validate Bot Management with Cloud Armor
 
@@ -312,7 +318,8 @@ Explore the security policy logs to validate bot management worked as expected.
 
     ![armor median results](images/armor-median-results.png)
 
-> **Note** Cloud Armor security policies create logs that can be explored to determine when traffic is denied and when it is allowed, along with the source of the traffic.
+> [!NOTE]  
+> Cloud Armor security policies create logs that can be explored to determine when traffic is denied and when it is allowed, along with the source of the traffic.
 
 ### Success Criteria
 

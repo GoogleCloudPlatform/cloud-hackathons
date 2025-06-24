@@ -4,7 +4,8 @@
 
 Welcome to the coach's guide for the *Hack to the Future: Data Track* gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
-> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+> [!NOTE]  
+> If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
@@ -122,7 +123,8 @@ bq  --location=us mk --dataset \
 
 Copying the tables can be done through a CTAS statement.
 
-> **Note** The snippets in this guide use the CLI for executing the SQL for BigQuery from the Cloud Shell. But we expect the participants to use the BigQuery Studio to enter the SQL statements (everything between the [heredoc](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Here-Documents) delimiters `EOF`), in which case the variables should be replaced by their literal values.
+> [!NOTE]  
+> The snippets in this guide use the CLI for executing the SQL for BigQuery from the Cloud Shell. But we expect the participants to use the BigQuery Studio to enter the SQL statements (everything between the [heredoc](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Here-Documents) delimiters `EOF`), in which case the variables should be replaced by their literal values.
 
 ```shell
 bq query --use_legacy_sql=false <<EOF
@@ -170,7 +172,7 @@ unzip httf-data-app-int.zip
 
 And publish it.
 
-> **Note**  
+> [!NOTE]  
 > When the following command runs, it first emits an error indicating that the connection is not found. This error can be ignored as the configuration also contains connection information that is used to create that connection.
 
 ```shell
@@ -250,12 +252,12 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
     --role="roles/aiplatform.user" --condition=None
 ```
 
-> **Note**  
+> [!NOTE]  
 > It might take up to a minute or two to propagate the IAM changes, so if after granting permissions you still get *Permission Denied* errors, try it a few more times.
 
 Now we can create the models (the versions in the endpoints are the latest versions at the time of writing this, you can use whatever version is the latest if those are obsolete).
 
-> **Note**  
+> [!NOTE]  
 > If you're copying the SQL statements to BigQuery Studio, make sure to remove the backslashes in front of the backticks. Those backslashes are needed to escape the backticks when you run the statements from the CLI.
 
 ```shell
@@ -484,4 +486,5 @@ python3 submit.py
 
 ```
 
-> **Note** Running this to completion will take >30 minutes, however first results should be visible in the output bucket after 5 minutes if everything goes well.
+> [!NOTE]  
+> Running this to completion will take >30 minutes, however first results should be visible in the output bucket after 5 minutes if everything goes well.

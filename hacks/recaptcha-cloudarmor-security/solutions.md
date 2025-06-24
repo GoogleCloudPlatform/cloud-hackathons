@@ -45,7 +45,8 @@ Students will creating managed instance groups here, so there are a few things t
 
     > The network tag **allow-health-check** ensures that the HTTP Health Check and SSH firewall rules apply to these instances.
 
-    > **Note** Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
+    > [!NOTE]  
+    > Make sure to type a space or press tab after typing the tag name, otherwise it might not get set.
 
 1. Go to the **Management** section and insert the following script into the **Startup script** field:
 
@@ -108,7 +109,8 @@ Students will creating managed instance groups here, so there are a few things t
 
 The first thing you need to do is open up the firewall for health checks and SSH traffic. Run these commands to create the needed firewall rules:
 
-> **Note**: We're assuming that you're using the `ghack` VPC, if not just substitute your VPC name below
+> [!NOTE]  
+> We're assuming that you're using the `ghack` VPC, if not just substitute your VPC name below
 
 - Open the firewall for health checks
 
@@ -227,7 +229,8 @@ You should see a simple webpage saying:
 Page served from: { name of your VM }
 ```
 
-> **Note** It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
+> [!NOTE]  
+> It might take up to 15 minutes to access the HTTP Load Balancer. In the meantime, you might get a 404 or 502 error. Keep trying until you see the page load.
 
 ## Challenge 3: Deploy a reCAPTCHA Token and Challenge Page
 
@@ -250,9 +253,11 @@ The reCAPTCHA JavaScript sets a reCAPTCHA session-token as a cookie on the end-u
         --waf-feature=session-token --waf-service=ca
     ```
 
-    > **Note** We are using the integration type **score** which will be leveraged in the Cloud Armor policy. You can alternatively use **checkbox** and **invisible**.
+    > [!NOTE]  
+    > We are using the integration type **score** which will be leveraged in the Cloud Armor policy. You can alternatively use **checkbox** and **invisible**.
 
-    > **Note** We are also setting a **testing score** when creating the key to validate that the bot management policies we create with Cloud Armor are working as intended. Replicating bot traffic is not easy and hence, this is a good way to test the feature.
+    > [!NOTE]  
+    > We are also setting a **testing score** when creating the key to validate that the bot management policies we create with Cloud Armor are working as intended. Replicating bot traffic is not easy and hence, this is a good way to test the feature.
 
 1. Output of the above command, gives you the key created. Make a note of it as we will add it to your web site in the next step.
 1. Create the reCAPTCHA WAF challenge-page site key and enable the WAF feature for the key. You can use the reCAPTCHA challenge page feature to redirect incoming requests to reCAPTCHA Enterprise to determine whether each request is potentially fraudulent or legitimate. We will later associate this key with the Cloud Armor security policy to enable the manual challenge. We will refer to this key as **CHALLENGE-PAGE-KEY** in the later steps.
@@ -390,7 +395,8 @@ In this section, you will use Cloud Armor bot management rules to allow, deny an
 
 1. Open another new window in Incognito mode to ensure we have a new session and go to ```http://{LoadBalancer_IP_Here}/index.html```. Click on the movie ***La Cucina in Crisis***. Verify you see the redirection to Google reCAPTCHA and the manual challenge page.
 
-    > **Note** Depending on your Internet usage, reCAPTCHA might already think you're trusted and will not display the manual challenge.
+    > [!NOTE]  
+    > Depending on your Internet usage, reCAPTCHA might already think you're trusted and will not display the manual challenge.
 
     ![armor recaptcha click check](images/armor-click-check.png)
 
@@ -428,4 +434,5 @@ Explore the security policy logs to validate bot management worked as expected.
 
 Notice that the configuredAction is set to **ALLOW, DENY or GOOGLE_RECAPTCHA** with the name **recaptcha-policy**.
 
-> **Note** Cloud Armor security policies create logs that can be explored to determine when traffic is denied and when it is allowed, along with the source of the traffic.
+> [!NOTE]  
+> Cloud Armor security policies create logs that can be explored to determine when traffic is denied and when it is allowed, along with the source of the traffic.

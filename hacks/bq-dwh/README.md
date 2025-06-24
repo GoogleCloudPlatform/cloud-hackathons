@@ -51,7 +51,8 @@ In this hack, you will explore and learn about the following concepts:
 
 This first step is all about getting started with the source data. Typically data is copied periodically from operational data stores, such as OLTP databases, CRM systems etc. to an *analytics data platform*. Many different methods exist for getting that data, either through pushes (change data capture streams, files being generated and forwarded etc.), or pulls (running periodically a query on a database, copying from a file system etc). But for now we'll ignore all that and assume that somehow data has been collected from the source systems and put into a Google Cloud Storage bucket.
 
-> **Note** For the sake of simplicity, we'll implement full loads. In real world applications with larger datasets you might want to consider incremental loads.
+> [!NOTE]  
+> For the sake of simplicity, we'll implement full loads. In real world applications with larger datasets you might want to consider incremental loads.
 
 ### Description
 
@@ -107,7 +108,8 @@ Create a new Dataform *Repository*, update its settings to use the `BQ DWH Dataf
 
 After configuring the Dataform repository, create a new *Development Workspace*, solve any errors and execute the pipeline with the *tag* `staging`.
 
-> **Note** The provided `git-secret` has a dummy value, it'll be ignored when you pull from the repository. When you link a Git repository, Dataform clones that repository *locally* (in your Dataform Development Workspace) and you can commit your changes to your local copy. Normally you'd be able to push those changes to the remote (either main or a different branch), but since the provided secret doesn't have any write permissions, you won't be able to do that for this exercise.
+> [!NOTE]  
+> The provided `git-secret` has a dummy value, it'll be ignored when you pull from the repository. When you link a Git repository, Dataform clones that repository *locally* (in your Dataform Development Workspace) and you can commit your changes to your local copy. Normally you'd be able to push those changes to the remote (either main or a different branch), but since the provided secret doesn't have any write permissions, you won't be able to do that for this exercise.
 
 ### Success Criteria
 
@@ -162,7 +164,8 @@ We have already provided the code for the dimension tables, first run the pipeli
 
 Once the configuration is complete run the Dataform pipeline with the tag `fact` and commit your changes.
 
-> **Note** If you've created the fact table with no or a different partition column, you'll have to drop it first manually before you can run the Dataform pipeline with the `fact` tag.
+> [!NOTE]  
+> If you've created the fact table with no or a different partition column, you'll have to drop it first manually before you can run the Dataform pipeline with the `fact` tag.
 
 ### Success Criteria
 
@@ -235,7 +238,8 @@ We'll add a couple of data governance rules to the `obt_sales` table that we've 
 
 In addition, for the same user, add dynamic data masking to the columns `full_name`, showing only first 4 characters and replacing the rest with `XXXXX`, and `birth_date`, replacing it with the Unix epoch date.
 
-> **Note** We're granting permissions for individual users for the sake of simplicity in this challenge, but the best practice is to use *User Groups* for this purpose (which also simplifies the management of these rules).
+> [!NOTE]  
+> We're granting permissions for individual users for the sake of simplicity in this challenge, but the best practice is to use *User Groups* for this purpose (which also simplifies the management of these rules).
 
 ### Success Criteria
 
@@ -259,7 +263,7 @@ BigQuery Studio and SQL are great tools for data analytics, but data scientists 
 
 We've already designed a [Python notebook](https://raw.githubusercontent.com/meken/gcp-dataform-bqdwh/v2.0.4/notebooks/churn-analysis.ipynb) for this challenge. Upload that to BigQuery, run the notebook interactively until you get to the cell for creating the model. Edit the cell and add the necessary SQL to create a BigQuery ML model, and run the notebook to completion.
 
-> **Warning**  
+> [!WARNING]  
 > Since notebooks on BigQuery use *End User Credentials*, make sure that you're running this notebook as a user that doesn't have the row level security filter applied to limit the data.
 
 ### Success Criteria
@@ -281,7 +285,8 @@ Running the Dataform pipelines manually works, but it's not very practical. We'd
 
 This challenge is all about Cloud Composer, which is basically a managed and serverless version of the well-known [Apache Airflow](https://airflow.apache.org/) framework, to schedule and run our complete pipeline.
 
-> **Note** There's a myriad of different orchestration services on Google Cloud, see the [documentation](https://cloud.google.com/bigquery/docs/orchestrate-workloads) for more information and guidance on which one to pick for *your* specific needs.
+> [!NOTE]  
+> There's a myriad of different orchestration services on Google Cloud, see the [documentation](https://cloud.google.com/bigquery/docs/orchestrate-workloads) for more information and guidance on which one to pick for *your* specific needs.
 
 ### Description
 
@@ -289,7 +294,8 @@ We've already created a *Cloud Composer* environment for you. You need to config
 
 Find the DAGs bucket for the Cloud Composer environment and copy the provided DAG into the correct location. Update the *environment variables* of the Cloud Composer environment to refer to the correct Dataform repository and use the tag `v1.0.4` as the Git reference.
 
-> **Note** It might take a few minutes for the DAG to be discovered by Airflow, be patient :) Once the DAG is discovered it will be started automatically, make sure to configure the environment variables before you upload the DAG.
+> [!NOTE]  
+> It might take a few minutes for the DAG to be discovered by Airflow, be patient :) Once the DAG is discovered it will be started automatically, make sure to configure the environment variables before you upload the DAG.
 
 ### Success Criteria
 
@@ -322,11 +328,13 @@ xx,yy
 
 And upload it to the landing bucket for one of the entities (next to a `data.csv` file, do not overwrite!) and re-run the Cloud Composer DAG.
 
-> **Note** If you had DAG failures in the previous challenge, the configured alert might be triggered before you re-run the DAG. Please ignore that and go ahead with uploading the broken file and re-run the DAG.
+> [!NOTE]  
+> If you had DAG failures in the previous challenge, the configured alert might be triggered before you re-run the DAG. Please ignore that and go ahead with uploading the broken file and re-run the DAG.
 
 When you receive an email for the incident, follow the link to view and then `Acknowledge` it.
 
-> **Note** This might take ~10 minutes as Airflow will retry the failing tasks multiple times before giving it up and mark the DAG run as *failed*.
+> [!NOTE]  
+> This might take ~10 minutes as Airflow will retry the failing tasks multiple times before giving it up and mark the DAG run as *failed*.
 
 ### Success Criteria
 

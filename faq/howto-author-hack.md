@@ -6,7 +6,8 @@ Developing a new gHack is a great way to get your content out to the world. Chan
 
 The following checklist summarizes all the steps required to author a new gHack with links to the relevant sections in this guide.
 
-> **Note** This is the general order you will work on things, but a lot of these items can be done in parallel.
+> [!NOTE]  
+> This is the general order you will work on things, but a lot of these items can be done in parallel.
 
 1. Understand the [concept of a gHack](#the-concept-of-ghacks), they are not your run of the mill training material.
 1. [Make a fork of the gHack repository](#getting-started) in your Github account and set it up for contributing to the main gHacks repository.
@@ -82,7 +83,7 @@ cd YOUR_FORK  # typically cloud-hackathons
 tools/setup-newhack.sh -h century-of-iot -a me@google.com -t "IoT hack of the century"
 ```
 
-> **Note**  
+> [!NOTE]  
 > The title of your hack is the *visible* title, and should be human readable, it will be used to link to your hack from the front page (the catalog). Also make sure to use "snake-case" for your hack name, ie: use dashes between words
 
 This command will create a new folder in the `hacks` directory with placeholders for the content. You can then start editing those. In principle, the most important and possibly the only file to edit is the `README.md` in your new hack folder. But if you need any setup or additional capabilities you'll need to edit other files as well. See for an overview the [Details of a gHack section](#the-details-of-a-ghack).
@@ -135,7 +136,7 @@ Final step is to run the Github Action to generate the rendered website. Navigat
 
 The rendered website will be available on `https://YOUR_USERNAME.github.io/YOUR_FORK/`.
 
-> **Note**  
+> [!NOTE]  
 > This approach also makes it possible for you to make quick changes to your content for specific events, without depending on the maintainers of this repo to validate and merge your PRs.
 
 ### Creating a Pull Request
@@ -154,7 +155,7 @@ If you get any conflicts you'll need to resolve those and commit your changes. T
 git push -f 
 ```
 
-> **Warning**  
+> [!WARNING]  
 > Please beware that force pushing your local will overwrite the commits in your *origin*. If you're collaborating with anyone else, they'll have to reset their local by doing a hard reset (and losing any work that they might not have committed/pushed).
 
 Now you can create a PR through the Github UI. Navigate to your repository and click on the button to create a new PR.
@@ -178,7 +179,7 @@ If something goes wrong with rebasing (getting warnings about divergent set of c
 git reset --hard origin/new-iot-hack  # or any other branch that you want to sync to
 ```
 
-> **Warning**  
+> [!WARNING]  
 > Here be dragons! Resetting your branch this way will remove all commits that you have locally on that branch, and will get whatever is in the remote branch. As long as that's what you want or need, resetting is fine.
 
 ## GCP Project Setup
@@ -209,7 +210,7 @@ The auto-generated `QL_OWNER` file contains the names of the maintainers of this
 
 The Terraform scripts in the `artifacts` directory of your hack will be automatically executed when the labs start.
 
-> **Warning**  
+> [!WARNING]  
 > At the moment Qwiklabs only support Terraform **1.0.1**, so make sure that your Terraform configuration only uses capabilities available for that version. Note that you can still use the latest version of the GCP providers, this only applies to the Terraform version used.
 
 The Terraform configuration when used by Qwiklabs has some pre-requisites. You'll need to make sure that your configuration includes the following variables, even if you don't use them!
@@ -306,7 +307,8 @@ To help you get started, we have provided a sample template for the Student Guid
 - [Student Guide Template](template-student-guide.md).
 
 Please copy this template into your hack's root folder, rename it to **README.md**, and customize it for your hack.
-> **Note** It is a good idea to read through the example markdown in the template to familiarize yourself with the various sections. The sections marked as "(Optional)" do **NOT** need to be in your Student Guide if you don't have content for those sections.
+> [!NOTE]  
+> It is a good idea to read through the example markdown in the template to familiarize yourself with the various sections. The sections marked as "(Optional)" do **NOT** need to be in your Student Guide if you don't have content for those sections.
 
 ## Challenge Design
 
@@ -350,7 +352,26 @@ For each of your challenges, you will add to the end of your Student Guide a new
 ## Challenge <#>: <Challenge Name>
 ```
 
-Keep in mind that we're using [Github Flavored Markdown](https://github.github.com/gfm/) and support highlighting of blockquotes that start with `> **Note**` or `> **Warning**`. In addition any line that ends with two spaces and a newline will cause renderer to emit a linebreak.
+### Alerts
+
+Keep in mind that we're using [Github Flavored Markdown](https://github.github.com/gfm/) and support highlighting of blockquotes that start with the supported [alert types](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts): `> [!NOTE]`, `> [!TIP]`, `> [!IMPORTANT]`, `> [!WARNING]` and `> [!CAUTION]`. See below for an example rendering of various alert types.
+
+> [!NOTE]  
+> Useful information that users should know, even when skimming content.
+
+> [!TIP]  
+> Helpful advice for doing things better or more easily. Prefer using the *Tips* section in student guides, and use this only for the solutions guides.
+
+> [!IMPORTANT]  
+> Key information users need to know to achieve their goal.
+
+> [!WARNING]  
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]  
+> Advises about risks or negative outcomes of certain actions. 
+
+In addition any line that ends with two spaces and a newline will cause renderer to emit a linebreak.
 
 ## Student Resources Folder
 
@@ -401,7 +422,8 @@ The Coach's guide should include the following:
 
 The Coach's guide should be updated during & post event with key learnings, such as all the gotchas, snags, and other unexpected blockers that your attendees hit.
 
-> **Note** The Coach's guide is the most detail oriented & time consuming item to produce however, here's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
+> [!NOTE]  
+> The Coach's guide is the most detail oriented & time consuming item to produce however, here's a pro tip: Hack authors have been known to write the Coach's Guide as a post-mortem from their first run of the hack.
 
 ### Coach's Guide Template
 
@@ -409,7 +431,8 @@ To help you get started, we have provided a sample markdown template for a Coach
 
 Please copy this template into your hack's top folder, rename it to `solutions.md`, customize it and add in all of your challenges.
 
-> **Note** It is a good idea to read through the example markdown in the template to familiarize yourself with the various sections. The sections marked as "(Optional)" do **NOT** need to be in your Coach's Guide if you don't have content for those sections.
+> [!NOTE]  
+> It is a good idea to read through the example markdown in the template to familiarize yourself with the various sections. The sections marked as "(Optional)" do **NOT** need to be in your Coach's Guide if you don't have content for those sections.
 
 ## Coach Solutions Folder
 
@@ -425,5 +448,5 @@ Examples of Coach solutions resources are:
 - Scripts/templates/etc for some challenges that can be shared with attendees if they get really stuck
   - Example: If challenges 1 through 3 build something (i.e. a GKE cluster) that is needed for challenge 4, you could “give” a stuck team the scripts so they could skip to challenge 4.
 
-> **Note**  
+> [!NOTE]  
 > This content is NOT intended for hack attendees to see before or during a hack event. The content IS available publicly and thus an attendee can and WILL find it if they are determined enough. It is important to stress to the attendees that they should not cheat themselves out of an education by looking at the solutions.

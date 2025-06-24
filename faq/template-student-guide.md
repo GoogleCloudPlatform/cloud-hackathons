@@ -41,11 +41,18 @@ In this hack you will be solving the common business problem that companies in t
 
 ***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section. You should remove all italicized & sample text and replace with your content.***
 
-> **Note**  
-> *Use this format for sample informational blockquote, the Note part is case sensitive*
 
-> **Warning**  
-> *Use this format for sample warning blockquote, the Warning part is case sensitive*
+> [!NOTE]  
+> *Useful information that users should know, even when skimming content.*
+
+> [!IMPORTANT]  
+> *Key information users need to know to achieve their goal.*
+
+> [!WARNING]  
+> *Urgent info that needs immediate user attention to avoid problems.*
+
+> [!CAUTION]  
+> *Advises about risks or negative outcomes of certain actions.*
 
 ### Pre-requisites (Optional)
 
@@ -65,13 +72,16 @@ When setting up an IoT device, it is important to understand how 'thingamajigs' 
 
 *This section should clearly state the goals of the challenge and any high-level instructions you want the students to follow. You may provide a list of specifications required to meet the goals. If this is more than 2-3 paragraphs, it is likely you are not doing it right.*
 
-> **Note** *Do NOT use ordered lists as that is an indicator of 'step-by-step' instructions. Instead, use bullet lists to list out goals and/or specifications.*
+> [!IMPORTANT]  
+> *Do NOT use ordered lists as that is an indicator of 'step-by-step' instructions. Instead, use bullet lists to list out goals and/or specifications.*
 
-> **Note** *You may use Markdown sub-headers to organize key sections of your challenge description.*
+> [!NOTE]  
+> *You may use Markdown sub-headers to organize key sections of your challenge description.*
 
 *Optionally, you may provide resource files such as a sample application, code snippets, or templates as learning aids for the students. These files are stored in the hack's `resources` sub-folder. It is the coach's responsibility to package these resources and provide them to students in the Google Space's Files section as per [the instructions provided](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available).*
 
-> **Note** *Do NOT provide direct links to files or folders in the gHacks Github repository from the student guide. Instead, you should refer to the "resources in the Google Space Files section".*
+> [!NOTE]  
+> *Do NOT provide direct links to files or folders in the gHacks Github repository from the student guide. Instead, you should refer to the "resources in the Google Space Files section".*
 
 *Here is some sample challenge text for the IoT Hack Of The Century:*
 
@@ -112,7 +122,8 @@ Please configure the thingamajig with the following specifications:
 
 *Think of this list as giving the students a head start on some easy Internet searches. However, try not to include documentation links that are the literal step-by-step answer of the challenge's scenario.*
 
-> **Note** *Use descriptive text for each link instead of just URLs.*
+> [!NOTE]  
+> *Use descriptive text for each link instead of just URLs.*
 
 *Sample IoT resource links:*
 

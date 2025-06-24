@@ -127,7 +127,8 @@ Required parameters for the template *Datastream to BigQuery*
 | Template for the dataset to contain replica table | `retail` |
 | Dead letter queue directory | `gs://${PROJECT_ID}-other/dlq` |
 
-> **Note** It used to be possible to use a top level bucket as the *File location for Datastream file output in Cloud Storage* parameter. However, the most recent version of the template now requires a root path, a folder that must exist in that bucket. In that case just create a new `cdc` folder in the bucket, update the Datastream Destination configuration to use that as the prefix (`/cdc`) and use that as the parameter in the Dataflow job configuration (`gs://${PROJECT_ID}/cdc/`).
+> [!NOTE]  
+> It used to be possible to use a top level bucket as the *File location for Datastream file output in Cloud Storage* parameter. However, the most recent version of the template now requires a root path, a folder that must exist in that bucket. In that case just create a new `cdc` folder in the bucket, update the Datastream Destination configuration to use that as the prefix (`/cdc`) and use that as the parameter in the Dataflow job configuration (`gs://${PROJECT_ID}/cdc/`).
 
 The following optional parameters must be set too.
 
@@ -163,7 +164,8 @@ SELECT count(*) FROM `retail.ORDERS`;
 
 With the backfill completed, this statement will return the number `520217`. Be patient as it might take up to ~10 minutes before all the records are replicated in BigQuery.
 
-> **Note** If for whatever reason things fail, you can always delete BQ tables, clear the bucket with the JSON files, recreate the Dataflow job (after stopping/canceling the original one) and re-initiate the backfill from Datastream.
+> [!NOTE]  
+> If for whatever reason things fail, you can always delete BQ tables, clear the bucket with the JSON files, recreate the Dataflow job (after stopping/canceling the original one) and re-initiate the backfill from Datastream.
 
 A real time view of the operational data is now available in BigQuery. You can run queries such as comparing the sales of a particular product across stores in real time, or to combine sales and customer data to analyze the spending habits of customers in particular stores.
 
@@ -232,7 +234,8 @@ FROM
 
 Run the following SQL to forecast the demand for organic bananas over the next 2 days:
 
-> **Note** The [`ML.FORECAST`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-forecast) function is used to forecast the expected demand over a horizon of n hours.
+> [!NOTE]  
+> The [`ML.FORECAST`](https://cloud.google.com/bigquery-ml/docs/reference/standard-sql/bigqueryml-syntax-forecast) function is used to forecast the expected demand over a horizon of n hours.
 
 ```sql
 CREATE OR REPLACE TABLE
@@ -246,7 +249,8 @@ FROM
 
 Because the training data is hourly, the horizon value will use the same unit of time when forecasting (hours). A horizon value of 48 hours will return forecast results over the next 2 days.
 
-> **Note** Since this is a small sample dataset, further investigation into the accuracy of the model is out of scope for this tutorial.
+> [!NOTE]  
+> Since this is a small sample dataset, further investigation into the accuracy of the model is out of scope for this tutorial.
 
 ## Challenge 5: Visualizing the results - Coach's Guide
 
@@ -282,6 +286,7 @@ CREATE TABLE
     product_name = 'Bag of Organic Bananas' )
 ```
 
-> **Note** This view lets the BI tool query the relevant data when you explore the actual and forecasted data.
+> [!NOTE]  
+> This view lets the BI tool query the relevant data when you explore the actual and forecasted data.
 
 ![Looker Studio configuration](images/config-chart.png)

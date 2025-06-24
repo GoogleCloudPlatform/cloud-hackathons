@@ -4,7 +4,8 @@
 
 Welcome to the coach's guide for the Infrastructure as Code with Terraform. Here you will find links to specific guidance for coaches for each of the challenges.
 
-> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+> [!NOTE]  
+> If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
@@ -58,7 +59,7 @@ git add .
 git commit -m "initial commit"
 ```
 
-> **Warning**  
+> [!WARNING]  
 > If participants initialize the repo in their home directory instead of in the root of the extracted archive, that will cause problems in the next challenges.
 
 If users ignored the instructions and cloned the repo, they can skip the local Git repo creation, but they'll have to do the following steps.
