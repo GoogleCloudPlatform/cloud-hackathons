@@ -13,10 +13,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Semi-linear history
-      uses: motlin/forbid-merge-commits-action@v1.0.5
-      with:
-        fail-on-merge-commits: 'true'
     - name: Markdown lint
       uses: DavidAnson/markdownlint-cli2-action@v17
       with:
