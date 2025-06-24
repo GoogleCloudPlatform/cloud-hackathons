@@ -369,7 +369,7 @@ Keep in mind that we're using [Github Flavored Markdown](https://github.github.c
 > Urgent info that needs immediate user attention to avoid problems.
 
 > [!CAUTION]  
-> Advises about risks or negative outcomes of certain actions. 
+> Advises about risks or negative outcomes of certain actions.
 
 In addition any line that ends with two spaces and a newline will cause renderer to emit a linebreak.
 

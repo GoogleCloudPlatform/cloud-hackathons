@@ -41,7 +41,6 @@ In this hack you will be solving the common business problem that companies in t
 
 ***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section. You should remove all italicized & sample text and replace with your content.***
 
-
 > [!NOTE]  
 > *Useful information that users should know, even when skimming content.*
 
