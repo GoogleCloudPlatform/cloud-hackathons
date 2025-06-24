@@ -4,7 +4,8 @@
 
 Welcome to the coach's guide for Monitor GenAI apps with Firebase Genkit. Here you will find links to specific guidance for coaches for each of the challenges.
 
-> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+> [!NOTE]  
+> If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
@@ -57,12 +58,14 @@ Here's an example of where to find it:
 Once the metrics start trickling in, the dashboard should look similar to this:
 ![Genkit monitoring dashboard overview](./images/genkit_dash.png)
 
-> **Warning** Until the metrics come in, the **Genkit Monitoring** page might show zero state like this:
+> [!WARNING]  
+> Until the metrics come in, the **Genkit Monitoring** page might show zero state like this:
 > ![Genkit monitoring zero state](./images/genkit_zero_state.png)
 >
 > Don't panic. Give it a few minutes and then refresh.
 
-> **Warning** If even after 5 minutes there are no traces, check the docker compose log for the following error:
+> [!WARNING]  
+> If even after 5 minutes there are no traces, check the docker compose log for the following error:
 > ![Genkit unable to send traces](./images/telemetry_error.png)
 >
 > Then navigate to js/flows/src/genkitConfig.ts and update remove the settings for
@@ -241,7 +244,8 @@ Currently, the app uses _movie.v2.prompt_, which is a variant of the movie.promp
   export const makeMovieRecommendation = ai.prompt('movie'); # will use movie.prompt
 ```
 
-> **Note** Participants may attempt to manually override model in the prompt file directly. It will not result in a good model response. Every model interacts uniquely, and updating a model typically also requires adjustments to the prompting. Participants may explore the difference in the prompt definitions between movie.v2.prompt and movie.prompt driven by the model change.
+> [!NOTE]  
+> Participants may attempt to manually override model in the prompt file directly. It will not result in a good model response. Every model interacts uniquely, and updating a model typically also requires adjustments to the prompting. Participants may explore the difference in the prompt definitions between movie.v2.prompt and movie.prompt driven by the model change.
 
 ### Important Note on a Unintended Potential Performance Bug
 
@@ -282,7 +286,8 @@ Participants need to spot this difference: fewer results for rating queries than
 
 Participants recommend to the Product team that they should roll back to the original version because transitioning purely to the vector-based search significantly impedes the quality of the results returned by the app and will likely impact user experience.
 
-**Note**: Please be aware that the chatbot uses conversation history to understand context. This means if a user first asks for "fun movies" and then, in a subsequent query, asks for "movies with rating greater than 3," the chatbot might interpret the second query as "fun movies with ratings greater than 3."
+> [!NOTE]  
+> Please be aware that the chatbot uses conversation history to understand context. This means if a user first asks for "fun movies" and then, in a subsequent query, asks for "movies with rating greater than 3," the chatbot might interpret the second query as "fun movies with ratings greater than 3."
 
 - This behavior is by design, as the chatbot attempts to refine results based on the ongoing conversation.
 - Combining criteria in this way might naturally lead to fewer movie recommendations if fewer films in the database meet both conditions.

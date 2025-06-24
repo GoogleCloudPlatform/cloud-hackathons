@@ -4,7 +4,8 @@
 
 Welcome to the coach's guide for the Intro to GKE gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
-> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+> [!NOTE]  
+> If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
@@ -36,7 +37,8 @@ Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-r
 
 Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
 
-> **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
+> [!NOTE]  
+> Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
 
 ## Challenge 1: Provision a GKE Cluster
 
@@ -46,7 +48,8 @@ This is a pretty simple challenge, students just need to create a 3 node cluster
 
 You might want to suggest that they try to use the `gcloud` CLI to get a taste of how it would be done for real.
 
-> **Warning** We have seen capacity issues creating clusters or kicking off Cloud Builds in this gHack. It seemed to affect certain regions so if you run into issues, try different regions. Also if SSD disks were used in creating the clusters, this will probably fail. Finally, make sure students don't create more than 3 nodes.
+> [!WARNING]  
+> We have seen capacity issues creating clusters or kicking off Cloud Builds in this gHack. It seemed to affect certain regions so if you run into issues, try different regions. Also if SSD disks were used in creating the clusters, this will probably fail. Finally, make sure students don't create more than 3 nodes.
 
 ### Step By Step Walk-through
 
@@ -97,7 +100,8 @@ You can also view your cluster and related information in the Cloud Console. Cli
 
 Congratulations! You created your first cluster!
 
-> **Note** If you're using an existing GKE cluster or if you created a cluster through Cloud Console, then you need to run the following command to retrieve the cluster's credentials and configure the kubectl command-line tool with them:
+> [!NOTE]  
+> If you're using an existing GKE cluster or if you created a cluster through Cloud Console, then you need to run the following command to retrieve the cluster's credentials and configure the kubectl command-line tool with them:
 >
 > `gcloud container clusters get-credentials fancy-cluster --zone us-central1-c`
 >
@@ -111,9 +115,11 @@ Knowing/learning the ins and outs of node.js isn't the purpose of this challenge
 
 It might be worth explaining to the students why the Artifact Registry has superseded Container Registry.
 
-> **Note** In the terraform scripts that were run, the GKE Service Account was given Artifact Registry Reader IAM permissions. If there are issues with getting Pods to start, begin your debugging here.
+> [!NOTE]  
+> In the terraform scripts that were run, the GKE Service Account was given Artifact Registry Reader IAM permissions. If there are issues with getting Pods to start, begin your debugging here.
 
-> **Note** The docs for Cloud Build will have an example where a specific region is specified in the command. This can be problematic because we don't have quota in some regions. If it causes an error, have them change the region.
+> [!NOTE]  
+> The docs for Cloud Build will have an example where a specific region is specified in the command. This can be problematic because we don't have quota in some regions. If it causes an error, have them change the region.
 
 ### Step By Step Walk-through
 
@@ -167,7 +173,8 @@ gcloud artifacts repositories create dev \
 
 This will create a repository for docker containers named `dev` with a path of `us-central1-docker.pkg.dev/codelab-gke-1/dev`.
 
-> **Note** The url used for the repository corresponds to the region you used when creating it as well as the project name in which it lives.
+> [!NOTE]  
+> The url used for the repository corresponds to the region you used when creating it as well as the project name in which it lives.
 
 Now that we have a docker repository ready, we can run Cloud Build to containerize our application. Cloud Build compresses the application files and moves them to a Cloud Storage bucket. The build process then takes the files from the bucket and uses the Dockerfile to run the Docker build process. Because you specified the `--tag` flag and are using our new Artifact Registry repository path above for the Docker image, the resulting Docker image gets pushed to that docker repository.
 
@@ -178,7 +185,8 @@ cd ~/monolith-to-microservices-master/monolith
 gcloud builds submit --region global --tag us-central1-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/dev/monolith:1.0.0 .
 ```
 
-> **Note** The student guide explicitly states that "the global region" should be used for the build. That means the above command needs to be issued without a region specified or with `--region global`
+> [!NOTE]  
+> The student guide explicitly states that "the global region" should be used for the build. That means the above command needs to be issued without a region specified or with `--region global`
 
 This process takes a few minutes, but after it's completed, you can see the following output in the terminal:
 
@@ -247,7 +255,8 @@ spec:
         - containerPort: 8080
 ```
 
-> **Note** Make sure that you replace the image path with the exact one from your Artifact Registry docker repository.
+> [!NOTE]  
+> Make sure that you replace the image path with the exact one from your Artifact Registry docker repository.
 
 Save this to a file named `monolith-deploy.yaml` and run the following command to apply the yaml and deploy your application:
 
@@ -281,9 +290,11 @@ replicaset.apps/monolith-675bff5d7b   1         1         1       12m
 
 This output shows us several things. You can see your Deployment, which is current; your ReplicaSet, with a desired Pod count of one; and your Pod, which is running. Looks like you successfully created everything!
 
-> **Note** You can also view your Kubernetes deployments via the Cloud Console. Navigate to the top-left menu, then click **Kubernetes Engine**.
+> [!NOTE]  
+> You can also view your Kubernetes deployments via the Cloud Console. Navigate to the top-left menu, then click **Kubernetes Engine**.
 
-> **Note** If you see unexpected errors or statuses, then you can debug your resources by using the following commands to see detailed information about them:
+> [!NOTE]  
+> If you see unexpected errors or statuses, then you can debug your resources by using the following commands to see detailed information about them:
 >
 > `kubectl describe pod monolith`
 >

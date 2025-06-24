@@ -64,7 +64,7 @@ git add .
 git commit -m "initial commit"
 ```
 
-> **Warning**  
+> [!WARNING]  
 > If participants initialize the repo in their home directory instead of in the root of the extracted archive, that will cause problems in the next challenges.
 
 If users ignored the instructions and cloned the repo, they can skip the local Git repo initialization step, but they will still have to do the following steps.
@@ -90,13 +90,13 @@ And finally push the changes.
 git push --all google
 ```
 
-> **Note**  
+> [!NOTE]  
 > The next driver will have to get access to the new repository as well, so everybody should pay attention to how to create and add a new key to the repository.
 >
-> **Note**  
+> [!NOTE]  
 > The Cloud Source Repositories still defaults to `master` branch, you might need to switch to a different branch to see the contents if you've used `main` as your default branch.
 >
-> **Warning**  
+> [!WARNING]  
 > It's possible to use `gcloud` authentication instead of SSH but that's not the challenge :)
 
 ## Challenge 3: You break the build, you buy cake
@@ -107,7 +107,8 @@ Any region can be selected to do the build (with Qwiklabs you might need to choo
 
 There's trailing whitespace in one of the files, which causes the linter to fail. That needs to be removed, and when the changes are pushed, the push trigger will yield a succesfull build.
 
-> **Note** We're using the `Compute Engine Default Service Account` for the build, but typically a more specific service account with very limited permissions would be used.
+> [!NOTE]  
+> We're using the `Compute Engine Default Service Account` for the build, but typically a more specific service account with very limited permissions would be used.
 
 ## Challenge 4: Automagic training with pipelines
 
@@ -175,7 +176,7 @@ sudo apt-get -y install apache2-utils
 ab -n 30000 -c 100 -p request.json -T "application/json" -H "Authorization: Bearer $TOKEN" $URL
 ```
 
-> **Warning**  
+> [!WARNING]  
 > Participants need to make sure that the output of `ab` doesn't contain any non 2XX responses or failed requests.
 
 This exercise can be completed either on the notebook terminal or Cloud Shell.
@@ -219,7 +220,7 @@ The output table should be a *new* table, so you should either just give the nam
 
 ### Notes & Guidance
 
-> **Warning**
+> [!WARNING]
 > Sometimes creating the notification channel from the monitoring configuration dialog hangs, in that case, participants should just go to the Notification Channels (in Cloud Monitoring) to create the channel there and pick that in the monitoring configuration.
 
 #### Online Monitoring
@@ -236,13 +237,13 @@ Setting this up through the UI should be trivial, the training sample data uri s
 
 #### Online Loop
 
-> **Warning**  
+> [!WARNING]  
 > Updating a monitoring job is only possible when the job is running, which might take some time, so if the job status is `PENDING` you might not be able to update it. Typically this would only happen if the participants are very quick with the challenges, in that case they could consider deleting the monitoring job and recreate it with the proper configuration.
 >
-> **Note**  
+> [!NOTE]  
 > Completing this might take a few hours as monitoring jobs only run once every hour. It's sufficient to see if things are configured properly than the full trigger of the pipeline.
 >
-> **Note**  
+> [!NOTE]  
 > In case a non global region is chosen for the Cloud Build pipeline, the displayed webhook URL might not be correct. If you run into 404s while calling that webhook, you can try `https://cloudbuild.googleapis.com/v1/projects/${PROJECT_ID}/locations/${REGION}/triggers/${TRIGGER_NAME}:webhook?key=${API_KEY}&secret=${SECRET_VALUE}&trigger=${TRIGGER_NAME}&projectId=${PROJECT_ID}"` as described in the [docs](https://cloud.google.com/build/docs/automate-builds-webhook-events#creating_webhook_triggers). Also, if you run it with cURL don't forget to set the *Content-Type* to *application/json*.
 
 The *retraining* (`clouddeploy.yaml`) build pipeline requires the following variables to be set.

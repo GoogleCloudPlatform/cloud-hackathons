@@ -51,7 +51,8 @@ We've prepared a [sample project](https://github.com/meken/speedrun/archive/refs
 
 Once the service is running locally, deploy it to Cloud Run *from source code* using *the command line*. Pick `us-central1` as the *region*, allow *unauthenticated invocations*, and stick to the defaults for the rest.
 
-> **Note** The deployment might take a few minutes to complete.
+> [!NOTE]  
+> The deployment might take a few minutes to complete.
 
 ### Success Criteria
 
@@ -126,10 +127,10 @@ Browse to `/logging` on your deployed service. This should be generating some lo
 
 Similar to the previous challenge, browse to `/firestore` and fix the issue.
 
-> **Warning**  
+> [!WARNING]  
 > The mode you select is permanent for the project and cannot be changed, so choose wisely.
 
-> **Note**  
+> [!NOTE]  
 > The Compute Engine default service account has been assigned the right roles to access Firestore. If you choose any other service account for your Cloud Run app, you'll have to make sure that it has the right permissions.
 
 ### Success Criteria
@@ -159,7 +160,7 @@ When it comes to querying data, relational databases are hard to beat. Who doesn
 
 We've already deployed a Cloud SQL instance for you. If you browse to `/sql`, you'll see that things are not working properly yet. You need to make sure that Cloud Run can connect to it. Pass the database name (`database`), database user name (`app`) and the database user password (`my-precious`) as environment variables in plain text (don't worry we'll fix that later) to the Cloud Run instance.
 
-> **Note**  
+> [!NOTE]  
 > The Compute Engine default service account has been assigned the right roles to access the SQL database. If you choose any other service account for your Cloud Run app, you'll have to make sure that it has the right permissions.
 
 ### Success Criteria
@@ -190,7 +191,7 @@ Secret Manager provides a central place and single source of truth to manage, ac
 
 Add the database password to the Secret Manager, and configure Cloud Run to refer to that secret for the database password.
 
-> **Note**  
+> [!NOTE]  
 > The Compute Engine default service account has been assigned the right roles to access Secret Manager. If you choose any other service account for your Cloud Run app, you'll have to make sure that it has the right permissions.
 
 ### Success Criteria

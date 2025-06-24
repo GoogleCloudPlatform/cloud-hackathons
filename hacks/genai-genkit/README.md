@@ -39,7 +39,8 @@ In this hack you will learn how to:
 - gCloud **CloudShell Terminal** **OR**
 - Local IDE (like VSCode) with [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/)  
 
-> **Warning** With **CloudShell Terminal** you cannot get the front-end to talk to the rest of the components, so viewing the full working app locally is difficult, but this doesn't affect the challenges.
+> [!WARNING]  
+> With **CloudShell Terminal** you cannot get the front-end to talk to the rest of the components, so viewing the full working app locally is difficult, but this doesn't affect the challenges.
 
 ## Contributors
 
@@ -123,7 +124,8 @@ Step 3:
 - Setup the local Postgres database. This will create a pgvector instance, a db (fake-movies-db), 2 tables (movies, user_preferences), 2 users (main, minimal-user).
 - Crucially, it also creates an hnsw index for the embedding column in the movies table.
 
-> **Note**: We create an index on our vector column (**embedding**) to speed up similarity searches. Without an index, the database would have to compare the query vector to every single vector in the table, which is not optimal. An index allows the database to quickly find the most similar vectors by organizing the data in a way that optimizes these comparisons. We chose the **HNSW** (Hierarchical Navigable Small World) index because it offers a good balance of speed and accuracy. Additionally, we use **cosine similarity** as the distance metric to compare the vectors, as it's well-suited for text-based embeddings and focuses on the conceptual similarity of the text.
+> [!NOTE]  
+> We create an index on our vector column (**embedding**) to speed up similarity searches. Without an index, the database would have to compare the query vector to every single vector in the table, which is not optimal. An index allows the database to quickly find the most similar vectors by organizing the data in a way that optimizes these comparisons. We chose the **HNSW** (Hierarchical Navigable Small World) index because it offers a good balance of speed and accuracy. Additionally, we use **cosine similarity** as the distance metric to compare the vectors, as it's well-suited for text-based embeddings and focuses on the conceptual similarity of the text.
 
 - It also sets up **adminer**, lightweight tool for managing databases.  
 
@@ -136,7 +138,8 @@ Step 4:
 - Connect to the database.
 - Go to <http://locahost:8082> to open the **adminer** interface.
 
-> **Note**: If you are using the GCP **CloudShell Editor**, click on the **webpreview** button and change the port to 8082.
+> [!NOTE]  
+> If you are using the GCP **CloudShell Editor**, click on the **webpreview** button and change the port to 8082.
 
 ![webpreview](images/webpreview.png)
 
@@ -199,7 +202,8 @@ Step 6:
 
 - Download the key and store it as **.key.json** in the root of this repo (make sure you use the filename exactly).
 
-> **Note**: In production it is BAD practice to store keys in file. Applications running in GoogleCloud use serviceaccounts attached to the platform to perform authentication. The setup used here is simply for convenience.
+> [!NOTE]  
+> In production it is BAD practice to store keys in file. Applications running in GoogleCloud use serviceaccounts attached to the platform to perform authentication. The setup used here is simply for convenience.
 
 Step 7:
 
@@ -216,7 +220,8 @@ Step 7:
     source set_env_vars.sh
     ```
 
-    > **Note**: You will need to re-run this each time you execute something from a new terminal instance.
+    > [!NOTE]  
+    > You will need to re-run this each time you execute something from a new terminal instance.
 
 Now you are ready to start the challenges.
 
@@ -297,7 +302,8 @@ There are instructions and hints in the file to help you proceed.
     docker compose -f docker-compose-indexer.yaml down indexer-js
     ```
 
-> **Note** This process won't exit automatically, but if you don't see anymore movies being added, just check the database to see if all movies have been added.
+> [!NOTE]  
+> This process won't exit automatically, but if you don't see anymore movies being added, just check the database to see if all movies have been added.
 
 ### Success Criteria
 
@@ -345,7 +351,8 @@ You need to perform the following steps:
 Dotprompts are a way to write and manage your AI prompts like code. They're special files that let you define your prompt template, input and output types (could be basic types like strings or more complex custom types), and model settings all in one place. Unlike regular prompts, which are just text, Dotprompts allow you to easily insert variables and dynamic data using [Handlebars](https://handlebarsjs.com/guide/) templating. This means you can create reusable prompts that adapt to different situations and user inputs, making your AI interactions more personalized and effective.
 This makes it easy to version, test, and organize your prompts, keeping them consistent and improving your AI results.
 
-> **Note** The working **Movie Guru** app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
+> [!NOTE]  
+> The working **Movie Guru** app and prompts have been tested for *gemini-1.5-flash*, but feel free to use a different model.
 
 ### Description
 
@@ -385,7 +392,8 @@ For these challenges, you do not need to have the full **Movie Guru** app runnin
 
 - This should open up a shell inside the container at the location **/app/cmd/flows**.
 
-> **Note**: In the docker compose file, we mount the local directory **chat_server_go/cmd/standaloneFlows** into the container at **app/cmd/standaloneFlows**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
+> [!NOTE]  
+> In the docker compose file, we mount the local directory **chat_server_go/cmd/standaloneFlows** into the container at **app/cmd/standaloneFlows**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
 
 - Inside the container, run
 
@@ -404,11 +412,13 @@ For these challenges, you do not need to have the full **Movie Guru** app runnin
 
 - Then press **ENTER** as instructed (this is the interactive step mentioned earlier). This should start the genkit server inside the container at port 4000 which we forward to port **4002** to your host machine (in the docker compose file).
 
-> **Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4002.
+> [!NOTE]  
+> If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4002.
 
 ![webpreview](images/webpreview.png)
 
-> **Note**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
+> [!NOTE]  
+> Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
 **Please be patient**.
 
 ```sh
@@ -439,7 +449,7 @@ Genkit Tools UI: http://localhost:4000
 
     ![Genkit UI Go](images/genkit-go.png)
 
-> **Warning**  
+> [!WARNING]  
 > **Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens,  go to **chat_server_go/cmd/standaloneFlows/main.go**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
 
 <!-- markdownlint-disable-file  no-duplicate-heading -->
@@ -510,7 +520,8 @@ For this challenge, you do not need to have the ****Movie Guru**** app running, 
 
 - This should open up a shell inside the container at the location **/app**.
 
-> **Note**: In the docker compose file, we mount the local directory **js/flows-js** into the container at **/app**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
+> [!NOTE]  
+> In the docker compose file, we mount the local directory **js/flows-js** into the container at **/app**, so that we can make changes in the local file system, while still being able to execute genkit tools from a container.
 
 - Inside the container, run
 
@@ -531,7 +542,8 @@ For this challenge, you do not need to have the ****Movie Guru**** app running, 
 - Then press **ENTER** as instructed (this is the interactive step mentioned earlier).
 - This should start the genkit server inside the container at port 4000 which we forward to port **4003** to your host machine (in the docker compose file).
 
-> **Note**: Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
+> [!NOTE]  
+> Wait till you see an output that looks like this. This basically means that all the Genkit has managed to load the necessary go dependencies, build the go module and load the genkit actions. This might take 30-60 seconds for the first time, and the process might pause output for several seconds before proceeding.
 **Please be patient**.
 
 ```sh
@@ -564,10 +576,11 @@ Genkit Tools UI: http://localhost:4000
 
     ![Genkit UI JS](images/genkit-js.png)
 
-    > **Note**: If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4003.
+    > [!NOTE]  
+    > If you are using the GCP **CloudShell Editor**, click on the  webpreview button and change the port to 4003.
     ![webpreview](images/webpreview.png)
 
-> **Warning**  
+> [!WARNING]  
 > **Potential error message**: At first, the genkit ui might show an error message and have no flows or prompts loaded. This might happen if genkit has yet had the time to detect and load the necessary go files. If that happens, go to **js/flows-js/src/index.ts**, make a small change (add a newline) and save it. This will cause the files to be detected and reloaded.
 
 ##### Challenge-steps
@@ -618,7 +631,8 @@ Genkit Tools UI: http://localhost:4000
 
 ### Success Criteria
 
-> **Note**: What to do if you've made the necessary change in the code files and still see weird output in the UI? Changing the code in the code files should automatically refresh it in the UI. Sometimes, however, genkit fails to autoupdate the prompt/flow in the UI after you've made the change in code. Hitting refresh on the browser (afer you've made and saved the code change) and reloading the UI page should fix it.
+> [!NOTE]  
+> What to do if you've made the necessary change in the code files and still see weird output in the UI? Changing the code in the code files should automatically refresh it in the UI. Sometimes, however, genkit fails to autoupdate the prompt/flow in the UI after you've made the change in code. Hitting refresh on the browser (afer you've made and saved the code change) and reloading the UI page should fix it.
 
 1. The model should be able to extract the user's sentiments from the message.
 2. The model should be able output all the required fields with the correct values (see introduction).
@@ -758,7 +772,8 @@ This challenge has two parts:
 1. Craft the Prompt: You'll engineer a prompt to guide the AI in understanding user queries and extracting key information.
 1. Integrate into a Flow: You'll then embed this prompt within a Genkit flow. Flows provide a structured way to interact with the AI, ensuring reliable outputs and error handling. This involves querying the model, processing the response, and formatting it for use in the Movie Guru application. In the previous challenge, we included the code for the flow for you (you just needed to write th  prompt). In this challenge, you'll need to write it yourself. The challenge also includes setting the correct input and output types for the flow.
 
-> **Note**: Think of the relationship between flows and prompts like this; the prompt is the recipe, and the flow is the chef who executes it and serves the final dish.
+> [!NOTE]  
+> Think of the relationship between flows and prompts like this; the prompt is the recipe, and the flow is the chef who executes it and serves the final dish.
 
 We want the model to take a user's statement, the conversation history and extract the following:
 
@@ -766,7 +781,8 @@ We want the model to take a user's statement, the conversation history and extra
 2. **User Intent**: The intent of the user's latest statement. Did the user issue a greeting to the chatbot (GREET), end the conversation (END_CONVERSATION), make a request to the chatbot (REQUEST), respond to the chatbot's question (RESPONSE), ackowledge a chatbot's statement (ACKNOWLEDGE), or is it unclear (UNCLEAR)? The reason we do this is to prevent a call to the vector DB if the user is not searching for anything. The application only performs a search if the intent is REQUEST or RESPONSE.
 3. Optional **Justification**:  Overall explanation of the model's response. This will help you understand why the model made its suggestions and help you debug and improve your prompt.
 
-> **Note**: We can improve the testability of our model by augmenting its response with strongly typed outputs (those with a limited range of possible values like the enum `User Intent`). This is because automatically validating free-form responses, like the `Transformed query`, is challenging due to the inherent variability and non-deterministic nature of the output. Even a short `Transformed query` can have many variations (e.g., "horror films," "horror movies," "horror," or "films horror"). However, by including additional outputs (with a restricted set of possible values, such as booleans, enums, or integers), we provide more concrete data points for our tests, ultimately leading to more robust and reliable validation of the model's performance.
+> [!NOTE]  
+> We can improve the testability of our model by augmenting its response with strongly typed outputs (those with a limited range of possible values like the enum `User Intent`). This is because automatically validating free-form responses, like the `Transformed query`, is challenging due to the inherent variability and non-deterministic nature of the output. Even a short `Transformed query` can have many variations (e.g., "horror films," "horror movies," "horror," or "films horror"). However, by including additional outputs (with a restricted set of possible values, such as booleans, enums, or integers), we provide more concrete data points for our tests, ultimately leading to more robust and reliable validation of the model's performance.
 
 You need to perform the following steps:
 
@@ -933,7 +949,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
     {% endraw %}
     ```
 
-> **Note**: When using Genkit dotprompts with Typescript, any elements of type zod.array() need to be rolled out in the prompt, else the object is not passed along to the model. While in GoLang, you can send the entire object as a single entity.
+> [!NOTE]  
+> When using Genkit dotprompts with Typescript, any elements of type zod.array() need to be rolled out in the prompt, else the object is not passed along to the model. While in GoLang, you can send the entire object as a single entity.
 
 1. Keep this file open in the editor. You will be editing the prompt here, and testing it in the **genkit UI**.
 1. From the Genkit UI, go to **Prompts/queryTransformFlow**.
@@ -1028,7 +1045,8 @@ You should get an output something that looks like this:
 
 ### Success Criteria
 
-> **Note**: What to do if you've made the necessary change in the code files and still see weird output in the UI? Changing the code in the code files should automatically refresh it in the UI. Sometimes, however, genkit fails to autoupdate the prompt/flow in the UI after you've made the change in code. Hitting refresh on the browser (afer you've made and saved the code change) and reloading the UI page should fix it.
+> [!NOTE]  
+> What to do if you've made the necessary change in the code files and still see weird output in the UI? Changing the code in the code files should automatically refresh it in the UI. Sometimes, however, genkit fails to autoupdate the prompt/flow in the UI after you've made the change in code. Hitting refresh on the browser (afer you've made and saved the code change) and reloading the UI page should fix it.
 
 The model should be able to extract the user's intent from the message and a meaningful query.
 
@@ -1330,7 +1348,8 @@ You can do this with [*GoLang*](#golang-retriever-flow) or [*TypeScript*](#types
 
 ### Success Criteria
 
-> **Note**: What to do if you've made the necessary change in the code files and still see weird output in the UI? Changing the code in the code files should automatically refresh it in the UI. Sometimes, however, genkit fails to autoupdate the prompt/flow in the UI after you've made the change in code. Hitting refresh on the browser (afer you've made and saved the code change) and reloading the UI page should fix it.
+> [!NOTE]  
+> What to do if you've made the necessary change in the code files and still see weird output in the UI? Changing the code in the code files should automatically refresh it in the UI. Sometimes, however, genkit fails to autoupdate the prompt/flow in the UI after you've made the change in code. Hitting refresh on the browser (afer you've made and saved the code change) and reloading the UI page should fix it.
 
 1. The retriever should return relevant documents.
     The input of:
@@ -1449,7 +1468,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4002>
     }
     ```
 
-> **Note**: When testing this prompt (especially an unfinished one), use the **Prompts interface** (**Prompts/dotPrompt/movieFlow**) instead of the **Flows interface**(**Flows/movieQAFlow**). There's an issue with Genkit's Go SDK (which is still in alpha) where complex output schemas can sometimes cause errors at the output parsing step if the model's response doesn't perfectly match the expected structure. This is because the model might include the schema in its output, leading to unmarshalling errors.
+> [!NOTE]  
+> When testing this prompt (especially an unfinished one), use the **Prompts interface** (**Prompts/dotPrompt/movieFlow**) instead of the **Flows interface**(**Flows/movieQAFlow**). There's an issue with Genkit's Go SDK (which is still in alpha) where complex output schemas can sometimes cause errors at the output parsing step if the model's response doesn't perfectly match the expected structure. This is because the model might include the schema in its output, leading to unmarshalling errors.
 
 1. You will get an answer like this. Note that the exact response will vary greatly between instances as LLMs are not determinstic in behaviour. However, you should expect the LLM to translate the userMessage into a different language or at the very least, ask you to clarify details about it.
 
@@ -1527,7 +1547,8 @@ Make sure the Genkit UI is up and running at <http://localhost:4003>
 
 ### Success Criteria
 
-> **Note**: What to do if you've made the necessary change in the code files and still see weird output in the UI? Changing the code in the code files should automatically refresh it in the UI. Sometimes, however, genkit fails to autoupdate the prompt/flow in the UI after you've made the change in code. Hitting refresh on the browser (afer you've made and saved the code change) and reloading the UI page should fix it.
+> [!NOTE]  
+> What to do if you've made the necessary change in the code files and still see weird output in the UI? Changing the code in the code files should automatically refresh it in the UI. Sometimes, however, genkit fails to autoupdate the prompt/flow in the UI after you've made the change in code. Hitting refresh on the browser (afer you've made and saved the code change) and reloading the UI page should fix it.
 
 1. The flow should give a meaningful answer and not return any relevant movies.
     The input of:

@@ -63,9 +63,11 @@ In this challenge, you will create a single *Standard* GKE cluster as per these 
 - An initial node pool size of 3
 - Located in a GCP zone near you
 
-> **Note** Although you can create this cluster using the Google Cloud Console UI, we encourage you to explore and figure out how to create clusters using the `gcloud` CLI tool.
+> [!NOTE]  
+> Although you can create this cluster using the Google Cloud Console UI, we encourage you to explore and figure out how to create clusters using the `gcloud` CLI tool.
 
-> **Note** Creating a cluster will take 5-7 minutes.
+> [!NOTE]  
+> Creating a cluster will take 5-7 minutes.
 
 ### Success Criteria
 
@@ -216,7 +218,8 @@ It looks like one of our helpful developers has already created the changes with
 
 Now that we've changed the application it needs to be rebuilt and a new container image needs to be created and pushed to the Artifact Registry with a new label to distinguish it from the original image.
 
-> **Note** Since this isn't a ReactJS gHack, we will give you the command to run from the root folder of the React app (ie: `./react-app`):
+> [!NOTE]  
+> Since this isn't a ReactJS gHack, we will give you the command to run from the root folder of the React app (ie: `./react-app`):
 >
 > ```shell
 >  npm run build:monolith
@@ -226,7 +229,8 @@ Now that the React app has been rebuilt, you can build and push a new container 
 
 Once we have a new container image ready, we need to roll it out to production.
 
-> **Note** If you list your pods after rolling out the update, you will see new Pods being created before the old Pods are deleted (look at their ages). This ensures zero downtime.
+> [!NOTE]  
+> If you list your pods after rolling out the update, you will see new Pods being created before the old Pods are deleted (look at their ages). This ensures zero downtime.
 
 Navigate to your external IP and confirm the new changes are visible.
 

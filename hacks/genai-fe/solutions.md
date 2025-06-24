@@ -4,7 +4,8 @@
 
 Welcome to the coach's guide for the *Crash Course in AI: Formula E Edition* gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
-> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+> [!NOTE]  
+> If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
@@ -27,7 +28,8 @@ gsutil mb -l $REGION $BUCKET
 gsutil -m cp -r gs://ghacks-genai-fe/* $BUCKET/ 
 ```
 
-> **Note** It's okay if particpants only copy the video files for this challenge. The telemetry data will be needed for the final challenge, but it can also be accessed from its source (without copying it to the new bucket).
+> [!NOTE]  
+> It's okay if particpants only copy the video files for this challenge. The telemetry data will be needed for the final challenge, but it can also be accessed from its source (without copying it to the new bucket).
 
 Create a new BigQuery dataset.
 
@@ -38,7 +40,8 @@ bq mk --location=$REGION -d $BQ_DATASET
 
 Create a connection and give permission to access the bucket. We're providing the CLI command here, but participants will likely use the console for that, which is fine.
 
-> **Note** It's possible to create the *connection* from the Console, but it can be confusing as (per the docs) you need to create a Vertex AI connection, which can be used for BigLake and Object Table entities. The creation of the table needs to happen either through `bq` CLI or the SQL editor.
+> [!NOTE]  
+> It's possible to create the *connection* from the Console, but it can be confusing as (per the docs) you need to create a Vertex AI connection, which can be used for BigLake and Object Table entities. The creation of the table needs to happen either through `bq` CLI or the SQL editor.
 
 ```shell
 CONN_ID=conn
@@ -61,7 +64,8 @@ OPTIONS(
 )
 ```
 
-> **Note** If the wildcard is left out, the table will be empty.
+> [!NOTE]  
+> If the wildcard is left out, the table will be empty.
 
 In order to get the number of rows, a simple count query would suffice.
 
@@ -80,7 +84,8 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAc
     --role="roles/aiplatform.user" --condition=None
 ```
 
-> **Note** It takes a while (1-2 minutes) before the IAM changes are propagated, so if the model creation fails due to lack of permissions even after granting the correct role, just retry after some time.
+> [!NOTE]  
+> It takes a while (1-2 minutes) before the IAM changes are propagated, so if the model creation fails due to lack of permissions even after granting the correct role, just retry after some time.
 
 Now, create the model
 
@@ -109,7 +114,8 @@ FROM
   )
 ```
 
-> **Note** Without the `interval_seconds` set to 120, there will be multiple embeddings per video segment. There might be cases that this is more desirable, but since we'll be providng the full segment to Gemini in the next challenge (to illustrate the RAG concept), and for the sake simplicity (we seem to have too many false positives with the increased number of embeddings), we're sticking to a single embedding per segment.
+> [!NOTE]  
+> Without the `interval_seconds` set to 120, there will be multiple embeddings per video segment. There might be cases that this is more desirable, but since we'll be providng the full segment to Gemini in the next challenge (to illustrate the RAG concept), and for the sake simplicity (we seem to have too many false positives with the increased number of embeddings), we're sticking to a single embedding per segment.
 
 In order to get the number rows, participants could check the `Details` tab (when clicked on the table in BigQuery Studio Explorer pane) and `Storage info` section, or run a query.
 
@@ -166,7 +172,8 @@ ORDER BY distance
 LIMIT 1
 ```
 
-> **Note** If you're wondering about the prefix `base` in the example queries above, it's one of the outputs of the `VECTOR_SEARCH` function that contains all columns from the `base_table` (which is the first argument,`$BQ_DATASET.cctv_embeddings` in this case).
+> [!NOTE]  
+> If you're wondering about the prefix `base` in the example queries above, it's one of the outputs of the `VECTOR_SEARCH` function that contains all columns from the `base_table` (which is the first argument,`$BQ_DATASET.cctv_embeddings` in this case).
 
 #### Prompt for Vertex AI Studio
 
@@ -182,7 +189,8 @@ The corresponding frames already have this information in dd/mm/yyyy * HH:MM:SS 
 
 And the correct response will be: *11/05/2024 15:42:06* (the exact wording might differ).
 
-> **Warning** The footage is from a European race, so the time format in the video is `dd/mm/yyyy` and not `mm/dd/yyyy`.
+> [!WARNING]  
+> The footage is from a European race, so the time format in the video is `dd/mm/yyyy` and not `mm/dd/yyyy`.
 
 We've succesfully tested this with `gemini-2.0-flash-001` using the default settings, but participants are free to experiment with different models and settings to get the correct answer.
 
@@ -209,13 +217,15 @@ FROM FILES (
 )
 ```
 
-> **Note** For both options, if the wildcard is left out, the table will be empty.
+> [!NOTE]  
+> For both options, if the wildcard is left out, the table will be empty.
 
 After loading the data, the notebook needs to be uploaded. You can click on the vertical ellipsis (3 dots) next to *Notebooks* in BigQuery Explorer pane and select *Upload to Notebooks*. Participants can either first download the notebook and upload it or, directly import it through its [URL](https://raw.githubusercontent.com/meken/gcp-genai-fe/refs/heads/main/notebooks/Formula-E-Challenge-4.ipynb). Note that some OS's append a `.txt` extension to the notebook file when downloaded, that needs to be fixed before uploading the file to BigQuery Studio, if they choose for that option.
 
 The following SQL statement should provide the required information to determine the drivers involved in the crash. Please note that the timestamp filtering has been updated for UTC in this solution, if the participants forget about updating the timezone information they will get empty results. The identifier `telemetry_during_crash` after the `%%bigquery` magic is the name of the Python variable where the results of the query will be stored. It's referenced in the final cell (it's a dataframe and will be converted to markdown, appended to the prompt to be designed by the participants).
 
-> **Note** It's probably easier if the participants start experimenting with the SQL in BigQuery Studio (SQL Editor). You can recommend using Gemini from the SQL Editor. Entering the content of the cell where we explain the SQL to be designed, yields pretty impressive results.
+> [!NOTE]  
+> It's probably easier if the participants start experimenting with the SQL in BigQuery Studio (SQL Editor). You can recommend using Gemini from the SQL Editor. Entering the content of the cell where we explain the SQL to be designed, yields pretty impressive results.
 
 ```sql
 %%bigquery telemetry_during_crash
@@ -229,7 +239,8 @@ GROUP BY
   driver_name
 ```
 
-> **Note** If the participants use a timestamp that's too early, the averages will be more homogeneous as there's a turn just before the crash where all cars slow down, so it won't be possible to detect the drivers that were involved in the crash.
+> [!NOTE]  
+> If the participants use a timestamp that's too early, the averages will be more homogeneous as there's a turn just before the crash where all cars slow down, so it won't be possible to detect the drivers that were involved in the crash.
 
 After determining and running the correct SQL, the following prompt should, in most cases :), give the correct answer.
 
