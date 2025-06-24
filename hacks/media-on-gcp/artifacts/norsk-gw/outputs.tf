@@ -17,6 +17,7 @@ output "admin_user" {
 output "admin_password" {
   description = "Password for Admin."
   value       = random_password.admin.result
+  sensitive   = true
 }
 
 output "instance_self_link" {
