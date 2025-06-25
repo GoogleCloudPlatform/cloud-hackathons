@@ -1,7 +1,18 @@
 variable "project_id" {
   description = "The ID of the project in which to provision resources."
   type        = string
-  default     = "ibc-ghack-playground"
+}
+
+variable "region" {
+  description = "The GCP region to deploy resources in."
+  type        = string
+  default     = "europe-west2"
+}
+
+variable "zone" {
+  description = "The zone for the solution to be deployed."
+  type        = string
+  default     = "europe-west2-a"
 }
 
 // Marketplace requires this variable name to be declared
@@ -15,12 +26,6 @@ variable "source_image" {
   description = "The image name for the disk for the VM instance."
   type        = string
   default     = "projects/id3as-public/global/images/norsk-studio-byol-debian-12-x86-64-2025-05-13"
-}
-
-variable "zone" {
-  description = "The zone for the solution to be deployed."
-  type        = string
-  default     = "europe-west2-a"
 }
 
 variable "machine_type" {
@@ -147,10 +152,4 @@ variable "certbot_email" {
   description = "The email where you will receive HTTPS certificate expiration notices from Let's Encrypt."
   type        = string
   default     = "chanka@google.com"
-}
-
-variable "region" {
-  description = "The GCP region to deploy resources in."
-  type        = string
-  default     = "europe-west2"
 }

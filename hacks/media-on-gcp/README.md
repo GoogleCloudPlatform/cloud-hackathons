@@ -38,10 +38,10 @@ In this hack you will be solving the common business problems that all companies
 
 ***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section. You should remove all italicized & sample text and replace with your content.***
 
-> **Note**  
+> **Note**
 > *Use this format for sample informational blockquote, the Note part is case sensitive*
 
-> **Warning**  
+> **Warning**
 > *Use this format for sample warning blockquote, the Warning part is case sensitive*
 
 ### Pre-requisites (Optional)
@@ -129,3 +129,50 @@ Too comfortable?  Eager to do more?  Try these additional challenges!
 
 - Observe what happens if your IoTDevice is separated from its thingamajig.
 - Configure your IoTDevice to connect to BOTH the mothership and IoTQueenBee at the same time.
+
+### Environment Setup
+
+Define environment variables to run Terraform.
+```
+export TARGET_ORGANIZATION_ID=<your-target-organization-id>
+export SOURCE_ORGANIZATION_ID=<your-source-organization-id>
+
+export GCP_PROJECT_ID_SOURCE=<your-source-project-id>
+
+export GCP_PROJECT_ID=<you-project-id>
+export GCP_REGION=europe-west2
+export GCP_ZONE=europe-west2-b
+```
+
+Setup necessaey org policies to run the Terraform script.
+```
+for f in policy_source.yaml.template policy_target.yaml.template; do
+    sed "s|\$GCP_PROJECT_ID_SOURCE|$GCP_PROJECT_ID_SOURCE|g; s|\$TARGET_ORGANIZATION_ID|$TARGET_ORGANIZATION_ID|g; s|\$GCP_PROJECT_ID|$GCP_PROJECT_ID|g" "$f" > "${f%.template}"
+done
+```
+
+Set necessary policies. Make sure the proper org administrator and project
+
+Apply policy_source.yaml to the source project
+```
+gcloud org-policies set-policy policy_source.yaml
+```
+
+Apply policy_target.yaml to the target project
+```
+gcloud org-policies set-policy policy_target.yaml
+```
+
+Run Terraform `init`, `plan`, and `apply`.
+```tf
+terraform init
+
+terraform plan \
+  -out=out.tfplan \
+  -var "gcp_project_id=${GCP_PROJECT_ID}" \
+  -var "gcp_region=${GCP_REGION}" \
+  -var "gcp_zone=${GCP_ZONE}"
+
+terraform apply "out.tfplan" \
+  -auto-approve
+```

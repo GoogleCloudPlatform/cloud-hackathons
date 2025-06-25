@@ -10,30 +10,21 @@
 # Shielded VM features (including Secure Boot) enabled to comply with organization policy.
 # Each instance is configured with a specific service account, API scopes, and a startup script.
 
-# TF is depending on the following images that are in ghack-student project
-# gcloud compute images list --project ghack-student |grep custom
+# TF is depending on the following images that are in media-on-gcp-storage project
+# gcloud compute images list --project media-on-gcp-storage |grep custom
 #NAME: tx-core-custom-image
 #NAME: tx-darwin-custom-image
 #NAME: tx-edge-custom-image
 #
-# --- Terraform and Provider Configuration ---
 
-# Specifies the required Terraform version and the Google Cloud provider.
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 4.0"
+locals {
+  network_interfaces = [for i, n in var.networks : {
+    network     = n,
+    subnetwork  = length(var.sub_networks) > i ? element(var.sub_networks, i) : null
+    external_ip = length(var.external_ips) > i ? element(var.external_ips, i) : "NONE"
     }
-  }
+  ]
 }
-
-# Configures the Google Cloud provider with your project ID and the desired region.
-provider "google" {
-  project = "ghack-student"
-  region  = "europe-west2"
-}
-
 
 # --- Instance Resources ---
 
@@ -46,7 +37,7 @@ resource "google_compute_instance" "tx_core" {
   # Defines the boot disk for the instance.
   boot_disk {
     initialize_params {
-      image = "projects/ghack-student/global/images/tx-core-custom-image"
+      image = "projects/media-on-gcp-storage/global/images/tx-core-custom-image"
       size  = 50
       type  = "pd-balanced"
     }
@@ -70,30 +61,19 @@ resource "google_compute_instance" "tx_core" {
     ]
   }
 
-  # This script runs the first time the instance boots.
-  # You can modify this script independently for tx-core.
-  metadata_startup_script = <<-EOT
-    #!/bin/bash
-    set -e # Exit immediately if a command exits with a non-zero status.
-
-    echo ">>> Starting startup script for tx-core..."
-
-    # Data Sync
-    mkdir -p /var/node
-    cd /var/node
-    gsutil cp gs://techex/tx-deploy.tar.gz /var/node
-#    tar xvzf tx-deploy.tar.gz
-#    cd /var/node/core
-#    chmod +x install-5.38.1.sh
-#    sudo ./install-5.38.1.sh
-
-    echo ">>> Startup script for tx-core finished."
-  EOT
   # Defines the network interface for the instance.
-  network_interface {
-    network = "default"
-    access_config {
-      // Ephemeral public IP is assigned here
+  dynamic "network_interface" {
+    for_each = local.network_interfaces
+    content {
+      network    = network_interface.value.network
+      subnetwork = network_interface.value.subnetwork
+
+      dynamic "access_config" {
+        for_each = network_interface.value.external_ip == "NONE" ? [] : [1]
+        content {
+          nat_ip = network_interface.value.external_ip == "EPHEMERAL" ? null : network_interface.value.external_ip
+        }
+      }
     }
   }
 
@@ -113,7 +93,7 @@ resource "google_compute_instance" "tx_edge" {
   # Defines the boot disk for the instance.
   boot_disk {
     initialize_params {
-      image = "projects/ghack-student/global/images/tx-edge-custom-image"
+      image = "projects/media-on-gcp-storage/global/images/tx-edge-custom-image"
       size  = 50
       type  = "pd-balanced"
     }
@@ -137,29 +117,19 @@ resource "google_compute_instance" "tx_edge" {
     ]
   }
 
-  # This script runs the first time the instance boots.
-  # You can modify this script independently for tx-edge.
-  metadata_startup_script = <<-EOT
-    #!/bin/bash
-    set -e # Exit immediately if a command exits with a non-zero status.
-
-    echo ">>> Starting startup script for tx-edge..."
-
-    # Data Sync
-    mkdir -p /var/node
-    cd /var/node
-    gsutil cp gs://techex/tx-deploy.tar.gz /var/node
-#    tar xvzf tx-deploy.tar.gz
-#    cd /var/node/edge
-#    chmod +x install-centos-1.43.0.sh
-#    sudo ./install-centos-1.43.0.sh
-    echo ">>> Startup script for tx-edge finished."
-  EOT
   # Defines the network interface for the instance.
-  network_interface {
-    network = "default"
-    access_config {
-      // Ephemeral public IP is assigned here
+  dynamic "network_interface" {
+    for_each = local.network_interfaces
+    content {
+      network    = network_interface.value.network
+      subnetwork = network_interface.value.subnetwork
+
+      dynamic "access_config" {
+        for_each = network_interface.value.external_ip == "NONE" ? [] : [1]
+        content {
+          nat_ip = network_interface.value.external_ip == "EPHEMERAL" ? null : network_interface.value.external_ip
+        }
+      }
     }
   }
 
@@ -179,7 +149,7 @@ resource "google_compute_instance" "tx_darwin" {
   # Defines the boot disk for the instance.
   boot_disk {
     initialize_params {
-      image = "projects/ghack-student/global/images/tx-darwin-custom-image"
+      image = "projects/media-on-gcp-storage/global/images/tx-darwin-custom-image"
       size  = 50
       type  = "pd-balanced"
     }
@@ -203,28 +173,19 @@ resource "google_compute_instance" "tx_darwin" {
     ]
   }
 
-  # This script runs the first time the instance boots.
-  metadata_startup_script = <<-EOT
-    #!/bin/bash
-    set -e # Exit immediately if a command exits with a non-zero status.
-
-    echo ">>> Starting startup script for tx-darwin..."
-
-    # Data Sync
-    mkdir -p /var/node
-    cd /var/node
-    gsutil cp gs://techex/tx-deploy.tar.gz /var/node
-#    tar xvzf tx-deploy.tar.gz
-#    cd /var/node/
-#    chmod +x darwin-init.sh
-#    sudo ./darwin-init.sh
-#    echo ">>> Startup script for tx-darwin: finished."
-  EOT
   # Defines the network interface for the instance.
-  network_interface {
-    network = "default"
-    access_config {
-      // Ephemeral public IP is assigned here
+  dynamic "network_interface" {
+    for_each = local.network_interfaces
+    content {
+      network    = network_interface.value.network
+      subnetwork = network_interface.value.subnetwork
+
+      dynamic "access_config" {
+        for_each = network_interface.value.external_ip == "NONE" ? [] : [1]
+        content {
+          nat_ip = network_interface.value.external_ip == "EPHEMERAL" ? null : network_interface.value.external_ip
+        }
+      }
     }
   }
 
