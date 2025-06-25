@@ -18,8 +18,8 @@ description: ""
 instruction:
   type: md
   uri: instructions/en.md
-duration: 420
-max_duration: 420
+duration: 7200
+max_duration: 7200
 credits: 0
 level: fundamental
 tags:

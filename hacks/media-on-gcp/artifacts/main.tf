@@ -15,3 +15,13 @@ resource "google_project_service" "compute_api" {
   service            = "compute.googleapis.com"
   disable_on_destroy = false  
 }
+
+data "google_storage_project_service_account" "gcs_default" {
+
+}
+
+resource "google_storage_bucket" "bucket" {
+  name                        = "${var.gcp_project_id}-testing"
+  location                    = var.gcp_region
+  uniform_bucket_level_access = true
+}
