@@ -6,6 +6,4 @@ dist/
 .DS_Store
 .terraform*
 terraform.tfstate*
-
-.terraform*
-terraform.tfstate*
+*.tfplan
