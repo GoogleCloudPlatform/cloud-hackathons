@@ -102,7 +102,8 @@ This challenge involves exploring the Movie Guru app and documenting typical use
     - Check your user profile to see if the app remembers your preferences.
     - Log out and log in again to understand the app's behavior.
   
-> **Warning**: AI platform rate limits in qwiklabs environments can be very low. This might cause the app to fail when chatting with the bot (Oops.. Something went wrong). You can still use the backend to look at how the main page load/login process works, but view the chatbot interactions through this video (with sound turned down).
+> [!WARNING]  
+> AI platform rate limits in qwiklabs environments can be very low. This might cause the app to fail when chatting with the bot (Oops.. Something went wrong). You can still use the backend to look at how the main page load/login process works, but view the chatbot interactions through this video (with sound turned down).
 
 [![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
 
@@ -114,7 +115,8 @@ This challenge involves exploring the Movie Guru app and documenting typical use
     - Goal: [What does the user want to achieve?]
     - Steps: [List the specific actions the user takes to achieve the goal]
 
-> **Note**: If you need a refresher on what a user journey is, visit the section on [What is a user journey?](#what-is-a-user-journey) (in **Learning Resources**).
+> [!NOTE]  
+> If you need a refresher on what a user journey is, visit the section on [What is a user journey?](#what-is-a-user-journey) (in **Learning Resources**).
 
 ### Success Criteria
 
@@ -207,7 +209,8 @@ Your challenge:  figure out how to improve the app's stability, manage the CEO's
 
 1. **Initial Response to CEO:** Analyze the CEO's demands in the context of SRE principles. Are there any parts of his demand that clash with those principles? Discuss your analysis with your team-mates and coach. You can also do a short role-play with one of you acting as the CEO.
 
-   > **Note**: The focus on the role-play should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
+   > [!NOTE]  
+   > The focus on the role-play should be on articulating your reasoning and how it aligns with SRE principles. The focus shouldn't be on trying to persuade the CEO to change their mind (this isn't a communication/negotiation workshop).
 
 1. **Information Gathering:** You're not alone in this quest for stability! To improve Movie Guru's stability, you'll need to collaborate with others. Identify the key stakeholders within the company and determine what information you need from each of them to achieve your reliability goals.
 
@@ -296,7 +299,8 @@ The platform team's dashboards use metrics collected from the **movie-guru backe
 - **Main Page Load Dashboard/ Startup Dashboard**: Monitors the performance of the post-login, **Main Page Load**.
 - **Chat Dashboard**: Provides a comprehensive view of user interactions with the chatbot, including engagement, sentiment, and response times.
 
-> **Note**: Metrics in the dashboards may appear blocky because we’re simulating load with only a few users. Achieving smoother graphs generally requires a larger user load.
+> [!NOTE]  
+> Metrics in the dashboards may appear blocky because we’re simulating load with only a few users. Achieving smoother graphs generally requires a larger user load.
 
 ### Description
 
@@ -350,7 +354,8 @@ We'll be setting achievable targets for your teams to achieve in the short-term 
 
 ### Description
 
-> **Note**: For this exercise, make educated guesses if exact information isn’t available.
+> [!NOTE]  
+> For this exercise, make educated guesses if exact information isn’t available.
 
 Just like SLIs, SLOs (refresher on [what are SLOs](#what-are-slos)) are also documented on paper before implementing them in monitoring tools. That's what you will do here.
 
@@ -388,7 +393,8 @@ Just like SLIs, SLOs (refresher on [what are SLOs](#what-are-slos)) are also doc
 
 Run the following command in the **Cloud Shell terminal**.
 
-> **Note**: With this command we're priming the backend that generates metrics to behave in a specific way. You're simulating fixes made to the app after 1-2 months work.
+> [!NOTE]  
+> With this command we're priming the backend that generates metrics to behave in a specific way. You're simulating fixes made to the app after 1-2 months work.
 
 ```sh
 ## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
@@ -431,7 +437,8 @@ This challenge is about setting up **Achievable** Service Level Objectives (SLOs
 ### Description
 
 1. **Create a service in the UI**
-    > **Note**: You can also create these via the API. Check [Tips](#tips) in **Learning Resources** for creating services via the API.
+    > [!NOTE]  
+    > You can also create these via the API. Check [Tips](#tips) in **Learning Resources** for creating services via the API.
 
    - Go to the **SLOs** tab in the monitoring suite. This is where you'll define and manage your SLOs.
    - Click on **+ Define Service > Custom Service**.
@@ -618,7 +625,8 @@ This challenge guides you through monitoring the four SLOs created in the previo
   - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives.
   - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
 
-> **Warning**: The lab setting makes it difficult to trigger alerts! Keep in mind that the SLIs were performing very badly at the start of the lab, eating into the error budgets from the very start. You might have just missed the window at which the burn rates would have triggered alerts. You might have also created the alerts after the burn rate hit the alert thresholds.
+> [!WARNING]  
+> The lab setting makes it difficult to trigger alerts! Keep in mind that the SLIs were performing very badly at the start of the lab, eating into the error budgets from the very start. You might have just missed the window at which the burn rates would have triggered alerts. You might have also created the alerts after the burn rate hit the alert thresholds.
 
 ### Success Criteria
 
@@ -663,7 +671,8 @@ kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/re
 
 - Reset the backend server
 
-  > **Note**: With this command we're priming the backend that generates metrics to behave in a specific way. This simulates your colleagues making some changes that might have broken/fixed a few things.
+  > [!NOTE]  
+  > With this command we're priming the backend that generates metrics to behave in a specific way. This simulates your colleagues making some changes that might have broken/fixed a few things.
 
   ```sh
   ## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.

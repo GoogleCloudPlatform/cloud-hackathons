@@ -4,7 +4,8 @@
 
 Welcome to the coach's guide for the *Introduction to Conversational Agents* gHack. Here you will find a step by step walkthrough for coaches to use as guidance when necessary.
 
-> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+> [!NOTE]  
+> If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
@@ -31,7 +32,8 @@ Welcome to the coach's guide for the *Introduction to Conversational Agents* gHa
     1. Open the **Toggle Simulator** by clicking the chat icon at the top right of the page
     1. Type a 'Hello' message to the new agent and note its generic reply
 
-> **Note** At this point you have a new agent that can process simple Intents for greetings
+> [!NOTE]  
+> At this point you have a new agent that can process simple Intents for greetings
 
 1. On the left-hand panel, select **Integrations** near the bottom.
 1. Find the square for **Conversational Messenger** and click **Connect**. Keep all of the defaults and click **Enable Conversational Messenger** at the bottom.
@@ -42,7 +44,8 @@ Welcome to the coach's guide for the *Introduction to Conversational Agents* gHa
     1. At the top right of the Cloud Shell window, click on the **Web Preview** icon (next to the pencil icon) and select **Preview on Port 8080**. This will open a new browser window and show a list of all the files in your home directory. Find and click on `agent-page.html`.
     1. You can now chat with the agent just as you did in the Console. Click on the agent chat icon at the bottom right of the page. Post a 'Hello' message again to see how it answers.
 
-> **Note** At this point we have the agent testable in the Console and via the webpage for end users
+> [!NOTE]  
+> At this point we have the agent testable in the Console and via the webpage for end users
 
 ## Challenge 2: Following the Playbook
 
@@ -107,7 +110,8 @@ Welcome to the coach's guide for the *Introduction to Conversational Agents* gHa
     1. Click the **CREATE** button
     1. Now it brings you back to the table of Data Stores.
 
-> **Note** Your new data store can take 10+ minutes to fully ingest all of the PDF documents. Click into your new data store in the table of Data Stores, and then click on the Activity tab to watch the ingestion progress.
+> [!NOTE]  
+> Your new data store can take 10+ minutes to fully ingest all of the PDF documents. Click into your new data store in the table of Data Stores, and then click on the Activity tab to watch the ingestion progress.
 
 1. When your data store is ready, go back to the Tools screen, select your new **HR Policy Documents** tool
 1. Once again, click the **Add data stores** link in the middle of the page.
@@ -124,13 +128,15 @@ Welcome to the coach's guide for the *Introduction to Conversational Agents* gHa
     1. *Do we offer sabbatical leave?*
     1. *What is our paid leave policy?*
 
-> **Note** Make sure the students know you can ask follow up questions because the Agent keeps the conversation context.
+> [!NOTE]  
+> Make sure the students know you can ask follow up questions because the Agent keeps the conversation context.
 
 ## Challenge 4: Agent Phone Home
 
 > **GOAL**: Call an external system for data we can use in responses
 
-> **Note** The terraform scripts that set up this gHack have already deployed a Cloud Run Function. It is this function that we're using to simulate an external service.
+> [!NOTE]  
+> The terraform scripts that set up this gHack have already deployed a Cloud Run Function. It is this function that we're using to simulate an external service.
 
 1. In the [Conversational Agents Console](https://dialogflow.cloud.google.com/v2/projects/) select **Tools** from the left-hand panel.  Click on the **+ Create** button.
     1. Name the new tool: **Vacation Days Query** for answering questions about how many vacation days an employee has remaining.

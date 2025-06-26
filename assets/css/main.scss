@@ -8,6 +8,8 @@ search: false
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
+$important-color: #ba46db;
+
 // We are removing h1's from the content because we're showing that text in the splash page header
 section.page__content h1 {
   display: none;
@@ -18,9 +20,44 @@ section.page__content h1 {
   fill: $warning-color;
 }
 
+blockquote:has(p > span.alert) {
+  border-left-color: $warning-color;
+}
+
 .info {
   color: $info-color;
   fill: $info-color;
+}
+
+blockquote:has(p > span.info) {
+  border-left-color: $info-color;
+}
+
+.tip {
+  color: $success-color;
+  fill: $success-color;
+}
+
+blockquote:has(p > span.tip) {
+  border-left-color: $success-color;
+}
+
+.important {
+  color: $important-color;
+  fill: $important-color;
+}
+
+blockquote:has(p > span.important) {
+  border-left-color: $important-color;
+}
+
+.caution {
+  color: $danger-color;
+  fill: $danger-color;
+}
+
+blockquote:has(p > span.caution) {
+  border-left-color: $danger-color;
 }
 
 .navigation svg {

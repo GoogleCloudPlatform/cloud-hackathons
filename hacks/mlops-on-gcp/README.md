@@ -6,7 +6,8 @@ In this hack, you'll implement the full lifecycle of an ML project. We'll provid
 
 ![MLOps Overview](./images/mlops-challenges.png)
 
-> **Note** This gHack is inspired by the methodology from [this article](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning).
+> [!NOTE]  
+> This gHack is inspired by the methodology from [this article](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning).
 
 There's no coding involved, we've already prepared the code to train a simple *scikit-learn* model; this could've been any other framework too, the model code has no dependencies on any Google Services or libraries.
 
@@ -27,7 +28,8 @@ Challenge 6 is all about monitoring that endpoint/batch predictions and detectin
 
 And finally in Challenge 7 we'll bring all these things together by tapping into model monitoring and triggering re-training when the model starts to behave off.
 
-> **Warning** As of June 2024 *Cloud Source Repositories* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. If you're running this in a Qwiklabs environment you're good to go, but if you're running this in **your** own environment, please verify that you have access to *Cloud Source Repositories* in your organization.
+> [!IMPORTANT]  
+> As of June 2024 *Cloud Source Repositories* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. If you're running this in a Qwiklabs environment you're good to go, but if you're running this in **your** own environment, please verify that you have access to *Cloud Source Repositories* in your organization.
 
 ## Learning Objectives
 
@@ -76,11 +78,13 @@ Create a *Vertex AI Workbench Instance*. Pick a region close to you and choose t
 
 It's a good practice to have isolated virtual environments for experiments, so create a new virtual environment and install that as a kernel. See this [gist](https://gist.github.com/meken/e6c7430997de9b3f2cf7721f8ecffc04) for the instructions.
 
-> **Warning** Not using a dedicated and isolated environment/kernel might cause dependency conflicts as Vertex AI Workbench Instances come pre-installed with some versions of the required libraries.
+> [!WARNING]  
+> Not using a dedicated and isolated environment/kernel might cause dependency conflicts as Vertex AI Workbench Instances come pre-installed with some versions of the required libraries.
 
 We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-demo/archive/refs/heads/main.zip), navigate there and download the project as a **zip** file and extract the contents of the zip file onto your Notebook instance. Open the notebook `01-tip-toe-vertex-ai.ipynb`, make sure that you've selected the newly created kernel. You should now be able to run the first notebook and get familiar with some of the Vertex AI concepts.
 
-> **Note** As we're installing packages in the first cell of the sample notebook and restarting the kernel in one of the following cells, *Run All* will not work. Run the cells one-by-one also to understand what's going on in every cell.
+> [!NOTE]  
+> As we're installing packages in the first cell of the sample notebook and restarting the kernel in one of the following cells, *Run All* will not work. Run the cells one-by-one also to understand what's going on in every cell.
 
 ### Success Criteria
 
@@ -105,7 +109,8 @@ We've prepared a [sample project on Github](https://github.com/meken/gcp-mlops-d
 
 The objective of this challenge is to create and configure a Git repository so that the code can be version controlled. In principle, you can use any external Git repository (Github/BitBucket/Gitlab etc), but for this challenge we'll use a *Cloud Source Repository* on GCP.
 
-> **Warning** As of June 2024 *Cloud Source Repository* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. So, if you've made it so far, and your coaches have done their due diligence, you're lucky and can use CSR for this challenge.
+> [!IMPORTANT]  
+> As of June 2024 *Cloud Source Repository* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. So, if you've made it so far, and your coaches have done their due diligence, you're lucky and can use CSR for this challenge.
 
 ### Description
 
@@ -142,7 +147,7 @@ This task is all about automating things using Cloud Build. When multiple people
 
 Once things look fine locally, set up a *Cloud Build Trigger* that's run when code is *pushed* to the repository. The code base already includes a build configuration (`cloudbuild.yaml`), have a look at it to understand what it does. Make sure that the trigger uses that build configuration and the `Compute Engine Default Service Account` as the service account. Name the trigger `CI` (or `continuous-integration`).
 
-> **Warning**  
+> [!IMPORTANT]  
 > The qwiklabs environment only has quota in the *global* region, make sure that you pick that when you're creating the trigger.
 
 ### Success Criteria
@@ -172,7 +177,7 @@ If you've successfully completed the previous challenge, your training code has 
 
 The provided project has a `pipeline.py` file that can generate a pipeline definition. Run that to generate a pipeline definition file in `YML` format. Use the generated pipeline definition file to create a new *Pipeline Run* through the GCP Console. Fill in the required pipeline parameters in the next step (you can look up the Python package location). Do not set/override the `endpoint` and `monitoring_job` parameters (keep the default values).
 
-> **Note**  
+> [!NOTE]  
 > Once the pipeline is triggered, it will take ~10 minutes to complete.
 
 ### Success Criteria
@@ -218,10 +223,10 @@ So, you've chosen for online inferencing. In order to use the model to serve pre
 
 Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the smallest machine type but make sure that it can scale to more than 1 node by configuring *autoscaling*.
 
-> **Note**  
+> [!NOTE]  
 > The deployment of the model will take ~10 minutes to complete.
 >
-> **Warning**  
+> [!WARNING]  
 > Note that the Qwiklab environment we're using has a quota on the endpoint throughput (30K requests per minute), **do not exceed that**.
 
 ### Success Criteria
@@ -246,7 +251,7 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 
 So, you've chosen for the batch inferencing path. We're going to use Vertex AI Batch Predictions to get predictions for data in a BigQuery table. First, go ahead and create a new table with at most 10K rows that's going to be used for generating the predictions. Once the table is created, create a new Batch Prediction job with that table as the input and another BigQuery table as the output, using the previously created model. Choose a small machine type and 2 compute nodes. Don't turn on Model Monitoring yet as that's for the next challenge.
 
-> **Note**  
+> [!NOTE]  
 > The batch inferencing will take roughly ~10 minutes, most of that is the overhead of starting the cluster, so increasing the number of instances won't help with the small table we're using.
 
 ### Success Criteria
@@ -274,7 +279,8 @@ So, you've chosen for the batch inferencing path. We're going to use Vertex AI B
 
 There are times when the training data becomes not representative anymore because of changing demographics, trends etc. To catch any skew or drift in feature distributions or even in predictions, it is necessary to monitor your model performance continuously.
 
-> **Note** We'll be using *Model Monitoring v1* for this challenge, which is configured during *Online Prediction Endpoint configuration* for online models, and *Batch Prediction Run configuration* for batch execution.
+> [!NOTE]  
+> We'll be using *Model Monitoring v1* for this challenge, which is configured during *Online Prediction Endpoint configuration* for online models, and *Batch Prediction Run configuration* for batch execution.
 
 If you've chosen the online inferencing path, continue with [Online Monitoring](#online-monitoring), otherwise please skip to the [Batch Monitoring](#batch-monitoring) section.
 
@@ -336,7 +342,7 @@ If you've completed all of the previous challenges, you're now ready to bring it
 
 Just like the previous challenges, if you've chosen the online inferencing path, continue to [Online Loop](#online-loop), otherwise please skip to the [Batch Loop](#batch-loop) section.
 
-> **Note**  
+> [!NOTE]  
 > For this challenge we'll keep things simple, we'll reuse the original training data to retrain and won't do anything if the model is not better, but in real world you'd be using a combination of existing data with the new data, and take manual actions if automatic retraining doesn't yield better results.
 
 ### Online Loop

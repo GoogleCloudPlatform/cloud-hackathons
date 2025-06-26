@@ -4,7 +4,8 @@
 
 Welcome to the coach's guide for Gaming on Google Cloud. Here you will find links to specific guidance for coaches for each of the challenges.
 
-> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+> [!NOTE]  
+> If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
@@ -176,7 +177,8 @@ The Game Frontend serves as a layer that transfers players' matchmaking requests
    cd space-agon-ghack
    ```
 
-    > **Note** Cloud Shell files that one participant creates will not be accessible by the other participants. Participants will want to coordinate the sharing of completed files with each other throught this hack so they don't replicate work they've already done.
+    > [!NOTE]  
+    > Cloud Shell files that one participant creates will not be accessible by the other participants. Participants will want to coordinate the sharing of completed files with each other throught this hack so they don't replicate work they've already done.
 
 1. **Create an Artifact Registry repository:** Students can do this using the UI. If needed, the gcloud command is `gcloud artifacts repositories create "space-agon-ghack" --location=us-central1 --repository-format=docker`.
 
@@ -349,7 +351,8 @@ In production, you will usually want a warm fleet of Ready GameServers, waiting 
    dedicated    Packed       2         2         0           2         9m
    ```
 
-   > **Note** The participants will likely have named their Fleet something other than "dedicated". This is fine for now, and will be a learning opportunity in the next challenge.
+   > [!NOTE]  
+   > The participants will likely have named their Fleet something other than "dedicated". This is fine for now, and will be a learning opportunity in the next challenge.
 
 1. **Scale the Fleet up to 5 replicas:** The Fleet can be scaled up by running `kubectl scale fleet dedicated --replicas=5`. Afterwards run either `kubectl get fleet` or `kubectl get gs` or `kubectl get gameservers` to verify that the new servers are **Ready**.
 

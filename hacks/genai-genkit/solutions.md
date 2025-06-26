@@ -4,7 +4,8 @@
 
 This hack helps you create and deploy a GenAI application using Google Cloud and Firebase Genkit.
 
-> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+> [!NOTE]  
+> If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
@@ -27,7 +28,8 @@ Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-r
 
 Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
 
-> **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
+> [!NOTE]  
+> Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
 
 ## Google Cloud Requirements
 

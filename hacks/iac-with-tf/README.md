@@ -6,7 +6,8 @@ This hack is intended as an introduction to provisioning GCP resources using Ter
 
 ![Overview](./images/iac-with-tf-overview.png)
 
-> **Warning** As of June 2024 *Cloud Source Repositories* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. If you're running this in a Qwiklabs environment you're good to go, but if you're running this in **your** own environment, please verify that you have access to *Cloud Source Repositories* in your organization.
+> [!IMPORTANT]  
+> As of June 2024 *Cloud Source Repositories* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. If you're running this in a Qwiklabs environment you're good to go, but if you're running this in **your** own environment, please verify that you have access to *Cloud Source Repositories* in your organization.
 
 ## Learning Objectives
 
@@ -48,7 +49,8 @@ In this hack you will be exploring the following tasks
 
 In this challenge we'll set up a few prerequisites for the hack. Since we'll be working in a team, we'll need to share the assets with each other and keep track of the changes. For that purpose we'll create and configure a Git version control system. In addition, Terraform needs to store its state somewhere. By default it does that on the local file system, but that's not practical if multiple people would need access to the same state. So, we'll have to configure a remote *backend*.
 
-> **Warning** As of June 2024 *Cloud Source Repository* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. So, if you've made it so far, and your coaches have done their due diligence, you're lucky and can use CSR for this challenge.
+> [!IMPORTANT]  
+> As of June 2024 *Cloud Source Repository* is [end of sale](https://cloud.google.com/source-repositories/docs/release-notes#June_17_2024). However, any organization that has created at least one CSR repository in the past, will still have access to existing repositories and will be able to create new ones. So, if you've made it so far, and your coaches have done their due diligence, you're lucky and can use CSR for this challenge.
 
 ### Description
 
@@ -58,7 +60,7 @@ We've prepared a [sample project](https://github.com/meken/gcp-iac-with-tf/archi
 
 Create a new bucket to hold the Terraform state using best practices and configure Terraform to use that as the backend.
 
-> **Note**  
+> [!NOTE]  
 > For the sake of simplicity we'll stick to a single environment for this challenge. But in real world you'll probably have to deal with multiple environments (dev/test/acc/prod) and might need to track the state for these environments separately.
 
 ### Success Criteria
@@ -117,7 +119,7 @@ Now we're done with the prerequisites we can finally roll out a VM as an HTTP se
 
 Create a new Linux VM and make sure that NGINX is installed and configured to serve HTTP requests.
 
-> **Note**  
+> [!NOTE]  
 > For this challenge we'll be using Terraform to handle NGINX installation, but keep in mind that there are alternatives, such as Ansible, Chef/Puppet etc. that can be used to augment Terraform capabilities.
 
 ### Success Criteria
@@ -136,7 +138,7 @@ We can run the Terraform commands locally but ideally they should be executed in
 
 Create a new Cloud Build push trigger using the `cloudbuild.yaml` in the provided sample project. Make sure that the variables for the build are configured properly. Note that you might need to edit this file to get a successful build.
 
-> **Warning**  
+> [!WARNING]  
 > For the sake of simplicity we'll stick to the `Compute Engine Default Service Account`, but typically you'd want to create a specific service account for the build with limited permissions.
 
 ### Success Criteria

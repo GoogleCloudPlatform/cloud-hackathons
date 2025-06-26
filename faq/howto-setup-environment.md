@@ -32,7 +32,8 @@ Although you can use the Google Cloud command line interface locally on your mac
 You've been given a set of files that you will need through-out this gHack. We need to copy them into the right places.
 
 - In the Google Space for this gHack Event, go to the **Files** tab and download **ALL** available files to your computer.
-  > **Note** Your hack may not come with all of these files, that's ok.
+  > [!NOTE]  
+  > Your hack may not come with all of these files, that's ok.
 
   ![Files Tab](images/setup-space-files.png)
 
@@ -95,7 +96,7 @@ In order to get access to these environments, each team will pick **one** partic
 
 When the *Classroom* is started (on the day of the event), the participant that has created the account (Team Lead) can log in to the [Qwiklabs instance](https://explore.qwiklabs.com) and will see the lab displayed on the home page.
 
-> **Warning**  
+> [!WARNING]  
 > Only the Team Lead needs to join the Qwiklabs instance and follow the instructions below to start the lab.
 
 ![Qwiklabs Home](images/setup-qwiklabs-home.png)
@@ -130,10 +131,10 @@ And choose the project that starts with *qwiklabs-gcp*
 
 If your gHack requires you to set up student resources, you'll be provided a `student-files.zip`. In that case follow the instructions in [this](#upload-and-unzip-all-student-files) section to complete the setup. In Qwiklabs mode you can ignore the `ghacks-setup.zip` as that has been executed automatically for you.
 
-> **Note**  
+> [!NOTE]  
 Since every team member will have access to the same Google Cloud Project, we recommend assigning a different *driver* for each challenge so that everybody gets to participate hands-on. The *driver* can share their screen so that the rest can see what's going on.
 
-> **Warning**
+> [!WARNING]
 > Although the Qwiklabs lab will include the instructions for the hack, we recommend you to follow the instructions on the [gHacks website](https://ghacks.dev) as those are accessible to **all** students (only the Team Lead will be logged into the Qwiklabs instance) and have a better layout.
 
 ## Success Criteria

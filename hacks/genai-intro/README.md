@@ -48,7 +48,8 @@ Create two Cloud Storage Buckets, one for uploading documents and another one fo
 
 We'll trigger the summary generation automatically when a document is uploaded to the first Cloud Storage Bucket. We've already provided you with a(n incomplete) Cloud Run Function, `process-document`, make sure that this function is triggered whenever a new document is uploaded to the Cloud Storage Bucket.
 
-> **Note** The provided Cloud Run Function is configured to be triggered when a message is sent to an already existing Pub/Sub topic. You'll need to configure the correct Cloud Storage Bucket to send a message to that topic whenever a new document is added.
+> [!NOTE]  
+> The provided Cloud Run Function is configured to be triggered when a message is sent to an already existing Pub/Sub topic. You'll need to configure the correct Cloud Storage Bucket to send a message to that topic whenever a new document is added.
 
 ### Success Criteria
 
@@ -103,7 +104,7 @@ For this challenge we'll use Gemini to determine what the title (including any s
 
 The objective of this challenge is to try to get a summary of a complete paper. For the title it's okay to just look at a part of the document, but generating a summary for the complete document requires an alternative approach, namely LLM *chains*.
 
-> **Note**  
+> [!NOTE]  
 > Although the expanding context windows of LLMs are gradually reducing the need for this technique, it remains relevant in specific use cases. In our case there are papers like [this](https://arxiv.org/pdf/1511.08771), with more than 10K pages and 10s of millions of characters, exceeding well beyond the context window of current models. Also keep in mind that in some cases chaining might still be more memory efficient (processing chunks individually instead of whole documents) and more flexible (by integrating data from diverse information sources & tools within a single workflow). So, the optimal approach depends on the specific requirements of the task and the available resources.
 
 There's roughly 3 different approaches we can take; *Stuffing* is the most basic approach where the full content (possibly from multiple documents) is provided as the context. However this only works with smaller documents due to the context length limits.
@@ -135,7 +136,8 @@ In order to get the summaries, we'll implement the *Refine* approach for this ch
   against dark matter and to the Integrated Galactic IMF (IGIMF) theory.
   ```
 
-  > **Note** By their nature, LLM results can vary, this is something to expect so your exact text may not match the above, but the intent should be the same.
+  > [!NOTE]  
+  > By their nature, LLM results can vary, this is something to expect so your exact text may not match the above, but the intent should be the same.
 
 ### Learning Resources
 
@@ -169,7 +171,7 @@ Upload the following papers to Cloud Storage Bucket and run your SQL query in Bi
 - [Quantitative Biology](https://arxiv.org/pdf/2310.00067)
 - [Quantitative Biology](https://arxiv.org/pdf/2310.02553)
 
-> **Warning**  
+> [!WARNING]  
 > Currently GenAI models have a rate limit of 60 calls per minute, since every page from the documents is a single call, if you process more than 60 pages you might run into this limit. None of the provided examples has more than 60 pages, but if you add them all at the same time you'll get to that limit.
 
 ### Success Criteria
@@ -213,7 +215,8 @@ Similarly to the previous challenge, create a remote model in BigQuery for text 
 
 Once the table is there, do a SQL search by `COSINE` distance for every row of the newly generated table and the query *Which paper is about characteristics of living organisms in alien worlds?* and show only the row with the closest distance.
 
-> **Note**  BigQuery has recently introduced *vector search* and *vector indexes* to make these type of searches more efficient. We'll keep to the naive approach for this challenge (as the next challenge will introduce the concepts of vector search and indexes), so **do not** create *vector indexes* and stick to `ML.DISTANCE` for the search.
+> [!NOTE]  
+> BigQuery has recently introduced *vector search* and *vector indexes* to make these type of searches more efficient. We'll keep to the naive approach for this challenge (as the next challenge will introduce the concepts of vector search and indexes), so **do not** create *vector indexes* and stick to `ML.DISTANCE` for the search.
 
 ### Success Criteria
 
@@ -240,11 +243,13 @@ This challenge is all about implementing the 2nd & 3rd step of this process to b
 
 Create a new Cloud Storage bucket and export the embeddings created in previous challenge into that bucket in JSON Lines format.
 
-> **Note** You'll need to pick an single region for the bucket since Vector Search index needs to be co-located with it and doesn't work with Multi-Region.
+> [!NOTE]  
+> You'll need to pick an single region for the bucket since Vector Search index needs to be co-located with it and doesn't work with Multi-Region.
 
 Once the embeddings have been exported, create a new Vector Search index. Choose **small** as the *Shard size*, and **5** as the *Approximate neighbours count*, find out the right number of *Dimensions* to set it, and stick to the defaults for the rest of the parameters.
 
-> **Note** JSON Lines is a text format that stores JSON objects, one per line, with each line terminated by a newline character. Typically the `.jsonl` extension is used to denote these files, but both BigQuery and Vector Search use and expect the `.json` extension.
+> [!NOTE]  
+> JSON Lines is a text format that stores JSON objects, one per line, with each line terminated by a newline character. Typically the `.jsonl` extension is used to denote these files, but both BigQuery and Vector Search use and expect the `.json` extension.
 
 Once the index is ready (should take less than a minute; refresh the page if *Status* is not *Ready* yet), create a new endpoint and deploy the index to that endpoint (use a machine type with 2 vCPUs and stick to the defaults for the rest). Deploying the index to the endpoint will take about 15 minutes (start working on how to use the endpoint while the index is being deployed).
 

@@ -12,7 +12,8 @@ This document has the following sections:
 
 The following checklist summarizes all the steps required to host a gHack with links to the relevant sections in this guide.
 
-> **Note** This is the general order you will work on things, but a lot of these items can be done in parallel.
+> [!NOTE]  
+> This is the general order you will work on things, but a lot of these items can be done in parallel.
 
 ### Before the gHack
 
@@ -72,7 +73,8 @@ During a gHacks event, participants work together in teams of 3 to 5 people to s
 
 At an in-person event, each team will be sitting at the same table. During a virtual event, everyone will be sitting at home in their pajamas. The main difference is that during a virtual event, participants will need to join the Meet call in the event's Chat Space for the duration of the event. Most other aspects of the event are the same.
 
-> **Note** To access a Google Chat Space, the participants will need a Google account. This can be their work account if the company runs Google Workspace, or it can be a Gmail account. If an participants doesn't have a Google account, please have them create one **AHEAD OF TIME** for this event: [Click here to create a new Gmail account](https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=US&flowEntry=SignUp&flowName=GlifWebSignIn)
+> [!NOTE]  
+> To access a Google Chat Space, the participants will need a Google account. This can be their work account if the company runs Google Workspace, or it can be a Gmail account. If an participants doesn't have a Google account, please have them create one **AHEAD OF TIME** for this event: [Click here to create a new Gmail account](https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=US&flowEntry=SignUp&flowName=GlifWebSignIn)
 
 ### People
 
@@ -108,7 +110,8 @@ If you are inviting participants that are outside of your organization, there ar
 
 If you are hosting a hack with a single organization, it is critical to identify an event stakeholder in the external organization who can help you plan for your gHacks event. The event stakeholder can help you address the following preparation concerns.
 
-> **Note** It is recommended that you start planning at least 2 weeks before the event to make sure everything is ironed out.
+> [!NOTE]  
+> It is recommended that you start planning at least 2 weeks before the event to make sure everything is ironed out.
 
 #### GCP Subscription
 
@@ -127,7 +130,8 @@ It will require at least one person from the team to sign up for the gHacks Qwik
 - Retrieve the GCP project details (project id, user names & passwords)
 - Share details with the rest of the team so that participants can log in to the sandbox GCP project.
 
-> **Note** Even though the QwikLab will contain the same instructions, it's better to ignore that and use the gHacks [website](https://ghacks.dev) like the rest of the team (they won't have access to the lab, only to the GCP project, using the credentials shared by the person who signed up).
+> [!NOTE]  
+> Even though the QwikLab will contain the same instructions, it's better to ignore that and use the gHacks [website](https://ghacks.dev) like the rest of the team (they won't have access to the lab, only to the GCP project, using the credentials shared by the person who signed up).
 
 In order to organize a gHack event with Qwiklabs, you'll need a *Classroom Template* and a *Classroom*. You'll need *Authoring* permissions on the special Qwiklabs instance to create those. Please follow the instructions on [go/ceqwiklabstraining](http://go/ceqwiklabstraining) to become an author.
 
@@ -137,13 +141,16 @@ If you run into any issues during lab startup make sure to follow the [troublesh
 
 You need to create *Classroom* instances for every event you want to organize (including any dry-runs you want to do with coaches before the real event). A *Classroom* has a start and an end date and references the *Classroom Template* which determines which lab is used.
 
-> **Note** *Labs for Sales* has recently introduced a formal process for creating *Classrooms*. Before you can set up a *Classroom*, you'll have to complete and submit the form for capacity request through go/lfs-capacity-request. You'll be provided a code that you need to add to the *Classroom* as a tag. I
+> [!NOTE]  
+> *Labs for Sales* has recently introduced a formal process for creating *Classrooms*. Before you can set up a *Classroom*, you'll have to complete and submit the form for capacity request through go/lfs-capacity-request. You'll be provided a code that you need to add to the *Classroom* as a tag. I
 
 You'll need to add the coach for each team as a *student* to the classroom so that they can see the lab when they log into the Qwiklabs instance.
 
-> **Note** The coaches for each team will be starting the Qwiklab and collecting the username/passwords to hand out to the team. There is no need for the students to be aware of the Qwiklab environment at all.
+> [!NOTE]  
+> The coaches for each team will be starting the Qwiklab and collecting the username/passwords to hand out to the team. There is no need for the students to be aware of the Qwiklab environment at all.
 
-> **Warning** If there are more teams than coaches, you will have to recruit a "Team Lead" student to start the Qwiklab from teams without a dedicated coach. Please guide the Team Lead through this process.
+> [!WARNING]  
+> If there are more teams than coaches, you will have to recruit a "Team Lead" student to start the Qwiklab from teams without a dedicated coach. Please guide the Team Lead through this process.
 
 Navigate to the [*Classrooms* section of the special Qwiklabs instance](https://ce.qwiklabs.com/classrooms)
 
@@ -155,12 +162,12 @@ Click on the **+** button on the top right to create a new *Classroom*. First st
 
 Untick the *Virtual Classroom* option, add the Lead Coach as a trainer and most importantly set the *start and end date* for the event. *Location* is required, but not as important as the *Timezone*.
 
-> **Warning**
+> [!WARNING]
 > Labs have a maximum duration and that value is set by the author of the gHack. If you try to set a start and end date longer than this duration, the classroom will default back to the maximum duration. If you need an instance longer than the default for the lab, get in contact with the gHack's author ASAP.
 
 ![Screenshot for Location/Timezone for Classroom](images/author-ql-new-classroom-02.png).
 
-> **Warning**  
+> [!WARNING]  
 > The *Timezone* you select is the one that applies to the *Start and End dates*, so pick the right one.
 
 You can add tags to keep things discoverable for yourself. Once you're done with the configuration, click on the *Create Classroom* button.
@@ -173,7 +180,7 @@ After clicking on *Done* you'll see the new *Classroom*.
 
 ![Screenshot for the new Classroom](images/author-ql-new-classroom-04.png)
 
-> **Warning**  
+> [!WARNING]  
 > The lab in the *Classroom* is not activated automatically, make sure that you activate it before the event by clicking on the *Activate Lab* button.
 
 ![Screenshot for the students](images/author-ql-new-classroom-05.png)
@@ -200,16 +207,19 @@ For example: `"gHack - Acme Corp - MLOps on GCP"`
 
 ![Create Google Space](images/host-create-space.png)
 
-> **Note** Make sure that you check off the book to allow external users otherwise your customers won't be able to join.
+> [!NOTE]  
+> Make sure that you check off the book to allow external users otherwise your customers won't be able to join.
 
-> **Note** To access this new Google Space, the participants will need a Google account. This can be their work account if the company runs Google Workspace, or it can be a Gmail account. If a participant doesn't have a Google account, please have them create one **AHEAD OF TIME** for this event: [Click here to create a new Gmail account](https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=US&flowEntry=SignUp&flowName=GlifWebSignIn)
+> [!NOTE]  
+> To access this new Google Space, the participants will need a Google account. This can be their work account if the company runs Google Workspace, or it can be a Gmail account. If a participant doesn't have a Google account, please have them create one **AHEAD OF TIME** for this event: [Click here to create a new Gmail account](https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=US&flowEntry=SignUp&flowName=GlifWebSignIn)
 
 ### Space Structure
 
 In our Google Space, we will have the following:
 
 - **Add Participant** - The lead coach will click on `Add people & apps` and enter the email addresses of all the participants and coaches for this event.
-  > **Note** See above, email addresses must be Google Workspace accounts or Gmail accounts to be able to join the Google Space. If an email is **NOT** a Google account it will turn **red**.
+  > [!NOTE]  
+  > See above, email addresses must be Google Workspace accounts or Gmail accounts to be able to join the Google Space. If an email is **NOT** a Google account it will turn **red**.
 - **Student Guide** - The lead coach will paste a link to the student guide as the first entry in the chat.
 - **Files** - The lead coach will click on `Share a file` and upload all files for the participants in this hack. See [Making Resources Available](#making-resources-available) below for information on creating the necessary files.
 - **Chat** - Make sure to turn on History so that the chats are persisted between days.
@@ -224,7 +234,8 @@ In our Google Space, we will have the following:
 
  ![Add Co-Hosts](images/host-add-cohost.png)
 
- > **Note** You must change the status of all coaches to "co-hosts" **BEFORE** creating breakout rooms or they will not have full co-host powers.
+ > [!NOTE]  
+ > You must change the status of all coaches to "co-hosts" **BEFORE** creating breakout rooms or they will not have full co-host powers.
 
 - **Breakout Rooms** - The lead coach will create 1 breakout room per team in the hack and name it appropriately. The participants will then join the breakout room they were assigned to work with their team. Coaches will join the breakout room for the team they were assigned. The lead coach (and other coaches if needed) will float around each of the breakout rooms as needed.
 
@@ -284,7 +295,8 @@ Now that you have taken care of creating and preparing a Google Space for your h
 
 It is up to you to decide how you will advertise your hack. You might send an invite to a larger group and let those interested RSVP by registering. Using [Google Forms](https://forms.google.com) is a great way to manage your event registration.
 
-> **Warning** Be sure you understand the privacy implications of gathering personal information in a Google Form.
+> [!WARNING]  
+> Be sure you understand the privacy implications of gathering personal information in a Google Form.
 
 If you are hosting an hack for an external organization, you should coordinate with the event stakeholder to determine how participants will be invited. It is often best to let the event stakeholder manage the invite and registration process. That's one less job for you.
 
@@ -294,7 +306,8 @@ If you are hosting a virtual event, the event location ***IS*** the event Space 
 
 Whether you used a Google Form or worked with an external organization stakeholder, you should gather the list of registered participants and add them to the Google Space a couple of days before the event.
 
-> **Note** To add a participant to a Google Space, they will need a Google account. This can be their work account if the company runs Google Workspace or it can be a Gmail account. If a participant doesn't have a Google account, please have them create one **AHEAD OF TIME** for this event: [Click here to create a new Gmail account](https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=US&flowEntry=SignUp&flowName=GlifWebSignIn)
+> [!NOTE]  
+> To add a participant to a Google Space, they will need a Google account. This can be their work account if the company runs Google Workspace or it can be a Gmail account. If a participant doesn't have a Google account, please have them create one **AHEAD OF TIME** for this event: [Click here to create a new Gmail account](https://accounts.google.com/signup/v2/webcreateaccount?biz=false&cc=US&flowEntry=SignUp&flowName=GlifWebSignIn)
 
 **Example of adding participants to a Google Space:**
 
@@ -302,9 +315,11 @@ Whether you used a Google Form or worked with an external organization stakehold
 
 When someone is added to a Space, they will be emailed to accept the invite and join the Space.
 
-> **Warning** The user will need to "activate" Google Chat if they've never used it before. Be aware of this, the link will be in the invite email.
+> [!WARNING]  
+> The user will need to "activate" Google Chat if they've never used it before. Be aware of this, the link will be in the invite email.
 
-> **Note** If the Space doesn't open up automatically for the user, they may need to click the '+' sign and select *Browse Spaces* and select the Space they were invited to.
+> [!NOTE]  
+> If the Space doesn't open up automatically for the user, they may need to click the '+' sign and select *Browse Spaces* and select the Space they were invited to.
 
 #### Calendar Invite
 
@@ -354,7 +369,8 @@ The lead coach should start the kick off meeting in the Google Space 15-20 mins 
 
 ![Start a Google Meet](images/host-create-meet.png)
 
-> **Note** To make things easier for external folks, you can make the meeting open to join without needing permission. Once you're in the meet, click on the **Host Controls** button, the lock icon at the very bottom right. Change **Meeting access type** to **Open**.
+> [!NOTE]  
+> To make things easier for external folks, you can make the meeting open to join without needing permission. Once you're in the meet, click on the **Host Controls** button, the lock icon at the very bottom right. Change **Meeting access type** to **Open**.
 
 ![Change meeting access type](images/host-change-meet-permissions.png)
 
@@ -398,7 +414,8 @@ Determine how you want to break the participants up into the smaller groups to f
 - At a virtual event, given various participants locations, you may form teams by timezone. This enables teams to take break times that align to their timezone.
 - Random
 
-> **Note** If hosting a hack at an external organization, it is a good idea to ask the event stakeholder to help decide on team formation.
+> [!NOTE]  
+> If hosting a hack at an external organization, it is a good idea to ask the event stakeholder to help decide on team formation.
 
 Once teams have been formed, encourage them to each give their team a fun name and rename their breakout room. This will help break the ice and get the team members collaborating out of the gate.
 
@@ -480,7 +497,8 @@ During the hack, a coach's responsibilities include:
 - Verify that a team has completed each challenge by checking that they have met all of the success criteria.
 - Solicit continuous feedback from the participants on their experience, the content, and what can be done to improve it. Encourage them to use the Google Space chat to share with all of the coaches and participants.
 
-> **Note** Participants should not be judged on how far they get.  No trophies should be given for challenge completion.  If event hosts want to gamify/incentivize participants, they should focus on encouraging participants to share gained knowledge with each other.
+> [!NOTE]  
+> Participants should not be judged on how far they get.  No trophies should be given for challenge completion.  If event hosts want to gamify/incentivize participants, they should focus on encouraging participants to share gained knowledge with each other.
 
 ### Stand-Ups
 

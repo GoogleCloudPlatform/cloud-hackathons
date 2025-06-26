@@ -46,7 +46,7 @@ During the process we'll learn about
 
 Formula E races are extensively covered with a network of broadcast cameras capturing the on-track action and drama, supplemented by CCTV cameras providing additional views for safety and race control. In this gHack we'll use CCTV footage to detect any incidents.
 
-> **Note**  
+> [!NOTE]  
 > A circuit will have multiple CCTV cameras covering different parts of the track, for the sake of simplicity we'll use the feed from a single camera.
 
 This first step is all about getting started with the source data, which is a collection of 2-minute segments from a CCTV camera.
@@ -55,7 +55,7 @@ This first step is all about getting started with the source data, which is a co
 
 Create a new bucket, and copy the sample videos from the bucket `gs://ghacks-genai-fe/cctv/` to the newly created bucket.
 
-> **Note**  
+> [!NOTE]  
 > You should navigate to your Cloud Storage bucket and preview the videos to familiarize yourself with the content.
 
 Once the data is in the bucket, create an *Object table* in BigQuery on that data in a new BigQuery dataset.
@@ -109,7 +109,8 @@ Design a SQL query that retrieves the **top result** from the embeddings table g
 
 Navigate to Vertex AI Studio, *Create Prompt* section, and design a prompt to get the exact timestamp of the crash, using the video segment in your prompt.
 
-> **Note** Have a look at the video segment to confirm when the crash happened. You can preview the videos in the Console, just browse to the specific video through Cloud Storage Bucket browser and there will be a button for *Preview*.
+> [!NOTE]  
+> Have a look at the video segment to confirm when the crash happened. You can preview the videos in the Console, just browse to the specific video through Cloud Storage Bucket browser and there will be a button for *Preview*.
 
 ### Success Criteria
 

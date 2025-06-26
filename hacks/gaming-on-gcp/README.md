@@ -37,7 +37,8 @@ The objectives of this gHack are:
 - Access to an environment with the following:
   - gcloud (>= 410.0.0)
   - node.js (>= v19.1.0)
-  > **Note** Cloud Shell has these pre-installed.
+  > [!NOTE]  
+  > Cloud Shell has these pre-installed.
 
 ## Contributors
 
@@ -96,11 +97,14 @@ Writing the evaluator customizations doesn't fit within the time constraints for
   sudo apt-get -y install netcat
   ```
 
-> **Note** Although you can create this cluster using the Google Cloud Console UI, we encourage you to explore and figure out how to create clusters using the gcloud CLI tool.
+> [!NOTE]  
+> Although you can create this cluster using the Google Cloud Console UI, we encourage you to explore and figure out how to create clusters using the gcloud CLI tool.
 
-> **Note** The reason we are installing Agones with Helm and not YAML is because this is more representative of a production scenario. The Agones documentation for this type of installation is also more detailed and explanatory.
+> [!NOTE]  
+> The reason we are installing Agones with Helm and not YAML is because this is more representative of a production scenario. The Agones documentation for this type of installation is also more detailed and explanatory.
 
-> **Note** Open Match isn't used until Challenge 5, and is not a requirement for Agones functionality. Open Match can sometimes take time to enter a ready state which is why we are installing it now. We are installing with Helm because it makes it easy to see the customizations that are being made to the default install.
+> [!NOTE]  
+> Open Match isn't used until Challenge 5, and is not a requirement for Agones functionality. Open Match can sometimes take time to enter a ready state which is why we are installing it now. We are installing with Helm because it makes it easy to see the customizations that are being made to the default install.
 
 ### Success Criteria
 
@@ -161,11 +165,14 @@ Before we can start playing on a real game server, we are first going to need a 
 
 At this point, you don't have any game servers to connect to, so you still can't play anything, but we will fix that in the next challenge.
 
-> **Note** If you're running an Autopilot cluster and see some errors, it might be because the cluster needs to scale before it can run your container. Be patient and give it some time.
+> [!NOTE]  
+> If you're running an Autopilot cluster and see some errors, it might be because the cluster needs to scale before it can run your container. Be patient and give it some time.
 
-> **Note** Epilepsy warning for Mac users. Mac users with non-Intel chips using Chrome or Safari will see a lot of flashing large boxes on the screen. You will need to download and install Firefox and use it as your browser for this gHack.
+> [!NOTE]  
+> Epilepsy warning for Mac users. Mac users with non-Intel chips using Chrome or Safari will see a lot of flashing large boxes on the screen. You will need to download and install Firefox and use it as your browser for this gHack.
 
-> **Note** Unfamiliar with Docker and what the build and push commands do? After this gHack, check out [Modernizing the Monolith: Containerizing and Deploying to Kubernetes](https://ghacks.dev/hacks/modernizing-monoliths/) to get hands-on experience with containerizing and deploying applications.
+> [!NOTE]  
+> Unfamiliar with Docker and what the build and push commands do? After this gHack, check out [Modernizing the Monolith: Containerizing and Deploying to Kubernetes](https://ghacks.dev/hacks/modernizing-monoliths/) to get hands-on experience with containerizing and deploying applications.
 
 ### Success Criteria
 
@@ -239,9 +246,11 @@ Your task is to deploy an Agones Fleet of Space Agon gameservers in Google Cloud
 - Write and apply a fleet.yaml file for Space Agon to deploy 2 game servers in your cluster.
 - Write an allocation.yaml and create the allocator in your Agones cluster.
 
-> **Note** You must ALWAYS use `kubectl create` with the allocator.yaml file, `kubectl apply` will not work.
+> [!NOTE]  
+> You must ALWAYS use `kubectl create` with the allocator.yaml file, `kubectl apply` will not work.
 
-> **Note** An allocator flags a game server so kubernetes knows not to delete it unless explicitly told to. It is most commonly used to flag that a game server has players on it, and will protect that server from scale down operations.
+> [!NOTE]  
+> An allocator flags a game server so kubernetes knows not to delete it unless explicitly told to. It is most commonly used to flag that a game server has players on it, and will protect that server from scale down operations.
 
 ### Success Criteria
 
@@ -296,7 +305,8 @@ So far, the Find Game feature hasn't been working because your cluster's matchma
 - Write and apply a director.yaml which includes RBAC.
 - Modify the Matchmaking Function to support a single game with your entire gHack team(including coach), or at least 4 players.
 
-  > **Note** The Director is a backend component in the Online Game Service that typically performs the following tasks:
+  > [!NOTE]  
+  > The Director is a backend component in the Online Game Service that typically performs the following tasks:
 
 - Fetch Matches from Open Match for each MatchProfile.
 - Fetch game allocations from a DGS (Dedicated Game Server) system.

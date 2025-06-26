@@ -1,0 +1,15 @@
+name: Validate history
+
+on:
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  forbid-merge-commits:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Semi-linear history
+      uses: motlin/forbid-merge-commits-action@v1.0.5
+      with:
+        fail-on-merge-commits: 'true'

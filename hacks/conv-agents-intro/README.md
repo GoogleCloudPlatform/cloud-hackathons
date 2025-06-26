@@ -51,7 +51,8 @@ This challenge is all about setting up and getting our agent configured.
 
 First, download the files we'll be using in the rest of this gHack from [this link](https://github.com/gfilicetti/conv-agents-intro/archive/refs/heads/main.zip). Unzip the zip file and keep the files handy, they will be needed in upcoming challenges.
 
-> **Note** You can even use `wget` to download the files directly to the Cloud Shell and keep everything there.
+> [!NOTE]  
+> You can even use `wget` to download the files directly to the Cloud Shell and keep everything there.
 
 Create a new agent in the Conversational Agents Console. Test your agent with a simple "Hello" message.
 
@@ -93,7 +94,7 @@ The Playbook will also need to be given some examples. You need to create an exa
 
 Whenever a user types something requiring a human, the conversation state should change to `ESCALATED`.
 
-> **Note**
+> [!NOTE]
 > Don't forget to use the Simulator to test your agent as you go.
 
 ### Success Criteria
@@ -120,7 +121,7 @@ The downloaded zip from Challenge 1 contains all of Piped Piper's HR policy docu
 
 Create a data store for these documents that can be used in your Playbook as a "Tool" of type **Unstructured documents**.
 
-> **Note**
+> [!NOTE]
 > Your new data store can take 10+ minutes to fully ingest all of the PDF documents. Click into your new data store in the table of Data Stores, and then click on the Activity tab to watch the ingestion progress.
 
 Once your documents are ingested, you will need to add this new "tool" to your Playbook.
@@ -159,7 +160,7 @@ You will need to create an **OpenAPI** Tool to make the call to this endpoint.
 
 You will need a YAML scheme for this tool. We have provided the YAML for you below.
 
-> **Note**
+> [!NOTE]
 > Make sure you read the comments as there are some substitutions you need to make.
 
 ```yaml
@@ -192,7 +193,7 @@ For authentication to this endpoint, you need to configure a **Service Agent Tok
 
 Once this tool is finished, incorporate it into your Playbook so that questions about number of vacation days are answered with a number.
 
-> **Note**
+> [!NOTE]
 > The number of vacation days is generated randomly, so it should always be changing.
 
 ### Success Criteria

@@ -41,7 +41,8 @@ If the participants miss the `OBJECT_FINALIZE` event type when they configure th
 gcloud storage buckets notifications delete $BUCKET  # delete all notification configurations
 ```
 
-> **Warning** Cloud Run Functions nowadays also support Cloud Storage triggers directly (through Eventarc), however there's a few issues with that at the moment (related to lack of control of retries and acknowledgment deadlines of the underlying assets, from the Cloud Run Functions UI), so we're sticking to Pub/Sub triggers for now. Make sure that the participants don't edit the configuration of the Cloud Run Function to use Cloud Storage triggers (instead of the already defined Pub/Sub trigger).
+> [!WARNING]  
+> Cloud Run Functions nowadays also support Cloud Storage triggers directly (through Eventarc), however there's a few issues with that at the moment (related to lack of control of retries and acknowledgment deadlines of the underlying assets, from the Cloud Run Functions UI), so we're sticking to Pub/Sub triggers for now. Make sure that the participants don't edit the configuration of the Cloud Run Function to use Cloud Storage triggers (instead of the already defined Pub/Sub trigger).
 
 ## Challenge 2: First steps into the LLM realm
 
@@ -66,7 +67,8 @@ And make sure to truncate the text (assuming that on average 1 token is 3-4 char
 prompt = prompt_template.format(text=text[:5000])
 ```
 
-> **Note**  If participants mention that they could have used models with large context windows to prevent the token limit issue, remind them that longer windows mean more tokens and become more expensive. The title is typically at the beginning of the article, so even when using those models it would make sense to truncate the text.
+> [!NOTE]  
+> If participants mention that they could have used models with large context windows to prevent the token limit issue, remind them that longer windows mean more tokens and become more expensive. The title is typically at the beginning of the article, so even when using those models it would make sense to truncate the text.
 
 Some participants might want to use string concatenation (instead of `prompt.format`, something like `prompt + text`) which could work, but that's less elegant and limits things (text can only be put at the end). Since for the next challenge the `format` function is going to be more important, it's good to stick to that for this challenge. The linked documentation for `str.format` is quite helpful.
 
@@ -110,7 +112,8 @@ prompt = rolling_prompt_template.format(summary=summary, page=page)
 
 The prompts listed here are just examples, there's a great variety when it comes to the possible valid prompts, so as a coach you should validate the results, which should in this case reflect the main points from the summary in *Success Criteria*.
 
-> **Note**  If participants mention that they could have used models with a much larger context window instead of chaining, remind them that these models sometimes have issues extracting relevant bits when given very large contexts (see for example [Lost in the Middle](https://arxiv.org/pdf/2307.03172.pdf) paper) although better prompt engineering sometimes can help. In addition, chaining might still be more memory efficient (processing chunks individually instead of whole documents) and more flexible (by integrating data from diverse information sources & tools within a single workflow) in some cases. Although the expanding context windows of LLMs are gradually reducing the need for this technique, it remains relevant in specific use cases. The optimal approach depends on the specific requirements of the task and the available resources.
+> [!NOTE]  
+> If participants mention that they could have used models with a much larger context window instead of chaining, remind them that these models sometimes have issues extracting relevant bits when given very large contexts (see for example [Lost in the Middle](https://arxiv.org/pdf/2307.03172.pdf) paper) although better prompt engineering sometimes can help. In addition, chaining might still be more memory efficient (processing chunks individually instead of whole documents) and more flexible (by integrating data from diverse information sources & tools within a single workflow) in some cases. Although the expanding context windows of LLMs are gradually reducing the need for this technique, it remains relevant in specific use cases. The optimal approach depends on the specific requirements of the task and the available resources.
 
 ## Challenge 4: BigQuery &#10084; LLMs
 
@@ -157,7 +160,8 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT --member="serviceAc
 
 This is the SQL statement to create a link to the LLM (you need to replace `$REGION` with the correct value).
 
-> **Note** Remind the participants that they can also use Gemini in BigQuery to get assistance on how to do certain things in SQL.
+> [!NOTE]  
+> Remind the participants that they can also use Gemini in BigQuery to get assistance on how to do certain things in SQL.
 
 ```sql
 CREATE OR REPLACE MODEL
@@ -165,7 +169,8 @@ CREATE OR REPLACE MODEL
 WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'gemini-2.0-flash')
 ```
 
-> **Note** We're using `gemini-2.0-flash` here as an example, which is one of the latest GA models by the time of this writing. You could use any other model version that's not discontinued.
+> [!NOTE]  
+> We're using `gemini-2.0-flash` here as an example, which is one of the latest GA models by the time of this writing. You could use any other model version that's not discontinued.
 
 Finally, we can use the linked model to make predictions.
 
@@ -200,7 +205,8 @@ In order to compare things, the results must be sorted. If the students don't fl
 
 We don't need to create another connection, we can reuse the existing one. Run the following command to create the model (you need to replace `$REGION` with the correct value).
 
-> **Note** We're using `text-embedding-005` here as an example, which is the latest GA model by the time of this writing. You could use any other model version that's not discontinued.
+> [!NOTE]  
+> We're using `text-embedding-005` here as an example, which is the latest GA model by the time of this writing. You could use any other model version that's not discontinued.
 
 ```sql
 CREATE OR REPLACE MODEL
@@ -253,7 +259,8 @@ Just keep in mind that participants might miss the fact that you need to generat
 
 ### Notes & Guidance
 
-> **Note** Students might get hung up on the JSON Lines file format as our docs don't do a good job of explaining it. The student guide contains an explanation, so point that out if they missed it.
+> [!NOTE]  
+> Students might get hung up on the JSON Lines file format as our docs don't do a good job of explaining it. The student guide contains an explanation, so point that out if they missed it.
 
 Create a new bucket to hold the embeddings.
 
@@ -277,7 +284,8 @@ FROM
   articles.summary_embeddings
 ```
 
-> **Warning**  Vector Search only supports single regions, and expects the `.json` data to be in a bucket in the same region. So if the bucket for the embeddings is in a multi region, participants will have to recreate it in a single region and re-export the embeddings.
+> [!WARNING]  
+> Vector Search only supports single regions, and expects the `.json` data to be in a bucket in the same region. So if the bucket for the embeddings is in a multi region, participants will have to recreate it in a single region and re-export the embeddings.
 
 In case data is exported in JSON array format instead of JSONL, use the following `jq` command for the conversion.
 

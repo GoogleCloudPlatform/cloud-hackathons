@@ -4,7 +4,8 @@
 
 Welcome to the coach's guide for the *Cloud Run in a Speed Run* hack. Here you will find links to specific guidance for coaches for each of the challenges.
 
-> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+> [!NOTE]  
+> If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
@@ -22,7 +23,7 @@ Welcome to the coach's guide for the *Cloud Run in a Speed Run* hack. Here you w
 
 If participants have chosen to work from their local environments (instead of Cloud Shell), it's recommended to create a new configuration for gcloud. They'll also have to install all the prerequisites to be able to complete the challenges.
 
-> **Note**  
+> [!NOTE]  
 > The easiest option is to use Cloud Shell as it has everything that's needed, it will provide a smooth experience. The only downside of using Cloud Shell is that the participants won't typically use Cloud Shell in their day-to-day workflow.
 
 You can download and upload the zip file to Cloud Shell through the UI, but it's easier to use `wget`.
@@ -136,7 +137,7 @@ gcloud run deploy $APP_NAME --region=$REGION --image=$IMAGE_FULL
 
 First step is to create the default database in the *Native* mode. All you have to do is to browse to Firestore and you'll be prompted to make the choice.
 
-> **Warning**  
+> [!WARNING]  
 > The mode you select is permanent for the project, so make sure that you're choosing the right one.
 
 Once the default database is there, click on **+Start collection** button to create a new collection called *cities* and add *Amsterdam* as the document with a sample field, for example `country` and set its value to `NL`.
