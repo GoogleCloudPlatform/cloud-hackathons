@@ -1,0 +1,21 @@
+name: projects/$GCP_PROJECT_ID/policies/compute.trustedImageProjects
+spec:
+  inheritFromParent: true
+  rules:
+  - values:
+      allowedValues:
+      - projects/id3as-public # public image for Norks
+      - projects/media-on-gcp-storage # created custom image for Techex
+---
+name: projects/$GCP_PROJECT_ID/policies/compute.storageResourceUseRestrictions
+spec:
+  inheritFromParent: true
+  rules:
+  - values:
+      allowedValues:
+      - under:projects/media-on-gcp-storage
+---
+name: projects/$GCP_PROJECT_ID/policies/constraints/compute.vmExternalIpAccess
+spec:
+  rules:
+  - enforce: true
