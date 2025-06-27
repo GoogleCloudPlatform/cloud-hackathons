@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 TARGET=ghacks-setup.zip
-OBJS=*.tf runtime.yaml
+OBJS=*.tf ./modules runtime.yaml
 
 $(TARGET): $(OBJS)
 	zip -r $(TARGET) $(OBJS)

@@ -34,7 +34,7 @@ module "vpc" {
 }
 
 module "media-tx" {
-  source = "./modules/media-tx"
+  source = "modules/media-tx/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
@@ -44,7 +44,7 @@ module "media-tx" {
 }
 
 module "norsk-gw" {
-  source = "./modules/norsk-gw"
+  source = "modules/norsk-gw/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
