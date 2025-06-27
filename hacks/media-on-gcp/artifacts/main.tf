@@ -23,6 +23,33 @@ data "google_project" "project" {
   project_id = var.gcp_project_id
 }
 
+resource "google_project_service" "org_policy_api" {
+  project = "${local.project.id}"
+  service = "orgpolicy.googleapis.com"
+  disable_dependent_services = true
+}
+
+resource "google_org_policy_policy" "compute_storage_resource_use_restrictions" {
+  name   = "projects/${local.project.id}/policies/compute.storageResourceUseRestrictions"
+  parent = "projects/${local.project.id}"
+
+  spec {
+    # Set inheritFromParent to true as per your original configuration.
+    inherit_from_parent = true
+
+    # Define the policy rules
+    rules {
+      # For 'allowedValues' in the original YAML, we use the 'values' block
+      # with 'allowed_values' and specify the list of values.
+      values {
+        allowed_values = [
+          "under:projects/media-on-gcp-storage"
+        ]
+      }
+    }
+  }
+}
+
 module "vpc" {
   source  = "terraform-google-modules/network/google//modules/vpc"
   version = "~> 10.0.0"
@@ -34,7 +61,7 @@ module "vpc" {
 }
 
 module "media-tx" {
-  source = "./modules/media-tx"
+  source = "./basics/media-tx/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
@@ -44,7 +71,7 @@ module "media-tx" {
 }
 
 module "norsk-gw" {
-  source = "./modules/norsk-gw"
+  source = "./basics/norsk-gw/stable"
 
   project_id = local.project.id
   region     = var.gcp_region

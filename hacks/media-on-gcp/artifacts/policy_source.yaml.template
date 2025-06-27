@@ -1,7 +1,0 @@
-name: projects/$GCP_PROJECT_ID_SOURCE/policies/iam.allowedPolicyMemberDomains
-spec:
-  inheritFromParent: true
-  rules:
-  - values:
-      allowedValues:
-      - is:principalSet://iam.googleapis.com/organizations/$TARGET_ORGANIZATION_ID
