@@ -132,12 +132,16 @@ Too comfortable?  Eager to do more?  Try these additional challenges!
 
 ### Environment Setup
 
+The deployment of this gHacks considered two environments:
+
+1) **Target environment**: Target environment is the ephemeral student project where all infrastructure will be created for the hack.
+2) **Source environment**: Source environment is a prerequisite environme for the Target environment for pulling licenses and custom images to run in Target project.
+
+#### File and variable setup
+
 Define environment variables to run Terraform.
 ```
-export TARGET_ORGANIZATION_ID=<your-target-organization-id>
-export SOURCE_ORGANIZATION_ID=<your-source-organization-id>
-
-export GCP_PROJECT_ID_SOURCE=<your-source-project-id>
+export GCP_PROJECT_ID_SOURCE=<you-source-project-id>
 
 export GCP_PROJECT_ID=<you-project-id>
 export GCP_REGION=europe-west2
@@ -145,22 +149,46 @@ export GCP_ZONE=europe-west2-b
 ```
 
 Setup necessaey org policies to run the Terraform script.
+```sh
+. ./scripts/process_policies.sh
 ```
-for f in policy_source.yaml.template policy_target.yaml.template; do
-    sed "s|\$GCP_PROJECT_ID_SOURCE|$GCP_PROJECT_ID_SOURCE|g; s|\$TARGET_ORGANIZATION_ID|$TARGET_ORGANIZATION_ID|g; s|\$GCP_PROJECT_ID|$GCP_PROJECT_ID|g" "$f" > "${f%.template}"
-done
+
+And enter in the required params to run scripts when prompted.
+
+#### Setup for Source environment
+
+When setting up source environment, make sure the logged in user has administrator level access to the environment.
+
+```
+gcloud auth login
+gcloud auth application-default login
+gcloud config set project ${GCP_PROJECT_ID_SOURCE}
+```
+
+Apply necessary policies for
+
+```sh
+gcloud org-policies set-policy ./artifacts/scripts/processed_policies/iam.allowedPolicyMemberDomains.yaml
+```
+
+#### Setup for Target environment
+
+When setting up target environment, make sure the logged in user has administrator level access to the environment.
+
+```
+gcloud auth login
+gcloud auth application-default login
+gcloud config set project ${GCP_PROJECT_ID_SOURCE}
 ```
 
 Set necessary policies. Make sure the proper org administrator and project
 
-Apply policy_source.yaml to the source project
-```
-gcloud org-policies set-policy policy_source.yaml
-```
+Apply necessary policies if needed.
 
-Apply policy_target.yaml to the target project
-```
-gcloud org-policies set-policy policy_target.yaml
+```sh
+gcloud org-policies set-policy ./artifacts/scripts/processed_policies/compute.storageResourceUseRestrictions.yaml
+gcloud org-policies set-policy ./artifacts/scripts/processed_policies/compute.trustedImageProjects.yaml
+gcloud org-policies set-policy ./artifacts/scripts/processed_policies/compute.vmExternalIpAccess.yaml
 ```
 
 Run Terraform `init`, `plan`, and `apply`.

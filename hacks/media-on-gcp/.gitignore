@@ -1,1 +1,1 @@
-policy*.yaml
+**/**/processed_policies/*.yaml
