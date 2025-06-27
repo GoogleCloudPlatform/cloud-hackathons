@@ -15,7 +15,15 @@ spec:
       allowedValues:
       - under:projects/media-on-gcp-storage
 ---
-name: projects/$GCP_PROJECT_ID/policies/constraints/compute.vmExternalIpAccess
+name: projects/$GCP_PROJECT_ID/policies/compute.vmExternalIpAccess
 spec:
   rules:
   - enforce: true
+---
+name: projects/$GCP_PROJECT_ID_SOURCE/policies/iam.allowedPolicyMemberDomains
+spec:
+  inheritFromParent: true
+  rules:
+  - values:
+      allowedValues:
+      - is:principalSet://iam.googleapis.com/organizations/$TARGET_ORGANIZATION_ID
