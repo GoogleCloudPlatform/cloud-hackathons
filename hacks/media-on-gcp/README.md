@@ -14,14 +14,37 @@ In this hack you will be solving the common business problems that all companies
 
 ## Challenges
 
-- Challenge 1: Provision an environment
-  - Create an environments and run tests to ensure it works
-- Challenge 2: Your First Stream
-  - Make the connection to the SRT streams and properly provision and connect them
-- Challenge 3: Advertising Makes the World Go 'Round
-  - Create some ad content and insert ads into your streams
-- Challenge 4: Scalable Play-out
-  - Figure out the play-out problem in the world media. How do we had large audiences
+- Challenge 1: Norsk
+  - Load Norsk Studio. (blank canvas)
+  - Drag an SRT Ingest component to the canvas, connect to camera source1
+  - Repeat for camera source 2, 3 and 4.
+  - Create an SRT Egest component set x,y,z (if req'd, TBD).
+  - Note down SRT locations, you'll need them in the next step.
+
+
+- Challenge 2: Connect Streams to Vizrt Vectar
+  - Connect to Vizrt using either Teamviewer or HP Anywhere
+  - Configure inputs as the SRT sources from Challenge 1
+  - Verify you can transition (video mix) between sources, 1,2,3 and 4
+  - Configuire an SRT output from Vectar, note down the details, you'll need them in the next challange
+
+
+- Challenge 3: Techex Darwin
+  - Connect to Techex Darwin
+  - Connect the SRT ingest point to the output from Vizrt Vectar in the previous step
+  - Press the button in Techex Darwin to insert a scte-35 marker into the program out stream
+  - Configure the SRT output 
+
+- Challenge 4: Ateme Titan Live
+  - Connect to Titan Live
+  - Configure a new input to receive the stream from techex Darwin
+
+
+- Challenge 5: Video JS Player
+  - Clone Git hub repo for VideoJS Player
+  - Publish to Cloud Run
+
+- Challenge 6: View your live channel.
 
 ## Prerequisites
 
