@@ -16,13 +16,10 @@ In this hack, you will tackle common enterprise challenges by leveraging Google 
 
 This hack is structured into three main challenges, each building on the previous one, guiding you from data preparation to advanced agentic workflows.
 
-* **Challenge 1: Preparing Your Data Feast in BigQuery**
-    * Lay the groundwork by integrating your SAP, Salesforce, and public data into a unified BigQuery dataset.
-* **Challenge 2: Quick No-Code Agentic Applications on Google Cloud using Agentspace**
-    * Build interactive, conversational AI applications on top of your integrated data with minimal coding.
-* **Challenge 3: Diving Deeper - Collaborative Agents with Google ADK**
-    * Design, implement, and deploy a team of AI agents to automate a multi-step SAP business process.
-
+- Challenge 1: Preparing Your Data Feast in BigQuery
+- Challenge 2: Quick No-Code Agentic Applications on Google Cloud using Agentspace
+- Challenge 3: Diving Deeper - Collaborative Agents with Google ADK
+    
 ## Prerequisites
 
 To make the most of this hack, ensure you have the following:
@@ -33,7 +30,8 @@ To make the most of this hack, ensure you have the following:
 
 ## Contributors
 
-* [Your Name/Team] - *Consider adding your names or team members here if you are customizing this for a specific event.*
+- Ekaterina Kruse
+- Viktor Palkin
 
 ---
 
