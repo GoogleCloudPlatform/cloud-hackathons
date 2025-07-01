@@ -17,7 +17,7 @@ title: "[gHacks] Ghack: Agentize SAP"
 description: ""
 instruction:
   type: md
-  uri: instructions/en.md
+  uri: README.md
 duration: 420
 max_duration: 420
 credits: 0
