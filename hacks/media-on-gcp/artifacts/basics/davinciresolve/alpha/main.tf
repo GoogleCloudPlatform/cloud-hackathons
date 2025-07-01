@@ -1,43 +1,89 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 4.50.0"
+# This code is compatible with Terraform 4.25.0 and versions that are backwards compatible to 4.25.0.
+# For information about validating this Terraform code, see https://developer.hashicorp.com/terraform/tutorials/gcp-get-started/google-cloud-platform-build#format-and-validate-the-configuration
+
+resource "google_compute_instance" "davinci-remote-edit-machine-01" {
+  boot_disk {
+    auto_delete = true
+    device_name = "davinci-remote-edit-machine-01"
+
+    initialize_params {
+      image = "projects/media-on-gcp-storage/global/images/davinci-remote-edit-machine"
+      size  = 500
+      type  = "pd-balanced"
     }
-  }
-}
 
-provider "google" {
-  project = var.gcp_project_id
-  region  = "europe-west2" # London
-}
-
-# Define the Google Compute Instance
-resource "google_compute_instance" "davinci_vm" {
-  project = var.gcp_project_id
-  zone    = "europe-west2-a"
-  name    = "davinci-remote-edit-machine-${var.teamname}"
-  
-  # This tells Terraform to create the instance from your specified machine image
-  source_machine_image = "projects/ibc-ghack-playground/global/machineImages/davinci-remote-edit-machine"
-
-  # The instance will be deleted when you run 'terraform destroy'
-  allow_stopping_for_update = true
-
-  # Network configuration
-  network_interface {
-    network    = var.vpc_name
-    subnetwork = var.subnet_name
+    mode = "READ_WRITE"
   }
 
-  # Service account configuration
-  service_account {
-    email  = "${var.gcp_project_number}-compute@developer.gserviceaccount.com"
-    scopes = ["cloud-platform"] # Or more specific scopes if needed
+  can_ip_forward      = false
+  deletion_protection = false
+  enable_display      = false
+
+  guest_accelerator {
+    count = 1
+    type  = "projects/media-on-gcp-storage/zones/europe-west2-b/acceleratorTypes/nvidia-l4"
   }
 
   labels = {
-    managed-by = "terraform"
-    team       = var.teamname
+    goog-ec-src           = "vm_add-tf"
+    goog-ops-agent-policy = "v2-x86-template-1-4-0"
+  }
+
+  machine_type = "g2-standard-4"
+
+  metadata = {
+    enable-osconfig = "TRUE"
+    enable-oslogin  = "true"
+  }
+
+  name = "davinci-remote-edit-machine-01"
+
+  network_interface {
+    access_config {
+      network_tier = "PREMIUM"
+    }
+
+    queue_count = 0
+    stack_type  = "IPV4_ONLY"
+    subnetwork  = "projects/media-on-gcp-storage/regions/europe-west2/subnetworks/ibc-vpc-subnet-eu-west2-a"
+  }
+
+  scheduling {
+    automatic_restart   = true
+    on_host_maintenance = "TERMINATE"
+    preemptible         = false
+    provisioning_model  = "STANDARD"
+  }
+
+  service_account {
+    email  = "669648730623-compute@developer.gserviceaccount.com"
+    scopes = ["https://www.googleapis.com/auth/devstorage.read_only", "https://www.googleapis.com/auth/logging.write", "https://www.googleapis.com/auth/monitoring.write", "https://www.googleapis.com/auth/service.management.readonly", "https://www.googleapis.com/auth/servicecontrol", "https://www.googleapis.com/auth/trace.append"]
+  }
+
+  shielded_instance_config {
+    enable_integrity_monitoring = true
+    enable_secure_boot          = false
+    enable_vtpm                 = true
+  }
+
+  zone = "europe-west2-b"
+}
+
+module "ops_agent_policy" {
+  source        = "github.com/terraform-google-modules/terraform-google-cloud-operations/modules/ops-agent-policy"
+  project       = "media-on-gcp-storage"
+  zone          = "europe-west2-b"
+  assignment_id = "goog-ops-agent-v2-x86-template-1-4-0-europe-west2-b"
+  agents_rule = {
+    package_state = "installed"
+    version       = "latest"
+  }
+  instance_filter = {
+    all = false
+    inclusion_labels = [{
+      labels = {
+        goog-ops-agent-policy = "v2-x86-template-1-4-0"
+      }
+    }]
   }
 }
