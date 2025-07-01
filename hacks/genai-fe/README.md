@@ -69,8 +69,14 @@ Once the data is in the bucket, create an *Object table* in BigQuery on that dat
 ### Learning Resources
 
 - [Creating new Cloud Storage Buckets](https://cloud.google.com/storage/docs/creating-buckets)
-- [Creating Cloud Resource Connections in BigQuery](https://cloud.google.com/bigquery/docs/create-cloud-resource-connection)
-- [Object tables in BigQuery](https://cloud.google.com/bigquery/docs/object-tables)
+- [Creating Cloud Resource Connections in BigQuery from the command line](https://cloud.google.com/bigquery/docs/create-cloud-resource-connection#bq)
+- [Object tables in BigQuery](https://cloud.google.com/bigquery/docs/object-tables#create-object-table)
+
+### Tips
+
+- The easiest option to craete the Cloud Resource Connection is through the `bq` command line.
+- If you get a permission denied error, look at the error message carefully, it should indicate which identity needs to have which role. And remember, once you configure the permissions, it might take a minute to propagate the changes.
+- The documentation for creating an Object Table has a few examples, study those, and keep in mind that you only need to configure the `object_metadata` and `uris` options.
 
 ## Challenge 2: Formula E-mbed
 
@@ -89,11 +95,12 @@ Now the source data is available in BigQuery, use BigQuery ML capabilities to ge
 ### Learning Resources
 
 - [Generate multimodal embeddings](https://cloud.google.com/bigquery/docs/generate-multimodal-embeddings)
+- [Latest versions and identifiers of Gemini models](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions#latest_stable_models)
 - [The ML.GENERATE_EMBEDDING function](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-embedding)
 
 ### Tips
 
-- The method for creating multimodal embeddings supports a few different arguments, pay attention to `flatten_json_output` and `interval_seconds`.
+- The method for creating multimodal embeddings supports a few different arguments, pay attention to `interval_seconds`.
 
 ## Challenge 3: Formula E RAG-ing
 
@@ -145,7 +152,7 @@ We've already designed a [Python notebook](https://raw.githubusercontent.com/mek
 
 ### Success Criteria
 
-- The telemetry data is available as a table in BigQuery.
+- The telemetry data is available as a table in BigQuery with `1,508,542` rows.
 - There's a SQL query that returns the average brake and speed from telemetry for each driver, aggregated over the second just before the crash.
 - There's a prompt that uses the output of the SQL query as input to Gemini to determine the drivers that were involved in the crash.
 - Gemini outputs the correct drivers (Maximilian Günther and Jake Hughes) and a brief explanation of why.
@@ -158,3 +165,4 @@ We've already designed a [Python notebook](https://raw.githubusercontent.com/mek
 ### Tips
 
 - Note that the timestamp from the CCTV footage is in local time (CEST, which is UTC+2) whereas the telemetry data is in UTC.
+- If you're struggling with the SQL, try entering the challenge description from the notebook into Gemini, it might help you get started.
