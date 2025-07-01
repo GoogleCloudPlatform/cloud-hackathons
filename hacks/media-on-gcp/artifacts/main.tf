@@ -26,7 +26,6 @@ data "google_project" "project" {
 resource "google_project_service" "org_policy_api" {
   project = "${local.project.id}"
   service = "orgpolicy.googleapis.com"
-  disable_dependent_services = true
 }
 
 resource "google_org_policy_policy" "compute_storage_resource_use_restrictions" {
@@ -48,6 +47,8 @@ resource "google_org_policy_policy" "compute_storage_resource_use_restrictions" 
       }
     }
   }
+
+  depends_on = [ google_project_service.org_policy_api ]
 }
 
 module "vpc" {
