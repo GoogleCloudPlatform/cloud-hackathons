@@ -73,7 +73,7 @@ Your goal in this challenge is to set up a BigQuery dataset that will serve as t
 * [BigQuery Documentation: Loading Data](https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv)
 * [BigQuery Documentation: Creating Views](https://cloud.google.com/bigquery/docs/views)
 * [Google Cloud Shell Overview](https://cloud.google.com/shell/docs/overview)
-* [BigQuery Public Dataset](https://cloud.google.com/bigquery/public-data)
+* [Creating BigQuery Dataset](https://cloud.google.com/bigquery/docs/datasets#bq)
 
 ---
 
