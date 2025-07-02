@@ -21,7 +21,9 @@ resource "google_compute_instance" "instance" {
   machine_type = var.machine_type
   zone         = var.zone
 
-  tags = ["${var.goog_cm_deployment_name}-deployment"]
+  allow_stopping_for_update = true
+
+  tags = ["${var.goog_cm_deployment_name}-deployment", "media-on-gcp"]
 
   boot_disk {
     device_name = "autogen-vm-tmpl-boot-disk"
@@ -34,8 +36,6 @@ resource "google_compute_instance" "instance" {
   }
 
   can_ip_forward = var.ip_forward
-
-  allow_stopping_for_update = true
 
   shielded_instance_config {
     enable_secure_boot          = true
@@ -53,19 +53,19 @@ resource "google_compute_instance" "instance" {
 
       echo ">>> Starting startup script..."
 
-      # Data Sync 
-      mkdir -p /opt/ghack 
+      # Data Sync
+      mkdir -p /opt/ghack
       cd /opt/ghack
       gsutil cp gs://ghacks-media-on-gcp-private-temp/mediaghack.tar.gz /opt/ghack
       tar xvzf mediaghack.tar.gz
 
-      
+
      # Install Norsk License & startup
-     
+
      gsutil cp gs://ghacks-media-on-gcp-private-temp/license.json /var/norsk-studio/norsk-studio-docker/secrets/license.json
      #cp /opt/ghack/terraform/modules/norsk-studio/norsk-config/studio-env /var/norsk-studio/norsk-studio-docker/env/studio-env
      #cp /opt/ghack/terraform/modules/norsk-studio/norsk-config/base-stream-multi-viewer-streamid.yaml /var/norsk-studio/norsk-studio-docker/data/studio-save-files/base-stream-multi-viewer-streamid.yaml
-     systemctl restart norsk.service 
+     systemctl restart norsk.service
 
       echo ">>> Startup script finished."
     EOT
