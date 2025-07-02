@@ -49,11 +49,9 @@ Before AI can work its magic, it needs data. In the enterprise, this data often 
 Your goal in this challenge is to set up a BigQuery dataset that will serve as the single source of truth for your AI agents. You will be responsible for:
 
 * Creating a new BigQuery dataset for your lab.
-* Loading essential SAP Material Master data. Consider the two scenarios provided: direct replication (if available) or loading from Cloud Storage.
-* Ingesting Salesforce Customer Case data into your BigQuery dataset.
-* Integrating external public data by creating a BigQuery view over relevant public datasets, specifically focusing on FDA food enforcement data related to "ice cream."
-
-You will primarily use the Google Cloud Shell for command-line interactions and the BigQuery Console for SQL operations and verification.
+* Load essential SAP Material Master data from Cloud Storage into your BigQuery dataset.
+* Load Salesforce Customer Case data from Cloud Storage into your BigQuery dataset..
+* Create a view over the FDA Food Enforcement Data to filter out only data related to `ice cream`
 
 > [!IMPORTANT]
 > Pay close attention to the data formats and schemas required for loading data into BigQuery. Ensure your commands correctly specify source formats, skip headers, and define column names and types.
@@ -68,15 +66,14 @@ You will primarily use the Google Cloud Shell for command-line interactions and 
 
 ### Tips
 
-* Leverage the BigQuery command-line tool (`bq`) for efficient data loading. Explore its various options for different source formats.
-* Understand the difference between loading a table and creating a view in BigQuery. When is one more appropriate than the other?
-* Think about how different data sources (SAP, Salesforce, public data) complement each other for a comprehensive view of "ice cream" operations.
+* The FDA FOOD enforcement data can be found in `bigquery-public-data.fda_food.food_enforcement` table. Try querying it to explore it
 
 ### Learning Resources
 
-* [BigQuery Documentation: Loading Data](https://cloud.google.com/bigquery/docs/loading-data)
+* [BigQuery Documentation: Loading Data](https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv)
 * [BigQuery Documentation: Creating Views](https://cloud.google.com/bigquery/docs/views)
 * [Google Cloud Shell Overview](https://cloud.google.com/shell/docs/overview)
+* [BigQuery Public Dataset](https://cloud.google.com/bigquery/public-data)
 
 ---
 

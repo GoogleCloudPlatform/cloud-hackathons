@@ -308,7 +308,7 @@ To use a connector from Integration Connectors, you need to provision Applicatio
 ### Coding exercises
 
 For this task, we have deployed the code with some TODOs to Google Cloud Run for you. To implement those TODOs, please, open Google Cloud Run (you can search for the service in the search panel).
-Then, naviage to the **purchasing-agent-service** by clicking on it.
+Then, navigate to the **purchasing-agent-service** by clicking on it.
 
 From here, you can modify code and redeploy it and test the application by clicking on its URL and evaluating the team of agents.
 ![Cloud Run](./images/CloudRun.png)
