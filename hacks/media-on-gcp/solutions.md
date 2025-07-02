@@ -1,108 +1,195 @@
-# Media & Entertainment on Google Cloud
+# Media & Entertainment on Google Cloud gHack: Coach's Guide
 
 ## Introduction
 
-Welcome to the coach's guide for Media & Entertainment on Google Cloud gHack. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for the *Media & Entertainment on Google Cloud* gHack for IBC. This guide provides solutions and notes to help you assist participants through the challenges. The goal is for them to build a live streaming pipeline, from source ingest to playback, incorporating professional broadcast tools and Google Cloud services.
 
-Remember that this hack includes a optional [lecture presentation](resources/lecture.pdf) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
+> **Note** If you are a gHacks participant, this is the answer guide to be used by the coaches to help to get students in the right track by providing support and hints. This shouldn't be provided as a setup runbook or step by step guide. The guides are based on ISV/parnter products to be deployed in GCP. This ghack assume candidate to have media / boradcasting and creative experience. 
 
-> **Note** If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+---
 
-## Coach's Guides
-
-- Challenge 1: Provision an IoT environment
-  - Create an IoT Hub and run tests to ensure it can ingest telemetry
-- Challenge 2: Your First Device
-  - Make the connection to your Edge device and see that it is properly provisioned.
-- Challenge 3: Connecting the World
-  - Connect your device and make sure it can see all other devices in your team.
-- Challenge 4: Scalable Monitoring of Telemetry
-  - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
-
-## Coach Prerequisites
-
-This hack has prerequisites that a coach is responsible for understanding and/or setting up BEFORE hosting an event. Please review the [gHacks Hosting Guide](https://ghacks.dev/faq/howto-host-hack.html) for information on how to host a hack event.
-
-The guide covers the common preparation steps a coach needs to do before any gHacks event, including how to properly setup Google Meet and Chat Spaces.
-
-### Student Resources
-
-Before the hack, it is the Coach's responsibility create and make available needed resources including:
-
-- Files for students
-- Lecture presentation
-- Terraform scripts for setup (if running in the customer's own environment)
-
-Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available) to create the zip files needed and upload them to your gHack's Google Space's Files area.
-
-Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
-
-> **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
-
-### Additional Coach Prerequisites (Optional)
-
-_Please list any additional pre-event setup steps a coach would be required to set up such as, creating or hosting a shared dataset, or preparing external resources._
-
-## Google Cloud Requirements
-
-This hack requires students to have access to Google Cloud project where they can create and consume Google Cloud resources. These requirements should be shared with a stakeholder in the organization that will be providing the Google Cloud project that will be used by the students.
-
-_Please list Google Cloud project requirements._
-
-_For example:_
-
-- Google Cloud resources that will be consumed by a student implementing the hack's challenges
-- Google Cloud permissions required by a student to complete the hack's challenges.
-
-## Suggested Hack Agenda (Optional)
-
-_This section is optional. You may wish to provide an estimate of how long each challenge should take for an average squad of students to complete and/or a proposal of how many challenges a coach should structure each session for a multi-session hack event. For example:_
-
-- Sample Day 1
-  - Challenge 1 (1 hour)
-  - Challenge 2 (30 mins)
-  - Challenge 3 (2 hours)
-- Sample Day 2
-  - Challenge 4 (45 mins)
-  - Challenge 5 (1 hour)
-  - Challenge 6 (45 mins)
-
-## Repository Contents
-
-_The default files & folders are listed below. You may add to this if you want to specify what is in additional sub-folders you may add._
-
-- `README.md`
-  - Student's Challenge Guide
-- `solutions.md`
-  - Coach's Guide and related files
-- `./resources`
-  - Resource files, sample code, scripts, etc meant to be provided to students. (Must be packaged up by the coach and provided to students at start of event)
-- `./artifacts`
-  - Terraform scripts and other files needed to set up the environment for the gHack
-- `./images`
-  - Images and screenshots used in the Student or Coach's Guide
-
-## Environment
-
-- Setting Up the Environment (if not on Qwiklabs)
-  - Before we can hack, you will need to set up a few things.
-  - Run the instructions on our [Environment Setup](../../faq/howto-setup-environment.md) page.
-
-## Challenge 1: Provision an IoT environment
+## Challenge 1: Norsk 
+Product Information https://norsk.video/
 
 ### Notes & Guidance
 
-This is the only section you need to include.
+This initial challenge is designed to be a straightforward introduction to the Norsk Studio interface. Participants will build a simple media flow graph.
 
-Use general non-bulleted text for the beginning of a solution area for this challenge
 
-- Then move into bullets
-  - And sub-bullets and even
-    - sub-sub-bullets
+1.  **Load Norsk Studio:** Participants should open the Norsk Studio URL provided to them, which will present a blank canvas.
+2.  **Add SRT Ingests:**
+    * In the components panel, find the **SRT Ingest** component.
+    * Participants need to drag four instances of this component onto the canvas.
+    * For each SRT Ingest node, they will need to configure it to connect to one of the four camera sources. The configuration panel for the node will require the **IP address and port** for each source stream.
+3.  **Create an SRT Egress:**
+    * Next, find the **SRT Egress** component and drag it onto the canvas.
+    * While the challenge mentions setting x,y,z, the primary goal is to create a combined output. For simplicity, you can have them connect just one of the ingest sources to the egress for now. A more advanced setup might involve a compositor, but that's not required for this step.
+4.  **Note SRT Egress Location:**
+    * Once the SRT Egress component is configured, Norsk will provide an SRT URL (e.g., `srt://<norsk-ip>:<port>`).
+    * **Crucially, participants must copy this URL.** They will need it for the next challenge to configure the input in Vizrt Vectar.
 
-Break things apart with more than one bullet list
 
-- Like this
-- One
-- Right
-- Here
+## Step 1: Add Your Input Sources
+
+First, we'll add the four input sources. According to your YAML file, these are all **SRT Ingest (Caller)** nodes, meaning Norsk will "call" a remote source to pull the stream.
+
+1.  In the **Component Library** on the left, find the **Inputs** section.
+2.  Click and drag the **SRT Ingest (Caller)** component onto the main canvas. Repeat this three more times, so you have four input nodes in total.
+3.  Click on each node to open its configuration panel and enter the details from your YAML file.
+    * **Input 1:**
+        * `displayName`: camera1
+        * `host`: 34.147.220.43 
+        * `port`: 5101
+        * `streamId`: camera1
+    * **Input 2:**
+        * `displayName`: camera2
+        * `host`: 34.147.220.43 
+        * `port`: 5101
+        * `streamId`: camera2
+    * **Input 3:**
+        * `displayName`: camera3
+        * `host`: 34.147.220.43 
+        * `port`: 5101
+        * `streamId`: camera3
+    * **Input 4:**
+        * `displayName`: camera4
+        * `host`: 34.147.220.43 
+        * `port`: 5101
+        * `streamId`: camera4
+
+## Step 2: Add Your Output Destinations 
+
+Next, you'll add the four output destinations. The configuration specifies these should be **SRT Listener (Egest)** nodes. This means Norsk will "listen" for a remote player or device to connect and receive the stream.
+
+1.  In the **Component Library**, find the **Outputs** section.
+2.  Click and drag the **SRT Listener (Egest)** component onto the canvas. Repeat this three more times. It's good practice to place them to the right of your input nodes.
+3.  Configure each listener with its unique port:
+    * **Output 1:**
+        * `displayName`: srt-listener-camera1
+        * `port`: 5111
+    * **Output 2:**
+        * `displayName`: srt-listener-camera2
+        * `port`: 5112
+    * **Output 3:**
+        * `displayName`: srt-listener-camera3
+        * `port`: 5113
+    * **Output 4:**
+        * `displayName`: srt-listener-camera4
+        * `port`: 5114
+
+## Step 3: Connect the Nodes
+
+The final step is to connect your inputs to your outputs. This tells Norsk where to send the media from each source. Your goal is to create four parallel, independent streams.
+
+1.  Hover your mouse over the **camera1** node until a small circle appears on its right side. This is the **output handle**.
+2.  Click and drag from the output handle of the **camera1** node to the input handle (the circle on the left) of the **srt-listener-camera1** node. A line will appear, showing the connection.
+3.  Repeat this process for the remaining pairs, following the logic in your YAML's subscriptions:
+    * Connect **camera2** to **srt-listener-camera2**.
+    * Connect **camera3** to **srt-listener-camera3**.
+    * Connect **camera4** to **srt-listener-camera4**.
+***
+
+## Challenge 2: Connect Streams to Vizrt Vectar
+Product Guide - https://www.vizrt.com/vizrt/remote/viz-vectar-plus/
+
+### Notes & Guidance
+
+In this challenge, participants will work with a professional video mixing tool, Vizrt Vectar. The main tasks are configuring inputs from the previous step and creating a new output stream.
+
+1.  **Connect to Vizrt:** Participants will need to use the provided credentials for Teamviewer or HP Anywhere to access the remote machine running Vizrt Vectar.
+2.  **Configure Inputs:**
+    * Within the Vectar interface, they need to navigate to the input configuration section.
+    * They should add **four new SRT inputs**.
+    * For each input, they will use the SRT source URLs from the Norsk SRT Ingest components they configured in Challenge 1.
+3.  **Verify Transitions:**
+    * After configuring the inputs, the four camera sources should appear in Vectar's source preview monitors.
+    * Guide them to use the Vectar's switcher controls (e.g., clicking on sources to put them in 'Preview' and using a T-bar or 'Cut'/'Auto' buttons to transition them to 'Program'). This confirms that the streams are correctly ingested and that Vectar is operational.
+4.  **Configure SRT Output:**
+    * Similar to Norsk, they now need to configure an output stream. This is typically done in the 'Output' or 'Streaming' settings.
+    * They must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
+    * **Participants must note down this new SRT output URL** for the next challenge.
+
+***
+
+## Challenge 3: Techex Darwin
+https://www.techex.tv/technologies/txdarwin
+
+
+### Notes & Guidance
+
+This challenge introduces SCTE-35 markers, which are fundamental for digital program insertion (like advertising). Techex Darwin is a specialized tool for manipulating transport streams.
+
+1.  **Connect to Techex Darwin:** Participants will connect to the Darwin UI via its web interface.
+2.  **Configure SRT Ingest:**
+    * Create a new input and configure it to be an **SRT source**.
+    * Paste the SRT output URL from Vizrt Vectar (Challenge 2) into the ingest configuration. The program feed from Vectar should now be flowing into Darwin.
+3.  **Insert SCTE-35 Marker:**
+    * The Darwin interface has a feature for live stream manipulation. Guide participants to find the button or control labeled **"Insert SCTE-35 Marker"** or similar.
+    * Pressing this button injects the ad signaling marker into the transport stream in real-time. This doesn't change the video content itself but adds metadata that downstream systems will use.
+4.  **Configure SRT Output:**
+    * Create a new SRT output for the stream that now contains the SCTE-35 marker.
+    * **Ensure participants copy the SRT output URL from Darwin**, as it will be the input for Ateme Titan Live.
+
+***
+
+## Challenge 4: Ateme Titan Live
+https://www.ateme.com/product-titan-software/
+
+### Notes & Guidance
+
+Ateme Titan Live is a broadcast-grade encoder. In this step, participants will configure it to receive the final produced stream and prepare it for delivery over the web. As shown in the architecture diagram, Titan Live is the final step before the stream is handed off to Google Cloud's media services.
+
+1.  **Connect to Titan Live:** Participants should log in to the Titan Live web interface.
+2.  **Configure New Input:**
+    * They need to create a new input channel.
+    * Set the input source type to **SRT**.
+    * In the configuration, they will paste the **SRT output URL from Techex Darwin** (from Challenge 3).
+3.  **Configure Output/Profile:**
+    * The primary goal is to have Titan Live process the stream. A default encoding profile (e.g., H.264/AAC in an HLS format) should be sufficient.
+    * The crucial part of the configuration is setting up the destination. In our architecture, Titan Live will hand off to the **Ateme Nea Packager**, which then interfaces with the **Google Cloud Video Stitcher API**. This may be a pre-configured output profile in Titan Live that participants just need to select. The output should be configured to create HLS manifests.
+
+***
+
+## Challenge 5: VideoJS Player
+
+### Notes & Guidance
+
+This challenge moves from broadcast-specific tooling to a standard cloud workflow: deploying a web application using a containerized service.
+
+1.  **Clone Git Repository:**
+    * Participants need to use a terminal with `gcloud` and `git` installed.
+    * They should clone the provided repository for the VideoJS Player.
+
+    ```shell
+    git clone [https://github.com/google-cloud-vietnam/ghack-videojs-player.git](https://github.com/google-cloud-vietnam/ghack-videojs-player.git)
+    cd ghack-videojs-player
+    ```
+2.  **Publish to Cloud Run:**
+    * The easiest way to deploy is using the `gcloud run deploy` command from the root of the cloned repository. This command will build the container image from the source and deploy it.
+    * Participants can name their service whatever they like (e.g., `ghack-player`).
+    * The `--allow-unauthenticated` flag is important to make the player publicly accessible for testing.
+
+    ```shell
+    gcloud run deploy ghack-player --source . --region europe-west1 --allow-unauthenticated
+    ```
+
+    > **Note**: After the deployment succeeds, the command line will output the service URL. **This is the URL for the live channel player.**
+
+***
+
+## Challenge 6: View Your Live Channel
+
+### Notes & Guidance
+
+This is the final step where everything comes together. Participants will see their live stream, complete with an advertisement inserted via the Google Cloud Video Stitcher API, triggered by the SCTE-35 marker they inserted earlier.
+
+1.  **Open the Player:**
+    * Participants should navigate to the **Cloud Run service URL** they obtained in the previous challenge.
+2.  **Verify the Stream:**
+    * The VideoJS player should load and start playing the live video feed originating from the Norsk sources, mixed in Vectar, and processed by Darwin and Titan.
+3.  **Look for the Ad:**
+    * The key to success for this entire hack is seeing an advertisement. The SCTE-35 marker inserted in Challenge 3 signals the Google Cloud Video Stitcher API (via the Ateme components) to insert an ad from Google Ad Manager.
+    * When the ad plays, it confirms the entire workflow is functioning correctly. If no ad appears, common issues to troubleshoot are:
+        * The SCTE-35 marker was not inserted correctly in Darwin.
+        * The integration between Titan Live and the Video Stitcher API is misconfigured.
+        * There is an issue with the Google Ad Manager campaign.
