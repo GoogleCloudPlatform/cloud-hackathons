@@ -154,8 +154,8 @@ Your primary objective is to implement and deploy a collaborative team of AI age
 
 You will achieve this by:
 
-1.  **Environment Setup:** Reviewing pre-configured Application Integration components essential for connecting your agents to the SAP environment. This includes examining a Network Endpoint Attachment for private connectivity and understanding the `SAP Gateway` Integration Connector (`s4-vendors`).
-2.  **Coding Exercises:** Modifying existing code (provided with TODOs) within a Google Cloud Run service (`purchasing-agent-service`). You will need to implement the logic for the various agents to perform their specific roles, likely involving API calls to SAP through the Application Integration connector.
+1.  **Environment Setup:** Reviewing pre-configured Application Integration components essential for connecting your agents to the SAP environment. This includes examining a Network Endpoint Attachment for private connectivity and creating the `SAP Gateway` Integration Connector (`s4-vendors`).
+2.  **Coding Exercises:** Modifying existing code (provided with TODOs) within a Google Cloud Run service (`purchasing-agent-service`). You will need to implement the logic for the various agents to perform their specific roles, involving API calls to SAP through the Application Integration connector.
     * Access the Cloud Run service, modify the code, and redeploy.
     * Refer to the provided GitLab repository for potential solutions or guidance on the TODO tasks.
 
@@ -166,7 +166,6 @@ You will achieve this by:
 
 * Verify the existence and configuration of the `saps4hana-endpoint-attachment` in Integration Connectors.
 * Confirm the successful creation and configuration of the `s4-vendors` SAP Gateway Connection in Integration Connectors, including its region, service, and authentication details.
-* Demonstrate a clear understanding of the `ExecuteConnection` Application Integration flow's purpose in facilitating agent-to-SAP communication.
 * Successfully complete the TODOs within the `purchasing-agent-service` on Cloud Run, effectively implementing the collaborative agent team.
 * Show that the team of agents can successfully process an email request for a Purchase Requisition, culminating in the creation of a PR in the simulated SAP system.
 
@@ -176,10 +175,11 @@ You will achieve this by:
 * Familiarize yourself with the concept of Application Integration and its role as a bridge between Google Cloud services and SAP.
 * When debugging your agents, check the Cloud Run logs for errors or unexpected behavior.
 * Consider how you would handle edge cases or error conditions in a real-world multi-agent system.
+* Use the email generated on the previous step with the Agentspace while triggering the workflow with the ADK.
 
 ### Learning Resources
 
 * [Google Cloud Run Documentation](https://cloud.google.com/run/docs)
-* [Google Cloud Application Integration Connectors Documentation](https://cloud.google.com/application-integration/docs/connectors)
-* [Google Agent Development Kit (ADK) Concepts](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/adk-overview) (This might be a conceptual overview; specific code examples might be in the provided GitLab repo or other samples.)
-* [GitLab Repository for Solutions](https://gitlab.com/ekakruse/sapwithadk/-/tree/main?ref_type=heads) (Use this for reference, not direct copy-pasting, to maximize learning!)
+* [Google Cloud Application Integration Connectors: SAP Gateway](https://cloud.google.com/integration-connectors/docs/connectors/sapgateway/configure)
+* [Google Agent Development Kit (ADK)](https://google.github.io/adk-docs/)
+* [GitLab Repository for Solutions](https://gitlab.com/ekakruse/sapwithadk)
