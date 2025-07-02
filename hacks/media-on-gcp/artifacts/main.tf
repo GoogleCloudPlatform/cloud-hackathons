@@ -23,32 +23,10 @@ data "google_project" "project" {
   project_id = var.gcp_project_id
 }
 
-resource "google_project_service" "org_policy_api" {
-  project = "${local.project.id}"
-  service = "orgpolicy.googleapis.com"
-}
 
-resource "google_org_policy_policy" "compute_storage_resource_use_restrictions" {
-  name   = "projects/${local.project.id}/policies/compute.storageResourceUseRestrictions"
-  parent = "projects/${local.project.id}"
-
-  spec {
-    # Set inheritFromParent to true as per your original configuration.
-    inherit_from_parent = true
-
-    # Define the policy rules
-    rules {
-      # For 'allowedValues' in the original YAML, we use the 'values' block
-      # with 'allowed_values' and specify the list of values.
-      values {
-        allowed_values = [
-          "under:projects/media-on-gcp-storage"
-        ]
-      }
-    }
-  }
-
-  depends_on = [ google_project_service.org_policy_api ]
+resource "google_project_service" "os_config_api" {
+  service            = "osconfig.googleapis.com"
+  disable_on_destroy = false
 }
 
 module "vpc" {
@@ -73,6 +51,16 @@ module "media-tx" {
 
 module "norsk-gw" {
   source = "./basics/norsk-gw/stable"
+
+  project_id = local.project.id
+  region     = var.gcp_region
+  zone       = var.gcp_zone
+
+  networks = [module.vpc.network_name]
+}
+
+module "davinciresolve" {
+  source = "./basics/davinciresolve/stable"
 
   project_id = local.project.id
   region     = var.gcp_region

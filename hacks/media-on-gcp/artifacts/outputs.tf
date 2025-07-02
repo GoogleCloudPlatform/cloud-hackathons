@@ -14,3 +14,14 @@
 output "project_id" {
     value = var.gcp_project_id
 }
+
+output "norsk_admin_user" {
+  description = "Nork admin username."
+  value       = "norsk-studio-admin"
+}
+
+output "norsk_admin_password" {
+  description = "Norsk admin password."
+  value       = module.norsk-gw.admin_password
+  sensitive   = true
+}

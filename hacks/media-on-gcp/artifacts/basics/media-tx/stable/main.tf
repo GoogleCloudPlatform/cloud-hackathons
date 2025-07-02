@@ -29,57 +29,57 @@ locals {
 # --- Instance Resources ---
 
 # This resource block defines the 'tx-darwin' instance running from a custom image.
-resource "google_compute_instance" "tx_darwin" {
-  name         = "tx-darwin"
-  machine_type = "c2-standard-8"
-  zone         = "europe-west2-b"
+# resource "google_compute_instance" "tx_darwin" {
+#   name         = "tx-darwin"
+#   machine_type = "c2-standard-8"
+#   zone         = var.zone
 
-  # Defines the boot disk for the instance.
-  boot_disk {
-    initialize_params {
-      image = "projects/media-on-gcp-storage/global/images/tx-darwin-custom-image"
-      size  = 50
-      type  = "pd-balanced"
-    }
-  }
+#   # Defines the boot disk for the instance.
+#   boot_disk {
+#     initialize_params {
+#       image = "projects/media-on-gcp-storage/global/images/tx-darwin-custom-image"
+#       size  = 50
+#       type  = "pd-balanced"
+#     }
+#   }
 
-  # Enables Shielded VM features to meet security constraints.
-  shielded_instance_config {
-    enable_secure_boot          = true
-    enable_vtpm                 = true
-    enable_integrity_monitoring = true
-  }
+#   # Enables Shielded VM features to meet security constraints.
+#   shielded_instance_config {
+#     enable_secure_boot          = true
+#     enable_vtpm                 = true
+#     enable_integrity_monitoring = true
+#   }
 
-  # Defines the service account and its API access scopes for the instance.
-  service_account {
-    email = "default"
-    scopes = [
-      "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
-      "https://www.googleapis.com/auth/devstorage.read_only",
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring.write",
-    ]
-  }
+#   # Defines the service account and its API access scopes for the instance.
+#   service_account {
+#     email = "default"
+#     scopes = [
+#       "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
+#       "https://www.googleapis.com/auth/devstorage.read_only",
+#       "https://www.googleapis.com/auth/logging.write",
+#       "https://www.googleapis.com/auth/monitoring.write",
+#     ]
+#   }
 
-  # Defines the network interface for the instance.
-  dynamic "network_interface" {
-    for_each = local.network_interfaces
-    content {
-      network    = network_interface.value.network
-      subnetwork = network_interface.value.subnetwork
+#   # Defines the network interface for the instance.
+#   dynamic "network_interface" {
+#     for_each = local.network_interfaces
+#     content {
+#       network    = network_interface.value.network
+#       subnetwork = network_interface.value.subnetwork
 
-      dynamic "access_config" {
-        for_each = network_interface.value.external_ip == "NONE" ? [] : [1]
-        content {
-          nat_ip = network_interface.value.external_ip == "EPHEMERAL" ? null : network_interface.value.external_ip
-        }
-      }
-    }
-  }
+#       dynamic "access_config" {
+#         for_each = network_interface.value.external_ip == "NONE" ? [] : [1]
+#         content {
+#           nat_ip = network_interface.value.external_ip == "EPHEMERAL" ? null : network_interface.value.external_ip
+#         }
+#       }
+#     }
+#   }
 
-  # Assigns labels for organization and filtering.
-  labels = {
-    "os_family" = "ubuntu"
-    "env"       = "dev"
-  }
-}
+#   # Assigns labels for organization and filtering.
+#   labels = {
+#     "os_family" = "ubuntu"
+#     "env"       = "dev"
+#   }
+# }
