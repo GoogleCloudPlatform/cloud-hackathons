@@ -9,7 +9,7 @@ resource "google_compute_instance" "ubuntu_instance" {
   # Defines the boot disk for the instance.
   boot_disk {
     initialize_params {
-      image = "projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2404-noble-amd64-v20250606"
+      image = "projects/media-on-gcp-storage/global/images/tx-darwin-with-modules"
       size  = 50
       type  = "hyperdisk-balanced"
     }
@@ -65,11 +65,5 @@ resource "google_compute_instance" "ubuntu_instance" {
         }
       }
     }
-  }
-
-  # Assigns labels for organization and filtering.
-  labels = {
-    "os_family" = "ubuntu"
-    "env"       = "dev"
   }
 }
