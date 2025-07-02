@@ -88,7 +88,7 @@ resource "google_compute_firewall" "tcp_22" {
     protocol = "tcp"
   }
 
-  source_ranges = "0.0.0.0/0"
+  source_ranges = ["0.0.0.0/0"]
 
   target_tags = ["*"]
 }
