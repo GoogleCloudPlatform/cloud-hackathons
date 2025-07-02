@@ -4,6 +4,12 @@
 
 Welcome to the **Agentize SAP gHack**, where we explore the powerful synergy between Google Cloud's AI capabilities and your enterprise data, especially from SAP. This hack is designed to challenge you to build intelligent applications that unify disparate business data and leverage cutting-edge AI agents for automation and insights.
 
+## Architecture
+
+During the course of the challenges you are going to be building the following architecture for your agentic applications
+
+![Architecture](./images/ghackArchitecture.png)
+
 ## Learning Objectives
 
 In this hack, you will tackle common enterprise challenges by leveraging Google Cloud solutions. You will gain hands-on experience in:
@@ -173,6 +179,7 @@ You will achieve this by:
 
 * Pay close attention to the roles and responsibilities of each agent. How do they pass information to each other?
 * Familiarize yourself with the concept of Application Integration and its role as a bridge between Google Cloud services and SAP.
+* Use Cloud Run Code Editor to quicker make changes in the code of your agents. Make sure you don't overwrite each other changes.
 * When debugging your agents, check the Cloud Run logs for errors or unexpected behavior.
 * Consider how you would handle edge cases or error conditions in a real-world multi-agent system.
 * Use the email generated on the previous step with the Agentspace while triggering the workflow with the ADK.
@@ -182,4 +189,6 @@ You will achieve this by:
 * [Google Cloud Run Documentation](https://cloud.google.com/run/docs)
 * [Google Cloud Application Integration Connectors: SAP Gateway](https://cloud.google.com/integration-connectors/docs/connectors/sapgateway/configure)
 * [Google Agent Development Kit (ADK)](https://google.github.io/adk-docs/)
-* [GitLab Repository for Solutions](https://gitlab.com/ekakruse/sapwithadk)
+* [Google ADK Application integration tool](https://google.github.io/adk-docs/tools/google-cloud-tools/#application-integration-tools)
+* [GitLab Repository for the sample agent](https://gitlab.com/ekakruse/sapwithadk)
+
