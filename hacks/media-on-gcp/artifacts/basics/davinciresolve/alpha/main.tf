@@ -21,7 +21,7 @@ resource "google_compute_instance" "davinci-remote-edit-machine-01" {
 
   guest_accelerator {
     count = 1
-    type  = "projects/media-on-gcp-storage/zones/europe-west2-b/acceleratorTypes/nvidia-l4"
+    type  = "projects/media-on-gcp-storage/zones/europe-west4-b/acceleratorTypes/nvidia-l4"
   }
 
   labels = {
@@ -45,7 +45,7 @@ resource "google_compute_instance" "davinci-remote-edit-machine-01" {
 
     queue_count = 0
     stack_type  = "IPV4_ONLY"
-    subnetwork  = "projects/media-on-gcp-storage/regions/europe-west2/subnetworks/ibc-vpc-subnet-eu-west2-a"
+    subnetwork  = "projects/media-on-gcp-storage/regions/europe-west4/subnetworks/ibc-vpc-subnet-eu-west2-a"
   }
 
   scheduling {
@@ -66,14 +66,14 @@ resource "google_compute_instance" "davinci-remote-edit-machine-01" {
     enable_vtpm                 = true
   }
 
-  zone = "europe-west2-b"
+  zone = "europe-west4-b"
 }
 
 module "ops_agent_policy" {
   source        = "github.com/terraform-google-modules/terraform-google-cloud-operations/modules/ops-agent-policy"
   project       = "media-on-gcp-storage"
-  zone          = "europe-west2-b"
-  assignment_id = "goog-ops-agent-v2-x86-template-1-4-0-europe-west2-b"
+  zone          = "europe-west4-b"
+  assignment_id = "goog-ops-agent-v2-x86-template-1-4-0-europe-west4-b"
   agents_rule = {
     package_state = "installed"
     version       = "latest"

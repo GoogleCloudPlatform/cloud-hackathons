@@ -43,7 +43,7 @@ YOUR_PROJECT_ID="media-on-gcp-storage"
 
 # Project and Machine Image details
 PROJECT_ID="${YOUR_PROJECT_ID}"
-ZONE="europe-west2-b" # London region, zone a
+ZONE="europe-west4-b" # London region, zone a
 SOURCE_IMAGE="projects/ibc-ghack-playground/global/machineImages/davinci-remote-edit-machine"
 INSTANCE_NAME="davinci-remote-edit-machine-${TEAMNAME}"
 SERVICE_ACCOUNT="${YOUR_PROJECT_NUMBER}-compute@developer.gserviceaccount.com"

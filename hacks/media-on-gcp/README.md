@@ -33,7 +33,7 @@ In this hack you will be solving the common business problems that all companies
   - Connect to Techex Darwin
   - Connect the SRT ingest point to the output from Vizrt Vectar in the previous step
   - Press the button in Techex Darwin to insert a scte-35 marker into the program out stream
-  - Configure the SRT output 
+  - Configure the SRT output
 
 - Challenge 4: Ateme Titan Live
   - Connect to Titan Live
@@ -167,8 +167,8 @@ Define environment variables to run Terraform.
 export GCP_PROJECT_ID_SOURCE=<you-source-project-id>
 
 export GCP_PROJECT_ID=<you-project-id>
-export GCP_REGION=europe-west2
-export GCP_ZONE=europe-west2-b
+export GCP_REGION=europe-west4
+export GCP_ZONE=europe-west4-b
 ```
 
 Setup necessaey org policies to run the Terraform script.

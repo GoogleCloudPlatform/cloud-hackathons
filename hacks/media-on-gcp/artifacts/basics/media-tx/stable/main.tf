@@ -6,7 +6,7 @@
 # 3. tx-darwin: A c2-standard-8 instance running Ubuntu 24.04 Minimal.
 #
 # All instances are defined as separate resources to allow for individual configuration,
-# will be created in the 'europe-west2-b' zone, and will have
+# will be created in the 'europe-west4-b' zone, and will have
 # Shielded VM features (including Secure Boot) enabled to comply with organization policy.
 # Each instance is configured with a specific service account, API scopes, and a startup script.
 

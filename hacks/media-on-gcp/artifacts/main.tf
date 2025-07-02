@@ -69,6 +69,26 @@ module "davinciresolve" {
   networks = [module.vpc.network_name]
 }
 
+module "vizrt" {
+  source = "./basics/vizrt-vectar/stable"
+
+  project_id = local.project.id
+  region     = var.gcp_region
+  zone       = var.gcp_zone
+
+  networks = [module.vpc.network_name]
+}
+
+module "ateme" {
+  source = "./basics/ateme/stable"
+
+  project_id = local.project.id
+  region     = var.gcp_region
+  zone       = var.gcp_zone
+
+  networks = [module.vpc.network_name]
+}
+
 data "google_storage_project_service_account" "gcs_default" {
 
 }
@@ -79,8 +99,8 @@ resource "google_storage_bucket" "bucket" {
   uniform_bucket_level_access = true
 }
 
-resource "google_compute_firewall" "tcp_22" {
-  name    = "media-on-gcp-tcp-22"
+resource "google_compute_firewall" "fw_ssh" {
+  name    = "fw-media-on-gcp-ssh"
   network = module.vpc.network_name
 
   allow {
@@ -89,6 +109,28 @@ resource "google_compute_firewall" "tcp_22" {
   }
 
   source_ranges = ["0.0.0.0/0"]
+}
 
-  target_tags = ["*"]
+resource "google_compute_firewall" "fw_http" {
+  name    = "fw-media-on-gcp-http"
+  network = module.vpc.network_name
+
+  allow {
+    ports    = ["80", "443"]
+    protocol = "tcp"
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_firewall" "fw_rdp" {
+  name    = "fw-media-on-gcp-rdp"
+  network = module.vpc.network_name
+
+  allow {
+    ports    = ["3389"]
+    protocol = "tcp"
+  }
+
+  source_ranges = ["0.0.0.0/0"]
 }

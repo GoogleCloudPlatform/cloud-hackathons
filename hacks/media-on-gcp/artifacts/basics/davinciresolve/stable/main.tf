@@ -12,7 +12,7 @@ locals {
 
 resource "google_compute_instance" "davinci-remote-edit-machine-01" {
   name          = "davinci-remote-edit-machine-01"
-  machine_type  = "g2-standard-4"
+  machine_type  = "g2-standard-8"
   zone          = var.zone
 
   allow_stopping_for_update = true
@@ -42,7 +42,6 @@ resource "google_compute_instance" "davinci-remote-edit-machine-01" {
     goog-ec-src           = "vm_add-tf"
     goog-ops-agent-policy = "v2-x86-template-1-4-0"
   }
-
 
   metadata = {
     enable-osconfig = "TRUE"
@@ -99,7 +98,7 @@ module "ops_agent_policy" {
   source        = "github.com/terraform-google-modules/terraform-google-cloud-operations/modules/ops-agent-policy"
   project       = var.project_id
   zone          = var.zone
-  assignment_id = "goog-ops-agent-v2-x86-template-1-4-0-europe-west2-b"
+  assignment_id = "goog-ops-agent-v2-x86-template-1-4-0-europe-west4-b"
   agents_rule = {
     package_state = "installed"
     version       = "latest"

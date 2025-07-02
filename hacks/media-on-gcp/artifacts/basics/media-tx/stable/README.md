@@ -57,7 +57,7 @@ Before applying this configuration, ensure you have the following:
 ## Configuration Details
 
 * **Project**: `ghack-student`
-* **Region**: `europe-west2`
-* **Zone**: `europe-west2-b`
+* **Region**: `europe-west4`
+* **Zone**: `europe-west4-b`
 * **Instance Type**: `c2-standard-8` for all instances.
 * **Security**: Shielded VM features (Secure Boot, vTPM, and Integrity Monitoring) are enabled on all instances.
