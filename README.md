@@ -58,6 +58,11 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 - [Gaming on Google Cloud](./hacks/gaming-on-gcp/README.md)
   > Learn how to deploy and manage game servers using Agones. Experience how Open Match integrates with Agones to assign players to game servers and protects servers with players from premature scale down operations.
 
+### SAP
+
+- [Agentize SAP](./hacks/sap-ai/README.md)
+  > This hackathon challenges participants to build intelligent applications by unifying SAP and other enterprise data in BigQuery. Participants will then use Google's no-code and advanced agent development tools to create conversational AI and automate complex business processes, such as creating purchase requisitions directly within SAP.
+
 ### Stay tuned for more
 
 We've got more hacks in development and feel free to suggest new ones...
