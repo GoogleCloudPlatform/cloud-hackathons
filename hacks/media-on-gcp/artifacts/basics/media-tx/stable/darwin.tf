@@ -4,6 +4,8 @@ resource "google_compute_instance" "ubuntu_instance" {
   machine_type = "c4-standard-8"
   zone         = var.zone
 
+  allow_stopping_for_update = true
+
   # Defines the boot disk for the instance.
   boot_disk {
     initialize_params {

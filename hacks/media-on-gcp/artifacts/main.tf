@@ -78,3 +78,17 @@ resource "google_storage_bucket" "bucket" {
   location                    = var.gcp_region
   uniform_bucket_level_access = true
 }
+
+resource "google_compute_firewall" "tcp_22" {
+  name    = "media-on-gcp-tcp-22"
+  network = module.vpc.network_name
+
+  allow {
+    ports    = ["22"]
+    protocol = "tcp"
+  }
+
+  source_ranges = "0.0.0.0/0"
+
+  target_tags = ["*"]
+}

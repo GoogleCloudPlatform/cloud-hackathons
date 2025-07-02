@@ -15,13 +15,14 @@ resource "google_compute_instance" "davinci-remote-edit-machine-01" {
   machine_type  = "g2-standard-4"
   zone          = var.zone
 
+  allow_stopping_for_update = true
+
   boot_disk {
     auto_delete = true
-    device_name = "davinci-remote-edit-machine-01"
 
     initialize_params {
       image = "projects/media-on-gcp-storage/global/images/davinci-remote-edit-machine"
-      size  = 500
+      size  = 600
       type  = "pd-balanced"
     }
 
@@ -33,7 +34,7 @@ resource "google_compute_instance" "davinci-remote-edit-machine-01" {
   enable_display      = false
 
   guest_accelerator {
-    type  = "nvidia-l4"
+    type  = "nvidia-l4-vws"
     count = 1
   }
 
