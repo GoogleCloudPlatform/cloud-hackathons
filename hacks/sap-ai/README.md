@@ -119,6 +119,12 @@ In this challenge, you will build and configure an Agentspace application to ser
 * Give meaningful names to your Agentspace app and data stores for easier management.
 * Experiment with different phrasing for your prompts to understand the agent's natural language understanding capabilities.
 * Observe the "sources" cited by the Agentspace responses to understand which data stores it is utilizing for each query.
+* In the next task, you will need to provide an email with recommended new ingredients. Please, make sure that you request Agentspace to generate this email. Example prompts:
+
+"We have got a request to focus on improvement of the recipe of Pistachio River Ripple. Based on the customer feedback and an existing recipe, suggest what exactly needs to be changed. List exact ingredients we need to purchase to make those changes."
+
+
+"Send an email to our purchasing organization (purchasing@company.com) with the recipe improvement suggestions for Pistachio River Ripple and the ingredients that need to be purchased."
 
 ### Learning Resources
 
