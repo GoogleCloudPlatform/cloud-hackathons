@@ -128,9 +128,8 @@ In this challenge, you will build and configure an Agentspace application to ser
 
 ### Learning Resources
 
-* [Google Agentspace Documentation (or equivalent product documentation)](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/agentspace-overview) (You might need to find the specific Agentspace public documentation if this link isn't exact)
-* [Google Cloud OAuth Consent Screen Configuration](https://cloud.google.com/compute/docs/tutorials/set-up-oauth) (General OAuth setup in GCP)
-* [Google Identity Platform for Developers](https://developers.google.com/identity/gsi/web/guides/overview)
+* [Google Agentspace Documentation](https://cloud.google.com/agentspace/agentspace-enterprise/docs/overview) 
+* [Google Cloud OAuth Consent Screen Configuration](https://developers.google.com/workspace/guides/configure-oauth-consent)
 
 ---
 
