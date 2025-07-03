@@ -1,11 +1,32 @@
+# OS Files - system-generated files that vary by machine
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*~
+
+# Editor/IDE - user-specific editor configurations
 .vscode/
+.idea/
+*.swp
+*.swo
+
+# Build Output - generated files that can be recreated
 _site/
 dist/
-*.zip
-.DS_Store
-.terraform*
-terraform.tfstate*
+node_modules/
 
+# Archives - typically temporary or release artifacts
+*.zip
+*.tar.gz
+*.rar
+
+# Terraform - contains secrets and state that shouldn't be shared
 .terraform*
 terraform.tfstate*
+terraform.tfvars*
