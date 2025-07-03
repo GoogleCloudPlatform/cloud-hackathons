@@ -56,9 +56,10 @@ In this hack you will be solving the common business problems that all companies
 
 ## Contributors
 
+- Jorge Sanchez
+- Chris Hampartsoumian
+- Chanka Perera
 - Gino Filicetti
-- Jane Q. Public
-- Joe T. Muppet
 
 ## Challenge 1: Provision an environment
 
