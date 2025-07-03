@@ -135,7 +135,53 @@ The final step is to connect your inputs to your outputs. This tells Norsk where
     * Connect **camera4** to **srt-listener-camera4**.
 **
 
+## Challenge 2: Connect Streams to Vizrt Vectar
+Product Guide - https://www.vizrt.com/vizrt/remote/viz-vectar-plus/
+
+### Notes & Guidance
+
+In this challenge, participants will work with a professional video mixing tool, Vizrt Vectar. The main tasks are configuring inputs from the previous step and creating a new output stream.
+
+Your coach will help you setting up license to to setup the hp-anywhere_pcoip-client so you would be able to connect to the Vizrt instance. 
+
+1.  **Connect to Vizrt:** Participants will need to use the provided credentials for Teamviewer or HP Anywhere to access the remote machine running Vizrt Vectar.
+2.  **Configure Inputs:**
+    * Within the Vectar interface, they need to navigate to the input configuration section.
+    * They should add **four new SRT inputs**.
+    * For each input, they will use the SRT source URL/IP's from the Norsk SRT Ingest components they configured in Challenge 1.
+3.  **Verify Transitions:**
+    * After configuring the inputs, the four camera sources should appear in Vectar's source preview monitors.
+    * Guide them to use the Vectar's switcher controls (e.g., clicking on sources to put them in 'Preview' and using a T-bar or 'Cut'/'Auto' buttons to transition them to 'Program'). This confirms that the streams are correctly ingested and that Vectar is operational.
+4.  **Configure SRT Output:**
+    * Similar to Norsk, they now need to configure an output stream. This is typically done in the 'Output' or 'Streaming' settings.
+    * They must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
+    * **Participants must note down this new SRT output URL** for the next challenge.
+
 ***
+
+## Challenge 3: Techex Darwin
+https://www.techex.tv/technologies/txdarwin
+
+
+### Notes & Guidance
+
+1.  **Connect to Techex Darwin:** Participants will connect to the Darwin UI via its web interface.
+2.  **Configure SRT Ingest:**
+    * Create a new input and configure it to be an **SRT source**.
+    * Paste the SRT output URL from Vizrt Vectar (Challenge 2) into the ingest configuration. The program feed from Vectar should now be flowing into Darwin.
+3.  **Insert SCTE-35 Marker:**
+    * The Darwin interface has a feature for live stream manipulation. Guide participants to find the button or control labeled **"Insert SCTE-35 Marker"** or similar.
+    * Pressing this button injects the ad signaling marker into the transport stream in real-time. This doesn't change the video content itself but adds metadata that downstream systems will use.
+4.  **Configure SRT Output:**
+    * Create a new SRT output for the stream that now contains the SCTE-35 marker.
+    * **Ensure participants copy the SRT output URL from Darwin**, as it will be the input for Ateme Titan Live.
+
+***
+
+***
+
+
+
 
 
 
