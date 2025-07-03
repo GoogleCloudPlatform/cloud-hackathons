@@ -59,6 +59,7 @@ In this hack you will be solving the common business problems that all companies
 - Jorge Sanchez
 - Chris Hampartsoumian
 - Chanka Perera
+- Michael Bychkowski
 - Gino Filicetti
 
 ## Challenge 1: Norsk setup 
@@ -157,7 +158,6 @@ Your coach will help you setting up license to to setup the hp-anywhere_pcoip-cl
     * They must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
     * **Participants must note down this new SRT output URL** for the next challenge.
 
-***
 
 ## Challenge 3: Techex Darwin
 https://www.techex.tv/technologies/txdarwin
@@ -178,11 +178,69 @@ https://www.techex.tv/technologies/txdarwin
 
 ***
 
+
+## Challenge 4: Ateme Titan Live
+https://www.ateme.com/product-titan-software/
+
+### Notes & Guidance
+
+Ateme Titan Live is a broadcast-grade encoder. In this step, participants will configure it to receive the final produced stream and prepare it for delivery over the web. As shown in the architecture diagram, Titan Live is the final step before the stream is handed off to Google Cloud's media services.
+
+1.  **Connect to Titan Live:** Participants should log in to the Titan Live web interface.
+2.  **Configure New Input:**
+    * They need to create a new input channel.
+    * Set the input source type to **SRT**.
+    * In the configuration, they will paste the **SRT output URL from Techex Darwin** (from Challenge 3).
+3.  **Configure Output/Profile:**
+    * The primary goal is to have Titan Live process the stream. A default encoding profile (e.g., H.264/AAC in an HLS format) should be sufficient.
+    * The crucial part of the configuration is setting up the destination. In our architecture, Titan Live will hand off to the **Ateme Nea Packager**, which then interfaces with the **Google Cloud Video Stitcher API**. This may be a pre-configured output profile in Titan Live that participants just need to select. The output should be configured to create HLS manifests.
+
+## Challenge 5: VideoJS Player
+
+### Notes & Guidance
+
+This challenge moves from broadcast-specific tooling to a standard cloud workflow: deploying a web application using a containerized service.
+
+1.  **Clone Git Repository:**
+    * Participants need to use a terminal with `gcloud` and `git` installed.
+    * They should clone the provided repository for the VideoJS Player.
+
+    ```shell
+    git clone [https://github.com/google-cloud-vietnam/ghack-videojs-player.git](https://github.com/google-cloud-vietnam/ghack-videojs-player.git)
+    cd ghack-videojs-player
+    ```
+2.  **Publish to Cloud Run:**
+    * The easiest way to deploy is using the `gcloud run deploy` command from the root of the cloned repository. This command will build the container image from the source and deploy it.
+    * Participants can name their service whatever they like (e.g., `ghack-player`).
+    * The `--allow-unauthenticated` flag is important to make the player publicly accessible for testing.
+
+    ```shell
+    gcloud run deploy ghack-player --source . --region europe-west1 --allow-unauthenticated
+    ```
+
+    > **Note**: After the deployment succeeds, the command line will output the service URL. **This is the URL for the live channel player.**
+
 ***
 
+## Challenge 6: View Your Live Channel
+
+### Notes & Guidance
+
+This is the final step where everything comes together. Participants will see their live stream, complete with an advertisement inserted via the Google Cloud Video Stitcher API, triggered by the SCTE-35 marker they inserted earlier.
+
+1.  **Open the Player:**
+    * Participants should navigate to the **Cloud Run service URL** they obtained in the previous challenge.
+2.  **Verify the Stream:**
+    * The VideoJS player should load and start playing the live video feed originating from the Norsk sources, mixed in Vectar, and processed by Darwin and Titan.
+3.  **Look for the Ad:**
+    * The key to success for this entire hack is seeing an advertisement. The SCTE-35 marker inserted in Challenge 3 signals the Google Cloud Video Stitcher API (via the Ateme components) to insert an ad from Google Ad Manager.
+    * When the ad plays, it confirms the entire workflow is functioning correctly. If no ad appears, common issues to troubleshoot are:
+        * The SCTE-35 marker was not inserted correctly in Darwin.
+        * The integration between Titan Live and the Video Stitcher API is misconfigured.
+        * There is an issue with the Google Ad Manager campaign.
 
 
-
+***
 
 
 
