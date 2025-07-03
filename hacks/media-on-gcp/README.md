@@ -39,8 +39,8 @@ In this hack you will be solving the common business problems that all companies
   - Configure the SRT output
 
 - Challenge 4: Ateme Titan Live
-  - Connect to Titan Live
-  - Configure a new input to receive the stream from techex Darwin
+  - For Titan Live and Nea follow the guide from this link:
+  - https://docs.google.com/document/d/1atvTkXzYpa7SpYjcBd2A7WnF2uO9oE-P2DS8ClY12y4/edit?tab=t.0
 
 
 - Challenge 5: Video JS Player
@@ -88,21 +88,25 @@ So distribute the load between these servers
         * `host`: 34.147.220.43 
         * `port`: 5121
         * `streamId`: camera1
+        * Click Save
     * **Input 2:**
         * `displayName`: camera2
         * `host`: 34.147.220.43 
         * `port`: 5122
         * `streamId`: camera2
+        * * Click Save
     * **Input 3:**
         * `displayName`: camera3
         * `host`: 35.246.1.71 
         * `port`: 5123
         * `streamId`: camera3
+        * * Click Save
     * **Input 4:**
         * `displayName`: camera6
         * `host`: 35.246.1.71
         * `port`: 5126
         * `streamId`: camera4
+        * * Click Save
 
 ## Step 2: Add Your Output Destinations 
 
