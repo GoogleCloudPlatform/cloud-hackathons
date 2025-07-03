@@ -169,6 +169,13 @@ Your coach will help you setting up license to to setup the hp-anywhere_pcoip-cl
     * Guide them to use the Vectar's switcher controls (e.g., clicking on sources to put them in 'Preview' and using a T-bar or 'Cut'/'Auto' buttons to transition them to 'Program'). This confirms that the streams are correctly ingested and that Vectar is operational.
 5.  **Configure SRT Output:**
     * Similar to Norsk, they now need to configure an output stream. This is typically done in the 'Output' or 'Streaming' settings.
+    * To Configure the output Locate the button that says 'STREAM' in the top menu, press the configure wheel next to that button
+    * Locate the output labelled SRT Stream that has a tick mark next to it, click the Configure wheel to the right
+    * In the Configure SRT Connection Dialog box, choose Connection Type drop down -> Host Local SRT Stream
+    * Leave the Server Port at 10000
+    * Note the Access URL, this will  be used downstream
+    * Press Close, twice.
+    * Now press the Stream button at the top of the screen. 
     * They must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
     * **Participants must note down this new SRT output URL** for the next challenge.
 
