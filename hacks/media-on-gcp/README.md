@@ -145,15 +145,29 @@ In this challenge, participants will work with a professional video mixing tool,
 
 Your coach will help you setting up license to to setup the hp-anywhere_pcoip-client so you would be able to connect to the Vizrt instance. 
 
-1.  **Connect to Vizrt:** Participants will need to use the provided credentials for Teamviewer or HP Anywhere to access the remote machine running Vizrt Vectar.
+1.  **Connect to Vizrt Using HP Anywhere:** Get the Windows username and password from the coach
 2.  **Configure Inputs:**
-    * Within the Vectar interface, they need to navigate to the input configuration section.
-    * They should add **four new SRT inputs**.
-    * For each input, they will use the SRT source URL/IP's from the Norsk SRT Ingest components they configured in Challenge 1.
-3.  **Verify Transitions:**
+    * Within the Vectar interface Press the Setup button at the top of the screen
+    * Configure Input 1 but locating input 1 in the setup screen and clicking the 'Configure' wheel at the end of the row.
+    * In the dialoug box that opens, from the source drop down menu chooses Local -> Add IP Source....
+    * In the Soure Manager Dialog that opens, click the configure wheel next to camera1
+    * In the Configure SRT Input Connection dialog box that opens, enter Camera1 in the Connection Name field
+    * In order to know the server URL, check the internal IP address of the ibc-ghack-norsk-gw-vm in Compute Engine. In this example, it is 10.164.0.5, yours may be different.
+    * In the Server URL enter srt://10.164.0.5
+    * In the port Number enter 5111 which was the port number allocated to camera1 in Norsk.
+    * Press Okay. (You will see a message about resetting your session, but we will add the other cameras first)
+    * Repeat the process for Camera 2, Camera 3 and Camera 4
+    * Now we need reset vizrt to receive the steams.
+    * Go to File -> Exit (you may need to position your mouse at the top of the screen to get the File Menu to appear.
+    * Press Exit - when asked are you sure you want to exit.
+    * This takes you to Kiosk mode, now click start Live Production in the bottom Right Corner.
+    * Viz takes a while to come back, when it's back you still need to configure the inputs.
+    * For Input1 Thumbnail, click the configure wheel in the bottom right of the thumbnail
+    * In the Input1 Dialog box, select Source -> Local -> Camera1
+4.  **Verify Transitions:**
     * After configuring the inputs, the four camera sources should appear in Vectar's source preview monitors.
     * Guide them to use the Vectar's switcher controls (e.g., clicking on sources to put them in 'Preview' and using a T-bar or 'Cut'/'Auto' buttons to transition them to 'Program'). This confirms that the streams are correctly ingested and that Vectar is operational.
-4.  **Configure SRT Output:**
+5.  **Configure SRT Output:**
     * Similar to Norsk, they now need to configure an output stream. This is typically done in the 'Output' or 'Streaming' settings.
     * They must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
     * **Participants must note down this new SRT output URL** for the next challenge.
