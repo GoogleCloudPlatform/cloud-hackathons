@@ -33,28 +33,35 @@ This initial challenge is designed to be a straightforward introduction to the N
 
 First, we'll add the four input sources. According to your YAML file, these are all **SRT Ingest (Caller)** nodes, meaning Norsk will "call" a remote source to pull the stream.
 
+We have two input sources 
+34.147.220.43:5121-5126
+35.246.1.71:5121-5126
+
+So distribute the load between these servers 
+
+
 1.  In the **Component Library** on the left, find the **Inputs** section.
 2.  Click and drag the **SRT Ingest (Caller)** component onto the main canvas. Repeat this three more times, so you have four input nodes in total.
 3.  Click on each node to open its configuration panel and enter the details from your YAML file.
     * **Input 1:**
         * `displayName`: camera1
         * `host`: 34.147.220.43 
-        * `port`: 5101
+        * `port`: 5121
         * `streamId`: camera1
     * **Input 2:**
         * `displayName`: camera2
         * `host`: 34.147.220.43 
-        * `port`: 5101
+        * `port`: 5122
         * `streamId`: camera2
     * **Input 3:**
         * `displayName`: camera3
-        * `host`: 34.147.220.43 
-        * `port`: 5101
+        * `host`: 35.246.1.71 
+        * `port`: 5123
         * `streamId`: camera3
     * **Input 4:**
         * `displayName`: camera4
-        * `host`: 34.147.220.43 
-        * `port`: 5101
+        * `host`: 35.246.1.71
+        * `port`: 5126
         * `streamId`: camera4
 
 ## Step 2: Add Your Output Destinations 

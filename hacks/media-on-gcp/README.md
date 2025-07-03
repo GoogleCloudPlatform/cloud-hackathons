@@ -61,7 +61,84 @@ In this hack you will be solving the common business problems that all companies
 - Chanka Perera
 - Gino Filicetti
 
-## Challenge 1: Provision an environment
+## Challenge 1: Norsk setup 
+
+https://norsk.video/
+Find the Norsk server on your environment, use the public ipaddress to access the norsk-studio 
+
+Example : https://<publicip_of_norsk_instance>/
+Your coach will provide login credentials 
+
+First, we'll add the four input sources. These are all **SRT Ingest (Caller)** , meaning Norsk will "call" a remote source to pull the stream.
+
+We have 12 SRT sources running on following instances. 
+
+IP: 34.147.220.43 port 5121-5126
+IP: 35.246.1.71 port 5121-5126
+
+So distribute the load between these servers 
+
+
+1.  In the **Component Library** on the left, find the **Inputs** section.
+2.  Click and drag the **SRT Ingest (Caller)** component onto the main canvas. Repeat this three more times, so you have four input nodes in total.
+3.  Click on each node to open its configuration panel and enter the details as follows, 
+    * **Input 1:**
+        * `displayName`: camera1
+        * `host`: 34.147.220.43 
+        * `port`: 5121
+        * `streamId`: camera1
+    * **Input 2:**
+        * `displayName`: camera2
+        * `host`: 34.147.220.43 
+        * `port`: 5122
+        * `streamId`: camera2
+    * **Input 3:**
+        * `displayName`: camera3
+        * `host`: 35.246.1.71 
+        * `port`: 5123
+        * `streamId`: camera3
+    * **Input 4:**
+        * `displayName`: camera6
+        * `host`: 35.246.1.71
+        * `port`: 5126
+        * `streamId`: camera4
+
+## Step 2: Add Your Output Destinations 
+
+Next, you'll add the four output destinations. The configuration specifies these should be **SRT Listener (Egest)** nodes. This means Norsk will "listen" for a remote player or device to connect and receive the stream.
+
+1.  In the **Component Library**, find the **Outputs** section.
+2.  Click and drag the **SRT Listener (Egest)** component onto the canvas. Repeat this three more times. It's good practice to place them to the right of your input nodes.
+3.  Configure each listener with its unique port:
+    * **Output 1:**
+        * `displayName`: srt-listener-camera1
+        * `port`: 5111
+    * **Output 2:**
+        * `displayName`: srt-listener-camera2
+        * `port`: 5112
+    * **Output 3:**
+        * `displayName`: srt-listener-camera3
+        * `port`: 5113
+    * **Output 4:**
+        * `displayName`: srt-listener-camera6
+        * `port`: 5116
+
+## Step 3: Connect the Nodes
+
+The final step is to connect your inputs to your outputs. This tells Norsk where to send the media from each source. Your goal is to create four parallel, independent streams.
+
+1.  Hover your mouse over the **camera1** node until a small circle appears on its right side. This is the **output handle**.
+2.  Click and drag from the output handle of the **camera1** node to the input handle (the circle on the left) of the **srt-listener-camera1** node. A line will appear, showing the connection.
+3.  Repeat this process for the remaining pairs, Now you can save your config as a YAML file for future use. 
+    * Connect **camera2** to **srt-listener-camera2**.
+    * Connect **camera3** to **srt-listener-camera3**.
+    * Connect **camera4** to **srt-listener-camera4**.
+**
+
+***
+
+
+
 
 ***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section. You should remove all italicized & sample text and replace with your content.***
 
