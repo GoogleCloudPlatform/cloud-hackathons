@@ -147,7 +147,11 @@ Product Guide - https://www.vizrt.com/vizrt/remote/viz-vectar-plus/
 
 In this challenge, participants will work with a professional video mixing tool, Vizrt Vectar. The main tasks are configuring inputs from the previous step and creating a new output stream.
 
-Your coach will help you setting up license to to setup the hp-anywhere_pcoip-client so you would be able to connect to the Vizrt instance. 
+Pre-requsit: One or two team members will need to download and install the HP Anywhere PCoIP Client (formerly known as Teradici)
+You can find the download for Mac, Windows, Linux and Chromebooks here: https://anyware.hp.com/find/product/hp-anyware
+You will need to register with hp.com to donwnload this software. This software is needed for anyone who wants to use Vizrt Vectar Vision mixing software or Black magic Davinci Resolve post production software. 
+
+Your coach will provide the Windows Username & Password for the Vizrt Vectar. You will need this when you connect to the machine.
 
 1.  **Connect to Vizrt Using HP Anywhere:** Get the Windows username and password from the coach
 2.  **Configure Inputs:**
