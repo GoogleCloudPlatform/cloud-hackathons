@@ -14,6 +14,9 @@ In this hack you will be solving the common business problems that all companies
 
 ## Challenges
 
+- Challenge 0: Veo3 Ad Creative
+  - Log into Media Studio 
+
 - Challenge 1: Norsk
   - Load Norsk Studio. (blank canvas)
   - Drag an SRT Ingest component to the canvas, connect to camera source1
