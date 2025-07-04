@@ -60,7 +60,7 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
 
 ### SAP
 
-- [Agentize SAP](./hacks/sap-ai/README.md)
+- [Agentic AI and SAP](./hacks/agentic-ai-and-sap/README.md)
   > This hackathon challenges participants to build intelligent applications by unifying SAP and other enterprise data in BigQuery. Participants will then use Google's no-code and advanced agent development tools to create conversational AI and automate complex business processes, such as creating purchase requisitions directly within SAP.
 
 ### Stay tuned for more
