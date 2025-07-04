@@ -6,16 +6,24 @@ The Media & Entertainment on Google Cloud gHack will take you on a whirlwind tou
 
 ## Learning Objectives
 
-In this hack you will be solving the common business problems that all companies in the Media & Entertainment industry are facing and how Google Cloud and our AI solutions fit in:
+In this hack you will get some hands on experience with some industry tools and create some Ad Creative in Veo3
 
-1. Provision appliances
-1. Set up SRT sources
-1. Create advert visuals
+1. Connect to tools like; Norsk, Vizrt Vectar, Techex Darwin, Ateme Titan Live and Nea Live.
+1. Connect products together via an SRT pipeline
+1. Create advert visuals using Google Veo
 
 ## Challenges
 
 - Challenge 0: Veo3 Ad Creative
-  - Log into Media Studio 
+  - Log into the Google Cloud Console with your student account https://console.cloud.google.com/
+  - Your coach will help you with your Student ID and password. Each Student ID uses the same password. We recommend using incognito mode in Chrome for the student account
+  - Your coach will help you get logged into Google Cloud Console
+  - Locate Vertex AI and Media Studio or use the link: https://console.cloud.google.com/vertex-ai/studio/media
+  - You can find the Google Docs here: https://cloud.google.com/vertex-ai/generative-ai/docs/video/overview
+  - Try to complete the Veo challenge by 11am. Each team should upload a maximum of two 'ad' videos to the following Google Cloud Storage Bucket:
+  - gs://hackfest-ad-creative/
+  - You should see 10 folder teams in there, place two ads for your team in the respective folder.
+  - Your coach can help you get the videos uploaded
 
 - Challenge 1: Norsk
   - Load Norsk Studio. (blank canvas)
