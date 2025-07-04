@@ -46,6 +46,7 @@ In this hack you will be solving the common business problems that all companies
 - Challenge 5: Video JS Player
   - Clone Git hub repo for VideoJS Player
   - Publish to Cloud Run
+  - Edit the code of the website and deploy the updated version (optional)
 
 - Challenge 6: View your live channel.
 
@@ -235,11 +236,11 @@ This challenge moves from broadcast-specific tooling to a standard cloud workflo
     * They should clone the provided repository for the VideoJS Player.
 
     ```shell
-    git clone [https://github.com/google-cloud-vietnam/ghack-videojs-player.git](https://github.com/google-cloud-vietnam/ghack-videojs-player.git)
-    cd ghack-videojs-player
+    git clone https://github.com/JorgeRSG/sample-video-player.git
+    cd sample-video-player
     ```
 2.  **Publish to Cloud Run:**
-    * The easiest way to deploy is using the `gcloud run deploy` command from the root of the cloned repository. This command will build the container image from the source and deploy it.
+    * The easiest way to deploy is using the `gcloud run deploy` command from the root of the cloned repository. This command will build the container image from the source and deploy it. You can find more information [here](https://cloud.google.com/run/docs/deploying-source-code) 
     * Participants can name their service whatever they like (e.g., `ghack-player`).
     * The `--allow-unauthenticated` flag is important to make the player publicly accessible for testing.
 
@@ -248,6 +249,9 @@ This challenge moves from broadcast-specific tooling to a standard cloud workflo
     ```
 
     > **Note**: After the deployment succeeds, the command line will output the service URL. **This is the URL for the live channel player.**
+3.  **Edit the code of the website and deploy the updated version (optional):**
+    * Participants can change the look and feel of the published service if they want to. Open the code of the repository in the IDE of your choice and make some edits. Changing the title of the website and the main header are good options.
+    * Once the changes are made, save the files and the new version of the service.
 
 ***
 
