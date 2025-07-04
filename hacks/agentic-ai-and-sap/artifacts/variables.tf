@@ -13,15 +13,6 @@ variable "gcp_zone" {
   description = "The GCP zone to apply this config to."
 }
 
-variable "username" {
-  type        = string
-  description = "The lab username"
-}
-
-variable "ssh_pvt_key" {
-  type        = string
-  description = "The public SSH key for user"
-}
 
 #The service account key for cloud run command execution
 variable "service_account_key_file" {
