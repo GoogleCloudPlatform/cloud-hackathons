@@ -16,7 +16,7 @@ OBJS=*
 IGNORE=Makefile
 
 $(TARGET):
-        zip -r $(TARGET) $(OBJS) -x $(IGNORE)
+	zip -r $(TARGET) $(OBJS) -x $(IGNORE)
 
 clean:
-        rm -f $(TARGET)
+	rm -f $(TARGET)
