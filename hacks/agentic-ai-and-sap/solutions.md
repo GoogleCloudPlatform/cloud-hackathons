@@ -1,4 +1,4 @@
-# Ghack: Agentize SAP
+# Agentic AI and SAP
 
 ## Introduction
 
@@ -183,11 +183,8 @@ In the next step, we will create OAuth client.
 ### Interact with Your Agentspace App
 
 1.  Wait for the data stores to finish indexing. This might take several minutes. You can check the status in the **Data Stores** section.
-    <ql-infobox>
-    <strong>Note:</strong> Indexing can take time.You will need the indexing to be complete to get accurate responses from the prompts below.
-    While waiting, you can take a little break or you might explore other parts of the Agent Builder interface or proceed to Task 3 descriptions. 
-    You can open a new tab with console.cloud.google.com and perform the Task 3. This way, you can easily switch back to the Agentspace prompts testing tab. You will need an email text generated using Prompt 6 in the next task.
-    </ql-infobox>
+> [!NOTE]
+> Indexing can take time.You will need the indexing to be complete to get accurate responses from the prompts below. While waiting, you can take a little break or you might explore other parts of the Agent Builder interface or proceed to Task 3 descriptions. You can open a new tab with console.cloud.google.com and perform the Task 3. This way, you can easily switch back to the Agentspace prompts testing tab. You will need an email text generated using Prompt 6 in the next task.
 3.  Once indexing is complete for your BigQuery and Cloud Storage data stores, navigate to the **Integration** section.
 4.  Open your application using the link in the section **The link to your web app**.
 ![Agentspace link](./images/AgentspaceLink.png)
@@ -293,10 +290,8 @@ An endpoint attachment is an interface for a private service connect. It is used
     - If prompted, enable the service account the requested access to the secret manager
 4. Click **Create**
 
-<ql-infobox>
-<strong>Note:</strong> Connectors are being provisioned for the first time in europe-west4. So, creating sap-vendors-connection may take 5 to 10 minutes. 
-    While waiting, you can take a little break or you can now go back to the Agentspace exercise to finish the task before doing the coding challenge.
-</ql-infobox>
+> [!NOTE]
+> Connectors are being provisioned for the first time in europe-west4. So, creating sap-vendors-connection may take 5 to 10 minutes. While waiting, you can take a little break or you can now go back to the Agentspace exercise to finish the task before doing the coding challenge.
 
 #### Review the Connector Executor with Application Integration
 

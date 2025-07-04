@@ -3,7 +3,7 @@ echo "=====--Starting the cloud run Agent Deployment--"===========
 cd sapwithadk
 
 #Install ADK
-pip install google-adk
+pip install google-adk==1.5.0
 
 #install The Google Cloud CLI
 curl https://sdk.cloud.google.com > install.sh

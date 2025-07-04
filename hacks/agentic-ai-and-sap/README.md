@@ -1,8 +1,8 @@
-# Ghack: Agentize SAP
+# Agentic AI and SAP
 
 ## Introduction
 
-Welcome to the **Agentize SAP gHack**, where we explore the powerful synergy between Google Cloud's AI capabilities and your enterprise data, especially from SAP. This hack is designed to challenge you to build intelligent applications that unify disparate business data and leverage cutting-edge AI agents for automation and insights.
+Welcome to the **Agentic AI and SAP**, where we explore the powerful synergy between Google Cloud's AI capabilities and your enterprise data, especially from SAP. This hack is designed to challenge you to build intelligent applications that unify disparate business data and leverage cutting-edge AI agents for automation and insights.
 
 ## Architecture
 
@@ -14,9 +14,9 @@ During the course of the challenges you are going to be building the following a
 
 In this hack, you will tackle common enterprise challenges by leveraging Google Cloud solutions. You will gain hands-on experience in:
 
-1.  **Unified Data Foundation:** Establishing a robust data backbone by integrating SAP and other enterprise data sources (like Salesforce) into Google BigQuery, Google's highly scalable and analytical data warehouse.
-2.  **Conversational AI with Agentspace:** Rapidly deploying no-code agentic applications that allow natural language interaction with your integrated enterprise data, providing immediate insights and automating responses.
-3.  **Advanced Agent Orchestration with ADK:** Designing and implementing sophisticated, collaborative AI agents using Google's Agent Development Kit (ADK) to automate complex business processes within SAP.
+1. **Unified Data Foundation:** Establishing a robust data backbone by integrating SAP and other enterprise data sources (like Salesforce) into Google BigQuery, Google's highly scalable and analytical data warehouse.
+2. **Conversational AI with Agentspace:** Rapidly deploying no-code agentic applications that allow natural language interaction with your integrated enterprise data, providing immediate insights and automating responses.
+3. **Advanced Agent Orchestration with ADK:** Designing and implementing sophisticated, collaborative AI agents using Google's Agent Development Kit (ADK) to automate complex business processes within SAP.
 
 ## Challenges
 
@@ -25,14 +25,14 @@ This hack is structured into three main challenges, each building on the previou
 - Challenge 1: Preparing Your Data Feast in BigQuery
 - Challenge 2: Quick No-Code Agentic Applications on Google Cloud using Agentspace
 - Challenge 3: Diving Deeper - Collaborative Agents with Google ADK
-    
+
 ## Prerequisites
 
 To make the most of this hack, ensure you have the following:
 
-* Your own GCP project with **Owner IAM role**.
-* Basic familiarity with Google Cloud Console and services.
-* (Optional but recommended) Basic understanding of enterprise data concepts (e.g., SAP data, CRM data).
+- Your own GCP project with **Owner IAM role**.
+- Basic familiarity with Google Cloud Console and services.
+- (Optional but recommended) Basic understanding of enterprise data concepts (e.g., SAP data, CRM data).
 
 ## Contributors
 
@@ -54,10 +54,10 @@ Before AI can work its magic, it needs data. In the enterprise, this data often 
 
 Your goal in this challenge is to set up a BigQuery dataset that will serve as the single source of truth for your AI agents. You will be responsible for:
 
-* Creating a new BigQuery dataset for your lab.
-* Load essential SAP Material Master data from Cloud Storage into your BigQuery dataset.
-* Load Salesforce Customer Case data from Cloud Storage into your BigQuery dataset..
-* Create a view over the FDA Food Enforcement Data to filter out only data related to `ice cream`
+- Creating a new BigQuery dataset for your lab.
+- Load essential SAP Material Master data from Cloud Storage into your BigQuery dataset.
+- Load Salesforce Customer Case data from Cloud Storage into your BigQuery dataset..
+- Create a view over the FDA Food Enforcement Data to filter out only data related to `ice cream`
 
 > [!IMPORTANT]
 > Pay close attention to the data formats and schemas required for loading data into BigQuery. Ensure your commands correctly specify source formats, skip headers, and define column names and types.

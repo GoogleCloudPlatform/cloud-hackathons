@@ -13,8 +13,8 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "[gHacks] Ghack: Agentize SAP"
-description: ""
+title: "[gHacks] Agentic AI and SAP"
+description: "This hackathon challenges participants to build intelligent applications by unifying SAP and other enterprise data in BigQuery. Participants will then use Google's no-code and advanced agent development tools to create conversational AI and automate complex business processes, such as creating purchase requisitions directly within SAP."
 instruction:
   type: md
   uri: README.md
