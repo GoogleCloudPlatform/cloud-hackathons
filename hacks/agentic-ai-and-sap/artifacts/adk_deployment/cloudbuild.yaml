@@ -1,0 +1,18 @@
+steps:
+  - id: Make Script deployable
+    name: ubuntu
+    entrypoint: /bin/bash
+    args: 
+      - -c
+      - |
+        chmod +x ./cloudrun/deploy_script.sh
+  - id: Clone repo
+    name: gcr.io/cloud-builders/git
+    args: ["clone", "-b", "code_with_todos", "https://gitlab.com/ekakruse/sapwithadk/"]
+  - id: Run Script
+    name: python
+    entrypoint: /bin/bash
+    args: 
+      - -c
+      - |
+        ./cloudrun/deploy_script.sh || exit 0
