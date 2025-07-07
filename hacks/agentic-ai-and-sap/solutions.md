@@ -77,7 +77,7 @@ First, we need a place for all our data ingredients. Let's create a BigQuery dat
 
    ![Material Master](./images/MaterialMaster.png)
 
-5. **Load Salesforce Customer Case Data:**
+4. **Load Salesforce Customer Case Data:**
     This data is provided in Cloud Storage. Load it into BigQuery using the Cloud Shell:
 
     ```bash
@@ -89,7 +89,7 @@ First, we need a place for all our data ingredients. Let's create a BigQuery dat
     CustomerName:STRING,ProductName:STRING,FeedbackDate:DATE,Rating:INTEGER,Description:STRING
     ```
 
-6. **Create a View over Public FDA Data:**
+5. **Create a View over Public FDA Data:**
     Let's create a view to easily access public FDA food enforcement data specifically related to ice cream.
     First, search for Google BigQuery in the search bar.
     ![Search BigQuery](./images/FindBQ.png)
@@ -108,7 +108,7 @@ First, we need a place for all our data ingredients. Let's create a BigQuery dat
 
     ![Run BQ query](./images/runBQQuery.png)
 
-8. Verify that the tables (`MaterialMasterData`, `CustomerCases`) and the view (`fda_ice_cream_enforcements`) exist in your `icecream_lab` dataset in the BigQuery console. In the preview, you can also check the uploaded or replicated data.
+6. Verify that the tables (`MaterialMasterData`, `CustomerCases`) and the view (`fda_ice_cream_enforcements`) exist in your `icecream_lab` dataset in the BigQuery console. In the preview, you can also check the uploaded or replicated data.
     ![Uploaded data in BQ](./images/uploadedData.png)
 
 ## Task 2: Quick No-Code Agentic Applications on Google Cloud using Agentspace
@@ -187,10 +187,10 @@ In the next step, we will create OAuth client.
 > [!NOTE]
 > Indexing can take time.You will need the indexing to be complete to get accurate responses from the prompts below. While waiting, you can take a little break or you might explore other parts of the Agent Builder interface or proceed to Task 3 descriptions. You can open a new tab with console.cloud.google.com and perform the Task 3. This way, you can easily switch back to the Agentspace prompts testing tab. You will need an email text generated using Prompt 6 in the next task.
 
-3. Once indexing is complete for your BigQuery and Cloud Storage data stores, navigate to the **Integration** section.
-4. Open your application using the link in the section **The link to your web app**.
+1. Once indexing is complete for your BigQuery and Cloud Storage data stores, navigate to the **Integration** section.
+2. Open your application using the link in the section **The link to your web app**.
 ![Agentspace link](./images/AgentspaceLink.png)
-5. Interact with the Assistant using the following prompts. Observe how it utilizes the different data sources:
+3. Interact with the Assistant using the following prompts. Observe how it utilizes the different data sources:
 
     - **Prompt 1:**
         - **Datasource:** MaterialMasterData (SAP via BQ)
@@ -222,7 +222,7 @@ In the next step, we will create OAuth client.
 
 In this Task, you will learn how to design and implement a team of custom AI agents to automate a common business process within SAP ERP (ECC or S/4HANA): creating Purchase Requisitions (PRs) from email requests, including vendor selection and initial vetting. You'll experience how AI can streamline procurement workflows, reduce manual effort, enhance compliance, and improve efficiency. We will execute the creation of these agents using Google Agent Development Kit and deploy them on Cloud Run.
 
-**Scenario: Automating Purchase Requisition Creation from Email with Vendor Selection**
+### Scenario: Automating Purchase Requisition Creation from Email with Vendor Selection
 
 Manually processing purchase requests that arrive via email is time-consuming and prone to errors. These requests need to have their data extracted, potential vendors identified and checked, and finally, be formally entered as Purchase Requisitions in SAP.
 
