@@ -52,7 +52,7 @@ Before AI can work its magic, it needs data. In the enterprise, this data often 
 
 ### Description
 
-Your goal in this challenge is to set up a BigQuery dataset that will serve as the single source of truth for your AI agents. You will be responsible for:
+Your goal in this challenge is to set up a BigQuery dataset that will serve as the single source of truth for your AI agents. You are responsible for:
 
 - Creating a new BigQuery dataset for your lab.
 - Load essential SAP Material Master data from Cloud Storage into your BigQuery dataset.
@@ -96,7 +96,7 @@ With your data now centralized in BigQuery, the next step is to make it accessib
 
 In this challenge, you will build and configure an Agentspace application to serve as an intelligent assistant for your "ice cream" business. Your tasks include:
 
-* **OAuth Configuration:** Set up an OAuth consent screen and create an OAuth client for your Agentspace application. This is crucial for enabling secure user authorization, especially for actions like sending emails.
+* **OAuth Configuration:** Set up an OAuth consent screen for internal applications and create an OAuth client for your Agentspace application. This is crucial for enabling secure user authorization, especially for actions like sending emails.
 * **Agentspace App Creation:** Instantiate a new Agentspace application, selecting the appropriate type and tier (e.g., "Search + Assistant").
 * **Data Store Integration:** Connect your Agentspace app to the BigQuery tables and view you created in Challenge 1 (`MaterialMasterData`, `CustomerCases`, `fda_ice_cream_enforcements`). Additionally, integrate an unstructured data source from Cloud Storage (like a recipe PDF).
 * **Action Integration:** Connect and configure the Gmail tool as an action within your Agentspace app, enabling it to send emails.
@@ -112,12 +112,30 @@ In this challenge, you will build and configure an Agentspace application to ser
 * Demonstrate that your Agentspace application is created and accessible.
 * Show that all required data stores (three BigQuery sources, one Cloud Storage source) are successfully connected and indexed within your Agentspace application.
 * Confirm that the Gmail action is properly configured with the correct OAuth client ID and secret.
-* Successfully interact with the Agentspace app using various prompts that demonstrate its ability to:
-    * Query SAP Material Master data (e.g., `Analyze our product portfolio...`)
-    * Retrieve and analyze Salesforce customer feedback (e.g., `Retrieve customer feedback...`)
-    * Utilize public FDA enforcement data (e.g., `Analyze historical product recalls...`)
-    * Combine insights from structured data and unstructured PDFs (e.g., `improve the recipe of Pistachio River Ripple...`)
-    * Execute the Gmail action by successfully sending an email through the agent.
+* Successfully interact with the Agentspace app using various prompts that demonstrate its abilities:
+    * **Prompt 1:**
+        * **Datasource:** MaterialMasterData (SAP via BQ)
+        * **Prompt:** `Analyze our product portfolio. Identify and summarize the key strengths of our ice cream catalog, focusing on: Flavor variety (range of types offered), Unique or innovative flavor profiles mentioned, Mention of premium ingredients or quality attributes, Presence of interesting textures (swirls,           inclusions, crunches). Provide a concise summary of these strengths.`
+
+    * **Prompt 2:**
+        * **Datasources:** CustomerCases (SFDC via BQ), Web Search
+        * **Prompt:** `Retrieve customer feedback on our ice cream products, focusing on the improvement suggestions from our customers. Can you identify any particular pattern in this feedback? Additionally, conduct a review our competitors’ strategy online. Based on both results, suggest what should we work on to             improve our portfolio and drive sales.`
+
+    * **Prompt 3:**
+        * **Datasources:** CustomerCases (SFDC via BQ), Web Search
+        * **Prompt:** `Generate a concept image for a potential new summer seasonal flavor: "Lemon Berry Bliss". The image should show a scoop of pale yellow lemon ice cream generously swirled with a vibrant mixed berry (strawberry, blueberry, raspberry) ribbon. It should look bright, appealing, and refreshing, perhaps         set against a simple, clean background.`
+
+    * **Prompt 4:**
+        * **Datasource:** fda\_ice\_cream\_enforcements (BQ View), Web Search
+        * **Prompt:** `Analyze historical product recalls related to ice cream and information on the web to find out how we can avoid major issues and recalls with our products and build a great reputation.`
+
+    * **Prompt 5:**
+        * **Datasources:** CustomerCases (SFDC via BQ), MaterialMasterData (SAP via BQ), Recipes PDF (Cloud Storage)
+        * **Prompt:** `We have got a request to focus on improvement of the recipe of Pistachio River Ripple. Based on the customer feedback and an existing recipe, suggest what exactly needs to be changed. List exact ingredients we need to purchase to make those changes.`
+
+    * **Prompt 6:** (This uses the Gmail Tool - you may be prompted to authorize)
+        * **Action:** Send Email
+        * **Prompt:** `Send an email to our purchasing organization (purchasing@company.com) with the recipe improvement suggestions for Pistachio River Ripple and the ingredients that need to be purchased.`
 
 ### Tips
 

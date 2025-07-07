@@ -39,31 +39,35 @@ environment:
     - project: project
       roles:
       - roles/owner
+      - roles/iap.httpsResourceAccessor
   - type: gcp_user
     id: user_2
     permissions:
     - project: project
       roles:
       - roles/owner
+      - roles/iap.httpsResourceAccessor
   - type: gcp_user
     id: user_3
     permissions:
     - project: project
       roles:
       - roles/owner
+      - roles/iap.httpsResourceAccessor
   - type: gcp_user
     id: user_4
     permissions:
     - project: project
       roles:
       - roles/owner
+      - roles/iap.httpsResourceAccessor
   - type: gcp_user
     id: user_5
     permissions:
     - project: project
       roles:
       - roles/owner
-
+      - roles/iap.httpsResourceAccessor
   student_visible_outputs:
   - label: Open Console
     reference: project.console_url

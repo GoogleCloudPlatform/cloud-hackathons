@@ -157,7 +157,7 @@ In the next step, we will create OAuth client.
     * Click **Continue** and leave the default schema 
     * Give the Data Store a name (e.g., `Icecream master data`).
     * Click **Create**.
-    * Repeate those steps with `CustomerCases` table and the `fda_ice_cream_enforcements` view.  
+    * Repeate those steps with `CustomerCases` table and te `fda_ice_cream_enforcements` view.  
 7.  Now, let us create one more data storage, but this time for the unstructured data. Click **+ CREATE DATA STORE** again and select **Cloud Storage**.
     * Enter the Cloud Storage URI for the recipe PDF (you can look it up and copy it from the Google Cloud Storage, it should have name YOURPROJECTID_recepies) and click **Continue**.
     * Give the Data Store a name (e.g., `IceCream Recipes`).
