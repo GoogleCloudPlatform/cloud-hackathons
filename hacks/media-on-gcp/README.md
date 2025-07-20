@@ -9,22 +9,16 @@ The Media & Entertainment on Google Cloud gHack will take you on a whirlwind tou
 In this hack you will get some hands on experience with some industry tools and create some Ad Creative in Veo3
 
 1. Connect to tools like; Norsk, Vizrt Vectar, Techex Darwin, Ateme Titan Live and Nea Live.
-1. Connect products together via an SRT pipeline
-1. Create advert visuals using Google Veo
+2. Connect products together via an SRT pipeline
+3. Create advert visuals using Google Veo
 
 ## Challenges
 
-- Challenge 0: Veo3 Ad Creative
-  - Log into the Google Cloud Console with your student account https://console.cloud.google.com/
-  - Your coach will help you with your Student ID and password. Each Student ID uses the same password. We recommend using incognito mode in Chrome for the student account
-  - Your coach will help you get logged into Google Cloud Console
-  - Locate Vertex AI and Media Studio or use the link: https://console.cloud.google.com/vertex-ai/studio/media
-  - You can find the Google Docs here: https://cloud.google.com/vertex-ai/generative-ai/docs/video/overview
-  - Try to complete the Veo challenge by 11am. Each team should upload a maximum of two 'ad' videos to the following Google Cloud Storage Bucket:
-  - gs://hackfest-ad-creative/
-  - You should see 10 folder teams in there, place two ads for your team in the respective folder.
-  - Your coach can help you get the videos uploaded
-
+- Challenge 0: Veo 3 Ad Creative
+  - Log into the Google Cloud Console with your student account
+  - Use Vertex AI and Media Studio to generate some ad creative
+  - Save/Upload your videos to a cloud bucket
+  
 - Challenge 1: Norsk
   - Load Norsk Studio. (blank canvas)
   - Drag an SRT Ingest component to the canvas, connect to camera source1
@@ -32,13 +26,11 @@ In this hack you will get some hands on experience with some industry tools and 
   - Create an SRT Egest component set x,y,z (if req'd, TBD).
   - Note down SRT locations, you'll need them in the next step.
 
-
 - Challenge 2: Connect Streams to Vizrt Vectar
   - Connect to Vizrt using either Teamviewer or HP Anywhere
   - Configure inputs as the SRT sources from Challenge 1
   - Verify you can transition (video mix) between sources, 1,2,3 and 4
   - Configuire an SRT output from Vectar, note down the details, you'll need them in the next challange
-
 
 - Challenge 3: Techex Darwin
   - Connect to Techex Darwin
@@ -49,7 +41,6 @@ In this hack you will get some hands on experience with some industry tools and 
 - Challenge 4: Ateme Titan Live
   - For Titan Live and Nea follow the guide from this link:
   - https://docs.google.com/document/d/1atvTkXzYpa7SpYjcBd2A7WnF2uO9oE-P2DS8ClY12y4/edit?tab=t.0
-
 
 - Challenge 5: Video JS Player
   - Clone Git hub repo for VideoJS Player
@@ -70,6 +61,17 @@ In this hack you will get some hands on experience with some industry tools and 
 - Chanka Perera
 - Michael Bychkowski
 - Gino Filicetti
+
+## Challenge 0: Veo 3 Ad Creative
+  - Log into the Google Cloud Console with your student account https://console.cloud.google.com/
+  - Your coach will provide your Student ID and password. Each Student ID uses the same password. We recommend using incognito mode in Chrome for the student account.
+  - Your coach will help you get logged into Google Cloud Console
+  - Locate Vertex AI and Media Studio or use the link: https://console.cloud.google.com/vertex-ai/studio/media
+  - You can find the Google documentation here: https://cloud.google.com/vertex-ai/generative-ai/docs/video/overview
+  - Try to complete the Veo challenge by 11am. Each team should upload a maximum of two 'ad' videos to the following Google Cloud Storage Bucket:
+  - gs://hackfest-ad-creative/
+  - You should see 10 folder teams in there, place two ads for your team in the respective folder.
+  - Your coach can help you get the videos uploaded
 
 ## Challenge 1: Norsk setup 
 
