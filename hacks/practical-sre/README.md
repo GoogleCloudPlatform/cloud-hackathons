@@ -93,8 +93,9 @@ This challenge involves exploring the Movie Guru app and documenting typical use
 - **Access** and **Explore** the App
 
   - Go to the Movie Guru app video (with the audio muted!)
-    [![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
   - Pay attention to the use of the app to understand its features.
+
+[![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
   
 - **Document User Journeys**
 
