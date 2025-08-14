@@ -92,13 +92,9 @@ This challenge involves exploring the Movie Guru app and documenting typical use
 
 - **Access** and **Explore** the App
 
-  - Go to the Movie Guru app video [![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA) (with audio muted!)
-  - Pay attention to the use of the app to understand its features:
-  
-    - Observe what happens after logging in.
-    - The user expresses their movie recommendations (e.g., "I feel like watching a funny movie").
-    - The user expresses their preferences for genres and themes (e.g., "I love movies with funny animals," or "I dislike violent movies").
-    - The user checks their user profile to see if the app remembers their preferences.
+  - Go to the Movie Guru app video (with the audio muted!)
+    [![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
+  - Pay attention to the use of the app to understand its features.
   
 - **Document User Journeys**
 
@@ -114,8 +110,8 @@ This challenge involves exploring the Movie Guru app and documenting typical use
 
 To successfully complete this exercise, you should have:
 
-- **Identify at least 2 user journeys:** Written down 2 UJs in the format mentioned above for the **Movie Guru** app
-- Remember there is no perfect answer.
+- **Identify at least 2 user journeys:** Two UJs in the format mentioned above for the **Movie Guru** app written down.
+- Remember, there is no perfect answer.
 
 ### Learning Resources
 

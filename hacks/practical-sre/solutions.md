@@ -132,7 +132,7 @@ $METRICS_APP_ADDRESS/phase
 #### Getting Started
 
 1. **Start Metrics Collection:** Begin by launching the load tester tool to collect background metrics. This data will be used in later challenges. Confirm this is running for the students.
-2. **Explore the App:**  Each student should access the Movie Guru app on their own machine using the provided frontend IP address. Take 10 minutes to explore the app individually. If the front end isn't working properly due to GenAI api ratelimits, then make them watch the video instead.
+2. **Explore the App:** Each student should understand how the Movie Guru app works via the video link.
 
 #### Identifying User Journeys
 
