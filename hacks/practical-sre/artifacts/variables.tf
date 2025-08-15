@@ -1,42 +1,44 @@
-# Copyright 2023 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 variable "gcp_project_id" {
   type        = string
-  description = "The GCP project ID to create resources in."
+  description = "GCP Project ID"
 }
 
-# Default value passed in
+variable "repo_prefix" {
+  type        = string
+  description = "Docker/Artifact registry prefix"
+  default     = "us-central1-docker.pkg.dev/o11y-movie-guru/movie-guru"
+}
+
+variable "image_tag" {
+  description = "TAG of the movie guru docker images"
+  default     = "sre-5e670f8"
+}
+
 variable "gcp_region" {
   type        = string
-  description = "Region to create resources in."
-  default     = "europe-west4"
+  default     = "us-central1"
+  description = "Region"
 }
 
 # Default value passed in
 variable "gcp_zone" {
   type        = string
   description = "Zone to create resources in."
-  default     = "europe-west4-c"
+  default     = "us-central1-c"
 }
 
-variable "helm_chart" {
-  description = "URL of the movie guru helm chart"
-  default = "https://mkand.github.io/movie-guru/movie-guru-0.6.0.tgz"
-}
+variable "locust_py_file" {
+  type = string
 
-variable "locust_file" {
   description = "URL of the locustfile"
-  default = "https://raw.githubusercontent.com/MKand/movie-guru/refs/heads/ghack-sre/locust/locustfile.py"
+  default     = "https://raw.githubusercontent.com/MKand/movie-guru/refs/heads/main/ghacks/practical-sre/locust/locustfile.py"
 }
+
+
+variable "otel_file" {
+  type = string
+
+  description = "URL of the otel config"
+  default     = "https://raw.githubusercontent.com/MKand/movie-guru/refs/heads/main/utils/metrics/otel.values.yaml"
+}
+
