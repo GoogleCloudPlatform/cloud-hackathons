@@ -189,4 +189,5 @@ resource "google_monitoring_dashboard" "chat_dashboard" {
       ]
     }
   })
+  depends_on = [ google_project_service.enable_apis ]
 }

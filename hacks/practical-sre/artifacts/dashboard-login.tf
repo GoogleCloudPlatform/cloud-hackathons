@@ -14,8 +14,7 @@
 
 resource "google_monitoring_dashboard" "login_dashboard" {
   project        = var.gcp_project_id
-  dashboard_json = <<EOF
-  {
+  dashboard_json = jsonencode({
     "displayName": "MovieGuru-Login-Dashboard",
     "mosaicLayout": {
       "columns": 48,
@@ -148,6 +147,6 @@ resource "google_monitoring_dashboard" "login_dashboard" {
     "dashboardFilters": [],
     "labels": {}
   }
-  
-  EOF
+  )
+  depends_on = [ google_project_service.enable_apis ]
 }

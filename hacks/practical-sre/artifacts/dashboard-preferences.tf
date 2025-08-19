@@ -14,7 +14,7 @@
 
 resource "google_monitoring_dashboard" "preferences_dashboard" {
   project        = var.gcp_project_id
-  dashboard_json = <<EOF
+  dashboard_json = jsonencode(
   {
     "displayName": "MovieGuru-Preferences-Dashboard",
     "mosaicLayout": {
@@ -272,7 +272,6 @@ resource "google_monitoring_dashboard" "preferences_dashboard" {
     },
     "dashboardFilters": [],
     "labels": {}
-  }
-  
-  EOF
+  })
+    depends_on = [ google_project_service.enable_apis ]
 }
