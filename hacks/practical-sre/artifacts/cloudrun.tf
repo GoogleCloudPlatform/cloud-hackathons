@@ -142,7 +142,7 @@ resource "google_cloud_run_v2_service" "locust" {
     service_account = google_service_account.service_account.email
     containers {
       name  = "locust"
-      image = "locustio/locust"
+      image = "locustio/locust:2.38.0"
       args = [
         "-f /mnt/locust/locust.py",
         "--host=${google_cloud_run_v2_service.app.urls[0]}"
