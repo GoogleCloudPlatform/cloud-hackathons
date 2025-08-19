@@ -6,7 +6,8 @@ Welcome to the coach's guide for The IoT Hack of the Century gHack. Here you wil
 
 Remember that this hack includes a optional [lecture presentation](resources/lecture.pdf) that features short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
 
-> **Note** If you are a gHacks student, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+> [!NOTE]
+> If you are a gHacks student, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
@@ -37,7 +38,8 @@ Follow [these instructions](https://ghacks.dev/faq/howto-host-hack.html#making-r
 
 Always refer students to the [gHacks website](https://ghacks.dev) for the student guide: [https://ghacks.dev](https://ghacks.dev)
 
-> **Note** Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
+> [!NOTE]  
+> Students should **NOT** be given a link to the gHacks Github repo before or during a hack. The student guide intentionally does **NOT** have any links to the Coach's guide or the GitHub repo.
 
 ## Google Cloud Requirements
 
@@ -94,7 +96,8 @@ For our metrics generation, we utilize a separate backend (henceforth called **f
 We're starting the load generator although the students don't need to understand the loadtest at all.
 The **fake backend** is primed to create responses that are suboptimal. This is to create the idea that at the start of the workshop, the **Movie Guru** app is performing suboptimally.
 
-> **Note**: If the students are going back to challenge 1 from other challenges, make them run this command in the **Cloud Shell terminal**
+> [!NOTE]
+> If the students are going back to challenge 1 from other challenges, make them run this command in the **Cloud Shell terminal**
 
 ```sh
 ## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
@@ -517,4 +520,5 @@ Analyze error budget: Discuss the "Startup Success Rate" SLO's error budget, its
   - **User-Centric Monitoring:**  Highlight the need to prioritize metrics that reflect the user's perspective, even if they don't directly align with backend performance.
   - **Proactive Problem Solving:** Encourage students to think proactively about potential monitoring gaps and explore solutions like synthetic monitoring or real user monitoring (RUM) to gain insights into frontend performance.
 
-- **Note:**  The goal of this challenge is not to debug the frontend issue itself, but to highlight the limitations of relying solely on backend metrics and to encourage a more holistic approach to monitoring.
+> [!NOTE]
+> The goal of this challenge is not to debug the frontend issue itself, but to highlight the limitations of relying solely on backend metrics and to encourage a more holistic approach to monitoring.
