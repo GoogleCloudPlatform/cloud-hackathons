@@ -1,4 +1,4 @@
-# Media & Entertainment on Google Cloud gHack: Coach's Guide
+# Media & Entertainment on Google Cloud: Coach Guide
 
 ## Introduction
 
@@ -6,7 +6,82 @@ Welcome to the coach's guide for the *Media & Entertainment on Google Cloud* gHa
 
 > **Note** If you are a gHacks participant, this is the answer guide to be used by the coaches to help to get students in the right track by providing support and hints. This shouldn't be provided as a setup runbook or step by step guide. The guides are based on ISV/parnter products to be deployed in GCP. This ghack assume candidate to have media / boradcasting and creative experience. 
 
----
+### Environment Setup
+
+> **Note** This was copied from the bottom of the original student guide
+
+The deployment of this gHacks considered two environments:
+
+1) **Target environment**: Target environment is the ephemeral student project where all infrastructure will be created for the hack.
+2) **Source environment**: Source environment is a prerequisite environme for the Target environment for pulling licenses and custom images to run in Target project.
+
+#### File and variable setup
+
+Define environment variables to run Terraform.
+```
+export GCP_PROJECT_ID_SOURCE=<you-source-project-id>
+
+export GCP_PROJECT_ID=<you-project-id>
+export GCP_REGION=europe-west4
+export GCP_ZONE=europe-west4-b
+```
+
+Setup necessaey org policies to run the Terraform script.
+```sh
+. ./scripts/process_policies.sh
+```
+
+And enter in the required params to run scripts when prompted.
+
+#### Setup for Source environment
+
+When setting up source environment, make sure the logged in user has administrator level access to the environment.
+
+```
+gcloud auth login
+gcloud auth application-default login
+gcloud config set project ${GCP_PROJECT_ID_SOURCE}
+```
+
+Apply necessary policies for
+
+```sh
+gcloud org-policies set-policy ./artifacts/scripts/processed_policies/iam.allowedPolicyMemberDomains.yaml
+```
+
+#### Setup for Target environment
+
+When setting up target environment, make sure the logged in user has administrator level access to the environment.
+
+```
+gcloud auth login
+gcloud auth application-default login
+gcloud config set project ${GCP_PROJECT_ID_SOURCE}
+```
+
+Set necessary policies. Make sure the proper org administrator and project
+
+Apply necessary policies if needed.
+
+```sh
+gcloud org-policies set-policy ./artifacts/scripts/processed_policies/compute.storageResourceUseRestrictions.yaml
+gcloud org-policies set-policy ./artifacts/scripts/processed_policies/compute.trustedImageProjects.yaml
+gcloud org-policies set-policy ./artifacts/scripts/processed_policies/compute.vmExternalIpAccess.yaml
+```
+
+Run Terraform `init`, `plan`, and `apply`.
+```tf
+terraform init
+
+terraform plan \
+  -out=out.tfplan \
+  -var "gcp_project_id=${GCP_PROJECT_ID}" \
+  -var "gcp_region=${GCP_REGION}" \
+  -var "gcp_zone=${GCP_ZONE}"
+
+terraform apply "out.tfplan" \
+  -auto-approve
+```
 
 ## Challenge 1: Norsk 
 Product Information https://norsk.video/
