@@ -22,25 +22,25 @@ This CTF is designed to provide practical, hands-on experience. Upon completion,
 
 - Your mission is to work through five distinct stages, each representing a step in a potential attack path.
 
-**Stage 1: Initial Reconnaissance**
+**Challenge 1: Initial Reconnaissance**
 
 **Objective:** Find the initial entry point into the Cygnus Corp environment.
 
 **Task:** Begin by enumerating public cloud resources. You need to find an exposed asset and understand the automated process it triggers.
 
-**Stage 2: Supply Chain Analysis**
+**Challenge 2: Supply Chain Analysis**
 
 **Objective: **Investigate the application's dependencies and identify a key vulnerability in its software supply chain.
 
 **Task:** Locate the application's source code, analyze its Dockerfile for weaknesses, and create a secure, private repository for your "blessed" artifacts.
 
-**Stage 3 & 4: Build and Deploy**
+**Challenge 3 & 4: Build and Deploy**
 
 **Objective:** Take control of the build process and deploy a public-facing application.
 
 **Task:** Create a CI/CD build configuration from scratch. Use Cloud Build to construct a container from the source code and deploy it as a new, publicly accessible service on Cloud Run.
 
-**Stage 5: Objective & Evasion**
+**Challenge 5: Objective & Evasion**
 
 **Objective:** Complete the final action using the deployed application while identifying gaps in the environment's security monitoring and response capabilities.
 
