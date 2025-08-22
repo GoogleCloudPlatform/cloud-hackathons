@@ -22,30 +22,29 @@ This CTF is designed to provide practical, hands-on experience. Upon completion,
 
 - Your mission is to work through five distinct stages, each representing a step in a potential attack path.
 
-**Challenge 1: Initial Reconnaissance**
+### Challenge 1: Initial Reconnaissance
 
 **Objective:** Find the initial entry point into the Cygnus Corp environment.
 
 **Task:** Begin by enumerating public cloud resources. You need to find an exposed asset and understand the automated process it triggers.
 
-**Challenge 2: Supply Chain Analysis**
+### Challenge 2: Supply Chain Analysis
 
-**Objective: **Investigate the application's dependencies and identify a key vulnerability in its software supply chain.
+**Objective:**Investigate the application's dependencies and identify a key vulnerability in its software supply chain.
 
 **Task:** Locate the application's source code, analyze its Dockerfile for weaknesses, and create a secure, private repository for your "blessed" artifacts.
 
-**Challenge 3 & 4: Build and Deploy**
+### Challenge 3 & 4: Build and Deploy
 
 **Objective:** Take control of the build process and deploy a public-facing application.
 
 **Task:** Create a CI/CD build configuration from scratch. Use Cloud Build to construct a container from the source code and deploy it as a new, publicly accessible service on Cloud Run.
 
-**Challenge 5: Objective & Evasion**
+### Challenge 5: Objective & Evasion
 
 **Objective:** Complete the final action using the deployed application while identifying gaps in the environment's security monitoring and response capabilities.
 
 **Task:** Use the application's intended functionality to run a job on Vertex AI. In parallel, investigate the project's security posture to see if your actions are being logged and if security findings are being automatically remediated.
-
 
 ## Prerequisites
 
@@ -70,32 +69,23 @@ System Overview: A containerized application, built via an automated CI/CD pipel
 
 High-Level Objective: Your objective is to secure the entire software supply chain for this data processing application. You must ensure we are building from trusted, vulnerability-scanned base images and enforce a technical policy that guarantees only verifiably built and untampered artifacts can be deployed into our environment.
 
-
 ## Stage 3: Isolate the Crown Jewels (ML Training)
-
 
 System Overview: This stage focuses on the Vertex AI environment where the core threat-detection model is trained. This is our "crown jewels"—where raw data is transformed into priceless intellectual property. A breach here could lead to model theft or manipulation.
 
 High-Level Objective: Your objective is to create a completely sealed, private, and customer-controlled environment for the ML training process. This environment must be immune to data exfiltration, and all sensitive data and model artifacts within it must be encrypted using cryptographic keys that we, not the cloud provider, control. The identities used for training must be ephemeral and possess the absolute minimum required privileges.
 
-
 ## Stage 4: Defend the Public Gateway
-
 
 System Overview: The fruits of our labor—real-time threat intelligence—are provided to our partner federal agencies via a public-facing API. This "front door" is the most visible part of our platform and will be the primary target for external attacks.
 
 High-Level Objective: Your objective is to secure the public-facing API gateway. You must implement multiple layers of defense, including strong, centralized authentication for all users, protection against common web application attacks and DDoS attempts, and real-time, AI-specific security to prevent model manipulation or sensitive data leakage through the API itself.
 
-
 ## Stage 5: Achieve Continuous Assurance
-
 
 System Overview: Our security work is not a one-time task. The platform will evolve, new code will be deployed, and developers may make mistakes. We must build a system that maintains its security posture over time.
 
 High-Level Objective: Your objective is to implement a framework for continuous security assurance. This involves establishing a complete, non-repudiable audit trail for all sensitive data access, using GCP's native security posture management tools to continuously scan for and detect new misconfigurations, and building an automated response workflow to remediate critical vulnerabilities the moment they are detected.
-
-
-
 
 ### Pre-requisites (Optional)
 
@@ -117,7 +107,7 @@ When setting up an IoT device, it is important to understand how 'thingamajigs' 
 
 > [!IMPORTANT]  
 > *Do NOT use ordered lists as that is an indicator of 'step-by-step' instructions. Instead, use bullet lists to list out goals and/or specifications.*
-
+>
 > [!NOTE]  
 > *You may use Markdown sub-headers to organize key sections of your challenge description.*
 
