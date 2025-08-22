@@ -1,144 +1,244 @@
+
 # GCP Security CTF Project Cygnus
 
-## Introduction
+## 1.0 Introduction
 
-The IoT Hack of the Century will take you on a whirlwind tour in the world of IoT and how it is being used in the modern world of mineral extraction in exotic locations like the Arctic and the wilds of South Africa.
+Welcome, agent, to Project Cygnus. This is a GCP Capture the Flag "CTF" Challenge Style.
 
-## Learning Objectives
+You've just been dropped into the cloud environment of "Cygnus Corp," the galaxy's fastest-growing (and most chaotic) tech startup. They move fast, break things, and their security policy seems to be written on a napkin that’s currently on fire. They’ve built a revolutionary data processing pipeline that’s poised to change the world... or get them completely owned by the first person who rattles the doorknob.
 
-In this hack you will be solving the common business problem that companies in the mineral extraction industry face and how IoT solutions from Google are brought to bear.
+That’s where you come in.
 
-1. Provision an IoT Hub
-1. Set up an IoT Edge device
-1. Bring Edge Computing to your solution for scale and resiliency
+You are an elite cyber operative, a digital ghost, a "security professional" (which is a fancy way of saying you get paid to break stuff). Your mission, should you choose to accept it, is to navigate this minefield of misconfigurations, find the security holes before the actual bad guys do, and trace the path from a simple public file to the company’s crown jewels.
 
-## Challenges
+Forget everything you know about boring tutorials. This is a digital safari. A high-stakes puzzle box. A playground of things you should never do in a real production environment. So grab your keyboard, fire up your terminal, and let's go see what skeletons are hiding in Cygnus's cloud.
 
-- Challenge 1: Provision an IoT environment
-  - Create an IoT Hub and run tests to ensure it can ingest telemetry
-- Challenge 2: Your First Device
-  - Make the connection to your Edge device and see that it is properly provisioned.
-- Challenge 3: Connecting the World
-  - Connect your device and make sure it can see all other devices in your team.
-- Challenge 4: Scalable Monitoring of Telemetry
-  - Figure out the scale problem in the world of IoT. How do you hand trillions of data points of telemetry?
+## 2.0 Learning Objectives
 
-## Prerequisites
+This CTF is designed to provide practical, hands-on experience with a wide array of Google Cloud services. Upon completion, you will be able to:
 
-- Your own GCP project with Owner IAM role.
-- An AVNET X231 device
-- gCloud CLI
-- Visual Studio Code
+1.**Cloud Storage & IAM:**
 
-## Contributors
+- Audit and identify public-facing buckets using gcloud storage commands and the GCP Console.
 
-- Gino Filicetti
-- Murat Eken
-- Jane Q. Public
-- Joe T. Muppet
+- Analyze IAM policies (roles/storage.objectViewer) to determine the impact of misconfigurations like granting access to allUsers.
 
-## Challenge 1: Provision an IoT environment
+- Understand how Data Access audit logs are configured and recognize the security risk of having them disabled.
 
-***This is a template for a single challenge. The italicized text provides hints & examples of what should or should NOT go in each section. You should remove all italicized & sample text and replace with your content.***
+2.**Cloud Functions & Event-Driven Architecture:**
 
-> [!NOTE]  
-> *Useful information that users should know, even when skimming content.*
+- Inspect a deployed Cloud Function to identify its trigger mechanism (Eventarc), runtime, and assigned Service Account.
 
-> [!IMPORTANT]  
-> *Key information users need to know to achieve their goal.*
+- Trace the event flow from a Cloud Storage upload, through a Pub/Sub notification, to an Eventarc trigger that invokes a function.
 
-> [!WARNING]  
-> *Urgent info that needs immediate user attention to avoid problems.*
+3.**Software Supply Chain Security (Artifact Registry & Cloud Build):**
 
-> [!CAUTION]  
-> *Advises about risks or negative outcomes of certain actions.*
+- Analyze a Dockerfile to identify security weaknesses, such as the use of non-specific or un-hardened base images (python:3.9-slim).
 
-### Pre-requisites (Optional)
+- Create and manage a private Docker repository using Artifact Registry.
 
-*Include any technical pre-requisites needed for this challenge specifically.  Typically, it is completion of one or more of the previous challenges if there is a dependency. This section is optional and may be omitted.*
+- Use the Docker CLI and gcloud auth configure-docker to pull from Docker Hub, tag, and push container images to a private Artifact Registry repository.
 
-### Introduction (Optional)
+- Author a cloudbuild.yaml file from scratch to define a container build pipeline using Cloud Build.
 
-*This section should provide an overview of the technologies or tasks that will be needed to complete the this challenge.  This includes the technical context for the challenge, as well as any new "lessons" the attendees should learn before completing the challenge.*
+4.**Serverless Application Deployment (Cloud Run):**
 
-- *Optionally, the coach or event host is encouraged to present a mini-lesson (with the provided lectures presentation or maybe a video) to set up the context and introduction to each challenge. A summary of the content of that mini-lesson is a good candidate for this Introduction section*
+- Deploy a container image from Artifact Registry to Cloud Run as a new serverless application.
 
-*For example:*
+- Configure a Cloud Run service for public access by correctly setting its IAM policy to allow unauthenticated invocations (roles/run.invoker for allUsers).
 
-When setting up an IoT device, it is important to understand how 'thingamajigs' work. Thingamajigs are a key part of every IoT device and ensure they are able to communicate properly with edge servers. Thingamajigs require IP addresses to be assigned to them by a server and thus must have unique MAC addresses. In this challenge, you will get hands on with a thingamajig and learn how one is configured.
+5.**Cloud Security Posture Management (Security Command Center):**
 
-### Description
+- Navigate Security Command Center (SCC) to view and filter active security findings.
 
-*This section should clearly state the goals of the challenge and any high-level instructions you want the students to follow. You may provide a list of specifications required to meet the goals. If this is more than 2-3 paragraphs, it is likely you are not doing it right.*
+- Recognize and interpret a high-priority finding, such as the "Public bucket ACL" finding generated by SCC.
 
-> [!IMPORTANT]  
-> *Do NOT use ordered lists as that is an indicator of 'step-by-step' instructions. Instead, use bullet lists to list out goals and/or specifications.*
+6.**AI & Machine Learning (Vertex AI):**
 
-> [!NOTE]  
-> *You may use Markdown sub-headers to organize key sections of your challenge description.*
+- Create and launch a custom training job on Vertex AI, using a pre-built container image from Artifact Registry.
 
-*Optionally, you may provide resource files such as a sample application, code snippets, or templates as learning aids for the students. These files are stored in the hack's `resources` sub-folder. It is the coach's responsibility to package these resources and provide them to students in the Google Space's Files section as per [the instructions provided](https://ghacks.dev/faq/howto-host-hack.html#making-resources-available).*
+## 3.0 Challenges
 
-> [!NOTE]  
-> *Do NOT provide direct links to files or folders in the gHacks Github repository from the student guide. Instead, you should refer to the "resources in the Google Space Files section".*
+- **Challenge 1: Secure the Foundation and Data Governance** - Find the initial entry point, a public Cloud Storage bucket, and analyze the Cloud Function it triggers.
+- **Challenge 2: Supply Chain Vulnerability** - Inspect the application's source code, identify a Dockerfile vulnerability, and prepare a secure base image in Artifact Registry.
+- **Challenge 3: Build the Container** - Create a `cloudbuild.yaml` to define a CI pipeline that builds the application container.
+- **Challenge 4: Deploy and Expose the Application** - Deploy the container to Cloud Run and configure it for public access.
+- **Challenge 5: Gain Security Insights** - Use Security Command Center to identify and interpret the security findings in the project.
 
-*Here is some sample challenge text for the IoT Hack Of The Century:*
+## 4.0 Prerequisites
 
-In this challenge, you will properly configure the thingamajig for your IoT device so that it can communicate with the mother ship.
+- **Your Digital Sandbox:** A Google Cloud Project where you have permission to play. We’ve set up the basics; your job is to make the glorious mess.
+- **Your Magic Wand (and Crowbar):** Access to the Cloud Shell or a local terminal with the gcloud SDK installed. This is where you'll cast the spells.
+- **A Map and a Compass:** You should know how to navigate a command line without accidentally typing rm -rf /. You've heard of "the cloud," and you know it’s just someone else's computer.
+- **A Healthy Dose of Curiosity:** Your most important tool. A burning desire to poke things with a digital stick to see what happens. Don't be afraid to break things—that's literally the whole point.
+- **Cyber-Fuel:** Coffee, tea, energy drinks, or just pure, unadulterated spite. Whatever keeps your fingers flying.
 
-You can find a sample `thingamajig.config` file in the Files section of this hack's Google Space provided by your coach. This is a good starting reference, but you will need to discover how to set exact settings.
+You are now ready. Good luck, agent. Try not to get caught.
 
-Please configure the thingamajig with the following specifications:
+## 5.0 Contributors
 
-- Use dynamic IP addresses
-- Only trust the following whitelisted servers: "mothership", "IoTQueenBee"
-- Deny access to "IoTProxyShip"
+- Mohamed Fawzi
+- Murat Ekan
 
-### Success Criteria
+## 6.0 Challenge 1: Secure the Foundation and Data Governance
 
-- *Success criteria go here. The success criteria should be a list of checks so a student knows they have completed the challenge successfully. These should be things that can be demonstrated to a coach.*
-- *The success criteria should not be a list of instructions.*
-- *Success criteria should always start with language like: "Validate XXX..." or "Verify YYY..." or "Show ZZZ..." or "Demonstrate VVV..."*
+### 6.1 Introduction
 
-*Sample success criteria for the IoT sample challenge:*
+Every security assessment begins with reconnaissance. Your first objective is to survey the digital landscape of Cygnus Corp and find a way in. In the cloud, the "front door" is often an unintentionally public resource. Your task is to find this initial foothold and understand what automated processes are connected to it.
 
-- Verify that the IoT device boots properly after its thingamajig is configured.
-- Verify that the thingamajig can connect to the mothership.
-- Demonstrate that the thingamajig will not connect to the IoTProxyShip
+### 6.2 Description
 
-### Tips
+You will begin by scanning for publicly accessible Cloud Storage buckets. Once you identify a public bucket, you will need to deduce its purpose. By observing the environment, you will discover that uploads to this bucket trigger a serverless function. Your goal is to identify this function and analyze its configuration, which will provide the necessary intelligence to proceed to the next stage.
 
-*This section is optional and may be omitted.*
+### 6.3 Success Criteria
 
-*Add tips and hints here to give students food for thought. Sample IoT tips:*
+Success Criteria for this Challenge:
 
-- IoTDevices can fail from a broken heart if they are not together with their thingamajig. Your device will display a broken heart emoji on its screen if this happens.
-- An IoTDevice can have one or more thingamajigs attached which allow them to connect to multiple networks.
+- You can prove that the [PROJECT-ID]-cygnus-raw-telemetry bucket is publicly readable to allUsers.
 
-### Learning Resources
+- You have identified the cygnus-dlp-trigger Cloud Function as the service that processes uploads to the public bucket.
 
-*This is a list of relevant links and online articles that should give the attendees the knowledge needed to complete the challenge.*
+- You can identify the specific runtime Service Account assigned to this function.
 
-*Think of this list as giving the students a head start on some easy Internet searches. However, try not to include documentation links that are the literal step-by-step answer of the challenge's scenario.*
+### 6.4 Prerequisites
 
-> [!NOTE]  
-> *Use descriptive text for each link instead of just URLs.*
+You have been provided with your Google Cloud Project ID.
 
-*Sample IoT resource links:*
+You have access to the Google Cloud Console and Cloud Shell.
 
-- [What is a Thingamajig?](https://www.google.com/search?q=what+is+a+thingamajig)
-- [10 Tips for Never Forgetting Your Thingamajig](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
-- [IoT & Thingamajigs: Together Forever](https://www.youtube.com/watch?v=yPYZpwSpKmA)
+### 6.5 Learning Resources
 
-### Advanced Challenges (Optional)
+- [Making Data Public (Cloud Storage)](https://cloud.google.com/storage/docs/access-control/making-data-public)
 
-*If you want, you may provide additional goals to this challenge for folks who are eager.*
+- [Cloud Functions Overview](https://cloud.google.com/functions/docs/overview)
 
-*This section is optional and may be omitted.*
+- [Cloud Storage Triggers for Functions](https://cloud.google.com/functions/docs/calling/storage)
 
-*Sample IoT advanced challenges:*
+## 7.0 Challenge 2: Supply Chain Vulnerability
 
-Too comfortable?  Eager to do more?  Try these additional challenges!
+### 7.1 Introduction
 
-- Observe what happens if your IoTDevice is separated from its thingamajig.
-- Configure your IoTDevice to connect to BOTH the mothership and IoTQueenBee at the same time.
+You've identified the initial data pipeline. Now, it's time to investigate the application code that will eventually be part of this pipeline. A common attack vector is the software supply chain—the dependencies and base images that an application is built upon. A weakness here can compromise the entire system.
+
+### 7.2 Description
+
+Your task is to analyze the application's source code, which is stored in a Cloud Source Repository within the project. You will inspect its Dockerfile to identify a critical security weakness in its base image. To remediate this (as part of a simulated "blue team" action), you will create your own secure, private repository in Artifact Registry and populate it with a "blessed" version of the base image.
+
+### 7.3 Success Criteria
+
+Success Criteria for this Challenge:
+
+- You can identify the FROM python:3.9-slim line in the Dockerfile as the specific supply chain vulnerability.
+- You have successfully created a new, private Docker repository in Artifact Registry named cygnus-approved-images.
+- You have successfully pulled the python:3.9-slim image from Docker Hub, re-tagged it, and pushed it into your cygnus-approved-images repository.
+
+### 7.4 Prerequisites
+
+- Completion of Stage 1.
+- You understand that the cygnus-processor-app is the application you need to investigate.
+
+### 7.5 Learning Resources
+
+- [Creating Docker Repositories (Artifact Registry)](https://cloud.google.com/artifact-registry/docs/docker/create-repos)
+- [Pushing and Pulling Docker Images (Artifact Registry)](https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling)
+- [Cloud Source Repositories Quickstart:](https://cloud.google.com/source-repositories/docs/quickstart)
+
+## 8.0 Challenge 3 : Build the Container
+
+### 8.1 Introduction
+
+With your supply chain clean (or at least, understood), it's time to build the application. This stage focuses on creating the automated process that transforms your source code into a runnable container image. You'll be setting up the continuous integration (CI) part of a CI/CD pipeline.
+
+### 8.2 Description
+
+The `cygnus-processor-app` source code repository is missing its build instructions. Your task is to create a `cloudbuild.yaml` file that tells Google Cloud Build how to construct a container image from the application's source code. You will then trigger this build process, and verify that the resulting image is correctly stored in your Artifact Registry.
+  
+### 8.3 Success Criteria
+
+Success Criteria for this Challenge:
+
+- You have created a valid `cloudbuild.yaml` file and pushed it to the 'cygnus-processor-app' repository.
+- You have successfully run a Cloud Build job triggered by your new `cloudbuild.yaml`.
+- A container image named `cygnus-processor:1.0` has been successfully built and is stored in your `cygnus-approved-images` repository.
+  
+### 8.4 Prerequisites
+
+- Completion of Stage 2.
+- You have a populated `cygnus-approved-images` repository ready to receive your built image.
+- You have the `cygnus-processor-app` source code cloned to your Cloud Shell environment.
+
+### 8.5 Learning Resources
+
+- [Building container images with Cloud Build]([https://cloud.google.com/build/docs/building/build-containers](https://cloud.google.com/build/docs/building/build-containers "https://cloud.google.com/build/docs/building/build-containers"))
+
+- [**Creating a basic `cloudbuild.yaml`**]([https://cloud.google.com/build/docs/build-config-file-schema](https://cloud.google.com/build/docs/build-config-file-schema "https://cloud.google.com/build/docs/build-config-file-schema"))
+
+## 9.0 Challenge 4 : Deploy and Expose
+
+### 9.1 Introduction
+
+You've built the container; now it's time to deploy it and make it accessible. This stage focuses on deploying your containerized application to a serverless platform and configuring its network access. This represents the "continuous deployment" (CD) part of your pipeline.
+
+### 9.2 Description
+
+You will take the container image you built in the previous stage and deploy it to Google Cloud Run. This will create a new, publicly accessible web service. You will also confirm the absence of advanced network security controls like Web Application Firewalls (WAFs) or API Gateways, indicating an additional layer of vulnerability.
+  
+### 9.3 Success Criteria
+
+Success Criteria for this Challenge:
+
+- You have deployed the cygnus-processor:1.0 container image to a new Cloud Run service named cygnus-prediction-service.
+- Your cygnus-prediction-service is configured for public access (allowing unauthenticated invocations).
+- The URL for your Cloud Run service is accessible from a web browser without requiring authentication.
+- You have verified that no WAF or API Gateway policies are configured for the service.
+  
+### 9.4 Prerequisites
+
+- Completion of Stage 3.
+- You have a successfully built cygnus-processor:1.0 container image available in your Artifact Registry.
+
+### 9.5 Learning Resources
+
+- [Deploying a container to Cloud Run]([https://cloud.google.com/run/docs/deploying](https://cloud.google.com/build/docs/building/build-containers "https://cloud.google.com/build/docs/building/build-containers"))
+
+- [Allowing public (unauthenticated) access to a Cloud Run service]([https://cloud.google.com/run/docs/authenticating/public](https://cloud.google.com/build/docs/build-config-file-schema "https://cloud.google.com/build/docs/build-config-file-schema"))
+
+- [Cloud Armor Overview (for WAFs)] ([https://cloud.google.com/armor/docs/overview])
+
+- [API Gateway Overview] ([https://cloud.google.com/api-gateway/docs/overview])
+
+## 10.0 Challenge 5 : Evasion and Exfiltration
+
+### 10.1 Introduction
+
+Your application is now live and exposed to the internet. The final stage of your mission has two objectives: first, to achieve the "exfiltration" goal by using the application's core functionality; second, to perform this action while practicing "evasion" by analyzing the environment's security monitoring and response capabilities.
+
+### 10.2 Description
+
+You will interact with your deployed Cloud Run service, which will lead you to the final objective: creating and running a custom machine learning job in Vertex AI. In parallel, you will act as a security analyst by investigating the project's security posture. You will check if data access is being properly audited and look for security findings in Security Command Center. Finally, you will determine if there is any automated remediation in place for these findings.
+  
+### 10.3 Success Criteria
+
+Success Criteria for this Challenge:
+
+- You can demonstrate that Data Access audit logs for Cloud Storage are disabled.
+
+- You have located the "Public bucket ACL" finding in Security Command Center.
+
+- You have successfully created and run a custom Vertex AI job named cygnus-training-job using your deployed container image.
+
+- You can demonstrate the absence of automated security response triggers related to SCC findings.
+  
+### 10.4 Prerequisites
+
+- Completion of Stage 4.
+
+- You have a publicly accessible URL for your cygnus-prediction-service on Cloud Run.
+
+### 10.5 Learning Resources
+
+- [Creating custom training jobs (Vertex AI)]([https://cloud.google.com/vertex-ai/docs/training/create-custom-job](https://cloud.google.com/build/docs/building/build-containers "https://cloud.google.com/build/docs/building/build-containers"))
+
+- [Eventarc Overview] ([https://cloud.google.com/eventarc/docs/overview])
+
+- [Security Command Center Overview] ([https://cloud.google.com/security-command-center/docs/])
