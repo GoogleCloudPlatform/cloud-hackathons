@@ -134,3 +134,15 @@ resource "google_compute_firewall" "fw_rdp" {
 
   source_ranges = ["0.0.0.0/0"]
 }
+
+resource "google_compute_firewall" "fw_nea" {
+  name    = "fw-media-on-gcp-nea"
+  network = module.vpc.network_name
+
+  allow {
+    ports    = ["8080"]
+    protocol = "tcp"
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
