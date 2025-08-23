@@ -93,12 +93,6 @@ data "google_storage_project_service_account" "gcs_default" {
 
 }
 
-resource "google_storage_bucket" "bucket" {
-  name                        = "${var.gcp_project_id}-testing"
-  location                    = var.gcp_region
-  uniform_bucket_level_access = true
-}
-
 resource "google_compute_firewall" "fw_ssh" {
   name    = "fw-media-on-gcp-ssh"
   network = module.vpc.network_name
