@@ -18,7 +18,7 @@ resource "google_compute_instance" "ubuntu_instance" {
   # Defines the boot disk for the instance.
   boot_disk {
     initialize_params {
-      image = "projects/media-on-gcp-storage/global/images/vizrt-vectar-machine"
+      image = "projects/qwiklabs-resources/global/images/vizrt-vectar-machine"
       size  = 50
       type  = "pd-balanced"
     }

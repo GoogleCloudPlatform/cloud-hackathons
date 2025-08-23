@@ -27,6 +27,7 @@ spec:
       allowedValues:
       - projects/id3as-public # public image for Norks
       - projects/media-on-gcp-storage # created custom image for Techex
+      - projects/qwiklabs-resources # permanent home in Qwiklabs
 ---
 name: projects/$GCP_PROJECT_ID/policies/compute.storageResourceUseRestrictions
 spec:
@@ -35,6 +36,7 @@ spec:
   - values:
       allowedValues:
       - under:projects/media-on-gcp-storage
+      - under:projects/qwiklabs-resources # permanent home in Qwiklabs
 ---
 name: projects/$GCP_PROJECT_ID/policies/compute.vmExternalIpAccess
 spec:

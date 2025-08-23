@@ -5,7 +5,8 @@ spec:
   - values:
       allowedValues:
       - projects/id3as-public # public image for Norks
-      - projects/media-on-gcp-storage # created custom image for Techex
+      - projects/media-on-gcp-storage # old location of images
+      - projects/qwiklabs-resources # permanent location of our images for Qwiklabs
 ---
 name: projects/$GCP_PROJECT_ID/policies/compute.storageResourceUseRestrictions
 spec:
@@ -13,7 +14,8 @@ spec:
   rules:
   - values:
       allowedValues:
-      - under:projects/media-on-gcp-storage
+      - under:projects/media-on-gcp-storage # old location of buckets
+      - under:projects/qwiklabs-resources # permanent location of our buckets for Qwiklabs
 ---
 name: projects/$GCP_PROJECT_ID/policies/compute.vmExternalIpAccess
 spec:

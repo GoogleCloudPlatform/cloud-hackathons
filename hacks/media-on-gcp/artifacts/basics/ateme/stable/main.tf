@@ -14,7 +14,7 @@ resource "google_compute_instance" "default" {
 
   boot_disk {
     initialize_params {
-      image = "projects/media-on-gcp-storage/global/images/ateme-nl-250625"
+      image = "projects/qwiklabs-resources/global/images/ateme-nl-250625"
     }
   }
 
@@ -41,7 +41,7 @@ resource "google_compute_instance" "default" {
 
   boot_disk {
     initialize_params {
-      image = "projects/media-on-gcp-storage/global/images/ateme-tl-250525"
+      image = "projects/qwiklabs-resources/global/images/ateme-tl-250525"
     }
   }
 

@@ -7,7 +7,7 @@ resource "google_compute_instance" "davinci-remote-edit-machine-01" {
     device_name = "davinci-remote-edit-machine-01"
 
     initialize_params {
-      image = "projects/media-on-gcp-storage/global/images/davinci-remote-edit-machine"
+      image = "projects/qwiklabs-resources/global/images/davinci-remote-edit-machine"
       size  = 500
       type  = "pd-balanced"
     }
