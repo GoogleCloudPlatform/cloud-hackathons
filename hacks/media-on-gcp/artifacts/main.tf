@@ -89,10 +89,6 @@ module "ateme" {
   networks = [module.vpc.network_name]
 }
 
-data "google_storage_project_service_account" "gcs_default" {
-
-}
-
 resource "google_compute_firewall" "fw_ssh" {
   name    = "fw-media-on-gcp-ssh"
   network = module.vpc.network_name
