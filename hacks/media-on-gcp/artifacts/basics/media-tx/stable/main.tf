@@ -10,8 +10,8 @@
 # Shielded VM features (including Secure Boot) enabled to comply with organization policy.
 # Each instance is configured with a specific service account, API scopes, and a startup script.
 
-# TF is depending on the following images that are in media-on-gcp-storage project
-# gcloud compute images list --project media-on-gcp-storage |grep custom
+# TF is depending on the following images that are in qwiklabs-resources project
+# gcloud compute images list --project qwiklabs-resources |grep custom
 #NAME: tx-core-custom-image
 #NAME: tx-darwin-custom-image
 #NAME: tx-edge-custom-image
@@ -37,7 +37,7 @@ locals {
 #   # Defines the boot disk for the instance.
 #   boot_disk {
 #     initialize_params {
-#       image = "projects/media-on-gcp-storage/global/images/tx-darwin-custom-image"
+#       image = "projects/qwiklabs-resources/global/images/tx-darwin-custom-image"
 #       size  = 50
 #       type  = "pd-balanced"
 #     }

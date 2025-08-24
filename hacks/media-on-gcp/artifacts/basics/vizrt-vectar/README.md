@@ -5,7 +5,7 @@ gcloud compute instances create vizrt-vectar-01 \
     --accelerator=type=nvidia-l4-vws,count=1 \
     --maintenance-policy="TERMINATE" \
     --image=vizrt-vectar-machine \
-    --image-project=media-on-gcp-storage \
+    --image-project=qwiklabs-resources
     --boot-disk-size=50 \
     --boot-disk-type=pd-balanced \
     --network=default \
