@@ -89,6 +89,49 @@ module "ateme" {
   networks = [module.vpc.network_name]
 }
 
+# In case a default network is not present in the project the variable `create_default_network` needs to be set.
+resource "google_compute_network" "default_network_created" {
+  name                    = "default"
+  auto_create_subnetworks = true
+  count                   = var.create_default_network ? 1 : 0
+  depends_on = [
+    google_project_service.compute_api
+  ]
+}
+
+# Punch a hole for internal VM to VM traffic
+resource "google_compute_firewall" "fwr_allow_custom" {
+  name          = "fwr-ingress-allow-custom"
+  network       = google_compute_network.default_network_created[0].self_link
+  count         = var.create_default_network ? 1 : 0
+  source_ranges = ["10.128.0.0/9"]
+  allow {
+    protocol = "all"
+  }
+}
+
+# Punch a hole for IAP traffic
+resource "google_compute_firewall" "fwr_allow_iap" {
+  name          = "fwr-ingress-allow-iap"
+  network       = google_compute_network.default_network_created[0].self_link
+  count         = var.create_default_network ? 1 : 0
+  source_ranges = ["35.235.240.0/20"]
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+}
+
+# This piece of code makes it possible to deal with the default network the same way, regardless of how it has
+# been created. Make sure to refer to the default network through this resource when needed.
+data "google_compute_network" "default_network" {
+  name = "default"
+  depends_on = [
+    google_project_service.compute_api,
+    google_compute_network.default_network_created
+  ]
+}
+
 resource "google_compute_firewall" "fw_ssh" {
   name    = "fw-media-on-gcp-ssh"
   network = module.vpc.network_name
