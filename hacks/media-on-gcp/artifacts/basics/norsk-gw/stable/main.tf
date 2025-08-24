@@ -56,13 +56,13 @@ resource "google_compute_instance" "instance" {
       # Data Sync
       mkdir -p /opt/ghack
       cd /opt/ghack
-      gsutil cp gs://ghacks-media-on-gcp-private-temp/mediaghack.tar.gz /opt/ghack
+      gsutil cp gs://ghacks-media-on-gcp-private/mediaghack.tar.gz /opt/ghack
       tar xvzf mediaghack.tar.gz
 
 
      # Install Norsk License & startup
 
-     gsutil cp gs://ghacks-media-on-gcp-private-temp/license.json /var/norsk-studio/norsk-studio-docker/secrets/license.json
+     gsutil cp gs://ghacks-media-on-gcp-private/license.json /var/norsk-studio/norsk-studio-docker/secrets/license.json
      #cp /opt/ghack/terraform/modules/norsk-studio/norsk-config/studio-env /var/norsk-studio/norsk-studio-docker/env/studio-env
      #cp /opt/ghack/terraform/modules/norsk-studio/norsk-config/base-stream-multi-viewer-streamid.yaml /var/norsk-studio/norsk-studio-docker/data/studio-save-files/base-stream-multi-viewer-streamid.yaml
      systemctl restart norsk.service

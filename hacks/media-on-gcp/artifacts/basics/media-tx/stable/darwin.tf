@@ -43,7 +43,7 @@ resource "google_compute_instance" "ubuntu_instance" {
     # Data Sync
     mkdir -p /var/node
     cd /var/node
-    gsutil cp gs://ghacks-media-on-gcp-private-temp/tx-deploy.tar.gz /var/node
+    gsutil cp gs://ghacks-media-on-gcp-private/tx-deploy.tar.gz /var/node
     tar xvzf tx-deploy.tar.gz
     cd /var/node/
     chmod +x darwin-init.sh
