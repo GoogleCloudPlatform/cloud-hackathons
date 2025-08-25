@@ -49,9 +49,9 @@ Add a wildcard A record with the external IP
 
 Create the NS record set using the 4 servers from above
 
-### Create 3 instance groups
+### Create instance groups
 
-Create 3 instance groups, one per VM
+Create instance groups, one per VM
 
 ```bash
 gcloud compute network-endpoint-groups create gclb-ateme-neg --zone=europe-west1-b --network=default --network-endpoint-type=GCE_VM_IP --subnet=default
