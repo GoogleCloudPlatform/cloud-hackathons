@@ -4,9 +4,21 @@ These instructions are to do everything by hand, they will be converted to Terra
 
 ## Steps
 
-### Create static private IP address
+These are the steps that need to run in this order to create the GCLB
+
+### Create static external IP address
+
+```bash
+gcloud compute addresses create gclb-ip --global
+```
 
 ### Create 3 internet NEGs
+
+Using the Zonal NEG which should be used for VMs hosted on GCP. This means we can use private addresses
+
+```bash
+gcloud compute network-endpoint-groups create gclb-ateme-neg --zone=europe-west1-b --network=default --network-endpoint-type=GCE_VM_IP --subnet=default
+```
 
 ### Testing Unmanaged Instance Group
 
