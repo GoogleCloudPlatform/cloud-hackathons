@@ -73,7 +73,7 @@ Before we start our first day as SREs, we are going to start up metrics collecti
 - Fill out the *Start new load test* form with the following values:
 
   - Number of users at peak: 5
-  - Spawn rate: 0.05
+  - Spawn rate: 1
   - Host: <METRICS_APP_ADDRESS> (the default value in the locust app should already point to this address)
   - Runtime: 7h (under Advanced options)
   
@@ -93,14 +93,13 @@ This challenge involves exploring the Movie Guru app and documenting typical use
 
 - **Access** and **Explore** the App
 
-  - Go to the Movie Guru app video (with the audio muted!)
-  - Pay attention to the use of the app to understand its features.
+  Go to the Movie Guru User video. This video shows you the way a typical user interacts with the app, and identfies User Journey's associated with them.
 
-[![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
+  [![**Movie Guru**](https://img.youtube.com/vi/XbWWlSabxmw/0.jpg)](https://www.youtube.com/watch?v=XbWWlSabxmw)
   
 - **Document User Journeys**
 
-  - Identify at least two distinct user journeys within the **Movie Guru** app.
+  - Select at least two distinct user journeys within the **Movie Guru** app.
   - Clearly document each journey using this format:
     - Journey Name: [Give a descriptive name]
     - Goal: [What does the user want to achieve?]
@@ -381,14 +380,13 @@ Just like SLIs, SLOs (refresher on [what are SLOs](#what-are-slos)) are also doc
 
 ### Prerequisites
 
-Run the following command in the **Cloud Shell terminal**.
+Run the following command in the **Cloud Shell terminal** (or any CLI with curl installed).
 
 > [!NOTE]  
-> With this command we're priming the backend that generates metrics to behave in a specific way. You're simulating fixes made to the app after 1-2 months work.
+> With this command we're priming the backend that generates metrics to behave in a specific way. You are simulating fixes made to the app after 1-2 months work.
 
 ```sh
-## Check if the METRICS_APP_ADDRESS
- env variable is set in your environment before you do this.
+## Check if the METRICS_APP_ADDRESS env variable is set in your environment before you do this.
 
 curl -X POST \
   -H "Content-Type: application/json" \
@@ -443,13 +441,13 @@ This challenge is about setting up **Achievable** Service Level Objectives (SLOs
     Use **Request Based** SLI calculations for now and NOT **window based**
 
    - Chat Latency:
-     - Metric: **movieguru_chat_latency_bucket** (look under the **prometheus targets > movieguru** section).
+     - Metric: **movieguru_chat_latency** (look under the **prometheus targets > movieguru** section).
    - Chat Engagement:
      - Metric: **movieguru_chat_outcome_counter_total** (Filter: **Outcome=Engaged**)
      - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Acknowledged** to indicate that the user finds the response relevant, but we will stick to just **Engaged** for now.
      - [Optional] If you want to use a filter that incorporates both **Engaged** and **Acknowledged**, use the monitoring API to create the SLO (see example).
    - Main Page Load Latency:
-     - Metric: **movieguru_startup_latency_bucket** (measured at the **startup** endpoint)
+     - Metric: **movieguru_startup_latency_milliseconds** (measured at the **startup** endpoint)
    - Main Page Load Success Rate:
      - Metric: This requires finding the ratio of two metrics: **movieguru_startup_success_total** and **movieguru_startup_attempts_total**.
      - Remarks: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO.
@@ -558,7 +556,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 - Run this command in the terminal (**Cloud Shell terminal**). This simulates your app team making some changes to the app.
 
   ```sh
-  ## Check if the METRICS_APP_ADDRESS env variable is set in your environment before you do this.
+    ## Check if the METRICS_APP_ADDRESS env variable is set in your environment before you do this.
 
   curl -X POST \
     -H "Content-Type: application/json" \
@@ -607,24 +605,23 @@ This challenge guides you through monitoring the four SLOs created in the previo
   - Create **SLO alerts** from the UI for all 4 SLOs.
     - **Slow burn rate alert** (1.5-2.0x): Indicates minor issues or gradual degradation.
     - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
+
+    > [!WARNING]  
+    > **Alerts may not trigger in this lab!** The lab starts with poor SLI performance, which consumes the error budget almost immediately. The alert window is therefore very brief and may have passed before you reach this step.
+
 - **Observe burn rates for different SLOs**:
   - Keep an eye on the burn rates for the 4 SLOs for 5-10 minutes.
   - Has the recent app change introduced any issues. If so, where?
   - Estimate the burn rate for each SLO and identify which ones require immediate action.
   - What would an ideal burn rate be?
-- [Optional] **Observing Alert Triggers**:  
-  - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives.
-  - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
-
-> [!WARNING]  
-> The lab setting makes it difficult to trigger alerts! Keep in mind that the SLIs were performing very badly at the start of the lab, eating into the error budgets from the very start. You might have just missed the window at which the burn rates would have triggered alerts. You might have also created the alerts after the burn rate hit the alert thresholds.
 
 ### Success Criteria
 
 - **Burn Rate Triggers**: Ensure you have created 2 burn rate alerts for all your SLOs (8 in total).
   - These alerts should be configured to trigger at different burn rates (e.g., 1.5-2.0x for slow burn, 10x for fast burn) to capture varying levels of degradation.
-- You've identified 2 problematic SLOs.
-- [Optional] **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, you should expect a few alerts.
+- You are able to eyeball the error budget change rate of all the SLOs.
+- You've identified 2 SLOs with decling error budgets where one is declining very rapidly, while the other is declining more slowly.
+- [Optional] **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, may see a few alerts. Don't be disappointed if you don't.
 
 ### Learning Resources
 
@@ -693,7 +690,11 @@ Burn rate measures how quickly you're using up your error budget.  It acts as an
 
 *"Mayday! Mayday!"* they exclaim, bursting into your cubicle. "*Users are reporting that Movie Guru is acting up! They can't seem to use the website properly!*"
 
-You and your colleagues decide to see what is wrong by navigating to the **movie guru** website. You notice that approximately 50% of your chat messages fail.
+You and your colleagues decide to see what is wrong by navigating to the **Movie Guru** website. You notice that approximately 50% of your chat messages fail.
+
+Look at the video below to understand what the user experience is like:
+
+[![**Movie Guru Failure Experience**](https://img.youtube.com/vi/O5C1DT1IjBw/0.jpg)](https://www.youtube.com/watch?v=O5C1DT1IjBw)
 
 ### Description
 
@@ -704,10 +705,8 @@ You and your colleagues decide to see what is wrong by navigating to the **movie
 
 ### Success Criteria
 
-- Identify the monitoring gap
-- Pinpoint the potential cause
-- Propose solutions to improve monitoring
-- [Optional] Dive deeper: Investigate further and discover the root cause
+- You have identified the monitoring gap.
+- You have propose solutions to improve monitoring.
 
 ### Learning Resources
 

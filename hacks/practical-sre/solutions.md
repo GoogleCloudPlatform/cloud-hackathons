@@ -371,6 +371,7 @@ Here is the command for it that needs to be run in a terminal to create all the 
 
 ```sh
 ## Make sure the env variable PROJECT_ID is set.
+PROJECT_ID=<project id>
 
 ## Unique Service ID of an existing service. Found on Service details section of the custom service dashboard.
 SERVICE_ID=<service UNIQUE id>
@@ -380,7 +381,7 @@ ACCESS_TOKEN=`gcloud auth print-access-token`
 
 STARTUP_SUCCESS_SLO_POST_BODY=$(cat <<EOF
 {
-  "displayName": "90% - Main Page Load Success Rate - Calendar Week",
+  "displayName": "90% - Main Page Load Success Rate - Calendar WEEK",
   "goal": 0.90,
   "calendarPeriod": "WEEK",
   "serviceLevelIndicator": {
@@ -403,7 +404,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 ```sh
 STARTUP_LATENCY_SLO_POST_BODY=$(cat <<EOF
 {
-  "displayName": "99% - Main Page Load Latency - Rolling Week",
+  "displayName": "99% - Main Page Load Latency - Rolling WEEK",
   "goal": 0.99,
   "rollingPeriod": "604800s",
   "serviceLevelIndicator": {
@@ -430,7 +431,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 ```sh
 CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
 {
-  "displayName": "70% - Chat Engagement Rate - Calendar day",
+  "displayName": "70% - Chat Engagement Rate - Calendar DAY",
   "goal": 0.7,
   "calendarPeriod": "DAY",
   "serviceLevelIndicator": {
@@ -459,7 +460,7 @@ CHAT_LATENCY_SLO_POST_BODY=$(cat <<EOF
   "serviceLevelIndicator": {
     "requestBased": {
           "distributionCut": {
-            "distributionFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_latency_milliseconds/histogram\" resource.type=\"prometheus_target\"",
+            "distributionFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_latency/histogram\" resource.type=\"prometheus_target\"",
             "range": {
               "min": -1000,
               "max": 5000
