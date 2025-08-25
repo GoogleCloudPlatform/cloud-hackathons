@@ -23,15 +23,13 @@ In this hack you will get hands on experience with both first party Google Cloud
 - Google Cloud CDN for delivery of video feeds to end users
 - Google Cloud Compute & Storage for the backbone of everything
 
-#### Industry Standard Third Party
-- Norsk for X
-- VizRT Vectar for video switching
-- TechEx Darwin for ad markers
-- Ateme Titan Live and Nea Live for playout
+#### Media Technology Partners
+- Norsk for Routing SRT Video Streams
+- Vizrt Vectar for video switching / Vision mixing
+- TechEx Darwin for inserting SCTE-35 Ad Markers
+- Ateme Titan Live for Encoding
+- Ateme Nea Live for ABR Packaging
 - Davinci Resolve for remote video editing
-- Connect to tools like; Norsk, Vizrt Vectar, Techex Darwin, Ateme Titan Live and Nea Live.
-- Connect products together via an SRT pipeline
-- Create advert visuals using Google Veo
 
 ## Challenges
 
@@ -46,8 +44,8 @@ In this hack you will get hands on experience with both first party Google Cloud
 ## Prerequisites
 
 - Basic knowledge of GCP
-- Access to a GCP environment
-- Licenses to the required third party software
+- Access to a GCP environment (will be provided in this gHack)
+- Licenses for the third party software (will be provided in this gHack)
 
 ## Contributors
 
