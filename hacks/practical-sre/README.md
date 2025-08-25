@@ -307,8 +307,7 @@ The platform team's dashboards use metrics collected from the **movie-guru backe
      - Example Availability SLI: The availability of `service abc` is measured by the ratio of successful startups recorded as a ratio of `metric x` to the total attempts in `metric y`.
      - Example Latency SLI: The latency of `service abc`, measured by the `metric x`, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.
 
-> [!TIPS]  
-> Look at the [Business Goals](#business-goals) below to narrow down your search to just a few SLIs relevant for this and the upcoming exercises. If you aren't sure of the difference between an **SLI** and a **metric**, look at how [metrics differ from SLIs](#how-do-metrics-differ-from-slis).
+**Tips**: Look at the [Business Goals](#business-goals) below to narrow down your search to just a few SLIs relevant for this and the upcoming exercises. If you aren't sure of the difference between an **SLI** and a **metric**, look at how [metrics differ from SLIs](#how-do-metrics-differ-from-slis).
 
 #### Business goals
 
@@ -692,7 +691,7 @@ Burn rate measures how quickly you're using up your error budget.  It acts as an
 
 You and your colleagues decide to see what is wrong by navigating to the **Movie Guru** website. You notice that approximately 50% of your chat messages fail.
 
-Look at the video below to understand what the user experience is like:
+Look at the video below to understand what the user experience is like (the video is sped up):
 
 [![**Movie Guru Failure Experience**](https://img.youtube.com/vi/O5C1DT1IjBw/0.jpg)](https://www.youtube.com/watch?v=O5C1DT1IjBw)
 
