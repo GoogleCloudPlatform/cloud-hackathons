@@ -31,17 +31,17 @@ module "dns-public-zone" {
     {
       name = ""
       type = "A"
-      ttl  = 300
+      ttl  = 900
       records = [
-        "34.120.52.154",
+        "34.128.188.251",
       ]
     },
     {
       name = "*"
-      type = "CNAME"
-      ttl  = 300
+      type = "A"
+      ttl  = 900
       records = [
-        "viper.media.ghacks.dev.",
+        "34.128.188.251",
       ]
     },
     {
@@ -49,7 +49,10 @@ module "dns-public-zone" {
       type = "NS"
       ttl  = 300
       records = [
-        "ns.${var.domain}",
+        "ns-cloud-e1.googledomains.com.",
+        "ns-cloud-e2.googledomains.com.",
+        "ns-cloud-e3.googledomains.com.",
+        "ns-cloud-e4.googledomains.com.",
       ]
     },
   ]
