@@ -57,12 +57,12 @@ In this hack you will get hands on experience with both first party Google Cloud
 
 ## Challenge 1: Get creative with the help of AI
 
-### Overview
+### Introduction
 - Log into the Google Cloud Console with your student account
 - Use Vertex AI and Media Studio to generate some ad creative
 - Save/Upload your videos to a cloud bucket
 
-### Details
+### Description
 - Log into the [Google Cloud Console](https://console.cloud.google.com/) with your student account 
 - Your coach will provide your Student ID and password. Each Student ID uses the same password. We recommend using incognito mode in Chrome for the student account.
 - Your coach will help you get logged into Google Cloud Console
@@ -73,16 +73,25 @@ In this hack you will get hands on experience with both first party Google Cloud
 - You should see 10 folder teams in there, place two ads for your team in the respective folder.
 - Your coach can help you get the videos uploaded
 
+### Success Criteria
+- one
+- two
+- three
+
+### Learning Resources
+- [Link]()
+- [Link]()
+
 ## Challenge 2: Gather up those feeds and spit 'em out
 
-### Overview
+### Introduction
 - Load Norsk Studio. (blank canvas)
 - Drag an SRT Ingest component to the canvas, connect to camera source1
 - Repeat for camera source 2, 3 and 4.
 - Create an SRT Egest component set x,y,z (if req'd, TBD).
 - Note down SRT locations, you'll need them in the next step.
 
-### Details
+### Description
 [Norsk Documentation](https://norsk.video/)
 
 Find the Norsk server on your environment, use the public ipaddress to access the norsk-studio 
@@ -160,15 +169,24 @@ The final step is to connect your inputs to your outputs. This tells Norsk where
     - Connect **camera3** to **srt-listener-camera3**.
     - Connect **camera4** to **srt-listener-camera4**.
 
+### Success Criteria
+- one
+- two
+- three
+
+### Learning Resources
+- [Link]()
+- [Link]()
+
 ## Challenge 3: Get in the Mix
 
-### Overview
+### Introduction
 - Connect to Vizrt using either Teamviewer or HP Anywhere
 - Configure inputs as the SRT sources from Challenge 1
 - Verify you can transition (video mix) between sources, 1,2,3 and 4
 - Configuire an SRT output from Vectar, note down the details, you'll need them in the next challange
 
-### Details
+### Description
 [VizRT Vectar Product Guide](https://www.vizrt.com/vizrt/remote/viz-vectar-plus/)
 
 In this challenge, participants will work with a professional video mixing tool, Vizrt Vectar. The main tasks are configuring inputs from the previous step and creating a new output stream.
@@ -213,15 +231,24 @@ Your coach will provide the Windows Username & Password for the Vizrt Vectar. Yo
     - They must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
     - **Participants must note down this new SRT output URL** for the next challenge.
 
+### Success Criteria
+- one
+- two
+- three
+
+### Learning Resources
+- [Link]()
+- [Link]()
+
 ## Challenge 4: Ready for some Ads?
 
-### Overview
+### Introduction
 - Connect to Techex Darwin
 - Connect the SRT ingest point to the output from Vizrt Vectar in the previous step
 - Press the button in Techex Darwin to insert a scte-35 marker into the program out stream
 - Configure the SRT output
 
-### Details
+### Description
 [Techex Darwin Documentation](https://www.techex.tv/technologies/txdarwin)
 
 1.  **Connect to Techex Darwin:** Participants will connect to the Darwin UI via its web interface.
@@ -235,12 +262,21 @@ Your coach will provide the Windows Username & Password for the Vizrt Vectar. Yo
     - Create a new SRT output for the stream that now contains the SCTE-35 marker.
     - **Ensure participants copy the SRT output URL from Darwin**, as it will be the input for Ateme Titan Live.
 
+### Success Criteria
+- one
+- two
+- three
+
+### Learning Resources
+- [Link]()
+- [Link]()
+
 ## Challenge 5: Let's Play Out!
 
-### Overview
+### Introduction
 - For Ateme Titan Live and Nea follow [this guide](https://docs.google.com/document/d/1atvTkXzYpa7SpYjcBd2A7WnF2uO9oE-P2DS8ClY12y4/edit?tab=t.0).
 
-### Details
+### Description
 [Ateme Titan Live Documentation](https://www.ateme.com/product-titan-software/)
 
 Ateme Titan Live is a broadcast-grade encoder. In this step, participants will configure it to receive the final produced stream and prepare it for delivery over the web. As shown in the architecture diagram, Titan Live is the final step before the stream is handed off to Google Cloud's media services.
@@ -254,14 +290,23 @@ Ateme Titan Live is a broadcast-grade encoder. In this step, participants will c
     - The primary goal is to have Titan Live process the stream. A default encoding profile (e.g., H.264/AAC in an HLS format) should be sufficient.
     - The crucial part of the configuration is setting up the destination. In our architecture, Titan Live will hand off to the **Ateme Nea Packager**, which then interfaces with the **Google Cloud Video Stitcher API**. This may be a pre-configured output profile in Titan Live that participants just need to select. The output should be configured to create HLS manifests.
 
+### Success Criteria
+- one
+- two
+- three
+
+### Learning Resources
+- [Link]()
+- [Link]()
+
 ## Challenge 6: Get your channel to the masses
 
-### Overview
+### Introduction
 - Clone Git hub repo for VideoJS Player
 - Publish to Cloud Run
 - Edit the code of the website and deploy the updated version (optional)
 
-### Details
+### Description
 
 This challenge moves from broadcast-specific tooling to a standard cloud workflow: deploying a web application using a containerized service.
 
@@ -287,11 +332,22 @@ This challenge moves from broadcast-specific tooling to a standard cloud workflo
     - Participants can change the look and feel of the published service if they want to. Open the code of the repository in the IDE of your choice and make some edits. Changing the title of the website and the main header are good options.
     - Once the changes are made, save the files and the new version of the service.
 
+### Success Criteria
+- one
+- two
+- three
+
+### Learning Resources
+- [Link]()
+- [Link]()
+
 ## Challenge 7: Sit back, relax, and watch TV
 
-### Details
+### Introduction
 
 This is the final step where everything comes together. Participants will see their live stream, complete with an advertisement inserted via the Google Cloud Video Stitcher API, triggered by the SCTE-35 marker they inserted earlier.
+
+### Description
 
 1.  **Open the Player:**
     - Participants should navigate to the **Cloud Run service URL** they obtained in the previous challenge.
@@ -303,3 +359,12 @@ This is the final step where everything comes together. Participants will see th
         - The SCTE-35 marker was not inserted correctly in Darwin.
         - The integration between Titan Live and the Video Stitcher API is misconfigured.
         - There is an issue with the Google Ad Manager campaign.
+
+### Success Criteria
+- one
+- two
+- three
+
+### Learning Resources
+- [Link]()
+- [Link]()
