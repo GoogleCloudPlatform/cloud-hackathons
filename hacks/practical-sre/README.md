@@ -73,7 +73,7 @@ Before we start our first day as SREs, we are going to start up metrics collecti
 - Fill out the *Start new load test* form with the following values:
 
   - Number of users at peak: 5
-  - Spawn rate: 1
+  - Ramp up: 1
   - Host: <METRICS_APP_ADDRESS> (the default value in the locust app should already point to this address)
   - Runtime: 7h (under Advanced options)
   
