@@ -53,13 +53,6 @@ resource "google_compute_instance" "instance" {
 
       echo ">>> Starting startup script..."
 
-      # Data Sync
-      mkdir -p /opt/ghack
-      cd /opt/ghack
-      gsutil cp gs://ghacks-media-on-gcp-private/mediaghack.tar.gz /opt/ghack
-      tar xvzf mediaghack.tar.gz
-
-
      # Install Norsk License & startup
 
      gsutil cp gs://ghacks-media-on-gcp-private/license.json /var/norsk-studio/norsk-studio-docker/secrets/license.json
