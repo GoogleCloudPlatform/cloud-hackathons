@@ -49,7 +49,7 @@ Add a wildcard A record with the external IP
 
 Create the NS record set using the 4 servers from above
 
-### Create instance groups
+### Create an unmanaged instance group per VM
 
 Create instance groups, one per VM
 
