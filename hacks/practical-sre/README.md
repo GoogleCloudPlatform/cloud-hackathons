@@ -34,9 +34,11 @@ In this hack you will learn how to:
 ## Prerequisites
 
 - Your own GCP project with Editor IAM role.
-- `kubectl` command line tool
 - `gcloud` command line tool
-- **Note** We recommend using the Cloud Shell to run the challenges as it has all the necessary tooling already installed.
+- `curl` command line tool
+
+> [!NOTE]  
+> We recommend using the Cloud Shell to run the challenges as it has all the necessary tooling already installed.
 
 ## Contributors
 
@@ -57,27 +59,25 @@ Before we start our first day as SREs, we are going to start up metrics collecti
 - The cloud console terminal times-out after around 30 minutes of inactivity.
 
   ```sh
-  FRONTEND_ADDRESS=<your frontend address>
-  BACKEND_ADDRESS=<your backend address>
-  LOCUST_ADDRESS=<your locust address>
   PROJECT_ID=<your project id>
-  GKE_CONNECTION_STRING=<the GKE connection string> # Don't worry you don't need to have any GKE knowledge.
+  METRICS_APP_ADDRESS=<the metrics app address>
+  LOCUST_ADDRESS=<your load generator address>
   ```
 
 #### Step 2: Generate Load on the Application
 
-- Open your browser and navigate to the Locust load generator address ($LOCUST_ADDRESS). You should see a screen similar to the one below:
+- Open your browser and navigate to the Locust Load Generator address ($LOCUST_ADDRESS). You should see a screen similar to the one below:
 
    ![locust start screen](images/locust-startscreen.png)
 
 - Fill out the *Start new load test* form with the following values:
 
   - Number of users at peak: 5
-  - Spawn rate: 0.05
-  - Host: <http://mockserver-service.movie-guru.svc.cluster.local>
+  - Ramp up: 1
+  - Host: <METRICS_APP_ADDRESS> (the default value in the locust app should already point to this address)
   - Runtime: 7h (under Advanced options)
   
-   This configuration will gradually increase the load on the backend, spawning around 3 simulated users over the course of 7 hours.
+   This configuration will gradually increase the load on the backend, spawning around 5 simulated users over the course of 7 hours.
 
 - Once the load test begins, Locust will swarm various backend endpoints, simulating traffic as users interact with the application. You should see something similar to this:
 
@@ -93,23 +93,13 @@ This challenge involves exploring the Movie Guru app and documenting typical use
 
 - **Access** and **Explore** the App
 
-  - Go to FRONTEND_ADDRESS in your web browser.
-  - Log in using your name or email. No password is required.
-  - Interact with the app to understand its features:
-    - Observe what happens after logging in.
-    - Request movie recommendations (e.g., "I feel like watching a fantasy movie").
-    - Express your preferences for genres and themes (e.g., "I love movies with funny animals," or "I dislike violent movies").
-    - Check your user profile to see if the app remembers your preferences.
-    - Log out and log in again to understand the app's behavior.
+  Go to the Movie Guru User video. This video shows you the way a typical user interacts with the app, and identfies User Journey's associated with them.
+
+  [![**Movie Guru**](https://img.youtube.com/vi/XbWWlSabxmw/0.jpg)](https://www.youtube.com/watch?v=XbWWlSabxmw)
   
-> [!WARNING]  
-> AI platform rate limits in qwiklabs environments can be very low. This might cause the app to fail when chatting with the bot (Oops.. Something went wrong). You can still use the backend to look at how the main page load/login process works, but view the chatbot interactions through this video (with sound turned down).
-
-[![**Movie Guru**](https://img.youtube.com/vi/l_KhN3RJ8qA/0.jpg)](https://youtu.be/l_KhN3RJ8qA)
-
 - **Document User Journeys**
 
-  - Identify at least two distinct user journeys within the **Movie Guru** app.
+  - Select at least two distinct user journeys within the **Movie Guru** app.
   - Clearly document each journey using this format:
     - Journey Name: [Give a descriptive name]
     - Goal: [What does the user want to achieve?]
@@ -122,8 +112,8 @@ This challenge involves exploring the Movie Guru app and documenting typical use
 
 To successfully complete this exercise, you should have:
 
-- **Identify at least 2 user journeys:** Written down 2 UJs in the format mentioned above for the **Movie Guru** app
-- Remember there is no perfect answer.
+- **Identify at least 2 user journeys:** Two UJs in the format mentioned above for the **Movie Guru** app written down.
+- Remember, there is no perfect answer.
 
 ### Learning Resources
 
@@ -203,7 +193,7 @@ Steps:
 
 Your second day as an SRE at **The Movie Advisory Company** started with a bang. The CEO, clearly fueled by an excessive amount of coffee, stormed into your workspace, ranting about Movie Guru's unreliable performance.  **"Users are complaining about the site not always being reachable!" he yelled, "This is unacceptable! Movie Guru needs to be up 100% of the time!"** He demanded a solution immediately. With a panicked look in his eyes, he pointed you towards the platform team (a single, overworked engineer) and the application team (known for their eccentric work habits).
 
-Your challenge:  figure out how to improve the app's stability, manage the CEO's expectations, and prevent a complete meltdown. Welcome to the world of SRE!
+Your challenge: Figure out how to improve the app's stability, manage the CEO's expectations, and prevent a complete meltdown. Welcome to the world of SRE!
 
 ### Description
 
@@ -292,12 +282,13 @@ The addition of "measured over a 30-day rolling window" specifies the timeframe 
 
 ### Introduction
 
-The platform team introduces you to the app's monitoring dashboards in the Google Cloud Console.
+The platform team introduces you to the app's Custom Monitoring Dashboards in the Google Cloud Console.
 The platform team's dashboards use metrics collected from the **movie-guru backend service**.
 
 - **Login Dashboard**: Tracks the health and efficiency of the user login process.
-- **Main Page Load Dashboard/ Startup Dashboard**: Monitors the performance of the post-login, **Main Page Load**.
+- **Startup Dashboard**: Monitors the performance of the post-login, main page.
 - **Chat Dashboard**: Provides a comprehensive view of user interactions with the chatbot, including engagement, sentiment, and response times.
+- **Preferences Dashboard**: Monitors the performance of the user preferences endpoints.
 
 > [!NOTE]  
 > Metrics in the dashboards may appear blocky because we’re simulating load with only a few users. Achieving smoother graphs generally requires a larger user load.
@@ -306,8 +297,7 @@ The platform team's dashboards use metrics collected from the **movie-guru backe
 
 **Make guesses for this exercise whenever you don't have real information to go on.**
 
-1. **Browse existing dashboards**
-   - Find them at **Google Cloud Monitoring \> Dashboards \> Custom Dashboards**.  
+1. **Browse the existing dashboards**
 1. **Assess user experience**
      - Based on the metrics and your own experience, describe how users likely perceive the app's performance.  
 1. Note down which aspects of the app need serious improvement.
@@ -317,9 +307,6 @@ The platform team's dashboards use metrics collected from the **movie-guru backe
    - Write them down in definition form as illustrated below.
      - Example Availability SLI: The availability of `service abc` is measured by the ratio of successful startups recorded as a ratio of `metric x` to the total attempts in `metric y`.
      - Example Latency SLI: The latency of `service abc`, measured by the `metric x`, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.
-   - **Tips**:
-     - Look at the [Business Goals](#business-goals) below to narrow down your search to just a few SLIs relevant for this and the upcoming exercises.
-     - If you aren't sure of the difference between an **SLI** and a **metric**, look [here](#how-do-metrics-differ-from-slis).
 
 #### Business goals
 
@@ -344,6 +331,11 @@ Metrics and Service Level Indicators (SLIs) both provide valuable data about a s
 - Lower latency means faster logins, contributing to a better user experience.
 - The dashboard displays several percentiles of login latency (10th, 50th, 90th, 95th, 99th), giving you a comprehensive view of the login speed distribution.
 - This metric is also displayed as a line chart, allowing you to track changes in latency over time and identify any performance degradations.
+
+### Tips
+
+Look at the [Business Goals](#business-goals) to narrow down your search to just a few SLIs relevant for this and the upcoming exercises.
+If you aren't sure of the difference between an **SLI** and a **metric**, look at how [metrics differ from SLIs](#how-do-metrics-differ-from-slis).
 
 ## Challenge 5: Setting Priorities for Reliability
 
@@ -391,13 +383,13 @@ Just like SLIs, SLOs (refresher on [what are SLOs](#what-are-slos)) are also doc
 
 ### Prerequisites
 
-Run the following command in the **Cloud Shell terminal**.
+Run the following command in the **Cloud Shell terminal** (or any CLI with curl installed).
 
 > [!NOTE]  
-> With this command we're priming the backend that generates metrics to behave in a specific way. You're simulating fixes made to the app after 1-2 months work.
+> With this command we're priming the backend that generates metrics to behave in a specific way. You are simulating fixes made to the app after 1-2 months work.
 
 ```sh
-## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+## Check if the METRICS_APP_ADDRESS env variable is set in your environment before you do this.
 
 curl -X POST \
   -H "Content-Type: application/json" \
@@ -427,7 +419,7 @@ curl -X POST \
   "PrefUpdateLatencyMinMS": 363,
   "PrefUpdateLatencyMaxMS": 645
 }' \
-$BACKEND_ADDRESS/phase 
+$METRICS_APP_ADDRESS/phase 
 ```
 
 ### Introduction
@@ -452,13 +444,13 @@ This challenge is about setting up **Achievable** Service Level Objectives (SLOs
     Use **Request Based** SLI calculations for now and NOT **window based**
 
    - Chat Latency:
-     - Metric: **movieguru_chat_latency_milliseconds_bucket** (look under the **prometheus targets > movieguru** section)
+     - Metric: **movieguru_chat_latency** (look under the **prometheus targets > movieguru** section).
    - Chat Engagement:
      - Metric: **movieguru_chat_outcome_counter_total** (Filter: **Outcome=Engaged**)
      - Remarks: Ideally we would like to use **Outcome=Engaged** and **Outcome=Acknowledged** to indicate that the user finds the response relevant, but we will stick to just **Engaged** for now.
      - [Optional] If you want to use a filter that incorporates both **Engaged** and **Acknowledged**, use the monitoring API to create the SLO (see example).
    - Main Page Load Latency:
-     - Metric: **movieguru_startup_latency_milliseconds_bucket** (measured at the **startup** endpoint)
+     - Metric: **movieguru_startup_latency_milliseconds** (measured at the **startup** endpoint)
    - Main Page Load Success Rate:
      - Metric: This requires finding the ratio of two metrics: **movieguru_startup_success_total** and **movieguru_startup_attempts_total**.
      - Remarks: Since the UI doesn't support combining metrics, you'll need to use the Cloud Monitoring API to define this SLO.
@@ -567,7 +559,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 - Run this command in the terminal (**Cloud Shell terminal**). This simulates your app team making some changes to the app.
 
   ```sh
-  ## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+    ## Check if the METRICS_APP_ADDRESS env variable is set in your environment before you do this.
 
   curl -X POST \
     -H "Content-Type: application/json" \
@@ -597,7 +589,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
     "PrefUpdateLatencyMinMS": 363,
     "PrefUpdateLatencyMaxMS": 645
   }' \
-  $BACKEND_ADDRESS/phase
+  $METRICS_APP_ADDRESS/phase
   ```
 
 ### Introduction
@@ -616,24 +608,23 @@ This challenge guides you through monitoring the four SLOs created in the previo
   - Create **SLO alerts** from the UI for all 4 SLOs.
     - **Slow burn rate alert** (1.5-2.0x): Indicates minor issues or gradual degradation.
     - **Fast burn rate alert** (10x): Signals major outages requiring immediate attention.
+
+    > [!WARNING]  
+    > **Alerts may not trigger in this lab!** The lab starts with poor SLI performance, which consumes the error budget almost immediately. The alert window is therefore very brief and may have passed before you reach this step.
+
 - **Observe burn rates for different SLOs**:
   - Keep an eye on the burn rates for the 4 SLOs for 5-10 minutes.
   - Has the recent app change introduced any issues. If so, where?
   - Estimate the burn rate for each SLO and identify which ones require immediate action.
   - What would an ideal burn rate be?
-- [Optional] **Observing Alert Triggers**:  
-  - Which SLOs are triggering alerts? This indicates which services are failing to meet their objectives.
-  - What is the burn rate of the triggered alerts? This shows how quickly the SLO is degrading. A faster burn rate (e.g., 10x) signals a more urgent issue.
-
-> [!WARNING]  
-> The lab setting makes it difficult to trigger alerts! Keep in mind that the SLIs were performing very badly at the start of the lab, eating into the error budgets from the very start. You might have just missed the window at which the burn rates would have triggered alerts. You might have also created the alerts after the burn rate hit the alert thresholds.
 
 ### Success Criteria
 
 - **Burn Rate Triggers**: Ensure you have created 2 burn rate alerts for all your SLOs (8 in total).
   - These alerts should be configured to trigger at different burn rates (e.g., 1.5-2.0x for slow burn, 10x for fast burn) to capture varying levels of degradation.
-- You've identified 2 problematic SLOs.
-- [Optional] **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, you should expect a few alerts.
+- You are able to eyeball the error budget change rate of all the SLOs.
+- You've identified 2 SLOs with decling error budgets where one is declining very rapidly, while the other is declining more slowly.
+- [Optional] **Alert Activity**: While the exact number of alerts triggered will vary depending on the system's behavior, may see a few alerts. Don't be disappointed if you don't.
 
 ### Learning Resources
 
@@ -657,25 +648,13 @@ Burn rate measures how quickly you're using up your error budget.  It acts as an
 
 ### Prerequisites
 
-- Connect to the GKE cluster from the **Cloud Shell terminal** by pasting the following command.
-
-```sh
-$GKE_CONNECTION_STRING ## This should print out the connection string command that will give your terminal credentials to connect to the GKE cluster
-```
-
-- Deploy a new frontend version (your devs have made a change and you want to have a new version running alongside the old one)
-
-```sh
-kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/refs/heads/ghack-sre/k8s/frontend-v2.yaml)
-```
-
 - Reset the backend server
 
   > [!NOTE]  
   > With this command we're priming the backend that generates metrics to behave in a specific way. This simulates your colleagues making some changes that might have broken/fixed a few things.
 
   ```sh
-  ## Check if the BACKEND_ADDRESS env variable is set in your environment before you do this.
+  ## Check if the METRICS_APP_ADDRESS env variable is set in your environment before you do this.
 
   curl -X POST \
     -H "Content-Type: application/json" \
@@ -705,7 +684,7 @@ kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/re
     "PrefUpdateLatencyMinMS": 363,
     "PrefUpdateLatencyMaxMS": 645
   }' \
-  $BACKEND_ADDRESS/phase 
+  $METRICS_APP_ADDRESS/phase 
   ```
 
 ### Introduction
@@ -714,23 +693,23 @@ kubectl apply -f <(curl -s https://raw.githubusercontent.com/MKand/movie-guru/re
 
 *"Mayday! Mayday!"* they exclaim, bursting into your cubicle. "*Users are reporting that Movie Guru is acting up! They can't seem to use the website properly!*"
 
+You and your colleagues decide to see what is wrong by navigating to the **Movie Guru** website. You notice that approximately 50% of your chat messages fail.
+
+Look at the video below to understand what the user experience is like (the video is sped up):
+
+[![**Movie Guru Failure Experience**](https://img.youtube.com/vi/O5C1DT1IjBw/0.jpg)](https://www.youtube.com/watch?v=O5C1DT1IjBw)
+
 ### Description
 
 - Look at your SLO dashboards to spot issues (wait a few minutes before you check).
-
-- Investigate the Issue:
-  - To get to the bottom of this mystery, open a new **incognito/private** browser window and navigate to the Movie Guru frontend.
-  - Refresh the page a few times and see if you spot something wrong.
-- Compare your observations with the data displayed on the dashboards. What discrepancies do you notice?
+- Compare your observation (when visiting the website) with the data displayed on the dashboards. What discrepancies do you notice?
 - Explain the reason for the difference between what users are reporting and what the dashboards are showing.
 - How can you improve your monitoring to better reflect the actual user experience?
 
 ### Success Criteria
 
-- Identify the monitoring gap
-- Pinpoint the potential cause
-- Propose solutions to improve monitoring
-- [Optional] Dive deeper: Investigate further and discover the root cause
+- You have identified the monitoring gap.
+- You have propose solutions to improve monitoring.
 
 ### Learning Resources
 

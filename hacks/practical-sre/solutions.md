@@ -129,13 +129,13 @@ curl -X POST \
   "PrefUpdateLatencyMinMS": 463,
   "PrefUpdateLatencyMaxMS": 745
 }' \
-$BACKEND_ADDRESS/phase 
+$METRICS_APP_ADDRESS/phase 
 ```
 
 #### Getting Started
 
 1. **Start Metrics Collection:** Begin by launching the load tester tool to collect background metrics. This data will be used in later challenges. Confirm this is running for the students.
-2. **Explore the App:**  Each student should access the Movie Guru app on their own machine using the provided frontend IP address. Take 10 minutes to explore the app individually. If the front end isn't working properly due to GenAI api ratelimits, then make them watch the video instead.
+2. **Explore the App:** Each student should understand how the Movie Guru app works via the video link.
 
 #### Identifying User Journeys
 
@@ -371,8 +371,9 @@ Here is the command for it that needs to be run in a terminal to create all the 
 
 ```sh
 ## Make sure the env variable PROJECT_ID is set.
+PROJECT_ID=<project id>
 
-## Unique Service ID of an existing service
+## Unique Service ID of an existing service. Found on Service details section of the custom service dashboard.
 SERVICE_ID=<service UNIQUE id>
 
 ## Get an access token
@@ -380,7 +381,7 @@ ACCESS_TOKEN=`gcloud auth print-access-token`
 
 STARTUP_SUCCESS_SLO_POST_BODY=$(cat <<EOF
 {
-  "displayName": "90% - Main Page Load Success Rate - Calendar Week",
+  "displayName": "90% - Main Page Load Success Rate - Calendar WEEK",
   "goal": 0.90,
   "calendarPeriod": "WEEK",
   "serviceLevelIndicator": {
@@ -403,7 +404,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 ```sh
 STARTUP_LATENCY_SLO_POST_BODY=$(cat <<EOF
 {
-  "displayName": "99% - Main Page Load Latency - Rolling Week",
+  "displayName": "99% - Main Page Load Latency - Rolling WEEK",
   "goal": 0.99,
   "rollingPeriod": "604800s",
   "serviceLevelIndicator": {
@@ -414,7 +415,6 @@ STARTUP_LATENCY_SLO_POST_BODY=$(cat <<EOF
               "min": -1000,
               "max": 1000
             }
-          
         },
       }
     }
@@ -431,7 +431,7 @@ curl  --http1.1 --header "Authorization: Bearer ${ACCESS_TOKEN}" --header "Conte
 ```sh
 CHAT_ENGAGEMENT_SLO_POST_BODY=$(cat <<EOF
 {
-  "displayName": "70% - Chat Engagement Rate - Calendar day",
+  "displayName": "70% - Chat Engagement Rate - Calendar DAY",
   "goal": 0.7,
   "calendarPeriod": "DAY",
   "serviceLevelIndicator": {
@@ -460,7 +460,7 @@ CHAT_LATENCY_SLO_POST_BODY=$(cat <<EOF
   "serviceLevelIndicator": {
     "requestBased": {
           "distributionCut": {
-            "distributionFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_latency_milliseconds/histogram\" resource.type=\"prometheus_target\"",
+            "distributionFilter": "metric.type=\"prometheus.googleapis.com/movieguru_chat_latency/histogram\" resource.type=\"prometheus_target\"",
             "range": {
               "min": -1000,
               "max": 5000
@@ -505,7 +505,7 @@ Analyze error budget: Discuss the "Startup Success Rate" SLO's error budget, its
   Before diving into this challenge, you'll need to orchestrate a bit of controlled chaos:
 
   1. **Fake Backend Manipulation:**  Instruct the students to configure the **fake backend** with a probability distribution that simulates excellent performance. This should push all SLOs into the "good" region, creating a false sense of stability.
-  2. **Frontend Sabotage:**  Have the students introduce a sneaky change to the frontend code that causes 50% of the calls to the backend to fail. This will create a noticeable impact on user experience while leaving the backend metrics untouched.
+  2. **Frontend Sabotage:**  Here the developers (imaginary) introduce a change to the frontend code that causes 50% of the calls to the backend to fail. This will create a noticeable impact on user experience while leaving the backend metrics untouched.
 
 - **The Illusion of Perfection**
 
