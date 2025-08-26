@@ -6,7 +6,7 @@ resource "google_compute_managed_ssl_certificate" "viper_media_ghacks_dev" {
       "viper.media.ghacks.dev",
       "norsk.viper.media.ghacks.dev",
       "darwin.viper.media.ghacks.dev",
-      "gemini-agent.viper.media.ghacks.dev",
+      "gemini.viper.media.ghacks.dev",
       "titan.viper.media.ghacks.dev",
       "nea.viper.media.ghacks.dev",
       "cdn.viper.media.ghacks.dev",
