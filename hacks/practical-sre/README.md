@@ -286,8 +286,9 @@ The platform team introduces you to the app's Custom Monitoring Dashboards in th
 The platform team's dashboards use metrics collected from the **movie-guru backend service**.
 
 - **Login Dashboard**: Tracks the health and efficiency of the user login process.
-- **Startup Dashboard**: Monitors the performance of the post-login, **Main Page Load**.
+- **Startup Dashboard**: Monitors the performance of the post-login, main page.
 - **Chat Dashboard**: Provides a comprehensive view of user interactions with the chatbot, including engagement, sentiment, and response times.
+- **Preferences Dashboard**: Monitors the performance of the user preferences endpoints.
 
 > [!NOTE]  
 > Metrics in the dashboards may appear blocky because we’re simulating load with only a few users. Achieving smoother graphs generally requires a larger user load.
@@ -306,8 +307,6 @@ The platform team's dashboards use metrics collected from the **movie-guru backe
    - Write them down in definition form as illustrated below.
      - Example Availability SLI: The availability of `service abc` is measured by the ratio of successful startups recorded as a ratio of `metric x` to the total attempts in `metric y`.
      - Example Latency SLI: The latency of `service abc`, measured by the `metric x`, is tracked as a histogram at the 10th, 50th, 90th, and 99th percentiles.
-
-**Tips**: Look at the [Business Goals](#business-goals) below to narrow down your search to just a few SLIs relevant for this and the upcoming exercises. If you aren't sure of the difference between an **SLI** and a **metric**, look at how [metrics differ from SLIs](#how-do-metrics-differ-from-slis).
 
 #### Business goals
 
@@ -332,6 +331,11 @@ Metrics and Service Level Indicators (SLIs) both provide valuable data about a s
 - Lower latency means faster logins, contributing to a better user experience.
 - The dashboard displays several percentiles of login latency (10th, 50th, 90th, 95th, 99th), giving you a comprehensive view of the login speed distribution.
 - This metric is also displayed as a line chart, allowing you to track changes in latency over time and identify any performance degradations.
+
+### Tips
+
+Look at the [Business Goals](#business-goals) to narrow down your search to just a few SLIs relevant for this and the upcoming exercises.
+If you aren't sure of the difference between an **SLI** and a **metric**, look at how [metrics differ from SLIs](#how-do-metrics-differ-from-slis).
 
 ## Challenge 5: Setting Priorities for Reliability
 
