@@ -61,6 +61,11 @@ gcloud compute network-endpoint-groups create gclb-ateme-neg --zone=europe-west1
 
 Use this everywhere
 
+### Create the URL Map
+
+Need to have the redirect http to https map first
+Then create the url map for our GCLB
+
 ### Create the backends
 
 Create 1 backend for each of the instance groups
