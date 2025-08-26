@@ -1,62 +1,45 @@
-locals {
-  network_interfaces = [for i, n in var.networks : {
-    network     = n,
-    subnetwork  = length(var.sub_networks) > i ? element(var.sub_networks, i) : null
-    external_ip = length(var.external_ips) > i ? element(var.external_ips, i) : "NONE"
-    }
-  ]
+module "nea" {
+  source = "../../gce-mig/stable"
+
+  project_id           = var.project_id
+  region               = var.region
+  instance_group_name  = "ateme-nl-mig"
+  base_instance_name   = "ateme-nl"
+  target_size          = 1
+  machine_type         = "c4d-standard-8"
+  source_image         = "projects/qwiklabs-resources/global/images/ateme-nl-250625"
+  boot_disk_type       = "hyperdisk-balanced"
+  tags                 = ["http-server"]
+
+  networks             = var.networks
+  sub_networks         = var.sub_networks
+  external_ips         = var.external_ips
+
+  named_ports = [{
+    name = "http"
+    port = 8080
+  }]
 }
 
-resource "google_compute_instance" "nea" {
-  name         = "ateme-nl"
-  machine_type = "c4d-standard-8"
-  zone         = var.zone
+module "titan" {
+  source = "../../gce-mig/stable"
 
-  boot_disk {
-    initialize_params {
-      image = "projects/media-on-gcp-storage/global/images/ateme-nl-250625"
-    }
-  }
+  project_id           = var.project_id
+  region               = var.region
+  instance_group_name  = "ateme-tl01-mig"
+  base_instance_name   = "ateme-tl01"
+  target_size          = 1
+  machine_type         = "c4d-standard-8"
+  source_image         = "projects/qwiklabs-resources/global/images/ateme-tl-250525"
+  boot_disk_type       = "hyperdisk-balanced"
+  tags                 = ["http-server"]
 
-  dynamic "network_interface" {
-    for_each = local.network_interfaces
-    content {
-      network    = network_interface.value.network
-      subnetwork = network_interface.value.subnetwork
+  networks             = var.networks
+  sub_networks         = var.sub_networks
+  external_ips         = var.external_ips
 
-      dynamic "access_config" {
-        for_each = network_interface.value.external_ip == "NONE" ? [] : [1]
-        content {
-          nat_ip = network_interface.value.external_ip == "EPHEMERAL" ? null : network_interface.value.external_ip
-        }
-      }
-    }
-  }
-}
-
-resource "google_compute_instance" "titan" {
-  name         = "ateme-tl01"
-  machine_type = "c4d-standard-8"
-  zone         = var.zone
-
-  boot_disk {
-    initialize_params {
-      image = "projects/media-on-gcp-storage/global/images/ateme-tl-250525"
-    }
-  }
-
-  dynamic "network_interface" {
-    for_each = local.network_interfaces
-    content {
-      network    = network_interface.value.network
-      subnetwork = network_interface.value.subnetwork
-
-      dynamic "access_config" {
-        for_each = network_interface.value.external_ip == "NONE" ? [] : [1]
-        content {
-          nat_ip = network_interface.value.external_ip == "EPHEMERAL" ? null : network_interface.value.external_ip
-        }
-      }
-    }
-  }
+  named_ports = [{
+    name = "https"
+    port = 443
+  }]
 }

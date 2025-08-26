@@ -4,136 +4,70 @@ resource "google_compute_global_address" "default" {
   name    = "lb-ip-address"
 }
 
-# Cloud Endpoints Service 1
-resource "google_endpoints_service" "service_1" {
+# Cloud Endpoints Services (Dynamic)
+resource "google_endpoints_service" "dynamic" {
+  for_each       = var.backend_services
+
   project        = var.project_id
-  service_name   = "instance1.endpoints.${var.project_id}.cloud.goog"
-  openapi_config = <<EOF
-swagger: "2.0"
-info:
-  title: "Cloud Endpoints DNS"
-  description: "A simple API to manage DNS settings"
-  version: "1.0.0"
-host: "instance1.endpoints.${var.project_id}.cloud.goog"
-x-google-endpoints:
-- name: "instance1.endpoints.${var.project_id}.cloud.goog"
-  target: "${google_compute_global_address.default.address}"
-paths: {}
-EOF
+  service_name   = "${each.key}.endpoints.${var.project_id}.cloud.goog"
+  openapi_config = <<-EOF
+    swagger: "2.0"
+    info:
+      title: "API for ${each.key}"
+      description: "A simple API for the ${each.key} service"
+      version: "1.0.0"
+    host: "${each.key}.endpoints.${var.project_id}.cloud.goog"
+    x-google-endpoints:
+    - name: "${each.key}.endpoints.${var.project_id}.cloud.goog"
+      target: "${google_compute_global_address.default.address}"
+    schemes:
+      - "https"
+    paths: {}
+  EOF
+
+  # NOTE:
+  # Prevent deletion on destroy.
+  # Deleteing this resource will not allow you to reuse again within 30 days. Can undelete service
+  # Following, https://cloud.google.com/service-infrastructure/docs/manage-services#undeleting_a_service
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
 }
 
-# Cloud Endpoints Service 2
-resource "google_endpoints_service" "service_2" {
-  project        = var.project_id
-  service_name   = "instance2.endpoints.${var.project_id}.cloud.goog"
-  openapi_config = <<EOF
-swagger: "2.0"
-info:
-  title: "Cloud Endpoints DNS"
-  description: "A simple API to manage DNS settings"
-  version: "1.0.0"
-host: "instance2.endpoints.${var.project_id}.cloud.goog"
-x-google-endpoints:
-- name: "instance2.endpoints.${var.project_id}.cloud.goog"
-  target: "${google_compute_global_address.default.address}"
-paths: {}
-EOF
-}
-
-# Cloud Endpoints Service 3
-resource "google_endpoints_service" "service_3" {
-  project        = var.project_id
-  service_name   = "instance3.endpoints.${var.project_id}.cloud.goog"
-  openapi_config = <<EOF
-swagger: "2.0"
-info:
-  title: "Cloud Endpoints DNS"
-  description: "A simple API to manage DNS settings"
-  version: "1.0.0"
-host: "instance3.endpoints.${var.project_id}.cloud.goog"
-x-google-endpoints:
-- name: "instance3.endpoints.${var.project_id}.cloud.goog"
-  target: "${google_compute_global_address.default.address}"
-paths: {}
-EOF
-}
-
-# Managed SSL Certificate
+# Managed SSL Certificate (Dynamic)
 resource "google_compute_managed_ssl_certificate" "default" {
   project = var.project_id
   name    = "managed-cert"
   managed {
-    domains = [
-      "instance1.endpoints.${var.project_id}.cloud.goog",
-      "instance2.endpoints.${var.project_id}.cloud.goog",
-      "instance3.endpoints.${var.project_id}.cloud.goog"
-    ]
+    domains = [for key in keys(var.backend_services) : "${key}.endpoints.${var.project_id}.cloud.goog"]
   }
 }
 
-# Target HTTPS Proxy
-resource "google_compute_target_https_proxy" "default" {
-  project          = var.project_id
-  name             = "https-proxy"
-  url_map          = google_compute_url_map.default.id
-  ssl_certificates = [google_compute_managed_ssl_certificate.default.id]
-}
-
-# Target HTTP Proxy for Redirect
-resource "google_compute_target_http_proxy" "redirect" {
-  project = var.project_id
-  name    = "http-redirect-proxy"
-  url_map = google_compute_url_map.redirect.id
-}
-
-# URL Map for HTTPS
+# URL Map for HTTPS (Dynamic)
 resource "google_compute_url_map" "default" {
-  project         = var.project_id
-  name            = "url-map"
-  default_service = google_compute_backend_service.bs-mig1.id
+  project = var.project_id
+  name    = "url-map"
+  # A default service is required, so we pick the first one from the map.
+  # This assumes the var.backend_services map is not empty.
+  default_service = google_compute_backend_service.dynamic[keys(var.backend_services)[0]].id
 
-  host_rule {
-    hosts        = ["instance1.endpoints.${var.project_id}.cloud.goog"]
-    path_matcher = "instance1-path-matcher"
-  }
-
-  path_matcher {
-    name            = "instance1-path-matcher"
-    default_service = google_compute_backend_service.bs-mig1.id
-
-    path_rule {
-      paths   = ["/", "/*"]
-      service = google_compute_backend_service.bs-mig1.id
+  dynamic "host_rule" {
+    for_each = var.backend_services
+    content {
+      hosts        = ["${host_rule.key}.endpoints.${var.project_id}.cloud.goog"]
+      path_matcher = "${host_rule.key}-path-matcher"
     }
   }
 
-  host_rule {
-    hosts        = ["instance2.endpoints.${var.project_id}.cloud.goog"]
-    path_matcher = "instance2-path-matcher"
-  }
-
-  path_matcher {
-    name            = "instance2-path-matcher"
-    default_service = google_compute_backend_service.bs-mig2.id
-
-    path_rule {
-      paths   = ["/", "/*"]
-      service = google_compute_backend_service.bs-mig2.id
-    }
-  }
-
-  host_rule {
-    hosts        = ["instance3.endpoints.${var.project_id}.cloud.goog"]
-    path_matcher = "instance3-path-matcher"
-  }
-
-  path_matcher {
-    name            = "instance3-path-matcher"
-    default_service = google_compute_backend_service.bs-mig3.id
-
-    path_rule {
-      paths   = ["/", "/*"]
-      service = google_compute_backend_service.bs-mig3.id
+  dynamic "path_matcher" {
+    for_each = var.backend_services
+    content {
+      name            = "${path_matcher.key}-path-matcher"
+      default_service = google_compute_backend_service.dynamic[path_matcher.key].id
+      path_rule {
+        paths   = ["/", "/*"]
+        service = google_compute_backend_service.dynamic[path_matcher.key].id
+      }
     }
   }
 }
@@ -149,78 +83,81 @@ resource "google_compute_url_map" "redirect" {
   }
 }
 
-# Backend Services & Health Checks
-resource "google_compute_backend_service" "bs-mig1" {
-  project     = var.project_id
-  name        = "backend-service-mig1"
-  port_name   = "http"
-  protocol    = "HTTP"
-  health_checks = [google_compute_health_check.http-health-check-mig1.id]
-  backend {
-    group = google_compute_region_instance_group_manager.mig1.instance_group
-  }
+# Target Proxies
+resource "google_compute_target_https_proxy" "default" {
+  project          = var.project_id
+  name             = "https-proxy"
+  url_map          = google_compute_url_map.default.id
+  ssl_certificates = [google_compute_managed_ssl_certificate.default.id]
 }
 
-resource "google_compute_health_check" "http-health-check-mig1" {
+resource "google_compute_target_http_proxy" "redirect" {
   project = var.project_id
-  name    = "http-health-check-mig1"
+  name    = "http-redirect-proxy"
+  url_map = google_compute_url_map.redirect.id
+}
+
+# Backend Services & Health Checks (Dynamic)
+resource "google_compute_health_check" "http" {
+  for_each = { for k, v in var.backend_services : k => v if v.healthcheck_protocol == "http" }
+  project  = var.project_id
+  name     = "http-health-check-${each.key}"
   http_health_check {
-    port = 80
+    port = each.value.port
   }
 }
 
-resource "google_compute_backend_service" "bs-mig2" {
-  project     = var.project_id
-  name        = "backend-service-mig2"
-  port_name   = "http"
-  protocol    = "HTTP"
-  health_checks = [google_compute_health_check.http-health-check-mig2.id]
+resource "google_compute_health_check" "ssl" {
+  for_each = { for k, v in var.backend_services : k => v if v.healthcheck_protocol == "ssl" }
+  project  = var.project_id
+  name     = "ssl-health-check-${each.key}"
+  ssl_health_check {
+    port = each.value.port
+  }
+}
+
+resource "google_compute_health_check" "tcp" {
+  for_each = { for k, v in var.backend_services : k => v if v.healthcheck_protocol == "tcp" }
+  project  = var.project_id
+  name     = "tcp-health-check-${each.key}"
+  tcp_health_check {
+    port = each.value.port
+  }
+}
+
+resource "google_compute_backend_service" "dynamic" {
+  for_each      = var.backend_services
+  project       = var.project_id
+  name          = "backend-service-${each.key}"
+  port_name     = each.value.port_name
+  protocol      = each.value.protocol
+  health_checks = [
+    each.value.healthcheck_protocol == "http" ? google_compute_health_check.http[each.key].id :
+    (each.value.healthcheck_protocol == "ssl" ? google_compute_health_check.ssl[each.key].id :
+      google_compute_health_check.tcp[each.key].id)
+  ]
+
   backend {
-    group = google_compute_region_instance_group_manager.mig2.instance_group
+    group = each.value.instance_group
   }
-}
 
-resource "google_compute_health_check" "http-health-check-mig2" {
-  project = var.project_id
-  name    = "http-health-check-mig2"
-  http_health_check {
-    port = 80
-  }
-}
-
-resource "google_compute_backend_service" "bs-mig3" {
-  project     = var.project_id
-  name        = "backend-service-mig3"
-  port_name   = "http"
-  protocol    = "HTTP"
-  health_checks = [google_compute_health_check.http-health-check-mig3.id]
-  backend {
-    group = google_compute_region_instance_group_manager.mig3.instance_group
-  }
-}
-
-resource "google_compute_health_check" "http-health-check-mig3" {
-  project = var.project_id
-  name    = "http-health-check-mig3"
-  http_health_check {
-    port = 80
-  }
+  enable_cdn = each.value.enable_cdn
 }
 
 # Firewall Rule
-resource "google_compute_firewall" "default" {
-  project = var.project_id
-  name    = "allow-health-check-and-lb"
-  network = var.network
+resource "google_compute_firewall" "fwr-allow-health-check-and-lb" {
+  project       = var.project_id
+  name          = "fwr-allow-health-check-and-lb"
+  network       = var.network
   allow {
     protocol = "tcp"
-    ports    = ["80"]
+    ports    = ["80", "443", "8080"]
   }
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
-  target_tags   = ["http-server"]
+  target_tags   = ["http-server"] # Assumes the source MIGs have this tag on their instance template
 }
 
-# HTTPS Global Forwarding Rule
+# Global Forwarding Rules
 resource "google_compute_global_forwarding_rule" "default" {
   project               = var.project_id
   name                  = "https-forwarding-rule"
@@ -228,11 +165,9 @@ resource "google_compute_global_forwarding_rule" "default" {
   port_range            = "443"
   target                = google_compute_target_https_proxy.default.id
   ip_address            = google_compute_global_address.default.id
-  network_tier          = "PREMIUM"
   load_balancing_scheme = "EXTERNAL"
 }
 
-# HTTP Global Forwarding Rule for Redirect
 resource "google_compute_global_forwarding_rule" "redirect" {
   project               = var.project_id
   name                  = "http-redirect-forwarding-rule"
@@ -240,75 +175,6 @@ resource "google_compute_global_forwarding_rule" "redirect" {
   port_range            = "80"
   target                = google_compute_target_http_proxy.redirect.id
   ip_address            = google_compute_global_address.default.id
-  network_tier          = "PREMIUM"
   load_balancing_scheme = "EXTERNAL"
 }
 
-# Managed Instance Groups (MIGs)
-resource "google_compute_instance_template" "default" {
-  project      = var.project_id
-  name         = "instance-template"
-  machine_type = "e2-medium"
-  region       = var.region
-  tags         = ["http-server"]
-  network_interface {
-    network = var.network
-  }
-  disk {
-    source_image = "debian-cloud/debian-11"
-    auto_delete  = true
-    boot         = true
-  }
-}
-
-resource "google_compute_region_instance_group_manager" "mig1" {
-  project            = var.project_id
-  name               = "mig-1"
-  base_instance_name = "mig-1"
-  region             = var.region
-  target_size        = 1
-  version {
-    name = "mig-1-v1"
-    instance_template  = google_compute_instance_template.default.id
-  }
-
-  named_port {
-    name = "http"
-    port = 80
-  }
-}
-
-resource "google_compute_region_instance_group_manager" "mig2" {
-  project            = var.project_id
-  name               = "mig-2"
-  base_instance_name = "mig-2"
-  region             = var.region
-  target_size        = 1
-
-  version {
-    name = "mig-2-v1"
-    instance_template  = google_compute_instance_template.default.id
-  }
-
-  named_port {
-    name = "http"
-    port = 80
-  }
-}
-
-resource "google_compute_region_instance_group_manager" "mig3" {
-  project            = var.project_id
-  name               = "mig-3"
-  base_instance_name = "mig-3"
-  region             = var.region
-  target_size        = 1
-  version {
-    name = "mig-3-v1"
-    instance_template  = google_compute_instance_template.default.id
-  }
-
-  named_port {
-    name = "http"
-    port = 80
-  }
-}

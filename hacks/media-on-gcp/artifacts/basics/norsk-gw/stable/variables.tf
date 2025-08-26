@@ -130,17 +130,7 @@ variable "udp_5001_source_ranges" {
   default     = ""
 }
 
-variable "accelerator_type" {
-  description = "The accelerator type resource exposed to this instance. E.g. nvidia-tesla-p100."
-  type        = string
-  default     = "nvidia-tesla-p100"
-}
 
-variable "accelerator_count" {
-  description = "The number of the guest accelerator cards exposed to this instance."
-  type        = number
-  default     = 0
-}
 
 variable "domain_name" {
   description = "The domain name that you will access this Norsk Studio deployment through, which you must set up through your DNS provider to point to the VM instance."

@@ -15,7 +15,14 @@ variable "network" {
 }
 
 variable "backend_services" {
-  description = "A map of backend services to create. The key is the subdomain identifier (e.g., 'instance1') and the value is the 'instance_group' attribute of a google_compute_region_instance_group_manager."
-  type        = map(string)
-  default     = {}
+  description = "A map of backend services to create. The key is the subdomain identifier (e.g., 'instance1') and the value is an object containing the 'instance_group', 'port', 'port_name', and 'healthcheck_protocol'."
+  type = map(object({
+    instance_group       = string
+    port                 = number
+    port_name            = string
+    protocol             = string
+    healthcheck_protocol = string
+    enable_cdn           = bool
+  }))
+  default = {}
 }

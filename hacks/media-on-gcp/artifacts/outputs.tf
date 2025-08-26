@@ -20,8 +20,8 @@ output "norsk_admin_user" {
   value       = "norsk-studio-admin"
 }
 
-output "norsk_admin_password" {
-  description = "Norsk admin password."
-  value       = module.norsk-gw.admin_password
-  sensitive   = true
-}
+# output "norsk_admin_password" {
+#   description = "Norsk admin password."
+#   value       = module.norsk-gw.admin_password
+#   sensitive   = true
+# }

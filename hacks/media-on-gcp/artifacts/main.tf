@@ -28,18 +28,24 @@ resource "google_project_service" "compute_api" {
   disable_on_destroy = false
 }
 
-module "vpc" {
-  source  = "terraform-google-modules/network/google//modules/vpc"
-  version = "~> 10.0.0"
-
-  project_id              = local.project.id
-  network_name            = "vpc-media-on-gcp"
-  routing_mode            = "GLOBAL"
-  auto_create_subnetworks = true
+resource "google_project_service" "os_config_api" {
+  service            = "osconfig.googleapis.com"
+  disable_on_destroy = false
 }
 
-module "media-tx" {
-  source = "./basics/media-tx/stable"
+# Ateme
+module "ateme" {
+  source = "./basics/ateme/stable"
+
+  project_id = local.project.id
+  region     = var.gcp_region
+  zone       = var.gcp_zone
+
+  networks = [module.vpc.network_name]
+}
+
+module "darwin" {
+  source = "./basics/darwin/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
@@ -58,8 +64,18 @@ module "norsk-gw" {
   networks = [module.vpc.network_name]
 }
 
-module "davinciresolve" {
-  source = "./basics/davinciresolve/stable"
+module "norsk-ai" {
+  source = "./basics/norsk-ai/stable"
+
+  project_id = local.project.id
+  region     = var.gcp_region
+  zone       = var.gcp_zone
+
+  networks = [module.vpc.network_name]
+}
+
+module "davinci" {
+  source = "./basics/davinci/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
@@ -78,103 +94,3 @@ module "vizrt" {
   networks = [module.vpc.network_name]
 }
 
-module "ateme" {
-  source = "./basics/ateme/stable"
-
-  project_id = local.project.id
-  region     = var.gcp_region
-  zone       = var.gcp_zone
-
-  networks = [module.vpc.network_name]
-}
-
-# In case a default network is not present in the project the variable `create_default_network` needs to be set.
-resource "google_compute_network" "default_network_created" {
-  name                    = "default"
-  auto_create_subnetworks = true
-  count                   = var.create_default_network ? 1 : 0
-  depends_on = [
-    google_project_service.compute_api
-  ]
-}
-
-# Punch a hole for internal VM to VM traffic
-resource "google_compute_firewall" "fwr_allow_custom" {
-  name          = "fwr-ingress-allow-custom"
-  network       = google_compute_network.default_network_created[0].self_link
-  count         = var.create_default_network ? 1 : 0
-  source_ranges = ["10.128.0.0/9"]
-  allow {
-    protocol = "all"
-  }
-}
-
-# Punch a hole for IAP traffic
-resource "google_compute_firewall" "fwr_allow_iap" {
-  name          = "fwr-ingress-allow-iap"
-  network       = google_compute_network.default_network_created[0].self_link
-  count         = var.create_default_network ? 1 : 0
-  source_ranges = ["35.235.240.0/20"]
-  allow {
-    protocol = "tcp"
-    ports    = ["22"]
-  }
-}
-
-# This piece of code makes it possible to deal with the default network the same way, regardless of how it has
-# been created. Make sure to refer to the default network through this resource when needed.
-data "google_compute_network" "default_network" {
-  name = "default"
-  depends_on = [
-    google_project_service.compute_api,
-    google_compute_network.default_network_created
-  ]
-}
-
-resource "google_compute_firewall" "fw_ssh" {
-  name    = "fw-media-on-gcp-ssh"
-  network = module.vpc.network_name
-
-  allow {
-    ports    = ["22"]
-    protocol = "tcp"
-  }
-
-  source_ranges = ["0.0.0.0/0"]
-}
-
-resource "google_compute_firewall" "fw_http" {
-  name    = "fw-media-on-gcp-http"
-  network = module.vpc.network_name
-
-  allow {
-    ports    = ["80", "443"]
-    protocol = "tcp"
-  }
-
-  source_ranges = ["0.0.0.0/0"]
-}
-
-resource "google_compute_firewall" "fw_rdp" {
-  name    = "fw-media-on-gcp-rdp"
-  network = module.vpc.network_name
-
-  allow {
-    ports    = ["3389"]
-    protocol = "tcp"
-  }
-
-  source_ranges = ["0.0.0.0/0"]
-}
-
-resource "google_compute_firewall" "fw_nea" {
-  name    = "fw-media-on-gcp-nea"
-  network = module.vpc.network_name
-
-  allow {
-    ports    = ["8080"]
-    protocol = "tcp"
-  }
-
-  source_ranges = ["0.0.0.0/0"]
-}
