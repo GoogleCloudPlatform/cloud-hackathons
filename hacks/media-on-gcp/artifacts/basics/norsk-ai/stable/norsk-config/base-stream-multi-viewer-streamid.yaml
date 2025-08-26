@@ -1,0 +1,213 @@
+__layout:
+  - id: camera1
+    x: 432
+    y: -416
+  - id: camera2
+    x: 448
+    y: -112
+  - id: camera3
+    x: 464
+    y: 224
+  - id: camera4
+    x: 512
+    y: 576
+  - id: camera5
+    x: 432
+    y: 912
+  - id: camera6
+    x: 368
+    y: 1328
+  - id: multiview
+    x: 1424
+    y: 16
+  - id: preview
+    x: 2192
+    y: 16
+  - id: srt-multicam-listener
+    x: 2032
+    y: 864
+__globalConfig: {}
+components:
+  - type: input.srt-listener
+    config:
+      displayName: camera1
+      port: 5001
+      host: 127.0.0.1
+      passphrase: ""
+      socketOptions: {}
+      sourceNames: permissive
+      streamIds:
+        - camera1
+      notes: ""
+      id: camera1
+    subscriptions: []
+  - type: input.srt-listener
+    config:
+      displayName: camera2
+      port: 5002
+      host: 127.0.0.1
+      passphrase: ""
+      socketOptions: {}
+      sourceNames: permissive
+      streamIds:
+        - camera2
+      notes: ""
+      id: camera2
+    subscriptions: []
+  - type: input.srt-listener
+    config:
+      displayName: camera3
+      port: 5003
+      host: 127.0.0.1
+      passphrase: ""
+      socketOptions: {}
+      sourceNames: permissive
+      streamIds:
+        - camera3
+      notes: ""
+      id: camera3
+    subscriptions: []
+  - type: input.srt-listener
+    config:
+      displayName: camera4
+      port: 5004
+      host: 127.0.0.1
+      passphrase: ""
+      socketOptions: {}
+      sourceNames: permissive
+      streamIds:
+        - camera4
+      notes: ""
+      id: camera4
+    subscriptions: []
+  - type: input.srt-listener
+    config:
+      displayName: camera5
+      port: 5005
+      host: 127.0.0.1
+      passphrase: ""
+      socketOptions: {}
+      sourceNames: permissive
+      streamIds:
+        - camera5
+      notes: ""
+      id: camera5
+    subscriptions: []
+  - type: input.srt-listener
+    config:
+      displayName: camera6
+      port: 5006
+      host: 127.0.0.1
+      passphrase: ""
+      socketOptions: {}
+      sourceNames: permissive
+      streamIds:
+        - camera6
+      notes: ""
+      id: camera6
+    subscriptions: []
+  - type: processor.multiview
+    config:
+      displayName: multiview
+      resolution:
+        width: 1920
+        height: 1080
+      rows: 3
+      columns: 3
+      notes: ""
+      id: multiview
+    subscriptions:
+      - source: camera1
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
+      - source: camera2
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
+      - source: camera4
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
+      - source: camera3
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
+      - source: camera5
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
+      - source: camera6
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
+  - type: output.preview
+    config:
+      displayName: preview
+      previewMode: image
+      showPreview: true
+      bufferDelayMs: 500
+      notes: ""
+      id: preview
+    subscriptions:
+      - source: multiview
+        streams:
+          type: take-first-stream
+          filter:
+            - media: video
+            - media: audio
+  - type: output.srt-listener
+    config:
+      displayName: srt-multicam-listener
+      port: 5101
+      host: 0.0.0.0
+      bufferDelayMs: 500
+      avDelayMs: 50
+      passphrase: ""
+      streamId: ""
+      socketOptions: {}
+      notes: ""
+      id: srt-multicam-listener
+    subscriptions:
+      - source: camera1
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
+      - source: camera2
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
+      - source: camera3
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
+      - source: camera4
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
+      - source: camera6
+        streams:
+          type: take-all-streams
+          filter:
+            - media: video
+            - media: audio
