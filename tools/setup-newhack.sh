@@ -98,6 +98,20 @@ variable "gcp_zone" {
   description = "Zone to create resources in."
   default     = "us-central1-c"
 }
+
+# Default value passed in
+variable "gcp_vpc" {
+  type        = string
+  description = "The name of the VPC to use."
+  default     = "default"
+}
+
+# Relevant when running on a system where no default network exists yet
+variable "create_default_network" {
+  type        = bool
+  default     = false
+  description = "Whether to create a default network with subnets for all regions"
+}
 EOF
 
 cat <<EOF > $BASEDIR/artifacts/main.tf
@@ -105,6 +119,47 @@ $LICENSE
 resource "google_project_service" "compute_api" {
   service            = "compute.googleapis.com"
   disable_on_destroy = false  
+}
+
+# In case a default network is not present in the project the variable `create_default_network` needs to be set.
+resource "google_compute_network" "default_network_created" {
+  name                    = var.gcp_vpc
+  auto_create_subnetworks = true
+  count                   = var.create_default_network ? 1 : 0
+  depends_on = [
+    google_project_service.compute_api
+  ]
+}
+
+resource "google_compute_firewall" "fwr_allow_custom" {
+  name          = "fwr-ingress-allow-custom"
+  network       = google_compute_network.default_network_created[0].self_link
+  count         = var.create_default_network ? 1 : 0
+  source_ranges = ["10.128.0.0/9"]
+  allow {
+    protocol = "all"
+  }
+}
+
+resource "google_compute_firewall" "fwr_allow_iap" {
+  name          = "fwr-ingress-allow-iap"
+  network       = google_compute_network.default_network_created[0].self_link
+  count         = var.create_default_network ? 1 : 0
+  source_ranges = ["35.235.240.0/20"]
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+}
+
+# This piece of code makes it possible to deal with the default network the same way, regardless of how it has
+# been created. Make sure to refer to the default network through this resource when needed.
+data "google_compute_network" "default_network" {
+  name = var.gcp_vpc
+  depends_on = [
+    google_project_service.compute_api,
+    google_compute_network.default_network_created
+  ]
 }
 EOF
 
