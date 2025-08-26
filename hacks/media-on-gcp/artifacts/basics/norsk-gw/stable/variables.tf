@@ -19,13 +19,13 @@ variable "zone" {
 variable "goog_cm_deployment_name" {
   description = "The name of the deployment and VM instance."
   type        = string
-  default     = "ibc-ghack-norsk-gw"
+  default     = "norsk-gw"
 }
 
 variable "source_image" {
   description = "The image name for the disk for the VM instance."
   type        = string
-  default     = "projects/id3as-public/global/images/norsk-studio-byol-debian-12-x86-64-2025-05-13"
+  default     = "projects/id3as-public/global/images/norsk-studio-byol-alpha-debian-12-x86-64-2025-08-18"
 }
 
 variable "machine_type" {
