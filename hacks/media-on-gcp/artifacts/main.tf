@@ -23,6 +23,10 @@ data "google_project" "project" {
   project_id = var.gcp_project_id
 }
 
+resource "google_project_service" "compute_api" {
+  service            = "compute.googleapis.com"
+  disable_on_destroy = false
+}
 
 resource "google_project_service" "os_config_api" {
   service            = "osconfig.googleapis.com"

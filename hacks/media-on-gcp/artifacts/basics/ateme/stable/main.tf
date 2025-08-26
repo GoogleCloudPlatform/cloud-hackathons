@@ -7,7 +7,7 @@ locals {
   ]
 }
 
-resource "google_compute_instance" "default" {
+resource "google_compute_instance" "nea" {
   name         = "ateme-nl"
   machine_type = "c4d-standard-8"
   zone         = var.zone
@@ -34,7 +34,7 @@ resource "google_compute_instance" "default" {
   }
 }
 
-resource "google_compute_instance" "default" {
+resource "google_compute_instance" "titan" {
   name         = "ateme-tl01"
   machine_type = "c4d-standard-8"
   zone         = var.zone
