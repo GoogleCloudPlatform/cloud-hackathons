@@ -21,9 +21,4 @@ module "davinci" {
   metadata = {
     enable-oslogin  = "true"
   }
-
-  named_ports = [{
-    name = "https"
-    port = 443
-  }]
 }

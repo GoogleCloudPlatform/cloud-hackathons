@@ -59,22 +59,6 @@ module "endpoints" {
       healthcheck_protocol = "ssl"
       enable_cdn           = false
     }
-    "davinci" = {
-      instance_group       = module.davinci.instance_group_manager_instance_group
-      port                 = module.davinci.port # 443
-      port_name            = module.davinci.port_name # https
-      protocol             = "HTTPS"
-      healthcheck_protocol = "ssl"
-      enable_cdn           = false
-    }
-    "vizrt" = {
-      instance_group       = module.vizrt.instance_group_manager_instance_group
-      port                 = module.vizrt.port # 443
-      port_name            = module.vizrt.port_name # https
-      protocol             = "HTTPS"
-      healthcheck_protocol = "ssl"
-      enable_cdn           = false
-    }
   }
 }
 

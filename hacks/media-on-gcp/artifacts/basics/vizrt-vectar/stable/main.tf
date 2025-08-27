@@ -18,35 +18,6 @@ module "vizrt_vectar" {
   accelerator_type  = "nvidia-l4-vws"
   accelerator_count = 1
 
-  named_ports = [{
-    name = "https"
-    port = 443
-    },
-    {
-      name = "tcp-4172"
-      port = 4172
-    },
-    {
-      name = "tcp-8444"
-      port = 8444
-    },
-    {
-      name = "tcp-22350"
-      port = 22350
-    },
-    {
-      name = "udp-4173"
-      port = 4173
-    },
-    {
-      name = "udp-8443"
-      port = 8443
-    },
-    {
-      name = "udp-22350"
-      port = 22350
-    }
-  ]
 }
 
 resource "google_compute_firewall" "fwr_vizrt_vectar" {
