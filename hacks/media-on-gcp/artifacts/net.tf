@@ -11,7 +11,7 @@ module "vpc" {
 
 # Load balancer
 module "endpoints" {
-  source = "./basics/endpoints"
+  source = "./basics/gclb/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
