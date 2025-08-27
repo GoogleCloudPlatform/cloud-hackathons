@@ -13,7 +13,7 @@ module "vizrt_vectar" {
 
   networks             = var.networks
   sub_networks         = var.sub_networks
-  external_ips         = [google_compute_global_address.vectar.address]
+  external_ips         = [google_compute_address.vectar.address]
 
   accelerator_type  = "nvidia-l4-vws"
   accelerator_count = 1
@@ -37,8 +37,9 @@ resource "google_compute_firewall" "fwr_vizrt_vectar" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-resource "google_compute_global_address" "vectar" {
+resource "google_compute_address" "vectar" {
   project = var.project_id
+  region  = var.region
   name    = "vectar-lb-ip-address"
 }
 
@@ -55,7 +56,7 @@ resource "google_endpoints_service" "dynamic" {
     host: "vectar.endpoints.${var.project_id}.cloud.goog"
     x-google-endpoints:
     - name: "vectar.endpoints.${var.project_id}.cloud.goog"
-      target: "${google_compute_global_address.vectar.address}"
+      target: "${google_compute_address.vectar.address}"
     schemes:
       - "https"
     paths: {}

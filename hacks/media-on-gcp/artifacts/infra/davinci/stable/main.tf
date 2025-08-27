@@ -13,7 +13,7 @@ module "davinci" {
 
   networks             = var.networks
   sub_networks         = var.sub_networks
-  external_ips         = [google_compute_global_address.davinci.address]
+  external_ips         = [google_compute_address.davinci.address]
 
   accelerator_type  = "nvidia-l4-vws"
   accelerator_count = 1
@@ -23,8 +23,9 @@ module "davinci" {
   }
 }
 
-resource "google_compute_global_address" "davinci" {
+resource "google_compute_address" "davinci" {
   project = var.project_id
+  region  = var.region
   name    = "davinci-lb-ip-address"
 }
 
@@ -41,7 +42,7 @@ resource "google_endpoints_service" "dynamic" {
     host: "davinci.endpoints.${var.project_id}.cloud.goog"
     x-google-endpoints:
     - name: "davinci.endpoints.${var.project_id}.cloud.goog"
-      target: "${google_compute_global_address.davinci.address}"
+      target: "${google_compute_address.davinci.address}"
     schemes:
       - "https"
     paths: {}
