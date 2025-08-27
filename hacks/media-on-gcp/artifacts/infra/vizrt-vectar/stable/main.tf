@@ -50,15 +50,13 @@ resource "google_endpoints_service" "dynamic" {
   openapi_config = <<-EOF
     swagger: "2.0"
     info:
-      title: "API for vectar"
-      description: "A simple API for the vectar service"
+      title: "API for vizrt vectar"
+      description: "A simple API for the vizrt vectar service"
       version: "1.0.0"
     host: "vectar.endpoints.${var.project_id}.cloud.goog"
     x-google-endpoints:
     - name: "vectar.endpoints.${var.project_id}.cloud.goog"
       target: "${google_compute_address.vectar.address}"
-    schemes:
-      - "https"
     paths: {}
   EOF
 

@@ -36,15 +36,13 @@ resource "google_endpoints_service" "dynamic" {
   openapi_config = <<-EOF
     swagger: "2.0"
     info:
-      title: "API for davinci"
-      description: "A simple API for the davinci service"
+      title: "API for davinci resolve"
+      description: "A simple API for the davinci resolve service"
       version: "1.0.0"
-    host: "davinci.endpoints.${var.project_id}.cloud.goog"
+    host: "resolve.endpoints.${var.project_id}.cloud.goog"
     x-google-endpoints:
-    - name: "davinci.endpoints.${var.project_id}.cloud.goog"
+    - name: "resolve.endpoints.${var.project_id}.cloud.goog"
       target: "${google_compute_address.davinci.address}"
-    schemes:
-      - "https"
     paths: {}
   EOF
 
