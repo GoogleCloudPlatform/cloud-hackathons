@@ -49,7 +49,7 @@ module "darwin" {
   networks = [module.vpc.network_name]
 }
 
-module "norsk-gw" {
+module "norsk_gw" {
   source = "./infra/norsk-gw/stable"
 
   project_id = local.project.id
@@ -59,7 +59,7 @@ module "norsk-gw" {
   networks = [module.vpc.network_name]
 }
 
-module "norsk-ai" {
+module "norsk_ai" {
   source = "./infra/norsk-ai/stable"
 
   project_id = local.project.id

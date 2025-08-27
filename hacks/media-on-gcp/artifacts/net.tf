@@ -43,18 +43,18 @@ module "gclb" {
       healthcheck_protocol = "ssl"
       enable_cdn           = false
     }
-    "norsk-ai" = {
-      instance_group       = module.norsk-ai.instance_group_manager_instance_group
-      port                 = module.norsk-ai.port # 443
-      port_name            = module.norsk-ai.port_name # https
+    "gemini" = {
+      instance_group       = module.norsk_ai.instance_group_manager_instance_group
+      port                 = module.norsk_ai.port # 443
+      port_name            = module.norsk_ai.port_name # https
       protocol             = "HTTPS"
       healthcheck_protocol = "ssl"
       enable_cdn           = false
     }
-    "norsk-gw" = {
-      instance_group       = module.norsk-gw.instance_group_manager_instance_group
-      port                 = module.norsk-gw.port # 443
-      port_name            = module.norsk-gw.port_name # https
+    "norsk" = {
+      instance_group       = module.norsk_gw.instance_group_manager_instance_group
+      port                 = module.norsk_gw.port # 443
+      port_name            = module.norsk_gw.port_name # https
       protocol             = "HTTPS"
       healthcheck_protocol = "ssl"
       enable_cdn           = false

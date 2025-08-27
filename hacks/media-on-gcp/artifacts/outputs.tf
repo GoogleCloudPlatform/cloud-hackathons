@@ -22,6 +22,6 @@ output "norsk_admin_user" {
 
 # output "norsk_admin_password" {
 #   description = "Norsk admin password."
-#   value       = module.norsk-gw.admin_password
+#   value       = module.norsk_gw.admin_password
 #   sensitive   = true
 # }
