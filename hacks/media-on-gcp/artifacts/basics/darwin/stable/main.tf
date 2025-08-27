@@ -7,7 +7,7 @@ module "darwin" {
   base_instance_name  = "tx-darwin"
   target_size         = 1
   machine_type        = "c4-standard-8"
-  source_image        = "projects/qwiklabs-resources/global/images/tx-darwin-with-modules"
+  source_image        = "projects/media-on-gcp-storage/global/images/tx-darwin-with-modules"
   boot_disk_size      = 50
   boot_disk_type      = "hyperdisk-balanced"
 
