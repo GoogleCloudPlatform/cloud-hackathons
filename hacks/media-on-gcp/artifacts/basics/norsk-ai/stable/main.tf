@@ -1,5 +1,5 @@
 module "norsk_ai" {
-  source = "../../gce-mig/stable"
+  source = "../../compute/stable"
 
   project_id           = var.project_id
   region               = var.region

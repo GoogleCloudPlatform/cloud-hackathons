@@ -1,5 +1,5 @@
 module "nea" {
-  source = "../../gce-mig/stable"
+  source = "../../compute/stable"
 
   project_id           = var.project_id
   region               = var.region
@@ -22,7 +22,7 @@ module "nea" {
 }
 
 module "titan" {
-  source = "../../gce-mig/stable"
+  source = "../../compute/stable"
 
   project_id           = var.project_id
   region               = var.region

@@ -6,7 +6,7 @@ This Terraform module creates a Google Cloud Engine (GCE) instance template and 
 
 ```hcl
 module "gce_mig" {
-  source = "./basics/gce-mig/stable"
+  source = "./basics/compute/stable"
 
   project_id           = "your-gcp-project-id"
   region               = "your-gcp-region"
