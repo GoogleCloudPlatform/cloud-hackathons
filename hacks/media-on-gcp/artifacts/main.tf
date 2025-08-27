@@ -30,7 +30,7 @@ resource "google_project_service" "compute_api" {
 
 # Ateme
 module "ateme" {
-  source = "./basics/ateme/stable"
+  source = "./infra/ateme/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
@@ -40,7 +40,7 @@ module "ateme" {
 }
 
 module "darwin" {
-  source = "./basics/darwin/stable"
+  source = "./infra/darwin/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
@@ -50,7 +50,7 @@ module "darwin" {
 }
 
 module "norsk-gw" {
-  source = "./basics/norsk-gw/stable"
+  source = "./infra/norsk-gw/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
@@ -60,7 +60,7 @@ module "norsk-gw" {
 }
 
 module "norsk-ai" {
-  source = "./basics/norsk-ai/stable"
+  source = "./infra/norsk-ai/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
@@ -70,7 +70,7 @@ module "norsk-ai" {
 }
 
 module "davinci" {
-  source = "./basics/davinci/stable"
+  source = "./infra/davinci/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
@@ -80,7 +80,7 @@ module "davinci" {
 }
 
 module "vizrt" {
-  source = "./basics/vizrt-vectar/stable"
+  source = "./infra/vizrt-vectar/stable"
 
   project_id = local.project.id
   region     = var.gcp_region
