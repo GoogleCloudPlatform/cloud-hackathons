@@ -22,3 +22,36 @@ module "davinci" {
     enable-oslogin  = "true"
   }
 }
+
+resource "google_compute_global_address" "default" {
+  project = var.project_id
+  name    = "davinci-lb-ip-address"
+}
+
+# Cloud Endpoints Services (Dynamic)
+resource "google_endpoints_service" "dynamic" {
+  project        = var.project_id
+  service_name   = "davinci.endpoints.${var.project_id}.cloud.goog"
+  openapi_config = <<-EOF
+    swagger: "2.0"
+    info:
+      title: "API for davinci"
+      description: "A simple API for the davinci service"
+      version: "1.0.0"
+    host: "davinci.endpoints.${var.project_id}.cloud.goog"
+    x-google-endpoints:
+    - name: "davinci.endpoints.${var.project_id}.cloud.goog"
+      target: "${google_compute_global_address.default.address}"
+    schemes:
+      - "https"
+    paths: {}
+  EOF
+
+  # NOTE:
+  # Prevent deletion on destroy.
+  # Deleteing this resource will not allow you to reuse again within 30 days. Can undelete service
+  # Following, https://cloud.google.com/service-infrastructure/docs/manage-services#undeleting_a_service
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
+}
