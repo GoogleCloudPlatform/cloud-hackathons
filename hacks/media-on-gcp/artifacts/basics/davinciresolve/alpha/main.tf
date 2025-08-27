@@ -68,22 +68,3 @@ resource "google_compute_instance" "davinci-remote-edit-machine-01" {
 
   zone = "europe-west4-b"
 }
-
-module "ops_agent_policy" {
-  source        = "github.com/terraform-google-modules/terraform-google-cloud-operations/modules/ops-agent-policy"
-  project       = "media-on-gcp-storage"
-  zone          = "europe-west4-b"
-  assignment_id = "goog-ops-agent-v2-x86-template-1-4-0-europe-west4-b"
-  agents_rule = {
-    package_state = "installed"
-    version       = "latest"
-  }
-  instance_filter = {
-    all = false
-    inclusion_labels = [{
-      labels = {
-        goog-ops-agent-policy = "v2-x86-template-1-4-0"
-      }
-    }]
-  }
-}

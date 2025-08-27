@@ -28,11 +28,6 @@ resource "google_project_service" "compute_api" {
   disable_on_destroy = false
 }
 
-resource "google_project_service" "os_config_api" {
-  service            = "osconfig.googleapis.com"
-  disable_on_destroy = false
-}
-
 module "vpc" {
   source  = "terraform-google-modules/network/google//modules/vpc"
   version = "~> 10.0.0"
