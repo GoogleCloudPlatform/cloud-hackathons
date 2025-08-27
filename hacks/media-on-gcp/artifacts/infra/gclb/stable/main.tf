@@ -1,5 +1,5 @@
 # Global External IP Address
-resource "google_compute_address" "default" {
+resource "google_compute_global_address" "default" {
   project = var.project_id
   name    = "lb-ip-address"
 }
@@ -19,7 +19,7 @@ resource "google_endpoints_service" "dynamic" {
     host: "${each.key}.endpoints.${var.project_id}.cloud.goog"
     x-google-endpoints:
     - name: "${each.key}.endpoints.${var.project_id}.cloud.goog"
-      target: "${google_compute_address.default.address}"
+      target: "${google_compute_global_address.default.address}"
     schemes:
       - "https"
     paths: {}
@@ -164,7 +164,7 @@ resource "google_compute_global_forwarding_rule" "default" {
   ip_protocol           = "TCP"
   port_range            = "443"
   target                = google_compute_target_https_proxy.default.id
-  ip_address            = google_compute_address.default.id
+  ip_address            = google_compute_global_address.default.id
   load_balancing_scheme = "EXTERNAL"
 }
 
@@ -174,7 +174,7 @@ resource "google_compute_global_forwarding_rule" "redirect" {
   ip_protocol           = "TCP"
   port_range            = "80"
   target                = google_compute_target_http_proxy.redirect.id
-  ip_address            = google_compute_address.default.id
+  ip_address            = google_compute_global_address.default.id
   load_balancing_scheme = "EXTERNAL"
 }
 

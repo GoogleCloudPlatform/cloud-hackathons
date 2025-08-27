@@ -40,7 +40,7 @@ resource "google_compute_firewall" "fwr_vizrt_vectar" {
 resource "google_compute_address" "vectar" {
   project = var.project_id
   region  = var.region
-  name    = "vectar-lb-ip-address"
+  name    = "vectar-vm-ip-address"
 }
 
 # Cloud Endpoints Services (Dynamic)
