@@ -9,7 +9,7 @@ resource "google_compute_instance" "ubuntu_instance" {
   # Defines the boot disk for the instance.
   boot_disk {
     initialize_params {
-      image = "projects/qwiklabs-resources/global/images/tx-darwin-with-modules"
+      image = "projects/media-on-gcp-storage/global/images/tx-darwin-with-modules"
       size  = 50
       type  = "hyperdisk-balanced"
     }

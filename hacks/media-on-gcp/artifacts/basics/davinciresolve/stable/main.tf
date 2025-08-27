@@ -21,7 +21,7 @@ resource "google_compute_instance" "davinci-remote-edit-machine-01" {
     auto_delete = true
 
     initialize_params {
-      image = "projects/qwiklabs-resources/global/images/davinci-remote-edit-machine"
+      image = "projects/media-on-gcp-storage/global/images/davinci-remote-edit-machine"
       size  = 600
       type  = "pd-balanced"
     }
