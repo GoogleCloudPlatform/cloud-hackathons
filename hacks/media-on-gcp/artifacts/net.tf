@@ -10,7 +10,7 @@ module "vpc" {
 }
 
 # Load balancer
-module "endpoints" {
+module "gclb" {
   source = "./infra/gclb/stable"
 
   project_id = local.project.id
