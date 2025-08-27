@@ -18,13 +18,7 @@ module "davinci" {
   accelerator_type  = "nvidia-l4-vws"
   accelerator_count = 1
 
-  labels = {
-    goog-ec-src           = "vm_add-tf"
-    goog-ops-agent-policy = "v2-x86-template-1-4-0"
-  }
-
   metadata = {
-    enable-osconfig = "TRUE"
     enable-oslogin  = "true"
   }
 
@@ -32,23 +26,4 @@ module "davinci" {
     name = "https"
     port = 443
   }]
-}
-
-module "ops_agent_policy" {
-  source        = "github.com/terraform-google-modules/terraform-google-cloud-operations/modules/ops-agent-policy"
-  project       = var.project_id
-  zone          = var.zone
-  assignment_id = "goog-ops-agent-v2-x86-template-1-5-0-europe-west4-b"
-  agents_rule = {
-    package_state = "installed"
-    version       = "latest"
-  }
-  instance_filter = {
-    all = false
-    inclusion_labels = [{
-      labels = {
-        goog-ops-agent-policy = "v2-x86-template-1-5-0"
-      }
-    }]
-  }
 }

@@ -28,11 +28,6 @@ resource "google_project_service" "compute_api" {
   disable_on_destroy = false
 }
 
-resource "google_project_service" "os_config_api" {
-  service            = "osconfig.googleapis.com"
-  disable_on_destroy = false
-}
-
 # Ateme
 module "ateme" {
   source = "./basics/ateme/stable"
