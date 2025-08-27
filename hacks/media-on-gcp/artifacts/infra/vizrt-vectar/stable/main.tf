@@ -13,7 +13,7 @@ module "vizrt_vectar" {
 
   networks             = var.networks
   sub_networks         = var.sub_networks
-  external_ips         = var.external_ips
+  external_ips         = google_compute_global_address.vectar.address
 
   accelerator_type  = "nvidia-l4-vws"
   accelerator_count = 1
@@ -37,25 +37,25 @@ resource "google_compute_firewall" "fwr_vizrt_vectar" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-resource "google_compute_global_address" "default" {
+resource "google_compute_global_address" "vectar" {
   project = var.project_id
-  name    = "vizrt-lb-ip-address"
+  name    = "vectar-lb-ip-address"
 }
 
 # Cloud Endpoints Services (Dynamic)
 resource "google_endpoints_service" "dynamic" {
   project        = var.project_id
-  service_name   = "vizrt.endpoints.${var.project_id}.cloud.goog"
+  service_name   = "vectar.endpoints.${var.project_id}.cloud.goog"
   openapi_config = <<-EOF
     swagger: "2.0"
     info:
-      title: "API for vizrt"
-      description: "A simple API for the vizrt service"
+      title: "API for vectar"
+      description: "A simple API for the vectar service"
       version: "1.0.0"
-    host: "vizrt.endpoints.${var.project_id}.cloud.goog"
+    host: "vectar.endpoints.${var.project_id}.cloud.goog"
     x-google-endpoints:
-    - name: "vizrt.endpoints.${var.project_id}.cloud.goog"
-      target: "${google_compute_global_address.default.address}"
+    - name: "vectar.endpoints.${var.project_id}.cloud.goog"
+      target: "${google_compute_global_address.vectar.address}"
     schemes:
       - "https"
     paths: {}
