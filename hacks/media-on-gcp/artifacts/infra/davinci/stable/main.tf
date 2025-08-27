@@ -13,7 +13,7 @@ module "davinci" {
 
   networks             = var.networks
   sub_networks         = var.sub_networks
-  external_ips         = google_compute_global_address.davinci.address
+  external_ips         = [google_compute_global_address.davinci.address]
 
   accelerator_type  = "nvidia-l4-vws"
   accelerator_count = 1

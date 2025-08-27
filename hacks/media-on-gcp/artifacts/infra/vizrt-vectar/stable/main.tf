@@ -13,7 +13,7 @@ module "vizrt_vectar" {
 
   networks             = var.networks
   sub_networks         = var.sub_networks
-  external_ips         = google_compute_global_address.vectar.address
+  external_ips         = [google_compute_global_address.vectar.address]
 
   accelerator_type  = "nvidia-l4-vws"
   accelerator_count = 1
