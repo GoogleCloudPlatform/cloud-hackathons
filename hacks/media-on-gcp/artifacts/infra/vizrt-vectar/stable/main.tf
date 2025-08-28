@@ -31,12 +31,12 @@ resource "google_compute_firewall" "fwr_vizrt_vectar" {
   network = element(var.networks, 0)
 
   allow {
-    ports    = ["4172", "8444", "22350"]
+    ports    = ["22350"]
     protocol = "tcp"
   }
 
   allow {
-    ports    = ["4173", "8443", "22350"]
+    ports    = ["22350"]
     protocol = "udp"
   }
 

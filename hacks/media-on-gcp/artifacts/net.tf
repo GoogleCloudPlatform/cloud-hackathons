@@ -131,11 +131,17 @@ resource "google_compute_firewall" "fwr_rdp" {
   network = module.vpc.network_self_link
 
   allow {
-    ports    = ["3389"]
+    ports    = ["3389", "4172"]
     protocol = "tcp"
   }
 
+  allow {
+    ports    = ["4172"]
+    protocol = "udp"
+  }
+
   source_ranges = ["0.0.0.0/0"]
+
 }
 
 resource "google_compute_firewall" "fwr_tcp_8080" {
