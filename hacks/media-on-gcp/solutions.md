@@ -4,86 +4,44 @@
 
 Welcome to the coach's guide for the *Media & Entertainment on Google Cloud* gHack. This guide provides solutions and notes to help you assist participants through the challenges. The goal is for them to build a live streaming pipeline, from source ingest to playback, incorporating professional broadcast tools and Google Cloud services.
 
-> **Note** If you are a gHacks participant, this is the answer guide to be used by the coaches to help to get students in the right track by providing support and hints. This shouldn't be provided as a setup runbook or step by step guide. The guides are based on ISV/parnter products to be deployed in GCP. This ghack assume candidate to have media / boradcasting and creative experience. 
+> **Note** If you are a gHacks participant, this is the answer guide to be used by the coaches to help to get students in the right track by providing support and hints. This shouldn't be provided as a setup runbook or step by step guide. The guides are based on ISV/partner products to be deployed in GCP. This ghack assume candidate to have media / broadcasting and creative experience. 
 
-### Environment Setup (TODO: Remove this whole section, should be redundant)
+## PRE-GAME: Install license file for 2 x Norsk Studio instances
 
-> **Note** This was copied from the bottom of the original student guide
+As a coach, you will need to run these steps manually to copy in the proper license file into the 2 Norsk VMs. 
 
-The deployment of this gHacks considered two environments:
+**NOTE:** Do this as soon as your environment is ready and before the gHack starts
 
-1) **Target environment**: Target environment is the ephemeral student project where all infrastructure will be created for the hack.
-2) **Source environment**: Source environment is a prerequisite environme for the Target environment for pulling licenses and custom images to run in Target project.
-
-#### File and variable setup
-
-Define environment variables to run Terraform.
-```
-export GCP_PROJECT_ID_SOURCE=<you-source-project-id>
-
-export GCP_PROJECT_ID=<you-project-id>
-export GCP_REGION=europe-west4
-export GCP_ZONE=europe-west4-b
-```
-
-Setup necessaey org policies to run the Terraform script.
-```sh
-. ./scripts/process_policies.sh
-```
-
-And enter in the required params to run scripts when prompted.
-
-#### Setup for Source environment
-
-When setting up source environment, make sure the logged in user has administrator level access to the environment.
-
-```
-gcloud auth login
-gcloud auth application-default login
-gcloud config set project ${GCP_PROJECT_ID_SOURCE}
-```
-
-Apply necessary policies for
-
-```sh
-gcloud org-policies set-policy ./artifacts/scripts/processed_policies/iam.allowedPolicyMemberDomains.yaml
-```
-
-#### Setup for Target environment
-
-When setting up target environment, make sure the logged in user has administrator level access to the environment.
-
-```
-gcloud auth login
-gcloud auth application-default login
-gcloud config set project ${GCP_PROJECT_ID_SOURCE}
-```
-
-Set necessary policies. Make sure the proper org administrator and project
-
-Apply necessary policies if needed.
-
-```sh
-gcloud org-policies set-policy ./artifacts/scripts/processed_policies/compute.storageResourceUseRestrictions.yaml
-gcloud org-policies set-policy ./artifacts/scripts/processed_policies/compute.trustedImageProjects.yaml
-gcloud org-policies set-policy ./artifacts/scripts/processed_policies/compute.vmExternalIpAccess.yaml
-```
-
-Run Terraform `init`, `plan`, and `apply`.
-```tf
-terraform init
-
-terraform plan \
-  -out=out.tfplan \
-  -var "gcp_project_id=${GCP_PROJECT_ID}" \
-  -var "gcp_region=${GCP_REGION}" \
-  -var "gcp_zone=${GCP_ZONE}"
-
-terraform apply "out.tfplan" \
-  -auto-approve
-```
-
-***
+1. Log in as any student and go to the [Cloud Shell](https://shell.cloud.google.com)
+1. Copy the license file locally:
+    ```shell
+    gsutil cp gs://ghacks-media-on-gcp-private/license.json .
+    ```
+1. Get the names of the Norsk VMs, they are named as you see here but with a unique string instead of `nnn`
+    ```shell
+    gcloud compute scp ./license.json norsk-gw-nnn:~
+    gcloud compute scp ./license.json norsk-ai-nnn:~
+    ```
+1. SSH to the Norsk GW VM and copy the license file to the right spot and restart the service
+    ```shell
+    gcloud compute ssh norsk-gw-nnn
+    ```
+    - Then in the VMs terminal, run:
+    ```shell
+    sudo mv ~/license.json /var/norsk-studio/norsk-studio-docker/secrets/license.json
+    sudo systemctl restart norsk.service
+    exit
+    ```
+1. SSH to the Norsk AI VM and copy the license file to the right spot and restart the service
+    ```shell
+    gcloud compute ssh norsk-ai-nnn
+    ```
+    - Then in the VMs terminal, run:
+    ```shell
+    sudo mv ~/license.json /var/norsk-studio/norsk-studio-docker/secrets/license.json
+    sudo systemctl restart norsk.service
+    exit
+    ```
 
 ## Challenge 1: Get creative with the help of AI
 
