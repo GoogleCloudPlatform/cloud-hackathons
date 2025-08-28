@@ -16,7 +16,7 @@ output "project_id" {
 }
 
 output "norsk_admin_user" {
-  description = "Nork admin username."
+  description = "Norsk admin username."
   value       = "norsk-studio-admin"
 }
 

@@ -35,7 +35,7 @@ output "vectar_admin_username" {
 
 output "vectar_admin_password" {
   description = "Vectar admin password for RDP access."
-  value       = random_password.admin_password
+  value       = random_password.admin_password.result
 }
 
 output "vectar_dns_address" {

@@ -35,7 +35,7 @@ output "resolve_admin_username" {
 
 output "resolve_admin_password" {
   description = "Resolve admin password for RDP access."
-  value       = random_password.admin_password
+  value       = random_password.admin_password.result
 }
 
 output "resolve_dns_address" {
