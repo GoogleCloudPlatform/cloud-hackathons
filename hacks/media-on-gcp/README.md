@@ -25,7 +25,7 @@ In this hack you will get hands on experience with both first party Google Cloud
 
 #### Media Technology Partners
 - Norsk for Routing SRT Video Streams
-- Vizrt Vectar for video switching / Vision mixing
+- VizRT Vectar for video switching / Vision mixing
 - TechEx Darwin for inserting SCTE-35 Ad Markers
 - Ateme Titan Live for Encoding
 - Ateme Nea Live for ABR Packaging
