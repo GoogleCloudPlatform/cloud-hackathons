@@ -75,9 +75,7 @@ This initial challenge is designed to be a straightforward introduction to the N
 
 First, we'll add the four input sources. According to your YAML file, these are all **SRT Ingest (Caller)** nodes, meaning Norsk will "call" a remote source to pull the stream.
 
-We have two input sources 
-34.147.220.43:5121-5126
-35.246.1.71:5121-5126
+34.32.228.47:5111-5116
 
 So distribute the load between these servers 
 
