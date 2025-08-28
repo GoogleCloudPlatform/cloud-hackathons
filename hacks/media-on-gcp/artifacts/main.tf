@@ -28,6 +28,16 @@ resource "google_project_service" "compute_api" {
   disable_on_destroy = false
 }
 
+resource "google_project_service" "vertexai_api" {
+  service            = "aiplatform.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "run_api" {
+  service            = "run.googleapis.com"
+  disable_on_destroy = false
+}
+
 # Ateme
 module "ateme" {
   source = "./infra/ateme/stable"
