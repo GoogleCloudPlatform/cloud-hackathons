@@ -37,6 +37,11 @@ output "vectar_admin_password" {
   sensitive   = true
 }
 
+output "vectar_dns_address" {
+  description = "URL for Vizrt Vectar RDP service"
+  value       = module.vizrt.vectar_dns_address
+}
+
 output "resolve_admin_username" {
   description = "Resolve admin username for RDP access."
   value       = module.davinci.resolve_admin_username
@@ -46,6 +51,11 @@ output "resolve_admin_password" {
   description = "Resolve admin password for RDP access."
   value       = module.davinci.resolve_admin_password
   sensitive   = true
+}
+
+output "resolve_dns_address" {
+  description = "URL for Davinci Resolve RDP service"
+  value       = module.davinci.resolve_dns_address
 }
 
 output "gclb_dns_addresses" {
