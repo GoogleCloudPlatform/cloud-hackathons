@@ -64,23 +64,18 @@ In this hack you will get hands on experience with both first party Google Cloud
 
 ### Description
 - Log into the [Google Cloud Console](https://console.cloud.google.com/) with your student account 
-- Your coach will provide your Student ID and password. Each Student ID uses the same password. We recommend using incognito mode in Chrome for the student account.
-- Your coach will help you get logged into Google Cloud Console
-- Locate Vertex AI and Media Studio or use [this link](https://console.cloud.google.com/vertex-ai/studio/media).
-- You can find the Veo [documentation here](https://cloud.google.com/vertex-ai/generative-ai/docs/video/overview). 
-- Try to complete this challenge in 90 minutes. Each team should upload a maximum of two 'ad' videos to the following Google Cloud Storage Bucket:
-    - `gs://hackfest-ad-creative/`
-- You should see 10 folder teams in there, place two ads for your team in the respective folder.
+    - Your coach will provide your Student ID and password. Each Student ID uses the same password. We recommend using incognito mode in Chrome for the student account.
+- Locate Media Studio within Vertex AI in the console
+- Try to complete this challenge in 90 minutes. Each team should upload a maximum of two 'ad' videos to your assigned Google Cloud Storage bucket sub-folder
+    - This will be given do you by your coach and will look something like: `gs://hackfest-ad-creative/[your_project_id]/`
 - Your coach can help you get the videos uploaded
 
 ### Success Criteria
-- one
-- two
-- three
+- You have created 1 or 2 ad videos.
+- You have uploaded them as `mp4` files to your assigned bucket sub-folder.
 
 ### Learning Resources
-- [Link]()
-- [Link]()
+- [Veo video generation overview](https://cloud.google.com/vertex-ai/generative-ai/docs/video/overview)
 
 ## Challenge 2: Gather up those feeds and spit 'em out
 
@@ -92,12 +87,9 @@ In this hack you will get hands on experience with both first party Google Cloud
 - Note down SRT locations, you'll need them in the next step.
 
 ### Description
-[Norsk Documentation](https://norsk.video/)
-
-Find the Norsk server on your environment, use the public ipaddress to access the norsk-studio 
-
-Example: `https://<publicip_of_norsk_instance>/`
-Your coach will provide login credentials 
+Log into your Norsk instance (replace with your actual project id):
+- URL: <https://norsk.endpoints.[your_project_id].cloud.goog>
+- Your coach will provide a username and password
 
 First, we'll add the four input sources. These are all **SRT Ingest (Caller)** , meaning Norsk will "call" a remote source to pull the stream.
 
@@ -108,7 +100,7 @@ IP: 34.147.220.43 port 5121-5126
 IP: 35.246.1.71 port 5121-5126
 ```
 
-So distribute the load between these servers 
+Please distribute the load between these servers 
 
 1.  In the **Component Library** on the left, find the **Inputs** section.
 2.  Click and drag the **SRT Ingest (Caller)** component onto the main canvas. Repeat this three more times, so you have four input nodes in total.
@@ -170,91 +162,90 @@ The final step is to connect your inputs to your outputs. This tells Norsk where
     - Connect **camera4** to **srt-listener-camera4**.
 
 ### Success Criteria
-- one
-- two
-- three
+- You have a few preview nodes to show what's happening
+- Your inputs are connected to outputs
 
 ### Learning Resources
-- [Link]()
-- [Link]()
+- [Norsk Studio Documentation](https://norsk.video/norsk-studio-live-media-workflow-server/)
 
 ## Challenge 3: Get in the Mix
 
 ### Introduction
-- Connect to Vizrt using either Teamviewer or HP Anywhere
+- Connect to VizRT Vectar using HP Anywhere PCoIP Client (formerly known as Teradici)
 - Configure inputs as the SRT sources from Challenge 1
 - Verify you can transition (video mix) between sources, 1,2,3 and 4
-- Configuire an SRT output from Vectar, note down the details, you'll need them in the next challange
+- Configure an SRT output from Vectar, note down the details, you'll need them in the next challenge
 
 ### Description
-[VizRT Vectar Product Guide](https://www.vizrt.com/vizrt/remote/viz-vectar-plus/)
-
-In this challenge, participants will work with a professional video mixing tool, Vizrt Vectar. The main tasks are configuring inputs from the previous step and creating a new output stream.
+In this challenge, participants will work with a professional video mixing tool, VizRT Vectar. The main tasks are configuring inputs from the previous step and creating a new output stream.
 
 Pre-requisite: One or two team members will need to download and install the HP Anywhere PCoIP Client (formerly known as Teradici)
 You can find the download for Mac, Windows, Linux and Chromebooks [here](https://anyware.hp.com/find/product/hp-anyware). 
-You will need to register with hp.com to download this software. This software is needed for anyone who wants to use Vizrt Vectar Vision mixing software or Black magic Davinci Resolve post production software. 
+You will need to register with hp.com to download this software. This software is needed for anyone who wants to use VizRT Vectar Vision mixing software or Black Magic DaVinci Resolve post production software. 
 
-Your coach will provide the Windows Username & Password for the Vizrt Vectar. You will need this when you connect to the machine.
+1.  **Connect to Vectar Using HP Anywhere:** 
+    - In HP Anywhere you will connect to: `vectar.endpoints.[your_project_id].cloud.goog`
+    - Your coach will provide the username and password.
 
-1.  **Connect to Vizrt Using HP Anywhere:** Get the Windows username and password from the coach
-2.  **Configure Inputs:**
+1.  **Configure Inputs:**
     - Within the Vectar interface Press the Setup button at the top of the screen
     - Configure Input 1 but locating input 1 in the setup screen and clicking the 'Configure' wheel at the end of the row.
-    - In the dialoug box that opens, from the source drop down menu chooses Local -> Add IP Source....
-    - In the Soure Manager Dialog that opens, click the configure wheel next to camera1
+    - In the dialogue box that opens, from the source drop down menu chooses Local -> Add IP Source....
+    - In the Source Manager Dialog that opens, click the configure wheel next to camera1
     - In the Configure SRT Input Connection dialog box that opens, enter Camera1 in the Connection Name field
-    - In order to know the server URL, check the internal IP address of the ibc-ghack-norsk-gw-vm in Compute Engine. In this example, it is 10.164.0.5, yours may be different.
-    - In the Server URL enter srt://10.164.0.5
-    - In the port Number enter 5111 which was the port number allocated to camera1 in Norsk.
+    - In order to know the server URL, check the internal IP address of the VM named: `norsk-gw-nnn` (where `nnn` is a random string). You can find this name in the Google Cloud console VM list. 
+        - In this example, it is `10.164.0.5`, yours will be different.
+    - In the Server URL enter `srt://10.164.0.5`
+    - In the port Number enter `5111` which was the port number allocated to camera1 in Norsk.
     - Press Okay. (You will see a message about resetting your session, but we will add the other cameras first)
     - Repeat the process for Camera 2, Camera 3 and Camera 4
-    - Now we need reset vizrt to receive the steams.
-    - Go to File -> Exit (you may need to position your mouse at the top of the screen to get the File Menu to appear.
+    - Now we need reset Vectar to receive the streams.
+    - Go to File -> Exit (you may need to position your mouse at the top of the screen to get the File Menu to appear).
     - Press Exit - when asked are you sure you want to exit.
     - This takes you to Kiosk mode, now click start Live Production in the bottom Right Corner.
-    - Viz takes a while to come back, when it's back you still need to configure the inputs.
+    - Vectar takes a while to come back, when it's back you still need to configure the inputs.
     - For Input1 Thumbnail, click the configure wheel in the bottom right of the thumbnail
     - In the Input1 Dialog box, select Source -> Local -> Camera1
-4.  **Verify Transitions:**
+
+1.  **Verify Transitions:**
     - After configuring the inputs, the four camera sources should appear in Vectar's source preview monitors.
     - Guide them to use the Vectar's switcher controls (e.g., clicking on sources to put them in 'Preview' and using a T-bar or 'Cut'/'Auto' buttons to transition them to 'Program'). This confirms that the streams are correctly ingested and that Vectar is operational.
-5.  **Configure SRT Output:**
+
+1.  **Configure SRT Output:**
     - Similar to Norsk, they now need to configure an output stream. This is typically done in the 'Output' or 'Streaming' settings.
     - To Configure the output Locate the button that says 'STREAM' in the top menu, press the configure wheel next to that button
     - Locate the output labelled SRT Stream that has a tick mark next to it, click the Configure wheel to the right
     - In the Configure SRT Connection Dialog box, choose Connection Type drop down -> Host Local SRT Stream
     - Leave the Server Port at 10000
-    - Note the Access URL, this will  be used downstream
+    - Note the Access URL, this will be used downstream
     - Press Close, twice.
     - Now press the Stream button at the top of the screen. 
-    - They must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
-    - **Participants must note down this new SRT output URL** for the next challenge.
+    - You must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
+    - **PLEASE NOTE DOWN this new SRT output URL** for the next challenge.
 
 ### Success Criteria
-- one
-- two
-- three
+- You have successfully switched inputs
+- You have an SRT output to use in the next challenge
 
 ### Learning Resources
-- [Link]()
-- [Link]()
+- [VizRT Vectar Tricaster Product Page](https://www.vizrt.com/products/tricaster/tricaster-vectar/)
 
 ## Challenge 4: Ready for some Ads?
 
 ### Introduction
 - Connect to Techex Darwin
-- Connect the SRT ingest point to the output from Vizrt Vectar in the previous step
-- Press the button in Techex Darwin to insert a scte-35 marker into the program out stream
+- Connect the SRT ingest point to the output from VizRT Vectar in the previous step
+- Press the button in Techex Darwin to insert a SCTE-35 marker into the program out stream
 - Configure the SRT output
 
 ### Description
-[Techex Darwin Documentation](https://www.techex.tv/technologies/txdarwin)
 
-1.  **Connect to Techex Darwin:** Participants will connect to the Darwin UI via its web interface.
+1.  **Connect to Techex Darwin:** 
+    - URL: https://darwin.endpoints.[your_project_id].cloud.goog
+    - Your coach will provide the username and password.
 2.  **Configure SRT Ingest:**
     - Create a new input and configure it to be an **SRT source**.
-    - Paste the SRT output URL from Vizrt Vectar (Challenge 2) into the ingest configuration. The program feed from Vectar should now be flowing into Darwin.
+    - Paste the SRT output URL from VizRT Vectar into the ingest configuration. The program feed from Vectar should now be flowing into Darwin.
 3.  **Insert SCTE-35 Marker:**
     - The Darwin interface has a feature for live stream manipulation. Guide participants to find the button or control labeled **"Insert SCTE-35 Marker"** or similar.
     - Pressing this button injects the ad signaling marker into the transport stream in real-time. This doesn't change the video content itself but adds metadata that downstream systems will use.
@@ -263,41 +254,41 @@ Your coach will provide the Windows Username & Password for the Vizrt Vectar. Yo
     - **Ensure participants copy the SRT output URL from Darwin**, as it will be the input for Ateme Titan Live.
 
 ### Success Criteria
-- one
-- two
-- three
+- You've consumed the SRT source from your VizRT Vectar configuration
+- A SCTE marker is in place
+- You've configured an SRT output for the next challenges
 
 ### Learning Resources
-- [Link]()
-- [Link]()
+- [Techex Darwin Documentation](https://www.techex.tv/technologies/txdarwin)
 
 ## Challenge 5: Let's Play Out!
 
 ### Introduction
-- For Ateme Titan Live and Nea follow [this guide](https://docs.google.com/document/d/1atvTkXzYpa7SpYjcBd2A7WnF2uO9oE-P2DS8ClY12y4/edit?tab=t.0).
+- For Ateme Titan Live and Nea follow [this guide](https://gfilicetti.github.io/media-on-gcp-ateme-docs/).
 
 ### Description
-[Ateme Titan Live Documentation](https://www.ateme.com/product-titan-software/)
-
 Ateme Titan Live is a broadcast-grade encoder. In this step, participants will configure it to receive the final produced stream and prepare it for delivery over the web. As shown in the architecture diagram, Titan Live is the final step before the stream is handed off to Google Cloud's media services.
 
-1.  **Connect to Titan Live:** Participants should log in to the Titan Live web interface.
+1.  **Connect to Titan Live:** 
+    - URL: https://titan.endpoints.[your_project_id].cloud.goog
+    - Your coach will provide the username and password.
+1.  **Connect to Nea:** 
+    - URL: https://nea.endpoints.[your_project_id].cloud.goog
+    - Your coach will provide the username and password.
 2.  **Configure New Input:**
-    - They need to create a new input channel.
+    - Create a new input channel.
     - Set the input source type to **SRT**.
-    - In the configuration, they will paste the **SRT output URL from Techex Darwin** (from Challenge 3).
+    - In the configuration paste the **SRT output URL from Techex Darwin**
 3.  **Configure Output/Profile:**
     - The primary goal is to have Titan Live process the stream. A default encoding profile (e.g., H.264/AAC in an HLS format) should be sufficient.
     - The crucial part of the configuration is setting up the destination. In our architecture, Titan Live will hand off to the **Ateme Nea Packager**, which then interfaces with the **Google Cloud Video Stitcher API**. This may be a pre-configured output profile in Titan Live that participants just need to select. The output should be configured to create HLS manifests.
 
 ### Success Criteria
-- one
-- two
-- three
+- Your channel is running and live
+- A processed stream is available
 
 ### Learning Resources
-- [Link]()
-- [Link]()
+- [Ateme Titan Live Documentation](https://www.ateme.com/product-titan-software/)
 
 ## Challenge 6: Get your channel to the masses
 
@@ -324,7 +315,7 @@ This challenge moves from broadcast-specific tooling to a standard cloud workflo
     - The `--allow-unauthenticated` flag is important to make the player publicly accessible for testing.
 
     ```shell
-    gcloud run deploy ghack-player --source . --region europe-west1 --allow-unauthenticated
+    gcloud run deploy ghack-player --source . --region europe-west1 --platform managed --allow-unauthenticated
     ```
 
     > **NOTE**: After the deployment succeeds, the command line will output the service URL. **This is the URL for the live channel player.**
@@ -333,13 +324,12 @@ This challenge moves from broadcast-specific tooling to a standard cloud workflo
     - Once the changes are made, save the files and the new version of the service.
 
 ### Success Criteria
-- one
-- two
-- three
+- You have a player running in your own Cloud Run service
+- The player works in your browser and in anyone's browser
 
 ### Learning Resources
-- [Link]()
-- [Link]()
+- [Cloud Run Quickstart](https://cloud.google.com/run/docs/quickstart)
+- [Sample Video Player Repository](https://github.com/JorgeRSG/sample-video-player)
 
 ## Challenge 7: Sit back, relax, and watch TV
 
@@ -350,7 +340,7 @@ This is the final step where everything comes together. Participants will see th
 ### Description
 
 1.  **Open the Player:**
-    - Participants should navigate to the **Cloud Run service URL** they obtained in the previous challenge.
+    - Participants should navigate to the **Cloud Run service URL** they created in the previous challenge.
 2.  **Verify the Stream:**
     - The VideoJS player should load and start playing the live video feed originating from the Norsk sources, mixed in Vectar, and processed by Darwin and Titan.
 3.  **Look for the Ad:**
@@ -361,10 +351,7 @@ This is the final step where everything comes together. Participants will see th
         - There is an issue with the Google Ad Manager campaign.
 
 ### Success Criteria
-- one
-- two
-- three
+- Are you not entertained!?!
 
 ### Learning Resources
-- [Link]()
-- [Link]()
+- [Yes We Are...](https://youtu.be/HmdpjkM3onk?si=t9_hnBoU4HBKeWZS&t=76)
