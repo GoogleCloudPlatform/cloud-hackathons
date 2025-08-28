@@ -14,7 +14,7 @@ In addition to this, there will be a creative portion to this gHack where you wi
 
 In this hack you will get hands on experience with both first party Google Cloud tooling for media as well as third party tools that are industry standards and used extensively in the ecosystem:
 
-#### Google Cloud First Party
+### Google Cloud First Party
 - Veo for AI driven video generation
 - Imagen for AI driven image generation
 - Lyra for AI driven music generation
@@ -23,7 +23,7 @@ In this hack you will get hands on experience with both first party Google Cloud
 - Google Cloud CDN for delivery of video feeds to end users
 - Google Cloud Compute & Storage for the backbone of everything
 
-#### Media Technology Partners
+### Media Technology Partners
 - Norsk for Routing SRT Video Streams
 - VizRT Vectar for video switching / Vision mixing
 - TechEx Darwin for inserting SCTE-35 Ad Markers
@@ -44,8 +44,8 @@ In this hack you will get hands on experience with both first party Google Cloud
 ## Prerequisites
 
 - Basic knowledge of GCP
-- Access to a GCP environment (will be provided in this gHack)
-- Licenses for the third party software (will be provided in this gHack)
+- Access to a GCP environment
+- Licenses for the third party software 
 
 ## Contributors
 
@@ -58,24 +58,37 @@ In this hack you will get hands on experience with both first party Google Cloud
 ## Challenge 1: Get creative with the help of AI
 
 ### Introduction
-- Log into the Google Cloud Console with your student account
-- Use Vertex AI and Media Studio to generate some ad creative
-- Save/Upload your videos to a cloud bucket
+Using Google Cloud's Generative Media offerings can make quick work of ad creative generation. In this challenge we'll get a taste of doing just that.
 
 ### Description
 - Log into the [Google Cloud Console](https://console.cloud.google.com/) with your student account 
     - Your coach will provide your Student ID and password. Each Student ID uses the same password. We recommend using incognito mode in Chrome for the student account.
-- Locate Media Studio within Vertex AI in the console
-- Try to complete this challenge in 90 minutes. Each team should upload a maximum of two 'ad' videos to your assigned Google Cloud Storage bucket sub-folder
+- Log into the Google Cloud Console and find **Media Studio** within the **Vertex AI** suite. 
+- Use Veo to create shots
+- Use Imagen to create still images
+- Use Lyra to create music
+- Use the provided DaVinci Resolve VM to edit together all of your generated assets into one or two 30 second ad spots.
+- Try to complete this challenge in 90 minutes. 
+- Each team should upload a maximum of 2 ad spots to your assigned Google Cloud Storage bucket sub-folder
     - This will be given do you by your coach and will look something like: `gs://hackfest-ad-creative/[your_project_id]/`
-- Your coach can help you get the videos uploaded
 
 ### Success Criteria
-- You have created 1 or 2 ad videos.
+- You have created shots using Veo
+- You have created still images using Imagen
+- You have created music using Lyra
+- You have created 1 or 2 ad spots.
 - You have uploaded them as `mp4` files to your assigned bucket sub-folder.
 
 ### Learning Resources
 - [Veo video generation overview](https://cloud.google.com/vertex-ai/generative-ai/docs/video/overview)
+- [Imagen image generation overview](https://cloud.google.com/vertex-ai/generative-ai/docs/image/overview)
+- [Lyra music generation overview](https://cloud.google.com/vertex-ai/generative-ai/docs/music/generate-music)
+
+### Tips
+To access the remote desktop of the DaVinci Resolve VM you will need to download and install the HP Anywhere PCoIP Client (formerly known as Teradici)
+- You can find the download for Mac, Windows, Linux and Chromebooks[here](https://anyware.hp.com/find/product/hp-anyware)
+    - Look in the **Anywhere Clients** section
+    - **NOTE:** If the page gets stuck on the splash page, click the browser reload button.
 
 ## Challenge 2: Gather up those feeds and spit 'em out
 
@@ -178,9 +191,6 @@ The final step is to connect your inputs to your outputs. This tells Norsk where
 ### Description
 In this challenge, participants will work with a professional video mixing tool, VizRT Vectar. The main tasks are configuring inputs from the previous step and creating a new output stream.
 
-Pre-requisite: One or two team members will need to download and install the HP Anywhere PCoIP Client (formerly known as Teradici)
-You can find the download for Mac, Windows, Linux and Chromebooks [here](https://anyware.hp.com/find/product/hp-anyware). 
-You will need to register with hp.com to download this software. This software is needed for anyone who wants to use VizRT Vectar Vision mixing software or Black Magic DaVinci Resolve post production software. 
 
 1.  **Connect to Vectar Using HP Anywhere:** 
     - In HP Anywhere you will connect to: `vectar.endpoints.[your_project_id].cloud.goog`
@@ -228,6 +238,10 @@ You will need to register with hp.com to download this software. This software i
 
 ### Learning Resources
 - [VizRT Vectar Tricaster Product Page](https://www.vizrt.com/products/tricaster/tricaster-vectar/)
+
+### Tips
+To access the remote desktop of the VizRT Vectar VM you will need to download and install the HP Anywhere PCoIP Client (formerly known as Teradici)
+- You can find the download for Mac, Windows, Linux and Chromebooks [here](https://anyware.hp.com/find/product/hp-anyware)
 
 ## Challenge 4: Ready for some Ads?
 
