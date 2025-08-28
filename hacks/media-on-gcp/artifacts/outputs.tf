@@ -63,3 +63,33 @@ output "gclb_dns_addresses" {
   value       = module.gclb.endpoint_dns_addresses
 }
 
+output "gclb_dns_address_nea" {
+  description = "The DNS address for the 'nea' service."
+  value       = module.gclb.endpoint_dns_addresses["nea"]
+}
+
+output "gclb_dns_address_cdn" {
+  description = "The DNS address for the 'cdn' service."
+  value       = module.gclb.endpoint_dns_addresses["cdn"]
+}
+
+output "gclb_dns_address_titan" {
+  description = "The DNS address for the 'titan' service."
+  value       = module.gclb.endpoint_dns_addresses["titan"]
+}
+
+output "gclb_dns_address_darwin" {
+  description = "The DNS address for the 'darwin' service."
+  value       = module.gclb.endpoint_dns_addresses["darwin"]
+}
+
+output "gclb_dns_address_gemini" {
+  description = "The DNS address for the 'gemini' service."
+  value       = module.gclb.endpoint_dns_addresses["gemini"]
+}
+
+output "gclb_dns_address_norsk" {
+  description = "The DNS address for the 'norsk' service."
+  value       = module.gclb.endpoint_dns_addresses["norsk"]
+}
+
