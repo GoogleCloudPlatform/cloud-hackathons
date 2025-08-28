@@ -93,11 +93,10 @@ Log into your Norsk instance (replace with your actual project id):
 
 First, we'll add the four input sources. These are all **SRT Ingest (Caller)** , meaning Norsk will "call" a remote source to pull the stream.
 
-We have 12 SRT sources running on following instances. 
+We have 4 SRT sources running on following instances. 
 
 ```
-IP: 34.147.220.43 port 5121-5126
-IP: 35.246.1.71 port 5121-5126
+IP: 34.32.228.47 port 5111-5116
 ```
 
 Please distribute the load between these servers 
@@ -107,26 +106,26 @@ Please distribute the load between these servers
 3.  Click on each node to open its configuration panel and enter the details as follows, 
     - **Input 1:**
         - `displayName`: camera1
-        - `host`: 34.147.220.43 
-        - `port`: 5121
+        - `host`: 34.32.228.47 
+        - `port`: 5111
         - `streamId`: camera1
         - Click Save
     - **Input 2:**
         - `displayName`: camera2
-        - `host`: 34.147.220.43 
-        - `port`: 5122
+        - `host`: 34.32.228.47 
+        - `port`: 5112
         - `streamId`: camera2
         - Click Save
     - **Input 3:**
         - `displayName`: camera3
-        - `host`: 35.246.1.71 
-        - `port`: 5123
+        - `host`: 34.32.228.47 
+        - `port`: 5113
         - `streamId`: camera3
         - Click Save
     - **Input 4:**
         - `displayName`: camera6
-        - `host`: 35.246.1.71
-        - `port`: 5126
+        - `host`: 34.32.228.47 
+        - `port`: 5116
         - `streamId`: camera4
         - Click Save
 
@@ -139,16 +138,16 @@ Next, you'll add the four output destinations. The configuration specifies these
 3.  Configure each listener with its unique port:
     - **Output 1:**
         - `displayName`: srt-listener-camera1
-        - `port`: 5111
+        - `port`: 5101
     - **Output 2:**
         - `displayName`: srt-listener-camera2
-        - `port`: 5112
+        - `port`: 5102
     - **Output 3:**
         - `displayName`: srt-listener-camera3
-        - `port`: 5113
+        - `port`: 5103
     - **Output 4:**
         - `displayName`: srt-listener-camera6
-        - `port`: 5116
+        - `port`: 5106
 
 #### Step 3: Connect the Nodes
 
