@@ -87,23 +87,23 @@ So distribute the load between these servers
 3.  Click on each node to open its configuration panel and enter the details from your YAML file.
     - **Input 1:**
         - `displayName`: camera1
-        - `host`: 34.147.220.43 
-        - `port`: 5121
+        - `host`: 34.32.228.47 
+        - `port`: 5111
         - `streamId`: camera1
     - **Input 2:**
         - `displayName`: camera2
-        - `host`: 34.147.220.43 
-        - `port`: 5122
+        - `host`: 34.32.228.47 
+        - `port`: 5112
         - `streamId`: camera2
     - **Input 3:**
         - `displayName`: camera3
-        - `host`: 35.246.1.71 
-        - `port`: 5123
+        - `host`: 34.32.228.47 
+        - `port`: 5113
         - `streamId`: camera3
     - **Input 4:**
         - `displayName`: camera4
-        - `host`: 35.246.1.71
-        - `port`: 5126
+        - `host`: 34.32.228.47 
+        - `port`: 5114
         - `streamId`: camera4
 
 ### Step 2: Add Your Output Destinations 
@@ -115,16 +115,16 @@ Next, you'll add the four output destinations. The configuration specifies these
 3.  Configure each listener with its unique port:
     - **Output 1:**
         - `displayName`: srt-listener-camera1
-        - `port`: 5111
+        - `port`: 5101
     - **Output 2:**
         - `displayName`: srt-listener-camera2
-        - `port`: 5112
+        - `port`: 5102
     - **Output 3:**
         - `displayName`: srt-listener-camera3
-        - `port`: 5113
+        - `port`: 5103
     - **Output 4:**
         - `displayName`: srt-listener-camera4
-        - `port`: 5114
+        - `port`: 5104
 
 ### Step 3: Connect the Nodes
 
