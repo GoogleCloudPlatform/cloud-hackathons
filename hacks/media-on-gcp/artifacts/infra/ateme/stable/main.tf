@@ -15,10 +15,16 @@ module "nea" {
   sub_networks         = var.sub_networks
   external_ips         = var.external_ips
 
-  named_ports = [{
-    name = "http"
-    port = 8080
-  }]
+  named_ports = [
+    {
+      name = "http1"
+      port = 8080
+    },
+    {
+      name = "http2"
+      port = 80
+    }
+  ]
 }
 
 module "titan" {

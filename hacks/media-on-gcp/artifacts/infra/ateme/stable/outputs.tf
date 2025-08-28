@@ -48,12 +48,12 @@ output "titan_named_ports" {
   value       = module.titan.named_ports
 }
 
-output "titan_port" {
-  description = "The port for the Ateme Titan instance group."
-  value       = module.titan.port
-}
+# output "titan_port" {
+#   description = "The port for the Ateme Titan instance group."
+#   value       = module.titan.port
+# }
 
-output "titan_port_name" {
-  description = "The port name for the Ateme Titan instance group."
-  value       = module.titan.port_name
-}
+# output "titan_port_name" {
+#   description = "The port name for the Ateme Titan instance group."
+#   value       = module.titan.port_name
+# }

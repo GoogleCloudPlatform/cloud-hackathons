@@ -20,10 +20,21 @@ output "named_ports" {
 
 output "port" {
   description = "The first port from the list of named ports."
-  value       = length(var.named_ports) > 0 ? var.named_ports[0].port : null
+  value       = length(var.named_ports) > 0 ? var.named_ports : null
 }
 
 output "port_name" {
   description = "The first port name from the list of named ports."
-  value       = length(var.named_ports) > 0 ? var.named_ports[0].name : null
+  value       = length(var.named_ports) > 0 ? var.named_ports : null
 }
+
+
+# output "port" {
+#   description = "The first port from the list of named ports."
+#   value       = length(var.named_ports) > 0 ? var.named_ports[0].port : null
+# }
+
+# output "port_name" {
+#   description = "The first port name from the list of named ports."
+#   value       = length(var.named_ports) > 0 ? var.named_ports[0].name : null
+# }

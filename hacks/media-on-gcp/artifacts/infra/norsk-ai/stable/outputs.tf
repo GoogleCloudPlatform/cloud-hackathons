@@ -18,15 +18,15 @@ output "named_ports" {
   value       = module.norsk_ai.named_ports
 }
 
-output "port" {
-  description = "The port for the Norsk AI instance group."
-  value       = module.norsk_ai.port
-}
+# output "port" {
+#   description = "The port for the Norsk AI instance group."
+#   value       = module.norsk_ai.port
+# }
 
-output "port_name" {
-  description = "The port name for the Norsk AI instance group."
-  value       = module.norsk_ai.port_name
-}
+# output "port_name" {
+#   description = "The port name for the Norsk AI instance group."
+#   value       = module.norsk_ai.port_name
+# }
 
 output "admin_password" {
   description = "Password for Admin."

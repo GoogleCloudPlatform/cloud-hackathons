@@ -18,12 +18,27 @@ output "named_ports" {
   value       = module.vizrt_vectar.named_ports
 }
 
-output "port" {
-  description = "The port for the Vizrt Vectar instance group."
-  value       = module.vizrt_vectar.port
+# output "port" {
+#   description = "The port for the Vizrt Vectar instance group."
+#   value       = module.vizrt_vectar.port
+# }
+
+# output "port_name" {
+#   description = "The port name for the Vizrt Vectar instance group."
+#   value       = module.vizrt_vectar.port_name
+# }
+
+output "vectar_admin_username" {
+  description = "Vectar admin username for RDP access."
+  value       = "admin"
 }
 
-output "port_name" {
-  description = "The port name for the Vizrt Vectar instance group."
-  value       = module.vizrt_vectar.port_name
+output "vectar_admin_password" {
+  description = "Vectar admin password for RDP access."
+  value       = random_password.admin_password
+}
+
+output "vectar_dns_address" {
+  description = "URL for Vizrt Vectar service"
+  value       = google_endpoints_service.dynamic.dns_address
 }

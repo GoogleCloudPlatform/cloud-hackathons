@@ -18,12 +18,12 @@ output "darwin_named_ports" {
   value       = module.darwin.named_ports
 }
 
-output "darwin_port" {
-  description = "The port for the Darwin instance group."
-  value       = module.darwin.port
-}
+# output "darwin_port" {
+#   description = "The port for the Darwin instance group."
+#   value       = module.darwin.port
+# }
 
-output "darwin_port_name" {
-  description = "The port name for the Darwin instance group."
-  value       = module.darwin.port_name
-}
+# output "darwin_port_name" {
+#   description = "The port name for the Darwin instance group."
+#   value       = module.darwin.port_name
+# }

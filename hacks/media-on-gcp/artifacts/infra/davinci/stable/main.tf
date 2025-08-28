@@ -20,6 +20,10 @@ module "davinci" {
 
   metadata = {
     enable-oslogin  = "true"
+    windows-startup-script-ps1 = <<-EOF
+      $password = ConvertTo-SecureString "${random_password.admin_password.result}" -AsPlainText -Force
+      Get-LocalUser -Name "admin" | Set-LocalUser -Password $password
+    EOF
   }
 }
 
@@ -53,4 +57,13 @@ resource "google_endpoints_service" "dynamic" {
   # lifecycle {
   #   prevent_destroy = true
   # }
+}
+
+resource "random_password" "admin_password" {
+  length           = 16
+  special          = true
+  override_special = "!@#$%^&*"
+  upper            = true
+  lower            = true
+  numeric          = true
 }

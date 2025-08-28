@@ -20,8 +20,36 @@ output "norsk_admin_user" {
   value       = "norsk-studio-admin"
 }
 
-# output "norsk_admin_password" {
-#   description = "Norsk admin password."
-#   value       = module.norsk_gw.admin_password
-#   sensitive   = true
-# }
+output "norsk_admin_password" {
+  description = "Norsk admin password."
+  value       = module.norsk_gw.admin_password
+  sensitive   = true
+}
+
+output "vectar_admin_username" {
+  description = "Vectar admin username for RDP access."
+  value       = module.vizrt.vectar_admin_username
+}
+
+output "vectar_admin_password" {
+  description = "Vectar admin password for RDP access."
+  value       = module.vizrt.vectar_admin_password
+  sensitive   = true
+}
+
+output "resolve_admin_username" {
+  description = "Resolve admin username for RDP access."
+  value       = module.davinci.resolve_admin_username
+}
+
+output "resolve_admin_password" {
+  description = "Resolve admin password for RDP access."
+  value       = module.davinci.resolve_admin_password
+  sensitive   = true
+}
+
+output "gclb_dns_addresses" {
+  description = "The DNS addresses for the services behind the Global Load Balancer."
+  value       = module.gclb.endpoint_dns_addresses
+}
+

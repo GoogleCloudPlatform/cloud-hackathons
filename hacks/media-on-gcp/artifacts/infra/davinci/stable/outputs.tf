@@ -18,12 +18,27 @@ output "named_ports" {
   value       = module.davinci.named_ports
 }
 
-output "port" {
-  description = "The port for the DaVinci Resolve instance group."
-  value       = module.davinci.port
+# output "port" {
+#   description = "The port for the DaVinci Resolve instance group."
+#   value       = module.davinci.port
+# }
+
+# output "port_name" {
+#   description = "The port name for the DaVinci Resolve instance group."
+#   value       = module.davinci.port_name
+# }
+
+output "resolve_admin_username" {
+  description = "Resolve admin username for RDP access."
+  value       = "admin"
 }
 
-output "port_name" {
-  description = "The port name for the DaVinci Resolve instance group."
-  value       = module.davinci.port_name
+output "resolve_admin_password" {
+  description = "Resolve admin password for RDP access."
+  value       = random_password.admin_password
+}
+
+output "resolve_dns_address" {
+  description = "URL for Davinci Resolve service"
+  value       = google_endpoints_service.dynamic.dns_address
 }

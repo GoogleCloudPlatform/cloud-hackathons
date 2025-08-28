@@ -15,9 +15,15 @@ module "vizrt_vectar" {
   sub_networks         = var.sub_networks
   external_ips         = [google_compute_address.vectar.address]
 
+  metadata = {
+    windows-startup-script-ps1 = <<-EOF
+      $password = ConvertTo-SecureString "${random_password.admin_password.result}" -AsPlainText -Force
+      Get-LocalUser -Name "Admin" | Set-LocalUser -Password $password
+    EOF
+  }
+
   accelerator_type  = "nvidia-l4-vws"
   accelerator_count = 1
-
 }
 
 resource "google_compute_firewall" "fwr_vizrt_vectar" {
@@ -67,4 +73,13 @@ resource "google_endpoints_service" "dynamic" {
   # lifecycle {
   #   prevent_destroy = true
   # }
+}
+
+resource "random_password" "admin_password" {
+  length           = 16
+  special          = true
+  override_special = "!@#$%^&*"
+  upper            = true
+  lower            = true
+  numeric          = true
 }

@@ -21,42 +21,51 @@ module "gclb" {
   backend_services = {
     nea = {
       instance_group       = module.ateme.nea_instance_group_manager_instance_group
-      port                 = module.ateme.nea_port # 8080
-      port_name            = module.ateme.nea_port_name # http
+      port                 = module.ateme.nea_named_ports[0].port # 8080
+      port_name            = module.ateme.nea_named_ports[0].name # http1
       protocol             = "HTTP"
-      healthcheck_protocol = "http"
+      healthcheck_protocol = "tcp"
       enable_cdn           = false
+    }
+    # TODO: CDN is nea on port 80
+    cdn = {
+      instance_group       = module.ateme.nea_instance_group_manager_instance_group
+      port                 = module.ateme.nea_named_ports[1].port # 80
+      port_name            = module.ateme.nea_named_ports[1].name # http2
+      protocol             = "HTTP"
+      healthcheck_protocol = "tcp"
+      enable_cdn           = true
     }
     titan = {
       instance_group       = module.ateme.titan_instance_group_manager_instance_group
-      port                 = module.ateme.titan_port # 443
-      port_name            = module.ateme.titan_port_name # https
+      port                 = module.ateme.titan_named_ports[0].port # 443
+      port_name            = module.ateme.titan_named_ports[0].name # https
       protocol             = "HTTPS"
-      healthcheck_protocol = "ssl"
+      healthcheck_protocol = "tcp"
       enable_cdn           = false
     }
     darwin = {
       instance_group       = module.darwin.darwin_instance_group_manager_instance_group
-      port                 = module.darwin.darwin_port # 443
-      port_name            = module.darwin.darwin_port_name # https
+      port                 = module.darwin.darwin_named_ports[0].port # 443
+      port_name            = module.darwin.darwin_named_ports[0].name # https
       protocol             = "HTTPS"
-      healthcheck_protocol = "ssl"
+      healthcheck_protocol = "tcp"
       enable_cdn           = false
     }
     "gemini" = {
       instance_group       = module.norsk_ai.instance_group_manager_instance_group
-      port                 = module.norsk_ai.port # 443
-      port_name            = module.norsk_ai.port_name # https
+      port                 = module.norsk_ai.named_ports[0].port # 443
+      port_name            = module.norsk_ai.named_ports[0].name # https
       protocol             = "HTTPS"
-      healthcheck_protocol = "ssl"
+      healthcheck_protocol = "tcp"
       enable_cdn           = false
     }
     "norsk" = {
       instance_group       = module.norsk_gw.instance_group_manager_instance_group
-      port                 = module.norsk_gw.port # 443
-      port_name            = module.norsk_gw.port_name # https
+      port                 = module.norsk_gw.named_ports[0].port # 443
+      port_name            = module.norsk_gw.named_ports[0].name # https
       protocol             = "HTTPS"
-      healthcheck_protocol = "ssl"
+      healthcheck_protocol = "tcp"
       enable_cdn           = false
     }
   }
