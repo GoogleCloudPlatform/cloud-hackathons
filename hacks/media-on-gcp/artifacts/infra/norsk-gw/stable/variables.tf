@@ -25,7 +25,7 @@ variable "goog_cm_deployment_name" {
 variable "source_image" {
   description = "The image name for the disk for the VM instance."
   type        = string
-  default     = "projects/id3as-public/global/images/norsk-studio-byol-alpha-debian-12-x86-64-2025-08-18"
+  default     = "projects/media-on-gcp-storage/global/images/norsk-image-ibc-alpha-debian-12-x86-64-2025-08-29"
 }
 
 variable "machine_type" {
