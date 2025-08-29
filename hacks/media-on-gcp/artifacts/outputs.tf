@@ -17,7 +17,7 @@ output "project_id" {
 
 output "norsk_admin_user" {
   description = "Norsk admin username."
-  value       = "norsk-studio-admin"
+  value       = module.norsk_gw.admin_user
 }
 
 output "norsk_admin_password" {
