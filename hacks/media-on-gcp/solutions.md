@@ -17,14 +17,18 @@ As a coach, you will need to run these steps manually to copy in the proper lice
     ```shell
     gsutil cp gs://ghacks-media-on-gcp-private/license.json .
     ```
-1. Get the names of the Norsk VMs, they are named as you see here but with a unique string instead of `nnn`
+1. Get the names of the Norsk VMs using this command:
     ```shell
-    gcloud compute scp ./license.json norsk-gw-nnn:~
-    gcloud compute scp ./license.json norsk-ai-nnn:~
+    gcloud compute instances list --filter="name~norsk" --format="table(name,zone)"
+    ```
+1. The VMs will have a small unique string, use that string in place of `nnn` in these commands, and use the zone that you got from the previous command:
+    ```shell
+    gcloud compute scp ./license.json norsk-gw-nnn:~ --zone europe-west4-a
+    gcloud compute scp ./license.json norsk-ai-nnn:~ --zone europe-west4-a
     ```
 1. SSH to the Norsk GW VM and copy the license file to the right spot and restart the service
     ```shell
-    gcloud compute ssh norsk-gw-nnn
+    gcloud compute ssh norsk-gw-nnn --zone europe-west4-a
     ```
     - Then in the VMs terminal, run:
     ```shell
@@ -34,7 +38,7 @@ As a coach, you will need to run these steps manually to copy in the proper lice
     ```
 1. SSH to the Norsk AI VM and copy the license file to the right spot and restart the service
     ```shell
-    gcloud compute ssh norsk-ai-nnn
+    gcloud compute ssh norsk-ai-nnn --zone europe-west4-a
     ```
     - Then in the VMs terminal, run:
     ```shell
