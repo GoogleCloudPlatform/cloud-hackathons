@@ -18,6 +18,7 @@ module "norsk_gw" {
 
   metadata = {
     norsk-studio-admin-password = random_password.admin.result
+    deploy_domain_name          = var.domain_name
     deploy_certbot_email        = var.certbot_email
     google-logging-enable       = "0"
     google-monitoring-enable    = "0"

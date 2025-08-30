@@ -130,8 +130,6 @@ variable "udp_5001_source_ranges" {
   default     = ""
 }
 
-
-
 variable "domain_name" {
   description = "The domain name that you will access this Norsk Studio deployment through, which you must set up through your DNS provider to point to the VM instance."
   type        = string
