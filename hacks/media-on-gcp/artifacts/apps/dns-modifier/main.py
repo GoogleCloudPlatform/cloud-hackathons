@@ -70,8 +70,12 @@ def add_subdomain():
         print(f"API Error creating record: {e}")
         return jsonify({"error": "An API error occurred.", "details": str(e)}), 500
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-        return jsonify({"error": "An unexpected error occurred."}), 500
+        error_details = f"{type(e).__name__}: {e}"
+        print(f"An unexpected error occurred: {error_details}")
+        return jsonify({
+            "error": "An unexpected error occurred. Check logs for details.",
+            "details": error_details
+        }), 500
 
 @app.route("/remove", methods=["DELETE"])
 def remove_subdomain():
@@ -111,8 +115,12 @@ def remove_subdomain():
         print(f"API Error deleting record: {e}")
         return jsonify({"error": "An API error occurred.", "details": str(e)}), 500
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-        return jsonify({"error": "An unexpected error occurred."}), 500
+        error_details = f"{type(e).__name__}: {e}"
+        print(f"An unexpected error occurred: {error_details}")
+        return jsonify({
+            "error": "An unexpected error occurred. Check logs for details.",
+            "details": error_details
+        }), 500
 
 
 if __name__ == "__main__":
