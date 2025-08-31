@@ -7,8 +7,8 @@ from google.api_core import exceptions
 app = Flask(__name__)
 
 # --- Configuration ---
-ZONE_NAME = "teamgino1-media-ghacks-dev"
-ZONE_DOMAIN = "teamgino1.media.ghacks.dev"
+ZONE_NAME = "media-ghacks-dev"
+ZONE_DOMAIN = "media.ghacks.dev"
 DEFAULT_TTL = 3000
 NAMESERVERS = [
     "ns-cloud-b1.googledomains.com.",
@@ -77,7 +77,7 @@ def add_subdomain():
             "details": error_details
         }), 500
 
-@app.route("/remove", methods=["DELETE"])
+@app.route("/subdomain", methods=["DELETE"])
 def remove_subdomain():
     """
     Removes an NS record for a subdomain.
