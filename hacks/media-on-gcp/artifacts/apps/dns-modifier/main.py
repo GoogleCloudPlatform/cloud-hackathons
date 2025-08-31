@@ -57,7 +57,7 @@ def add_subdomain():
 
         record_set = zone.resource_record_set(fqdn, "NS", DEFAULT_TTL, NAMESERVERS)
         changes = zone.changes()
-        changes.add(record_set)
+        changes.add_record_set(record_set)
         changes.create()
 
         # Wait for the change to complete
@@ -102,7 +102,7 @@ def remove_subdomain():
             return jsonify({"error": f"Record {fqdn} not found."}), 404
 
         changes = zone.changes()
-        changes.delete(record_to_delete)
+        changes.delete_record_set(record_to_delete)
         changes.create()
 
         # Wait for the change to complete
