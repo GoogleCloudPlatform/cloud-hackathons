@@ -1,0 +1,4 @@
+requests==2.31.0
+Flask==2.3.3
+gunicorn==21.2.0
+google-cloud-dns==0.34.0
