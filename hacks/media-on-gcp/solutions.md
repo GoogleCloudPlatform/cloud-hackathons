@@ -8,52 +8,19 @@ Welcome to the coach's guide for the *Media & Entertainment on Google Cloud* gHa
 
 ## PRE-GAME: Install license file for 2 x Norsk Studio instances
 
-As a coach, you will need to run these steps manually to copy in the proper license file into the 2 Norsk VMs. 
+As a coach, you will need to add the registration code to both the Vectar and Resolve machines.
+
+They are windows machines we will be using PCoIP PC Anywhere software for GPC accelerated remote desktop access
 
 **NOTE:** Do this as soon as your environment is ready and before the gHack starts
 
-1. Log in as any student and go to the [Cloud Shell](https://shell.cloud.google.com)
-1. Copy the license file locally:
-    ```shell
-    gsutil cp gs://ghacks-media-on-gcp-private/license.json .
-    ```
-1. Get the names of the Norsk VMs using this command:
-    ```shell
-    gcloud compute instances list --filter="name~norsk" --format="table(name,zone)"
-    ```
-1. The VMs will have a small unique string, use that string in place of `nnn` in these commands, and use the zone that you got from the previous command:
-    ```shell
-    gcloud compute scp ./license.json norsk-gw-nnn:~ --zone europe-west4-a
-    gcloud compute scp ./license.json norsk-ai-nnn:~ --zone europe-west4-a
-    ```
-1. SSH to the Norsk GW VM and copy the license file to the right spot and restart the service
-    ```shell
-    gcloud compute ssh norsk-gw-nnn --zone europe-west4-a
-    ```
-    - Then in the VMs terminal, run:
-    ```shell
-    sudo mv ~/license.json /var/norsk-studio/norsk-studio-docker/secrets/license.json
-    sudo systemctl restart norsk.service
-    exit
-    ```
-1. SSH to the Norsk AI VM and copy the license file to the right spot and restart the service
-    ```shell
-    gcloud compute ssh norsk-ai-nnn --zone europe-west4-a
-    ```
-    - Then in the VMs terminal, run:
-    ```shell
-    sudo mv ~/license.json /var/norsk-studio/norsk-studio-docker/secrets/license.json
-    sudo systemctl restart norsk.service
-    exit
-    ```
+You will be provided instructions and this code.
 
 ## Challenge 1: Get creative with the help of AI
 
 ### Notes & Guidance
 
 Coach guide for the GenMedia creative challenge goes here
-
-***
 
 ## Challenge 2: Gather up those feeds and spit 'em out
 
@@ -139,8 +106,6 @@ The final step is to connect your inputs to your outputs. This tells Norsk where
     - Connect **camera3** to **srt-listener-camera3**.
     - Connect **camera4** to **srt-listener-camera4**.
 
-***
-
 ## Challenge 3: Get in the Mix
 
 Product Guide - https://www.vizrt.com/vizrt/remote/viz-vectar-plus/
@@ -162,8 +127,6 @@ In this challenge, participants will work with a professional video mixing tool,
     - They must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
     - **Participants must note down this new SRT output URL** for the next challenge.
 
-***
-
 ## Challenge 4: Ready for some Ads?
 
 https://www.techex.tv/technologies/txdarwin
@@ -183,8 +146,6 @@ This challenge introduces SCTE-35 markers, which are fundamental for digital pro
     - Create a new SRT output for the stream that now contains the SCTE-35 marker.
     - **Ensure participants copy the SRT output URL from Darwin**, as it will be the input for Ateme Titan Live.
 
-***
-
 ## Challenge 5: Let's Play Out!
 
 https://www.ateme.com/product-titan-software/
@@ -201,8 +162,6 @@ Ateme Titan Live is a broadcast-grade encoder. In this step, participants will c
 3.  **Configure Output/Profile:**
     - The primary goal is to have Titan Live process the stream. A default encoding profile (e.g., H.264/AAC in an HLS format) should be sufficient.
     - The crucial part of the configuration is setting up the destination. In our architecture, Titan Live will hand off to the **Ateme Nea Packager**, which then interfaces with the **Google Cloud Video Stitcher API**. This may be a pre-configured output profile in Titan Live that participants just need to select. The output should be configured to create HLS manifests.
-
-***
 
 ## Challenge 6: Get your channel to the masses
 
@@ -229,8 +188,6 @@ This challenge moves from broadcast-specific tooling to a standard cloud workflo
     ```
 
     > **Note**: After the deployment succeeds, the command line will output the service URL. **This is the URL for the live channel player.**
-
-***
 
 ## Challenge 7: Sit back, relax, and watch TV
 
