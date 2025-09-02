@@ -71,9 +71,9 @@ Work as a team and get creative to come up with an imaginary product. Now use yo
 Log into the Google Cloud Console and find **Media Studio** within the **Vertex AI** suite. 
 
 In the **Media Studio** you have access to the generative AI creative tooling. 
-    - Use Veo to create shots. 
-    - Use Imagen to create still images. 
-    - Use Lyra to create music
+- Use Veo to create shots. 
+- Use Imagen to create still images. 
+- Use Lyra to create music
 
 You are welcome to produce the final ad using only Veo if you'd like, but if you want to make it more professional, you'll need to editing your shots, music and stills together.
 
