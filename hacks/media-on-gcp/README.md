@@ -114,91 +114,60 @@ Install the client and then use the credentials provided by your coach to log in
 ## Challenge 2: Gather up those feeds and spit 'em out
 
 ### Introduction
-- Load Norsk Studio. (blank canvas)
-- Drag an SRT Ingest component to the canvas, connect to camera source1
-- Repeat for camera source 2, 3 and 4.
-- Create an SRT Egest component set x,y,z (if req'd, TBD).
-- Note down SRT locations, you'll need them in the next step.
+It is now time to start working on end to end media streaming pipeline. It all begins from our raw source feeds.
+
+We will gather up all the live and recorded feeds that we have available and bring them into a gateway. This gives us the opportunity to preview the feeds and then create SRT output that can be used later in our pipeline.
+
+### Tools Used
+- Google Cloud Compute Engine
+- Norsk Studio 
 
 ### Description
-Log into your Norsk instance (replace with your actual project id):
+We will be using Norsk Studio as our gateway to collect all our feeds. Norsk is where our pipeline begins.
+
+Log into your Norsk instance and replace placeholder with your actual project id:
 - URL: <https://norsk.endpoints.[your_project_id].cloud.goog>
 - Your coach will provide a username and password
 
-First, we'll add the four input sources. These are all **SRT Ingest (Caller)** , meaning Norsk will "call" a remote source to pull the stream.
+You will start with a blank canvas in Norsk. On the left is the **Component Library**. We will be dragging components onto our canvas and connecting them to build up this part of the pipeline.
 
-We have 4 SRT sources running on following instances. 
+**NOTE:** Connecting nodes requires dragging lines between the small circles on the components.
 
+Using the **SRT Ingest (Caller)** component, connect to the 4 provided camera feeds. They are running at the following URIs:
 ```
-IP: 34.32.228.47 port 5111-5116
+srt://34.32.228.47:5001
+srt://34.34.228.47:5001
+srt://34.32.34.47:5001
+srt://34.32.228.34:5001
 ```
 
-Please distribute the load between these servers 
+The settings on the SRT Ingest component will look something like this:
+- `displayName`: camera1
+- `host`: 34.32.228.47 
+- `port`: 5001
+- `streamId`: camera1
 
-1.  In the **Component Library** on the left, find the **Inputs** section.
-2.  Click and drag the **SRT Ingest (Caller)** component onto the main canvas. Repeat this three more times, so you have four input nodes in total.
-3.  Click on each node to open its configuration panel and enter the details as follows, 
-    - **Input 1:**
-        - `displayName`: camera1
-        - `host`: 34.32.228.47 
-        - `port`: 5111
-        - `streamId`: camera1
-        - Click Save
-    - **Input 2:**
-        - `displayName`: camera2
-        - `host`: 34.32.228.47 
-        - `port`: 5112
-        - `streamId`: camera2
-        - Click Save
-    - **Input 3:**
-        - `displayName`: camera3
-        - `host`: 34.32.228.47 
-        - `port`: 5113
-        - `streamId`: camera3
-        - Click Save
-    - **Input 4:**
-        - `displayName`: camera6
-        - `host`: 34.32.228.47 
-        - `port`: 5116
-        - `streamId`: camera4
-        - Click Save
+Now add 4 Preview components and connect it to the Ingest components so you can actually see what is coming in.
 
-#### Step 2: Add Your Output Destinations 
+Finally, add 4 **SRT Listener (Egest)** components and connect them to the sources. Use ports 5101 to 5104.
 
-Next, you'll add the four output destinations. The configuration specifies these should be **SRT Listener (Egest)** nodes. This means Norsk will "listen" for a remote player or device to connect and receive the stream.
-
-1.  In the **Component Library**, find the **Outputs** section.
-2.  Click and drag the **SRT Listener (Egest)** component onto the canvas. Repeat this three more times. It's good practice to place them to the right of your input nodes.
-3.  Configure each listener with its unique port:
-    - **Output 1:**
-        - `displayName`: srt-listener-camera1
-        - `port`: 5101
-    - **Output 2:**
-        - `displayName`: srt-listener-camera2
-        - `port`: 5102
-    - **Output 3:**
-        - `displayName`: srt-listener-camera3
-        - `port`: 5103
-    - **Output 4:**
-        - `displayName`: srt-listener-camera6
-        - `port`: 5106
-
-#### Step 3: Connect the Nodes
+The settings on the SRT Egest component will look something like this:
+- `displayName`: srt-listener-camera1
+- `port`: 5101
 
 The final step is to connect your inputs to your outputs. This tells Norsk where to send the media from each source. Your goal is to create four parallel, independent streams.
 
-1.  Hover your mouse over the **camera1** node until a small circle appears on its right side. This is the **output handle**.
-2.  Click and drag from the output handle of the **camera1** node to the input handle (the circle on the left) of the **srt-listener-camera1** node. A line will appear, showing the connection.
-3.  Repeat this process for the remaining pairs, Now you can save your config as a YAML file for future use. 
-    - Connect **camera2** to **srt-listener-camera2**.
-    - Connect **camera3** to **srt-listener-camera3**.
-    - Connect **camera4** to **srt-listener-camera4**.
+Save your configuration as a YAML file for future use.
+
+**NOTE:** Write down the SRT URIs for your Egest components, these will be used in the next stage of the pipeline.
 
 ### Success Criteria
-- You have a few preview nodes to show what's happening
-- Your inputs are connected to outputs
+- You are ingest 4 camera feeds
+- On the Norsk Studio canvas you have Preview components running and showing video for all 4 feeds.
+- You've created 4 SRT Egests and noted down their SRT URIs
 
 ### Learning Resources
+- [Norsk Studio Demo Video](https://youtu.be/6G5OZPv8wRA)
 - [Norsk Studio Documentation](https://norsk.video/norsk-studio-live-media-workflow-server/)
 
 ## Challenge 3: Get in the Mix
