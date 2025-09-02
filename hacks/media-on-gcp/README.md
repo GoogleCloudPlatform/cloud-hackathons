@@ -60,14 +60,14 @@ In this hack you will get hands on experience with both first party Google Cloud
 ### Introduction
 Using Google Cloud's Generative Media offerings can make quick work of ad creative generation. In this challenge we'll get a taste of doing just that and create an ad videos that we will use later in this gHack to insert into our video stream.
 
-Work as a team and get creative to come up with an imaginary product. Now use your creativity to create an ad for that product.
-
 ### Tools Used
 - Google Cloud's Media Studio for Generative AI: Veo, Imagen and Lyra
 - HP Anywhere PCoIP for GPU accelerated remote desktop access (formerly known as Teradici)
 - Blackmagic DaVinci Resolve for professional video editing 
 
 ### Description
+You will work as a team and get creative to come up with an imaginary product. Then use your creativity to create an ad for that product.
+
 Log into the Google Cloud Console and find **Media Studio** within the **Vertex AI** suite. 
 
 In the **Media Studio** you have access to the generative AI creative tooling. 
