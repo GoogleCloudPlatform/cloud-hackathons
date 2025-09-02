@@ -58,37 +58,53 @@ In this hack you will get hands on experience with both first party Google Cloud
 ## Challenge 1: Get creative with the help of AI
 
 ### Introduction
-Using Google Cloud's Generative Media offerings can make quick work of ad creative generation. In this challenge we'll get a taste of doing just that.
+Using Google Cloud's Generative Media offerings can make quick work of ad creative generation. In this challenge we'll get a taste of doing just that and create an ad spot that we will use later in this gHack to insert into our video stream.
+
+### Tools Used
+- Google Cloud's Media Studio for Generative AI: Veo, Imagen and Lyra
+- HP Anywhere PCoIP for GPU accelerated remote desktop access (formerly known as Teradici)
+- Blackmagic DaVinci Resolve for professional video editing 
 
 ### Description
-- Log into the [Google Cloud Console](https://console.cloud.google.com/) with your student account 
-    - Your coach will provide your Student ID and password. Each Student ID uses the same password. We recommend using incognito mode in Chrome for the student account.
-- Log into the Google Cloud Console and find **Media Studio** within the **Vertex AI** suite. 
-- Use Veo to create shots
-- Use Imagen to create still images
-- Use Lyra to create music
-- Use the provided DaVinci Resolve VM to edit together all of your generated assets into one or two 30 second ad spots.
-- Try to complete this challenge in 90 minutes. 
-- Each team should upload a maximum of 2 ad spots to your assigned Google Cloud Storage bucket sub-folder
-    - This will be given do you by your coach and will look something like: `gs://hackfest-ad-creative/[your_project_id]/`
+Log into the Google Cloud Console and find **Media Studio** within the **Vertex AI** suite. 
+
+In the **Media Studio** you have access to the generative AI creative tooling. Use Veo to create shots. Use Imagen to create still images. Use Lyra to create music
+
+You are welcome to produce the final ad using only Veo if you'd like. 
+
+If you want to take things further, we have provided a virtual workstation with Blackmagic's DaVinci Resolve video editor. You can use it to create a nicely produced ad video. Your coach will provide log in details. See the **Tips** section below for instructions on connecting to the workstation.
+
+Your final result should be one or two 30 second ad videos.
+
+Try to complete this challenge in 90 minutes to give yourselves enough time for the rest of the gHack. This challenge can be worked on independently from the rest of the gHack. If there are team members that want to focus more on video editing, that's fine. 
+
+Each team should upload a maximum of 2 ad spots to your assigned Google Cloud Storage bucket sub-folder. This will be given do you by your coach and will look something like: `gs://hackfest-ad-creative/[your_project_id]/`
 
 ### Success Criteria
-- You have created shots using Veo
-- You have created still images using Imagen
-- You have created music using Lyra
-- You have created 1 or 2 ad spots.
-- You have uploaded them as `mp4` files to your assigned bucket sub-folder.
+- You have created one or two 30 second ad videos.
+- Only the Google Cloud generative media suite was used to produce the source material:
+    - Veo
+    - Imagen
+    - Lyra
+- You have uploaded your vides as `mp4` files to your assigned bucket sub-folder.
+
+### Tips
+To access the remote desktop of the DaVinci Resolve VM you will need a GPU accelerated remote desktop client. Regular Windows Remote Desktop will not be able to run DaVinci Resolve.
+
+Download the HP Anywhere PCoIP Client for your OS from [this link](https://anyware.hp.com/find/product/hp-anyware)
+    - On the downloads page, look in the **Anywhere Clients** section
+    - **NOTE:** If the page gets stuck on the splash page, click the browser reload button.
+
+Install the client and then use the credentials provided by your coach to log into the DaVinci Resolve workstation VM.
 
 ### Learning Resources
 - [Veo video generation overview](https://cloud.google.com/vertex-ai/generative-ai/docs/video/overview)
 - [Imagen image generation overview](https://cloud.google.com/vertex-ai/generative-ai/docs/image/overview)
 - [Lyra music generation overview](https://cloud.google.com/vertex-ai/generative-ai/docs/music/generate-music)
+- [DaVince Resolve Beginners Guide Video (13 min)](https://youtu.be/SzttF-qnqsM)
+- [DaVinci Resolve New Features Guide](https://documents.blackmagicdesign.com/SupportNotes/DaVinci_Resolve_20_New_Features_Guide.pdf)
+- [HP Anywhere PCoIP Downloads](https://anyware.hp.com/find/product/hp-anyware)
 
-### Tips
-To access the remote desktop of the DaVinci Resolve VM you will need to download and install the HP Anywhere PCoIP Client (formerly known as Teradici)
-- You can find the download for Mac, Windows, Linux and Chromebooks[here](https://anyware.hp.com/find/product/hp-anyware)
-    - Look in the **Anywhere Clients** section
-    - **NOTE:** If the page gets stuck on the splash page, click the browser reload button.
 
 ## Challenge 2: Gather up those feeds and spit 'em out
 
