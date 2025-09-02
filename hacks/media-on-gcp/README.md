@@ -58,7 +58,9 @@ In this hack you will get hands on experience with both first party Google Cloud
 ## Challenge 1: Get creative with the help of AI
 
 ### Introduction
-Using Google Cloud's Generative Media offerings can make quick work of ad creative generation. In this challenge we'll get a taste of doing just that and create an ad spot that we will use later in this gHack to insert into our video stream.
+Using Google Cloud's Generative Media offerings can make quick work of ad creative generation. In this challenge we'll get a taste of doing just that and create an ad videos that we will use later in this gHack to insert into our video stream.
+
+Work as a team and get creative to come up with an imaginary product. Now use your creativity to create an ad for that product.
 
 ### Tools Used
 - Google Cloud's Media Studio for Generative AI: Veo, Imagen and Lyra
@@ -68,17 +70,20 @@ Using Google Cloud's Generative Media offerings can make quick work of ad creati
 ### Description
 Log into the Google Cloud Console and find **Media Studio** within the **Vertex AI** suite. 
 
-In the **Media Studio** you have access to the generative AI creative tooling. Use Veo to create shots. Use Imagen to create still images. Use Lyra to create music
+In the **Media Studio** you have access to the generative AI creative tooling. 
+    - Use Veo to create shots. 
+    - Use Imagen to create still images. 
+    - Use Lyra to create music
 
-You are welcome to produce the final ad using only Veo if you'd like. 
+You are welcome to produce the final ad using only Veo if you'd like, but if you want to make it more professional, you'll need to editing your shots, music and stills together.
 
-If you want to take things further, we have provided a virtual workstation with Blackmagic's DaVinci Resolve video editor. You can use it to create a nicely produced ad video. Your coach will provide log in details. See the **Tips** section below for instructions on connecting to the workstation.
+We have provided a virtual workstation with Blackmagic's DaVinci Resolve video editor. You can use it to create a nicely produced ad video. Your coach will provide log in details. See the **Tips** section below for instructions on installing the client and connecting to the workstation.
 
-Your final result should be one or two 30 second ad videos.
+Your final result should be one or two 30 second ad videos that use multiple shots generated in Veo and scored with music created in Lyra. If you want to weave in some still images, these are created with Imagen.
 
 Try to complete this challenge in 90 minutes to give yourselves enough time for the rest of the gHack. This challenge can be worked on independently from the rest of the gHack. If there are team members that want to focus more on video editing, that's fine. 
 
-Each team should upload a maximum of 2 ad spots to your assigned Google Cloud Storage bucket sub-folder. This will be given do you by your coach and will look something like: `gs://hackfest-ad-creative/[your_project_id]/`
+Each team should upload a maximum of 2 ad videos to your assigned Google Cloud Storage bucket sub-folder. This will be given do you by your coach and will look something like: `gs://hackfest-ad-creative/[your_project_id]/`
 
 ### Success Criteria
 - You have created one or two 30 second ad videos.
