@@ -91,7 +91,7 @@ Each team should upload a maximum of 2 ad videos to your assigned Google Cloud S
     - Veo
     - Imagen
     - Lyra
-- You have uploaded your vides as `mp4` files to your assigned bucket sub-folder.
+- You have uploaded your videos as `mp4` files to your assigned bucket sub-folder.
 
 ### Tips
 To access the remote desktop of the DaVinci Resolve VM you will need a GPU accelerated remote desktop client. Regular Windows Remote Desktop will not be able to run DaVinci Resolve.
