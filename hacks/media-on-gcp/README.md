@@ -116,7 +116,11 @@ Install the client and then use the credentials provided by your coach to log in
 ### Introduction
 It is now time to start working on end to end media streaming pipeline. It all begins from our raw source feeds.
 
-We will gather up all the live and recorded feeds that we have available and bring them into a gateway. This gives us the opportunity to preview the feeds and then create SRT output that can be used later in our pipeline.
+We will gather up all the live and recorded feeds that we have available and bring them into Norsk Studio. Norsk Studio is a live streaming workflow builder with a graphical drag-and-drop UI
+
+This gives us the opportunity to preview the feeds and then create SRT outputs. SRT (Secure Reliable Transport) is an open-source video transport protocol designed to deliver high-quality, low-latency video securely over unpredictable networks like the public internet.
+
+Once we have SRT outputs, we will be using them later in our pipeline.
 
 ### Tools Used
 - Google Cloud Compute Engine
