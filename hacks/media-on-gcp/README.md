@@ -68,7 +68,7 @@ Using Google Cloud's Generative Media offerings can make quick work of ad creati
 ### Description
 You will work as a team and get creative to come up with an imaginary product. Then use your creativity to create an ad for that product.
 
-Log into the Google Cloud Console and find **Media Studio** within the **Vertex AI** suite. 
+In the Google Cloud Console and find **Media Studio** within the **Vertex AI** suite. 
 
 In the **Media Studio** you have access to the generative AI creative tooling. 
 - Use Veo to create shots. 
