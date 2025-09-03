@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,14 @@
 schema_version: 2
 default_locale: en
 title: "[gHacks] Media & Entertainment on Google Cloud"
-description: ""
+description: The Media & Entertainment on Google Cloud gHack will take you on a whirlwind
+  tour in the world of media technology and how it is being used in the modern world
+  of cloud based and AI services.
 instruction:
   type: md
   uri: instructions/en.md
-duration: 7200
-max_duration: 7200
+duration: 420
+max_duration: 420
 credits: 0
 level: fundamental
 tags:
@@ -29,64 +31,90 @@ domain_tags:
 environment:
   resources:
   - type: gcp_project
-    id: project
+    variant: gcp_medium_extra
+    id: project_0
+    allowed_locations:
+    - europe-west4-a
+    - europe-west4-b
+    - europe-west4-c
     startup_script:
       type: qwiklabs
       path: artifacts
+      custom_properties:
+      - key: access_token
+        reference: user_0.access_token
+  - type: gcp_user
+    id: user_0
+    permissions:
+    - project: project_0
+      roles:
+      - roles/owner
   - type: gcp_user
     id: user_1
     permissions:
-    - project: project
+    - project: project_0
       roles:
       - roles/owner
   - type: gcp_user
     id: user_2
     permissions:
-    - project: project
+    - project: project_0
       roles:
       - roles/owner
   - type: gcp_user
     id: user_3
     permissions:
-    - project: project
+    - project: project_0
       roles:
       - roles/owner
   - type: gcp_user
     id: user_4
     permissions:
-    - project: project
+    - project: project_0
       roles:
       - roles/owner
-  - type: gcp_user
-    id: user_5
-    permissions:
-    - project: project
-      roles:
-      - roles/owner
-
   student_visible_outputs:
   - label: Open Console
-    reference: project.console_url
-  - label: Username 1
-    reference: user_1.username
-  - label: Password 1
-    reference: user_1.password
-  - label: Username 2
-    reference: user_2.username
-  - label: Password 2
-    reference: user_2.password
-  - label: Username 3
-    reference: user_3.username
-  - label: Password 3
-    reference: user_3.password
-  - label: Username 4
-    reference: user_4.username
-  - label: Password 4
-    reference: user_4.password
-  - label: Username 5
-    reference: user_5.username
-  - label: Password 5
-    reference: user_5.password
-
+    reference: project_0.console_url
   - label: Project ID
-    reference: project.project_id
+    reference: project_0.project_id
+  - label: Student 1
+    reference: user_0.username
+  - label: Student 2
+    reference: user_1.username
+  - label: Student 3
+    reference: user_2.username
+  - label: Student 4
+    reference: user_3.username
+  - label: Student 5
+    reference: user_4.username
+  - label: Student Password
+    reference: user_0.password
+  - label: Norsk Admin User
+    reference: project_0.startup_script.norsk_admin_user
+  - label: Norsk Admin Password
+    reference: project_0.startup_script.norsk_admin_password
+  - label: Vectar Address
+    reference: project_0.startup_script.vectar_dns_address
+  - label: Vectar Admin User
+    reference: project_0.startup_script.vectar_admin_username
+  - label: Vectar Admin Password
+    reference: project_0.startup_script.vectar_admin_password
+  - label: Resolve Address
+    reference: project_0.startup_script.resolve_dns_address
+  - label: Resolve Admin User
+    reference: project_0.startup_script.resolve_admin_username
+  - label: Resolve Admin Password
+    reference: project_0.startup_script.resolve_admin_password
+  - label: Ateme Nea URL
+    reference: project_0.startup_script.gclb_dns_address_nea
+  - label: Ateme Titan URL
+    reference: project_0.startup_script.gclb_dns_address_titan
+  - label: Norsk Gateway URL
+    reference: project_0.startup_script.gclb_dns_address_norsk
+  - label: Norsk Gemini Live URL
+    reference: project_0.startup_script.gclb_dns_address_gemini
+  - label: tx Darwin URL
+    reference: project_0.startup_script.gclb_dns_address_darwin
+  - label: CDN URL
+    reference: project_0.startup_script.gclb_dns_address_CDN
