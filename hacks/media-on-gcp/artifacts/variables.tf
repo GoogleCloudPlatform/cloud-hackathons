@@ -36,3 +36,9 @@ variable "create_default_network" {
   default     = false
   description = "Whether to create a default network with subnets for all regions"
 }
+
+# This is an access token for a user running in the QL org that is the one running this tf script
+variable "access_token" {
+  type        = string
+  description = "access token for the qwiklab.net account."
+}
