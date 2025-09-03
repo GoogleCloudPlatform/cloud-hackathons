@@ -46,7 +46,7 @@ This initial challenge is designed to be a straightforward introduction to the N
 
 First, we'll add the four input sources. According to your YAML file, these are all **SRT Ingest (Caller)** nodes, meaning Norsk will "call" a remote source to pull the stream.
 
-34.32.228.47:5111-5116
+34.32.228.47:5101-5106
 
 So distribute the load between these servers 
 
@@ -57,22 +57,22 @@ So distribute the load between these servers
     - **Input 1:**
         - `displayName`: camera1
         - `host`: 34.32.228.47 
-        - `port`: 5111
+        - `port`: 5101
         - `streamId`: camera1
     - **Input 2:**
         - `displayName`: camera2
         - `host`: 34.32.228.47 
-        - `port`: 5112
+        - `port`: 5102
         - `streamId`: camera2
     - **Input 3:**
         - `displayName`: camera3
         - `host`: 34.32.228.47 
-        - `port`: 5113
+        - `port`: 5103
         - `streamId`: camera3
     - **Input 4:**
         - `displayName`: camera4
         - `host`: 34.32.228.47 
-        - `port`: 5114
+        - `port`: 5104
         - `streamId`: camera4
 
 ### Step 2: Add Your Output Destinations 
@@ -84,16 +84,16 @@ Next, you'll add the four output destinations. The configuration specifies these
 3.  Configure each listener with its unique port:
     - **Output 1:**
         - `displayName`: srt-listener-camera1
-        - `port`: 5101
+        - `port`: 5111
     - **Output 2:**
         - `displayName`: srt-listener-camera2
-        - `port`: 5102
+        - `port`: 5112
     - **Output 3:**
         - `displayName`: srt-listener-camera3
-        - `port`: 5103
+        - `port`: 5113
     - **Output 4:**
         - `displayName`: srt-listener-camera4
-        - `port`: 5104
+        - `port`: 5114
 
 ### Step 3: Connect the Nodes
 
