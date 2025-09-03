@@ -163,7 +163,7 @@ The final step is to connect your inputs to your outputs. This tells Norsk where
 
 Save your configuration as a YAML file for future use.
 
-**NOTE:** Write down the SRT URIs for your Egest components, these will be used in the next stage of the pipeline.
+**NOTE:** Write down the SRT URIs for your Egest components for the next challenge.
 
 ### Success Criteria
 - You are ingest 4 camera feeds
@@ -226,7 +226,7 @@ We have provided a virtual workstation with the VizRT Vectar vision mixer. Your 
 - Leave the **Server Port** at **10000**
 - Now press the **STREAM** button at the top of the screen. 
 - You must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
-- **NOTE:** Please note down this new SRT output URL for the next challenge.
+- **NOTE:** Write down this new SRT output URL for the next challenge.
 
 ### Success Criteria
 - Your have connected 4 inputs on the Vectar mixing board to the 4 outputs from Norsk Studio used in the last challenge
@@ -251,33 +251,42 @@ Install the client and then use the credentials provided by your coach to log in
 ## Challenge 4: Ready for some Ads?
 
 ### Introduction
-- Connect to Techex Darwin
-- Connect the SRT ingest point to the output from VizRT Vectar in the previous step
-- Press the button in Techex Darwin to insert a SCTE-35 marker into the program out stream
-- Configure the SRT output
+In this challenge, we'll be using TX Darwin to insert ad markers in our stream that we will use later in our pipeline to insert the ads we created in the first challenge.
+
+Techex's TX Darwin is a software-based platform designed for processing, transporting, and monitoring live video workflows in the media industry.
+
+We will be using Darwin specifically for ad insertion into our stream. This means we will be taking the SRT stream that is now coming out of VizRT Vectar and inserting SCTE-35 markers into it.
+
+SCTE-35 markers, colloquially known as "scuddy markers", are a digital signal embedded within a video stream that carries instructions for downstream pipeline elements. They are most commonly used to signal the exact start and end points for inserting ads.
+
+### Tools Used
+- Techex TX Darwin
 
 ### Description
+TX Darwin is a web app running in our environment access through a webpage. Your coach will provide log in details. 
 
-1.  **Connect to Techex Darwin:** 
-    - URL: https://darwin.endpoints.[your_project_id].cloud.goog
-    - Your coach will provide the username and password.
-2.  **Configure SRT Ingest:**
-    - Create a new input and configure it to be an **SRT source**.
-    - Paste the SRT output URL from VizRT Vectar into the ingest configuration. The program feed from Vectar should now be flowing into Darwin.
-3.  **Insert SCTE-35 Marker:**
-    - The Darwin interface has a feature for live stream manipulation. Guide participants to find the button or control labeled **"Insert SCTE-35 Marker"** or similar.
-    - Pressing this button injects the ad signaling marker into the transport stream in real-time. This doesn't change the video content itself but adds metadata that downstream systems will use.
-4.  **Configure SRT Output:**
-    - Create a new SRT output for the stream that now contains the SCTE-35 marker.
-    - **Ensure participants copy the SRT output URL from Darwin**, as it will be the input for Ateme Titan Live.
+#### Configure SRT Ingestion
+- Create a new input and configure it to be an **SRT source**.
+- Paste the SRT output URL from VizRT Vectar into the ingest configuration. The program feed from Vectar should now be flowing into Darwin.
+
+#### Configure a SCTE-35 Marker
+- The Darwin interface has a feature for live stream manipulation. Look for the button labelled **"Insert SCTE-35 Marker"**.
+- Pressing this button injects the SCTE-35 marker into the SRT stream in real time, signaling that an ad should be inserted.
+- This doesn't change the video content itself but adds metadata that downstream pipeline elements will use.
+
+#### Configure SRT Output
+- Create a new SRT output for the stream that now contains the SCTE-35 marker.
+- **NOTE:** Write down this new SRT output URL for the next challenge.
 
 ### Success Criteria
-- You've consumed the SRT source from your VizRT Vectar configuration
-- A SCTE marker is in place
+- You've consumed the SRT source from the VizRT Vectar program output
+- A SCTE-35 marker has been manually inserted into the stream
 - You've configured an SRT output for the next challenges
 
 ### Learning Resources
-- [Techex Darwin Documentation](https://www.techex.tv/technologies/txdarwin)
+- [SCTE-35 - Their Essential Role for Ad Insertion (video)](https://youtu.be/nEdK2AroyCg)
+- [SCTE-35 in TX Darwin](https://www.techex.tv/technologies/txdarwin/transform/technology-module-8)
+- [Techex TX Darwin Product Page](https://www.techex.tv/technologies/txdarwin)
 
 ## Challenge 5: Let's Play Out!
 
