@@ -139,25 +139,25 @@ You will start with a blank canvas in Norsk. On the left is the **Component Libr
 
 Using the **SRT Ingest (Caller)** component, connect to the 4 provided camera feeds. They are running at the following URIs:
 ```
-srt://34.32.228.47:5001
-srt://34.34.228.47:5001
-srt://34.32.34.47:5001
-srt://34.32.228.34:5001
+srt://34.32.228.47:5101
+srt://34.34.228.47:5l02
+srt://34.32.34.47:5103
+srt://34.32.228.34:5104
 ```
 
 The settings on the SRT Ingest component will look something like this:
 - **displayName**: `camera1`
 - **host**: `34.32.228.47` 
-- **port**: `5001`
+- **port**: `5101`
 - **streamId**: `camera1`
 
 Now add 4 Preview components and connect it to the Ingest components so you can actually see what is coming in.
 
-Finally, add 4 **SRT Listener (Egest)** components and connect them to the sources. Use ports 5101 to 5104.
+Finally, add 4 **SRT Listener (Egest)** components and connect them to the sources. Use ports 5111 to 5114.
 
 The settings on the SRT Egest component will look something like this:
 - **displayName**: `srt-listener-camera1`
-- **port**: `5101`
+- **port**: `5111`
 
 The final step is to connect your inputs to your outputs. This tells Norsk where to send the media from each source. Your goal is to create four parallel, independent streams.
 
