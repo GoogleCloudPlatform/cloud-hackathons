@@ -25,15 +25,15 @@ terraform {
 }
 
 provider "google" {
-  project = var.gcp_project_id
-  region  = var.gcp_region
-  zone    = var.gcp_zone
-  access_token = var.access_token
+  project       = var.gcp_project_id
+  region        = var.gcp_region
+  zone          = var.gcp_zone
+  access_token  = var.access_token
 }
 
 provider "google-beta" {
-  project = var.gcp_project_id
-  region  = var.gcp_region
-  zone    = var.gcp_zone
-  access_token = var.access_token
+  project       = var.gcp_project_id
+  region        = var.gcp_region
+  zone          = var.gcp_zone
+  access_token  = var.access_token
 }
