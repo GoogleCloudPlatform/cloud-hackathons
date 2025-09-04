@@ -291,31 +291,37 @@ TX Darwin is a web app running in our environment access through a webpage. Your
 ## Challenge 5: Let's Play Out!
 
 ### Introduction
-- For Ateme Titan Live and Nea follow [this guide](https://gfilicetti.github.io/media-on-gcp-ateme-docs/).
+Now that we have a stream that's ready for broadcast and has SCTE-35 ad insertion markers, we need to encode it for the various devices that will play the stream.
+
+Ateme Titan Live is a broadcast-grade encoder. We will use it to take in the final produced stream and prepare it for delivery over the web. As shown in the architecture diagram, Titan Live and Nea Live are the final step before the stream is handed off to Google Cloud's CDN and used as the origin.
+
+### Tools Used
+- Ateme Titan Live for encoding
+- Ateme Nea Live for packaging
 
 ### Description
-Ateme Titan Live is a broadcast-grade encoder. In this step, participants will configure it to receive the final produced stream and prepare it for delivery over the web. As shown in the architecture diagram, Titan Live is the final step before the stream is handed off to Google Cloud's media services.
+First off, log into both Titan and Nea using the credentials given to you by your coach.
+- Titan URL: https://titan.endpoints.[your_project_id].cloud.goog
+- Nea URL: https://nea.endpoints.[your_project_id].cloud.goog
 
-1.  **Connect to Titan Live:** 
-    - URL: https://titan.endpoints.[your_project_id].cloud.goog
-    - Your coach will provide the username and password.
-1.  **Connect to Nea:** 
-    - URL: https://nea.endpoints.[your_project_id].cloud.goog
-    - Your coach will provide the username and password.
-2.  **Configure New Input:**
-    - Create a new input channel.
-    - Set the input source type to **SRT**.
-    - In the configuration paste the **SRT output URL from Techex Darwin**
-3.  **Configure Output/Profile:**
-    - The primary goal is to have Titan Live process the stream. A default encoding profile (e.g., H.264/AAC in an HLS format) should be sufficient.
-    - The crucial part of the configuration is setting up the destination. In our architecture, Titan Live will hand off to the **Ateme Nea Packager**, which then interfaces with the **Google Cloud Video Stitcher API**. This may be a pre-configured output profile in Titan Live that participants just need to select. The output should be configured to create HLS manifests.
+We will first create a new input and set its input source to **SRT** and calling it: **SRT output URL from Techex Darwin**
+
+Then we will configure an output profile using the default: H.264/AAC in an HLS format.
+
+The crucial part of the configuration is setting up the destination. In our architecture, Titan Live will hand off to the **Ateme Nea Packager**, which then interfaces with the **Google Cloud Video Stitcher API**. This is a pre-configured output profile in Titan Live. The output should be configured to create HLS manifests.
+
+**NOTE:** To achieve the above, you will be following a [step by step guide](https://gfilicetti.github.io/media-on-gcp-ateme-docs/) to configure your pipeline on Ateme Titan and Nea.
 
 ### Success Criteria
-- Your channel is running and live
-- A processed stream is available
+- Your pipeline input is ingested into Titan Live.
+- Your output is encoded with H.264/AAC in an HLS format
+- Your output flows into Nea and a package and manifest is produced
 
 ### Learning Resources
+- [Ateme Titan & Nea Step by Step Setup Guide](https://gfilicetti.github.io/media-on-gcp-ateme-docs/)
+- [NEA to CDN Flow (video)](https://youtu.be/bnPkXYyXjOI)
 - [Ateme Titan Live Documentation](https://www.ateme.com/product-titan-software/)
+- [Ateme Nea Live Documentation](https://www.ateme.com/product-video-content-delivery/)
 
 ## Challenge 6: Get your channel to the masses
 
