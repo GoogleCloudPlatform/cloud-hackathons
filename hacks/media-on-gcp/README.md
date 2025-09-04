@@ -137,6 +137,8 @@ You will start with a blank canvas in Norsk. On the left is the **Component Libr
 
 **NOTE:** Connecting nodes requires dragging lines between the small circles on the components.
 
+**NOTE:** If a setting's value is **NOT** specified in these instructions LEAVE THE DEFAULT.
+
 Using the **SRT Ingest (Caller)** component, connect to the 4 provided camera feeds. They are running at the following URIs:
 ```
 srt://34.32.228.47:5101
@@ -151,7 +153,7 @@ The settings on the SRT Ingest component will look something like this:
 - **Port**: `5101`
 - **streamId**: `camera1`
 
-Now add 4 Preview components and connect it to the Ingest components so you can actually see what is coming in.
+Now add 4 Preview components and connect it to the Ingest components so you can actually see what is coming in. Make sure you don't touch the **Preview Mode** field. It should be: **JPEG Only**.
 
 Finally, add 4 **SRT Listener (Egest)** components and connect them to the sources. Use ports 5111 to 5114.
 
