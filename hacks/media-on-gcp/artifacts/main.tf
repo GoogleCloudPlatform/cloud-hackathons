@@ -66,7 +66,7 @@ module "norsk_gw" {
   project_id = local.project.id
   region     = var.gcp_region
   zone       = var.gcp_zone
-  domain_name = "norsk.${local.endpoint_url}"
+  # domain_name = "norsk.${local.endpoint_url}"
 
   networks = [module.vpc.network_name]
 }
@@ -77,7 +77,7 @@ module "norsk_ai" {
   project_id = local.project.id
   region     = var.gcp_region
   zone       = var.gcp_zone
-  domain_name = "gemini.${local.endpoint_url}"
+  # domain_name = "gemini.${local.endpoint_url}"
 
   networks = [module.vpc.network_name]
 }
