@@ -351,6 +351,15 @@ The easiest way to deploy the player is using the `gcloud run deploy` command fr
 
 **NOTE**: After the deployment succeeds, the command line will output the service URL. **This is the URL for the live channel**. You can also find the public URL in the Cloud Console on the Cloud Run page.
 
+The VideoJS player should load and start playing the live video feed originating from the Norsk sources, mixed in Vectar, and processed by Darwin and Titan.
+
+The key to success for this entire gHack is seeing an advertisement. The SCTE-35 marker inserted with Darwin signals the Google Cloud Video Stitcher API (via the Ateme components) to insert an ad from Google Ad Manager.
+
+When the ad plays, it confirms the entire workflow is functioning correctly. If no ad appears, common issues to troubleshoot are:
+    - The SCTE-35 marker was not inserted correctly in Darwin.
+    - The integration between Titan Live and the Video Stitcher API is misconfigured.
+    - There is an issue with the Google Ad Manager campaign.
+
 ### Advanced Challenge
 In a professional setting you will always want to modify the presentation of the player to use your own branding. 
 
@@ -364,29 +373,4 @@ To get a feel for how easy it is to update the Cloud Run service, change some of
 ### Learning Resources
 - [Cloud Run Quickstart](https://cloud.google.com/run/docs/quickstart)
 - [Deploying to Cloud Run from source code](https://cloud.google.com/run/docs/deploying-source-code)
-- [JS Video Player Repository](https://github.com/JorgeRSG/sample-video-player)
-
-## Challenge 7: Sit back, relax, and watch TV
-
-### Introduction
-
-This is the final step where everything comes together. Participants will see their live stream, complete with an advertisement inserted via the Google Cloud Video Stitcher API, triggered by the SCTE-35 marker they inserted earlier.
-
-### Description
-
-1.  **Open the Player:**
-    - Participants should navigate to the **Cloud Run service URL** they created in the previous challenge.
-2.  **Verify the Stream:**
-    - The VideoJS player should load and start playing the live video feed originating from the Norsk sources, mixed in Vectar, and processed by Darwin and Titan.
-3.  **Look for the Ad:**
-    - The key to success for this entire hack is seeing an advertisement. The SCTE-35 marker inserted in Challenge 3 signals the Google Cloud Video Stitcher API (via the Ateme components) to insert an ad from Google Ad Manager.
-    - When the ad plays, it confirms the entire workflow is functioning correctly. If no ad appears, common issues to troubleshoot are:
-        - The SCTE-35 marker was not inserted correctly in Darwin.
-        - The integration between Titan Live and the Video Stitcher API is misconfigured.
-        - There is an issue with the Google Ad Manager campaign.
-
-### Success Criteria
-- Are you not entertained!?!
-
-### Learning Resources
-- [Yes We Are...](https://youtu.be/HmdpjkM3onk?si=t9_hnBoU4HBKeWZS&t=76)
+- [VideoJS Player Repository](https://github.com/JorgeRSG/sample-video-player)
