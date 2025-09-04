@@ -356,9 +356,9 @@ The VideoJS player should load and start playing the live video feed originating
 The key to success for this entire gHack is seeing an advertisement. The SCTE-35 marker inserted with Darwin signals the Google Cloud Video Stitcher API (via the Ateme components) to insert an ad from Google Ad Manager.
 
 When the ad plays, it confirms the entire workflow is functioning correctly. If no ad appears, common issues to troubleshoot are:
-    - The SCTE-35 marker was not inserted correctly in Darwin.
-    - The integration between Titan Live and the Video Stitcher API is misconfigured.
-    - There is an issue with the Google Ad Manager campaign.
+- The SCTE-35 marker was not inserted correctly in Darwin.
+- The integration between Titan Live and the Video Stitcher API is misconfigured.
+- There is an issue with the Google Ad Manager campaign.
 
 ### Advanced Challenge
 In a professional setting you will always want to modify the presentation of the player to use your own branding. 
