@@ -326,43 +326,45 @@ The crucial part of the configuration is setting up the destination. In our arch
 ## Challenge 6: Get your channel to the masses
 
 ### Introduction
-- Clone Git hub repo for VideoJS Player
-- Publish to Cloud Run
-- Edit the code of the website and deploy the updated version (optional)
+In this challenge, we now more from broadcast/streaming specific technology and tooling to cloud based app deployment and hosting.
+
+We will deploy a Cloud Run Service that our viewers will connect to with their phones or browsers to view our stream that is served up through a CDN.
+
+Now that we have the end of our pipeline coming from Nea, it serves as the origin of Google Cloud CDN and the player in this challenge is connecting to it.
+
+### Tools Used
+- JS Player (open source)
+- Google Cloud Run
+- Google Cloud CDN
+- Google Cloud Shell
 
 ### Description
+Need to deploy the player application to a Cloud Run service so that it can be consumed by the masses. 
 
-This challenge moves from broadcast-specific tooling to a standard cloud workflow: deploying a web application using a containerized service.
+Open the Google Cloud shell, and clone this github repository:
+```shell
+git clone https://github.com/JorgeRSG/sample-video-player.git
+cd sample-video-player
+```
 
-1.  **Clone Git Repository:**
-    - Participants need to use a terminal with `gcloud` and `git` installed.
-    - They should clone the provided repository for the VideoJS Player.
+The easiest way to deploy the player is using the `gcloud run deploy` command from the root of the cloned repository. This command will build the container image from the source and deploy it. Name your service `ghack-player` and make sure to allow public access to the service.
 
-    ```shell
-    git clone https://github.com/JorgeRSG/sample-video-player.git
-    cd sample-video-player
-    ```
-2.  **Publish to Cloud Run:**
-    - The easiest way to deploy is using the `gcloud run deploy` command from the root of the cloned repository. This command will build the container image from the source and deploy it. You can find more information [here](https://cloud.google.com/run/docs/deploying-source-code) 
-    - Participants can name their service whatever they like (e.g., `ghack-player`).
-    - The `--allow-unauthenticated` flag is important to make the player publicly accessible for testing.
+**NOTE**: After the deployment succeeds, the command line will output the service URL. **This is the URL for the live channel**. You can also find the public URL in the Cloud Console on the Cloud Run page.
 
-    ```shell
-    gcloud run deploy ghack-player --source . --region europe-west1 --platform managed --allow-unauthenticated
-    ```
+### Advanced Challenge
+In a professional setting you will always want to modify the presentation of the player to use your own branding. 
 
-    > **NOTE**: After the deployment succeeds, the command line will output the service URL. **This is the URL for the live channel player.**
-3.  **Edit the code of the website and deploy the updated version (optional):**
-    - Participants can change the look and feel of the published service if they want to. Open the code of the repository in the IDE of your choice and make some edits. Changing the title of the website and the main header are good options.
-    - Once the changes are made, save the files and the new version of the service.
+To get a feel for how easy it is to update the Cloud Run service, change some of the HTML/CSS code for the player and then issue a `gcloud` command to update the Cloud Run service. (Changing the title of the website and the main header are good options to start with).
 
 ### Success Criteria
-- You have a player running in your own Cloud Run service
-- The player works in your browser and in anyone's browser
+- You have a Cloud Run service named `ghack-player` deployed
+- You can hit the service's public URL and see your stream being played
+- [Optional] You made some changes to the look and feel of the player and redeployed the service
 
 ### Learning Resources
 - [Cloud Run Quickstart](https://cloud.google.com/run/docs/quickstart)
-- [Sample Video Player Repository](https://github.com/JorgeRSG/sample-video-player)
+- [Deploying to Cloud Run from source code](https://cloud.google.com/run/docs/deploying-source-code)
+- [JS Video Player Repository](https://github.com/JorgeRSG/sample-video-player)
 
 ## Challenge 7: Sit back, relax, and watch TV
 
