@@ -146,9 +146,9 @@ srt://34.32.228.34:5104
 ```
 
 The settings on the SRT Ingest component will look something like this:
-- **displayName**: `camera1`
-- **host**: `34.32.228.47` 
-- **port**: `5101`
+- **Display Name**: `camera1`
+- **Host**: `34.32.228.47` 
+- **Port**: `5101`
 - **streamId**: `camera1`
 
 Now add 4 Preview components and connect it to the Ingest components so you can actually see what is coming in.
@@ -156,14 +156,23 @@ Now add 4 Preview components and connect it to the Ingest components so you can 
 Finally, add 4 **SRT Listener (Egest)** components and connect them to the sources. Use ports 5111 to 5114.
 
 The settings on the SRT Egest component will look something like this:
-- **displayName**: `srt-listener-camera1`
-- **port**: `5111`
+- **Display Name**: `srt-listener-camera1`
+- **Port**: `5111`
+- **Host**: `0.0.0.0`
 
 The final step is to connect your inputs to your outputs. This tells Norsk where to send the media from each source. Your goal is to create four parallel, independent streams.
 
 Save your configuration as a YAML file for future use.
 
-**NOTE:** Write down the SRT URIs for your Egest components for the next challenge.
+**NOTE:** Write down the SRT URIs for your Egest components for the next challenge. For example:
+```
+srt://34.2.10.55:5111
+srt://34.2.10.55:5112
+srt://34.2.10.55:5113
+srt://34.2.10.55:5114
+```
+
+Where `34.2.10.55` is the public ip of the `norsk-gw` VM that you used to log into Norsk Studio
 
 ### Success Criteria
 - You are ingest 4 camera feeds
