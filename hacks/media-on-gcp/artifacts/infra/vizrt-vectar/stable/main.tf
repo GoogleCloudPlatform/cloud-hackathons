@@ -7,7 +7,8 @@ module "vizrt_vectar" {
   base_instance_name   = "vizrt-vectar"
   target_size          = 1
   machine_type         = "g2-standard-8"
-  source_image         = "projects/qwiklabs-resources/global/images/vizrt-vectar-machine"
+  # source_image         = "projects/qwiklabs-resources/global/images/vizrt-vectar-machine"
+  source_image         = "projects/media-on-gcp-storage/global/images/vizrt-vectar-machine"
   boot_disk_type       = "pd-balanced"
   boot_disk_size       = 50
 

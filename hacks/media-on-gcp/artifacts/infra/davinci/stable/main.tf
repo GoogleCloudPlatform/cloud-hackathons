@@ -7,7 +7,8 @@ module "davinci" {
   base_instance_name   = "davinci-resolve"
   target_size          = 1
   machine_type         = "g2-standard-8"
-  source_image         = "projects/qwiklabs-resources/global/images/davinci-resolve-machine"
+  # source_image         = "projects/qwiklabs-resources/global/images/davinci-resolve-machine"
+  source_image         = "projects/media-on-gcp-storage/global/images/davinci-resolve-machine"
   boot_disk_type       = "pd-balanced"
   boot_disk_size       = 600
 
