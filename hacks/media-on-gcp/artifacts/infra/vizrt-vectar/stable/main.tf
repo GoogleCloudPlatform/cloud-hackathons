@@ -16,6 +16,8 @@ module "vizrt_vectar" {
   sub_networks         = var.sub_networks
   external_ips         = [google_compute_address.vectar.address]
 
+  distribution_policy_zones = ["europe-west4-c", "europe-west4-a"]
+
   metadata = {
     # windows-startup-script-ps1 = <<-EOF
     #   $password = ConvertTo-SecureString "${random_password.admin_password.result}" -AsPlainText -Force

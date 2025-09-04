@@ -16,6 +16,8 @@ module "davinci" {
   sub_networks         = var.sub_networks
   external_ips         = [google_compute_address.resolve.address]
 
+  distribution_policy_zones = ["europe-west4-c", "europe-west4-a"]
+
   accelerator_type  = "nvidia-l4-vws"
   accelerator_count = 1
 

@@ -126,6 +126,18 @@ variable "labels" {
   default     = {}
 }
 
+variable "distribution_policy_zones" {
+  description = "Distribution of zones for MIGs"
+  type = list(string)
+  default = ["europe-west4-c", "europe-west4-b", "europe-west4-a"]
+}
+
+variable "distribution_policy_target_shape" {
+  description = "Target description for distributing VMs across a region. Needs to be one of the following: EVEN, ANY, BALANCED, ANY SINGLE ZONE"
+  type = string
+  default = "ANY"
+}
+
 variable "named_ports" {
   description = "A list of named port configurations for the instance group."
   type = any

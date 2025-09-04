@@ -79,6 +79,12 @@ resource "google_compute_region_instance_group_manager" "mig" {
     instance_template = google_compute_instance_template.instance_template.id
   }
 
+  # Add these
+  distribution_policy_zones  = var.distribution_policy_zones
+  # ["europe-west4-c", "europe-west4-a"]
+  distribution_policy_target_shape = var.distribution_policy_target_shape
+  # "ANY"
+
   dynamic "named_port" {
     for_each = var.named_ports
     content {
