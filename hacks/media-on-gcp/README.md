@@ -35,11 +35,11 @@ In this hack you will get hands on experience with both first party Google Cloud
 
 - Challenge 1: Get creative with the help of AI
 - Challenge 2: Gather up those feeds and spit 'em out
-- Challenge 3: Get in the Mix
-- Challenge 4: Ready for some Ads?
-- Challenge 5: Let's Play Out!
-- Challenge 6: Get your channel to the masses
-- Challenge 7: Sit back, relax, and watch TV
+- Challenge 3: Sprinkle some AI on it
+- Challenge 4: Get in the Mix
+- Challenge 5: Ready for some Ads?
+- Challenge 6: Let's Play Out!
+- Challenge 7: Get your channel to the masses
 
 ## Prerequisites
 
@@ -140,7 +140,7 @@ You will start with a blank canvas in Norsk. On the left is the **Component Libr
 Using the **SRT Ingest (Caller)** component, connect to the 4 provided camera feeds. They are running at the following URIs:
 ```
 srt://34.32.228.47:5101
-srt://34.34.228.47:5l02
+srt://34.34.228.47:5102
 srt://34.32.34.47:5103
 srt://34.32.228.34:5104
 ```
@@ -174,7 +174,68 @@ Save your configuration as a YAML file for future use.
 - [Norsk Studio Demo Video](https://youtu.be/6G5OZPv8wRA)
 - [Norsk Studio Documentation](https://norsk.video/norsk-studio-live-media-workflow-server/)
 
-## Challenge 3: Get in the Mix
+## Challenge 3: Sprinkle some AI on it
+
+### Introduction
+The way we consume live media is evolving. Viewers no longer just want to watch; they want to engage, analyze, and get real-time insights. The Gemini Live API is a powerful new tool that enables developers to build real-time, interactive experiences by processing live streams of video and audio. This opens up a world of possibilities for a new generation of live media applications.
+
+Your challenge is to build an innovative application using the Gemini Live API that transforms a live media stream from a Formula E race into an intelligent and interactive experience. Your application will process the live video and audio to provide new value to the audience in real time.
+
+### Tools Used
+- Gemini Live API
+- Norsk Studio (with AI components)
+
+### Description
+First we must start with a prompt. The key is to instruct the model on its role and what to look for in the live stream.
+
+For example:
+
+```
+You are a cricket match statistician. I will send you video from a match. For every ball bowled, report on the batsman's current score and the bowler's statistics.
+```
+
+Design a prompt that look at the feed of a Formula E race and look for overtakes and then explain what happened.
+
+Log into your Norsk AI instance and replace placeholder with your actual project id:
+- URL: <https://gemini.endpoints.[your_project_id].cloud.goog>
+- Your coach will provide a username and password
+
+Just as in the last challenge, you will start with a blank canvas in Norsk. On the left is the **Component Library**.
+
+Add a **Camera Feed** component and a **Gemini AI** component to your canvas and connect them.
+
+Configure the Gemini AI Component:
+- Give it a name
+- Set the API to **Live**
+- Update the **System Instructions** by replacing the default text with the prompt you designed.
+
+Now we need to get a **Gemini API Key** 
+- Go to the Google Cloud Console and search for the **Gemini API** page and enable the API
+- On that same page, create credentials of type: **API key**
+- A new API is created, save this key, you'll be using it soon.
+
+Next we will deploy and run the pipeline
+- SSH into the Norsk AI instance by finding it's VM in the Google Cloud Console and click the **SSH** button to open a terminal window.
+- Add the API key to Norsk's environment by editing this file:
+    - `/var/norsk-studio/norsk-studio-docker/env/studio-env`
+    - Find the **GOOGLE_API_KEY** variable and paste in your API key
+- Restart Norsk by issuing this command:
+    ```shell
+    sudo systemctl restart norsk
+    ```
+
+And finally, let's explore the output we are getting. Go back to Norsk Studio. Observe the console output from the **Gemini AI** component to see the live commentary.
+
+### Success Criteria
+- Created a new Gemini API Key
+- Designed a prompt to look for overtakes in a Formula E race
+- Connected Gemini Live API to your video feed
+- Real time commentary is being produced
+
+### Learning Resources
+- [Getting Started with Gemini Live API](https://ai.google.dev/gemini-api/docs/live)
+
+## Challenge 4: Get in the Mix
 
 ### Introduction
 In this challenge, we'll be bringing our feeds into a vision mixer and creating a program output that will be used in our pipeline.
@@ -248,7 +309,7 @@ Install the client and then use the credentials provided by your coach to log in
 - [How to Work With Inputs (video)](https://youtu.be/9GlqeAPigTU)
 - [VizRT Vectar Product Page](https://www.vizrt.com/products/tricaster/tricaster-vectar/)
 
-## Challenge 4: Ready for some Ads?
+## Challenge 5: Ready for some Ads?
 
 ### Introduction
 In this challenge, we'll be using TX Darwin to insert ad markers in our stream that we will use later in our pipeline to insert the ads we created in the first challenge.
@@ -288,7 +349,7 @@ TX Darwin is a web app running in our environment access through a webpage. Your
 - [SCTE-35 in TX Darwin](https://www.techex.tv/technologies/txdarwin/transform/technology-module-8)
 - [Techex TX Darwin Product Page](https://www.techex.tv/technologies/txdarwin)
 
-## Challenge 5: Let's Play Out!
+## Challenge 6: Let's Play Out!
 
 ### Introduction
 Now that we have a stream that's ready for broadcast and has SCTE-35 ad insertion markers, we need to encode it for the various devices that will play the stream.
@@ -323,7 +384,7 @@ The crucial part of the configuration is setting up the destination. In our arch
 - [Ateme Titan Live Documentation](https://www.ateme.com/product-titan-software/)
 - [Ateme Nea Live Documentation](https://www.ateme.com/product-video-content-delivery/)
 
-## Challenge 6: Get your channel to the masses
+## Challenge 7: Get your channel to the masses
 
 ### Introduction
 In this challenge, we now more from broadcast/streaming specific technology and tooling to cloud based app deployment and hosting.
