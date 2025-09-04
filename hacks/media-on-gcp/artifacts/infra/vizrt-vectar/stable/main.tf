@@ -17,10 +17,10 @@ module "vizrt_vectar" {
   external_ips         = [google_compute_address.vectar.address]
 
   metadata = {
-    windows-startup-script-ps1 = <<-EOF
-      $password = ConvertTo-SecureString "${random_password.admin_password.result}" -AsPlainText -Force
-      Get-LocalUser -Name "Admin" | Set-LocalUser -Password $password
-    EOF
+    # windows-startup-script-ps1 = <<-EOF
+    #   $password = ConvertTo-SecureString "${random_password.admin_password.result}" -AsPlainText -Force
+    #   Get-LocalUser -Name "Admin" | Set-LocalUser -Password $password
+    # EOF
   }
 
   accelerator_type  = "nvidia-l4-vws"
