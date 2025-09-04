@@ -41,4 +41,5 @@ variable "create_default_network" {
 variable "access_token" {
   type        = string
   description = "access token for the qwiklab.net account."
+  default     = ""
 }
