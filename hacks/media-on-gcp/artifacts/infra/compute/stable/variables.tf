@@ -116,12 +116,7 @@ variable "service_account_scopes" {
   description = "The list of scopes to be made available for the service account."
   type        = list(string)
   default = [
-      "https://www.googleapis.com/auth/devstorage.read_only",
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring.write",
-      "https://www.googleapis.com/auth/service.management.readonly",
-      "https://www.googleapis.com/auth/servicecontrol",
-      "https://www.googleapis.com/auth/trace.append"
+    "https://www.googleapis.com/auth/cloud-platform"
   ]
 }
 
@@ -129,6 +124,18 @@ variable "labels" {
   description = "The labels to apply to the instance."
   type        = map(string)
   default     = {}
+}
+
+variable "distribution_policy_zones" {
+  description = "Distribution of zones for MIGs"
+  type = list(string)
+  default = ["europe-west4-c", "europe-west4-b", "europe-west4-a"]
+}
+
+variable "distribution_policy_target_shape" {
+  description = "Target description for distributing VMs across a region. Needs to be one of the following: EVEN, ANY, BALANCED, ANY SINGLE ZONE"
+  type = string
+  default = "ANY"
 }
 
 variable "named_ports" {

@@ -1,4 +1,4 @@
-module "nea" {
+module "compute_nea" {
   source = "../../compute/stable"
 
   project_id           = var.project_id
@@ -28,7 +28,7 @@ module "nea" {
   ]
 }
 
-module "titan" {
+module "compute_titan" {
   source = "../../compute/stable"
 
   project_id           = var.project_id

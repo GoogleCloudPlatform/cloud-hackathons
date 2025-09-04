@@ -1,4 +1,4 @@
-module "darwin" {
+module "compute" {
   source = "../../compute/stable"
 
   project_id          = var.project_id

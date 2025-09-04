@@ -1,4 +1,4 @@
-module "vizrt_vectar" {
+module "compute" {
   source = "../../compute/stable"
 
   project_id           = var.project_id
@@ -15,6 +15,8 @@ module "vizrt_vectar" {
   networks             = var.networks
   sub_networks         = var.sub_networks
   external_ips         = [google_compute_address.vectar.address]
+
+  distribution_policy_zones = ["europe-west4-c", "europe-west4-a"]
 
   metadata = {
     # windows-startup-script-ps1 = <<-EOF
