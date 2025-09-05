@@ -6,7 +6,7 @@ module "compute" {
   instance_group_name  = "stitch-machine-mig"
   base_instance_name   = "stitch-machine"
   target_size          = 1
-  machine_type         = "e2-medium"
+  machine_type         = "c4d-standard-2"
   source_image         = "projects/media-on-gcp-storage/global/images/stitch-machine"
   boot_disk_type       = "pd-balanced"
   boot_disk_size       = 50
