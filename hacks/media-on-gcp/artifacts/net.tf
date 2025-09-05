@@ -27,7 +27,6 @@ module "gclb" {
       healthcheck_protocol = "tcp"
       enable_cdn           = false
     }
-    # TODO: CDN is nea on port 80
     cdn = {
       instance_group       = module.ateme.nea_instance_group_manager_instance_group
       port                 = module.ateme.nea_named_ports[1].port # 80
