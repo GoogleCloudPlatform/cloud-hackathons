@@ -3,12 +3,12 @@ module "compute" {
 
   project_id           = var.project_id
   region               = var.region
-  instance_group_name  = "stitcher-machine-mig"
-  base_instance_name   = "stitcher-machine"
+  instance_group_name  = "stitch-machine-mig"
+  base_instance_name   = "stitch-machine"
   target_size          = 1
-  machine_type         = "e2-medium"
-  source_image         = "projects/media-on-gcp-storage/global/images/stitcher-machine"
-  boot_disk_type       = "pd-balanced"
+  machine_type         = "c4d-standard-2"
+  source_image         = "projects/media-on-gcp-storage/global/images/stitch-machine"
+  boot_disk_type       = "hyperdisk-balanced"
   boot_disk_size       = 50
 
   networks             = var.networks
@@ -16,33 +16,36 @@ module "compute" {
 
   metadata = {
     enable-oslogin  = "true"
-    startup_script = <<-EOT
-      #!/bin/bash
-      set -e # Exit immediately if a command exits with a non-zero status.
-
-      echo ">>> Starting startup script..."
-
-      cat <<EOF > request-create-config.json
-{
-  "sourceUri": "https://cdn.endpoints.${var.project_id}.cloud.goog/live/disk0/channel1/HLS/channel1.m3u8",
-  "adTagUri": "https://pubads.g.doubleclick.net/gampad/live/ads?sz=640x480&output=xml_vast3&iu=/6353/christophen/IBC2025_hackathon&env=vp&impl=s&gdfp_req=1&unviewed_position_start=1&ad_rule=0",
-  "defaultSlate": "projects/669648730623/locations/europe-west1/slates/testslate",
-  "gamLiveConfig": {
-    "networkCode": "6353"
-  },
-  "adTracking": "SERVER"
-}
-EOF
-
-      curl -X POST \
-          -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-          -H "x-goog-user-project: 669648730623" \
-          -H "Content-Type: application/json; charset=utf-8" \
-          -d @request-create-config.json \
-          "https://videostitcher.googleapis.com/v1/projects/669648730623/locations/europe-west1/liveConfigs?liveConfigId=${var.project_id}"
-
-      echo ">>> Startup script finished."
-    EOT
   }
 }
 
+resource "google_compute_address" "stitch" {
+  project = var.project_id
+  region  = var.region
+  name    = "stitch-vm-ip-address"
+}
+
+resource "google_endpoints_service" "dynamic" {
+  project        = var.project_id
+  service_name   = "stitch.endpoints.${var.project_id}.cloud.goog"
+  openapi_config = <<-EOF
+    swagger: "2.0"
+    info:
+      title: "API for davinci stitch"
+      description: "A simple API for the davinci stitch service"
+      version: "1.0.0"
+    host: "stitch.endpoints.${var.project_id}.cloud.goog"
+    x-google-endpoints:
+    - name: "stitch.endpoints.${var.project_id}.cloud.goog"
+      target: "${google_compute_address.stitch.address}"
+    paths: {}
+  EOF
+
+  # NOTE:
+  # Prevent deletion on destroy.
+  # Deleteing this resource will not allow you to reuse again within 30 days. Can undelete service
+  # Following, https://cloud.google.com/service-infrastructure/docs/manage-services#undeleting_a_service
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
+}

@@ -18,16 +18,6 @@ output "named_ports" {
   value       = module.compute.named_ports
 }
 
-output "resolve_admin_username" {
-  description = "Resolve admin username for RDP access."
-  value       = "admin"
-}
-
-output "resolve_admin_password" {
-  description = "Resolve admin password for RDP access."
-  value       = random_password.admin_password.result
-}
-
 output "resolve_dns_address" {
   description = "URL for Davinci Resolve service"
   value       = google_endpoints_service.dynamic.dns_address

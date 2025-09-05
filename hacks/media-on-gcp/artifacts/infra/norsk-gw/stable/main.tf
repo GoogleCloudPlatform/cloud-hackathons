@@ -6,9 +6,9 @@ module "compute" {
   instance_group_name  = "norsk-gw-mig"
   base_instance_name   = "norsk-gw"
   target_size          = 1
-  machine_type         = var.machine_type
-  source_image         = var.source_image
-  boot_disk_type       = var.boot_disk_type
+  machine_type         = "c4-standard-4"
+  source_image         = "projects/media-on-gcp-storage/global/images/norsk-image-ibc-alpha-debian-12-x86-64-2025-08-29"
+  boot_disk_type       = "hyperdisk-balanced"
   boot_disk_size       = var.boot_disk_size
   tags                 = ["${var.goog_cm_deployment_name}-deployment", "media-on-gcp"]
 
@@ -23,20 +23,6 @@ module "compute" {
     google-logging-enable       = "0"
     google-monitoring-enable    = "0"
   }
-
-  startup_script = <<-EOT
-      #!/bin/bash
-      set -e # Exit immediately if a command exits with a non-zero status.
-
-      echo ">>> Starting startup script..."
-
-     # Install Norsk License & startup
-
-     gsutil cp gs://ghacks-media-on-gcp-private/license.json /var/norsk-studio/norsk-studio-docker/secrets/license.json
-     systemctl restart norsk.service
-
-      echo ">>> Startup script finished."
-    EOT
 
   named_ports = [{
     name = "https"
