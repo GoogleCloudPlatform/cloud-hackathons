@@ -6,9 +6,9 @@ module "compute" {
   instance_group_name  = "norsk-ai-mig"
   base_instance_name   = "norsk-ai"
   target_size          = 1
-  machine_type         = "c4d-standard-4"
+  machine_type         = "c4-standard-4"
   source_image         = var.source_image
-  boot_disk_type       = "hyperdisk-balanced"
+  boot_disk_type       = "pd-balanced"
   boot_disk_size       = var.boot_disk_size
   tags                 = ["${var.goog_cm_deployment_name}-deployment", "media-on-gcp"]
 
