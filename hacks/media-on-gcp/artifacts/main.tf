@@ -39,7 +39,6 @@ resource "google_project_service" "run_api" {
   disable_on_destroy = false
 }
 
-# Ateme
 module "ateme" {
   source = "./infra/ateme/stable"
 
@@ -102,3 +101,12 @@ module "vizrt" {
   networks = [module.vpc.network_name]
 }
 
+module "stitcher" {
+  source = "./infra/stitcher/stable"
+
+  project_id = local.project.id
+  region     = var.gcp_region
+  zone       = var.gcp_zone
+
+  networks = [module.vpc.network_name]
+}
