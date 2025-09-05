@@ -24,20 +24,6 @@ module "compute" {
     google-monitoring-enable    = "0"
   }
 
-  startup_script = <<-EOT
-      #!/bin/bash
-      set -e # Exit immediately if a command exits with a non-zero status.
-
-      echo ">>> Starting startup script..."
-
-     # Install Norsk License & startup
-
-     gsutil cp gs://ghacks-media-on-gcp-private/license.json /var/norsk-studio/norsk-studio-docker/secrets/license.json
-     systemctl restart norsk.service
-
-      echo ">>> Startup script finished."
-    EOT
-
   named_ports = [{
     name = "https"
     port = 443
