@@ -101,12 +101,14 @@ module "vizrt" {
   networks = [module.vpc.network_name]
 }
 
-module "stitcher" {
-  source = "./infra/stitcher/stable"
+# TODO: Need stitcher image deployed and available
 
-  project_id = local.project.id
-  region     = var.gcp_region
-  zone       = var.gcp_zone
+# module "stitcher" {
+#   source = "./infra/stitcher/stable"
 
-  networks = [module.vpc.network_name]
-}
+#   project_id = local.project.id
+#   region     = var.gcp_region
+#   zone       = var.gcp_zone
+
+#   networks = [module.vpc.network_name]
+# }
