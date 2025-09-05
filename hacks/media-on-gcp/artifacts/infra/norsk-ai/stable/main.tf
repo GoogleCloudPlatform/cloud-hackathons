@@ -6,7 +6,7 @@ module "compute" {
   instance_group_name  = "norsk-ai-mig"
   base_instance_name   = "norsk-ai"
   target_size          = 1
-  machine_type         = var.machine_type
+  machine_type         = "c4d-standard-4"
   source_image         = var.source_image
   boot_disk_type       = var.boot_disk_type
   boot_disk_size       = var.boot_disk_size
