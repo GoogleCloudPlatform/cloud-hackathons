@@ -7,7 +7,6 @@ module "compute_nea" {
   base_instance_name   = "ateme-nl"
   target_size          = 1
   machine_type         = "c4d-standard-8"
-  # source_image         = "projects/qwiklabs-resources/global/images/ateme-nl-250625"
   source_image         = "projects/media-on-gcp-storage/global/images/ateme-nl-250625"
   boot_disk_type       = "hyperdisk-balanced"
   tags                 = ["http-server"]
@@ -37,7 +36,6 @@ module "compute_titan" {
   base_instance_name   = "ateme-tl01"
   target_size          = 1
   machine_type         = "c4d-standard-8"
-  # source_image         = "projects/qwiklabs-resources/global/images/ateme-tl-250525"
   source_image         = "projects/media-on-gcp-storage/global/images/ateme-tl-250525"
   boot_disk_type       = "hyperdisk-balanced"
   tags                 = ["http-server"]
