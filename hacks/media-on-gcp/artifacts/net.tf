@@ -7,6 +7,8 @@ module "vpc" {
   network_name            = "vpc-media-on-gcp"
   routing_mode            = "GLOBAL"
   auto_create_subnetworks = true
+
+  depends_on = [ google_project_iam_member.centralized_project_binding ]
 }
 
 # Load balancer
@@ -68,6 +70,8 @@ module "gclb" {
       enable_cdn           = false
     }
   }
+
+  depends_on = [ google_project_iam_member.centralized_project_binding ]
 }
 
 # General Firewall Rules
@@ -88,6 +92,8 @@ resource "google_compute_firewall" "fwr_allow_internal" {
   allow {
     protocol = "icmp"
   }
+
+  depends_on = [ google_project_iam_member.centralized_project_binding ]
 }
 
 # Punch a hole for IAP traffic
@@ -99,6 +105,8 @@ resource "google_compute_firewall" "fwr_allow_iap" {
     protocol = "tcp"
     ports    = ["22"]
   }
+
+  depends_on = [ google_project_iam_member.centralized_project_binding ]
 }
 
 resource "google_compute_firewall" "fwr_ssh" {
@@ -111,6 +119,8 @@ resource "google_compute_firewall" "fwr_ssh" {
   }
 
   source_ranges = ["0.0.0.0/0"]
+
+  depends_on = [ google_project_iam_member.centralized_project_binding ]
 }
 
 resource "google_compute_firewall" "fwr_http" {
@@ -123,6 +133,8 @@ resource "google_compute_firewall" "fwr_http" {
   }
 
   source_ranges = ["0.0.0.0/0"]
+
+  depends_on = [ google_project_iam_member.centralized_project_binding ]
 }
 
 resource "google_compute_firewall" "fwr_rdp" {
@@ -141,6 +153,7 @@ resource "google_compute_firewall" "fwr_rdp" {
 
   source_ranges = ["0.0.0.0/0"]
 
+  depends_on = [ google_project_iam_member.centralized_project_binding ]
 }
 
 resource "google_compute_firewall" "fwr_tcp_8080" {
@@ -153,4 +166,6 @@ resource "google_compute_firewall" "fwr_tcp_8080" {
   }
 
   source_ranges = ["0.0.0.0/0"]
+
+  depends_on = [ google_project_iam_member.centralized_project_binding ]
 }

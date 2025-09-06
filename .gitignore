@@ -7,3 +7,4 @@ dist/
 .terraform*
 terraform.tfstate*
 *.tfplan
+key.json

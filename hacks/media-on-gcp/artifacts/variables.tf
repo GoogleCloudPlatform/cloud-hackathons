@@ -43,3 +43,15 @@ variable "access_token" {
   description = "access token for the qwiklab.net account."
   default     = ""
 }
+
+variable "host_gcp_project_id" {
+  type        = string
+  default     = "media-on-gcp-storage"
+  description = "The GCP project ID to pull resouces from."
+}
+
+variable "host_centralized_serviceaccount_name" {
+  type        = string
+  default     = "ql-manager-sa"
+  description = "Centralized SA for project connnection"
+}

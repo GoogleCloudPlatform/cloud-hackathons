@@ -25,15 +25,18 @@ terraform {
 }
 
 provider "google" {
+  alias         = "bootstrap_user_account_googl"
   project       = var.gcp_project_id
   region        = var.gcp_region
   zone          = var.gcp_zone
-  # access_token  = var.access_token
 }
 
-provider "google-beta" {
+provider "google" {
   project       = var.gcp_project_id
   region        = var.gcp_region
   zone          = var.gcp_zone
-  # access_token  = var.access_token
+
+  impersonate_service_account = "${var.host_centralized_serviceaccount_name}@${var.host_gcp_project_id}.iam.gserviceaccount.com"
+  credentials                 = "key.json"
+  scopes                      = ["https://www.googleapis.com/auth/cloud-platform"]
 }
