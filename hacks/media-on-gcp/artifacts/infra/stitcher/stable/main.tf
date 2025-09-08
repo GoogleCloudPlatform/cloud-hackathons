@@ -6,9 +6,9 @@ module "compute" {
   instance_group_name  = "stitch-machine-mig"
   base_instance_name   = "stitch-machine"
   target_size          = 1
-  machine_type         = "c4d-standard-2"
+  machine_type         = "n2d-standard-2"
   source_image         = "projects/media-on-gcp-storage/global/images/stitch-machine"
-  boot_disk_type       = "hyperdisk-balanced"
+  boot_disk_type       = "pd-standard"
   boot_disk_size       = 50
 
   networks             = var.networks

@@ -93,3 +93,8 @@ output "gclb_dns_address_norsk" {
   value       = module.gclb.endpoint_dns_addresses["norsk"]
 }
 
+output "team_bucket_names" {
+  description = "The names of the created team buckets."
+  value       = module.team_setup.bucket_names
+}
+

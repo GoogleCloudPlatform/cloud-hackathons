@@ -11,55 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-locals {
-  project = {
-    id     = var.gcp_project_id
-    name   = data.google_project.project.name
-    number = data.google_project.project.number
-  }
-  endpoint_url = "endpoints.${local.project.id}.cloud.goog"
-}
-
-data "google_project" "project" {
-  provider = google.bootstrap_user_account_googl
-
-  project_id = var.gcp_project_id
-}
-
-resource "google_project_service" "compute_api" {
-  provider = google.bootstrap_user_account_googl
-
-  service            = "compute.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "vertexai_api" {
-  provider = google.bootstrap_user_account_googl
-
-  service            = "aiplatform.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "run_api" {
-  provider = google.bootstrap_user_account_googl
-
-  service            = "run.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_iam_member" "centralized_project_binding" {
-  provider = google.bootstrap_user_account_googl
-
-  project = local.project.id
-  role    = "roles/owner"
-  member  = "serviceAccount:${var.host_centralized_serviceaccount_name}@${var.host_gcp_project_id}.iam.gserviceaccount.com"
-}
-
-resource "google_project_iam_member" "imageuser_role" {
-  project = var.host_gcp_project_id
-  role    = "roles/compute.imageUser"
-  member  = "serviceAccount:${local.project.number}@cloudservices.gserviceaccount.com"
-}
 
 module "ateme" {
   source = "./infra/ateme/stable"
@@ -135,16 +86,32 @@ module "vizrt" {
   depends_on = [ google_project_iam_member.centralized_project_binding ]
 }
 
+module "team_setup" {
+  source = "./infra/team-setup"
+
+  providers = {
+    google                              = google
+    google.bootstrap_user_account_googl = google.bootstrap_user_account_googl
+  }
+
+  gcp_project_id      = local.project.id
+  host_gcp_project_id = var.host_gcp_project_id
+
+  host_centralized_serviceaccount_name = var.host_centralized_serviceaccount_name
+
+  depends_on = [google_project_iam_member.centralized_project_binding]
+}
+
 # TODO: Need stitcher image deployed and available
 
-# module "stitcher" {
-#   source = "./infra/stitcher/stable"
+module "stitcher" {
+  source = "./infra/stitcher/stable"
 
-#   project_id = local.project.id
-#   region     = var.gcp_region
-#   zone       = var.gcp_zone
+  project_id = local.project.id
+  region     = var.gcp_region
+  zone       = var.gcp_zone
 
-#   networks = [module.vpc.network_name]
+  networks = [module.vpc.network_name]
 
-#   depends_on = [ google_project_iam_member.centralized_project_binding ]
-# }
+  depends_on = [ google_project_iam_member.centralized_project_binding ]
+}

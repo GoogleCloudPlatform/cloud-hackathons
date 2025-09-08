@@ -26,7 +26,7 @@ module "gclb" {
       port                 = module.ateme.nea_named_ports[0].port # 8080
       port_name            = module.ateme.nea_named_ports[0].name # http1
       protocol             = "HTTP"
-      healthcheck_protocol = "tcp"
+      healthcheck_protocol = "http"
       enable_cdn           = false
     }
     cdn = {
@@ -34,7 +34,7 @@ module "gclb" {
       port                 = module.ateme.nea_named_ports[1].port # 80
       port_name            = module.ateme.nea_named_ports[1].name # http2
       protocol             = "HTTP"
-      healthcheck_protocol = "tcp"
+      healthcheck_protocol = "http"
       enable_cdn           = true
     }
     titan = {
@@ -42,7 +42,7 @@ module "gclb" {
       port                 = module.ateme.titan_named_ports[0].port # 443
       port_name            = module.ateme.titan_named_ports[0].name # https
       protocol             = "HTTPS"
-      healthcheck_protocol = "tcp"
+      healthcheck_protocol = "ssl"
       enable_cdn           = false
     }
     darwin = {
@@ -50,7 +50,7 @@ module "gclb" {
       port                 = module.darwin.darwin_named_ports[0].port # 443
       port_name            = module.darwin.darwin_named_ports[0].name # https
       protocol             = "HTTPS"
-      healthcheck_protocol = "tcp"
+      healthcheck_protocol = "ssl"
       enable_cdn           = false
     }
     "gemini" = {
@@ -58,7 +58,7 @@ module "gclb" {
       port                 = module.norsk_ai.named_ports[0].port # 443
       port_name            = module.norsk_ai.named_ports[0].name # https
       protocol             = "HTTPS"
-      healthcheck_protocol = "tcp"
+      healthcheck_protocol = "ssl"
       enable_cdn           = false
     }
     "norsk" = {
@@ -66,7 +66,7 @@ module "gclb" {
       port                 = module.norsk_gw.named_ports[0].port # 443
       port_name            = module.norsk_gw.named_ports[0].name # https
       protocol             = "HTTPS"
-      healthcheck_protocol = "tcp"
+      healthcheck_protocol = "ssl"
       enable_cdn           = false
     }
   }
