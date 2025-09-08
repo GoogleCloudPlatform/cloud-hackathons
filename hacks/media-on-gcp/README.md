@@ -140,17 +140,25 @@ You will start with a blank canvas in Norsk. On the left is the **Component Libr
 **NOTE:** If a setting's value is **NOT** specified in these instructions LEAVE THE DEFAULT.
 
 Using the **SRT Ingest (Caller)** component, connect to the 4 provided camera feeds. They are running at the following URIs:
+
 ```
-srt://34.32.228.47:5101
-srt://34.34.228.47:5102
-srt://34.32.34.47:5103
-srt://34.32.228.34:5104
+#Simulation camera set 1
+srt://34.12.149.233:5111
+srt://34.13.239.246:5112
+srt://34.34.120.187:5113
+srt://34.90.129.150:5114
+
+#Simulation camera 2
+srt://34.12.149.233:5131
+srt://34.13.239.246:5132
+srt://34.34.120.187:5133
+srt://34.90.129.150:5134
 ```
 
 The settings on the SRT Ingest component will look something like this:
 - **Display Name**: `camera1`
-- **Host**: `34.32.228.47` 
-- **Port**: `5101`
+- **Host**: `34.12.149.233` 
+- **Port**: `5111`
 - **streamId**: `camera1`
 
 Now add 4 Preview components and connect it to the Ingest components so you can actually see what is coming in. Make sure you don't touch the **Preview Mode** field. It should be: **JPEG Only**.
@@ -159,27 +167,28 @@ Finally, add 4 **SRT Listener (Egest)** components and connect them to the sourc
 
 The settings on the SRT Egest component will look something like this:
 - **Display Name**: `srt-listener-camera1`
-- **Port**: `5111`
+- **Port**: `5141`
 - **Host**: `0.0.0.0`
 
 The final step is to connect your inputs to your outputs. This tells Norsk where to send the media from each source. Your goal is to create four parallel, independent streams.
 
 Save your configuration as a YAML file for future use.
 
-**NOTE:** Write down the SRT URIs for your Egest components for the next challenge. For example:
+**NOTE:** Write down the SRT URIs for your Egest components for the next challenge(*use the internal ip addresses*). For example:
 ```
-srt://34.2.10.55:5111
-srt://34.2.10.55:5112
-srt://34.2.10.55:5113
-srt://34.2.10.55:5114
+srt://10.164.0.12:5141
+srt://10.164.0.12:5142
+srt://10.164.0.12:5143
+srt://10.164.0.12:5144
 ```
 
-Where `34.2.10.55` is the public ip of the `norsk-gw` VM that you used to log into Norsk Studio
+Where `10.164.0.12` is the private ip of the `norsk-gw` VM that you used to log into Norsk Studio
 
 ### Success Criteria
 - You are ingest 4 camera feeds
 - On the Norsk Studio canvas you have Preview components running and showing video for all 4 feeds.
 - You've created 4 SRT Egests and noted down their SRT URIs
+- You've saved your work as a yaml files and download it as a backup configs.
 
 ### Learning Resources
 - [Norsk Studio Demo Video](https://youtu.be/6G5OZPv8wRA)
