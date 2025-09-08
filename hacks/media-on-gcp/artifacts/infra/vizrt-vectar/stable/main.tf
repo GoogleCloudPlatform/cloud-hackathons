@@ -18,10 +18,9 @@ module "compute" {
   distribution_policy_zones = ["europe-west4-c", "europe-west4-a"]
 
   metadata = {
-    # windows-startup-script-ps1 = <<-EOF
-    #   $password = ConvertTo-SecureString "${random_password.admin_password.result}" -AsPlainText -Force
-    #   Get-LocalUser -Name "Admin" | Set-LocalUser -Password $password
-    # EOF
+    windows-startup-script-ps1 = <<-EOF
+      & "C:\Program Files\Teradici\pcoip-activation.ps1"
+    EOF
   }
 
   accelerator_type  = "nvidia-l4-vws"

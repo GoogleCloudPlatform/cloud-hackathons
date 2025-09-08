@@ -22,10 +22,9 @@ module "compute" {
 
   metadata = {
     enable-oslogin  = "true"
-    # windows-startup-script-ps1 = <<-EOF
-    #   $password = ConvertTo-SecureString "${random_password.admin_password.result}" -AsPlainText -Force
-    #   Get-LocalUser -Name "admin" | Set-LocalUser -Password $password
-    # EOF
+    windows-startup-script-ps1 = <<-EOF
+      & "C:\Program Files\Teradici\pcoip-activation.ps1"
+    EOF
   }
 }
 
