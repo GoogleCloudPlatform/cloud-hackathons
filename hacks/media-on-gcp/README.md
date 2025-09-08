@@ -35,8 +35,8 @@ In this hack you will get hands on experience with both first party Google Cloud
 
 - Challenge 1: Get creative with the help of AI
 - Challenge 2: Gather up those feeds and spit 'em out
-- Challenge 3: Sprinkle some AI on it
-- Challenge 4: Get in the Mix
+- Challenge 3: Get in the Mix
+- Challenge 4: Sprinkle some AI on it
 - Challenge 5: Ready for some Ads?
 - Challenge 6: Let's Play Out!
 - Challenge 7: Get your channel to the masses
@@ -174,16 +174,6 @@ The final step is to connect your inputs to your outputs. This tells Norsk where
 
 Save your configuration as a YAML file for future use.
 
-**NOTE:** Write down the SRT URIs for your Egest components for the next challenge(*use the internal ip addresses*). For example:
-```
-srt://10.164.0.12:5141
-srt://10.164.0.12:5142
-srt://10.164.0.12:5143
-srt://10.164.0.12:5144
-```
-
-Where `10.164.0.12` is the private ip of the `norsk-gw` VM that you used to log into Norsk Studio
-
 ### Success Criteria
 - You are ingest 4 camera feeds
 - On the Norsk Studio canvas you have Preview components running and showing video for all 4 feeds.
@@ -194,7 +184,81 @@ Where `10.164.0.12` is the private ip of the `norsk-gw` VM that you used to log 
 - [Norsk Studio Demo Video](https://youtu.be/6G5OZPv8wRA)
 - [Norsk Studio Documentation](https://norsk.video/norsk-studio-live-media-workflow-server/)
 
-## Challenge 3: Sprinkle some AI on it
+## Challenge 3: Get in the Mix
+
+### Introduction
+In this challenge, we'll be bringing our feeds into a vision mixer and creating a program output that will be used in our pipeline.
+
+You will work with a professional vision mixer, VizRT Vectar. 
+
+First you will wire up the mixing board inputs with feeds from the previous step.
+
+Then using some creative art direction, you'll be producing a program out. "PGM" or program out is a single video feed from a vision mixer that represents the final, switched, live output intended for broadcast, streaming, or recording.
+
+We will be using VizRT Vectar as a virtual appliance. It runs on VM to which we'll connect with our GPU accelerated remote desktop client: HP Anywhere PCoIP.
+
+### Tools Used
+- VizRT Vectar
+- HP Anywhere PCoIP for GPU accelerated remote desktop access (formerly known as Teradici)
+
+### Description
+We have provided a virtual workstation with the VizRT Vectar vision mixer. Your coach will provide log in details. See the **Tips** section below for instructions on installing the client and connecting to the workstation. Only one team member needs to install this.
+
+#### Configuring Inputs
+- Within the Vectar interface, press the **Setup** button at the top of the screen
+- Locate input 1 in the setup screen and click the **Configure** wheel at the end of the row.
+- In the dialog that opens, find the **source** drop down menu and choose: **Local -> Add IP Source...**
+- In the Source Manager dialog that opens, click the **Configure** wheel next to `camera1`
+- In the Configure SRT Input Connection dialog box that opens, enter `Camera1` in the **Connection Name** field
+- To find the server URL, check the internal IP address of the VM named: `norsk-gw-nnn` (where `nnn` is a random string). You can find this name in the Google Cloud console VM list. 
+    - In this example, it is `10.164.0.5`, yours will be different.
+- In the **Server URL** field, enter `srt://10.164.0.5`
+- In the port Number enter `5111` which was the port number allocated to camera1 in Norsk.
+- Press OK but do not reset your session. We need to add the other cameras first.
+- Repeat the above process for Camera 2, Camera 3 and Camera 4, using their respective port numbers.
+- To receive the streams, we need to reset Vectar. Go to **File -> Exit** (you will need to position your mouse at the top of the screen to get the File Menu to appear, it's a little tricky).
+- Now you are in Kiosk mode. Click **Start Live Production** in the bottom right corner of the screen.
+- Vectar takes a while to load again, when it's back you still need to configure the inputs.
+- For Input1 Thumbnail, click the **Configure** wheel in the bottom right of the thumbnail
+- In the Input1 dialog box, select **Source -> Local -> Camera1**
+- Repeat this for the other 3 feeds.
+
+#### Verify Transitions
+- After configuring the inputs, the four camera sources should appear in Vectar's source preview monitors.
+- Try out all the switcher controls. 
+    - Click on sources to put them in **Preview** and use the **T-Bar** or **Cut/Auto** buttons to transition them to **Program**. This confirms that the streams are correctly ingested and that Vectar is operational.
+
+#### Configure SRT Output
+- Similar to Norsk, you need to configure an output stream. This is typically done in the **Output** or **Streaming** settings.
+- To configure the output, locate the **STREAM** button in the top menu, press the **Configure** wheel next to it.
+- Locate the output labelled **SRT Stream** that has a tick mark next to it. Click the **Configure** wheel to the right of it.
+- In the **Configure SRT Connection** dialog box, choose **Connection Type -> Host Local SRT Stream**
+- Leave the **Server Port** at **10000**
+- Now press the **STREAM** button at the top of the screen. 
+- You must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
+- **NOTE:** Write down this new SRT output URL for the next challenge.
+
+### Success Criteria
+- Your have connected 4 inputs on the Vectar mixing board to the 4 outputs from Norsk Studio used in the last challenge
+- You have shown you know how to switch between outputs in Vectar using the **T-Bar** control or **Cut/Auto** buttons.
+- You started a stream and have an SRT output URI to use in the next challenge for the next part of our pipeline.
+
+### Tips
+To access the remote desktop of the VizRT Vectar VM you will need a GPU accelerated remote desktop client. Regular Windows Remote Desktop will not be able to run VizRT Vectar.
+
+Download the HP Anywhere PCoIP Client for your OS from [this link](https://anyware.hp.com/find/product/hp-anyware)
+    - On the downloads page, look in the **Anywhere Clients** section
+    - **NOTE:** If the page gets stuck on the splash page, click the browser reload button.
+
+Install the client and then use the credentials provided by your coach to log into the VizRT Vectar workstation VM.
+
+### Learning Resources
+- [VizRT Vectar User Guide](https://docs.vizrt.com/viz-vectar-plus-user-guide-1.5.pdf)
+- [Getting Started with Vectar (video)](https://youtu.be/bBYKKKJVmuA?t=390)
+- [How to Work With Inputs (video)](https://youtu.be/9GlqeAPigTU)
+- [VizRT Vectar Product Page](https://www.vizrt.com/products/tricaster/tricaster-vectar/)
+
+## Challenge 4: Sprinkle some AI on it
 
 ### Introduction
 The way we consume live media is evolving. Viewers no longer just want to watch; they want to engage, analyze, and get real-time insights. The Gemini Live API is a powerful new tool that enables developers to build real-time, interactive experiences by processing live streams of video and audio. This opens up a world of possibilities for a new generation of live media applications.
@@ -254,80 +318,6 @@ And finally, let's explore the output we are getting. Go back to Norsk Studio. O
 
 ### Learning Resources
 - [Getting Started with Gemini Live API](https://ai.google.dev/gemini-api/docs/live)
-
-## Challenge 4: Get in the Mix
-
-### Introduction
-In this challenge, we'll be bringing our feeds into a vision mixer and creating a program output that will be used in our pipeline.
-
-You will work with a professional vision mixer, VizRT Vectar. 
-
-First you will wire up the mixing board inputs with feeds from the previous step.
-
-Then using some creative art direction, you'll be producing a program out. "PGM" or program out is a single video feed from a vision mixer that represents the final, switched, live output intended for broadcast, streaming, or recording.
-
-We will be using VizRT Vectar as a virtual appliance. It runs on VM to which we'll connect with our GPU accelerated remote desktop client: HP Anywhere PCoIP.
-
-### Tools Used
-- VizRT Vectar
-- HP Anywhere PCoIP for GPU accelerated remote desktop access (formerly known as Teradici)
-
-### Description
-We have provided a virtual workstation with the VizRT Vectar vision mixer. Your coach will provide log in details. See the **Tips** section below for instructions on installing the client and connecting to the workstation. Only one team member needs to install this.
-
-#### Configuring Inputs
-- Within the Vectar interface, press the **Setup** button at the top of the screen
-- Locate input 1 in the setup screen and click the **Configure** wheel at the end of the row.
-- In the dialog that opens, find the **source** drop down menu and choose: **Local -> Add IP Source...**
-- In the Source Manager dialog that opens, click the **Configure** wheel next to `camera1`
-- In the Configure SRT Input Connection dialog box that opens, enter `Camera1` in the **Connection Name** field
-- To find the server URL, check the internal IP address of the VM named: `norsk-gw-nnn` (where `nnn` is a random string). You can find this name in the Google Cloud console VM list. 
-    - In this example, it is `10.164.0.5`, yours will be different.
-- In the **Server URL** field, enter `srt://10.164.0.5`
-- In the port Number enter `5111` which was the port number allocated to camera1 in Norsk.
-- Press OK but do not reset your session. We need to add the other cameras first.
-- Repeat the above process for Camera 2, Camera 3 and Camera 4
-- To receive the streams, we need to reset Vectar. Go to **File -> Exit** (you will need to position your mouse at the top of the screen to get the File Menu to appear, it's a little tricky).
-- Now you are in Kiosk mode. Click **Start Live Production** in the bottom right corner of the screen.
-- Vectar takes a while to load again, when it's back you still need to configure the inputs.
-- For Input1 Thumbnail, click the **Configure** wheel in the bottom right of the thumbnail
-- In the Input1 dialog box, select **Source -> Local -> Camera1**
-- Repeat this for the other 3 feeds.
-
-#### Verify Transitions
-- After configuring the inputs, the four camera sources should appear in Vectar's source preview monitors.
-- Try out all the switcher controls. 
-    - Click on sources to put them in **Preview** and use the **T-Bar** or **Cut/Auto** buttons to transition them to **Program**. This confirms that the streams are correctly ingested and that Vectar is operational.
-
-#### Configure SRT Output
-- Similar to Norsk, you need to configure an output stream. This is typically done in the **Output** or **Streaming** settings.
-- To configure the output, locate the **STREAM** button in the top menu, press the **Configure** wheel next to it.
-- Locate the output labelled **SRT Stream** that has a tick mark next to it. Click the **Configure** wheel to the right of it.
-- In the **Configure SRT Connection** dialog box, choose **Connection Type -> Host Local SRT Stream**
-- Leave the **Server Port** at **10000**
-- Now press the **STREAM** button at the top of the screen. 
-- You must set the output type to **SRT**. Vectar will provide a new SRT URL for its program output.
-- **NOTE:** Write down this new SRT output URL for the next challenge.
-
-### Success Criteria
-- Your have connected 4 inputs on the Vectar mixing board to the 4 outputs from Norsk Studio used in the last challenge
-- You have shown you know how to switch between outputs in Vectar using the **T-Bar** control or **Cut/Auto** buttons.
-- You started a stream and have an SRT output URI to use in the next challenge for the next part of our pipeline.
-
-### Tips
-To access the remote desktop of the VizRT Vectar VM you will need a GPU accelerated remote desktop client. Regular Windows Remote Desktop will not be able to run VizRT Vectar.
-
-Download the HP Anywhere PCoIP Client for your OS from [this link](https://anyware.hp.com/find/product/hp-anyware)
-    - On the downloads page, look in the **Anywhere Clients** section
-    - **NOTE:** If the page gets stuck on the splash page, click the browser reload button.
-
-Install the client and then use the credentials provided by your coach to log into the VizRT Vectar workstation VM.
-
-### Learning Resources
-- [VizRT Vectar User Guide](https://docs.vizrt.com/viz-vectar-plus-user-guide-1.5.pdf)
-- [Getting Started with Vectar (video)](https://youtu.be/bBYKKKJVmuA?t=390)
-- [How to Work With Inputs (video)](https://youtu.be/9GlqeAPigTU)
-- [VizRT Vectar Product Page](https://www.vizrt.com/products/tricaster/tricaster-vectar/)
 
 ## Challenge 5: Ready for some Ads?
 
