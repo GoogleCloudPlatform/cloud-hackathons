@@ -31,7 +31,7 @@ domain_tags:
 environment:
   resources:
   - type: gcp_project
-    variant: gcp_medium_extra
+    variant: gcp_high_extra
     id: project_0
     allowed_locations:
     - europe-west4-a
@@ -90,31 +90,19 @@ environment:
     reference: user_4.username
   - label: Student Password
     reference: user_0.password
-  - label: Norsk Admin User
-    reference: project_0.startup_script.norsk_admin_user
-  - label: Norsk Admin Password
-    reference: project_0.startup_script.norsk_admin_password
-  - label: Vectar Address
-    reference: project_0.startup_script.vectar_dns_address
-  - label: Vectar Admin User
-    reference: project_0.startup_script.vectar_admin_username
-  - label: Vectar Admin Password
-    reference: project_0.startup_script.vectar_admin_password
-  - label: Resolve Address
+  - label: Resolve Remote Desktop
     reference: project_0.startup_script.resolve_dns_address
-  - label: Resolve Admin User
-    reference: project_0.startup_script.resolve_admin_username
-  - label: Resolve Admin Password
-    reference: project_0.startup_script.resolve_admin_password
-  - label: Ateme Nea URL
-    reference: project_0.startup_script.gclb_dns_address_nea
-  - label: Ateme Titan URL
-    reference: project_0.startup_script.gclb_dns_address_titan
   - label: Norsk Gateway URL
     reference: project_0.startup_script.gclb_dns_address_norsk
   - label: Norsk Gemini Live URL
     reference: project_0.startup_script.gclb_dns_address_gemini
-  - label: tx Darwin URL
+  - label: Vectar Remote Desktop
+    reference: project_0.startup_script.vectar_dns_address
+  - label: TX Darwin URL
     reference: project_0.startup_script.gclb_dns_address_darwin
+  - label: Ateme Titan URL
+    reference: project_0.startup_script.gclb_dns_address_titan
+  - label: Ateme Nea URL
+    reference: project_0.startup_script.gclb_dns_address_nea
   - label: CDN URL
     reference: project_0.startup_script.gclb_dns_address_CDN
