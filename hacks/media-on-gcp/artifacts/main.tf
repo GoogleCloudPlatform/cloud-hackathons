@@ -86,24 +86,6 @@ module "vizrt" {
   depends_on = [ google_project_iam_member.centralized_project_binding ]
 }
 
-module "team_setup" {
-  source = "./infra/team-setup"
-
-  providers = {
-    google                              = google
-    google.bootstrap_user_account_googl = google.bootstrap_user_account_googl
-  }
-
-  gcp_project_id      = local.project.id
-  host_gcp_project_id = var.host_gcp_project_id
-
-  host_centralized_serviceaccount_name = var.host_centralized_serviceaccount_name
-
-  depends_on = [google_project_iam_member.centralized_project_binding]
-}
-
-# TODO: Need stitcher image deployed and available
-
 module "stitcher" {
   source = "./infra/stitcher/stable"
 
@@ -114,4 +96,18 @@ module "stitcher" {
   networks = [module.vpc.network_name]
 
   depends_on = [ google_project_iam_member.centralized_project_binding ]
+}
+
+module "team_setup" {
+  source = "./infra/team-setup"
+
+  providers = {
+    google                              = google
+    google.bootstrap_user_account_googl = google.bootstrap_user_account_googl
+  }
+
+  gcp_project_id      = local.project.id
+  host_gcp_project_id = local.host_project.id
+
+  host_centralized_serviceaccount_name = var.host_centralized_serviceaccount_name
 }
