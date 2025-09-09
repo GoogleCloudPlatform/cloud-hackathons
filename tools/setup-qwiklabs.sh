@@ -48,6 +48,24 @@ if [ -d ${LAB_DIR}/images ]; then
     rm -rf ${LAB_DIR}/images
 fi
 
+# Putting the student visible outputs into the instructions
+OUTPUTS=`yq -r \
+    '.environment.student_visible_outputs[]| 
+        ("{{{" + .label + ": " + .reference + "|Shown after startup}}}")' \
+	"${LAB_DIR}/qwiklabs.yaml"`
+
+BLOCK=`cat<<EOF
+## Lab resources for the participants
+
+<ql-code-block bash templated noWrap>
+$OUTPUTS
+</ql-code-block>
+EOF
+`
+
+sed -i "0,/^# /a\\\n${BLOCK//$'\n'/\\n}" "${INST_DIR}/en.md"
+
+
 # git --git-dir="${DST_DIR}/.git" checkout -b ${HACK}
 # git --git-dir="${DST_DIR}/.git" commit -am "adding gHacks ${HACK}"
 # git --git-dir="${DST_DIR}/.git" push --set-upstream origin ${HACK}
