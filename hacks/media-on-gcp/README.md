@@ -309,10 +309,12 @@ Next we will deploy and run the pipeline
     - Find the **GOOGLE_API_KEY** variable and paste in your API key
 - Restart Norsk by issuing this command:
     ```shell
-    sudo systemctl restart norsk
+    systemctl restart norsk
     ```
 
-And finally, let's explore the output we are getting. Go back to Norsk Studio. Observe the console output from the **Gemini AI** component to see the live commentary.
+And finally, let's explore the output we are getting. 
+
+Go back to Norsk Studio. Click the Play button to observe the console output from the **Gemini AI** component and see the live commentary.
 
 ### Success Criteria
 - Created a new Gemini API Key
