@@ -5,3 +5,8 @@ output "bucket_names" {
     hp_client   = google_storage_bucket.hp_client.name
   }
 }
+
+output "api_response" {
+  description = "The response from the API call."
+  value       = jsondecode(data.http.api_call.response_body)
+}
