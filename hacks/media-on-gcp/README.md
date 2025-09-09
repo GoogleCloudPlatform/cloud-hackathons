@@ -144,22 +144,15 @@ You will start with a blank canvas in Norsk. On the left is the **Component Libr
 Using the **SRT Ingest (Caller)** component, connect to the 4 provided camera feeds. They are running at the following URIs:
 
 ```
-#Simulation camera set 1
-srt://34.12.149.233:5111
-srt://34.13.239.246:5112
-srt://34.34.120.187:5113
-srt://34.90.129.150:5114
-
-#Simulation camera 2
-srt://34.12.149.233:5131
-srt://34.13.239.246:5132
-srt://34.34.120.187:5133
-srt://34.90.129.150:5134
+fecamgw01.media.ghacks.dev:5111
+fecamgw02.media.ghacks.dev:5112
+fecamgw03.media.ghacks.dev:5113
+fecamgw04.media.ghacks.dev:5114
 ```
 
 The settings on the SRT Ingest component will look something like this:
 - **Display Name**: `camera1`
-- **Host**: `34.12.149.233` 
+- **Host**: `fecamgw01.media.ghacks.dev` 
 - **Port**: `5111`
 - **streamId**: `camera1`
 
@@ -169,7 +162,7 @@ Finally, add 4 **SRT Listener (Egest)** components and connect them to the sourc
 
 The settings on the SRT Egest component will look something like this:
 - **Display Name**: `srt-listener-camera1`
-- **Port**: `5141`
+- **Port**: `5101`
 - **Host**: `0.0.0.0`
 
 The final step is to connect your inputs to your outputs. This tells Norsk where to send the media from each source. Your goal is to create four parallel, independent streams.
@@ -211,12 +204,13 @@ We have provided a virtual workstation with the VizRT Vectar vision mixer. Your 
 - Within the Vectar interface, press the **Setup** button at the top of the screen
 - Locate input 1 in the setup screen and click the **Configure** wheel at the end of the row.
 - In the dialog that opens, find the **source** drop down menu and choose: **Local -> Add IP Source...**
-- In the Source Manager dialog that opens, click the **Configure** wheel next to `camera1`
+- In the IP Source Manager dialog that opens, click Add New IP Source
+- Select SRT Source in the drop down
 - In the Configure SRT Input Connection dialog box that opens, enter `Camera1` in the **Connection Name** field
 - To find the server URL, check the internal IP address of the VM named: `norsk-gw-nnn` (where `nnn` is a random string). You can find this name in the Google Cloud console VM list. 
     - In this example, it is `10.164.0.5`, yours will be different.
 - In the **Server URL** field, enter `srt://10.164.0.5`
-- In the port Number enter `5111` which was the port number allocated to camera1 in Norsk.
+- In the port Number enter `5101` which was the port number allocated to SRT Listener Egest camera1 in Norsk.
 - Press OK but do not reset your session. We need to add the other cameras first.
 - Repeat the above process for Camera 2, Camera 3 and Camera 4, using their respective port numbers.
 - To receive the streams, we need to reset Vectar. Go to **File -> Exit** (you will need to position your mouse at the top of the screen to get the File Menu to appear, it's a little tricky).
@@ -300,6 +294,9 @@ Configure the Gemini AI Component:
 Now we need to get a **Gemini API Key** 
 - Go to the Google Cloud Console and search for the **Gemini API** page and enable the API
 - On that same page, create credentials of type: **API key**
+- Provide a name for your api key : example - Gemini API Key
+- In API restrictions section, click radio button Restrict Key
+- In the filter select Generative Language API and Vertex AI
 - A new API is created, save this key, you'll be using it soon.
 
 Next we will deploy and run the pipeline
@@ -309,7 +306,7 @@ Next we will deploy and run the pipeline
     - Find the **GOOGLE_API_KEY** variable and paste in your API key
 - Restart Norsk by issuing this command:
     ```shell
-    systemctl restart norsk
+    sudo systemctl restart norsk
     ```
 
 And finally, let's explore the output we are getting. 
@@ -319,8 +316,8 @@ Go back to Norsk Studio. Click the Play button to observe the console output fro
 ### Success Criteria
 - Created a new Gemini API Key
 - Designed a prompt to look for overtakes in a Formula E race
-- Connected Gemini Live API to your video feed
-- Real time commentary is being produced
+- Connected Gemini Live API to your video feed with commentary/audio feed.
+- Real time commentary is being produced by Gemini
 
 ### Learning Resources
 - [Getting Started with Gemini Live API](https://ai.google.dev/gemini-api/docs/live)
