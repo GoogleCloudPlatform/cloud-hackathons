@@ -78,6 +78,8 @@ environment:
     reference: project_0.console_url
   - label: Project ID
     reference: project_0.project_id
+  - label: Team Name
+    reference: project_0.startup_script.team_name
   - label: Student 1
     reference: user_0.username
   - label: Student 2
