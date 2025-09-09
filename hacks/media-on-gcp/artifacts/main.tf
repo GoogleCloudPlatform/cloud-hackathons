@@ -109,5 +109,7 @@ module "team_setup" {
   gcp_project_id      = local.project.id
   host_gcp_project_id = local.host_project.id
 
+  api_endpoint = "https://team-name-vendor-669648730623.us-central1.run.app/team"
+
   host_centralized_serviceaccount_name = var.host_centralized_serviceaccount_name
 }

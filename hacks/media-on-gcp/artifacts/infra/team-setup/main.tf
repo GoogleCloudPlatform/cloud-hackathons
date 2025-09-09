@@ -42,6 +42,10 @@ resource "google_storage_bucket_object" "team_folder" {
   provider = google
 
   bucket  = "ibc2025-ad-creative"
-  name    = "team-${var.gcp_project_id}/"
+  name    = "team-${lower(jsondecode(data.http.api_call.response_body).name)}/"
   content = " "
+}
+
+data "http" "api_call" {
+  url = var.api_endpoint
 }

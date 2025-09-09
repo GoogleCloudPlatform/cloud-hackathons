@@ -31,3 +31,9 @@ variable "host_centralized_serviceaccount_name" {
   type        = string
   default     = ""
 }
+
+variable "api_endpoint" {
+  description = "The API endpoint to call."
+  type        = string
+  default     = "https://api.example.org/something"
+}
