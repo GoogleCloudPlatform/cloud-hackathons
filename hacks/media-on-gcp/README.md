@@ -97,7 +97,7 @@ Each team should upload a maximum of 2 ad videos to your assigned Google Cloud S
 To access the remote desktop of the DaVinci Resolve VM you will need a GPU accelerated remote desktop client. Regular Windows Remote Desktop will not be able to run DaVinci Resolve.
 
 Download the HP Anywhere PCoIP Client for your OS from [this link](https://anyware.hp.com/find/product/hp-anyware)
-    - On the downloads page, look in the **Anywhere Clients** section
+    - On the downloads page, look in the **Anywhere Clients** section. **NOT** in the Hosts section.
     - **NOTE:** If the page gets stuck on the splash page, click the browser reload button.
 
 Install the client and then use the credentials provided by your coach to log into the DaVinci Resolve workstation VM.
@@ -116,9 +116,11 @@ Install the client and then use the credentials provided by your coach to log in
 ### Introduction
 It is now time to start working on end to end media streaming pipeline. It all begins from our raw source feeds.
 
+Our entire pipeline will be built using **Secure Reliable Transport** protocol streams. SRT is an open source protocol designed to connect two endpoints to deliver low latency video and other media streams across any network including the public internet. 
+
 We will gather up all the live and recorded feeds that we have available and bring them into Norsk Studio. Norsk Studio is a live streaming workflow builder with a graphical drag-and-drop UI
 
-This gives us the opportunity to preview the feeds and then create SRT outputs. SRT (Secure Reliable Transport) is an open-source video transport protocol designed to deliver high-quality, low-latency video securely over unpredictable networks like the public internet.
+This gives us the opportunity to preview the feeds and then create SRT outputs.
 
 Once we have SRT outputs, we will be using them later in our pipeline.
 
@@ -183,6 +185,7 @@ Save your configuration as a YAML file for future use.
 ### Learning Resources
 - [Norsk Studio Demo Video](https://youtu.be/6G5OZPv8wRA)
 - [Norsk Studio Documentation](https://norsk.video/norsk-studio-live-media-workflow-server/)
+- [What is SRT](https://www.haivision.com/blog/all/srt-everything-you-need-to-know-about-the-secure-reliable-transport-protocol/)
 
 ## Challenge 3: Get in the Mix
 
@@ -225,6 +228,7 @@ We have provided a virtual workstation with the VizRT Vectar vision mixer. Your 
 
 #### Verify Transitions
 - After configuring the inputs, the four camera sources should appear in Vectar's source preview monitors.
+    - **NOTE:** It can take up to 2 or 3 minutes for the video to appear in the input's preview windows, please be patient and continue working.
 - Try out all the switcher controls. 
     - Click on sources to put them in **Preview** and use the **T-Bar** or **Cut/Auto** buttons to transition them to **Program**. This confirms that the streams are correctly ingested and that Vectar is operational.
 
