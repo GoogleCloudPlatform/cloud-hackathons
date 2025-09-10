@@ -6,7 +6,7 @@ module "compute" {
   instance_group_name  = "norsk-gw-mig"
   base_instance_name   = "norsk-gw"
   target_size          = 1
-  machine_type         = "c4-standard-4"
+  machine_type         = "c4d-standard-32"
   source_image         = "projects/media-on-gcp-storage/global/images/norsk-image-ibc-alpha-debian-12-x86-64-2025-08-29"
   boot_disk_type       = "hyperdisk-balanced"
   boot_disk_size       = var.boot_disk_size
