@@ -1,0 +1,46 @@
+STUDIO_WORKING_DIRECTORY=${STUDIO_WORKING_DIRECTORY:-/data/}
+# This is the directory in which all files are accessed by Studio
+# relative to this, studio-save-files are where the yaml files exist
+# but components may read/write to sub directories of this folder
+# and it is assumed that the same directory is also mounted under the same path
+# for Norsk as well, so that the same files are available (such as images, data sources, etc)
+# Example folder structure below:
+#
+# ─data
+# ├── graphics
+# │  └── trinorsk.png
+# ├── studio-save-files
+# │  ├── OnscreenGraphic.yaml
+# │  ├── SourceSwitcher.yaml
+# │  └── WhisperSubtitles.yaml
+# └── whisper-models
+# Other files you might want in there are the Whisper langauge models etc.  The Whisper demo
+# assumes ggml-tiny.bin is in data/whisper-models/
+# You can get it from e.g. https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin
+# Or run scripts/get-whisper-tiny-model.sh
+
+
+#STUDIO_DOCUMENT=${STUDIO_DOCUMENT:-}
+STUDIO_DOCUMENT=base-stream-multi-viewer-streamid.yaml
+# Example: OnscreenGraphic.yaml
+# If non-empty, Studio will load the file with this name from
+# $STUDIO_WORKING_DIRECTORY/studio-save-files at startup.  It also
+# disables stop / start on the workflow
+
+STUDIO_DOCUMENT_OVERRIDES=${STUDIO_DOCUMENT_OVERRIDES:-}
+# Example: /data/overrides/example-overrides.yaml
+# If non-empty, Studio will use this file to override configuration using
+# in the same manner as the usage of environment variables
+
+GLOBAL_ICE_SERVERS=${GLOBAL_ICE_SERVERS:-}
+
+# Media URLs that Studio publishes will start with the below
+PUBLIC_URL_PREFIX=${PUBLIC_URL_PREFIX:-http://127.0.0.1:8080}
+# A URL to Studio itself
+STUDIO_URL_PREFIX=${STUDIO_URL_PREFIX:-}
+# A URL to docs (defaults )
+STUDIO_DOCS_URL=${STUDIO_DOCS_URL:-}
+
+# Logging
+LOG_LEVEL=info # error warning info debug silly
+NODE_DEBUG=norsk # Output extra trace (e.g. gRPC messages)
