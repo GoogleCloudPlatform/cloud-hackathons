@@ -1,0 +1,251 @@
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: marketplace-tools-display
+  annotations:
+    autogenSpecType: SINGLE_VM
+    config.kubernetes.io/local-config: "true"
+spec:
+  ui:
+    input:
+      variables:
+        project_id:
+          name: project_id
+          title: Project Id
+          invisible: true
+        goog_cm_deployment_name:
+          name: goog_cm_deployment_name
+          title: Goog Cm Deployment Name
+        source_image:
+          name: source_image
+          title: Image version
+          enumValueLabels:
+            - label: norsk-studio-byol-debian-12-x86-64-2025-05-13
+              value: projects/id3as-public/global/images/norsk-studio-byol-debian-12-x86-64-2025-05-13
+          xGoogleProperty:
+            type: ET_GCE_DISK_IMAGE
+        machine_type:
+          name: machine_type
+          title: Machine type
+          xGoogleProperty:
+            type: ET_GCE_MACHINE_TYPE
+            zoneProperty: zone
+            gceMachineType:
+              minCpu: 2
+              minRamGb: 8
+        accelerator_type:
+          name: accelerator_type
+          title: GPUs
+          xGoogleProperty:
+            type: ET_GCE_GPU_TYPE
+            gceGpuType:
+              machineType: machine_type
+              gpuType:
+                - nvidia-tesla-p100
+                - nvidia-tesla-v100
+                - nvidia-tesla-p100-vws
+                - nvidia-tesla-p4-vws
+                - nvidia-tesla-p4
+                - nvidia-tesla-t4
+                - nvidia-tesla-t4-vws
+                - nvidia-tesla-a100
+                - nvidia-a100-80gb
+                - nvidia-l4
+                - nvidia-l4-vws
+                - nvidia-h100-80gb
+                - nvidia-h100-mega-80gb
+        accelerator_count:
+          name: accelerator_count
+          title: GPU Count
+          xGoogleProperty:
+            type: ET_GCE_GPU_COUNT
+            gceGpuCount:
+              machineTypeVariable: machine_type
+        boot_disk_type:
+          name: boot_disk_type
+          title: Boot disk type
+          section: boot_disk
+          xGoogleProperty:
+            type: ET_GCE_DISK_TYPE
+            zoneProperty: zone
+        boot_disk_size:
+          name: boot_disk_size
+          title: Boot disk size in GB
+          max: 10000
+          section: boot_disk
+          xGoogleProperty:
+            type: ET_GCE_DISK_SIZE
+            gceDiskSize:
+              diskTypeVariable: boot_disk_type
+        zone:
+          name: zone
+          title: Zone
+          subtext: 'GPU availability is limited to certain zones. <a href="https://cloud.google.com/compute/docs/gpus">Learn more</a>'
+          xGoogleProperty:
+            type: ET_GCE_ZONE
+        networks:
+          name: networks
+          title: Network name
+          minItems: 1
+          maxItems: 1
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_NETWORK
+            gceNetwork:
+              allowSharedVpcs: true
+              machineTypeVariable: machine_type
+        sub_networks:
+          name: subnetworks
+          title: Subnetwork name
+          minItems: 1
+          maxItems: 1
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_SUBNETWORK
+            zoneProperty: zone
+            gceSubnetwork:
+              networkVariable: networks
+        external_ips:
+          name: external_ips
+          title: External IP
+          tooltip: 'An external IP address associated with this instance. Selecting "None" will result in the instance having no external internet access. <a href="https://cloud.google.com/compute/docs/configure-instance-ip-addresses">Learn more</a>'
+          minItems: 1
+          maxItems: 1
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_EXTERNAL_IP
+            gceExternalIp:
+              networkVariable: networks
+              notConfigurable: false
+              allowStaticIps: true
+        enable_tcp_80:
+          name: enable_tcp_80
+          title: Allow HTTP traffic from the Internet (to redirect to HTTPS)
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_FIREWALL
+            gceFirewall:
+              networkVariable: networks
+        tcp_80_source_ranges:
+          name: tcp_80_source_ranges
+          title: Source IP ranges for HTTP traffic
+          tooltip: 'Traffic is only allowed from sources within these IP address ranges. Use CIDR notation when entering ranges. <a href="https://cloud.google.com/compute/docs/networking#firewalls">Learn more</a>'
+          placeholder: '0.0.0.0/0, 192.169.0.2/24'
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_FIREWALL_RANGE
+            gceFirewallRange:
+              firewallVariable: enable_tcp_80
+        enable_tcp_443:
+          name: enable_tcp_443
+          title: Allow HTTPS traffic from the Internet
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_FIREWALL
+            gceFirewall:
+              networkVariable: networks
+        tcp_443_source_ranges:
+          name: tcp_443_source_ranges
+          title: Source IP ranges for HTTPS traffic
+          tooltip: 'Traffic is only allowed from sources within these IP address ranges. Use CIDR notation when entering ranges. <a href="https://cloud.google.com/compute/docs/networking#firewalls">Learn more</a>'
+          placeholder: '0.0.0.0/0, 192.169.0.2/24'
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_FIREWALL_RANGE
+            gceFirewallRange:
+              firewallVariable: enable_tcp_443
+        enable_tcp_3478:
+          name: enable_tcp_3478
+          title: Allow TCP port 3478 (STUN/TURN) traffic from the Internet
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_FIREWALL
+            gceFirewall:
+              networkVariable: networks
+        tcp_3478_source_ranges:
+          name: tcp_3478_source_ranges
+          title: Source IP ranges for TCP port 3478 traffic
+          tooltip: 'Traffic is only allowed from sources within these IP address ranges. Use CIDR notation when entering ranges. <a href="https://cloud.google.com/compute/docs/networking#firewalls">Learn more</a>'
+          placeholder: '0.0.0.0/0, 192.169.0.2/24'
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_FIREWALL_RANGE
+            gceFirewallRange:
+              firewallVariable: enable_tcp_3478
+        enable_udp_3478:
+          name: enable_udp_3478
+          title: Allow UDP port 3478 (STUN/TURN) traffic from the Internet
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_FIREWALL
+            gceFirewall:
+              networkVariable: networks
+        udp_3478_source_ranges:
+          name: udp_3478_source_ranges
+          title: Source IP ranges for UDP port 3478 traffic
+          tooltip: 'Traffic is only allowed from sources within these IP address ranges. Use CIDR notation when entering ranges. <a href="https://cloud.google.com/compute/docs/networking#firewalls">Learn more</a>'
+          placeholder: '0.0.0.0/0, 192.169.0.2/24'
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_FIREWALL_RANGE
+            gceFirewallRange:
+              firewallVariable: enable_udp_3478
+        enable_udp_5001:
+          name: enable_udp_5001
+          title: Allow UDP port 5001 traffic (example SRT port) from the Internet
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_FIREWALL
+            gceFirewall:
+              networkVariable: networks
+        udp_5001_source_ranges:
+          name: udp_5001_source_ranges
+          title: Source IP ranges for UDP port 5001 traffic
+          tooltip: 'Traffic is only allowed from sources within these IP address ranges. Use CIDR notation when entering ranges. <a href="https://cloud.google.com/compute/docs/networking#firewalls">Learn more</a>'
+          placeholder: '0.0.0.0/0, 192.169.0.2/24'
+          section: networking
+          xGoogleProperty:
+            type: ET_GCE_FIREWALL_RANGE
+            gceFirewallRange:
+              firewallVariable: enable_udp_5001
+        ip_forward:
+          name: ip_forward
+          title: IP forwarding
+          tooltip: 'Forwarding allows the instance to help route packets. <a href="https://cloud.google.com/compute/docs/networking#canipforward">Learn more</a>'
+          section: networking
+          level: 1
+          xGoogleProperty:
+            type: ET_GCE_IP_FORWARDING
+            gceIpForwarding:
+              networkVariable: networks
+              notConfigurable: false
+        domain_name:
+          name: domain_name
+          title: Domain Name
+          subtext: The domain name that you will access this Norsk Studio deployment through, which you must set up through your DNS provider to point to the VM instance.
+          section: DOMAIN_NAME
+          regexValidation: (?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9])?
+          validation: Must be a valid domain name
+        certbot_email:
+          name: certbot_email
+          title: Email address
+          subtext: The email where you will receive HTTPS certificate expiration notices from Let's Encrypt.
+          section: DOMAIN_NAME
+      sections:
+        - name: boot_disk
+          title: Boot Disk
+          tooltip: Each instance requires a disk to boot from.
+        - name: networking
+          title: Networking
+        - name: DOMAIN_NAME
+          title: Configure Custom Domain (Optional)
+          subtext: This deployment package is able to obtain a free publicly-trusted HTTPS certificate from Let's Encrypt. By entering a domain name here, you are agreeing to Let's Encrypt's Subscriber Agreement. You will have to configure DNS for the instance manually based on the instance's External IP after it is allocated.  If you do not enter a domain name here, the instance will use self-signed certs which you will be prompted to accept when you first visit it.
+    runtime:
+      suggestedActions:
+        - heading: Set up custom domain
+          description: 'If you configured a custom domain: Once the deployment finishes, add the instance''s External IP ("Instance Nat Ip") as a type "A" record to your DNS provider, so the instance can obtain a publicly-trusted certificate from Let''s Encrypt. (HTTP-01 challenge) It may take some time for DNS to update before the instance is able to obtain the certificate.'
+        - heading: Log in to Norsk Studio
+          description: |-
+            Direct your web browser to the domain name (if you set a domain name) or instance IP address and log in with the username "norsk-studio-admin" and the password generated during deployment. You can find this password in the table above, or in the VM instance's metadata.
+
+            If you are using the IP address, you will be prompted to accept the self-signed HTTPS certificate when you first visit it.
