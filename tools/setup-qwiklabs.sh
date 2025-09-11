@@ -51,7 +51,7 @@ fi
 # Putting the student visible outputs into the instructions
 OUTPUTS=`yq -r \
     '.environment.student_visible_outputs[]| 
-        ("{{{" + .label + ": " + .reference + "|Shown after startup}}}")' \
+        (.label + ": {{{" + .reference + "|Shown after startup}}}")' \
 	"${LAB_DIR}/qwiklabs.yaml"`
 
 BLOCK=`cat<<EOF
