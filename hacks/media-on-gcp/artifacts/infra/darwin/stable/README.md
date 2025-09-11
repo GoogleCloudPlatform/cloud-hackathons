@@ -18,38 +18,43 @@ This configuration will create virtual machines ready for the installation of th
 
 Before applying this configuration, ensure you have the following:
 
-1.  **Terraform**: Terraform v1.0 or later installed on your local machine.
-2.  **Google Cloud SDK (`gcloud`)**: The `gcloud` CLI installed and authenticated.
-3.  **GCP Project**: A Google Cloud project with the Compute Engine API enabled.
-4.  **Permissions**: Your GCP user or service account must have the necessary IAM permissions to create Compute Engine instances, manage service accounts, and access the custom images.
-5.  **Custom Images**: The custom images `tx-core-custom-image`, `tx-edge-custom-image`, and `tx-darwin-custom-image` must exist in the `ghack-student` project.
+1. **Terraform**: Terraform v1.0 or later installed on your local machine.
+2. **Google Cloud SDK (`gcloud`)**: The `gcloud` CLI installed and authenticated.
+3. **GCP Project**: A Google Cloud project with the Compute Engine API enabled.
+4. **Permissions**: Your GCP user or service account must have the necessary IAM permissions to create Compute Engine instances, manage service accounts, and access the custom images.
+5. **Custom Images**: The custom images `tx-core-custom-image`, `tx-edge-custom-image`, and `tx-darwin-custom-image` must exist in the `ghack-student` project.
 
 ## Usage
 
-1.  **Clone the Repository**:
+1. **Clone the Repository**:
     Clone the repository containing the `.tf` file to your local machine.
 
-2.  **Initialize Terraform**:
+2. **Initialize Terraform**:
     Navigate to the directory and run the `init` command to initialize the Terraform providers.
+
     ```bash
     terraform init
     ```
 
-3.  **Plan the Deployment**:
+3. **Plan the Deployment**:
     Run the `plan` command to see what resources will be created. This is a dry run and will not make any changes.
+
     ```bash
     terraform plan
     ```
 
-4.  **Apply the Configuration**:
+4. **Apply the Configuration**:
     Run the `apply` command to provision the resources in Google Cloud. You will be prompted to confirm the action.
+
     ```bash
     terraform apply
     ```
+
     Type `yes` when prompted to proceed.
 
-5.  **Destroy Resources**:
+5. **Destroy Resources**:
     When you no longer need the instances, you can destroy all the created resources to avoid ongoing charges.
+
     ```bash
     terraform destroy
     ```

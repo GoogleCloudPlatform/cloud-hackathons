@@ -3,13 +3,15 @@
 This module deploys a product from Google Cloud Marketplace.
 
 ## Usage
+
 The provided test configuration can be used by executing:
 
-```
+```shell
 terraform plan --var-file marketplace_test.tfvars --var project_id=<YOUR_PROJECT>
 ```
 
 ## Inputs
+
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | project_id | The ID of the project in which to provision resources. | `string` | `null` | yes |
@@ -52,13 +54,15 @@ terraform plan --var-file marketplace_test.tfvars --var project_id=<YOUR_PROJECT
 | instance_network | Self-link for the network of the compute instance. |
 
 ## Requirements
+
 ### Terraform
 
 Be sure you have the correct Terraform version (1.2.0+), you can choose the binary here:
 
-https://releases.hashicorp.com/terraform/
+<https://releases.hashicorp.com/terraform/>
 
 ### Configure a Service Account
+
 In order to execute this module you must have a Service Account with the following project roles:
 
 - `roles/compute.admin`
@@ -69,6 +73,7 @@ If you are using a shared VPC:
 - `roles/compute.networkAdmin` is required on the Shared VPC host project.
 
 ### Enable API
+
 In order to operate with the Service Account you must activate the following APIs on the project where the Service Account was created:
 
 - Compute Engine API - `compute.googleapis.com`
