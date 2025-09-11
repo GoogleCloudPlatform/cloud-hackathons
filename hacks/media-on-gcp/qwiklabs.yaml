@@ -107,4 +107,4 @@ environment:
   - label: Ateme Nea URL
     reference: project_0.startup_script.gclb_dns_address_nea
   - label: CDN URL
-    reference: project_0.startup_script.gclb_dns_address_CDN
+    reference: project_0.startup_script.gclb_dns_address_cdn
