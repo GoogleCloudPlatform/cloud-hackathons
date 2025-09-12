@@ -485,7 +485,8 @@ cd sample-video-player
 
 The easiest way to deploy the player is using the `gcloud run deploy` command from the root of the cloned repository. This command will build the container image from the source and deploy it. Name your service `ghack-player` and make sure to allow public access to the service. 
 
-**NOTE:** If it fails, try a second time, as some services are created on the fly.
+> [!NOTE]  
+> If it fails, try a second time, as some services are created on the fly.
 
 > [!NOTE]  
 > After the deployment succeeds, the command line will output the service URL. **This is the URL for the live channel**. You can also find the public URL in the Cloud Console on the Cloud Run page.
@@ -501,22 +502,31 @@ Go to the Google Cloud console and ssh into the machine called **video-stitch**
 Run the command `sudo su - videostitch` to assume the identity of the videostitch user. With it you’ll create your Video Stitcher configuration and start a Video Stitcher session which will return a URI where your ad will be stitched while you watch your stream on the video player.
 
 Use gsutil to copy some configuration files:
-`gsutil cp gs://ibc2025-videostitch/* .`
 
-Before running the scripts you just downloaded, remember to make them executable: 
-`chmod +x create_config.sh create_session.sh`
+```shell
+gsutil cp gs://ibc2025-videostitch/* .
+```
+
+Before running the scripts you just downloaded, remember to make them executable:
+
+```shell
+chmod +x create_config.sh create_session.sh
+```
 
 Additionally, the following three variables have to be in place for the scripts to use them. Make sure you replace the values and add them to your terminsal session.
-```
+
+```shell
 export SOURCE_HLS_LIVESTREAM_URI="YOUR_SOURCE_HLS_LIVESTREAM_URI"
 export AD_GROUP="ASK_YOUR_COACH_FOR_AD_GROUP"
 export TEAM_NAME="YOUR_TEAM_NAME"
 ```
+
 You're now ready to run **create_config.sh** followed by **create_session.sh**
 
 On the output of create_session.sh you’ll see an element called **“Play URI”**. Note that this URI is different from your previous one; your video stitching is ready. Copy that URI and load it in your video player.
 
-Note: If the session doesn't receive any requests in 5 minutes, it will automatically be closed and you'll have to start a new one. 
+> [!NOTE]
+> If the session doesn't receive any requests in 5 minutes, it will automatically be closed and you'll have to start a new one. 
 
 Now that content is being played, it is time to insert that ad marker (SCTE35) so that you can see your ad. Go back to the Darwin console from one of the previous challenges and press once the “SCTE Slice Insert - Ad Break Start”.  Wait a few seconds and you’ll see an ad playing in your stream. Once the ad break is over, you’ll see that your stream comes back automatically.
 
