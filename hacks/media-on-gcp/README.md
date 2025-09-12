@@ -483,7 +483,7 @@ git clone https://github.com/JorgeRSG/sample-video-player.git
 cd sample-video-player
 ```
 
-The easiest way to deploy the player is using the `gcloud run deploy` command from the root of the cloned repository. This command will build the container image from the source and deploy it. Name your service `ghack-player` and make sure to allow public access to the service. 
+The easiest way to deploy the player is using the `gcloud run deploy` command from the root of the cloned repository. This command will build the container image from the source and deploy it. Name your service `ghack-player` and make sure to allow public access to the service.
 
 > [!NOTE]  
 > If it fails, try a second time, as some services are created on the fly.
