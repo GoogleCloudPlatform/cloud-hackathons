@@ -526,7 +526,7 @@ You're now ready to run **create_config.sh** followed by **create_session.sh**
 On the output of create_session.sh you’ll see an element called **“Play URI”**. Note that this URI is different from your previous one; your video stitching is ready. Copy that URI and load it in your video player.
 
 > [!NOTE]
-> If the session doesn't receive any requests in 5 minutes, it will automatically be closed and you'll have to start a new one. 
+> If the session doesn't receive any requests in 5 minutes, it will automatically be closed and you'll have to start a new one.
 
 Now that content is being played, it is time to insert that ad marker (SCTE35) so that you can see your ad. Go back to the Darwin console from one of the previous challenges and press once the “SCTE Slice Insert - Ad Break Start”.  Wait a few seconds and you’ll see an ad playing in your stream. Once the ad break is over, you’ll see that your stream comes back automatically.
 
