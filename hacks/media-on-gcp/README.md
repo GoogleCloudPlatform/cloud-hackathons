@@ -230,7 +230,7 @@ We have provided a virtual workstation with the VizRT Vectar vision mixer. Your 
 - In the Configure SRT Input Connection dialog box that opens, enter `Camera1` in the **Connection Name** field
 - To find the server URL, check the internal IP address of the VM named: `norsk-gw-nnn` (where `nnn` is a random string). You can find this name in the Google Cloud console VM list.
   - In this example, it is `10.164.0.5`, yours will be different.
-- In the **Server URL** field, enter `srt://10.164.0.5`
+- In the **Server URL** field, enter `srt://10.164.X.X`
 - In the port Number enter `5101` which was the port number allocated to SRT Listener Egest camera1 in Norsk.
 - Press OK but do not reset your session. We need to add the other cameras first.
 - Repeat the above process for Camera 2, Camera 3 and Camera 4, using their respective port numbers.
@@ -483,7 +483,9 @@ git clone https://github.com/JorgeRSG/sample-video-player.git
 cd sample-video-player
 ```
 
-The easiest way to deploy the player is using the `gcloud run deploy` command from the root of the cloned repository. This command will build the container image from the source and deploy it. Name your service `ghack-player` and make sure to allow public access to the service.
+The easiest way to deploy the player is using the `gcloud run deploy` command from the root of the cloned repository. This command will build the container image from the source and deploy it. Name your service `ghack-player` and make sure to allow public access to the service. 
+
+**NOTE:** If it fails, try a second time, as some services are created on the fly.
 
 > [!NOTE]  
 > After the deployment succeeds, the command line will output the service URL. **This is the URL for the live channel**. You can also find the public URL in the Cloud Console on the Cloud Run page.
@@ -491,6 +493,32 @@ The easiest way to deploy the player is using the `gcloud run deploy` command fr
 The VideoJS player should load and start playing the live video feed originating from the Norsk sources, mixed in Vectar, and processed by Darwin and Titan.
 
 The key to success for this entire gHack is seeing an advertisement. The SCTE-35 marker inserted with Darwin signals the Google Cloud Video Stitcher API (via the Ateme components) to insert an ad from Google Ad Manager.
+
+To enable stitching on your stream the Google Cloud Video Stitcher has to be set up.
+
+Go to the Google Cloud console and ssh into the machine called **video-stitch**
+
+Run the command `sudo su - videostitch` to assume the identity of the videostitch user. With it you’ll create your Video Stitcher configuration and start a Video Stitcher session which will return a URI where your ad will be stitched while you watch your stream on the video player.
+
+Use gsutil to copy some configuration files:
+`gsutil cp gs://ibc2025-videostitch/* .`
+
+Before running the scripts you just downloaded, remember to make them executable: 
+`chmod +x create_config.sh create_session.sh`
+
+Additionally, the following three variables have to be in place for the scripts to use them. Make sure you replace the values and add them to your terminsal session.
+```
+export SOURCE_HLS_LIVESTREAM_URI="YOUR_SOURCE_HLS_LIVESTREAM_URI"
+export AD_GROUP="ASK_YOUR_COACH_FOR_AD_GROUP"
+export TEAM_NAME="YOUR_TEAM_NAME"
+```
+You're now ready to run **create_config.sh** followed by **create_session.sh**
+
+On the output of create_session.sh you’ll see an element called **“Play URI”**. Note that this URI is different from your previous one; your video stitching is ready. Copy that URI and load it in your video player.
+
+Note: If the session doesn't receive any requests in 5 minutes, it will automatically be closed and you'll have to start a new one. 
+
+Now that content is being played, it is time to insert that ad marker (SCTE35) so that you can see your ad. Go back to the Darwin console from one of the previous challenges and press once the “SCTE Slice Insert - Ad Break Start”.  Wait a few seconds and you’ll see an ad playing in your stream. Once the ad break is over, you’ll see that your stream comes back automatically.
 
 When the ad plays, it confirms the entire workflow is functioning correctly. If no ad appears, common issues to troubleshoot are:
 
@@ -508,6 +536,7 @@ To get a feel for how easy it is to update the Cloud Run service, change some of
 
 - You have a Cloud Run service named `ghack-player` deployed
 - You can hit the service's public URL and see your stream being played
+- Insert a SCTE35 message and watch an ad playing in your stream.
 - [Optional] You made some changes to the look and feel of the player and redeployed the service
 
 ### Learning Resources
