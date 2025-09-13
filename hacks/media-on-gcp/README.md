@@ -154,13 +154,39 @@ You will start with a blank canvas in Norsk. On the left is the **Component Libr
 > [!NOTE]  
 > Connecting nodes requires dragging lines between the small circles on the components. If a setting's value is **NOT** specified in these instructions LEAVE THE DEFAULT.
 
-Using the **SRT Ingest (Caller)** component, connect to the 4 provided camera feeds. They are running at the following URIs:
+Using the **SRT Ingest (Caller)** component, connect to the various camera and audio feeds. They are running at the following URIs:
 
-```text
+```bash
+# Race Feeds 
 fecamgw01.media.ghacks.dev:5111
 fecamgw02.media.ghacks.dev:5112
 fecamgw03.media.ghacks.dev:5113
 fecamgw04.media.ghacks.dev:5114
+
+# Race Audio Feed
+fecamgw05.media.ghacks.dev:5116
+
+# Drive Cam Feeds 
+fegridgw01.media.ghacks.dev:5141
+fegridgw01.media.ghacks.dev:5142
+fegridgw02.media.ghacks.dev:5121
+fegridgw02.media.ghacks.dev:5122
+fegridgw03.media.ghacks.dev:5131
+fegridgw03.media.ghacks.dev:5132
+
+# RAI Venue Feeds
+# Football 
+raigw01.media.ghacks.dev:5161
+
+# Accelerator
+raigw02.media.ghacks.dev:5162
+
+# Stage
+raigw03.media.ghacks.dev:5163
+
+# RAI Audio
+raigw04.media.ghacks.dev:5081
+raigw04.media.ghacks.dev:5082
 ```
 
 The settings on the SRT Ingest component will look something like this:
