@@ -1,0 +1,57 @@
+#!/bin/bash
+export PROJECT_ID=${gcp_project_id}
+export REGION=${gcp_region}
+export SOURCE_REPO=${source_repo}
+export BUILD_SA=${build_sa}
+
+# Suppressing some warnings
+echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
+# Installing the OS dependencies
+apt-get update && apt-get install -y git zip
+
+# Initialize the repo
+echo "Retrieving the source code..."
+git clone https://github.com/meken/gcp-adk-intro-agent.git adk-agent
+
+echo "Configuring the repo credentials..."
+cd adk-agent
+git config credential.helper gcloud.sh
+
+echo "Pushing the cloned repo to the new remote..."
+git remote add google $SOURCE_REPO
+git push google main:master
+cd ..
+
+# Set up the Cloud Run instances
+echo "Retrieving the source code for Cloud Run instances..."
+git clone https://github.com/meken/gcp-adk-intro-setup.git adk-setup
+
+echo "Deploying a2a server..."
+# The first deployment seems to fail occasionally, retrying until success
+until gcloud run deploy a2a-server \
+    --project=$PROJECT_ID \
+    --region=$REGION \
+    --no-allow-unauthenticated \
+    --set-env-vars=GOOGLE_CLOUD_PROJECT=$PROJECT_ID \
+    --set-env-vars=GOOGLE_CLOUD_LOCATION=$REGION \
+    --set-env-vars=GOOGLE_GENAI_USE_VERTEXAI=True \
+    --build-service-account=projects/$PROJECT_ID/serviceAccounts/$BUILD_SA \
+    --source adk-setup/a2a-server
+do
+    sleep 60
+    echo "Retrying..."
+done
+
+echo "Deploying mcp server..."
+gcloud run deploy mcp-server \
+    --project=$PROJECT_ID \
+    --region=$REGION \
+    --no-allow-unauthenticated \
+    --set-env-vars=GOOGLE_CLOUD_PROJECT=$PROJECT_ID \
+    --set-env-vars=GOOGLE_CLOUD_LOCATION=$REGION \
+    --set-env-vars=GOOGLE_GENAI_USE_VERTEXAI=True \
+    --build-service-account=projects/$PROJECT_ID/serviceAccounts/$BUILD_SA \
+    --source adk-setup/mcp-server
+
+echo "All done!"
