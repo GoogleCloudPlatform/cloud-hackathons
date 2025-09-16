@@ -26,11 +26,11 @@ This hack will help you explore the following tasks:
 ## Challenges
 
 - Challenge 1: First Scan
-- Challenge 2: The Scanner's Toolkit
-- Challenge 3: Agent's Logbook
-- Challenge 4: Teamwork
-- Challenge 5: MCP: The Final Check
-- Challenge 6: A2A: Taking Action
+- Challenge 2: Equipping the Scanner
+- Challenge 3: Sticky Notes
+- Challenge 4: Agent Symphony
+- Challenge 5: MCP: Universal Tooling
+- Challenge 6: A2A: Remote Agent Power
 
 ## Prerequisites
 
@@ -49,14 +49,14 @@ This hack will help you explore the following tasks:
 
 ### Introduction
 
-We’re taking baby steps, let’s get started with our development environment. This challenge is all about getting the quintessential *Agent* to work so that we can start building it further.
+We're taking baby steps, let's get started with our development environment. This challenge is all about getting the quintessential *Agent* to work so that we can start building it further.
 
 > [!NOTE]  
 > You could run this (and the remaining challenges) from any VM, but we recommend you to use Cloud Shell as it comes with most of the prerequisites pre-installed.
 
 ### Description
 
-We’ve already prepared a code base for you and put it in a Git repository (your coach will provide you the link). Clone that on Cloud Shell, create a virtual environment and install the requirements.
+We've already prepared a code base for you and put it in a Git repository (your coach will provide you the link). Clone that on Cloud Shell, create a virtual environment and install the requirements.
 
 Once everything is set up, run `adk web` and make sure that the agent responds back.
 
@@ -76,7 +76,7 @@ Once everything is set up, run `adk web` and make sure that the agent responds b
 
 - [Setting up authentication for ADK](https://google.github.io/adk-docs/get-started/quickstart/#set-up-the-model)
 
-## Challenge 2: The Scanner's Toolkit
+## Challenge 2: Equipping the Scanner
 
 ### Introduction
 
@@ -113,7 +113,7 @@ The provided code base already has a function that can look up the resources run
 
 - You can verify the list by navigating to the *VM Instances* page in the Google Cloud Console or by using the `gcloud compute instances list` command in Cloud Shell.
 
-## Challenge 3: Agent's Logbook
+## Challenge 3: Sticky Notes
 
 ### Introduction
 
@@ -139,7 +139,7 @@ Modify the `resource_scanner_agent` to save the list of all virtual machines in 
 
 - You can use `adk web` UI to inspect the session state (and to verify that everything works as expected).
 
-## Challenge 4: Teamwork
+## Challenge 4: Agent Symphony
 
 ### Introduction
 
@@ -173,7 +173,7 @@ Then create a new sequential agent `orchestrator_agent` that calls the `resource
 
 - You can use `adk web` UI to view the agents involved.
 
-## Challenge 5: MCP: The Final Check
+## Challenge 5: MCP: Universal Tooling
 
 ### Introduction
 
@@ -203,7 +203,7 @@ Create a new agent `notification_agent`, configure it to use the tool from that 
 - You can use a [proxy](https://cloud.google.com/sdk/gcloud/reference/run/services/proxy) to simplify the authentication for the Cloud Run service.
 - You can verify the list by navigating to the *VM Instances* page in the Google Cloud Console or by using the `gcloud compute instances describe` command in Cloud Shell.
 
-## Challenge 6: A2A: Taking Action
+## Challenge 6: A2A: Remote Agent Power
 
 ### Introduction
 

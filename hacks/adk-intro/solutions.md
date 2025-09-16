@@ -15,13 +15,13 @@ Welcome to the coach's guide for Introduction to Agents with ADK gHack. Here you
 ## Challenges
 
 - Challenge 1: First Scan
-- Challenge 2: The Scanner's Toolkit
-- Challenge 3: Agent's Logbook
-- Challenge 4: Teamwork
-- Challenge 5: MCP: The Final Check
-- Challenge 6: A2A: Taking Action
+- Challenge 2: Equipping the Scanner
+- Challenge 3: Sticky Notes
+- Challenge 4: Agent Symphony
+- Challenge 5: MCP: Universal Tooling
+- Challenge 6: A2A: Remote Agent Power
 
-## Challenge 1: First Contact
+## Challenge 1: First Scan
 
 ### Notes & Guidance
 
@@ -93,7 +93,7 @@ Now we can run the `adk web` command and preview it by clicking the web preview 
 
 If you get authentication errors, make sure that the environment variables as defined above (in the `.env` file) are set and have been sourced.
 
-## Challenge 2: The Scanner's Toolkit
+## Challenge 2: Equipping the Scanner
 
 ### Notes & Guidance
 
@@ -117,7 +117,7 @@ Format of the response is not relevant for this challenge as long as all of the 
 
 Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
 
-## Challenge 3: Agent's Logbook
+## Challenge 3: Sticky Notes
 
 ### Notes & Guidance
 
@@ -141,7 +141,7 @@ resource_scanner_agent = Agent(
 
 Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
 
-## Challenge 4: Teamwork
+## Challenge 4: Agent Symphony
 
 ### Notes & Guidance
 
@@ -174,7 +174,7 @@ root_agent = orchestrator_agent
 
 Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
 
-## Challenge 5: MCP: The Final Check
+## Challenge 5: MCP: Universal Tooling
 
 ### Notes & Guidance
 
@@ -254,7 +254,7 @@ As our tool is simple, this approach works fine, but in real world, you might ne
 
 Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
 
-## Challenge 6: A2A: Taking Action
+## Challenge 6: A2A: Remote Agent Power
 
 ### Notes & Guidance
 
