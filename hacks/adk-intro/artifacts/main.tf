@@ -32,6 +32,31 @@ resource "google_project_service" "default" {
   disable_on_destroy = false
 }
 
+locals {
+  yesterday = formatdate("YYYY-MM-DD", timeadd(timestamp(), "-24h"))
+  test_vms = [
+    {
+      name   = "gce-sbx-lnx-blob-01",
+      labels = {
+        "janitor-scheduled" = local.yesterday,
+        "owner" = "xxx@example.com"
+      }
+    },
+    {
+      name   = "gce-dev-lnx-tomcat-01",
+      labels = {
+        "owner" = "yyy@example.com"
+      }
+    },
+    {
+      name   = "gce-dev-lnx-tomcat-02",
+      labels = {
+        "owner" = "yyy@example.com"
+      }
+    }
+  ]
+}
+
 data "google_compute_default_service_account" "gce_default" {
   depends_on = [
     google_project_service.default
@@ -136,7 +161,7 @@ resource "google_artifact_registry_repository" "cloud_run_source_deploy" {
 }
 
 resource "google_compute_instance" "startup_vm" {
-  name         = "gce-lnx-env-setup"
+  name         = "gce-prd-lnx-env-setup"
   machine_type = "e2-micro"
 
   boot_disk {
@@ -172,4 +197,28 @@ resource "google_compute_instance" "startup_vm" {
     google_project_iam_member.startup_vm_sa_roles,
     google_artifact_registry_repository.cloud_run_source_deploy
   ]
+}
+
+resource "google_compute_instance" "test_vms" {
+  for_each     = { for vm in local.test_vms : vm.name => vm }
+
+  name         = each.value.name
+  machine_type = "e2-micro"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-12"
+    }
+  }
+
+  shielded_instance_config {
+    enable_secure_boot = true
+    enable_vtpm        = true
+  }
+
+  network_interface {
+    network = data.google_compute_network.default_network.self_link
+  }
+
+  labels = each.value.labels
 }
