@@ -80,7 +80,7 @@ Once everything is set up, run `adk web` and make sure that the agent responds b
 
 ### Introduction
 
-We have our first agent, and if you'd now ask for resources, the LLM would gladly make some suggestions. But since it doesn't know about our projects, it would probably fabricate imaginary ones. This is because LLMs lack real-time and specific information; think about your internal documents/databases/processes/rules, LLMs have no access to that information, unleess we inform them.
+We have our first agent, and if you'd now ask for resources, the LLM would gladly make some suggestions. But since it doesn't know about our projects, it would probably fabricate imaginary ones. This is because LLMs lack real-time and specific information; think about your internal documents/databases/processes/rules, LLMs have no access to that information, unless we inform them.
 
 This is where *Tools* come into the picture: they provide a way for LLMs/agents to access external systems, databases, or APIs, thereby augmenting the LLM's knowledge base and enabling it to perform more complex, data-dependent operations. Although in this challenge we'll use a tool to gather additional information, tools can also be used to execute actions such as creating tickets, modifying local files, updating databases, generating media, sending communications etc.
 
@@ -93,7 +93,7 @@ The provided code base already has a function that can look up the resources run
 
 ### Success Criteria
 
-- The Agent has been configured to use the `get_compute_engine_vm_info` function as a tool.
+- The Agent has been configured to use the `get_compute_instances_list` function as a tool.
 - The Agent lists the following Virtual Machines when it's asked to list all resources:
 
   ```text
@@ -123,7 +123,7 @@ In this challenge we'll focus on the session state. Within each `Session` (our c
 
 ### Description
 
-Modify the `resource_scanner_agent` to save the list of all virtual machines in the session state. The list should adhere to the correct output schema and stored in the session state under the name `resources`.
+Modify the `resource_scanner_agent` to save the list of all virtual machines in the session state. The list should adhere to the output schema `VMInstanceList` and should be stored in the session state under the name `resources`.
 
 ### Success Criteria
 
@@ -152,17 +152,17 @@ In this challenge we'll introduce the concept of *sub-agents* and *workflow agen
 
 ### Description
 
-Create two new agents, an `resource_monitor_agent` which, should filter the list of resources found by the `resource_scanner_agent`, and stores that into the session store as `idle_resources`. This agent should return back only the instances that are idle.
+Create two new agents, `resource_monitor_agent` which should filter the list of resources found by the `resource_scanner_agent`, and store that into the session store as `idle_resources` using the appropriate schema. This agent should return back only the instances that are idle.
 
 Then create a new sequential agent `orchestrator_agent` that calls the `resource_scanner_agent` and the `resource_monitor_agent` in sequence. Once you have created the new agents, update the `root_agent` to be the `orchestrator_agent`.
 
 > [!NOTE]  
-> This is a very basic scenario where we're looking up basic stats and letting the Agent to decide what's idle. The power of the LLM based agents is however that they can also detect more advanced patterns (which is beyond the scope of this challenge)
+> This is a very basic scenario where we're looking up basic stats and letting the Agent to decide what's idle. The power of the LLM based agents is however that they can also detect more advanced patterns based on more complex data (which is beyond the scope of this challenge)
 
 ### Success Criteria
 
 - The Agent runs both `resource_scanner_agent` and `resource_monitor_agent` in sequence and updates the session store.
-- The session state contains `gce-dev-lnx-tomcat-001`,  `gce-dev-lnx-tomcat-002` and `gce-sbx-lnx-blob-001` (and their details) for `idle_resources` when prompted to find the idle resources.
+- The session state contains `gce-dev-lnx-tomcat-001`,  `gce-dev-lnx-tomcat-002` and `gce-sbx-lnx-blob-001` (and their details) for `idle_resources` using the correct schema when prompted to find the idle resources.
 - The changes have been pushed to the remote Git repository.
 
 ### Learning Resources
@@ -185,7 +185,7 @@ In this challenge we'll make sure that idle resources are tagged so that we can 
 
 ### Description
 
-We have already provided an `mcp-server` on Cloud Run. It provides a number of tools that are basically responsible for updating the labels on resources.
+We have already provided a service called `mcp-server` on Cloud Run. It provides a number of tools that are basically responsible for managing the labels on resources.
 
 Create a new agent `resource_labeler_agent`, configure it to use the toolset from that server. Instruct the agent to add the `janitor-scheduled` label with the value set to 7 days in the future to the idle instances. Make sure that the agent does not add the label if the instance already has a `janitor-scheduled` label.
 
@@ -207,16 +207,17 @@ Then add the `resource_labeler_agent` to the `orchestrator_agent` sequence.
 - You can use a [proxy](https://cloud.google.com/sdk/gcloud/reference/run/services/proxy) to simplify the authentication for the Cloud Run service.
 - You can verify the list by navigating to the *VM Instances* page in the Google Cloud Console or by using the `gcloud compute instances describe` command in Cloud Shell.
 - LLMs have no understanding of the current date and can struggle with date arithmetic, you might want to use additional tools.
+- If anything goes wrong with the labels, you can use the provided `reset-labels.sh` script to reset the labels to their original state.
 
 ## Challenge 6: A2A: Remote Agent Power
 
 ### Introduction
 
-In the previous challenge we've learned that we can use tools developed by others, but what about agents? This is where Agent2Agent comes in, it provides a standard way for discovering and utilizing agents developed by others.
+In the previous challenge we've learned that we can use tools developed by others, but what about agents? This is where Agent2Agent protocol comes in, it provides a standard way for discovering and utilizing agents developed by others.
 
 ### Description
 
-We have already provided an `a2a-server` on Cloud Run. It has a single agent deployed that's responsible for stopping the idle resources that have been marked with the `janitor-scheduled` label.
+We have already provided a service called `a2a-server` on Cloud Run. It has a single agent deployed that's responsible for stopping the idle resources that have been marked with the `janitor-scheduled` label.
 
 Create a new agent `resource_cleaner_agent` that uses A2A protocol to connect to the remote `a2a-server` and add it to the `orchestrator_agent` sequence as the last one.
 
@@ -241,4 +242,4 @@ Create a new agent `resource_cleaner_agent` that uses A2A protocol to connect to
 - You can use `adk web` UI to view the agents involved.
 - You can use a [proxy](https://cloud.google.com/sdk/gcloud/reference/run/services/proxy) to simplify the authentication for the Cloud Run service.
 - For this challenge if you're using the Cloud Run proxy, you need to stick to port `8080`.
-- You can verify the list by navigating to the *VM Instances* page in the Google Cloud Console or by using the `gcloud compute instances list` command in Cloud Shell.
+- You can verify the list of VMs and their state by navigating to the *VM Instances* page in the Google Cloud Console or by using the `gcloud compute instances list` command in Cloud Shell.

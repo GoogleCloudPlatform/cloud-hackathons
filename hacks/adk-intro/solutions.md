@@ -67,7 +67,7 @@ source .env
 > [!NOTE]  
 > We've configured Git to ignore the file `.env` as we don't want it to be checked in. Although in our case it doesn't contain sensitive information (other than the project id), it typically will have keys and other secret information, so it's not a good practice to store that in a Git repository.
 
-The only file that will be edited in the following challenges is `janitor/agent.py`. In this challenge it will look like this:
+The only file that needs to be edited in the following challenges is `janitor/agent.py`, no other file needs to be modified. In this challenge it will look like this:
 
 ```python
 from google.adk import Agent
