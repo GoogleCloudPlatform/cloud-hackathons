@@ -159,6 +159,7 @@ resource_monitor_agent = Agent(
     instruction="""
     You are a Cloud Resource Monitor.
     Filter the {resources} and return back only the instances that are idle.
+    A resource is considered idle if it has <5% average cpu utilization and minimal network activity.
     """,
     tools=[tools.get_compute_instance_stats],
     output_key="idle_resources",
@@ -256,6 +257,14 @@ mcp_tool_set = MCPToolset(
 
 As our tool is simple, this approach works fine, but in real world, you might need to use OAuth flows, API keys etc. And there will be cases where the currently authenticated user's credentials need to be forwarded to remote agents/tools so that they can perform actions on behalf of the user (see the official [docs](https://google.github.io/adk-docs/safety/#identity-and-authorization) for more details).
 
+In order to verify if the labels have been set correctly, you can either navigate to the relevant section on Google Cloud Console or run the following command:
+
+```shell
+gcloud compute instances list  \
+    --project=$GOOGLE_CLOUD_PROJECT \
+    --format='value(name, labels)'
+```
+
 Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
 
 ## Challenge 6: A2A: Remote Agent Power
@@ -323,3 +332,11 @@ resource_cleaner_agent = RemoteA2aAgent(
 
 > [!NOTE]  
 > Again, due to lack of relative URL support in A2A `url` definitions, if this authentication method is chosen, the `url` field of `agent.json` needs to be updated too (can be done through the Cloud Console by editing the source of Cloud Run instance for `a2a-server`).
+
+In order to verify if the correct instance have been stopped, you can either navigate to the relevant section on Google Cloud Console or run the following command:
+
+```shell
+gcloud compute instances list  \
+    --project=$GOOGLE_CLOUD_PROJECT \
+    --format='value(name, status)'
+```

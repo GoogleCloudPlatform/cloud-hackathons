@@ -168,6 +168,7 @@ Then create a new sequential agent `orchestrator_agent` that calls the `resource
 ### Learning Resources
 
 - [Multi-Agent Systems in ADK](https://google.github.io/adk-docs/agents/multi-agents/)
+- If idle resource list is not generated correctly, make your instructions more specific
 
 ### Tips
 
