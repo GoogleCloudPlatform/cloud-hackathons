@@ -82,7 +82,7 @@ resource_scanner_agent = Agent(
     model=settings.GEMINI_MODEL,
     instruction="""
     You are a Cloud Resource Scanner. 
-    Your job is to return *all* virtual machines.
+    Return *all* resources.
     """
 )
 
@@ -107,9 +107,9 @@ resource_scanner_agent = Agent(
     model=settings.GEMINI_MODEL,
     instruction="""
     You are a Cloud Resource Scanner. 
-    Your job is to return *all* virtual machines.
+    Return *all* resources.
     """,
-    tools=[tools.get_compute_engine_vm_info]
+    tools=[tools.get_compute_instances_list]
 )
 ```
 
@@ -131,9 +131,9 @@ resource_scanner_agent = Agent(
     model=settings.GEMINI_MODEL,
     instruction="""
     You are a Cloud Resource Scanner. 
-    Your job is to return *all* virtual machines.
+    Return *all* resources.
     """,
-    tools=[tools.get_compute_engine_vm_info],
+    tools=[tools.get_compute_instances_list],
     output_key="resources",
     output_schema=schemas.VMInstanceList
 )
@@ -153,24 +153,28 @@ Again the new driver should follow the same steps for the first challenge to clo
 from google.adk.agents import SequentialAgent
 
 # keep resource_scanner_agent as is
-idle_checker_agent = Agent(
-    name="idle_checker_agent",
+resource_monitor_agent = Agent(
+    name="resource_monitor_agent",
     model=settings.GEMINI_MODEL,
     instruction="""
-    Filter the {resources} and return back only the instances that are idle, 
-    or have a label with the key 'janitor-scheduled'.
+    You are a Cloud Resource Monitor.
+    Filter the {resources} and return back only the instances that are idle.
     """,
+    tools=[tools.get_compute_instance_stats],
     output_key="idle_resources",
-    output_schema=schemas.VMInstanceList
+    output_schema=schemas.VMStatsList,
 )
 
 orchestrator_agent = SequentialAgent(
     name="orchestrator_agent",
-    sub_agents=[resource_scanner_agent, idle_checker_agent]
+    sub_agents=[resource_scanner_agent, resource_monitor_agent]
 )
 
 root_agent = orchestrator_agent
 ```
+
+> [!NOTE]  
+> Sometimes after running both agents, the `resources` state variable seems to be empty, but as long as `idle_resources` provides the correct set of instances, it should be fine.
 
 Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
 
@@ -201,23 +205,23 @@ mcp_tool_set = MCPToolset(
     )
 )
 
-notification_agent = Agent(
-    name="notification_agent",
+resource_labeler_agent = Agent(
+    name="resource_labeler_agent",
     model=settings.GEMINI_MODEL,
     instruction="""
-    You are responsible for notifying the user about the idle resources. 
-    We're going to do that by adding the 'janitor-scheduled' label to the idle resources 
-    that don't have that label yet.
+    You are a Cloud Resource Labeler.
+    Add the 'janitor-scheduled' label with the value set to 7 days in the future to the idle instances.
+    Do not add the label if the instance already has a 'janitor-scheduled' label.
     """,
-    tools=[mcp_tool_set]
+    tools=[mcp_tool_set, tools.get_current_date, tools.add_days_to_date]
 )
 
 orchestrator_agent = SequentialAgent(
     name="orchestrator_agent",
     sub_agents=[
         resource_scanner_agent,
-        idle_checker_agent,
-        notification_agent
+        resource_monitor_agent,
+        resource_labeler_agent
     ]
 )
 ```
@@ -277,22 +281,21 @@ from google.adk.agents.remote_a2a_agent import AGENT_CARD_WELL_KNOWN_PATH
 from google.adk.agents.remote_a2a_agent import RemoteA2aAgent
 
 # keep other agents
-
-cleanup_agent = RemoteA2aAgent(
-    name="cleanup_agent",
-    description="Agent that handles stopping idle resources",
+resource_cleaner_agent = RemoteA2aAgent(
+    name="resource_cleaner_agent",
+    description="This agent stops idle instances that have been scheduled for cleanup",
     agent_card=(
-        f"http://localhost:8080/a2a/cleanup_agent{AGENT_CARD_WELL_KNOWN_PATH}"
+        f"http://localhost:8080/a2a/resource_cleaner_agent{AGENT_CARD_WELL_KNOWN_PATH}"
     )
 )
 
 orchestrator_agent = SequentialAgent(
     name="orchestrator_agent",
     sub_agents=[
-        resource_scanner_agent, 
-        idle_checker_agent, 
-        notification_agent, 
-        cleanup_agent
+        resource_scanner_agent,
+        resource_monitor_agent,
+        resource_labeler_agent,
+        resource_cleaner_agent
     ]
 )
 ```
@@ -308,11 +311,11 @@ httpx_client = httpx.AsyncClient(headers={
         "Authorization": f"Bearer {tools.get_bearer_token(A2A_SERVER_CLOUD_RUN_URL)}"
     })
 
-cleanup_agent = RemoteA2aAgent(
-    name="cleanup_agent",
-    description="Agent that handles stopping idle resources",
+resource_cleaner_agent = RemoteA2aAgent(
+    name="resource_cleaner_agent",
+    description="This agent stops idle instances that have been scheduled for cleanup",
     agent_card=(
-        f"{A2A_SERVER_CLOUD_RUN_URL}/a2a/cleanup_agent{AGENT_CARD_WELL_KNOWN_PATH}"
+        f"http://localhost:8080/a2a/resource_cleaner_agent{AGENT_CARD_WELL_KNOWN_PATH}"
     ),
     httpx_client=httpx_client
 )

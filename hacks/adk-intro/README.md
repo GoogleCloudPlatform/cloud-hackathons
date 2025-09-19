@@ -152,17 +152,17 @@ In this challenge we'll introduce the concept of *sub-agents* and *workflow agen
 
 ### Description
 
-Create two new agents, an `idle_checker_agent` which, should filter the list of resources found by the `resource_scanner_agent`, and stores that into the session store as `idle_resources` (using the same schema as `resources` in the previous challenge). This agent should return back only the instances that are idle, or have a label with the key 'janitor-scheduled'.
+Create two new agents, an `resource_monitor_agent` which, should filter the list of resources found by the `resource_scanner_agent`, and stores that into the session store as `idle_resources`. This agent should return back only the instances that are idle.
 
-Then create a new sequential agent `orchestrator_agent` that calls the `resource_scanner_agent` and the `idle_checker_agent` in sequence. Once you have created the new agents, update the `root_agent` to be the `orchestrator_agent`.
+Then create a new sequential agent `orchestrator_agent` that calls the `resource_scanner_agent` and the `resource_monitor_agent` in sequence. Once you have created the new agents, update the `root_agent` to be the `orchestrator_agent`.
 
 > [!NOTE]  
-> This is a very basic scenario where we're looking up average CPU utilization and letting the Agent to decide what's idle. The power of the LLM based agents is however that they can also detect more advanced patterns (which is beyond the scope of this challenge)
+> This is a very basic scenario where we're looking up basic stats and letting the Agent to decide what's idle. The power of the LLM based agents is however that they can also detect more advanced patterns (which is beyond the scope of this challenge)
 
 ### Success Criteria
 
-- The Agent runs both `resource_scanner_agent` and `idle_checker_agent` in sequence and updates the session store.
-- The session state contains `gce-stg-lnx-nginx-001` and `gce-sbx-lnx-blob-001` (and their details) for `idle_resources` when prompted to list the resources.
+- The Agent runs both `resource_scanner_agent` and `resource_monitor_agent` in sequence and updates the session store.
+- The session state contains `gce-dev-lnx-tomcat-001`,  `gce-dev-lnx-tomcat-002` and `gce-sbx-lnx-blob-001` (and their details) for `idle_resources` when prompted to find the idle resources.
 - The changes have been pushed to the remote Git repository.
 
 ### Learning Resources
@@ -185,13 +185,17 @@ In this challenge we'll make sure that idle resources are tagged so that we can 
 
 ### Description
 
-We have already provided an `mcp-server` on Cloud Run. It provides a single tool that's basically responsible for updating the labels on the idle resources.
+We have already provided an `mcp-server` on Cloud Run. It provides a number of tools that are basically responsible for updating the labels on resources.
 
-Create a new agent `notification_agent`, configure it to use the tool from that server. Then add the `notification_agent` to the `orchestrator_agent` sequence.
+Create a new agent `resource_labeler_agent`, configure it to use the toolset from that server. Instruct the agent to add the `janitor-scheduled` label with the value set to 7 days in the future to the idle instances. Make sure that the agent does not add the label if the instance already has a `janitor-scheduled` label.
+
+Then add the `resource_labeler_agent` to the `orchestrator_agent` sequence.
 
 ### Success Criteria
 
-- The Agent runs `resource_scanner_agent`, `idle_checker_agent` and `notification_agent` in sequence and updates the labels on the virtual machines that are idle.
+- The Agent runs `resource_scanner_agent`, `resource_monitor_agent` and `resource_labeler_agent` in sequence.
+- The instances `gce-dev-lnx-tomcat-001`,  `gce-dev-lnx-tomcat-002` have the label `janitor-scheduled` with the value set to 7 days in the future.
+- The instance `gce-sbx-lnx-blob-001` is not updated and keeps `janitor-scheduled` label set to yesterday.
 - The changes have been pushed to the remote Git repository.
 
 ### Learning Resources
@@ -202,6 +206,7 @@ Create a new agent `notification_agent`, configure it to use the tool from that 
 
 - You can use a [proxy](https://cloud.google.com/sdk/gcloud/reference/run/services/proxy) to simplify the authentication for the Cloud Run service.
 - You can verify the list by navigating to the *VM Instances* page in the Google Cloud Console or by using the `gcloud compute instances describe` command in Cloud Shell.
+- LLMs have no understanding of the current date and can struggle with date arithmetic, you might want to use additional tools.
 
 ## Challenge 6: A2A: Remote Agent Power
 
@@ -213,15 +218,16 @@ In the previous challenge we've learned that we can use tools developed by other
 
 We have already provided an `a2a-server` on Cloud Run. It has a single agent deployed that's responsible for stopping the idle resources that have been marked with the `janitor-scheduled` label.
 
-Create a new agent `cleanup_agent` that uses A2A protocol to connect to the remote `a2a-server` and add it to the `orchestrator_agent` sequence as the last one.
+Create a new agent `resource_cleaner_agent` that uses A2A protocol to connect to the remote `a2a-server` and add it to the `orchestrator_agent` sequence as the last one.
 
 ### Success Criteria
 
-- The Agent runs all the agents in sequence and stops all the idle resources that have been marked with the `janitor-scheduled` label, leaving only the following running:
+- The Agent runs all the agents in sequence and stops all the idle resources that have been marked with the `janitor-scheduled` label where the date is in the past, leaving only the following running:
 
   ```text
   - gce-dev-lnx-tomcat-001
   - gce-dev-lnx-tomcat-002
+  - gce-prd-lnx-env-setup
   ```
 
 - The changes have been pushed to the remote Git repository.

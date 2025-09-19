@@ -38,21 +38,16 @@ locals {
     {
       name   = "gce-sbx-lnx-blob-01",
       labels = {
-        "janitor-scheduled" = local.yesterday,
-        "owner" = "xxx@example.com"
+        "janitor-scheduled" = local.yesterday
       }
     },
     {
       name   = "gce-dev-lnx-tomcat-01",
-      labels = {
-        "owner" = "yyy@example.com"
-      }
+      labels = {}
     },
     {
       name   = "gce-dev-lnx-tomcat-02",
-      labels = {
-        "owner" = "yyy@example.com"
-      }
+      labels = {}
     }
   ]
 }
@@ -66,7 +61,9 @@ data "google_compute_default_service_account" "gce_default" {
 resource "google_project_iam_member" "gce_default_iam" {
   project = var.gcp_project_id
   for_each = toset([
-    "roles/aiplatform.user"
+    "roles/aiplatform.user",
+    "roles/compute.instanceAdmin.v1",
+    "roles/run.invoker"
   ])
   role   = each.key
   member = "serviceAccount:${data.google_compute_default_service_account.gce_default.email}"
@@ -203,7 +200,7 @@ resource "google_compute_instance" "test_vms" {
   for_each     = { for vm in local.test_vms : vm.name => vm }
 
   name         = each.value.name
-  machine_type = "e2-micro"
+  machine_type = "n1-standard-1"
 
   boot_disk {
     initialize_params {
