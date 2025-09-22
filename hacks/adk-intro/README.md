@@ -71,10 +71,11 @@ Once everything is set up, run `adk web` and make sure that the agent responds b
 - [Cloud Shell](https://cloud.google.com/shell/docs/launching-cloud-shell)
 - [Cloud Shell Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor)
 - [Previewing web apps](https://cloud.google.com/shell/docs/using-web-preview)
+- [Setting up authentication for ADK](https://google.github.io/adk-docs/get-started/quickstart/#gemini---google-cloud-vertex-ai)
 
 ### Tips
 
-- [Setting up authentication for ADK](https://google.github.io/adk-docs/get-started/quickstart/#set-up-the-model)
+- Easiest option for ADK authentication is to use a properly configured `.env` file.
 
 ## Challenge 2: Equipping the Scanner
 
@@ -100,7 +101,7 @@ The provided code base already has a function that can look up the resources run
   - gce-sbx-lnx-blob-001
   - gce-dev-lnx-tomcat-001
   - gce-dev-lnx-tomcat-002
-  - gce-stg-lnx-nginx-001
+  - gce-prd-lnx-env-setup
   ```
 
 - The changes have been pushed to the remote Git repository.
@@ -134,6 +135,8 @@ Modify the `resource_scanner_agent` to save the list of all virtual machines in 
 ### Learning Resources
 
 - [Session state in ADK](https://google.github.io/adk-docs/sessions/state/)
+- [Updating state](https://google.github.io/adk-docs/sessions/state/#how-state-is-updated-recommended-methods)
+- [Output schemas](https://google.github.io/adk-docs/agents/llm-agents/#structuring-data-input_schema-output_schema-output_key)
 
 ### Tips
 
