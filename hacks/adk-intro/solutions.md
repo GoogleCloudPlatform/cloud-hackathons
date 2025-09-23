@@ -56,12 +56,12 @@ One final step before we can start running the `adk web` command is to set some 
 
 ```shell
 REGION=us-central1
-cat > .env <<EOF
+cat > janitor/.env <<EOF
 GOOGLE_GENAI_USE_VERTEXAI=TRUE
 GOOGLE_CLOUD_PROJECT=$GOOGLE_CLOUD_PROJECT
 GOOGLE_CLOUD_LOCATION=$REGION
 EOF
-source .env
+source janitor/.env  # might be left out 
 ```
 
 > [!NOTE]  
