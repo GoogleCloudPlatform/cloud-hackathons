@@ -1,0 +1,69 @@
+#!/bin/bash
+export PROJECT_ID=${gcp_project_id}
+export REGION=${gcp_region}
+export SOURCE_REPO=${source_repo}
+export BUILD_SA=${build_sa}
+
+# Suppressing some warnings
+echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
+# Installing the OS dependencies
+apt-get update && apt-get install -y git zip stress
+
+# Initialize the repo
+echo "Retrieving the source code..."
+git clone https://github.com/meken/gcp-adk-intro-agent.git adk-agent
+
+echo "Configuring the repo credentials..."
+cd adk-agent
+git config credential.helper gcloud.sh
+
+echo "Pushing the cloned repo to the new remote..."
+git remote add google $SOURCE_REPO
+git push google main:master
+cd ..
+
+# Set up the Cloud Run instances
+echo "Retrieving the source code for Cloud Run instances..."
+git clone https://github.com/meken/gcp-adk-intro-setup.git adk-setup
+
+echo "Deploying mcp server..."
+# The first deployment seems to fail occasionally, retrying until success
+until gcloud run deploy mcp-server \
+    --project=$PROJECT_ID \
+    --region=$REGION \
+    --memory=1Gi \
+    --no-allow-unauthenticated \
+    --set-env-vars=GOOGLE_CLOUD_PROJECT=$PROJECT_ID \
+    --set-env-vars=GOOGLE_CLOUD_LOCATION=$REGION \
+    --set-env-vars=GOOGLE_GENAI_USE_VERTEXAI=True \
+    --build-service-account=projects/$PROJECT_ID/serviceAccounts/$BUILD_SA \
+    --source adk-setup/mcp-server
+do
+    sleep 60
+    echo "Retrying..."
+done
+
+MCP_SERVER_CLOUD_RUN_URL=`gcloud run services describe mcp-server \
+    --project=$PROJECT_ID \
+    --region $REGION \
+    --format='value(status.url)'`
+
+echo "Deploying a2a server..."
+gcloud run deploy a2a-server \
+    --project=$PROJECT_ID \
+    --region=$REGION \
+    --memory=1Gi \
+    --no-allow-unauthenticated \
+    --set-env-vars=GOOGLE_CLOUD_PROJECT=$PROJECT_ID \
+    --set-env-vars=GOOGLE_CLOUD_LOCATION=$REGION \
+    --set-env-vars=GOOGLE_GENAI_USE_VERTEXAI=True \
+    --set-env-vars=MCP_SERVER_CLOUD_RUN_URL="$MCP_SERVER_CLOUD_RUN_URL" \
+    --build-service-account=projects/$PROJECT_ID/serviceAccounts/$BUILD_SA \
+    --source adk-setup/a2a-server
+
+echo "Setup done!"
+
+echo "Starting CPU hogging..."
+# Hog the cpu after 2 minutes (120 seconds = 120,000,000 microseconds)
+stress -c 1 --backoff 120000000 &
