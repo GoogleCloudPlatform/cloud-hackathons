@@ -39,7 +39,7 @@ Welcome to the coach's guide for the *Easy Ads: From Concept to Creation with Ge
 
 ### Notes & Guidance
 
-Celebrity look likes, generating descriptions using Gemini.
+Celebrity look alikes, generating descriptions using Gemini. But ideally, generate an image and use Nano-Banana to create the different angles.
 
 ## Challenge 3: From Stills to Motion
 
@@ -67,4 +67,4 @@ You'll have the choice to use Google's Chirp model or Gemini itself to create th
 
 ### Notes & Guidance
 
-TBD
+Including instrument information in the prompt can be helpful.

@@ -61,13 +61,22 @@ The **Cymbal Pod** is a single person, urban transport vehicle that hovers silen
 
 ### Description
 
-Start by designing the **brand guidelines**, include at least the *aesthetics* (e.g. 1920s art deco) and the *values* (e.g. sustainable farming) that you want to convey. These characteristics will guide all the visuals we create for the product.
+Start by designing the **brand guidelines**, these should include:
+
+- *Aesthetics* (e.g. 1920s art deco)  
+- *Values* (e.g. sustainable farming)
+- *Mood / Color Palette* (e.g. film noir)  
+- *Target Audience* (e.g. 20-35 year old farmers)
+
+These characteristics will guide all the visuals we create for the product.
 
 Next, create a description of your **protagonist** who is the main character of your ad. This description needs to be detailed enough so that we can achieve consistency from shot to shot in the ad.
 
 Now, we'll craft an **overall narrative** to tell the story of the *Cymbal Pod* and what makes it compelling. We will do this by creating textual descriptions of at least **three scenes** describing what happens in each scene and how they tie together to tell your story.
 
 And finally, create **a tagline or call to action** that meets the brand guidelines (e.g Available for pre-order now*)*. We'll use that text in our final ad video.
+
+Using Gemini in this challenge is fair game, but if you want to flex your creative muscles and do your own writing, please feel free to.
 
 We've created a storage bucket with the same name as your project id, navigate there, and upload a text document with all this information into that bucket.
 
@@ -83,10 +92,6 @@ We've created a storage bucket with the same name as your project id, navigate t
 
 - [Storytelling in the Ad Creative Process](https://mailchimp.com/resources/storytelling-in-marketing)  
 - [Gemini Prompts for Ad Copy](https://felloai.com/2025/08/7-effective-gemini-prompts-for-ad-copy-that-actually-bring-results/)
-
-### Tips
-
-- When you are in need of creative inspiration, you are free to use Gemini in clever ways.
 
 ## Challenge 2: The Visual Blueprint
 
@@ -104,7 +109,8 @@ We also need a **final closing frame** that will inform Veo on how to end the vi
 
 Finally, use *Imagen* to generate **a logo** for the Cymbal Pod that conveys the brand. Save these images for later use when we compose our final video.
 
-**IMPORTANT:** In this gHack we will be producing horizontal landscape video (16:9) format.
+> [!IMPORTANT]  
+> In this gHack we will be producing horizontal landscape video (16:9) format.
 
 Make sure that all of this work is stored in the storage bucket that has been created for you.
 
@@ -136,7 +142,8 @@ With your storyboard and protagonist created, it's time to bring your vision to 
 
 Using the *Veo* family of models in Vertex AI Studio, generate video clips for each of your storyboard scenes from Challenge 2. Make sure you use your generated images as references in your prompts to guide the model.
 
-**IMPORTANT:** For this challenge, generate the videos **without any audio**. We will add sound in later stages.
+> [!IMPORTANT]  
+> For this challenge, generate the videos **without any audio**. We will add sound in later stages.
 
 You know the drill, once finished, store the resulting clips in the storage bucket provided to you.
 
@@ -161,11 +168,12 @@ You have all your visual components. Now it's time for post-production. In this 
 
 ### Description
 
-Using a video editor of your preference, stitch together the video clips you created in Challenge 3\. The goal is to create a single, cohesive video file that flows logically and tells the intended story.
+Using a video editor of your preference, stitch together the video clips you created in Challenge 3. The goal is to create a single, cohesive video file that flows logically and tells the intended story.
 
-To close out the ad, add in the Cymbal Pod logo and any other static graphics you created in Challenge 2\. Don't forget to add your tagline or call to action here as well.
+To close out the ad, add in the Cymbal Pod logo and any other static graphics you created in Challenge 2. Don't forget to add your tagline or call to action here as well.
 
-**NOTE:** You could use Imagen for generating text as well, but in case you're not getting what you want, you can just use text elements within your video editor.
+> [!NOTE]  
+> You could use Imagen for generating text as well, but in case you're not getting what you want, you can just use text elements within your video editor.
 
 ### Success Criteria
 
@@ -175,7 +183,7 @@ To close out the ad, add in the Cymbal Pod logo and any other static graphics yo
 
 ### Tips
 
-- [Google Vids](http://vids.google.com) is a great and free service for editing videos
+- [Google Vids](http://vids.google.com) is a great and free service for editing videos.
 
 ## Challenge 5: Giving It a Voice
 
@@ -220,3 +228,7 @@ Once you have a track you're happy with, add it as a final audio layer to your v
 - The music's mood and style align with the brand guidelines.  
 - The music is successfully added to the video, creating a final, polished ad with visuals, voice-over, and a soundtrack.  
 - You've exported your final ad as an **MP4** file.
+
+### Tips
+
+- Keep in mind that Gemini itself can be a helping hand here. If you give it your brand guidelines and/or your video, it can give you a recommendation for a good soundtrack to use.
