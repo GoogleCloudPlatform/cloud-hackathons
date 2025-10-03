@@ -91,6 +91,7 @@ module "agent_to_cloud_run" {
   source = "./adk_deployment"
   gcp_project_id = var.gcp_project_id
   gcp_region = var.gcp_region
+  gcp_zone = var.gcp_zone
   service_account_key_file = var.service_account_key_file
 }
 
