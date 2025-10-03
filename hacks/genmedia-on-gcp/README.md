@@ -101,9 +101,9 @@ Now that we have our brand guidelines, our protagonist and our narrative, it's t
 
 ### Description
 
-First we will create our **protagonist**. Using *Imagen*, generate a character “model sheet” and “turnaround” images for your protagonist using your description of them and your brand guidelines. The model sheet standardizes a character's appearance, poses, and gestures, while the turnaround images depict the character at different angles.
+First we will create our **protagonist**. Using *Imagen* and/or *Nano Banana*, generate a character “model sheet” and “turnaround” images for your protagonist using your description of them and your brand guidelines. The model sheet standardizes a character's appearance, poses, and gestures, while the turnaround images depict the character at different angles.
 
-Next, create images for your **storyboard** visualizing the scenes crafted in the previous challenge.
+Next, create images for your **storyboard** visualizing the scenes crafted in the previous challenge. Once you've created these images, now place your protagonist in these scenes. You can use *Imagen* here but *Nano Banana* really shines at this kind of task.
 
 We also need a **final closing frame** that will inform Veo on how to end the video. It should include space for a Cymbal Pod logo and space for the text of the tagline or call to action.
 
@@ -129,8 +129,8 @@ Make sure that all of this work is stored in the storage bucket that has been cr
 
 - [Introduction to Vertex AI Studio](https://cloud.google.com/vertex-ai/docs/studio/introduction)  
 - [Generate images with Imagen](https://cloud.google.com/vertex-ai/docs/generative-ai/image/generate-images)  
-- Model sheet  
-- Turnaround images
+- [What is a model sheet?](https://en.wikipedia.org/wiki/Model_sheet)
+- [What are turnaround images?](https://www.domestika.org/en/blog/5703-what-is-a-turnaround-in-character-design-and-how-to-draw-one)
 
 ## Challenge 3: From Stills to Motion
 
@@ -195,7 +195,7 @@ A silent film can be powerful, but a voice-over can deliver a targeted message. 
 
 First, write a short, compelling script for your ad. The script should consist of multiple pieces of voice-over audio to be inserted into your ad in different spots. The script should align with the brand guidelines you've defined. Gemini is fair game to generate the script, or you're free to use your own writing creativity.
 
-Next, use the *Chirp* model in Vertex AI or *Gemini* itself to generate the voice-overs from your script. Choose one of the voice-overs and generate it in a foreign language, (e.g. Italian, Afrikaans, Turkish).
+Next, use the *Chirp* model in Vertex AI or the *Gemini TTS* to generate the voice-overs from your script. Choose one of the voice-overs and generate it in a foreign language, (e.g. Italian, Afrikaans, Turkish).
 
 Finally, add these audio tracks to the video you assembled in Challenge 4 in the proper places in your video sequence timeline.
 
@@ -207,8 +207,7 @@ Finally, add these audio tracks to the video you assembled in Challenge 4 in the
 
 ### Learning Resources
 
-- [Create voice-overs with Chirp](https://cloud.google.com/text-to-speech/docs/chirp3-hd)  
-- [Create voice-overs with Gemini](https://cloud.google.com/text-to-speech/docs/gemini-tts)
+- [Gemini Text to Speech](https://cloud.google.com/text-to-speech)  
 
 ## Challenge 6: The Soundtrack
 
@@ -232,3 +231,4 @@ Once you have a track you're happy with, add it as a final audio layer to your v
 ### Tips
 
 - Keep in mind that Gemini itself can be a helping hand here. If you give it your brand guidelines and/or your video, it can give you a recommendation for a good soundtrack to use.
+- The Lyria model is trained from the point of view of a musician and their instrument. You'll get better results if your prompt speaks in the language of instruments.
