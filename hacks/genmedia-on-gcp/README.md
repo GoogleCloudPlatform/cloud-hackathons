@@ -76,7 +76,8 @@ Now, we'll craft an **overall narrative** to tell the story of the *Cymbal Pod* 
 
 And finally, create **a tagline or call to action** that meets the brand guidelines (e.g Available for pre-order now*)*. We'll use that text in our final ad video.
 
-Using Gemini in this challenge is fair game, but if you want to flex your creative muscles and do your own writing, please feel free to.
+> [!NOTE]  
+> Using Gemini in this challenge is fair game, but if you want to flex your creative muscles and do your own writing, please feel free to.
 
 We've created a storage bucket with the same name as your project id, navigate there, and upload a text document with all this information into that bucket.
 
@@ -101,18 +102,18 @@ Now that we have our brand guidelines, our protagonist and our narrative, it's t
 
 ### Description
 
-First we will create our **protagonist**. Using *Imagen* and/or *Nano Banana*, generate a character “model sheet” and “turnaround” images for your protagonist using your description of them and your brand guidelines. The model sheet standardizes a character's appearance, poses, and gestures, while the turnaround images depict the character at different angles.
+First we will create our **protagonist**. Using *Imagen* and/or *Nano Banana*, generate a character *model sheet* and *turnaround* images for your protagonist using your description of them and your brand guidelines. The model sheet standardizes a character's appearance, poses, and gestures, while the turnaround images depict the character at different angles.
 
 Next, create images for your **storyboard** visualizing the scenes crafted in the previous challenge. Once you've created these images, now place your protagonist in these scenes. You can use *Imagen* here but *Nano Banana* really shines at this kind of task.
 
 We also need a **final closing frame** that will inform Veo on how to end the video. It should include space for a Cymbal Pod logo and space for the text of the tagline or call to action.
 
-Finally, use *Imagen* to generate **a logo** for the Cymbal Pod that conveys the brand. Save these images for later use when we compose our final video.
+Finally, use *Imagen* to generate **a logo** for the Cymbal Pod that conveys the brand.
 
 > [!IMPORTANT]  
 > In this gHack we will be producing horizontal landscape video (16:9) format.
 
-Make sure that all of this work is stored in the storage bucket that has been created for you.
+Make sure that all of this work is stored in the storage bucket that has been created for you, as we'll use these assets when we compose our final video.
 
 ### Success Criteria
 
@@ -193,7 +194,10 @@ A silent film can be powerful, but a voice-over can deliver a targeted message. 
 
 ### Description
 
-First, write a short, compelling script for your ad. The script should consist of multiple pieces of voice-over audio to be inserted into your ad in different spots. The script should align with the brand guidelines you've defined. Gemini is fair game to generate the script, or you're free to use your own writing creativity.
+First, write a short, compelling script for your ad. The script should consist of multiple pieces of voice-over audio to be inserted into your ad in different spots. The script should align with the brand guidelines you've defined.
+
+> [!NOTE]  
+> Once again, Gemini is fair game to generate the script, but you're also free to use your own writing creativity.
 
 Next, use the *Chirp* model in Vertex AI or the *Gemini TTS* to generate the voice-overs from your script. Choose one of the voice-overs and generate it in a foreign language, (e.g. Italian, Afrikaans, Turkish).
 
