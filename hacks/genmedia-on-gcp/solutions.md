@@ -22,30 +22,42 @@ Welcome to the coach's guide for the *Easy Ads: From Concept to Creation with Ge
 
 ### Notes & Guidance
 
-#### Example Brand Guidelines
+If the participants are using Vertex AI Studio for generating the story, they should turn on auto-save. This way they can keep track of their progress and easily hand over the generated descriptions to the next driver.
 
-- Aesthetic: Sleek, minimalist, futuristic, elegant, teardrop-shaped, glowing blue accents
-- Values: Sustainable, quiet, efficient, harmonious with both urban cityscapes and nature.
-- Target Audience: Young, tech-savvy, environmentally conscious urban professionals.
+It is helpful to have generic system instructions when using Gemini, although there would be great variety, something like that captures what we expect (the purpose and the subject):
 
-#### Example Scene Ideas
+```text
+We're creating an ad for a product called The Cymbal Pod which is a single person, urban transport vehicle that hovers silently and moves quietly through the world.
+```
 
-- The Cymbal Pod exiting a futuristic, minimalist apartment building.
-- The Cymbal Pod gliding silently through a clean, bustling, green city.
-- The Cymbal Pod arrives at a sleek, modern office building integrated with nature.
-- Ending: The Cymbal Pod shown prominently, with the protagonist standing beside it and a tagline and call to action shown on screen.
+Although it's hard to assess the quality of the deliverables, these should be consistent, coherent, on-brand and brief.
+
+We're expecting *at least* three scenes, but it makes sense to have more (and shorter) scenes. Veo will struggle if there's too much happening in a single scene. The snippet below is from *Veo Prompting Best Practices*:
+
+> Attempting to prompt "A knight battles a dragon, then flies on its back to a castle, then attends a feast" in a single prompt for an 8-second clip will likely result in a muddled or incomplete depiction of one small part, or a very rushed and incoherent sequence. Instead, generate each distinct part as a separate clip if needed
 
 ## Challenge 2: The Visual Blueprint
 
 ### Notes & Guidance
 
-Celebrity look alikes, generating descriptions using Gemini. But ideally, generate an image and use Nano-Banana to create the different angles.
+The idea is that the participants should use the descriptions from Challenge 1, and use either Gemini or *Help me write* capabilities with Vertex AI Media Studio to generate the required prompts. They should start using *Imagen* for the original images for the protagonist and the product, and then switch to Nano Banana to generate the different angles.
+
+For the storyboard scene generation again Nano Banana would be the best fit. They can start uploading the relevant protagonist and product pictures together with the text of the their storyboard scene (maybe optimized through Gemini or *Help me write* capabilities) to generate the images.
+
+> [!NOTE]  
+> If participants choose to generate the different angles or the storyboard scenes with Imagen, this could be quite hard for consistency. Let them experiment to find out how hard that is but **DO NOT** let them spend too much time on that approach.
+
+> [!WARNING]  
+> At the time of this writing Nano Banana in Vertex AI Media Studio has a limit of 10MB, so if there are too many images inserted in a single conversation, things will fail. Participants should use multiple conversations and/or fewer images.
 
 ## Challenge 3: From Stills to Motion
 
 ### Notes & Guidance
 
-TBD
+The storyboard images created in the previous challenge should be used as a *Reference* to generate the video clips. If the participants gloss over this, they will struggle with consistency. Similarly, just like the previous challenge, **DO NOT** let them struggle for too long.
+
+> [!NOTE]  
+> At the time of this writing only Veo 2 can do references, so it's okay if participants use that model.
 
 ## Challenge 4: The Assembly
 

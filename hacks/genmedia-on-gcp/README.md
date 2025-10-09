@@ -59,6 +59,9 @@ Every ad starts with a product and tells a story to sell that product. In this c
 
 The **Cymbal Pod** is a single person, urban transport vehicle that hovers silently and moves quietly through the world.
 
+> [!NOTE]  
+> This challenge is all about building our story and characters, we're expecting you to craft descriptions, which we'll use in the subsequent challenges to create prompts. So, your descriptions should be detailed enough to capture the essence of your story, but keep in mind that we're not designing prompts yet.
+
 ### Description
 
 Start by designing the **brand guidelines**, these should include:
@@ -83,10 +86,10 @@ We've created a storage bucket with the same name as your project id, navigate t
 
 ### Success Criteria
 
-- You have created a set of brand guidelines at a minimum describing the *aesthetics* and the *values* of the brand.  
-- You have created a detailed text description of the protagonist of your narrative.  
-- You have created a text description/script for at least three scenes that seamlessly tell your story.  
-- You have created a tagline or call to action that meets the brand guidelines.  
+- You have created a set of brand guidelines describing the *aesthetics*, *values*, *mood/color palette* and *target audience* for the brand.
+- You have created a detailed text description of the protagonist of your narrative.
+- You have created a text description/script for at least three scenes that seamlessly tell your story.
+- You have created a tagline or call to action that meets the brand guidelines.
 - You've stored all of this information in a text document on the provided storage bucket.
 
 ### Learning Resources
@@ -102,28 +105,30 @@ Now that we have our brand guidelines, our protagonist and our narrative, it's t
 
 ### Description
 
-First we will create our **protagonist**. Using *Imagen* and/or *Nano Banana*, generate a character *model sheet* and *turnaround* images for your protagonist using your description of them and your brand guidelines. The model sheet standardizes a character's appearance, poses, and gestures, while the turnaround images depict the character at different angles.
+First we will create our **protagonist**. Using *Imagen* and/or *Nano Banana*, generate a representative image of your protagonist using your description of them and your brand guidelines. Once you have your protagonist images, generate more images that depict the protagonist at different angles (front, side, back, 3/4, etc).
 
-Next, create images for your **storyboard** visualizing the scenes crafted in the previous challenge. Once you've created these images, now place your protagonist in these scenes. You can use *Imagen* here but *Nano Banana* really shines at this kind of task.
+Once you have your protoganist, generate the same set of images for the **product**.
+
+Next, create images for your **storyboard** visualizing the scenes crafted in the previous challenge. These storyboard images should contain *accurate* and *consistent* depictions of the product and protagonist when they are shown.
 
 We also need a **final closing frame** that will inform Veo on how to end the video. It should include space for a Cymbal Pod logo and space for the text of the tagline or call to action.
 
 Finally, use *Imagen* to generate **a logo** for the Cymbal Pod that conveys the brand.
 
 > [!IMPORTANT]  
-> In this gHack we will be producing horizontal landscape video (16:9) format.
+> The storyboard images must be in 16:9 format because we'll use them as references for the video clips we'll create in the next challenge
 
 Make sure that all of this work is stored in the storage bucket that has been created for you, as we'll use these assets when we compose our final video.
 
 ### Success Criteria
 
-- One model sheet image is generated that clearly defines the **protagonist's appearance**.  
-- Two turnaround images are generated showing the protagonist in back and side views.  
-- You have generated **distinct storyboard images** and a **final closing frame image**.  
-- The *Cymbal Pod*'s design is *visibly consistent* across all storyboard images.  
-- The protagonist's appearance is *visibly consistent* across all storyboard images.  
-- The overall aesthetic is *consistent* and conforms to your brand guidelines.  
-- Your coach approves of the visual consistency of your images.  
+- Multiple consistent images are generated that clearly define the **protagonist's appearance** from various angles.
+- Multiple consistent images are generated that clearly define the **Cymbal Pod's appearance** from various angles.
+- You have generated **distinct storyboard images** and a **final closing frame image**.
+- The *Cymbal Pod*'s design is *visibly consistent* across all storyboard images.
+- The protagonist's appearance is *visibly consistent* across all storyboard images.
+- The overall aesthetic, mood and color palette is *consistent* and conforms to your brand guidelines.
+- Your coach approves of the visual consistency of your images.
 - The images are stored in the storage bucket that has been provided to you.
 
 ### Learning Resources
@@ -150,11 +155,12 @@ You know the drill, once finished, store the resulting clips in the storage buck
 
 ### Success Criteria
 
-- High-quality, 5-7 second video clips for each of the storyboard scenes are generated.  
-- The video aesthetics are *highly consistent* with the corresponding static images.  
-- The motion depicted is *smooth* and *realistic*.  
-- When viewed in sequence, the clips form a coherent narrative, with logical transitions.  
-- Your coach approves of the visual consistency of your videos and their fidelity to your storyboard images.  
+- High-quality video clips for each of the storyboard scenes are generated.
+- The total runtime for the video clips should be around 20-30 seconds.
+- The video aesthetics, mood and color palette are *highly consistent* with the corresponding static images.
+- The motion depicted is *smooth* and *realistic*.
+- When viewed in sequence, the clips form a coherent narrative, with logical transitions.
+- Your coach approves of the visual consistency of your videos and their fidelity to your storyboard images.
 - The videos have been stored in the storage bucket that has been provided to you.
 
 ### Learning Resources
@@ -178,8 +184,8 @@ To close out the ad, add in the Cymbal Pod logo and any other static graphics yo
 
 ### Success Criteria
 
-- The video is 20-30 seconds long.  
-- The video tells a coherent story, using the shots generated in the previous challenge.  
+- The video is 20-30 seconds long.
+- The video tells a coherent story, using the shots generated in the previous challenge.
 - The final assembled video is free of jarring cuts, ridiculous transitions (no star wipes!) or continuity errors.
 
 ### Tips
@@ -205,8 +211,8 @@ Finally, add these audio tracks to the video you assembled in Challenge 4 in the
 
 ### Success Criteria
 
-- A short, on-brand script is written describing multiple voice-overs needed in the ad.  
-- Multiple high-quality voice-overs are generated with at least **one** in a foreign language.  
+- A short, on-brand script is written describing multiple voice-overs needed in the ad.
+- Multiple high-quality voice-overs are generated with at least **one** in a foreign language.
 - The voice-overs are successfully added to the video file, with timing that matches the visuals.
 
 ### Learning Resources
@@ -227,8 +233,8 @@ Once you have a track you're happy with, add it as a final audio layer to your v
 
 ### Success Criteria
 
-- A music track is generated for the entire length of the ad.  
-- The music's mood and style align with the brand guidelines.  
+- A music track is generated for the entire length of the ad.
+- The music's mood and style align with the brand guidelines.
 - The music is successfully added to the video, creating a final, polished ad with visuals, voice-over, and a soundtrack.  
 - You've exported your final ad as an **MP4** file.
 
