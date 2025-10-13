@@ -24,6 +24,9 @@ Welcome to the coach's guide for the *Easy Ads: From Concept to Creation with Ge
 
 If the participants are using Vertex AI Studio for generating the story, they should turn on auto-save. This way they can keep track of their progress and easily hand over the generated descriptions to the next driver.
 
+> [!NOTE]  
+> As mentioned in the instructions using Gemini is fair game, but using the first best response might lead to generic outputs, so adding a bit of creativity, or a few more iterations, would make the end results better.
+
 It is helpful to have generic system instructions when using Gemini, although there would be great variety, something like that captures what we expect (the purpose and the subject):
 
 ```text
@@ -48,7 +51,7 @@ For the storyboard scene generation again Nano Banana would be the best fit. The
 > If participants choose to generate the different angles or the storyboard scenes with Imagen, this could be quite hard for consistency. Let them experiment to find out how hard that is but **DO NOT** let them spend too much time on that approach.
 
 > [!WARNING]  
-> At the time of this writing Nano Banana in Vertex AI Media Studio has a limit of 10MB, so if there are too many images inserted in a single conversation, things will fail. Participants should use multiple conversations and/or fewer images.
+> At the time of this writing Nano Banana in Vertex AI Media Studio has a limit of 10MB, so if there are too many images inserted in a single conversation, things will fail. Also there are limits to how many images can be included in a single prompt, if the participants go beyond that limit, Nano Banana will silently ignore those. Participants should use multiple conversations and/or fewer images.
 
 ## Challenge 3: From Stills to Motion
 

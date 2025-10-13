@@ -90,7 +90,7 @@ We've created a storage bucket with the same name as your project id, navigate t
 - You have created a detailed text description of the protagonist of your narrative.
 - You have created a text description/script for at least three scenes that seamlessly tell your story.
 - You have created a tagline or call to action that meets the brand guidelines.
-- You've stored all of this information in a text document on the provided storage bucket.
+- You've stored all of this information in a text document in the provided storage bucket.
 
 ### Learning Resources
 
@@ -133,10 +133,13 @@ Make sure that all of this work is stored in the storage bucket that has been cr
 
 ### Learning Resources
 
-- [Introduction to Vertex AI Studio](https://cloud.google.com/vertex-ai/docs/studio/introduction)  
-- [Generate images with Imagen](https://cloud.google.com/vertex-ai/docs/generative-ai/image/generate-images)  
-- [What is a model sheet?](https://en.wikipedia.org/wiki/Model_sheet)
-- [What are turnaround images?](https://www.domestika.org/en/blog/5703-what-is-a-turnaround-in-character-design-and-how-to-draw-one)
+- [Introduction to Vertex AI Studio](https://cloud.google.com/vertex-ai/docs/studio/introduction)
+- [Generate images with Imagen](https://cloud.google.com/vertex-ai/docs/generative-ai/image/generate-images)
+
+### Tips
+
+- Keep in mind that some models will have limitations with respect to how many reference images you can include in a prompt and the maximum size. See for example the *Technical Spacifications* for [Nano Banana](https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-5-flash-image)
+- There are also limits in the Media Studio UI, you might want to use the Import from Cloud Storage options instead of uploading your images in your prompt
 
 ## Challenge 3: From Stills to Motion
 
@@ -149,14 +152,14 @@ With your storyboard and protagonist created, it's time to bring your vision to 
 Using the *Veo* family of models in Vertex AI Studio, generate video clips for each of your storyboard scenes from Challenge 2. Make sure you use your generated images as references in your prompts to guide the model.
 
 > [!IMPORTANT]  
-> For this challenge, generate the videos **without any audio**. We will add sound in later stages.
+> It's fine to have background sound or noises for some parts of your video, but keep in mind that you'll be generating voice-over in a later challenge. So you might want to turn off audio generation for those sections.
 
 You know the drill, once finished, store the resulting clips in the storage bucket provided to you.
 
 ### Success Criteria
 
 - High-quality video clips for each of the storyboard scenes are generated.
-- The total runtime for the video clips should be around 20-30 seconds.
+- The total runtime for the video clips should be around ~30 seconds (min: 20 seconds and max: 1 minute).
 - The video aesthetics, mood and color palette are *highly consistent* with the corresponding static images.
 - The motion depicted is *smooth* and *realistic*.
 - When viewed in sequence, the clips form a coherent narrative, with logical transitions.
@@ -184,7 +187,7 @@ To close out the ad, add in the Cymbal Pod logo and any other static graphics yo
 
 ### Success Criteria
 
-- The video is 20-30 seconds long.
+- The video is around 20-30 seconds long (min: 20 seconds and max: 1 minute).
 - The video tells a coherent story, using the shots generated in the previous challenge.
 - The final assembled video is free of jarring cuts, ridiculous transitions (no star wipes!) or continuity errors.
 
