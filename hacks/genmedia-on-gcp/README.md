@@ -169,6 +169,9 @@ You know the drill, once finished, store the resulting clips in the storage buck
 ### Learning Resources
 
 - [Generate videos with Veo](https://cloud.google.com/vertex-ai/docs/generative-ai/video/generate-videos)
+- [Detailed Prompting Guide for Veo](https://medium.com/google-cloud/veo-3-a-detailed-prompting-guide-867985b46018)
+- [Veo Technical Deep Dive](https://medium.com/google-cloud/google-veo-a-technical-deep-dive-for-the-ai-director-a6fdf6438a3f)
+- [Veo 3 Prompting Guide](https://github.com/snubroot/Veo-3-Prompting-Guide)
 
 ## Challenge 4: The Assembly
 
