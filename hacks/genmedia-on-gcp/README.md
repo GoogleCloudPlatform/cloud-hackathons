@@ -39,7 +39,7 @@ This hack will help you master the following skills:
 ## Prerequisites
 
 - Basic understanding of generative AI concepts (text-to-image, text-to-video, text-to-speech).  
-- Access to a Google Cloud project with Vertex AI Studio enabled, including access to Imagen, Veo, Chirp, and Lyria models.  
+- Access to a Google Cloud project with Vertex AI Studio enabled, including access to Gemini, Veo, Chirp, and Lyria models.  
 - Access to a basic video editing tool (e.g., Google Vids, DaVinci Resolve, Adobe Premiere Pro, CapCut, iMovie, or any online editor).
 
 ## Contributors
@@ -105,15 +105,18 @@ Now that we have our brand guidelines, our protagonist and our narrative, it's t
 
 ### Description
 
-First we will create our **protagonist**. Using *Imagen* and/or *Nano Banana*, generate a representative image of your protagonist using your description of them and your brand guidelines. Once you have your protagonist images, generate more images that depict the protagonist at different angles (front, side, back, 3/4, etc).
+First we will create our **protagonist**. Using *Gemini Native Image* (aka: *Nano Banana*), generate a representative image of your protagonist using your description of them and your brand guidelines. Once you have your protagonist images, generate more images that depict the protagonist at different angles (front, side, back, 3/4, etc).
 
-Once you have your protoganist, generate the same set of images for the **product**.
+Once you have your protagonist, generate the same set of images for the **product**.
+
+> [!NOTE]  
+> Given the limit of 3 images as context when generating videos and images, consider creating a "contact sheet" for the protagonist and product with all images at the various angles together in one image file.
 
 Next, create images for your **storyboard** visualizing the scenes crafted in the previous challenge. These storyboard images should contain *accurate* and *consistent* depictions of the product and protagonist when they are shown.
 
 We also need a **final closing frame** that will inform Veo on how to end the video. It should include space for a Cymbal Pod logo and space for the text of the tagline or call to action.
 
-Finally, use *Imagen* to generate **a logo** for the Cymbal Pod that conveys the brand.
+Finally, generate **a logo** for the Cymbal Pod that conveys the brand.
 
 > [!IMPORTANT]  
 > The storyboard images must be in 16:9 format because we'll use them as references for the video clips we'll create in the next challenge
@@ -134,11 +137,11 @@ Make sure that all of this work is stored in the storage bucket that has been cr
 ### Learning Resources
 
 - [Introduction to Vertex AI Studio](https://cloud.google.com/vertex-ai/docs/studio/introduction)
-- [Generate images with Imagen](https://cloud.google.com/vertex-ai/docs/generative-ai/image/generate-images)
+- [Generate images with Nano Banana](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/image-generation)
 
 ### Tips
 
-- Keep in mind that some models will have limitations with respect to how many reference images you can include in a prompt and the maximum size. See for example the *Technical Spacifications* for [Nano Banana](https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-5-flash-image)
+- Keep in mind that some models will have limitations with respect to how many reference images you can include in a prompt and the maximum size. See for example the *Technical Specifications* for [Nano Banana](https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-5-flash-image)
 - There are also limits in the Media Studio UI, you might want to use the Import from Cloud Storage options instead of uploading your images in your prompt
 
 ## Challenge 3: From Stills to Motion
@@ -152,7 +155,7 @@ With your storyboard and protagonist created, it's time to bring your vision to 
 Using the *Veo* family of models in Vertex AI Studio, generate video clips for each of your storyboard scenes from Challenge 2. Make sure you use your generated images as references in your prompts to guide the model.
 
 > [!IMPORTANT]  
-> It's fine to have background sound or noises for some parts of your video, but keep in mind that you'll be generating voice-over in a later challenge. So you might want to turn off audio generation for those sections.
+> It's fine to have background sound or noises for some parts of your video, but keep in mind that you'll be generating voice-overs in a later challenge. Also, if you need to have dialog that syncs with lips on the screen, that needs to be done during video creation time.
 
 You know the drill, once finished, store the resulting clips in the storage bucket provided to you.
 
@@ -170,8 +173,8 @@ You know the drill, once finished, store the resulting clips in the storage buck
 
 - [Generate videos with Veo](https://cloud.google.com/vertex-ai/docs/generative-ai/video/generate-videos)
 - [Detailed Prompting Guide for Veo](https://medium.com/google-cloud/veo-3-a-detailed-prompting-guide-867985b46018)
+- [Veo Prompting Guide](https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1)
 - [Veo Technical Deep Dive](https://medium.com/google-cloud/google-veo-a-technical-deep-dive-for-the-ai-director-a6fdf6438a3f)
-- [Veo 3 Prompting Guide](https://github.com/snubroot/Veo-3-Prompting-Guide)
 
 ## Challenge 4: The Assembly
 
@@ -186,7 +189,7 @@ Using a video editor of your preference, stitch together the video clips you cre
 To close out the ad, add in the Cymbal Pod logo and any other static graphics you created in Challenge 2. Don't forget to add your tagline or call to action here as well.
 
 > [!NOTE]  
-> You could use Imagen for generating text as well, but in case you're not getting what you want, you can just use text elements within your video editor.
+> You could use *Nano Banana* for generating text as well, but in case you're not getting what you want, you can just use text elements within your video editor.
 
 ### Success Criteria
 
@@ -211,7 +214,7 @@ First, write a short, compelling script for your ad. The script should consist o
 > [!NOTE]  
 > Once again, Gemini is fair game to generate the script, but you're also free to use your own writing creativity.
 
-Next, use the *Chirp* model in Vertex AI or the *Gemini TTS* to generate the voice-overs from your script. Choose one of the voice-overs and generate it in a foreign language, (e.g. Italian, Afrikaans, Turkish).
+Next, use the *Chirp 3 HD* model in Vertex AI or the *Gemini TTS* model to generate the voice-overs from your script. Choose one of the voice-overs and generate it in a foreign language, (e.g. Italian, Afrikaans, Turkish).
 
 Finally, add these audio tracks to the video you assembled in Challenge 4 in the proper places in your video sequence timeline.
 

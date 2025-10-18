@@ -43,15 +43,15 @@ We're expecting *at least* three scenes, but it makes sense to have more (and sh
 
 ### Notes & Guidance
 
-The idea is that the participants should use the descriptions from Challenge 1, and use either Gemini or *Help me write* capabilities with Vertex AI Media Studio to generate the required prompts. They should start using *Imagen* for the original images for the protagonist and the product, and then switch to Nano Banana to generate the different angles.
+The idea is that the participants should use the descriptions from Challenge 1, and use either Gemini or *Help me write* capabilities with Vertex AI Media Studio to generate the required prompts. Nano Banana can be used to create the original images as well as to generate the different angles.
+
+> [!IMPORTANT]  
+> Participants should try to stay away from *Imagen* family of models, these are not well suited for this task. *Gemini Native Image* (aka: *Nano Banana*) is the recommended model.
 
 For the storyboard scene generation again Nano Banana would be the best fit. They can start uploading the relevant protagonist and product pictures together with the text of the their storyboard scene (maybe optimized through Gemini or *Help me write* capabilities) to generate the images.
 
-> [!NOTE]  
-> If participants choose to generate the different angles or the storyboard scenes with Imagen, this could be quite hard for consistency. Let them experiment to find out how hard that is but **DO NOT** let them spend too much time on that approach.
-
 > [!WARNING]  
-> At the time of this writing Nano Banana in Vertex AI Media Studio has a limit of 10MB, so if there are too many images inserted in a single conversation, things will fail. Also there are limits to how many images can be included in a single prompt, if the participants go beyond that limit, Nano Banana will silently ignore those. Participants should use multiple conversations and/or fewer images.
+> At the time of this writing Nano Banana in Vertex AI Media Studio has a limit of 10MB, so if there are too many images inserted in a single conversation, things will fail. Also there are limits to how many images can be included in a single prompt (3 for Nano Banana at the moment), if the participants go beyond that limit, Nano Banana will silently ignore those. Participants should use multiple conversations and/or fewer images.
 
 ## Challenge 3: From Stills to Motion
 
@@ -59,8 +59,7 @@ For the storyboard scene generation again Nano Banana would be the best fit. The
 
 The storyboard images created in the previous challenge should be used as a *Reference* to generate the video clips. If the participants gloss over this, they will struggle with consistency. Similarly, just like the previous challenge, **DO NOT** let them struggle for too long.
 
-> [!NOTE]  
-> At the time of this writing only Veo 2 can do references, so it's okay if participants use that model.
+There's a plethora of different options here, participants can use the story board imags as *Reference*s, or generate start and end frames based on the story board and use those for the newer *Veo* models.
 
 ## Challenge 4: The Assembly
 
@@ -76,7 +75,7 @@ Google Vids is a web-based video creation app designed to make producing profess
 
 ### Notes & Guidance
 
-You'll have the choice to use Google's Chirp model or Gemini itself to create the voice-overs. The difference between these two lies in the source of vocal identity and style. Chirp functions as an advanced text-to-speech engine, requiring a pre-existing voice, either from its library or a custom clone, to articulate the provided text with high fidelity; any stylistic nuance is primarily achieved through manipulating the text itself with punctuation and pacing adjustments. In contrast, Gemini operates as a true generative voice model, creating the vocal characteristics and delivery style from scratch based on natural language prompts. This allows a user to conjure a voice by describing it (e.g., "a deep, soothing voice") and directing its emotional tone (e.g., "speak with excitement"), offering a layer of creative control and on-the-fly vocal design that Chirp, in this context, does not.
+You'll have the choice to use Google's Chirp 3 HD model or Gemini itself to create the voice-overs. The difference between these two lies in the source of vocal identity and style. Chirp functions as an advanced text-to-speech engine, requiring a pre-existing voice, either from its library or a custom clone, to articulate the provided text with high fidelity; any stylistic nuance is primarily achieved through manipulating the text itself with punctuation and pacing adjustments. In contrast, Gemini operates as a true generative voice model, creating the vocal characteristics and delivery style from scratch based on natural language prompts. This allows a user to conjure a voice by describing it (e.g., "a deep, soothing voice") and directing its emotional tone (e.g., "speak with excitement"), offering a layer of creative control and on-the-fly vocal design that Chirp, in this context, does not.
 
 ## Challenge 6: The Soundtrack
 
