@@ -105,7 +105,7 @@ Now that we have our brand guidelines, our protagonist and our narrative, it's t
 
 ### Description
 
-First we will create our **protagonist**. Using *Gemini 2.5 Flash Image* (aka: *Nano Banana*), generate a representative image of your protagonist using your description of them and your brand guidelines. Once you have your protagonist images, generate more images that depict the protagonist at different angles (front, side, back, 3/4, etc).
+First we will create our **protagonist**. Using *Gemini Native Image* (aka: *Nano Banana*), generate a representative image of your protagonist using your description of them and your brand guidelines. Once you have your protagonist images, generate more images that depict the protagonist at different angles (front, side, back, 3/4, etc).
 
 Once you have your protagonist, generate the same set of images for the **product**.
 
@@ -173,7 +173,7 @@ You know the drill, once finished, store the resulting clips in the storage buck
 
 - [Generate videos with Veo](https://cloud.google.com/vertex-ai/docs/generative-ai/video/generate-videos)
 - [Detailed Prompting Guide for Veo](https://medium.com/google-cloud/veo-3-a-detailed-prompting-guide-867985b46018)
-- [Veo 3.1 Prompting Guide](https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1)
+- [Veo Prompting Guide](https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1)
 - [Veo Technical Deep Dive](https://medium.com/google-cloud/google-veo-a-technical-deep-dive-for-the-ai-director-a6fdf6438a3f)
 
 ## Challenge 4: The Assembly
