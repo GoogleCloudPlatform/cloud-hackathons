@@ -122,7 +122,7 @@ Once you have your protagonist, generate the same set of images for the **produc
 Next, create images for your **storyboard** visualizing the scenes crafted in the previous challenge. These storyboard images should contain *accurate* and *consistent* depictions of the product and protagonist when they are shown.
 
 > [!NOTE]  
-> These storyboard images will be used in the next challenge and there are multiple ways to reference them. You can use them as start/end frames, you can use them as *Subject* reference. If you don't design your storyboard images with that idea or fi you don't use them in the next challenge, you will struggle with the consistency.
+> These storyboard images will be used in the next challenge and there are multiple ways to reference them. You can use them as start/end frames, you can use them as *Subject* reference. If you don't design your storyboard images with that idea or if you don't use them in the next challenge, you will struggle with the consistency.
 
 We also need a **final closing frame** that will inform Veo on how to end the video. It should include space for a Cymbal Pod logo and space for the text of the tagline or call to action.
 
@@ -168,7 +168,7 @@ Using the *Veo* family of models in Vertex AI Studio, generate video clips for e
 > [!IMPORTANT]  
 > It's fine to have background sound or noises for some parts of your video, but keep in mind that you'll be generating voice-overs in a later challenge. Also, if you need to have dialog that syncs with lips on the screen, that needs to be done during video creation time.
 
-Once finished, store your favorite clips for each scene in the storage bucket provided to you.
+Once finished, store your favorite clips for each scene in the storage bucket provided to you (ideally in a separate folder).
 
 ### Success Criteria
 
@@ -239,7 +239,8 @@ Finally, add these audio tracks to the video you assembled in Challenge 4 in the
 
 ### Learning Resources
 
-- [Gemini Text to Speech](https://cloud.google.com/text-to-speech)  
+- [Prompting tips for Chirp 3 HD](https://docs.cloud.google.com/text-to-speech/docs/chirp3-hd#scripting-and-prompting-tips)
+- [Prompting tips for Gemini Text to Speech](https://docs.cloud.google.com/text-to-speech/docs/gemini-tts#prompting_tips)
 
 ## Challenge 6: The Soundtrack
 
