@@ -64,7 +64,9 @@ The **Cymbal Pod** is a single person, urban transport vehicle that hovers silen
 
 ### Description
 
-Start by designing the **brand guidelines**, these should include:
+First, create a document (e.g. Google Doc) that's shared with your whole team, so you can collaborate and keep track of your work.
+
+Then, start by designing the **brand guidelines**, these should include:
 
 - *Aesthetics* (e.g. 1920s art deco)  
 - *Values* (e.g. sustainable farming)
@@ -82,20 +84,25 @@ And finally, create **a tagline or call to action** that meets the brand guideli
 > [!NOTE]  
 > Using Gemini in this challenge is fair game, but if you want to flex your creative muscles and do your own writing, please feel free to.
 
-We've created a storage bucket with the same name as your project id, navigate there, and upload a text document with all this information into that bucket.
-
 ### Success Criteria
 
 - You have created a set of brand guidelines describing the *aesthetics*, *values*, *mood/color palette* and *target audience* for the brand.
 - You have created a detailed text description of the protagonist of your narrative.
 - You have created a text description/script for at least three scenes that seamlessly tell your story.
 - You have created a tagline or call to action that meets the brand guidelines.
-- You've stored all of this information in a text document in the provided storage bucket.
+- Your work is stored in a shared document (e.g. Google Doc) that's accessible by your team.
 
 ### Learning Resources
 
-- [Storytelling in the Ad Creative Process](https://mailchimp.com/resources/storytelling-in-marketing)  
 - [Gemini Prompts for Ad Copy](https://felloai.com/2025/08/7-effective-gemini-prompts-for-ad-copy-that-actually-bring-results/)
+- [Storytelling in the Ad Creative Process](https://mailchimp.com/resources/storytelling-in-marketing)  
+
+### Tips
+
+- Focus on your story and keep in mind that you have 30 seconds to tell that story.
+- Don't try to squeeze too many different things in a single scene.
+- Using Gemini is fair game, but make sure that you keep its output brief and clear.
+- Although Gemini will help with inspiration, it will generate similar (and rather bland) ideas if you enter the challenge description in verbatim (we've seen far too often an architect called Elara to be the protagonist).
 
 ## Challenge 2: The Visual Blueprint
 
@@ -114,6 +121,9 @@ Once you have your protagonist, generate the same set of images for the **produc
 
 Next, create images for your **storyboard** visualizing the scenes crafted in the previous challenge. These storyboard images should contain *accurate* and *consistent* depictions of the product and protagonist when they are shown.
 
+> [!NOTE]  
+> These storyboard images will be used in the next challenge and there are multiple ways to reference them. You can use them as start/end frames, you can use them as *Subject* reference. If you don't design your storyboard images with that idea or if you don't use them in the next challenge, you will struggle with the consistency.
+
 We also need a **final closing frame** that will inform Veo on how to end the video. It should include space for a Cymbal Pod logo and space for the text of the tagline or call to action.
 
 Finally, generate **a logo** for the Cymbal Pod that conveys the brand.
@@ -121,7 +131,7 @@ Finally, generate **a logo** for the Cymbal Pod that conveys the brand.
 > [!IMPORTANT]  
 > The storyboard images must be in 16:9 format because we'll use them as references for the video clips we'll create in the next challenge
 
-Make sure that all of this work is stored in the storage bucket that has been created for you, as we'll use these assets when we compose our final video.
+We've already created a storage bucket for you, make sure that all of this work is stored in that bucket, as we'll use these assets when we compose our final video (copying those images into your document and screenshotting will negatively impact the quality of these images).
 
 ### Success Criteria
 
@@ -136,11 +146,12 @@ Make sure that all of this work is stored in the storage bucket that has been cr
 
 ### Learning Resources
 
-- [Introduction to Vertex AI Studio](https://cloud.google.com/vertex-ai/docs/studio/introduction)
-- [Generate images with Nano Banana](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/image-generation)
+- [Vertex AI Studio Quickstart](https://cloud.google.com/vertex-ai/generative-ai/docs/start/quickstarts/quickstart)
+- [Nano Banana Prompting Guide](https://developers.googleblog.com/en/how-to-prompt-gemini-2-5-flash-image-generation-for-the-best-results/)
 
 ### Tips
 
+- If you're in a squeeze for time, you can parallelize the protagonist, product, and logo generation. You'll need both product and protagonist contact sheets to start with the storyboard images though.
 - Keep in mind that some models will have limitations with respect to how many reference images you can include in a prompt and the maximum size. See for example the *Technical Specifications* for [Nano Banana](https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-5-flash-image)
 - There are also limits in the Media Studio UI, you might want to use the Import from Cloud Storage options instead of uploading your images in your prompt
 
@@ -157,7 +168,7 @@ Using the *Veo* family of models in Vertex AI Studio, generate video clips for e
 > [!IMPORTANT]  
 > It's fine to have background sound or noises for some parts of your video, but keep in mind that you'll be generating voice-overs in a later challenge. Also, if you need to have dialog that syncs with lips on the screen, that needs to be done during video creation time.
 
-You know the drill, once finished, store the resulting clips in the storage bucket provided to you.
+Once finished, store your favorite clips for each scene in the storage bucket provided to you (ideally in a separate folder).
 
 ### Success Criteria
 
@@ -172,9 +183,11 @@ You know the drill, once finished, store the resulting clips in the storage buck
 ### Learning Resources
 
 - [Generate videos with Veo](https://cloud.google.com/vertex-ai/docs/generative-ai/video/generate-videos)
-- [Detailed Prompting Guide for Veo](https://medium.com/google-cloud/veo-3-a-detailed-prompting-guide-867985b46018)
 - [Veo Prompting Guide](https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1)
-- [Veo Technical Deep Dive](https://medium.com/google-cloud/google-veo-a-technical-deep-dive-for-the-ai-director-a6fdf6438a3f)
+
+### Tips
+
+- Similarly to the previous challenge, if you're pressed for time, you can parallelize the video generation for the various scenes.
 
 ## Challenge 4: The Assembly
 
@@ -226,7 +239,8 @@ Finally, add these audio tracks to the video you assembled in Challenge 4 in the
 
 ### Learning Resources
 
-- [Gemini Text to Speech](https://cloud.google.com/text-to-speech)  
+- [Prompting tips for Chirp 3 HD](https://docs.cloud.google.com/text-to-speech/docs/chirp3-hd#scripting-and-prompting-tips)
+- [Prompting tips for Gemini Text to Speech](https://docs.cloud.google.com/text-to-speech/docs/gemini-tts#prompting_tips)
 
 ## Challenge 6: The Soundtrack
 
