@@ -1,3 +1,65 @@
+
+resource "time_sleep" "wait_start" {
+  create_duration = "60s"
+}
+
+resource "google_compute_instance" "lab_setup_vm" {
+
+  project      = var.gcp_project_id
+  name         = "lab-server"
+  machine_type = "e2-medium"
+  zone         = var.gcp_zone
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-12"
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config { 
+      // Ephemeral public IP
+    }
+  }
+
+  metadata = {
+    startup-script = <<SCRIPT
+        #!/bin/bash
+
+        export DATE=$(date '+%Y%m%d%H%M%S')
+        export YYMM=$(date '+%Y%m')
+        echo Recording Lab information into LFS Logs bucket
+        export ZONE=${var.gcp_zone}
+        export REGION=${var.gcp_region}
+        export PROJECT_ID=${var.gcp_project_id}
+        export USER_ACCOUNT=$(gcloud config list --format="value(core.account)")
+        export PROJECT_ID=$(gcloud info --format='value(config.project)')
+        export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
+
+        gcloud services disable cloudbuild.googleapis.com
+        gcloud services disable iap.googleapis.com
+        sleep 10
+        gcloud services enable cloudbuild.googleapis.com
+        gcloud services enable iap.googleapis.com
+
+        sleep 300
+        gcloud compute instances delete lab-server --zone=$ZONE  --quiet 
+
+      SCRIPT
+  }
+
+  service_account {
+    scopes = ["cloud-platform"]
+  }
+ depends_on = [ time_sleep.wait_start]
+
+}
+
+resource "time_sleep" "wait" {
+  depends_on = [ google_compute_instance.lab_setup_vm]
+  create_duration = "60s"
+}
+
+
 locals {
     services = [
         "cloudbuild.googleapis.com",
@@ -31,14 +93,23 @@ resource "google_project_service" "required_api" {
   lifecycle {
     
   }
+  depends_on = [ time_sleep.wait]
 }
+
+resource "google_project_service_identity" "iap" {
+  provider = google-beta
+
+  project = var.gcp_project_id
+  service = "iap.googleapis.com"
+}
+
 
 resource "google_project_iam_member" "cloud_build_run_admin" {
   project = var.gcp_project_id
   role    = "roles/run.admin"
 
   member = "serviceAccount:${local.project_number}@cloudbuild.gserviceaccount.com"
-  
+ depends_on = [ time_sleep.wait,google_project_service_identity.iap]
 }
 
 resource "google_project_iam_member" "cloud_build_registry_admin" {
@@ -46,6 +117,7 @@ resource "google_project_iam_member" "cloud_build_registry_admin" {
   role    = "roles/artifactregistry.admin"
 
   member = "serviceAccount:${local.project_number}@cloudbuild.gserviceaccount.com"
+  depends_on = [ time_sleep.wait]
 }
 
 resource "google_project_iam_member" "cloud_build_iam" {
@@ -53,12 +125,14 @@ resource "google_project_iam_member" "cloud_build_iam" {
   role    = "roles/resourcemanager.projectIamAdmin"
 
   member = "serviceAccount:${local.project_number}@cloudbuild.gserviceaccount.com"
+  depends_on = [ time_sleep.wait]
 }
 
 resource "google_project_iam_member" "cloud_build_iap_admin" {
   project = var.gcp_project_id
   role    = "roles/iap.admin"
   member = "serviceAccount:${local.project_number}@cloudbuild.gserviceaccount.com"
+  depends_on = [ time_sleep.wait]
 }
 
 
@@ -66,6 +140,7 @@ resource "google_project_iam_member" "iap_run_invoke" {
   project = var.gcp_project_id
   role    = "roles/run.invoker"
   member = "serviceAccount:service-${local.project_number}@gcp-sa-iap.iam.gserviceaccount.com"
+  depends_on = [ time_sleep.wait]
 }
 
 resource "local_file" "deploy_script" {
