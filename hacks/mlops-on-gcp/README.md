@@ -238,7 +238,7 @@ Create a new Vertex AI Endpoint and deploy the freshly trained model. Use the sm
 ### Tips
 
 - Verify first that you're getting predictions from the endpoint before generating load (for example using cURL)
-- In order to generate load you can use any tool you want, but the easiest approach would be to install [apache-bench](https://httpd.apache.org/docs/2.4/programs/ab.html) on Cloud Shell or your notebook environment. Google it, if you don't know how to use it :)
+- In order to generate load you can use any tool you want, but we recommend [oha](https://github.com/hatoo/oha) on Cloud Shell or your notebook environment. You can download the latest version from [here](https://github.com/hatoo/oha/releases) (you'll need the `oha-linux-amd64` version for Cloud Shell or your notebook environment).
 
 ### Learning Resources
 
