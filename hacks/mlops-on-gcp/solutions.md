@@ -169,15 +169,16 @@ URL="https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locat
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN"  -d @request.json $URL
 ```
 
-The following commands will install & run `apache-bench` load tool. The parameters 30000 requests and 100 connections will generate sufficient throughput for the endpoint to scale (assuming that the smallest instance size, `n1-standard-2`, is chosen).
+The following commands will install & run `oha` load tool. The parameters 30000 requests and 100 connections will generate sufficient throughput for the endpoint to scale (assuming that the smallest instance size, `n1-standard-2`, is chosen).
 
 ```shell
-sudo apt-get -y install apache2-utils
-ab -n 30000 -c 100 -p request.json -T "application/json" -H "Authorization: Bearer $TOKEN" $URL
+wget -O oha "https://github.com/hatoo/oha/releases/download/v1.11.0/oha-linux-amd64"  # or any other version
+chmod +x oha
+./oha -n 30000 -c 100 -m POST -D request.json -T "application/json" -H "Authorization: Bearer $TOKEN" $URL
 ```
 
 > [!WARNING]  
-> Participants need to make sure that the output of `ab` doesn't contain any non 2XX responses or failed requests.
+> Participants need to make sure that the output of `oha` doesn't contain any non 2XX responses or failed requests.
 
 This exercise can be completed either on the notebook terminal or Cloud Shell.
 
