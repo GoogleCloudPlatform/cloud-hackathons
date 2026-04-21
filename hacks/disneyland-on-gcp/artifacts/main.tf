@@ -34,21 +34,67 @@ resource "google_project_service" "default" {
   disable_on_destroy = false
 }
 
-data "google_compute_network" "default" {
-  name    = "default"
-  project = var.gcp_project_id
-  depends_on = [google_project_service.default]
+# In case a default network is not present in the project, this variable needs to be set
+resource "google_compute_network" "default_network_created" {
+  name                    = "default"
+  auto_create_subnetworks = true
+  count                   = var.create_default_network ? 1 : 0
+  depends_on = [
+    google_project_service.default
+  ]
+}
+
+# Enabling comms between VMs for auto mode subnets (needed by Dataproc/Dataflow workers)
+resource "google_compute_firewall" "fwr_allow_custom" {
+  name          = "fwr-ingress-allow-custom"
+  network       = google_compute_network.default_network_created[0].self_link
+  count         = var.create_default_network ? 1 : 0
+  source_ranges = ["10.128.0.0/9"]
+  allow {
+    protocol = "all"
+  }
+}
+
+# Enabling Identity-Aware-Proxy for TCP forwarding (for SSH access from Console)
+resource "google_compute_firewall" "fwr_allow_iap" {
+  name          = "fwr-ingress-allow-iap"
+  network       = google_compute_network.default_network_created[0].self_link
+  count         = var.create_default_network ? 1 : 0
+  source_ranges = ["35.235.240.0/20"]
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+}
+
+# This piece of code makes it possible to deal with the default network the same way, 
+# regardless of how it has been created. Make sure to refer to the default network through
+# this resource when needed.
+data "google_compute_network" "default_network" {
+  name = "default"
+  depends_on = [
+    google_project_service.default,
+    google_compute_network.default_network_created
+  ]
+}
+
+resource "random_string" "password" {
+  length  = 12
+  special = false
 }
 
 # AlloyDB Cluster
 resource "google_alloydb_cluster" "default" {
   cluster_id = "disney-cluster"
   location   = var.gcp_region
-  network    = data.google_compute_network.default.id
+
+  network_config {
+    network = data.google_compute_network.default_network.id
+  }
 
   initial_user {
     user     = "postgres"
-    password = "buildwithgemini2025"
+    password = random_string.password.result
   }
 
   depends_on = [google_project_service.default]

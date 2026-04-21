@@ -20,6 +20,15 @@ output "alloydb_ip" {
   value = google_alloydb_instance.default.ip_address
 }
 
+output "alloydb_usr" {
+  value = google_alloydb_cluster.default.initial_user[0].user
+}
+
+output "alloydb_pwd" {
+  value     = google_alloydb_cluster.default.initial_user[0].password
+  sensitive = true
+}
+
 output "bq_connection_id" {
   value = google_bigquery_connection.vertex_ai_conn.connection_id
 }

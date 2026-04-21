@@ -29,3 +29,10 @@ variable "gcp_zone" {
   description = "Zone to create resources in."
   default     = "europe-west1-b"
 }
+
+# Relevant when running in an environment where no default network exists yet
+variable "create_default_network" {
+  type        = bool
+  default     = false
+  description = "Whether to create a default network with subnets for all regions"
+}
