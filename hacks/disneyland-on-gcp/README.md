@@ -24,15 +24,15 @@ In this hack, you will build an end-to-end data analytics pipeline leveraging AI
 
 ## Challenges
 
-- Challenge 1: The Magic Begins: Operational Data & Syncing
+- Challenge 1: Data Ingestion & Sync
   - Load data into AlloyDB, create embeddings for similarity search, and sync data to BigQuery using Datastream.
-- Challenge 2: Polishing the Wand: Data Discovery & Quality
+- Challenge 2: Data Discovery & Quality
   - Explore data semantically in BigQuery, perform profiling and quality scans, and use Gemini for data preparation.
-- Challenge 3: Seeing Through the Magic Mirror: Multi-modal Analysis
+- Challenge 3: Multi-modal Analysis
   - Analyze attraction images and build a RAG system to query park brochures using PDF chunking and vector search.
-- Challenge 4: Predicting the Future: ML & Reverse-ETL
+- Challenge 4: ML & Reverse-ETL
   - Forecast waiting times, classify rides by intensity, and implement Reverse-ETL to move insights back to AlloyDB.
-- Challenge 5: The Ultimate Wizard: Intelligent Agents
+- Challenge 5: Intelligent Agents
   - Create conversational analytics agents in BigQuery and build a custom AI agent using ADK and MCP Toolbox.
 
 ## Prerequisites
@@ -47,7 +47,7 @@ In this hack, you will build an end-to-end data analytics pipeline leveraging AI
 - Rayhane Rezgui
 - Matt Cornillon
 
-## Challenge 1: The Magic Begins: Operational Data & Syncing
+## Challenge 1: Data Ingestion & Sync
 
 ### Introduction
 
@@ -111,7 +111,7 @@ To stream our data from AlloyDB to BigQuery, use Google Datastream. It will list
 - [Datastream Documentation](https://cloud.google.com/datastream/docs)
 - [pgvector on AlloyDB](https://cloud.google.com/alloydb/docs/ai/work-with-embeddings)
 
-## Challenge 2: Polishing the Wand: Data Discovery & Quality
+## Challenge 2: Data Discovery & Quality
 
 ### Introduction
 
@@ -168,7 +168,7 @@ Use Gemini-powered Data Preparation to clean your data:
 - [Dataplex Data Profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview)
 - [BigQuery Data Preparation Suggestions](https://cloud.google.com/bigquery/docs/data-prep-get-suggestions)
 
-## Challenge 3: Seeing Through the Magic Mirror: Multi-modal Analysis
+## Challenge 3: Multi-modal Analysis
 
 ### Introduction
 
@@ -212,7 +212,7 @@ Create a Retrieval-Augmented Generation (RAG) system using park brochures in `gs
 - [BigQuery Object Tables](https://cloud.google.com/bigquery/docs/object-table-introduction)
 - [Multimodal RAG in BigQuery](https://cloud.google.com/bigquery/docs/multimodal-data-sql-tutorial)
 
-## Challenge 4: Predicting the Future: ML & Reverse-ETL
+## Challenge 4: ML & Reverse-ETL
 
 ### Introduction
 
@@ -264,7 +264,7 @@ Move your insights back to AlloyDB using the "BigQuery views" feature in AlloyDB
 - [BigQuery ML AI Functions](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-classify)
 - [AlloyDB BigQuery Integration](https://cloud.google.com/alloydb/docs/connect-to-bigquery)
 
-## Challenge 5: The Ultimate Wizard: Intelligent Agents
+## Challenge 5: Intelligent Agents
 
 ### Introduction
 
