@@ -9,18 +9,18 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
 
 ## Coach's Guides
 
-- Challenge 1: The Magic Begins: Operational Data & Syncing
+- Challenge 1: Data Ingestion & Sync
   - Load data into AlloyDB, create embeddings for similarity search, and sync data to BigQuery using Datastream.
-- Challenge 2: Polishing the Wand: Data Discovery & Quality
+- Challenge 2: Data Discovery & Quality
   - Explore data semantically in BigQuery, perform profiling and quality scans, and use Gemini for data preparation.
-- Challenge 3: Seeing Through the Magic Mirror: Multi-modal Analysis
+- Challenge 3: Multi-modal Analysis
   - Analyze attraction images and build a RAG system to query park brochures using PDF chunking and vector search.
-- Challenge 4: Predicting the Future: ML & Reverse-ETL
+- Challenge 4: ML & Reverse-ETL
   - Forecast waiting times, classify rides by intensity, and implement Reverse-ETL to move insights back to AlloyDB.
-- Challenge 5: The Ultimate Wizard: Intelligent Agents
+- Challenge 5: Intelligent Agents
   - Create conversational analytics agents in BigQuery and build a custom AI agent using ADK and MCP Toolbox.
 
-## Challenge 1: The Magic Begins: Operational Data & Syncing
+## Challenge 1: Data Ingestion & Sync
 
 ### Notes & Guidance
 
@@ -77,7 +77,7 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
   - Region: `europe-west1`.
   - Dataset: `disney`.
 
-## Challenge 2: Polishing the Wand: Data Discovery & Quality
+## Challenge 2: Data Discovery & Quality
 
 ### Notes & Guidance
 
@@ -90,7 +90,7 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
   - `review_id` uniqueness.
 - **Data Preparation:** Open the table in Data Preparation, follow Gemini suggestions for cleaning (Filter NULLs, replace "missing").
 
-## Challenge 3: Seeing Through the Magic Mirror: Multi-modal Analysis
+## Challenge 3: Multi-modal Analysis
 
 ### Notes & Guidance
 
@@ -141,7 +141,7 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
       );
     ```
 
-## Challenge 4: Predicting the Future: ML & Reverse-ETL
+## Challenge 4: ML & Reverse-ETL
 
 ### Notes & Guidance
 
@@ -179,7 +179,7 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
     );
     ```
 
-## Challenge 5: The Ultimate Wizard: Intelligent Agents
+## Challenge 5: Intelligent Agents
 
 ### Notes & Guidance
 
