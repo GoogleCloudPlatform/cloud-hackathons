@@ -1,4 +1,4 @@
-# Disneyland Data Analytics Hackathon
+# Disneyland Data Analytics
 
 ## Introduction
 
@@ -6,7 +6,7 @@ Welcome, future Disney data wizards!🪄
 
 Forget tedious travel guides and endless forum scrolling. Imagine planning the perfect Disneyland trip, equipped with data-driven insights. Which park offers the best experience? When are the crowds thinnest? Can you predict the best time to conquer that notoriously long queue?
 
-In this Hackathon, you're building your ultimate Disneyland planning tool. We've got the data: reviews from visitors across global branches, historical waiting times, and attendance figures. Your mission? Transform this raw data into actionable insights leveraging the power of AI and Data on Google Cloud.
+In this gHack, you're building your ultimate Disneyland planning tool. We've got the data: reviews from visitors across global branches, historical waiting times, and attendance figures. Your mission? Transform this raw data into actionable insights leveraging the power of AI and Data on Google Cloud.
 
 ![Disneyland 1](images/a5db692deef31d78.jpeg)
 
@@ -24,15 +24,15 @@ In this hack, you will build an end-to-end data analytics pipeline leveraging AI
 
 ## Challenges
 
-- **Challenge 1: The Magic Begins: Operational Data & Syncing**
+- Challenge 1: The Magic Begins: Operational Data & Syncing
   - Load data into AlloyDB, create embeddings for similarity search, and sync data to BigQuery using Datastream.
-- **Challenge 2: Polishing the Wand: Data Discovery & Quality**
+- Challenge 2: Polishing the Wand: Data Discovery & Quality
   - Explore data semantically in BigQuery, perform profiling and quality scans, and use Gemini for data preparation.
-- **Challenge 3: Seeing Through the Magic Mirror: Multi-modal Analysis**
+- Challenge 3: Seeing Through the Magic Mirror: Multi-modal Analysis
   - Analyze attraction images and build a RAG system to query park brochures using PDF chunking and vector search.
-- **Challenge 4: Predicting the Future: ML & Reverse-ETL**
+- Challenge 4: Predicting the Future: ML & Reverse-ETL
   - Forecast waiting times, classify rides by intensity, and implement Reverse-ETL to move insights back to AlloyDB.
-- **Challenge 5: The Ultimate Wizard: Intelligent Agents**
+- Challenge 5: The Ultimate Wizard: Intelligent Agents
   - Create conversational analytics agents in BigQuery and build a custom AI agent using ADK and MCP Toolbox.
 
 ## Prerequisites
