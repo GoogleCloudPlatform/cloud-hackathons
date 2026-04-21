@@ -36,6 +36,8 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
   > We will be going through replicating and processing operational data from an Oracle database into Google Cloud in real time. You'll also figure out how to forecast future demand, and how to visualize this forecast data as it arrives.
 - [Hack to the Future: Data Track](./hacks/httf-data/README.md)
   > In this hack we'll help the fictitious Cymbal Shops e-commerce platform to modernize their tech stack, primarily focusing on the migration of the legacy application MySQL database to Cloud Spanner. From that point we'll create BigQuery analytics datasets to handle both historical and live data using federation, use advanced generative AI to enhance the existing dataset with descriptions and images, and finally implement semantic search on this dataset.
+- [Disneyland Data Analytics](./hacks/disneyland-on-gcp/README.md)
+  > The goal of this hack is to build an end-to-end data analytics pipeline leveraging AI/ML capabilities on Google Cloud. You'll load data into AlloyDB, a fully-managed, PostgreSQL-compatible database optimized for demanding workloads, then use Datastream, a serverless change data capture (CDC) service, to move it to BigQuery, Google Cloud's serverless data warehouse. In BigQuery, you'll apply BigQuery ML, which allows you to create and execute machine learning models directly in BigQuery using standard SQL, for review analysis and attendance forecasting. Finally, you'll play around with agents, either out of the box through Conversational Analytics & Data Agents or create a custom agent, powered by Agent Development Kit and MCP toolbox for natural language interaction with your data.
 
 ### Infrastructure
 
