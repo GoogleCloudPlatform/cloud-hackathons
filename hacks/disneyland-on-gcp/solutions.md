@@ -46,36 +46,65 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
     );
     ```
 
-- **Data Import:** Students can use the AlloyDB UI "Import" feature or `gcloud alloydb instances import`.
-- **Embeddings:**
+- **Data import:** Students can use the AlloyDB UI "Import" feature or `gcloud alloydb instances import`.
+- **Generating the embeddings:**
 
     ```sql
-    CREATE EXTENSION IF NOT EXISTS pgvector;
+    CREATE EXTENSION IF NOT EXISTS vector;
+
     ALTER TABLE disneyland_attractions ADD COLUMN embedding vector(768);
 
-    -- Example using AlloyDB AI (Native integration)
-    UPDATE disneyland_attractions
-    SET embedding = azure_ai.generate_embeddings('text-embedding-004', description) -- Note: check exact function name for AlloyDB AI
-    -- Or using the Vertex AI integration via ml_predict_row
+    UPDATE 
+        disneyland_attractions
+    SET
+        embedding = google_ml.embedding('text-embedding-004', description)::vector;
     ```
 
-    *Note: Students should use the `google_ml_integration` extension if available.*
+- **Searching in embeddings:**
+
+   ```sql
+   SELECT
+    name,
+    description,
+    branch
+   FROM
+    disneyland_attractions
+   ORDER BY
+    embedding <=> google_ml.embedding('text-embedding-004', 'Dark ride in space')::vector ASC
+   LIMIT
+    5;
+   ```
 
 #### 2. Sync to BigQuery with Datastream
 
 - **AlloyDB Prep:**
 
     ```sql
-    CREATE PUBLICATION pub_disney FOR TABLE disneyland_reviews, disneyland_attractions;
     ALTER USER postgres WITH REPLICATION;
+    CREATE PUBLICATION pub_disney FOR TABLE disneyland_reviews, disneyland_attractions;
     SELECT PG_CREATE_LOGICAL_REPLICATION_SLOT('slot_disney', 'pgoutput');
     ```
 
-- **Datastream Config:**
-  - Source: AlloyDB (PostgreSQL).
-  - Destination: BigQuery.
-  - Region: `europe-west1`.
-  - Dataset: `disney`.
+- **Public IP Allowlisting:** In case any other location is chosen, this is the approach
+
+  ```shell
+  gcloud compute firewall-rules create allow-datastream-us-central1 \
+    --network=default \
+    --action=ALLOW \
+    --direction=INGRESS \
+    --source-ranges=34.72.28.29/32,34.67.234.134/32,34.67.6.157/32,34.72.239.218/32,34.71.242.81/32 \
+    --rules=tcp:5432 \
+    --description="Allow Datastream public IPs for us-central1 to access PostgreSQL"
+  ```
+
+- **Datastream configuration:**
+  - Source: AlloyDB (PostgreSQL)
+    - Use database proxy IP to connect, user `postgres`, database `postgres`
+    - IP Allowlisting
+    - `slot_disney` as the replication slot and `pubset` as publication
+    - Select the `disneyland_attractions` and `disneyland_reviews` from the schema `public`
+  - Destination: BigQuery
+    - Dataset: `disney`
 
 ## Challenge 2: Data Discovery & Quality
 

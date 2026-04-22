@@ -57,7 +57,7 @@ For this initial stage, you will retrieve the data from your AlloyDB operational
 
 #### Data loading in AlloyDB
 
-First, ingest 20k reviews for Disneyland amusement parks and a list of attractions into your AlloyDB for PostgreSQL cluster.
+First, ingest reviews for Disneyland amusement parks and a list of attractions into your AlloyDB for PostgreSQL cluster.
 
 > [!NOTE]  
 > You should be provided the AlloyDB credentials.
@@ -68,11 +68,15 @@ First, ingest 20k reviews for Disneyland amusement parks and a list of attractio
   - `gs://<YOUR_PROJECT_ID>/reviews.csv`
   - `gs://<YOUR_PROJECT_ID>/attractions.csv`
 
+> [!TIP]  
+> If you don't know how to write the SQL, for example to create a table, consider using the *Generate SQL* option in AlloyDB Studio Query Editor.
+> And if you don't know how to do something in Google Cloud, for example to import a CSV file from GCS to AlloyDB, consider using the Gemini Cloud Assist (click on the Gemini icon ![Gemini Icon](images/cloud-assist.svg) at the top right corner of the screen).
+
 #### Generate Embeddings
 
 To provide attraction recommendations, you need to create embeddings of attraction descriptions:
 
-- Install the `pgvector` extension in AlloyDB.
+- Install the `vector` extension in AlloyDB.
 - Add a vector column called `embedding` to your `disneyland_attractions` table.
 - Generate and populate the embedding of the descriptions using the native integration between AlloyDB and Vertex AI.
 
@@ -80,7 +84,7 @@ To provide attraction recommendations, you need to create embeddings of attracti
 
 To stream our data from AlloyDB to BigQuery, use Google Datastream. It will listen to all changes in source tables (using Change Data Capture) and send them to BigQuery.
 
-- Create a publication and replication slot on Postgres.
+- Create a [publication and a replication slot](https://docs.cloud.google.com/datastream/docs/configure-alloydb-psql#configure_alloydb_for_replication) on your AlloyDB database. You can use AlloyDB Studio, instead of `psql` to enter the SQL commands.
 - Create a source profile for your AlloyDB cluster (use the public IP address).
 - Create a destination profile for BigQuery.
 - Create a stream from AlloyDB to BigQuery.
@@ -89,14 +93,14 @@ To stream our data from AlloyDB to BigQuery, use Google Datastream. It will list
 > **Configure the dataset characteristics:**
 >
 > - Schema grouping: Single dataset for all schemas
-> - Dataset: Create one with the name `disney` in the `europe-west1` region
+> - Dataset: Use the existing dataset `disney` as the destination dataset
 > - Stream write mode: Merge
 > - Staleness limit: 0 seconds
 
 ### Success Criteria
 
-- Verify that `disneyland_reviews` has 20,000 rows and `disneyland_attractions` has 73 rows in AlloyDB.
-- Demonstrate a similarity search on attraction descriptions to identify the top 5 attractions similar to ‘Dark ride in space'.
+- Verify that `disneyland_reviews` has 42,656 rows and `disneyland_attractions` has 73 rows in AlloyDB.
+- Demonstrate a similarity search on attraction descriptions to identify the top 5 attractions similar to `Dark ride in space`.
 - Show a BigQuery Table called `disneyland_reviews` with 42,656 rows (after sync and potential historical data merge).
 - Show a BigQuery Table called `disneyland_attractions` with 73 rows.
 

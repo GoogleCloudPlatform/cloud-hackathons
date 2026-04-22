@@ -27,7 +27,8 @@ resource "google_project_service" "default" {
     "aiplatform.googleapis.com",
     "dataplex.googleapis.com",
     "artifactregistry.googleapis.com",
-    "run.googleapis.com"
+    "run.googleapis.com",
+    "servicenetworking.googleapis.com"
   ])
   service = each.key
 
@@ -78,7 +79,24 @@ data "google_compute_network" "default_network" {
   ]
 }
 
-# Random password for the AlooyDB database user
+# Reserve a range for Private Service Access
+resource "google_compute_global_address" "private_ip_alloc" {
+  name          = "alloydb-private-ip-alloc"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = data.google_compute_network.default_network.id
+}
+
+# Create the VPC Peering connection
+resource "google_service_networking_connection" "vpc_connection" {
+  network                 = data.google_compute_network.default_network.id
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.private_ip_alloc.name]
+  depends_on              = [google_project_service.default]
+}
+
+# Random password for the AlloyDB database user
 resource "random_string" "password" {
   length  = 12
   special = false
@@ -98,13 +116,20 @@ resource "google_alloydb_cluster" "default" {
     password = random_string.password.result
   }
 
-  depends_on = [google_project_service.default]
+  depends_on = [
+    google_project_service.default,
+    google_service_networking_connection.vpc_connection
+  ]
 }
 
 resource "google_alloydb_instance" "default" {
   cluster       = google_alloydb_cluster.default.name
   instance_id   = "disney-instance"
   instance_type = "PRIMARY"
+
+  database_flags = {
+    "alloydb.logical_decoding"    = "on"  # needed for replication
+  }
 
   machine_config {
     cpu_count = 2
