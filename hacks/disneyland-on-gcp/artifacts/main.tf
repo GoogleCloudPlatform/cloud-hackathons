@@ -28,7 +28,9 @@ resource "google_project_service" "default" {
     "dataplex.googleapis.com",
     "artifactregistry.googleapis.com",
     "run.googleapis.com",
-    "servicenetworking.googleapis.com"
+    "servicenetworking.googleapis.com",
+    "cloudaicompanion.googleapis.com",
+    "geminicloudassist.googleapis.com"
   ])
   service = each.key
 
@@ -77,6 +79,28 @@ data "google_compute_network" "default_network" {
     google_project_service.default,
     google_compute_network.default_network_created
   ]
+}
+
+# Allow Datastream to access the TCP Proxy
+resource "google_compute_firewall" "fwr_allow_datastream" {
+  name        = "fwr-ingress-allow-datastream-us-central1"
+  network     = data.google_compute_network.default_network.name
+  description = "Allow Datastream public IPs for us-central1 to access PostgreSQL proxy"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["5432"]
+  }
+
+  source_ranges = [
+    "34.72.28.29/32",
+    "34.67.234.134/32",
+    "34.67.6.157/32",
+    "34.72.239.218/32",
+    "34.71.242.81/32"
+  ]
+
+  target_tags = ["tcp-proxy"]
 }
 
 # Reserve a range for Private Service Access
@@ -128,7 +152,7 @@ resource "google_alloydb_instance" "default" {
   instance_type = "PRIMARY"
 
   database_flags = {
-    "alloydb.logical_decoding"    = "on"  # needed for replication
+    "alloydb.logical_decoding" = "on" # needed for replication
   }
 
   machine_config {
@@ -157,20 +181,77 @@ resource "google_bigquery_dataset" "disney" {
 }
 
 # BigQuery Cloud Resource Connection
-resource "google_bigquery_connection" "vertex_ai_conn" {
-  connection_id = "vertex_ai_conn"
+resource "google_bigquery_connection" "agent_platform" {
+  connection_id = "conn"
   location      = var.gcp_region
-  friendly_name = "Connection to Vertex AI"
+  friendly_name = "Connection to Agent Platform"
   cloud_resource {}
 
   depends_on = [google_project_service.default]
 }
 
-# Grant Vertex AI User to BigQuery Connection Service Account
-resource "google_project_iam_member" "bq_connection_vertex_ai" {
+# Grant Agent Platform User to BigQuery Connection Service Account
+resource "google_project_iam_member" "bq_connection_roles" {
   project = var.gcp_project_id
   role    = "roles/aiplatform.user"
-  member  = "serviceAccount:${google_bigquery_connection.vertex_ai_conn.cloud_resource[0].service_account_id}"
+  member  = "serviceAccount:${google_bigquery_connection.agent_platform.cloud_resource[0].service_account_id}"
+}
 
-  depends_on = [google_bigquery_connection.vertex_ai_conn]
+# AlloyDB Service Agent
+resource "google_project_service_identity" "alloydb_sa" {
+  provider = google-beta
+  project  = var.gcp_project_id
+  service  = "alloydb.googleapis.com"
+}
+
+# Grant Agent Platform User to AlloyDB Service Agent
+resource "google_project_iam_member" "alloydb_sa_roles" {
+  project = var.gcp_project_id
+  role    = "roles/aiplatform.user"
+  member  = "serviceAccount:${google_project_service_identity.alloydb_sa.email}"
+}
+
+# TCP Proxy for AlloyDB (Datastream)
+resource "google_compute_instance" "gce_tcp_proxy" {
+  name         = "gce-tcp-proxy"
+  machine_type = "e2-micro"
+  zone         = var.gcp_zone
+  tags         = ["tcp-proxy"]
+
+  boot_disk {
+    initialize_params {
+      image = "projects/cos-cloud/global/images/family/cos-stable"
+    }
+  }
+
+  network_interface {
+    network = data.google_compute_network.default_network.id
+    access_config {
+      // Ephemeral public IP
+    }
+  }
+
+  can_ip_forward = true
+
+  metadata = {
+    startup-script = <<-EOT
+      #! /bin/bash
+      # Configure Docker
+      mkdir -p /etc/docker
+      cat <<EOF > /etc/docker/daemon.json
+      {"bridge":"none"}
+      EOF
+      systemctl restart docker
+
+      # Run the TCP proxy container
+      docker run -d --name=tcp-proxy \
+        --restart=always \
+        --net=host \
+        -e SOURCE_CONFIG=${google_alloydb_instance.default.ip_address}:5432 \
+        gcr.io/dms-images/tcp-proxy
+      iptables -A INPUT -p tcp --dport 5432 -j ACCEPT
+    EOT
+  }
+
+  depends_on = [google_alloydb_instance.default]
 }

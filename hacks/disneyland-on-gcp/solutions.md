@@ -10,15 +10,10 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
 ## Coach's Guides
 
 - Challenge 1: Data Ingestion & Sync
-  - Load data into AlloyDB, create embeddings for similarity search, and sync data to BigQuery using Datastream.
 - Challenge 2: Data Discovery & Quality
-  - Explore data semantically in BigQuery, perform profiling and quality scans, and use Gemini for data preparation.
 - Challenge 3: Multi-modal Analysis
-  - Analyze attraction images and build a RAG system to query park brochures using PDF chunking and vector search.
 - Challenge 4: ML & Reverse-ETL
-  - Forecast waiting times, classify rides by intensity, and implement Reverse-ETL to move insights back to AlloyDB.
 - Challenge 5: Intelligent Agents
-  - Create conversational analytics agents in BigQuery and build a custom AI agent using ADK and MCP Toolbox.
 
 ## Challenge 1: Data Ingestion & Sync
 
@@ -30,7 +25,7 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
 
     ```sql
     CREATE TABLE disneyland_reviews (
-        review_id INT PRIMARY KEY,
+        review_id INT,
         rating INT,
         year_month TEXT,
         reviewer_location TEXT,
@@ -39,7 +34,7 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
     );
 
     CREATE TABLE disneyland_attractions (
-        attraction_id INT PRIMARY KEY,
+        attraction_id INT,
         branch TEXT,
         name TEXT,
         description TEXT
@@ -65,7 +60,7 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
    ```sql
    SELECT
     name,
-    description,
+   -- description,
     branch
    FROM
     disneyland_attractions
@@ -74,6 +69,16 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
    LIMIT
     5;
    ```
+
+The search should return something like this:
+
+| name | branch |
+| --- | --- |
+| Hyperspace Mountain | Disneyland_HongKong |
+| Space Mountain | Disneyland_California |
+| Les Voyages de Pinocchio | Disneyland_Paris |
+| Blanche-Neige et les Sept Nains | Disneyland_Paris |
+| Peter Pan's Flight | Disneyland_Paris |
 
 #### 2. Sync to BigQuery with Datastream
 
@@ -85,7 +90,7 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
     SELECT PG_CREATE_LOGICAL_REPLICATION_SLOT('slot_disney', 'pgoutput');
     ```
 
-- **Public IP Allowlisting:** In case any other location is chosen, this is the approach
+- **Public IP Allowlisting:** In case any other location is chosen, you need to open up the firewall
 
   ```shell
   gcloud compute firewall-rules create allow-datastream-us-central1 \

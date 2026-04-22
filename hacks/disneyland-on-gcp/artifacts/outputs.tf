@@ -16,8 +16,8 @@ output "project_id" {
   value = var.gcp_project_id
 }
 
-output "alloydb_ip" {
-  value = google_alloydb_instance.default.ip_address
+output "alloydb_proxy_ip" {
+  value = google_compute_instance.gce_tcp_proxy.network_interface[0].access_config[0].nat_ip
 }
 
 output "alloydb_usr" {
@@ -27,8 +27,4 @@ output "alloydb_usr" {
 output "alloydb_pwd" {
   value     = google_alloydb_cluster.default.initial_user[0].password
   sensitive = true
-}
-
-output "bq_connection_id" {
-  value = google_bigquery_connection.vertex_ai_conn.connection_id
 }
