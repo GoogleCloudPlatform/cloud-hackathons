@@ -94,3 +94,9 @@ environment:
     reference: project.project_id
   - label: AlloyDB IP
     reference: project.startup_script.alloydb_ip
+  - label: AlloyDB User
+    reference: project.startup_script.alloydb_usr
+  - label: AlloyDB Password
+    reference: project.startup_script.alloydb_pwd
+
+

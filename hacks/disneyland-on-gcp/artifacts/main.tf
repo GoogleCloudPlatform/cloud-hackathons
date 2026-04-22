@@ -13,7 +13,7 @@
 # limitations under the License.
 
 resource "google_project_service" "default" {
-  project  = var.gcp_project_id
+  project = var.gcp_project_id
   for_each = toset([
     "cloudresourcemanager.googleapis.com",
     "serviceusage.googleapis.com",
@@ -78,6 +78,7 @@ data "google_compute_network" "default_network" {
   ]
 }
 
+# Random password for the AlooyDB database user
 resource "random_string" "password" {
   length  = 12
   special = false
@@ -112,13 +113,20 @@ resource "google_alloydb_instance" "default" {
   depends_on = [google_alloydb_cluster.default]
 }
 
+# Storage Bucket
+resource "google_storage_bucket" "disney" {
+  name                        = var.gcp_project_id
+  location                    = var.gcp_region
+  uniform_bucket_level_access = true
+}
+
 # BigQuery Dataset
 resource "google_bigquery_dataset" "disney" {
-  dataset_id                  = "disney"
-  friendly_name               = "Disneyland Data"
-  description                 = "Dataset for Disneyland Data Analytics"
-  location                    = var.gcp_region
-  delete_contents_on_destroy  = true
+  dataset_id                 = "disney"
+  friendly_name              = "Disneyland Data"
+  description                = "Dataset for Disneyland Data Analytics"
+  location                   = var.gcp_region
+  delete_contents_on_destroy = true
 
   depends_on = [google_project_service.default]
 }

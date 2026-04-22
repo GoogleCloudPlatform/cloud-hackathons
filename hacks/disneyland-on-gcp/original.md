@@ -2,12 +2,12 @@
 
 ## 🏰 Disneyland Data Analytics Hackathon (2nd Edition - 3rd Dec) 🏰
 
-| <strong>Summary</strong> | In this Hackathon, you will build an end-to-end data analytics pipeline leveraging AI/ML capabilities on Google Cloud. You&#39;ll load data into <strong>AlloyDB</strong>, a fully-managed, PostgreSQL-compatible database optimized for demanding workloads, then use <strong>Datastream</strong>, a serverless change data capture (CDC) service, to move it to <strong>BigQuery</strong>, Google Cloud&#39;s serverless data warehouse. In BigQuery, you&#39;ll apply <strong>BigQuery ML</strong>, which allows you to create and execute machine learning models directly in BigQuery using standard SQL, for review analysis and attendance forecasting. Finally, you&#39;ll play around with agents, either out of the box through <strong>Conversational Analytics</strong> &amp; Data Agents or create a custom agent, powered by <strong>Agent Development Kit</strong> and  <strong>MCP toolbox</strong> for natural language interaction with your data. |
+| **Summary** | In this Hackathon, you will build an end-to-end data analytics pipeline leveraging AI/ML capabilities on Google Cloud. You&#39;ll load data into **AlloyDB**, a fully-managed, PostgreSQL-compatible database optimized for demanding workloads, then use **Datastream**, a serverless change data capture (CDC) service, to move it to **BigQuery**, Google Cloud&#39;s serverless data warehouse. In BigQuery, you&#39;ll apply **BigQuery ML**, which allows you to create and execute machine learning models directly in BigQuery using standard SQL, for review analysis and attendance forecasting. Finally, you&#39;ll play around with agents, either out of the box through **Conversational Analytics** &amp; Data Agents or create a custom agent, powered by **Agent Development Kit** and  **MCP toolbox** for natural language interaction with your data. |
 | --- | --- |
-| <strong>categories</strong> | docType:Codelab, product:Bigquery |
-| <strong>Author</strong> | Rayhane Rezgui, Matt Cornillon |
-| <strong>Layout</strong> | scrolling |
-| <strong>Robots</strong> | noindex |
+| **categories** | docType:Codelab, product:Bigquery |
+| **Author** | Rayhane Rezgui, Matt Cornillon |
+| **Layout** | scrolling |
+| **Robots** | noindex |
 
 ## Introduction
 
@@ -25,9 +25,9 @@ In this Hackathon, you're building your ultimate Disneyland planning tool. We've
 
 Get ready to unlock the secrets of the most magical places on Earth and build a data analytics pipeline that would make Mickey proud!
 
-<img src="img/a5db692deef31d78.jpeg" alt="a5db692deef31d78.jpeg"  width="624.00" />
+![a5db692deef31d78.jpeg](images/a5db692deef31d78.jpeg)
 
-<img src="img/db26cb0beaf5a543.jpeg" alt="db26cb0beaf5a543.jpeg"  width="624.00" />
+![db26cb0beaf5a543.jpeg](images/db26cb0beaf5a543.jpeg)
 
 ## Task 1: From Operational to Analytical; Analyze Disneyland reviews with Gemini
 
@@ -53,12 +53,12 @@ We are gonna ingest 20k reviews for DisneyLand amusement parks and a list of att
 
 The steps you need to take are as follows:
 
-#### **Tables creation:**
+#### Tables creation
 
 * Create a table **disneyland_reviews** with 6 columns: review_id and rating as integer, year_month, reviewer_location, review_text, branch as text.
 * Create a table **disneyland_attractions** with 4 columns: attraction_id as integer, branch, name and description as text.
 
-#### **Using the tool of your choice, import data from the CSVs:**
+#### Using the tool of your choice, import data from the CSVs
 
 * `gs://hackathon_data_disneyland_&lt;YOUR_PROJECT_3DIGITS&gt;/reviews.csv` for the reviews table
 * `gs://hackathon_data_disneyland_&lt;YOUR_PROJECT_3DIGITS&gt;/attractions.csv` for the attractions table
@@ -69,7 +69,7 @@ The steps you need to take are as follows:
 >
 > Or you can use the import API of AlloyDB using the UI or gcloud!
 
-#### **To provide attractions recommendation, we need to create embeddings of attractions description:**
+#### To provide attractions recommendation, we need to create embeddings of attractions description
 
 * Install the pgvector extension in AlloyDB
 * Add a vector column called "embedding" to your table attraction
@@ -95,7 +95,7 @@ To be able to replicate changes from AlloyDB with Datastream, we need to create 
 
 Execute the following queries on your AlloyDB cluster (you need to run them one at a time):
 
-```
+```sql
 CREATE PUBLICATION pub_disney FOR TABLE disneyland_reviews, disneyland_attractions;
 
 ALTER USER postgres WITH REPLICATION;
@@ -138,28 +138,28 @@ Now that we have our data in BigQuery, let's make sure we know the new enhanceme
 
 We have 3 new functions that you can already see in the BigQuery exploration panel.
 
-<img src="img/bcafae83cfd4f968.png" alt="bcafae83cfd4f968.png"  width="197.00" />
+![bcafae83cfd4f968.png](images/bcafae83cfd4f968.png)
 
 * **Overview:** contains information about BigQuery features, tours to get started on analysis amongst other possibilities.
 * **Search:** perform semantic search on your data assets.
 * **Agents:** Shhh! We'll save this for later 🤫
 
-#### **Search your data semantically in BigQuery**
+#### Search your data semantically in BigQuery
 
 Go to the Search tab in BigQuery exploration panel, and play around with terms related to disney like "attractions" or "branch".
 
-#### **Visualize your Data in BigQuery**
+#### Visualize your Data in BigQuery
 
 You can now visualize and manipulate your data in BigQuery. For this, you can run this query in a new query tab;
 
-```
+```sql
 SELECT
   *
 FROM
   [dataset_name].[table_name];
 ```
 
-#### **Generate data insights on the reviews table**
+#### Generate data insights on the reviews table
 
 In this task, you will enable data insights on the `disneyland_reviews` table within the `disney` dataset.
 
@@ -167,13 +167,13 @@ In this task, you will enable data insights on the `disneyland_reviews` table wi
 
 **This might take a few minutes.**
 
-**Query the disneyland_reviews table without SQL**
+### Query the disneyland_reviews table without SQL
 
 The insights you generated in the previous section are now ready. In this task, you will use a prompt generated from these insights to query the `disneyland_reviews` table without using code.
 
 Select an insight and run the query associated with it. For example, find the query that calculates the difference in the average rating between consecutive months for each branch. It would look like this:
 
-```
+```sql
 WITH
  monthly_avg AS (
  SELECT
@@ -199,7 +199,7 @@ ORDER BY
  year_month;
 ```
 
-**Use BigQuery Knowledge engine to better understand the data**
+### Use BigQuery Knowledge engine to better understand the data
 
 First things first; let's start with looking at the **Insights** tab on a dataset level; this will give us an idea on the hidden relationships across tables in the disney dataset. Then,
 
@@ -212,7 +212,7 @@ First things first; let's start with looking at the **Insights** tab on a datase
 >
 > * Gemini-generated descriptions added to the details of the dataset, tables and columns
 
-#### **Perform a profile scan of your data**
+#### Perform a profile scan of your data
 
 The goal of this section is to clean and prepare your data. However, you're not very familiar with the distribution of the values of each column. You need to profile your data to know what kind of transformation steps you need to perform on your data.
 
@@ -227,7 +227,7 @@ Answer the following questions:
 * Are all reviews unique?
 * What's the percentage of missing data from the Year_Month column?
 
-#### **Perform a quality scan of your data**
+#### Perform a quality scan of your data
 
 Dataplex Universal Catalog  [automatic data quality](https://cloud.google.com/dataplex/docs/auto-data-quality-overview) lets you define and measure the quality of the data in your BigQuery tables. You can automate the scanning of data, validate data against defined rules, and log alerts if your data doesn't meet quality requirements. You can manage data quality rules and deployments as code, improving the integrity of data production pipelines.
 
@@ -241,7 +241,7 @@ Based on the profile scan, define a quality scan (on no more than 10% of your da
 
 Think about all the potential transformations you need to apply to your data.
 
-#### **Prepare your data using Gemini's Data Preparation**
+#### Prepare your data using Gemini's Data Preparation
 
 Following the data quality and profiling scans you performed, it's time to clean the data before analyzing it.
 
@@ -280,29 +280,29 @@ You can choose to use  [ML.GENERATE_TEXT](https://cloud.google.com/bigquery/docs
 
 The following steps guide you through if you want to use ML.GENERATE_TEXT.
 
-#### **Create the cloud resource connection and grant IAM role**
+#### Create the cloud resource connection and grant IAM role
 
 You need to create a Cloud resource connection in BigQuery to Vertex AI models, so you can work with Gemini Pro and Gemini Flash models. You will also grant the cloud resource connection's service account IAM permissions, through a role, to enable it access the Vertex AI services.
 
-#### **Grant Vertex AI User role to the connection's service account**
+#### Grant Vertex AI User role to the connection's service account
 
 Allow the connection's service account to use your chosen model (for example `gemini-2.5-flash`), by granting it the Vertex AI User role. It takes 1 minute for the permission to propagate.
 
-#### **Create the Gemini models in BigQuery**
+#### Create the Gemini models in BigQuery
 
 Create your model by using the connection above. Use for example the endpoint `gemini-2.5-flash.`
 
-#### **Prompt Gemini to analyze customer reviews for categories and sentiment**
+#### Prompt Gemini to analyze customer reviews for categories and sentiment
 
 In this task, you will use the Gemini model to analyze each customer review for categories and sentiment, either positive or negative.
 
-##### **Analyze the customer reviews for categories**
+##### Analyze the customer reviews for categories
 
 Note: From now on, for the analysis, **we'll only take 100 rows**, as Gemini call on 20k rows can take a while.
 
 * `Extract categories by modifying and running the following SQL Query:`
 
-```
+```sql
 CREATE OR REPLACE TABLE
 [dataset_name].[results_table_name] AS (
 SELECT Review_ID, Rating, Year_Month, Reviewer_Location, Review_Text, Branch, ml_generate_text_llm_result AS categories FROM
@@ -325,13 +325,13 @@ Please wait. The model takes approximately 30 seconds to process the customer re
 
 Display the results:
 
-```
+```sql
 SELECT * FROM [dataset_name].[results_table_name];
 ```
 
 Take some time to read some of the categories.
 
-##### **Analyze the customer reviews for positive and negative sentiment**
+##### Analyze the customer reviews for positive and negative sentiment
 
 Based on the SQL query for Keyword extraction, write a query that analyses review into Positive, Negative and Neutral under a column called "sentiment".
 
@@ -341,7 +341,7 @@ When the model is finished, the result is in the **`reviews_analysis`** table th
 
 Explore the results:
 
-```
+```sql
 SELECT * FROM [...];
 ```
 
@@ -355,7 +355,7 @@ Create a view that sanitizes the values of the column sentiment by:
 * Using LOWER to make sure all the values are lowercase.
 * Removing punctuation (. and , and space) by using REPLACE
 
-```
+```sql
 CREATE OR REPLACE VIEW [view_name] AS
 SELECT [SANITIZATION_EXPRESSION] AS sentiment,
 Review_ID, Rating, Year_Month, Reviewer_Location, Review_Text, Branch,
@@ -366,17 +366,17 @@ The query creates the view **`cleaned_data_view`** and includes the sentiment re
 
 1. You can query the view with the query below, to see the rows created.
 
-```
+```sql
 SELECT * FROM [view_name];
 ```
 
-#### **Create a report of positive and negative review counts with Data Canvas**
+#### Create a report of positive and negative review counts with Data Canvas
 
 Now, it's time to analyze your results. Let's start by doing directly in BigQuery, through Data Canvas. This is a tool that allows you to search data (semantically or keyword), query and join tables, create graphs and get insights by creating a flow of canvas.
 
 Your final goal is to create a graph of your choice of the percentages of positive vs negative reviews . Here's an example:
 
-<img src="img/c599269a77b3933c.png" alt="c599269a77b3933c.png"  width="382.50" />
+![c599269a77b3933c.png](images/c599269a77b3933c.png)
 
 #### **Create a graph of the number of reviews per category, as well as the distribution of positive and negative reviews for each category**
 
@@ -396,15 +396,15 @@ Tip: Activate and use Data Canvas's **Advanced Analysis**, which runs a Python N
 
 Duration: 30:00
 
-#### **Image Analysis in BigQuery**
+### Image Analysis in BigQuery
 
 You have access to some thrilling and appealing pictures of Attraction parc that visitors took along the years. You're so excited for your upcoming trip! However, you don't know which ones are actual photos of disneyland. You're tasked with identifying those. The pictures are located in **`gs://hackathon_data_disneyland_&lt;YOUR_PROJECT_3DIGITS&gt;/attraction_parc_photos/`**.
 
-<img src="img/ed155804de3f13e7.png" alt="ed155804de3f13e7.png"  width="322.57" />
+![ed155804de3f13e7.png](images/ed155804de3f13e7.png)
 
 **Is_disneyland:** False
 
-<img src="img/e201eb9a26faa4c.jpeg" alt="e201eb9a26faa4c.jpeg"  width="323.00" />
+![e201eb9a26faa4c.jpeg](images/e201eb9a26faa4c.jpeg)
 
 **Is_disneyland:** True
 
@@ -423,7 +423,7 @@ In order to rapidly perform this analysis. You should use BigQuery's object tabl
 
 Can you verify the output of Gemini by checking some photos?
 
-#### **Create your own RAG system with BigQuery on Disneyland brochures**
+### Create your own RAG system with BigQuery on Disneyland brochures
 
 While waiting in line, you want to get some fun facts/technical details about the attraction you're waiting for.
 
@@ -436,7 +436,7 @@ To achieve this, you need to:
 * Create an object table of pdf files
 * Create a Python UDF to chunk PDF files. Here's an example you can use:
 
-```
+```sql
 CREATE OR REPLACE FUNCTION disney.chunk_pdf(src_json STRING, chunk_size INT64, overlap_size INT64)
 RETURNS ARRAY<STRING>
 LANGUAGE python
@@ -510,7 +510,7 @@ def chunk_pdf(src_ref: str, chunk_size: int, overlap_size: int) -> str:
 
 Duration: 30:00
 
-#### **Forecast Waiting times**
+### Forecast Waiting times
 
 The pictures are very cool! You can't wait! Now in order to know which attractions to choose and which ones to avoid, you want to know the actual waiting times for some of the attractions between Paris and California. Your task is to forecast waiting_times of every attraction  using Machine Learning (Arima plus or TimesFM) for every 30mns in 2025.
 
@@ -541,7 +541,7 @@ The steps of your task are:
 >
 > * A table containing the forecasted data named timesfm_forecasted_waiting_time
 
-#### **Classify the rides by intensity**
+### Classify the rides by intensity
 
 You're visiting Disneyland with friends, and while the park is generally family-friendly, some rides can be too intense for some people. Let's use BigQuery Managed AI functions to classify and rank the attractions by thrill & intensity level, without human bias, so we can accommodate to everyone.
 
@@ -553,7 +553,7 @@ You're visiting Disneyland with friends, and while the park is generally family-
 >
 > * A table with a column class with the extracted category
 
-#### **Rank rides on thrill level**
+### **Rank rides on thrill level**
 
 * Use `AI.SCORE` to compare and order attractions based on a **thrill level**, where Rank 10 is the most extreme and Rank 1 is the least.
 
@@ -579,7 +579,7 @@ In order to do that, we are gonna use a brand new feature, still in private prev
 
 First, you need to grant your AlloyDB cluster service account the necessary privileges to query BigQuery.
 
-```
+```shell
 gcloud beta alloydb clusters describe <CLUSTER ID> --region=europe-west1
 ```
 
@@ -602,7 +602,7 @@ Now, go to AlloyDB Studio in the Console and connect to the "postgres" database.
 
 Execute the following queries to install and configure the new feature:
 
-```
+```sql
 CREATE EXTENSION bigquery_fdw; 
 
 CREATE SERVER bq_disney FOREIGN DATA WRAPPER bigquery_fdw; 
@@ -612,7 +612,7 @@ CREATE USER MAPPING FOR postgres SERVER bq_disney ;
 
 You can now create a "foreign table" that will be mapped to a current table in BigQuery. Use any table you created in Task 3. Here's an example of the syntax:
 
-```
+```sql
 CREATE FOREIGN TABLE reviews_analysis ( "Review_ID" int,
     "Sentiment" text) SERVER bq_disney OPTIONS (PROJECT 'bqml-hack25par-xxx',
     dataset 'disney',
@@ -638,7 +638,7 @@ You have friends who want to contribute to the Disneyland Application project. T
 * Collaborate on SQL code.
 * Talk to their Data.
 
-#### **Data Engineering Agents for automating your Data Pipelines**
+### **Data Engineering Agents for automating your Data Pipelines**
 
 Create a new view average_waiting_time that joins the table waiting time and attractions, and calculates the average waiting_time per attraction, using the Data Engineering Agent.  
 
@@ -649,12 +649,12 @@ Create a new view average_waiting_time that joins the table waiting time and att
 > * A data pipeline created in BigQuery's Data Pipelines
 > * A view average_waiting_time with the relevant columns
 
-#### **Create your Conversational Analytics agent in BigQuery**
+### **Create your Conversational Analytics agent in BigQuery**
 
 What if you could create an agent to talk to your data, without coding, without SQL, and without deployment, and from BigQuery's interface, how cool would that be?
 Well it's possible today with the "Agents" tab in BigQuery.
 
-<img src="img/98570651479cfd3.png" alt="98570651479cfd3.png"  width="624.00" />
+![98570651479cfd3.png](images/98570651479cfd3.png)
 
 * Create an agent my_disney_friend, that connects to your disney tables. You can improve the agent performance by filling the Agent instructions. Ask questions like "what percentage of positive vs negative reviews, what's the average waiting time per attraction,etc ... ?"
 * Publish the agent in BigQuery and on API (you will be using it later).
@@ -701,9 +701,9 @@ In this task, your goal is to:
 > * Two successful prompts that you used to generate insights from your AlloyDB and BigQuery data
 > * The two HTML pages that describe the data in BigQuery and AlloyDB
 
-Here are some examples of what you could generate in a single (or few) prompts with Gemini-CLI and its extensions. Now imagine that you could do that with real life applications?  <img src="img/147214db02ae32f7.png" alt="147214db02ae32f7.png"  width="379.50" />
+Here are some examples of what you could generate in a single (or few) prompts with Gemini-CLI and its extensions. Now imagine that you could do that with real life applications?  ![147214db02ae32f7.png](images/147214db02ae32f7.png)
 
-<img src="img/d73dda1665b16c66.png" alt="d73dda1665b16c66.png"  width="383.49" />
+![d73dda1665b16c66.png](images/d73dda1665b16c66.png)
 
 ## Task 6: Create an AI agent to interact with your data
 
