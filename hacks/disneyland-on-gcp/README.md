@@ -28,12 +28,16 @@ In this hack, you will build an end-to-end data analytics pipeline leveraging AI
   - Load data into AlloyDB, create embeddings for similarity search, and sync data to BigQuery using Datastream.
 - Challenge 2: Data Discovery & Quality
   - Explore data semantically in BigQuery, perform profiling and quality scans, and use Gemini for data preparation.
-- Challenge 3: Multi-modal Analysis
-  - Analyze attraction images and build a RAG system to query park brochures using PDF chunking and vector search.
-- Challenge 4: ML & Reverse-ETL
-  - Forecast waiting times, classify rides by intensity, and implement Reverse-ETL to move insights back to AlloyDB.
-- Challenge 5: Intelligent Agents
-  - Create conversational analytics agents in BigQuery and build a custom AI agent using ADK and MCP Toolbox.
+- Challenge 3: Sentiment & Categorization with Gemini
+  - Use BigQuery ML and Gemini to analyze reviews for sentiment and categories, and visualize insights with Data Canvas.
+- Challenge 4: Multimodal Analytics (Images & PDFs)
+  - Perform image analysis and build a RAG system for PDF brochures entirely within BigQuery.
+- Challenge 5: Predictive Analytics & Classification
+  - Forecast waiting times and use advanced AI functions to classify and rank attractions by intensity.
+- Challenge 6: Operationalizing Insights & Data Agents
+  - Sync data back to AlloyDB using Reverse-ETL and leverage out-of-the-box Data Agents for natural language interaction.
+- Challenge 7: Intelligent Interaction & Agents
+  - Use Gemini-CLI for rapid data exploration and build a custom AI agent using Agent Development Kit (ADK) and MCP toolbox.
 
 ## Prerequisites
 
@@ -139,7 +143,7 @@ It's also possible to generate dataset level insights to capture any hidden rela
 
 The goal of this section is to clean and prepare your data. However, you're not very familiar with the distribution of the values of each column. You need to profile your data to know what kind of transformation steps you need to perform on your data.
 
-Google Cloud's *Knowledge Catalog* automates [profiling scans](https://cloud.google.com/dataplex/docs/data-profiling-overview) to deliver consistent data quality metrics. Key statistics identified include null counts, distinct values, data ranges, and value distributions. It's possible to activate a profile scan through the BigQuery Interface.
+Google Cloud's *Knowledge Catalog* automates profiling scans to deliver consistent data quality metrics. Key statistics identified include null counts, distinct values, data ranges, and value distributions. It's possible to activate a profile scan through the BigQuery Interface.
 
 Go ahead and do a *Quick data profile* for the `reviews` table and answer the following questions:
 
@@ -148,7 +152,7 @@ Go ahead and do a *Quick data profile* for the `reviews` table and answer the fo
 - Are all reviews unique?
 - What's the percentage of "missing" data from the year_month column?
 
-*Knowledge Catalog* also has support for [automatic data quality](https://cloud.google.com/dataplex/docs/auto-data-quality-overview) which lets you define and measure the quality of the data in your BigQuery tables. You can automate the scanning of data, validate data against defined rules, and log alerts if your data doesn't meet quality requirements. You can manage data quality rules and deployments as code, improving the integrity of data production pipelines.
+*Knowledge Catalog* also has support for automatic data quality which lets you define and measure the quality of the data in your BigQuery tables. You can automate the scanning of data, validate data against defined rules, and log alerts if your data doesn't meet quality requirements. You can manage data quality rules and deployments as code, improving the integrity of data production pipelines.
 
 Define and run a quality scan on the same table with the following rules (stick to defaults for anything else):
 
@@ -164,7 +168,7 @@ Define and run a quality scan on the same table with the following rules (stick 
 
 Following the data quality and profiling scans you performed, it's time to clean the data before analyzing it.
 
-[Data preparations](https://cloud.google.com/bigquery/docs/data-prep-get-suggestions) are [BigQuery](https://cloud.google.com/bigquery/docs/query-overview#bigquery-studio) resources, which use Gemini in BigQuery to analyze your data and provide intelligent suggestions for cleaning, transforming, and enriching it. You can significantly reduce the time and effort required for manual data preparation tasks.
+*Data preparations* are BigQuery resources, which use Gemini in BigQuery to analyze your data and provide intelligent suggestions for cleaning, transforming, and enriching it. You can significantly reduce the time and effort required for manual data preparation tasks.
 
 Use Gemini-powered *Data Preparation* to clean your data:
 
@@ -184,153 +188,171 @@ Use Gemini-powered *Data Preparation* to clean your data:
 ### Learning Resources
 
 - [BigQuery Data Insights](https://cloud.google.com/bigquery/docs/data-insights)
-- [Dataplex Data Profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview)
+- [BigQuery Data Profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview)
+- [BigQuery Data Quality](https://cloud.google.com/dataplex/docs/auto-data-quality-overview)
 - [BigQuery Data Preparation Suggestions](https://cloud.google.com/bigquery/docs/data-prep-get-suggestions)
 
-## Challenge 3: Multi-modal Analysis
+## Challenge 3: Sentiment & Categorization with Gemini
 
 ### Introduction
 
-In this challenge, you'll step beyond structured data and explore how to analyze images and unstructured documents (PDFs) directly within BigQuery.
+Now that you've cleaned your data, you can start analyzing it using BigQuery ML and Gemini models. Your goal is to extract categories from reviews and perform sentiment analysis to understand visitor experiences better.
 
 ### Description
 
-#### Image Analysis in BigQuery
+#### Analyze Reviews with Gemini
 
-You have photos taken by visitors in `gs://<YOUR_PROJECT_ID>/attraction_parc_photos/`.
+We'll use BigQuery ML `AI.GENERATE_TEXT` function to access Gemini models and generate text. Before we can use that function we'll have to create a model in BigQuery.
 
-![Attraction Photos](images/ed155804de3f13e7.png)
+Once the model is created, we can start using it for the following tasks:
 
-- Use BigQuery Object Tables and Gemini (via `ML.GENERATE_TEXT`) to identify which photos are actually from Disneyland.
-- Create a column `is_disneyland` (boolean) to store the result.
+- **Extract Categories:** Analyze a sample of 100 reviews from `disneyland_reviews` to identify categories (e.g., cleanliness, food, waiting time). Each review could have multiple categories, assume that the category column is a comma separated list. Store the results in a table `reviews_categories`. The new table should contain all of the columns from the original `disneyland_reviews` table and one more text column called `categories`.
+- **Sentiment Analysis:** Classify the same 100 reviews into *Positive*, *Negative*, or *Neutral* sentiments. Store these in a table `reviews_analysis`. Make sure that the generated text is only the sentiment (without any punctuation or additional text). Similar to previous task, the new table should contain all of the columns from the original `disneyland_reviews` table and one more text column called `sentiment`.
 
-![Is Disneyland Result](images/e201eb9a26faa4c.jpeg)
+> [!NOTE]  
+> Make sure to use a sample of 100 (using the LIMIT clause) so that processing is quick, running Gemini on 40K rows could take a while.
 
-#### RAG System for Park Brochures
+#### Visualize with Data Canvas
 
-Create a Retrieval-Augmented Generation (RAG) system using park brochures in `gs://<YOUR_PROJECT_ID>/disneyland_brochures/`.
+Use BigQuery's *Data Canvas* to explore your results visually.
 
-- Create an Object Table for the PDF files.
-- Create a Python UDF to chunk the PDF files.
-- Parse the PDFs, generate embeddings, and store them in a table.
-- Implement a vector search to answer questions like: *"Where to eat a tex-mex meal buffet-style?"*
+- Create a graph showing the percentage of positive vs. negative reviews.
+- Create another graph showing the number of reviews per category and the sentiment distribution within each category (make sure that the category list is split).
+
+> [!NOTE]
+> You can use Data Canvas' *Canvas Assistant* feature to help you.
 
 ### Success Criteria
 
-- Show an object table referencing the images and a results table `images_analysis` with the `is_disneyland` classification.
-- Demonstrate the Python UDF for PDF chunking.
-- Show a successful vector search and an augmented answer for a question about the park brochures.
-
-### Tips
-
-- You might need to grant the `Vertex AI User` role to the BigQuery connection service account.
-- The UDF function can take up to 3 minutes to be created.
+- Table `reviews_categories` with extracted categories for 100 reviews.
+- Table `reviews_analysis` with sentiment classification for 100 reviews.
+- A Data Canvas showing the required graphs and insights.
 
 ### Learning Resources
 
-- [BigQuery Object Tables](https://cloud.google.com/bigquery/docs/object-table-introduction)
-- [Multimodal RAG in BigQuery](https://cloud.google.com/bigquery/docs/multimodal-data-sql-tutorial)
+- [BigQuery AI.GENERATE_TEXT function](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-generate-text)
 
-## Challenge 4: ML & Reverse-ETL
+## Challenge 4: Multimodal Analytics (Images & PDFs)
 
 ### Introduction
 
-Now you'll use BigQuery's advanced ML capabilities to forecast wait times and classify attractions. Finally, you'll close the loop by moving these insights back to your operational database.
+Disneyland isn't just about text; it's about magic you can see and read about! In this challenge, you'll use BigQuery's multimodal capabilities to analyze images and build a RAG (Retrieval-Augmented Generation) system for brochures.
+
+### Description
+
+#### Image Analysis
+
+You have photos taken by visitors in `gs://<YOUR_BUCKET>/attraction_parc_photos/`. Some are from Disneyland, some are not.
+
+- Create an **Object Table** in BigQuery that references these images.
+- Use Gemini via BigQuery ML to identify which photos are actually from Disneyland.
+- Create a table `images_analysis` with a boolean column `is_disneyland`.
+
+#### RAG System for Brochures
+
+While waiting in line, visitors want fun facts. You have PDF brochures in `gs://<YOUR_BUCKET>/disneyland_brochures/`.
+
+- Create an **Object Table** for the PDF files.
+- Use the pre-provided Python UDF `chunk_pdf` to parse the PDFs into chunks.
+- Generate embeddings for these chunks using a remote model.
+- Perform a **Vector Search** to answer questions like: *"Where to eat a tex-mex meal buffet-style?"*
+- Generate an augmented answer using the search results.
+
+> [!NOTE]
+> The Python UDF `chunk_pdf` is already created for you in the `disney` dataset. You just need to call it!
+
+### Success Criteria
+
+- An Object Table for images and a successful analysis identifying Disneyland photos.
+- An Object Table for PDFs.
+- A table containing embeddings for the PDF chunks.
+- A successful Vector Search and an AI-generated answer based on the brochures.
+
+## Challenge 5: Predictive Analytics & Classification
+
+### Introduction
+
+Predicting the future and understanding ride intensity is key to a perfect visit. In this challenge, you'll forecast waiting times and classify attractions.
 
 ### Description
 
 #### Forecast Waiting Times
 
-Predict the waiting times for attractions using historical data in `gs://<YOUR_PROJECT_ID>/waiting_times.csv`.
+Load the historical data from `gs://<YOUR_BUCKET>/waiting_times.csv` into a BigQuery table `waiting_times`.
 
-- Load the data into a BigQuery table `waiting_times`.
-- Train a forecasting model (Arima_Plus or TimesFM) or use `AI.FORECAST`.
-- Forecast waiting times for every 30 minutes in 2025.
+- Train a forecasting model (using `ARIMA_PLUS` or `TimesFM`) to predict waiting times for every 30 minutes in 2025.
+- Evaluate the model's performance and store the results in `forecasted_waiting_time`.
 
 #### Classify and Rank Rides
 
-Use BigQuery Managed AI functions:
+Let's use BigQuery's managed AI functions to categorize attractions without human bias.
 
-- Use `AI.CLASSIFY` to categorize rides into: `[easy-peasy, thrilling, extreme]`.
-- Use `AI.SCORE` to rank attractions based on a "thrill level" from 1 to 10.
-
-#### Reverse-ETL: BigQuery to AlloyDB
-
-Move your insights back to AlloyDB using the "BigQuery views" feature in AlloyDB (BigQuery Foreign Data Wrapper).
-
-![Data Canvas Analysis](images/c599269a77b3933c.png)
-
-- Grant AlloyDB service account privileges to query BigQuery.
-- Install the `bigquery_fdw` extension in AlloyDB.
-- Create a foreign table in AlloyDB mapped to your BigQuery analysis results.
-- Ingest the data into a native AlloyDB table.
+- Use `AI.CLASSIFY` to categorize rides into `[easy-peasy, thrilling, extreme]` based on their descriptions.
+- Use `AI.SCORE` to rank attractions on a **thrill level** from 1 to 10.
 
 ### Success Criteria
 
-- Show a table of forecasted waiting times.
-- Demonstrate a table with rides classified by intensity and ranked by thrill level.
-- Show the results of a SQL query in AlloyDB that retrieves data directly from BigQuery.
-- Show a new table in AlloyDB containing the ingested BigQuery insights.
+- A BigQuery table `waiting_times` with historical data.
+- A trained forecasting model and a table with 2025 predictions.
+- A table with attractions classified by intensity and ranked by thrill level.
 
-### Tips
-
-- For forecasting, remember to split your data into training and evaluation sets.
-- AlloyDB `bigquery_fdw` requires specific IAM roles (`bigquery.dataViewer`, `bigquery.readSessionUser`) for the AlloyDB service account.
-
-### Learning Resources
-
-- [BigQuery ML Time Series Forecasting](https://cloud.google.com/bigquery/docs/timesfm-time-series-forecasting-tutorial)
-- [BigQuery ML AI Functions](https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-classify)
-- [AlloyDB BigQuery Integration](https://cloud.google.com/alloydb/docs/connect-to-bigquery)
-
-## Challenge 5: Intelligent Agents
+## Challenge 6: Operationalizing Insights & Data Agents
 
 ### Introduction
 
-In the final challenge, you will build intelligent interfaces that allow users (and yourself) to interact with your data using natural language.
+Now that you have insights in BigQuery, it's time to make them actionable! You'll sync data back to your operational database (AlloyDB) and set up agents for easy access.
 
 ### Description
 
+#### Reverse-ETL to AlloyDB
+
+Use the `bigquery_fdw` extension in AlloyDB to query your BigQuery results directly from PostgreSQL.
+
+- Grant the required IAM permissions to your AlloyDB service account (BigQuery Data Viewer and Read Session User).
+- Install the `bigquery_fdw` extension in AlloyDB.
+- Create a **Foreign Table** in AlloyDB that maps to your `reviews_analysis` table in BigQuery.
+- Verify the connection by running a `SELECT` query in AlloyDB Studio.
+
 #### Out-of-the-Box Data Agents
 
-- Use the **Data Engineering Agent** in BigQuery to create a pipeline that joins `waiting_times` and `attractions`.
-- Create a **Conversational Analytics** agent in the BigQuery "Agents" tab.
+Leverage BigQuery's built-in agents to simplify data interaction.
 
-![BigQuery Agents](images/98570651479cfd3.png)
-
-- Connect it to your `disney` tables and publish it.
-
-#### Gemini-CLI Exploration
-
-- Use **Gemini-CLI** with the BigQuery and AlloyDB extensions.
-- Generate a fancy HTML page that explains the content of your databases using natural language prompts.
-
-![Gemini-CLI Insight 1](images/147214db02ae32f7.png)
-
-![Gemini-CLI Insight 2](images/d73dda1665b16c66.png)
-
-#### Custom AI Agent (ADK & MCP)
-
-Create a full-featured assistant for park visitors:
-
-- Deploy an **MCP Toolbox** server using AlloyDB and BigQuery as sources.
-- Define tools for: listing attractions, recommendations, adding reviews, and providing wait time estimations.
-- Deploy the agent using **Agent Development Kit (ADK)** and showcase a full conversation.
+- **Data Engineering Agent:** Create a new view `average_waiting_time` that joins `waiting_times` and `disneyland_attractions` using the agent's assistance.
+- **Conversational Analytics Agent:** Create and publish an agent called `my_disney_friend` in the BigQuery *Agents* tab. Ask it questions like: *"What's the average waiting time per attraction?"*
 
 ### Success Criteria
 
-- Show a published Conversational Agent in the BigQuery UI.
-- Demonstrate Gemini-CLI connecting to both databases (via `/mcp` command) and generating data insights.
-- Showcase a full discussion with your ADK-powered assistant, demonstrating the use of various tools to query the data.
+- Successful query of BigQuery data from within AlloyDB using a foreign table.
+- A BigQuery view `average_waiting_time` created with the help of the Data Engineering Agent.
+- A published and functional Conversational Analytics Agent.
 
-### Tips
+## Challenge 7: Intelligent Interaction & Agents
 
-- ADK and MCP Toolbox can be deployed on Cloud Shell for fast development and debugging.
-- Be creative with your Gemini-CLI prompts!
+### Introduction
 
-### Learning Resources
+The final stage! You'll use professional developer tools and build a custom AI agent that can act on your data.
 
-- [BigQuery Conversational Analytics](https://cloud.google.com/bigquery/docs/conversational-analytics)
-- [Gemini-CLI Extensions](https://geminicli.com/extensions/)
-- [Agent Development Kit (ADK)](https://google.github.io/adk-docs/)
-- [MCP Toolbox for Databases](https://github.com/googleapis/genai-toolbox)
+### Description
+
+#### Developer Experience with Gemini-CLI
+
+[Gemini-CLI](https://geminicli.com/) is an open-source AI agent for your terminal.
+
+- Install Gemini-CLI and its BigQuery/AlloyDB extensions.
+- Configure it to connect to your databases.
+- Use prompts to generate a fancy HTML summary of your data in both BigQuery and AlloyDB.
+
+#### Build a Custom Agent with ADK & MCP Toolbox
+
+Build a full-fledged assistant that can recommend attractions, provide waiting time estimates, and handle reviews.
+
+- Deploy an [MCP toolbox for databases](https://github.com/googleapis/genai-toolbox) server using AlloyDB and BigQuery as sources.
+- Define tools for the agent: listing attractions, recommendations, adding reviews, and waiting time estimation.
+- Deploy an agent using the [Agent Development Kit (ADK)](https://google.github.io/adk-docs/) that uses these tools.
+- Demonstrate a full conversation with your assistant in the ADK web interface.
+
+### Success Criteria
+
+- Gemini-CLI output showing successful connection to both BigQuery and AlloyDB.
+- An HTML page generated by Gemini-CLI describing the data.
+- A functional ADK agent using MCP tools to interact with Disneyland data.

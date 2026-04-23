@@ -190,10 +190,14 @@ resource "google_bigquery_connection" "agent_platform" {
   depends_on = [google_project_service.default]
 }
 
-# Grant Agent Platform User to BigQuery Connection Service Account
+# Grant Agent Platform User and Storage Viewer to BigQuery Connection Service Account
 resource "google_project_iam_member" "bq_connection_roles" {
+  for_each = toset([
+    "roles/aiplatform.user",
+    "roles/storage.objectViewer"
+  ])
   project = var.gcp_project_id
-  role    = "roles/aiplatform.user"
+  role    = each.key
   member  = "serviceAccount:${google_bigquery_connection.agent_platform.cloud_resource[0].service_account_id}"
 }
 
@@ -204,12 +208,92 @@ resource "google_project_service_identity" "alloydb_sa" {
   service  = "alloydb.googleapis.com"
 }
 
-# Grant Agent Platform User to AlloyDB Service Agent
+# Grant Agent Platform User, BQ Viewer and BQ Read Session User to AlloyDB Service Agent
 resource "google_project_iam_member" "alloydb_sa_roles" {
+  for_each = toset([
+    "roles/aiplatform.user",
+    "roles/bigquery.dataViewer",
+    "roles/bigquery.readSessionUser"
+  ])
   project = var.gcp_project_id
-  role    = "roles/aiplatform.user"
+  role    = each.key
   member  = "serviceAccount:${google_project_service_identity.alloydb_sa.email}"
 }
+
+# Pre-provided Python UDF for PDF chunking
+resource "google_bigquery_routine" "chunk_pdf" {
+  provider        = google-beta
+  dataset_id      = google_bigquery_dataset.disney.dataset_id
+  routine_id      = "chunk_pdf"
+  routine_type    = "SCALAR_FUNCTION"
+  language        = "PYTHON"
+  definition_body = <<-EOT
+import io
+import json
+
+from pypdf import PdfReader  # type: ignore
+from urllib.request import urlopen, Request
+
+def chunk_pdf(src_ref: str, chunk_size: int, overlap_size: int) -> str:
+ src_json = json.loads(src_ref)
+ srcUrl = src_json["access_urls"]["read_url"]
+
+ req = urlopen(srcUrl)
+ pdf_file = io.BytesIO(bytearray(req.read()))
+ reader = PdfReader(pdf_file, strict=False)
+
+ # extract and chunk text simultaneously
+ all_text_chunks = []
+ curr_chunk = ""
+ for page in reader.pages:
+     page_text = page.extract_text()
+     if page_text:
+         curr_chunk += page_text
+         # split the accumulated text into chunks of a specific size with overlaop
+         # this loop implements a sliding window approach to create chunks
+         while len(curr_chunk) >= chunk_size:
+             split_idx = curr_chunk.rfind(" ", 0, chunk_size)
+             if split_idx == -1:
+                 split_idx = chunk_size
+             actual_chunk = curr_chunk[:split_idx]
+             all_text_chunks.append(actual_chunk)
+             overlap = curr_chunk[split_idx + 1 : split_idx + 1 + overlap_size]
+             curr_chunk = overlap + curr_chunk[split_idx + 1 + overlap_size :]
+ if curr_chunk:
+     all_text_chunks.append(curr_chunk)
+
+ return all_text_chunks
+EOT
+
+  python_options {
+    entry_point = "chunk_pdf"
+    packages = ["pypdf"]  # need specific version
+  }
+
+  arguments {
+    name      = "src_json"
+    data_type = "{\"typeKind\": \"STRING\"}"
+  }
+  arguments {
+    name      = "chunk_size"
+    data_type = "{\"typeKind\": \"INT64\"}"
+  }
+  arguments {
+    name      = "overlap_size"
+    data_type = "{\"typeKind\": \"INT64\"}"
+  }
+  return_type = "{\"typeKind\": \"ARRAY\", \"arrayElementType\": {\"typeKind\": \"STRING\"}}"
+
+  remote_function_options {
+    connection      = google_bigquery_connection.agent_platform.id
+    max_batching_rows = "1"
+  }
+
+  external_runtime_options {
+    runtime_version = "python-3.11"
+  }
+}
+
 
 # TCP Proxy for AlloyDB (Datastream)
 resource "google_compute_instance" "gce_tcp_proxy" {
