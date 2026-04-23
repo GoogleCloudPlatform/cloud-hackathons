@@ -11,9 +11,11 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
 
 - Challenge 1: Data Ingestion, Search and Sync
 - Challenge 2: Data Discovery & Quality
-- Challenge 3: Multi-modal Analysis
-- Challenge 4: ML & Reverse-ETL
-- Challenge 5: Intelligent Agents
+- Challenge 3: Sentiment & Categorization with Gemini
+- Challenge 4: Multimodal Analytics (Images & PDFs)
+- Challenge 5: Predictive Analytics & Classification
+- Challenge 6: Operationalizing Insights & Data Agents
+- Challenge 7: Intelligent Interaction & Agents
 
 ## Challenge 1: Data Ingestion, Search and Sync
 
@@ -177,112 +179,236 @@ Add 3 built-in rule types, *Null check* for `branch` column, *Value set check* f
 - *Transform*, replace all underscores with spaces in the branch column: `REPLACE(branch, '_', ' ')`
 - *Destination*, `disney` dataset, `disneyland_reviews_cleaned` table
 
-## Challenge 3: Multi-modal Analysis
+## Challenge 3: Sentiment & Categorization with Gemini
+
+### Notes & Guidance
+
+#### 1. Analyze Reviews with Gemini
+
+##### Create the Model
+
+```sql
+CREATE OR REPLACE MODEL `disney.gemini_flash`
+  REMOTE WITH CONNECTION `us-central1.conn`
+  OPTIONS (ENDPOINT = 'gemini-2.5-flash');
+```
+
+##### Extract Categories
+
+```sql
+CREATE OR REPLACE TABLE `disney.reviews_categories` AS
+SELECT
+  review_id, rating, year_month, reviewer_location, review_text, branch, result AS categories 
+FROM
+  AI.GENERATE_TEXT(
+    MODEL `disney.gemini_flash`,
+    (
+      SELECT
+        *,
+        """Identify categories (e.g., cleanliness, food, waiting time) in the following review text 
+        and return thme as a comma separated list. Review: 
+        """ || review_text AS prompt
+      FROM `disney.public_disneyland_reviews`
+      LIMIT 100
+    )
+  )
+```
+
+##### Sentiment Analysis
+
+```sql
+CREATE OR REPLACE TABLE `disney.reviews_analysis` AS
+SELECT 
+  review_id, rating, year_month, reviewer_location, review_text, branch, result AS sentiment
+FROM 
+  AI.GENERATE_TEXT(
+    MODEL `disney.gemini_flash`,
+    (
+      SELECT *,
+      """Classify the sentiment of this review as Positive, Negative, or Neutral 
+      and only output single word. Review:
+      """ || review_text AS prompt
+      FROM `disney.public_disneyland_reviews` 
+      LIMIT 100
+    )
+  )
+```
+
+#### 2. Data Canvas
+
+Participants should navigate to the *Data Canvas* tab in BigQuery Studio, add the `reviews_analysis` table, and use the "Visualize" or "Analyze" buttons to generate the requested charts. The *Canvas assistant* is very useful. Using the task descriptions as prompt works pretty good, just make sure that join is mentioned (or performed before) for the second graph.
+
+## Challenge 4: Multimodal Analytics (Images & PDFs)
 
 ### Notes & Guidance
 
 #### 1. Image Analysis
 
-- **Object Table:**
+##### Create Object Table for Images
 
-    ```sql
-    CREATE OR REPLACE EXTERNAL TABLE `disney.attraction_images`
-    WITH CONNECTION `europe-west1.my-connection`
-    OPTIONS (
-      object_metadata = 'DIRECTORY',
-      uris = ['gs://hackathon_data_disneyland_xxx/attraction_parc_photos/*']
-    );
-    ```
+```sql
+CREATE OR REPLACE EXTERNAL TABLE `disney.attraction_images`
+WITH CONNECTION `us-central1.conn`
+OPTIONS (
+  object_metadata = 'SIMPLE',
+  uris = ['gs://<YOUR_BUCKET>/attraction_parc_photos/*']
+);
+```
 
-- **Gemini Classification:**
+##### Analyze Images
 
-    ```sql
-    SELECT *
-    FROM ML.GENERATE_TEXT(
-      MODEL `disney.gemini_pro_vision`,
-      TABLE `disney.attraction_images`,
-      STRUCT(
-        'Is this photo from a Disneyland park? Answer with True or False.' AS prompt,
-        TRUE AS flatten_json_output
-      )
-    );
-    ```
+```sql
+CREATE OR REPLACE TABLE `disney.images_analysis` AS
+SELECT
+  uri,
+  ml_generate_text_llm_result AS identification
+FROM ML.GENERATE_TEXT(
+  MODEL `disney.gemini_flash`,
+  TABLE `disney.attraction_images`,
+  STRUCT(
+    CONCAT('Is this photo from a Disneyland park? Answer with a JSON object { "is_disneyland": true/false }') AS prompt,
+    TRUE AS flatten_json_output
+  )
+);
+```
 
-#### 2. RAG System with PDF Brochures
+#### 2. RAG System for Brochures
 
-- **Python UDF for Chunking:** (Use the code provided in the student guide/content.md).
-- **Vector Search:**
+##### Create Object Table for PDFs
 
-    ```sql
-    SELECT
-      query_text,
-      base.text_content,
-      distance
-    FROM
-      VECTOR_SEARCH(
-        TABLE `disney.brochure_embeddings`,
-        'embedding',
-        (SELECT ml_generate_embedding_result, content AS query_text
-         FROM ML.GENERATE_EMBEDDING(MODEL `disney.embedding_model`, (SELECT 'Where to eat a tex-mex meal buffet-style?' AS content))),
-        top_k => 3
-      );
-    ```
+```sql
+CREATE OR REPLACE EXTERNAL TABLE `disney.brochures_pdf`
+WITH CONNECTION `us-central1.conn`
+OPTIONS (
+  object_metadata = 'SIMPLE',
+  uris = ['gs://<YOUR_BUCKET>/disneyland_brochures/*.pdf']
+);
+```
 
-## Challenge 4: ML & Reverse-ETL
+##### Chunk PDFs (Using pre-provided UDF)
 
-### Notes & Guidance
+```sql
+CREATE OR REPLACE TABLE `disney.brochures_chunks` AS
+SELECT
+  uri,
+  chunk
+FROM `disney.brochures_pdf`,
+UNNEST(disney.chunk_pdf(to_json_string(struct(uri as read_url)), 1000, 100)) as chunk;
+```
 
-#### 1. Forecasting
+##### Generate Embeddings
 
-- **Model Training:**
+```sql
+CREATE OR REPLACE MODEL `disney.embedding_model`
+REMOTE WITH CONNECTION `us-central1.conn`
+OPTIONS (ENDPOINT = 'text-embedding-004');
 
-    ```sql
-    CREATE OR REPLACE MODEL `disney.waiting_time_forecast`
-    OPTIONS(model_type='ARIMA_PLUS', time_series_timestamp_col='timestamp', time_series_data_col='waiting_time', time_series_id_col='attraction_id')
-    AS SELECT timestamp, waiting_time, attraction_id FROM `disney.waiting_times`;
-    ```
+CREATE OR REPLACE TABLE `disney.brochures_embeddings` AS
+SELECT * FROM ML.GENERATE_EMBEDDING(
+  MODEL `disney.embedding_model`,
+  (SELECT chunk as content, * FROM `disney.brochures_chunks`)
+);
+```
 
-#### 2. Classification & Scoring
+##### Vector Search
 
-- **Classify:** `SELECT * FROM AI.CLASSIFY(MODEL ..., (SELECT description FROM ...), ...)`
-- **Score:** `SELECT * FROM AI.SCORE(MODEL ..., (SELECT description FROM ...), ...)`
+```sql
+SELECT * FROM VECTOR_SEARCH(
+  TABLE `disney.brochures_embeddings`,
+  'ml_generate_embedding_result',
+  (SELECT ml_generate_embedding_result, content AS query
+   FROM ML.GENERATE_EMBEDDING(MODEL `disney.embedding_model`, (SELECT 'Where to eat a tex-mex meal buffet-style?' AS content))),
+  top_k => 3
+);
+```
 
-#### 3. Reverse-ETL
-
-- **AlloyDB Setup:**
-
-    ```sql
-    CREATE EXTENSION bigquery_fdw;
-    CREATE SERVER bq_disney FOREIGN DATA WRAPPER bigquery_fdw;
-    CREATE USER MAPPING FOR postgres SERVER bq_disney;
-
-    CREATE FOREIGN TABLE reviews_analysis (
-        review_id INT,
-        sentiment TEXT
-    ) SERVER bq_disney OPTIONS (
-        project 'YOUR_PROJECT_ID',
-        dataset 'disney',
-        table 'reviews_analysis'
-    );
-    ```
-
-## Challenge 5: Intelligent Agents
+## Challenge 5: Predictive Analytics & Classification
 
 ### Notes & Guidance
 
-- **Conversational Agent:** Setup via the "Agents" tab in BigQuery. Ensure it has access to the `disney` dataset.
-- **Gemini-CLI:**
-  - Install: `npm install -g @google/gemini-cli` (or equivalent).
-  - Configure `.env` with project IDs and credentials.
-  - Use `/mcp` to verify connectivity.
-- **ADK & MCP Toolbox:**
-  - Deploy MCP Toolbox: `gcloud run deploy mcp-toolbox ...`
-  - Deploy ADK: Follow the ADK docs to connect it to the MCP endpoint.
-  - Tool definition example (for MCP Toolbox):
+#### 1. Forecast Waiting Times
 
-    ```yaml
-    tools:
-        - name: list_attractions
-        description: List all Disneyland attractions
-        sql: SELECT name, description FROM disneyland_attractions
-    ```
+```sql
+-- Load data first (UI or bq load)
+-- Train Arima Plus model
+CREATE OR REPLACE MODEL `disney.waiting_time_model`
+OPTIONS(model_type='ARIMA_PLUS', time_series_timestamp_col='date', time_series_data_col='waiting_time', time_series_id_col='attraction') AS
+SELECT * FROM `disney.waiting_times`;
+
+-- Or use AI.FORECAST if available
+```
+
+#### 2. Classify and Rank Rides
+
+```sql
+-- AI.CLASSIFY
+CREATE OR REPLACE TABLE `disney.rides_classified` AS
+SELECT * FROM AI.CLASSIFY(
+  MODEL `disney.gemini_flash`,
+  (SELECT description AS content, name FROM `disney.disneyland_attractions`),
+  STRUCT(['easy-peasy', 'thrilling', 'extreme'] AS labels)
+);
+
+-- AI.SCORE (Thrill level)
+CREATE OR REPLACE TABLE `disney.rides_ranked` AS
+SELECT * FROM AI.SCORE(
+  MODEL `disney.gemini_flash`,
+  (SELECT description AS content, name FROM `disney.disneyland_attractions`),
+  STRUCT('thrill level from 1 to 10' AS task)
+);
+```
+
+## Challenge 6: Operationalizing Insights & Data Agents
+
+### Notes & Guidance
+
+#### 1. Reverse-ETL to AlloyDB
+
+##### Install Extension
+
+```sql
+CREATE EXTENSION IF NOT EXISTS bigquery_fdw;
+CREATE SERVER bq_disney FOREIGN DATA WRAPPER bigquery_fdw;
+CREATE USER MAPPING FOR postgres SERVER bq_disney;
+```
+
+##### Create Foreign Table
+
+```sql
+CREATE FOREIGN TABLE reviews_analysis (
+    "Review_ID" INT,
+    "ml_generate_text_llm_result" TEXT
+) SERVER bq_disney OPTIONS (
+    project '<YOUR_PROJECT_ID>',
+    dataset 'disney',
+    table 'reviews_analysis'
+);
+```
+
+#### 2. Data Agents
+
+- **Data Engineering Agent:** Open BigQuery Studio, click on *Data Pipelines*, and use the Gemini icon to prompt for the view creation.
+- **Conversational Analytics Agent:** Go to the *Agents* tab, select the `disney` dataset, and configure the agent with instructions.
+
+## Challenge 7: Intelligent Interaction & Agents
+
+### Notes & Guidance
+
+#### 1. Gemini-CLI
+
+Participants should install the CLI via `npm install -g @google/gemini-cli` (or as instructed in the tool's documentation).
+Configuring extensions:
+```bash
+gemini mcp add bigquery
+gemini mcp add alloydb
+```
+Prompts for HTML generation:
+- *"Generate a single HTML page with a dashboard summarizing the Disneyland reviews from BigQuery."*
+- *"Generate a single HTML page summarizing the attractions and their descriptions from AlloyDB."*
+
+#### 2. ADK & MCP Toolbox
+
+- **MCP Toolbox:** Use the provided GitHub repository link to deploy the toolbox. Configure sources to point to your project's AlloyDB and BigQuery.
+- **ADK Agent:** Use the ADK documentation to create a new agent. The core is the `agent.yaml` or code where tools are defined as MCP calls.
+- **Verification:** Ensure the agent can answer: *"What is the best time to join the queue for Space Mountain?"* (This requires the agent to call the tool that queries the forecast data).
+
