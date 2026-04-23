@@ -258,18 +258,19 @@ OPTIONS (
 ##### Analyze Images
 
 ```sql
-CREATE OR REPLACE TABLE `disney.images_analysis` AS
+CREATE OR REPLACE TABLE disney.images_analysis AS
 SELECT
   uri,
-  ml_generate_text_llm_result AS identification
-FROM ML.GENERATE_TEXT(
-  MODEL `disney.gemini_flash`,
-  TABLE `disney.attraction_images`,
-  STRUCT(
-    CONCAT('Is this photo from a Disneyland park? Answer with a JSON object { "is_disneyland": true/false }') AS prompt,
-    TRUE AS flatten_json_output
+  result AS is_disneyland
+FROM
+  AI.GENERATE_TEXT(
+    MODEL `disney.gemini_flash`,
+    TABLE `disney.attraction_images`,
+    STRUCT(
+      'Is this photo from a Disneyland park? Answer with true or false, output only true or false and if unsure stick to false'
+        AS prompt
+    )
   )
-);
 ```
 
 #### 2. RAG System for Brochures
@@ -288,38 +289,60 @@ OPTIONS (
 ##### Chunk PDFs (Using pre-provided UDF)
 
 ```sql
-CREATE OR REPLACE TABLE `disney.brochures_chunks` AS
-SELECT
-  uri,
-  chunk
-FROM `disney.brochures_pdf`,
-UNNEST(disney.chunk_pdf(to_json_string(struct(uri as read_url)), 1000, 100)) as chunk;
+CREATE OR REPLACE TABLE disney.brochures_chunks AS
+SELECT 
+  uri, chunk
+FROM
+  `disney.brochures_pdf`,
+  UNNEST(
+    disney.chunk_pdf(
+      TO_JSON_STRING(
+        OBJ.GET_ACCESS_URL(OBJ.MAKE_REF(uri, 'us-central1.conn'), 'r')
+      ),
+      1000,
+      100
+    )
+  ) AS chunk;
 ```
 
 ##### Generate Embeddings
 
 ```sql
 CREATE OR REPLACE MODEL `disney.embedding_model`
-REMOTE WITH CONNECTION `us-central1.conn`
-OPTIONS (ENDPOINT = 'text-embedding-004');
+  REMOTE WITH CONNECTION `us-central1.conn`
+  OPTIONS (ENDPOINT = 'gemini-embedding-001');
+```
 
-CREATE OR REPLACE TABLE `disney.brochures_embeddings` AS
-SELECT * FROM ML.GENERATE_EMBEDDING(
-  MODEL `disney.embedding_model`,
-  (SELECT chunk as content, * FROM `disney.brochures_chunks`)
-);
+```sql
+CREATE OR REPLACE TABLE disney.brochures_embeddings AS
+SELECT *
+FROM
+  AI.GENERATE_EMBEDDING(
+    MODEL `disney.embedding_model`,
+    (
+      SELECT uri, chunk AS content FROM disney.brochures_chunks
+    )
+  );
 ```
 
 ##### Vector Search
 
 ```sql
-SELECT * FROM VECTOR_SEARCH(
-  TABLE `disney.brochures_embeddings`,
-  'ml_generate_embedding_result',
-  (SELECT ml_generate_embedding_result, content AS query
-   FROM ML.GENERATE_EMBEDDING(MODEL `disney.embedding_model`, (SELECT 'Where to eat a tex-mex meal buffet-style?' AS content))),
-  top_k => 3
-);
+SELECT query.query, base.content, distance
+FROM
+  VECTOR_SEARCH(
+    TABLE `disney.brochures_embeddings`,
+    'embedding',
+    (
+      SELECT embedding, content AS query
+      FROM
+        AI.GENERATE_EMBEDDING(
+          MODEL `disney.embedding_model`,
+          (SELECT 'Where to eat a tex-mex meal buffet-style?' AS content)
+        )
+    ),
+    top_k => 3
+  );
 ```
 
 ## Challenge 5: Predictive Analytics & Classification
@@ -398,11 +421,14 @@ CREATE FOREIGN TABLE reviews_analysis (
 
 Participants should install the CLI via `npm install -g @google/gemini-cli` (or as instructed in the tool's documentation).
 Configuring extensions:
+
 ```bash
 gemini mcp add bigquery
 gemini mcp add alloydb
 ```
+
 Prompts for HTML generation:
+
 - *"Generate a single HTML page with a dashboard summarizing the Disneyland reviews from BigQuery."*
 - *"Generate a single HTML page summarizing the attractions and their descriptions from AlloyDB."*
 
@@ -411,4 +437,3 @@ Prompts for HTML generation:
 - **MCP Toolbox:** Use the provided GitHub repository link to deploy the toolbox. Configure sources to point to your project's AlloyDB and BigQuery.
 - **ADK Agent:** Use the ADK documentation to create a new agent. The core is the `agent.yaml` or code where tools are defined as MCP calls.
 - **Verification:** Ensure the agent can answer: *"What is the best time to join the queue for Space Mountain?"* (This requires the agent to call the tool that queries the forecast data).
-
