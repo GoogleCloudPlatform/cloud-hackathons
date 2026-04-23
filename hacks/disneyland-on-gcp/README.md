@@ -245,16 +245,15 @@ Disneyland isn't just about text; it's about magic you can see and read about! I
 You have photos taken by visitors in `gs://<YOUR_BUCKET>/attraction_parc_photos/`. Some are from Disneyland, some are not.
 
 - Create an **Object Table** in BigQuery that references these images.
-- Use Gemini via BigQuery ML to identify which photos are actually from Disneyland.
-- Create a table `images_analysis` with a boolean column `is_disneyland`.
+- Use Gemini via BigQuery ML (`AI.GENERATE_TEXT` and the model you've creaated in the previous challenge) to identify which photos are actually from Disneyland and store the results in a table `images_analysis` with the `uri` of the image and a boolean column `is_disneyland`.
 
 #### RAG System for Brochures
 
 While waiting in line, visitors want fun facts. You have PDF brochures in `gs://<YOUR_BUCKET>/disneyland_brochures/`.
 
 - Create an **Object Table** for the PDF files.
-- Use the pre-provided Python UDF `chunk_pdf` to parse the PDFs into chunks.
-- Generate embeddings for these chunks using a remote model.
+- Use the pre-provided Python UDF `chunk_pdf` to parse the PDFs into chunks, store the results in a new table `brochures_chunks` with the columns `uri` and `chunk`.
+- Create a new embbedding model in BigQuery and generate embeddings for these chunks using it.
 - Perform a **Vector Search** to answer questions like: *"Where to eat a tex-mex meal buffet-style?"*
 - Generate an augmented answer using the search results.
 
@@ -263,10 +262,14 @@ While waiting in line, visitors want fun facts. You have PDF brochures in `gs://
 
 ### Success Criteria
 
-- An Object Table for images and a successful analysis identifying Disneyland photos.
-- An Object Table for PDFs.
+- An Object table for images and a successful analysis identifying Disneyland photos.
+- An Object table for PDFs.
 - A table containing embeddings for the PDF chunks.
 - A successful Vector Search and an AI-generated answer based on the brochures.
+
+### Learning Resources
+
+- [Example usage of the `chunk_pdf` UDF](https://docs.cloud.google.com/bigquery/docs/multimodal-data-sql-tutorial#analyze_pdf_data)
 
 ## Challenge 5: Predictive Analytics & Classification
 
