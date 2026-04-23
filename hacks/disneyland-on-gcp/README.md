@@ -24,7 +24,7 @@ In this hack, you will build an end-to-end data analytics pipeline leveraging AI
 
 ## Challenges
 
-- Challenge 1: Data Ingestion & Sync
+- Challenge 1: Data Ingestion, Search and Sync
   - Load data into AlloyDB, create embeddings for similarity search, and sync data to BigQuery using Datastream.
 - Challenge 2: Data Discovery & Quality
   - Explore data semantically in BigQuery, perform profiling and quality scans, and use Gemini for data preparation.
@@ -47,7 +47,7 @@ In this hack, you will build an end-to-end data analytics pipeline leveraging AI
 - Rayhane Rezgui
 - Matt Cornillon
 
-## Challenge 1: Data Ingestion & Sync
+## Challenge 1: Data Ingestion, Search and Sync
 
 ### Introduction
 
@@ -60,7 +60,7 @@ For this initial stage, you will retrieve the data from your AlloyDB operational
 First, ingest reviews for Disneyland amusement parks and a list of attractions into your AlloyDB for PostgreSQL cluster.
 
 > [!NOTE]  
-> You should be provided the AlloyDB credentials.
+> You should be provided the AlloyDB details such as credentials and proxy ip address.
 
 - Create a table `disneyland_reviews` with 6 columns: `review_id` and `rating` as integer, `year_month`, `reviewer_location`, `review_text`, `branch` as text.
 - Create a table `disneyland_attractions` with 4 columns: `attraction_id` as integer, `branch`, `name` and `description` as text.
@@ -69,8 +69,8 @@ First, ingest reviews for Disneyland amusement parks and a list of attractions i
   - `gs://<YOUR_PROJECT_ID>/attractions.csv`
 
 > [!TIP]  
-> If you don't know how to write the SQL, for example to create a table, consider using the *Generate SQL* option in AlloyDB Studio Query Editor.
-> And if you don't know how to do something in Google Cloud, for example how to import a CSV file from GCS to AlloyDB, consider using the Gemini Cloud Assist (click on the Gemini icon at the top right corner of the screen).
+> If you don't know how to write the SQL, for example creating a table, consider using the *Generate SQL* option in AlloyDB Studio Query Editor.
+> And if you don't know how to do something in Google Cloud in general, for example importing a CSV file from GCS to AlloyDB, consider using the Gemini Cloud Assist (click on the Gemini icon at the top right corner of the screen).
 
 #### Generate Embeddings
 
@@ -79,35 +79,40 @@ To provide attraction recommendations, you need to create embeddings of attracti
 - Install the `vector` extension in AlloyDB.
 - Add a vector column called `embedding` to your `disneyland_attractions` table.
 - Generate and populate the embedding of the descriptions using the native integration between AlloyDB and Vertex AI.
+- Find top 5 attractions most similar to `Dark ride in space` using the embeddings.
 
 #### Sync to BigQuery with Datastream
 
-To stream our data from AlloyDB to BigQuery, we'll use Google Datastream. It will listen to all changes in source tables (using Change Data Capture) and send them to BigQuery.
+To stream our data from AlloyDB to BigQuery, we'll use Google Datastream. It will *backfill* the already existing data and will listen to all changes in source tables (using Change Data Capture) and send them to BigQuery.
 
 - Create a [publication and a replication slot](https://docs.cloud.google.com/datastream/docs/configure-alloydb-psql#configure_alloydb_for_replication) in your AlloyDB database.
-- Create a Datastram source profile for your AlloyDB database
-  - Stick to `us-central1` region, otherwise you might need to recreate some firewall rules
-  - Use the public IP of the proxy to connect and database user/password that you've been provided earlier
-  - Choose IP allowlisting for *Connectivity*
+- Create a Datastream source profile for your AlloyDB database
+  - Stick to `us-central1` whenever prompted for a region, otherwise you might need to recreate some firewall rules
+  - Use the public IP of the **proxy** as the hostname and database user/password that you've been provided earlier
+  - Use *Encryption type* `None`
+  - Choose IP allowlisting for *Connectivity method*
+  - Provide the replicaton slot name and publication name that you've created in the previous step
+  - Choose the two tables that you have created as the *Objects to include*
 - Create a Datastream destination profile for BigQuery
-  - Use single dataset `disney` for all schemas
-  - Write mode should be `MERGE`
-  - Staleness limit should be `0 seconds`
-  - Replicate only the two tables that you have created
-- Create & start the stream from AlloyDB to BigQuery
+  - Stick to the same region as your source (`us-central1` in this case)
+  - For *Schema grouping* use *Single dataset for all schemas* and pick the dataset `disney` in your project
+  - Stick to *Stream write mode* of `Merge`
+  - And a *Staleness limit* of `0 seconds`
+- If the validation is successful create & start the stream from AlloyDB to BigQuery
+
+> [!NOTE]  
+> It might take a few minutes before all data is synced to BigQuery.
 
 ### Success Criteria
 
 - Verify that `disneyland_reviews` has 42,656 rows and `disneyland_attractions` has 73 rows in AlloyDB.
 - Demonstrate a similarity search on attraction descriptions to identify the top 5 attractions similar to `Dark ride in space`.
-- Show a BigQuery Table called `disneyland_reviews` with 42,656 rows (after sync and potential historical data merge).
-- Show a BigQuery Table called `disneyland_attractions` with 73 rows.
+- Show a BigQuery table with 42,656 rows that's synced from the AlloyDB `disneyland_reviews` table.
+- Show a BigQuery table with 73 rows that's synced from the AlloyDB `disneyland_attractions` table.
 
 ### Learning Resources
 
-- [AlloyDB Documentation](https://cloud.google.com/alloydb/docs)
-- [Datastream Documentation](https://cloud.google.com/datastream/docs)
-- [pgvector on AlloyDB](https://cloud.google.com/alloydb/docs/ai/work-with-embeddings)
+- [Generating text embeddings in AlloyDB](https://cloud.google.com/alloydb/docs/ai/work-with-embeddings)
 
 ## Challenge 2: Data Discovery & Quality
 
@@ -117,48 +122,64 @@ Now that your data is in BigQuery, it's time to explore its potential and ensure
 
 ### Description
 
-#### Data Discovery in BigQuery
+#### Data Discovery and Insights in BigQuery
 
-Explore the new enhancements in the BigQuery interface:
+We can directly navigate to our tables from the BigQuery Studio interface, but we'll use the *Search* capabilities to find a table. Search for `rating` in the *Explorer* pane using the *Search for resources* search box at the top. Filter for your project to get the correct table.
 
-- Use the **Search** tab to perform semantic search on your data assets (e.g., search for "attractions" or "branch").
+Navigate to the table that's found and *Generate Insights with publishing* to generate descriptions for the table and its columns. Use the generated *insights* to answer any question without you writing the SQL.
 
-![BigQuery Features](images/bcafae83cfd4f968.png)
+You can also generate descriptions from the *Schema* tab of the tables, navigate to the schema for other table in your dataset and generate those descriptions for the table.
 
-- Use **Data Insights** on the `disneyland_reviews` table to gain insights without writing complex SQL.
-- Use **BigQuery Knowledge Engine** to generate descriptions for your dataset, tables, and columns using Gemini.
+It's also possible to generate dataset level insights to capture any hidden relationships across tables, go ahead and generate insights for the dataset as well.
+
+> [!NOTE]  
+> It might take a few minutes to generate the insights. You can havee a look at the next task while insights are being generated for the various resources.
 
 #### Data Profiling and Quality
 
-Perform a profile scan and a quality scan using Dataplex Universal Catalog:
+The goal of this section is to clean and prepare your data. However, you're not very familiar with the distribution of the values of each column. You need to profile your data to know what kind of transformation steps you need to perform on your data.
 
-- Profile your data to understand value distributions and null counts.
-- Define a quality scan that:
-  - Checks for null values in the `branch` column.
-  - Validates that `rating` is in the set `{1, 2, 3, 4, 5}`.
-  - Checks for uniqueness of `review_id`.
+Google Cloud's *Knowledge Catalog* automates [profiling scans](https://cloud.google.com/dataplex/docs/data-profiling-overview) to deliver consistent data quality metrics. Key statistics identified include null counts, distinct values, data ranges, and value distributions. It's possible to activate a profile scan through the BigQuery Interface.
+
+Go ahead and do a *Quick data profile* for the `reviews` table and answer the following questions:
+
+- What's the average rating of Disneyland?
+- Where are reviewers located the most?
+- Are all reviews unique?
+- What's the percentage of "missing" data from the year_month column?
+
+*Knowledge Catalog* also has support for [automatic data quality](https://cloud.google.com/dataplex/docs/auto-data-quality-overview) which lets you define and measure the quality of the data in your BigQuery tables. You can automate the scanning of data, validate data against defined rules, and log alerts if your data doesn't meet quality requirements. You can manage data quality rules and deployments as code, improving the integrity of data production pipelines.
+
+Define and run a quality scan on the same table with the following rules (stick to defaults for anything else):
+
+- Checks for `null` values in the `branch` column.
+- Validates that `rating` is in the set `{1, 2, 3, 4, 5}`.
+- Checks for uniqueness of `review_id`.
 - Ensure results are exported to a BigQuery table `quality_scan_results`.
+
+> [!NOTE]  
+> It might take a few minutes to generate the profile & quality scans
 
 #### Data Preparation using Gemini
 
-Use Gemini-powered Data Preparation to clean your data:
+Following the data quality and profiling scans you performed, it's time to clean the data before analyzing it.
 
-- Filter out rows where `branch` is NULL or empty.
-- Replace "missing" in `year_month` with NULL.
+[Data preparations](https://cloud.google.com/bigquery/docs/data-prep-get-suggestions) are [BigQuery](https://cloud.google.com/bigquery/docs/query-overview#bigquery-studio) resources, which use Gemini in BigQuery to analyze your data and provide intelligent suggestions for cleaning, transforming, and enriching it. You can significantly reduce the time and effort required for manual data preparation tasks.
+
+Use Gemini-powered *Data Preparation* to clean your data:
+
+- Filter out rows where `branch` is `NULL` or empty.
+- Replace "missing" in `year_month` with `NULL`.
 - Replace underscores with spaces in the `branch` column.
 - Export to a transformed table `disneyland_reviews_cleaned`.
 
 ### Success Criteria
 
 - Demonstrate Gemini-generated descriptions added to the metadata of the dataset, tables, and columns.
-- Answer specific questions based on the profile scan (e.g., average rating, missing data percentage).
+- Answer at least one question about the reviews data using the generated *insights*.
+- Answer specific questions based on the profile scan (e.g., average rating, reviewer location, uniqueness, missing data percentage).
 - Show the `quality_scan_results` table with the defined rules.
 - Verify the existence of the `disneyland_reviews_cleaned` table with the applied transformations.
-
-### Tips
-
-- Data insights might take a few minutes to generate.
-- Profiling scans can be activated directly through the BigQuery interface.
 
 ### Learning Resources
 
@@ -189,7 +210,7 @@ You have photos taken by visitors in `gs://<YOUR_PROJECT_ID>/attraction_parc_pho
 
 Create a Retrieval-Augmented Generation (RAG) system using park brochures in `gs://<YOUR_PROJECT_ID>/disneyland_brochures/`.
 
-- Create an object table for the PDF files.
+- Create an Object Table for the PDF files.
 - Create a Python UDF to chunk the PDF files.
 - Parse the PDFs, generate embeddings, and store them in a table.
 - Implement a vector search to answer questions like: *"Where to eat a tex-mex meal buffet-style?"*

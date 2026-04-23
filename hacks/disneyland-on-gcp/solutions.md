@@ -9,107 +9,142 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
 
 ## Coach's Guides
 
-- Challenge 1: Data Ingestion & Sync
+- Challenge 1: Data Ingestion, Search and Sync
 - Challenge 2: Data Discovery & Quality
 - Challenge 3: Multi-modal Analysis
 - Challenge 4: ML & Reverse-ETL
 - Challenge 5: Intelligent Agents
 
-## Challenge 1: Data Ingestion & Sync
+## Challenge 1: Data Ingestion, Search and Sync
 
 ### Notes & Guidance
 
 #### 1. Data Loading in AlloyDB
 
-- **Table Creation:**
+##### Table Creation
 
-    ```sql
-    CREATE TABLE disneyland_reviews (
-        review_id INT,
-        rating INT,
-        year_month TEXT,
-        reviewer_location TEXT,
-        review_text TEXT,
-        branch TEXT
-    );
+Participants can use `psql` from Cloud Shell, but the recommendation would be to use SQL Studio in the AlloyDB Console. In order to connect built-in authentication with the user `postgres` and database `postgres` should be used. Password should be provided by the coach.
 
-    CREATE TABLE disneyland_attractions (
-        attraction_id INT,
-        branch TEXT,
-        name TEXT,
-        description TEXT
-    );
-    ```
+Creating the tables is rather straight-forward; in case the participants struggle with the syntax, remind them to use the Gemini powered *Generate SQL* capability in the SQL Editor.
 
-- **Data import:** Students can use the AlloyDB UI "Import" feature or `gcloud alloydb instances import`.
-- **Generating the embeddings:**
+> [!NOTE]  
+> The CSV file that's imported in the next step contains duplicates for `review_id`, if that columnn is made a primary key or has any other unique constraints import will fail.
 
-    ```sql
-    CREATE EXTENSION IF NOT EXISTS vector;
+```sql
+CREATE TABLE disneyland_reviews (
+    review_id INT,
+    rating INT,
+    year_month TEXT,
+    reviewer_location TEXT,
+    review_text TEXT,
+    branch TEXT
+);
 
-    ALTER TABLE disneyland_attractions ADD COLUMN embedding vector(768);
+CREATE TABLE disneyland_attractions (
+    attraction_id INT,
+    branch TEXT,
+    name TEXT,
+    description TEXT
+);
+```
 
-    UPDATE 
-        disneyland_attractions
-    SET
-        embedding = google_ml.embedding('text-embedding-004', description)::vector;
-    ```
+##### Data Import
 
-- **Searching in embeddings:**
+Students can use the AlloyDB UI *Import* feature from the Console (on cluster overview page, top navbar) or `gcloud alloydb instances import`.
 
-   ```sql
-   SELECT
-    name,
-   -- description,
-    branch
-   FROM
+#### 2. Semantic Search
+
+##### Generating the Embeddings
+
+First we need to install the `vector` extension in AlloyDB
+
+```sql
+CREATE EXTENSION IF NOT EXISTS vector;
+```
+
+Then a new `vector` column is added to the table.
+
+> [!NOTE]  
+> The `text-embedding-005` model below is an example, participants can use any supported embbedding model version, as long as the same model and version is also used when doing the search. Also keep in mind the vector length (size of the embedding) depends on the specific model and can vary from 768 (`text-embedding-005`) to 3072 (`gemini-embedding-001`) unless otherwise specified.
+
+```sql
+ALTER TABLE disneyland_attractions ADD COLUMN embedding vector;
+
+UPDATE 
     disneyland_attractions
-   ORDER BY
-    embedding <=> google_ml.embedding('text-embedding-004', 'Dark ride in space')::vector ASC
-   LIMIT
-    5;
-   ```
+SET
+    embedding = google_ml.embedding('text-embedding-005', description)::vector;
+```
+
+##### Searching in Embeddings
+
+Searching is similar to generating the embeddings, make sure that the same model and version is used.
+
+```sql
+SELECT
+  name,
+-- description,
+  branch
+FROM
+  disneyland_attractions
+ORDER BY
+  embedding <=> google_ml.embedding('text-embedding-005', 'Dark ride in space')::vector ASC
+LIMIT
+ 5;
+```
 
 The search should return something like this:
 
 | name | branch |
 | --- | --- |
-| Hyperspace Mountain | Disneyland_HongKong |
 | Space Mountain | Disneyland_California |
+| Hyperspace Mountain | Disneyland_HongKong |
+| Star Tours: The Adventures Continue | Disneyland_Paris |
 | Les Voyages de Pinocchio | Disneyland_Paris |
 | Blanche-Neige et les Sept Nains | Disneyland_Paris |
-| Peter Pan's Flight | Disneyland_Paris |
 
-#### 2. Sync to BigQuery with Datastream
+#### 3. Sync to BigQuery with Datastream
 
-- **AlloyDB Prep:**
+##### AlloyDB Preperation
 
-    ```sql
-    ALTER USER postgres WITH REPLICATION;
-    CREATE PUBLICATION pub_disney FOR TABLE disneyland_reviews, disneyland_attractions;
-    SELECT PG_CREATE_LOGICAL_REPLICATION_SLOT('slot_disney', 'pgoutput');
-    ```
+First we need to grant permissions to the `postgres` user.
 
-- **Public IP Allowlisting:** In case any other location is chosen, you need to open up the firewall
+```sql
+ALTER USER postgres WITH REPLICATION;
+```
 
-  ```shell
-  gcloud compute firewall-rules create allow-datastream-us-central1 \
-    --network=default \
-    --action=ALLOW \
-    --direction=INGRESS \
-    --source-ranges=34.72.28.29/32,34.67.234.134/32,34.67.6.157/32,34.72.239.218/32,34.71.242.81/32 \
-    --rules=tcp:5432 \
-    --description="Allow Datastream public IPs for us-central1 to access PostgreSQL"
-  ```
+And then we can create the publication and replication slot.
 
-- **Datastream configuration:**
-  - Source: AlloyDB (PostgreSQL)
-    - Use database proxy IP to connect, user `postgres`, database `postgres`
-    - IP Allowlisting
-    - `slot_disney` as the replication slot and `pubset` as publication
-    - Select the `disneyland_attractions` and `disneyland_reviews` from the schema `public`
-  - Destination: BigQuery
-    - Dataset: `disney`
+```sql
+CREATE PUBLICATION pub_disney FOR TABLE disneyland_reviews, disneyland_attractions;
+SELECT PG_CREATE_LOGICAL_REPLICATION_SLOT('slot_disney', 'pgoutput');
+```
+
+> [!WARNING]  
+> Sometimes running the SQL commands above in a single run causes an error message: postgresql error: cannot create logical replication slot in transaction that has performed writes. Easiest way to solve that is to run the statements one by one.
+
+##### Connectivity Preparation
+
+The easiest method to configure the Datastream to AlloydDB connection is through IP Allowlisting. During the initialization we've already configured the required firewall rules for the region `us-central1` using the following command.
+
+```shell
+gcloud compute firewall-rules create fwr-ingress-allow-datastream-us-central1 \
+  --network=default \
+  --action=ALLOW \
+  --direction=INGRESS \
+  --source-ranges=34.72.28.29/32,34.67.234.134/32,34.67.6.157/32,34.72.239.218/32,34.71.242.81/32 \
+  --rules=tcp:5432 \
+  --description="Allow Datastream public IPs for us-central1 to access AlloyDB/PostgreSQL"
+```
+
+In case any other region is used, a similar rule needs to be created, where the `source-ranges` will depend on the chosen region (and will be displayed in Datastream UI).
+
+##### Datastream configuration
+
+Participants can either create the source & destination connection profiles separately and refer to them when creating the *Stream*, or just start with *Create Stream* and configure those during the setup. All of the required configuration is in the instructions, so it should be rather straight forward. Depending on which method is chosen (defnining the profiles in the *Create stream* wizard or individually, the order of some of the parameters might be different).
+
+> [!WARNING]  
+> Make sure that the participants use the public IP of the database proxy as the hostname and validate that the connection is successfull
 
 ## Challenge 2: Data Discovery & Quality
 
@@ -118,11 +153,29 @@ The search should return something like this:
 - **Semantic Search:** Use the "Search" tab in BQ Studio.
 - **Data Insights:** Click on the `disneyland_reviews` table and select the "Insights" tab.
 - **Metadata Generation:** Click on the "Edit" button for dataset/table descriptions and use the "Suggest with Gemini" option.
-- **Quality Scan:**
-  - Check for NULL in `branch`.
-  - `rating` BETWEEN 1 AND 5.
-  - `review_id` uniqueness.
-- **Data Preparation:** Open the table in Data Preparation, follow Gemini suggestions for cleaning (Filter NULLs, replace "missing").
+
+#### Data Profiling
+
+Quick profile with 10% sampling should be sufficient and we expect the following results
+
+- What's the average rating of Disneyland? *4.44*
+- Where are reviewers located the most? *United_States*
+- Are all reviews unique? *No, uniquness is not 100%*
+- What's the percentage of "missing" data from the year_month column? *~3.98%*
+
+> [!WARNING]  
+> Since quick profile does a 10% sample, there might be some small discrepancies in the expected values above.
+
+#### Quality Scan
+
+Add 3 built-in rule types, *Null check* for `branch` column, *Value set check* for `rating` column, and *Uniqueness check* for `review_id` column. Once you have created these rule types, you need to edit the `rating` column rule to include the set of allowed values. Once this runs, the uniqueness check for the `review_id` should fail.
+
+#### Data Preparation
+
+- Click on *Filter* end ask Gemini *filter out rows where `branch` is NULL or empty*, this should yield `branch IS NOT NULL AND branch != ''`
+- *Transform*, replace "missing" with NULL values: `NULLIF(year_month, 'missing')`
+- *Transform*, replace all underscores with spaces in the branch column: `REPLACE(branch, '_', ' ')`
+- *Destination*, `disney` dataset, `disneyland_reviews_cleaned` table
 
 ## Challenge 3: Multi-modal Analysis
 
