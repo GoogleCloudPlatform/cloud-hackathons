@@ -436,7 +436,7 @@ CREATE FOREIGN TABLE reviews_analysis (
 And before you can use this table, you'll need to grant a service account the required permissions, running from Cloud Shell:
 
 ```shell
-SA=$(gcloud beta alloydb clusters describe disney-cluster --region=us-central1 --format="value(serviceAccountEmail))"
+SA=$(gcloud beta alloydb clusters describe disney-cluster --region=us-central1 --format="value(serviceAccountEmail)")
 for ROLE in "roles/bigquery.dataViewer" "roles/bigquery.readSessionUser"; do
   gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
     --member="serviceAccount:$SA" \
