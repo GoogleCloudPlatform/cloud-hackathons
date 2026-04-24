@@ -352,33 +352,53 @@ FROM
 #### 1. Forecast Waiting Times
 
 ```sql
--- Load data first (UI or bq load)
--- Train Arima Plus model
-CREATE OR REPLACE MODEL `disney.waiting_time_model`
-OPTIONS(model_type='ARIMA_PLUS', time_series_timestamp_col='date', time_series_data_col='waiting_time', time_series_id_col='attraction') AS
-SELECT * FROM `disney.waiting_times`;
+-- Load data first (or using the UI or bq load)
+LOAD DATA OVERWRITE `disney.waiting_times`
+FROM FILES (
+  format = 'CSV',
+  uris = ['gs://<YOUR_BUCKET>/waiting_time.csv']
+);
 
--- Or use AI.FORECAST if available
+CREATE OR REPLACE TABLE disney.forecasted_wait_times AS
+SELECT *
+FROM
+  AI.FORECAST(
+    (
+      SELECT
+        TIMESTAMP_TRUNC(usage_start_time, HOUR) AS time_bucket,
+        attraction,
+        AVG(waiting_time) AS avg_wait_time
+      FROM `disney.waiting_times`
+      GROUP BY 1, 2
+    ),
+    horizon => 15,
+    confidence_level => 0.95,
+    timestamp_col => 'time_bucket',
+    id_cols => ['attraction'],
+    data_col => 'avg_wait_time'
+    -- output_historical_time_series => true
+  );
+
 ```
 
 #### 2. Classify and Rank Rides
 
 ```sql
--- AI.CLASSIFY
-CREATE OR REPLACE TABLE `disney.rides_classified` AS
-SELECT * FROM AI.CLASSIFY(
-  MODEL `disney.gemini_flash`,
-  (SELECT description AS content, name FROM `disney.disneyland_attractions`),
-  STRUCT(['easy-peasy', 'thrilling', 'extreme'] AS labels)
-);
+CREATE OR REPLACE TABLE `disney.attractions_classified` AS
+SELECT
+  *,
+  AI.CLASSIFY(
+    description,
+    categories => ['easy-peasy', 'thrilling', 'extreme']
+  ) AS category,
+  AI.SCORE(
+    """
+    Score attractions on a **thrill level** from 1 to 10 based on their description. Description: 
+    """ || description
+  ) as thrill_level
+FROM
+  `disney.attractions`
 
--- AI.SCORE (Thrill level)
-CREATE OR REPLACE TABLE `disney.rides_ranked` AS
-SELECT * FROM AI.SCORE(
-  MODEL `disney.gemini_flash`,
-  (SELECT description AS content, name FROM `disney.disneyland_attractions`),
-  STRUCT('thrill level from 1 to 10' AS task)
-);
 ```
 
 ## Challenge 6: Operationalizing Insights & Data Agents
