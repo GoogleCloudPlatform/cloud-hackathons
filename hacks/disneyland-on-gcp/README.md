@@ -317,16 +317,50 @@ Now that you have insights in BigQuery, it's time to make them actionable! You'l
 
 Use the `bigquery_fdw` extension in AlloyDB to query your BigQuery results directly from PostgreSQL.
 
-- Grant the required IAM permissions to your AlloyDB service account (BigQuery Data Viewer and Read Session User).
 - Install the `bigquery_fdw` extension in AlloyDB.
 - Create a **Foreign Table** in AlloyDB that maps to your `reviews_analysis` table in BigQuery.
 - Verify the connection by running a `SELECT` query in AlloyDB Studio.
+
+As this functionality is not part of the documentation, you can use the following to get things working:
+
+```sql
+CREATE EXTENSION bigquery_fdw; 
+
+CREATE SERVER bq_disney FOREIGN DATA WRAPPER bigquery_fdw; 
+
+CREATE USER MAPPING FOR postgres SERVER bq_disney;
+```
+
+You can now create a *foreign table* that will be mapped to a specific table in BigQuery.
+
+```sql
+CREATE FOREIGN TABLE reviews_analysis (
+    "review_id" int,
+    "sentiment" text
+  ) 
+  SERVER bq_disney OPTIONS (
+    PROJECT '<YOUR PROJECT ID>',
+    DATASET 'disney',
+    TABLE 'reviews_analysis'
+  );
+```
+
+And before you can use this table, you'll need to grant a service account the required permissions, running from Cloud Shell:
+
+```shell
+SA=$(gcloud beta alloydb clusters describe disney-cluster --region=us-central1 --format="value(serviceAccountEmail))"
+for ROLE in "roles/bigquery.dataViewer" "roles/bigquery.readSessionUser"; do
+  gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
+    --member="serviceAccount:$SA" \
+    --role="$ROLE"
+done
+```
 
 #### Out-of-the-Box Data Agents
 
 Leverage BigQuery's built-in agents to simplify data interaction.
 
-- **Data Engineering Agent:** Create a new view `average_waiting_time` that joins `waiting_times` and `disneyland_attractions` using the agent's assistance.
+- **Data Engineering Agent:** Create a new *Pipeline* in Bigquery that creates the view `average_waiting_time` in `disney` dataset by joining `waiting_times` and `disneyland_attractions` to calculate the average waiting_time per attraction, using the agent's assistance.
 - **Conversational Analytics Agent:** Create and publish an agent called `my_disney_friend` in the BigQuery *Agents* tab. Ask it questions like: *"What's the average waiting time per attraction?"*
 
 ### Success Criteria

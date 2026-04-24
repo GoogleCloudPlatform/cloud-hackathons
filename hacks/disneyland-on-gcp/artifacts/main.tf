@@ -154,6 +154,7 @@ resource "google_alloydb_instance" "default" {
 
   database_flags = {
     "alloydb.logical_decoding" = "on" # needed for replication
+    "bigquery_fdw.enabled"     = "on" # needed for connecting to bq
   }
 
   machine_config {
@@ -230,8 +231,8 @@ resource "google_project_service_identity" "alloydb_sa" {
 resource "google_project_iam_member" "alloydb_sa_roles" {
   for_each = toset([
     "roles/aiplatform.user",
-    "roles/bigquery.dataViewer",
-    "roles/bigquery.readSessionUser"
+    # "roles/bigquery.dataViewer",  # these need to be granted to another service account
+    # "roles/bigquery.readSessionUser"
   ])
   project = var.gcp_project_id
   role    = each.key
@@ -285,7 +286,7 @@ EOT
 
   python_options {
     entry_point = "chunk_pdf"
-    packages = ["pypdf==6.10.2"]
+    packages    = ["pypdf==6.10.2"]
   }
 
   arguments {
@@ -304,7 +305,7 @@ EOT
 
 
   external_runtime_options {
-    runtime_version = "python-3.11"
+    runtime_version    = "python-3.11"
     runtime_connection = google_bigquery_connection.agent_platform.id
   }
 }

@@ -143,7 +143,7 @@ In case any other region is used, a similar rule needs to be created, where the 
 
 ##### Datastream configuration
 
-Participants can either create the source & destination connection profiles separately and refer to them when creating the *Stream*, or just start with *Create Stream* and configure those during the setup. All of the required configuration is in the instructions, so it should be rather straight forward. Depending on which method is chosen (defnining the profiles in the *Create stream* wizard or individually, the order of some of the parameters might be different).
+Participants can either create the source & destination connection profiles separately and refer to them when creating the *Stream*, or just start with *Create Stream* and configure those during the setup. All of the required configuration is in the instructions, so it should be rather straight forward. Depending on which method is chosen (defining the profiles in the *Create stream* wizard or individually, the order of some of the parameters might be different).
 
 > [!WARNING]  
 > Make sure that the participants use the public IP of the database proxy as the hostname and validate that the connection is successfull
@@ -409,28 +409,50 @@ FROM
 
 ##### Install Extension
 
+As this functionality is not part of the documentation, you can use the following to get things working:
+
 ```sql
-CREATE EXTENSION IF NOT EXISTS bigquery_fdw;
-CREATE SERVER bq_disney FOREIGN DATA WRAPPER bigquery_fdw;
+CREATE EXTENSION bigquery_fdw; 
+
+CREATE SERVER bq_disney FOREIGN DATA WRAPPER bigquery_fdw; 
+
 CREATE USER MAPPING FOR postgres SERVER bq_disney;
 ```
 
-##### Create Foreign Table
+You can now create a *foreign table* that will be mapped to a specific table in BigQuery.
 
 ```sql
 CREATE FOREIGN TABLE reviews_analysis (
-    "Review_ID" INT,
-    "ml_generate_text_llm_result" TEXT
-) SERVER bq_disney OPTIONS (
-    project '<YOUR_PROJECT_ID>',
-    dataset 'disney',
-    table 'reviews_analysis'
-);
+    "review_id" int,
+    "sentiment" text
+  ) 
+  SERVER bq_disney OPTIONS (
+    PROJECT '<YOUR PROJECT ID>',
+    DATASET 'disney',
+    TABLE 'reviews_analysis'
+  );
+```
+
+And before you can use this table, you'll need to grant a service account the required permissions, running from Cloud Shell:
+
+```shell
+SA=$(gcloud beta alloydb clusters describe disney-cluster --region=us-central1 --format="value(serviceAccountEmail))"
+for ROLE in "roles/bigquery.dataViewer" "roles/bigquery.readSessionUser"; do
+  gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
+    --member="serviceAccount:$SA" \
+    --role="$ROLE"
+done
+```
+
+Now you can just run queries on the table from AlloyDB:
+
+```sql
+SELECT * FROM reviews_analysis
 ```
 
 #### 2. Data Agents
 
-- **Data Engineering Agent:** Open BigQuery Studio, click on *Data Pipelines*, and use the Gemini icon to prompt for the view creation.
+- **Data Engineering Agent:** Open BigQuery Studio, click on *Pipelines*, and use the Gemini icon to prompt for the view creation.
 - **Conversational Analytics Agent:** Go to the *Agents* tab, select the `disney` dataset, and configure the agent with instructions.
 
 ## Challenge 7: Intelligent Interaction & Agents
