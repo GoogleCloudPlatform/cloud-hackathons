@@ -9,15 +9,25 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
 
 ## Coach's Guides
 
-- Challenge 1: Data Ingestion, Search and Sync
-- Challenge 2: Data Discovery & Quality
-- Challenge 3: Sentiment & Categorization with Gemini
-- Challenge 4: Multimodal Analytics (Images & PDFs)
-- Challenge 5: Predictive Analytics & Classification
-- Challenge 6: Operationalizing Insights & Data Agents
-- Challenge 7: Intelligent Interaction & Agents
+- Challenge 1: Data Ingestion in AlloyDB
+- Challenge 2: Semantic Search with Embeddings
+- Challenge 3: Real-time Sync with Datastream
+- Challenge 4: Data Discovery & Metadata Management
+- Challenge 5: Data Profiling & Quality
+- Challenge 6: Data Preparation with Gemini
+- Challenge 7: Sentiment & Category Analysis
+- Challenge 8: Visualization with Data Canvas
+- Challenge 9: Multimodal Image Analysis
+- Challenge 10: PDF Document Intelligence (RAG)
+- Challenge 11: Time-Series Forecasting
+- Challenge 12: Intelligent Classification & Ranking
+- Challenge 13: Operationalizing Insights with Reverse-ETL
+- Challenge 14: Automated Data Engineering Agents
+- Challenge 15: Conversational Analytics Agents
+- Challenge 16: Rapid Development with Gemini-CLI
+- Challenge 17: Custom Agent Development (ADK & MCP)
 
-## Challenge 1: Data Ingestion, Search and Sync
+## Challenge 1: Data Ingestion in AlloyDB
 
 ### Notes & Guidance
 
@@ -54,9 +64,11 @@ CREATE TABLE disneyland_attractions (
 
 Students can use the AlloyDB UI *Import* feature from the Console (on cluster overview page, top navbar) or `gcloud alloydb instances import`.
 
-#### 2. Semantic Search
+## Challenge 2: Semantic Search with Embeddings
 
-##### Generating the Embeddings
+### Notes & Guidance
+
+#### Generating the Embeddings
 
 First we need to install the `vector` extension in AlloyDB
 
@@ -78,7 +90,7 @@ SET
     embedding = google_ml.embedding('text-embedding-005', description)::vector;
 ```
 
-##### Searching in Embeddings
+#### Searching in Embeddings
 
 Searching is similar to generating the embeddings, make sure that the same model and version is used.
 
@@ -105,9 +117,11 @@ The search should return something like this:
 | Les Voyages de Pinocchio | Disneyland_Paris |
 | Blanche-Neige et les Sept Nains | Disneyland_Paris |
 
-#### 3. Sync to BigQuery with Datastream
+## Challenge 3: Real-time Sync with Datastream
 
-##### AlloyDB Preperation
+### Notes & Guidance
+
+#### AlloyDB Preperation
 
 First we need to grant permissions to the `postgres` user.
 
@@ -125,7 +139,7 @@ SELECT PG_CREATE_LOGICAL_REPLICATION_SLOT('slot_disney', 'pgoutput');
 > [!WARNING]  
 > Sometimes running the SQL commands above in a single run causes an error message: postgresql error: cannot create logical replication slot in transaction that has performed writes. Easiest way to solve that is to run the statements one by one.
 
-##### Connectivity Preparation
+#### Connectivity Preparation
 
 The easiest method to configure the Datastream to AlloydDB connection is through IP Allowlisting. During the initialization we've already configured the required firewall rules for the region `us-central1` using the following command.
 
@@ -141,20 +155,24 @@ gcloud compute firewall-rules create fwr-ingress-allow-datastream-us-central1 \
 
 In case any other region is used, a similar rule needs to be created, where the `source-ranges` will depend on the chosen region (and will be displayed in Datastream UI).
 
-##### Datastream configuration
+#### Datastream configuration
 
 Participants can either create the source & destination connection profiles separately and refer to them when creating the *Stream*, or just start with *Create Stream* and configure those during the setup. All of the required configuration is in the instructions, so it should be rather straight forward. Depending on which method is chosen (defining the profiles in the *Create stream* wizard or individually, the order of some of the parameters might be different).
 
 > [!WARNING]  
 > Make sure that the participants use the public IP of the database proxy as the hostname and validate that the connection is successfull
 
-## Challenge 2: Data Discovery & Quality
+## Challenge 4: Data Discovery & Metadata Management
 
 ### Notes & Guidance
 
 - **Semantic Search:** Use the "Search" tab in BQ Studio.
 - **Data Insights:** Click on the `disneyland_reviews` table and select the "Insights" tab.
 - **Metadata Generation:** Click on the "Edit" button for dataset/table descriptions and use the "Suggest with Gemini" option.
+
+## Challenge 5: Data Profiling & Quality
+
+### Notes & Guidance
 
 #### Data Profiling
 
@@ -172,14 +190,16 @@ Quick profile with 10% sampling should be sufficient and we expect the following
 
 Add 3 built-in rule types, *Null check* for `branch` column, *Value set check* for `rating` column, and *Uniqueness check* for `review_id` column. Once you have created these rule types, you need to edit the `rating` column rule to include the set of allowed values. Once this runs, the uniqueness check for the `review_id` should fail.
 
-#### Data Preparation
+## Challenge 6: Data Preparation with Gemini
+
+### Notes & Guidance
 
 - Click on *Filter* end ask Gemini *filter out rows where `branch` is NULL or empty*, this should yield `branch IS NOT NULL AND branch != ''`
 - *Transform*, replace "missing" with NULL values: `NULLIF(year_month, 'missing')`
 - *Transform*, replace all underscores with spaces in the branch column: `REPLACE(branch, '_', ' ')`
 - *Destination*, `disney` dataset, `disneyland_reviews_cleaned` table
 
-## Challenge 3: Sentiment & Categorization with Gemini
+## Challenge 7: Sentiment & Category Analysis
 
 ### Notes & Guidance
 
@@ -234,11 +254,15 @@ FROM
   )
 ```
 
-#### 2. Data Canvas
+## Challenge 8: Visualization with Data Canvas
+
+### Notes & Guidance
+
+#### Visualize with Data Canvas
 
 Participants should navigate to the *Data Canvas* tab in BigQuery Studio, add the `reviews_analysis` table, and use the "Visualize" or "Analyze" buttons to generate the requested charts. The *Canvas assistant* is very useful. Using the task descriptions as prompt works pretty good, just make sure that join is mentioned (or performed before) for the second graph.
 
-## Challenge 4: Multimodal Analytics (Images & PDFs)
+## Challenge 9: Multimodal Image Analysis
 
 ### Notes & Guidance
 
@@ -273,7 +297,11 @@ FROM
   )
 ```
 
-#### 2. RAG System for Brochures
+## Challenge 10: PDF Document Intelligence (RAG)
+
+### Notes & Guidance
+
+#### 1. RAG System for Brochures
 
 ##### Create Object Table for PDFs
 
@@ -345,7 +373,7 @@ FROM
   );
 ```
 
-## Challenge 5: Predictive Analytics & Classification
+## Challenge 11: Time-Series Forecasting
 
 ### Notes & Guidance
 
@@ -381,7 +409,11 @@ FROM
 
 ```
 
-#### 2. Classify and Rank Rides
+## Challenge 12: Intelligent Classification & Ranking
+
+### Notes & Guidance
+
+#### 1. Classify and Rank Rides
 
 ```sql
 CREATE OR REPLACE TABLE `disney.attractions_classified` AS
@@ -401,7 +433,7 @@ FROM
 
 ```
 
-## Challenge 6: Operationalizing Insights & Data Agents
+## Challenge 13: Operationalizing Insights with Reverse-ETL
 
 ### Notes & Guidance
 
@@ -450,12 +482,19 @@ Now you can just run queries on the table from AlloyDB:
 SELECT * FROM reviews_analysis
 ```
 
-#### 2. Data Agents
+## Challenge 14: Automated Data Engineering Agents
+
+### Notes & Guidance
 
 - **Data Engineering Agent:** Open BigQuery Studio, click on *Pipelines*, and use the Gemini icon to prompt for the view creation.
+
+## Challenge 15: Conversational Analytics Agents
+
+### Notes & Guidance
+
 - **Conversational Analytics Agent:** Go to the *Agents* tab, select the `disney` dataset, and configure the agent with instructions.
 
-## Challenge 7: Intelligent Interaction & Agents
+## Challenge 16: Rapid Development with Gemini-CLI
 
 ### Notes & Guidance
 
@@ -474,7 +513,11 @@ Prompts for HTML generation:
 - *"Generate a single HTML page with a dashboard summarizing the Disneyland reviews from BigQuery."*
 - *"Generate a single HTML page summarizing the attractions and their descriptions from AlloyDB."*
 
-#### 2. ADK & MCP Toolbox
+## Challenge 17: Custom Agent Development (ADK & MCP)
+
+### Notes & Guidance
+
+#### 1. ADK & MCP Toolbox
 
 - **MCP Toolbox:** Use the provided GitHub repository link to deploy the toolbox. Configure sources to point to your project's AlloyDB and BigQuery.
 - **ADK Agent:** Use the ADK documentation to create a new agent. The core is the `agent.yaml` or code where tools are defined as MCP calls.
