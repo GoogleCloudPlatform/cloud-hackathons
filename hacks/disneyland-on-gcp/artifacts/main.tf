@@ -30,7 +30,8 @@ resource "google_project_service" "default" {
     "run.googleapis.com",
     "servicenetworking.googleapis.com",
     "cloudaicompanion.googleapis.com",
-    "geminicloudassist.googleapis.com"
+    "geminicloudassist.googleapis.com",
+    "geminidataanalytics.googleapis.com"
   ])
   service = each.key
 
@@ -180,6 +181,23 @@ resource "google_bigquery_dataset" "disney" {
   depends_on = [google_project_service.default]
 }
 
+resource "google_bigquery_reservation" "bq_edition" {
+  name          = "disneyland-analytics"
+  location      = var.gcp_region
+  edition       = "ENTERPRISE"
+  slot_capacity = 0
+
+  autoscale {
+    max_slots = 100
+  }
+}
+
+resource "google_bigquery_reservation_assignment" "default" {
+  assignee    = "projects/${var.gcp_project_id}"
+  reservation = google_bigquery_reservation.bq_edition.id
+  job_type    = "QUERY"
+}
+
 # BigQuery Cloud Resource Connection
 resource "google_bigquery_connection" "agent_platform" {
   connection_id = "conn"
@@ -267,7 +285,7 @@ EOT
 
   python_options {
     entry_point = "chunk_pdf"
-    packages = ["pypdf"]  # need specific version
+    packages = ["pypdf==6.10.2"]
   }
 
   arguments {
@@ -284,13 +302,10 @@ EOT
   }
   return_type = "{\"typeKind\": \"ARRAY\", \"arrayElementType\": {\"typeKind\": \"STRING\"}}"
 
-  remote_function_options {
-    connection      = google_bigquery_connection.agent_platform.id
-    max_batching_rows = "1"
-  }
 
   external_runtime_options {
     runtime_version = "python-3.11"
+    runtime_connection = google_bigquery_connection.agent_platform.id
   }
 }
 

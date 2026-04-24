@@ -73,8 +73,8 @@ First, ingest reviews for Disneyland amusement parks and a list of attractions i
   - `gs://<YOUR_PROJECT_ID>/attractions.csv`
 
 > [!TIP]  
-> If you don't know how to write the SQL, for example creating a table, consider using the *Generate SQL* option in AlloyDB Studio Query Editor.
-> And if you don't know how to do something in Google Cloud in general, for example importing a CSV file from GCS to AlloyDB, consider using the Gemini Cloud Assist (click on the Gemini icon at the top right corner of the screen).
+> If you don't know how to write the SQL (e.g. to create a table), consider using the *Generate SQL* option in AlloyDB Studio Query Editor.  
+> And if you don't know how to do something in Google Cloud in general, (e.g. importing a CSV file from GCS to AlloyDB), consider using the Gemini Cloud Assist (click on the Gemini icon at the top right corner of the screen).
 
 #### Generate Embeddings
 
@@ -137,7 +137,7 @@ You can also generate descriptions from the *Schema* tab of the tables, navigate
 It's also possible to generate dataset level insights to capture any hidden relationships across tables, go ahead and generate insights for the dataset as well.
 
 > [!NOTE]  
-> It might take a few minutes to generate the insights. You can havee a look at the next task while insights are being generated for the various resources.
+> It might take a few minutes to generate the insights. You can have a look at the next task while insights are being generated for the various resources.
 
 #### Data Profiling and Quality
 
@@ -262,8 +262,8 @@ While waiting in line, visitors want fun facts. You have PDF brochures in `gs://
 
 ### Success Criteria
 
-- An Object table for images and a successful analysis identifying Disneyland photos.
-- An Object table for PDFs.
+- An Object Table for images and a successful analysis identifying Disneyland photos.
+- An Object Table for PDFs.
 - A table containing embeddings for the PDF chunks.
 - A successful Vector Search and an AI-generated answer based on the brochures.
 
@@ -283,8 +283,8 @@ Predicting the future and understanding ride intensity is key to a perfect visit
 
 Load the historical data from `gs://<YOUR_BUCKET>/waiting_times.csv` into a BigQuery table `waiting_times`.
 
-- Train a forecasting model (using `ARIMA_PLUS` or `TimesFM`) to predict waiting times for every 30 minutes in 2025.
-- Evaluate the model's performance and store the results in `forecasted_waiting_time`.
+- Use `AI.FORECAST` function to predict average hourly waiting times for the first day of 2025.
+- Store the results in `forecasted_waiting_time`.
 
 #### Classify and Rank Rides
 
@@ -296,8 +296,14 @@ Let's use BigQuery's managed AI functions to categorize attractions without huma
 ### Success Criteria
 
 - A BigQuery table `waiting_times` with historical data.
-- A trained forecasting model and a table with 2025 predictions.
+- A table with predictions for the first day of 2025.
 - A table with attractions classified by intensity and ranked by thrill level.
+
+### Learning Resources
+
+- [Forecasting example on BigQuery](https://docs.cloud.google.com/bigquery/docs/timesfm-time-series-forecasting-tutorial)
+- [BigQuery AI.CLASSiFY function](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-classify)
+- [BigQuery AI.SCORE function](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-score)
 
 ## Challenge 6: Operationalizing Insights & Data Agents
 
