@@ -75,11 +75,9 @@ In this hack, you will build an end-to-end data analytics pipeline leveraging AI
 
 ### Introduction
 
-In this challenge, you will initialize your operational database in AlloyDB by ingesting the Disneyland data.
+We'll start with the basics, the goal of this challenge is to initialize your operational database by ingesting the Disneyland data from Google Cloud Storage. Our operational database is going to be an AlloyDB instance. [AlloyDB](https://cloud.google.com/products/alloydb) is a fully managed PostgreSQL-compatible database service for most demanding enterprise database workloads.
 
 ### Description
-
-#### Data loading in AlloyDB
 
 First, ingest reviews for Disneyland amusement parks and a list of attractions into your AlloyDB for PostgreSQL cluster.
 
@@ -106,11 +104,12 @@ First, ingest reviews for Disneyland amusement parks and a list of attractions i
 
 ### Introduction
 
-Set up semantic search capabilities in AlloyDB using Agent Platform integrations to enable recommendations.
+Our next task is help recommend attractions to travelers, and for that purpose we need to create embeddings of the descriptions of attractions.
+So, the goal of this challenge is to set up semantic search capabilities in AlloyDB using Agent Platform integrations to enable recommendations.
 
 ### Description
 
-To provide attraction recommendations, you need to create embeddings of attraction descriptions:
+To provide recommendations for attractions, you need to create embeddings for their descriptions:
 
 - Install the `vector` extension in AlloyDB.
 - Add a vector column called `embedding` to your `disneyland_attractions` table.
@@ -124,13 +123,13 @@ To provide attraction recommendations, you need to create embeddings of attracti
 
 ### Introduction
 
-Bridge the gap between operational and analytical workloads by syncing your AlloyDB data to BigQuery.
+AlloyDB is our operational data store, and even though it's capable of doing analytics workloads, the real work-horse for analytical workloads on Google Cloud is BigQuery. In this challenge we'll continously sync our data from AlloyDB to BigQuery using Datastream. [Datastream](https://docs.cloud.google.com/datastream/docs/overview) is a serverless and easy-to-use change data capture (CDC) and replication service that lets you synchronize data reliably, and with minimal latency.
 
 ### Description
 
-To stream our data from AlloyDB to BigQuery, we'll use Google Datastream. It will *backfill* the already existing data and will listen to all changes in source tables (using Change Data Capture) and send them to BigQuery.
+We'll use Datastream to *backfill* from the already existing data in AlloyDB, and listen to all changes in source tables using Change Data Capture, so the data in BigQuery is kept in-sync continously.
 
-- Create a [publication and a replication slot](https://docs.cloud.google.com/datastream/docs/configure-alloydb-psql#configure_alloydb_for_replication) in your AlloyDB database.
+- Create a [publication and a replication slot](https://docs.cloud.google.com/datastream/docs/configure-alloydb-psql#configure_alloydb_for_replication) in your AlloyDB database. Remember the names of these slots as you'll need them during the configuration of the *Stream*.
 - Create a Datastream source profile for your AlloyDB database
   - Stick to `us-central1` whenever prompted for a region, otherwise you might need to recreate some firewall rules
   - Use the public IP of the **proxy** as the hostname and database user/password that you've been provided earlier
@@ -157,7 +156,7 @@ To stream our data from AlloyDB to BigQuery, we'll use Google Datastream. It wil
 
 ### Introduction
 
-Explore your data in BigQuery and use Gemini to enrich it with meaningful metadata.
+Now that we have our data in BigQuery, let's explore it and use Gemini to enrich it with meaningful metadata.
 
 ### Description
 
@@ -181,20 +180,23 @@ It's also possible to generate dataset level insights to capture any hidden rela
 
 ### Introduction
 
-Ensure your data is clean and reliable before performing advanced analysis. The goal of this section is to clean and prepare your data. However, you're not very familiar with the distribution of the values of each column. You need to profile your data to know what kind of transformation steps you need to perform on your data.
+We have looked into our data briefly but we're not yet very familiar with the distribution of the values of each column, as well as the *quality* of the data.
 
-Google Cloud's *Knowledge Catalog* automates profiling scans to deliver consistent data quality metrics. Key statistics identified include null counts, distinct values, data ranges, and value distributions. It's possible to activate a profile scan through the BigQuery Interface.
+Before we start performing advanced analysis, we'll explore the charecteristics of our data using two features of [Knowledlege Catalog](https://docs.cloud.google.com/dataplex/docs/introduction):
+
+- [Data profiling](https://docs.cloud.google.com/dataplex/docs/data-profiling-overview), automating the calculation of key statistics such as null counts, distinct values, data ranges, and value distributions.
+- And [Data quality](https://docs.cloud.google.com/dataplex/docs/auto-data-quality-overview), which allows you to measure the quality of the data. You can automate the scanning of data, validate it against defined rules, and log alerts if your data doesn't meet quality requirements.
+
+In this challenge we'll access this functionality from the BigQuery Studio interface.
 
 ### Description
 
-Go ahead and do a *Quick data profile* for the `reviews` table and answer the following questions:
+Go ahead and do a *Quick data profile* for the `reviews` table and answer the following questions based on the generated profile:
 
 - What's the average rating of Disneyland?
 - Where are reviewers located the most?
 - Are all reviews unique?
 - What's the percentage of "missing" data from the year_month column?
-
-*Knowledge Catalog* also has support for automatic data quality which lets you define and measure the quality of the data in your BigQuery tables. You can automate the scanning of data, validate data against defined rules, and log alerts if your data doesn't meet quality requirements. You can manage data quality rules and deployments as code, improving the integrity of data production pipelines.
 
 Define and run a quality scan on the same table with the following rules (stick to defaults for anything else):
 
@@ -215,7 +217,7 @@ Define and run a quality scan on the same table with the following rules (stick 
 
 ### Introduction
 
-Use Gemini-powered Data Preparation to clean and transform your data for analysis. Following the data quality and profiling scans you performed, it's time to clean the data before analyzing it.
+In this challenge we'll use Gemini-powered [Data Preparation](https://docs.cloud.google.com/bigquery/docs/data-prep-introduction) to clean and transform your data for analysis. Following the data quality and profiling scans you performed, it's time to clean the data before analyzing it.
 
 *Data preparations* are BigQuery resources, which use Gemini in BigQuery to analyze your data and provide intelligent suggestions for cleaning, transforming, and enriching it. You can significantly reduce the time and effort required for manual data preparation tasks.
 
