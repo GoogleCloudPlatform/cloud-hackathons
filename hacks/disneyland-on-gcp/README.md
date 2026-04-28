@@ -388,7 +388,9 @@ Based on the descriptions of the attractions:
 
 ### Introduction
 
-Move your analytical insights back to AlloyDB for use in operational applications.
+We've taken advantage of BigQuery's powerful capabilities to generate insights on large amounts of data. Now we want those insights to be actionable by our operational applications.
+
+This challenge is all about reverse-ETL, the process of syncing data from a central data warehouse, in our case BigQuery, to operational tools, such as AlloyDB.
 
 ### Description
 
@@ -441,7 +443,7 @@ done
 
 ### Introduction
 
-Use BigQuery's Data Engineering Agent to automate the creation of data pipelines and views.
+Typically we'll be using SQL to define transformations in BigQuery. But in previous challenges we've seen that it's also possible to use Gemini to express our intent in natural language. Can we go one step further and define a whole pipeline using natural language? In this challenge we'll use BigQuery [Data Engineering Agent](https://docs.cloud.google.com/bigquery/docs/data-engineering-agent-pipelines) to build a data engineering agent.
 
 ### Description
 
@@ -457,11 +459,11 @@ Create a new *Pipeline* in Bigquery that creates the view `average_waiting_time`
 
 ### Introduction
 
-Build a Conversational Analytics agent in BigQuery to interact with your data using natural language.
+Creating a data engineering agent using natural language is nice but what if you could create an agent to talk to your data, without coding, without SQL, and without deployment, and from BigQuery's interface, how cool would that be? In this challenge we'll explore BigQuery [Conversational Analytics](https://docs.cloud.google.com/bigquery/docs/conversational-analytics).
 
 ### Description
 
-Create and publish an agent called `my_disney_friend` in the BigQuery *Agents* tab. Ask it questions like: *"What's the average waiting time per attraction?"*
+Create and publish an agent called `my_disney_friend` in the BigQuery *Agents* tab. Ask it questions like: *what’s the average attendance per attraction, what percentage of positive vs negative reviews* etc.
 
 ### Success Criteria
 
