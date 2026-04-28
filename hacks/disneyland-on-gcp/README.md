@@ -217,7 +217,7 @@ Define and run a quality scan on the same table with the following rules (stick 
 
 ### Introduction
 
-In this challenge we'll use Gemini-powered [Data Preparation](https://docs.cloud.google.com/bigquery/docs/data-prep-introduction) to clean and transform your data for analysis. Following the data quality and profiling scans you performed, it's time to clean the data before analyzing it.
+In this challenge we'll use Gemini-powered [Data Preparation](https://docs.cloud.google.com/bigquery/docs/data-prep-introduction) to clean and transform the data for analysis. Following the data quality and profiling scans you performed, it's time to clean the data before analyzing it.
 
 *Data preparations* are BigQuery resources, which use Gemini in BigQuery to analyze your data and provide intelligent suggestions for cleaning, transforming, and enriching it. You can significantly reduce the time and effort required for manual data preparation tasks.
 
@@ -238,7 +238,9 @@ Open the `reviews` table in *Data Preparation* to clean your data:
 
 ### Introduction
 
-Now that you've cleaned your data, you can start analyzing it using BigQuery ML and Gemini models. Your goal is to extract categories from reviews and perform sentiment analysis to understand visitor experiences better.
+Now the data is cleaned, we can start analyzing it using BigQuery ML and Gemini models. BigQuery ML lets you  [create and run machine learning (ML) models](https://cloud.google.com/bigquery/docs/e2e-journey) by using SQL queries. BigQuery ML models are stored in BigQuery datasets, similar to tables and views.
+
+In this challenge, the goal is to extract categories from reviews and perform sentiment analysis to understand visitor experiences better.
 
 ### Description
 
@@ -249,8 +251,13 @@ Once the model is created, we can start using it for the following tasks:
 - **Extract Categories:** Analyze a sample of 100 reviews from `disneyland_reviews` to identify categories (e.g., cleanliness, food, waiting time). Each review could have multiple categories, assume that the category column is a comma separated list. Store the results in a table `reviews_categories`. The new table should contain all of the columns from the original `disneyland_reviews` table and one more text column called `categories`.
 - **Sentiment Analysis:** Classify the same 100 reviews into *Positive*, *Negative*, or *Neutral* sentiments. Store these in a table `reviews_analysis`. Make sure that the generated text is only the sentiment (without any punctuation or additional text). Similar to previous task, the new table should contain all of the columns from the original `disneyland_reviews` table and one more text column called `sentiment`.
 
-> [!NOTE]  
+> [!IMPORTANT]  
 > Make sure to use a sample of 100 (using the LIMIT clause) so that processing is quick, running Gemini on 40K rows could take a while.
+
+### Success Criteria
+
+- Table `reviews_categories` with extracted categories for 100 reviews.
+- Table `reviews_analysis` with sentiment classification for 100 reviews.
 
 ### Learning Resources
 
@@ -259,22 +266,17 @@ Once the model is created, we can start using it for the following tasks:
 
 ### Tips
 
-- There's already a Cloud resouce connection in BigQuery and the required permissions have been granted.
-
-### Success Criteria
-
-- Table `reviews_categories` with extracted categories for 100 reviews.
-- Table `reviews_analysis` with sentiment classification for 100 reviews.
+- There's already a Cloud resouce connection in BigQuery and the required permissions have been granted to the corresponding service account.
 
 ## Challenge 8: Visualization with Data Canvas
 
 ### Introduction
 
-Use BigQuery's Data Canvas to explore your results visually and gain deeper insights into visitor sentiment.
+Now we have the sentiment and category information, we'd like to visualize the results. There's a plethora of methods to do that using code (Python, SQL etc), but for this challenge we'll use [Data Canvas](https://docs.cloud.google.com/bigquery/docs/data-canvas) functionality in BigQuery Studio.
 
 ### Description
 
-Use BigQuery's *Data Canvas* to explore your results visually.
+Create a new BigQuery *Data Canvas* resource to explore your results visually.
 
 - Create a graph showing the percentage of positive vs. negative reviews.
 - Create another graph showing the number of reviews per category and the sentiment distribution within each category (make sure that the category list is split).
@@ -284,44 +286,48 @@ Use BigQuery's *Data Canvas* to explore your results visually.
 
 ### Success Criteria
 
-- A Data Canvas showing the required graphs.
+- A *Data Canvas* showing the required graphs.
 
 ## Challenge 9: Multimodal Image Analysis
 
 ### Introduction
 
-Identify which photos in your collection are truly from Disneyland using multimodal AI.
+So far we have been working with structured tabular data, but in real world there's also other types of data, such as pictures, videos, documents, etc. BigQuery has support for multimodal data through [Object Tables](https://docs.cloud.google.com/bigquery/docs/object-table-introduction).
+
+In this challenge we'll Identify which photos in your collection are truly from Disneyland using multimodal AI.
 
 ### Description
 
 You have photos taken by visitors in `gs://<YOUR_BUCKET>/attraction_parc_photos/`. Some are from Disneyland, some are not.
 
-- Create an **Object Table** in BigQuery that references these images.
-- Use Gemini via BigQuery ML (`AI.GENERATE_TEXT` and the model you've creaated in the previous challenge) to identify which photos are actually from Disneyland and store the results in a table `images_analysis` with the `uri` of the image and a boolean column `is_disneyland`.
+- Create an *Object Table* in BigQuery that references these images.
+- Use Gemini via BigQuery ML (using `AI.GENERATE_TEXT` and the model you've creaated in the previous challenge) to identify which photos are actually from Disneyland and store the results in a table `images_analysis` with the `uri` of the image and a boolean column `is_disneyland`.
 
 ### Success Criteria
 
-- An Object Table for images.
+- An *Object Table* for images.
 - A new table `images_analysis` with the `uri` of the image and a boolean column `is_disneyland` indicating whether the photo is from Disneyland.
+
+### Learning Resources
+
+- [Creating an Object Table in BigQuery](https://docs.cloud.google.com/bigquery/docs/object-tables)
+- [Analyzing images in BigQuery](https://docs.cloud.google.com/bigquery/docs/image-analysis#analyze_the_movie_posters)
 
 ## Challenge 10: PDF Document Intelligence (RAG)
 
 ### Introduction
 
-Build a smart assistant that can answer questions about Disneyland brochures.
+While waiting in line, we'd like to provide some fun facts/technical details about the attraction the travelers are waiting for. We have a bunch of brochures about these attractions and in this challenge we'll build a smart assistant that can answer questions about them.
 
 ### Description
 
-While waiting in line, visitors want fun facts. You have PDF brochures in `gs://<YOUR_BUCKET>/disneyland_brochures/`.
+The PDF brochures are stored in `gs://<YOUR_BUCKET>/disneyland_brochures/`.
 
-- Create an **Object Table** for the PDF files.
+- Create an *Object Table* for the PDF files.
 - Use the pre-provided Python UDF `chunk_pdf` to parse the PDFs into chunks, store the results in a new table `brochures_chunks` with the columns `uri` and `chunk`.
 - Create a new embbedding model in BigQuery and generate embeddings for these chunks using it.
-- Perform a **Vector Search** to answer questions like: *"Where to eat a tex-mex meal buffet-style?"*
+- Perform a *Vector Search* to answer questions like: *"Where to eat a tex-mex meal buffet-style?"*
 - Generate an augmented answer using the search results.
-
-> [!NOTE]
-> The Python UDF `chunk_pdf` is already created for you in the `disney` dataset. You just need to call it!
 
 ### Success Criteria
 
@@ -337,7 +343,7 @@ While waiting in line, visitors want fun facts. You have PDF brochures in `gs://
 
 ### Introduction
 
-Predict the crowds! Forecast attraction waiting times for the upcoming year.
+The pictures are very cool! You can't wait! Now in order to know which attractions to choose and which ones to avoid, you want to know the actual waiting times for some of the attractions between Paris and California. Your task is to forecast waiting_times of every attraction using Machine Learning (timeseries analysis).
 
 ### Description
 
@@ -354,23 +360,29 @@ Load the historical data from `gs://<YOUR_BUCKET>/waiting_times.csv` into a BigQ
 ### Learning Resources
 
 - [Loading CSV data into BigQuery](https://docs.cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv)
+- [AI.FORECAST function](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-forecast)
 
 ## Challenge 12: Intelligent Classification & Ranking
 
 ### Introduction
 
-Use AI to objectively classify and rank attractions by their thrill level.
+The treavelers are visiting Disneyland with friends, and while the park is generally family-friendly, some rides can be too intense for some people. In this challenge we'll use BigQuery Managed AI functions to classify and rank the attractions by thrill & intensity level, without human bias, so we can accommodate to everyone.
 
 ### Description
 
-Let's use BigQuery's managed AI functions to categorize attractions without human bias.
+Based on the descriptions of the attractions:
 
-- Use `AI.CLASSIFY` to categorize rides into `[easy-peasy, thrilling, extreme]` based on their descriptions.
-- Use `AI.SCORE` to rank attractions on a **thrill level** from 1 to 10.
+- Categorize rides into `[easy-peasy, thrilling, extreme]` using `AI.CLASSIFY`.
+- Rank attractions on a *thrill level* from 1 to 10 using `AI.SCORE`.
 
 ### Success Criteria
 
 - A table with attractions classified by intensity and ranked by thrill level.
+
+### Learning Resources
+
+- [AI.CLASSIFY function](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-classify)
+- [AI.SCORE function](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-score)
 
 ## Challenge 13: Operationalizing Insights with Reverse-ETL
 
