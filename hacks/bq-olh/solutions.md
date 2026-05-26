@@ -71,7 +71,7 @@ gcloud storage buckets create "gs://${DATA_BUCKET_NAME}" \
 
 ### 2. Setup BigQuery Connection
 
-#### Create a bq connection to access the bucket
+#### Create a cloud resource connection to access the bucket
 
 ```shell
 BQ_CONNECTION_NAME="gcs-connection"
@@ -79,7 +79,7 @@ bq mk --connection --location="${LOCATION}" --project_id="${PROJECT_ID}" \
     --connection_type=CLOUD_RESOURCE "${BQ_CONNECTION_NAME}" < /dev/null
 ```
 
-#### Give bq connection service account GCS permissions
+#### Give resource connection service account GCS permissions
 
 ```shell
 CONNECTION_SA="$(bq show --format=prettyjson --connection "${PROJECT_ID}"."${LOCATION}"."${BQ_CONNECTION_NAME}" | jq -r '.cloudResource.serviceAccountId')"
@@ -141,14 +141,16 @@ bq --project_id="${PROJECT_ID}" mk \
     "${DATASET_ID}"."${PRODUCTS_TABLE_NAME}" < /dev/null
 ```
 
-Partitioning is in private preview so you can not yet use:
+Iceberg managed tables also support partitioning, clustering and combining clustered and partitioned tables (in Preview). See [here](https://docs.cloud.google.com/bigquery/docs/biglake-iceberg-tables-in-bigquery#use_partitioning) for more information:
+
+Partition flags:
 
 ```shell
     --time_partitioning_field=created_at \
     --time_partitioning_type=DAY \
 ```
 
-Also, not using the following in the excercise yet:
+Clustering flag:
 
 ```shell
     --clustering_fields=CLUSTER_COLUMN_LIST \
@@ -200,7 +202,7 @@ FROM FILES (
 
 ### 2. Create a join SQL statement
 
-Thanks to BigLake which is a metadata layer above various storage engines on Google Cloud, you can seamlessly access data across Iceberg tables that are stored on GCS as well as BigQuery native table.
+The Open Lakehouse enables you to seamlessly access data across Iceberg tables that are stored on GCS as well as BigQuery native table.
 
 Create a single SQL query that calculates for every country the (1) total number of orders (2) total number of ordered items and (3) total sales price.
 
@@ -296,7 +298,7 @@ Since you just updated the table `products` and `orders`, additional metadata fi
 
 ### Notes & Guidance
 
-As the Lakehouse grows, so does the responsibility to protect sensitive information. While open standards provide flexibility, we must ensure that PII (Personally Identifiable Information) is only visible to authorized personnel. BigLake allows you to apply fine-grained access control, such as Data Masking rules directly on Iceberg tables, ensuring that sensitive data is obscured even when queried through BigQuery.
+As the Lakehouse grows, so does the responsibility to protect sensitive information. While open standards provide flexibility, we must ensure that PII (Personally Identifiable Information) is only visible to authorized personnel. The Open Lakehouse allows you to apply fine-grained access control, such as Data Masking rules directly on Iceberg tables, ensuring that sensitive data is obscured even when queried through BigQuery.
 
 ### 1. Create the taxonomy and policy tags
 
@@ -359,10 +361,10 @@ Create the Spark session:
 ```python
 from google.cloud.dataproc_spark_connect import DataprocSparkSession
 from google.cloud.dataproc_v1 import Session
-# Create the Dataproc Serverless session.
+# Create the Managed Service for Apache Spark Serverless session.
 session = Session()
 
-# Set the session configuration for BigLake Metastore with the Iceberg environment.
+# Set the session configuration for Lakehouse Metastore with the Iceberg environment.
 catalog="bq_catalog"
 
 session.environment_config.execution_config.subnetwork_uri = f"{SUBNET_NAME}"
@@ -377,7 +379,7 @@ session.runtime_config.properties[f"spark.sql.catalog.{catalog}.warehouse"] = f"
 # Create the Spark Connect session.
 spark = (
    DataprocSparkSession.builder
-     .appName("BigLake Iceberg Lab")
+     .appName("Lakehouse Iceberg Lab")
      .dataprocSessionConfig(session)
      .getOrCreate()
 )

@@ -20,12 +20,12 @@ Your team is tasked with building the bedrock of this platform on Google Cloud. 
 
 This hack will help you explore the following tasks:
 
-- Configuring BigLake for open table formats
+- Configuring Google Cloud Open Lakehouse for open table formats
 - Creating and managing Iceberg tables using BigQuery
 - Performing DML operations (ACID transactions) on Iceberg tables
 - Utilizing time travel for historical data analysis
 - Managing security with fine-grained access control
-- Interacting with Iceberg tables using Dataproc (Spark)
+- Interacting with Iceberg tables using Managed Service for Apache Spark Serverless
 - Integrating Iceberg data directly with Gemini models for AI use cases
 
 ## Challenges
@@ -59,7 +59,7 @@ Before we can analyze data, we need to lay the groundwork. Unlike standard BigQu
 
 In BigQuery, we aim to have 2 datasets. One for *marketing* and one for *sales*. Your task is to create the *sales* dataset and the necessary tables.
 
-You have been provided with raw sales data stored in a bucket on Google Cloud Storage. In this bucket, you will find the necessary data to create tables for orders, order\_items and products. First, create a **new** Cloud Storage bucket to serve as our data lake storage. Then, configure a **BigLake Connection** (Cloud Resource) to allow BigQuery to access this bucket. Finally, create the *sales* BigQuery dataset and 3 Iceberg tables, located within the bucket you created earlier, named `products`, `orders` and `order_items`. Finally, load the raw data into the Iceberg tables.
+You have been provided with raw sales data stored in a bucket on Google Cloud Storage. In this bucket, you will find the necessary data to create tables for orders, order\_items and products. First, create a **new** Cloud Storage bucket to serve as our data lake storage. Then, configure a **Lakehouse Connection** (Cloud Resource) to allow BigQuery to access this bucket. Finally, create the *sales* BigQuery dataset and 3 Iceberg tables, located within the bucket you created earlier, named `products`, `orders` and `order_items`. Finally, load the raw data into the Iceberg tables.
 
 > [!NOTE]  
 > The data is loaded in the background to your bucket in Google Cloud Storages. If you do not yet see folders for the different tables in the bucket, then please wait a minute or so.
@@ -77,26 +77,25 @@ You can download the schema of these tables by using the following links. The sc
 ### Success Criteria
 
 - A Cloud Storage bucket exists in the same region as your dataset.
-- A BigLake Cloud Resource connection is successfully created and has the required permissions to access the bucket.
+- A Lakehouse Cloud Resource connection is successfully created and has the required permissions to access the bucket.
 - The tables `products`, `orders` and `order_items` exist, and their `table_format` is listed as `ICEBERG`.
 - Querying the Iceberg tables returns data.
 
 ### Learning Resources
 
-- [Introduction to BigLake tables](https://cloud.google.com/bigquery/docs/biglake-intro)
 - [Create and set up a Cloud resource connection](https://docs.cloud.google.com/bigquery/docs/create-cloud-resource-connection)
-- [Create Iceberg tables in BigQuery](https://cloud.google.com/bigquery/docs/iceberg-tables)
+- [Apache Iceberg managed tables](https://docs.cloud.google.com/bigquery/docs/biglake-iceberg-tables-in-bigquery)
 
 ### Tips
 
 - Pay close attention to **Regions**. Your Bucket, Connection, and Dataset must all be in the same location (e.g., `us-central1`).
-- You will need to grant specific IAM roles on your Storage Bucket to the Service Account created by the BigLake connection.
+- You will need to grant specific IAM roles on your Storage Bucket to the Service Account created by the Lakehouse connection.
 
 ## Challenge 2: Data interoperability across Lakehouse
 
 ### Introduction
 
-A cornerstone of the Google Cloud Lakehouse architecture is true interoperability: the ability to join disparate datasets without the latency or cost of data movement. Through BigLake, Google Cloud provides a unified interface that allows BigQuery to query Apache Iceberg tables alongside native BigQuery tables in a single SQL statement.
+A cornerstone of the Google Cloud Lakehouse architecture is true interoperability: the ability to join disparate datasets without the latency or cost of data movement. The Open Lakehouse provides a unified interface that allows BigQuery to query Apache Iceberg tables alongside native BigQuery tables in a single SQL statement.
 
 This architecture not only streamlines analytics but also serves as a robust foundation for AI integration. By storing data in open formats like Iceberg, you can feed cleaned, governed data directly into BigQuery’s AI capabilities without ever moving the underlying bits.
 
@@ -104,7 +103,7 @@ This architecture not only streamlines analytics but also serves as a robust fou
 
 Using the parquet file found in the raw data bucket on Cloud Storage, create a native BigQuery table called users in the marketing dataset. You should not need to define the table schema since BigQuery can automatically infer it from the parquet file.
 
-Leverage the BigLake metadata layer to join your new users table with the existing Iceberg  tables. Write a single SQL query to aggregate the following metrics by country:
+Leverage the Open Lakehouse metadata layer to join your new users table with the existing Iceberg tables. Write a single SQL query to aggregate the following metrics by country:
 
 - Total number of orders
 - Total number of ordered items
@@ -167,7 +166,7 @@ Accidents happen. Data gets deleted or updated incorrectly. Use Time Travel to r
 
 In a modern Lakehouse, flexibility must be balanced with rigorous security. As we consolidate data into Apache Iceberg, protecting Personally Identifiable Information (PII) becomes a top priority.
 
-Using BigLake and Data Catalog, you can enforce "Zero Trust" security directly on your Iceberg tables. By applying Data Masking and Column-Level Security, you ensure that sensitive fields like email addresses or pricing data are obscured by default. This is a foundational step for Responsible AI, preventing sensitive data from leaking into LLM prompts or being used improperly during model training.
+Using the Open Lakehouse and Policy Tags, you can enforce "Zero Trust" security directly on your Iceberg tables. By applying Data Masking and Column-Level Security, you ensure that sensitive fields like email addresses or pricing data are obscured by default. This is a foundational step for Responsible AI, preventing sensitive data from leaking into LLM prompts or being used improperly during model training.
 
 ### Description
 
@@ -206,7 +205,7 @@ A true Data Lakehouse isn't tied to one engine. To demonstrate the architecture 
 
 ### Description
 
-We are going to use Dataproc Serverless via a BigQuery Notebook to easily combine Spark with BigQuery.
+We are going to use the Managed Service for Apache Spark Serverless via a BigQuery Notebook to easily combine Spark with BigQuery.
 
 The first step is to create a new notebook in BigQuery so you can start writing Spark SQL. At this time, you need to provide an additional instruction to explicitly export the table metadata for our tables to GCS. In the future, this will no longer be necessary as it will be done automatically. Add these instructions early on to your Notebook.
 
@@ -225,7 +224,7 @@ Requirements:
 
 ### Success Criteria
 
-- A Dataproc Serverless session is started in a BigQuery Notebook
+- A Managed Service for Apache Spark Serverless session is started in a BigQuery Notebook
 - The total revenue, total profit and the return rate percentages are calculated. The return rates should be between 7% \- 15%.
 
 ### Learning Resources
@@ -248,7 +247,7 @@ In a modern Lakehouse, data isn't just rows and columns; it’s also unstructure
 
 A batch of images representing returned products has been uploaded to your Google Cloud Storage bucket in the `/return_images/` folder. Each filename corresponds to a product ID. Your goal is to analyze these images and extract a description of the faulty product and correlate this information with our product catalog.
 
-1. **Create an Object Table**: Create an external Object Table in BigQuery that points to the images in your Cloud Storage bucket. You can use the same BigLake connection created in Challenge 1\.
+1. **Create an Object Table**: Create an external Object Table in BigQuery that points to the images in your Cloud Storage bucket. You can use the same Lakehouse connection created in Challenge 1\.
 2. **Join product and image data**: Create a new table that brings the structured product data (backed by Iceberg) and the image metadata (Object table) together in a single table that contains a column using the ObjectRef data type.
 3. **Perform Multi-modal Analysis**: Write a SQL query that uses the `AI.GENERATE` function to describe the condition of the products in the return images.
 
