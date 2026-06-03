@@ -33,9 +33,9 @@ STAGING_BUCKET=f"{PROJECT_ID}-staging"
 BQ_DATASET="articles"
 BQ_TABLE="summaries"
 
-MODEL_NAME="gemini-2.5-flash"
+MODEL_NAME="gemini-3.5-flash"
 
-genai_client = genai.Client(vertexai=True, project=PROJECT_ID, location=REGION)
+genai_client = genai.Client(vertexai=True, project=PROJECT_ID, location="global")
 
 
 def extract_text_from_document(src_bucket: str, file_name: str, dst_bucket: str) -> str:

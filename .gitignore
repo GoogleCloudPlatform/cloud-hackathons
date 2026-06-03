@@ -30,3 +30,6 @@ node_modules/
 .terraform*
 terraform.tfstate*
 terraform.tfvars*
+
+# AGY
+.antigravitycli/

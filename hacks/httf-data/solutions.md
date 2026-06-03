@@ -272,6 +272,14 @@ OPTIONS (ENDPOINT = 'gemini-2.0-flash');
 EOF
 ```
 
+In case a model is not available in a specific region, but for example only has a global endpoint (gemini-3.5-flash, as per June 2026), you can indicate it in the endpoint definition.
+
+```sql
+CREATE OR REPLACE MODEL $BQ_DATASET.text_generation
+REMOTE WITH CONNECTION \`us.$CONN_ID\`
+OPTIONS (ENDPOINT = 'projects/$GOOGLE_CLOUD_PROJECT/locations/global/publishers/google/models/gemini-3.5-flash');
+```
+
 Generating the product description will involve designing a prompt, which is an art by itself. It's sufficient to ensure that the prompt is common sense and includes the columns mentioned in the instructions.
 
 ```shell

@@ -172,6 +172,17 @@ WITH CONNECTION `$REGION.conn-llm` OPTIONS (ENDPOINT = 'gemini-2.0-flash')
 > [!NOTE]  
 > We're using `gemini-2.0-flash` here as an example, which is one of the latest GA models by the time of this writing. You could use any other model version that's not discontinued.
 
+In case a model is not available in a specific region, but for example only has a global endpoint (gemini-3.5-flash, as per June 2026), you can indicate it in the endpoint definition.
+
+```sql
+CREATE OR REPLACE MODEL
+  articles.llm REMOTE
+WITH CONNECTION `$REGION.conn-llm` 
+OPTIONS (
+  ENDPOINT = 'projects/$PROJECT_ID/locations/global/publishers/google/models/gemini-3.5-flash'
+)
+```
+
 Finally, we can use the linked model to make predictions.
 
 ```sql

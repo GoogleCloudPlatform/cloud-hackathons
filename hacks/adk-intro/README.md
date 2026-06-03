@@ -76,6 +76,8 @@ Once everything is set up, run `adk web` and make sure that the agent responds b
 ### Tips
 
 - Easiest option for ADK authentication is to use a properly configured `.env` file.
+- Keep in mind that some models are only available in the `global` region.
+- On Cloud Shell you might need to use the `--allow_origins="*"` parameter when launching `adk web` to prevent CORS errors.
 
 ## Challenge 2: Equipping the Scanner
 
@@ -113,6 +115,7 @@ The provided code base already has a function that can look up the resources run
 ### Tips
 
 - You can verify the list by navigating to the *VM Instances* page in the Google Cloud Console or by using the `gcloud compute instances list` command in Cloud Shell.
+- The `--reload_agents` parameter for `adk web` enables live reload of changed agent code, useful during development.
 
 ## Challenge 3: Sticky Notes
 
