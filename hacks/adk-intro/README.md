@@ -56,7 +56,7 @@ We're taking baby steps, let's get started with our development environment. Thi
 
 ### Description
 
-We've already prepared a code base for you and put it in a Git repository (your coach will provide you the link). Clone that on Cloud Shell, create a virtual environment and install the requirements.
+We've already prepared a code base for you and put it in a Git repository (your coach will provide you the link). Clone that on Cloud Shell, create a virtual environment, activate it and install the requirements from the `requirements.txt` file in that environment.
 
 Once everything is set up, run `adk web` and make sure that the agent responds back.
 
@@ -157,9 +157,9 @@ In this challenge we'll introduce the concept of *sub-agents* and *Workflows* wh
 
 ### Description
 
-Create two new agents, `resource_monitor_agent` which should filter the list of resources found by the `resource_scanner_agent`, and store that into the session store as `idle_resources` using the appropriate schema. This agent should return back only the instances that are idle.
+Create a new agent, `resource_monitor_agent` which should filter the list of resources found by the `resource_scanner_agent`, and store that into the session store as `idle_resources` using the appropriate schema. This agent should return back only the instances that are idle.
 
-Then create a new **Workflow** `orchestrator_agent` that calls the `resource_scanner_agent` and the `resource_monitor_agent` in sequence. Once you have created the new agents, update the `root_agent` to be the `orchestrator_agent`.
+Then create a new *Workflow* `orchestrator_agent` that calls the `resource_scanner_agent` and the `resource_monitor_agent` in sequence. Once you have created the new agents, update the `root_agent` to be the `orchestrator_agent`.
 
 > [!NOTE]  
 > This is a very basic scenario where we're looking up basic stats and letting the Agent to decide what's idle. The power of the LLM based agents is however that they can also detect more advanced patterns based on more complex data (which is beyond the scope of this challenge)
@@ -177,7 +177,7 @@ Then create a new **Workflow** `orchestrator_agent` that calls the `resource_sca
 ### Tips
 
 - You can use `adk web` UI to view the agents involved.
-- If idle resource list is not generated correctly, make your instructions more specific
+- If idle resource list is not generated correctly, make your instructions more specific.
 
 ## Challenge 5: MCP: Universal Tooling
 
@@ -187,7 +187,7 @@ We have built and referenced our own tool in the second challenge, but what abou
 
 There's a plethora of various MCP Tool providers (for example see this [list](https://mcpservers.org/)), which can run locally as well as remotely. For this challenge we'll use a sample tool that we have developed for this hack using [FastMCP](https://gofastmcp.com/getting-started/welcome) library and running remotely on [Cloud Run](https://cloud.google.com/run/docs/host-mcp-servers).
 
-In this challenge we'll make sure that idle resources are tagged so that we can give the developers time to verify if we can stop them. In order to do that we'll use an MCP tool that adds a new label with a termination date in the future to the idle resource.
+Goal of this challenge is to make sure that idle resources are tagged so that we can give the developers time to verify if we can stop them. In order to do that we'll use an MCP tool that adds a new label with a termination date in the future, to the idle resource.
 
 ### Description
 
