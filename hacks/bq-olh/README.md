@@ -13,8 +13,9 @@ We have selected Apache Iceberg as our foundational table format. It provides th
 
 Your team is tasked with building the bedrock of this platform on Google Cloud. You will begin by configuring the storage layer and conclude by demonstrating true multi-engine and AI interoperability.
 
-![Architecture of the solution](./images/architecture.png)
-*Architecture diagram for the challengesi in this gHack.*
+| ![Architecture of the solution](./images/architecture.png) |
+| :--: |
+| *Architecture diagram for the challengesi in this gHack.* |
 
 ## Learning Objectives
 

@@ -192,7 +192,7 @@ And the correct response will be: *11/05/2024 15:42:06* (the exact wording might
 > [!WARNING]  
 > The footage is from a European race, so the time format in the video is `dd/mm/yyyy` and not `mm/dd/yyyy`.
 
-We've succesfully tested this with `gemini-2.0-flash-001` using the default settings (which is end of life by now), but participants are free to experiment with different available models and settings to get the correct answer.
+We've succesfully tested this with `gemini-2.0-flash` using the default settings (which is end of life by now), but participants are free to experiment with different available models and settings to get the correct answer.
 
 ## Challenge 4: Telemetry to the rescue!
 

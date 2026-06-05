@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to DevCore Inc.! We are a fast-moving tech company where innovation thrives. Our developers have the freedom to spin up Cloud resources on demand, fostering rapid prototyping and experimentation. However, this freedom has a downside: *zombie resources*. Developers frequently create servers for tests but forget to stop or delete them afterwards.
+Welcome to Cymbal Inc.! We are a fast-moving tech company where innovation thrives. Our developers have the freedom to spin up Cloud resources on demand, fostering rapid prototyping and experimentation. However, this freedom has a downside: *zombie resources*. Developers frequently create servers for tests but forget to stop or delete them afterwards.
 
 This results in hundreds of idle resources running 24/7, costing the company tens of thousands of dollars every month for zero value. The manual cleanup process is tedious, error-prone, and can't keep up. We need an automated, intelligent system to solve this problem.
 
@@ -56,7 +56,7 @@ We're taking baby steps, let's get started with our development environment. Thi
 
 ### Description
 
-We've already prepared a code base for you and put it in a Git repository (your coach will provide you the link). Clone that on Cloud Shell, create a virtual environment and install the requirements.
+We've already prepared a code base for you and put it in a Git repository (your coach will provide you the link). Clone that on Cloud Shell, create a virtual environment, activate it and install the requirements from the `requirements.txt` file in that environment.
 
 Once everything is set up, run `adk web` and make sure that the agent responds back.
 
@@ -76,6 +76,7 @@ Once everything is set up, run `adk web` and make sure that the agent responds b
 ### Tips
 
 - Easiest option for ADK authentication is to use a properly configured `.env` file.
+- On Cloud Shell you might need to use the `--allow_origins="*"` parameter when launching `adk web` to prevent CORS errors.
 
 ## Challenge 2: Equipping the Scanner
 
@@ -108,11 +109,12 @@ The provided code base already has a function that can look up the resources run
 
 ### Learning Resources
 
-- [Tools in ADK](https://google.github.io/adk-docs/tools/)
+- [Tools in ADK](https://adk.dev/tools-custom/)
 
 ### Tips
 
 - You can verify the list by navigating to the *VM Instances* page in the Google Cloud Console or by using the `gcloud compute instances list` command in Cloud Shell.
+- The `--reload_agents` parameter for `adk web` enables live reload of changed agent code, useful during development.
 
 ## Challenge 3: Sticky Notes
 
@@ -134,9 +136,9 @@ Modify the `resource_scanner_agent` to save the list of all virtual machines in 
 
 ### Learning Resources
 
-- [Session state in ADK](https://google.github.io/adk-docs/sessions/state/)
-- [Updating state](https://google.github.io/adk-docs/sessions/state/#how-state-is-updated-recommended-methods)
-- [Output schemas](https://google.github.io/adk-docs/agents/llm-agents/#structuring-data-input_schema-output_schema-output_key)
+- [Session state in ADK](https://adk.dev/sessions/state/)
+- [Updating state](https://adk.dev/sessions/state/#how-state-is-updated-recommended-methods)
+- [Output schemas](https://adk.dev/agents/llm-agents/#data-handling)
 
 ### Tips
 
@@ -148,16 +150,16 @@ Modify the `resource_scanner_agent` to save the list of all virtual machines in 
 
 Breaking down complex problems into smaller, manageable sub-problems is a well-established strategy in software development. Multi-agent systems apply this principle to AI, allowing specialized agents to handle specific aspects of a larger task.
 
-In this challenge we'll introduce the concept of *sub-agents* and *workflow agents* which are specialized agents that control the execution flow of its sub-agents.
+In this challenge we'll introduce the concept of *sub-agents* and *Workflows* which are specialized constructs that control the execution flow of its sub-agents by organizing them in a graph-like structure.
 
 > [!NOTE]  
-> Workflow agents (sequential, parallel, loop) can be useful for orchestration in many cases as they're reliable, well structured and predictable. However, it's also possible to use LLM based Agents for orchestration if more flexibility is needed. In that case you'll be defining the order and conditions for running the sub-agents in the agent's instructions (the prompt).
+> Workflows can be useful for orchestration in many cases as they're reliable, well structured and predictable. However, it's also possible to use LLM based Agents for orchestration if more flexibility is needed. In that case you'll be defining the order and conditions for running the sub-agents in the agent's instructions (the prompt).
 
 ### Description
 
-Create two new agents, `resource_monitor_agent` which should filter the list of resources found by the `resource_scanner_agent`, and store that into the session store as `idle_resources` using the appropriate schema. This agent should return back only the instances that are idle.
+Create a new agent, `resource_monitor_agent` which should filter the list of resources found by the `resource_scanner_agent`, and store that into the session store as `idle_resources` using the appropriate schema. This agent should return back only the instances that are idle.
 
-Then create a new sequential agent `orchestrator_agent` that calls the `resource_scanner_agent` and the `resource_monitor_agent` in sequence. Once you have created the new agents, update the `root_agent` to be the `orchestrator_agent`.
+Then create a new *Workflow* `orchestrator_agent` that calls the `resource_scanner_agent` and the `resource_monitor_agent` in sequence. Once you have created the new agents, update the `root_agent` to be the `orchestrator_agent`.
 
 > [!NOTE]  
 > This is a very basic scenario where we're looking up basic stats and letting the Agent to decide what's idle. The power of the LLM based agents is however that they can also detect more advanced patterns based on more complex data (which is beyond the scope of this challenge)
@@ -170,12 +172,12 @@ Then create a new sequential agent `orchestrator_agent` that calls the `resource
 
 ### Learning Resources
 
-- [Multi-Agent Systems in ADK](https://google.github.io/adk-docs/agents/multi-agents/)
-- If idle resource list is not generated correctly, make your instructions more specific
+- [Graph based agent workflows](https://adk.dev/graphs/)
 
 ### Tips
 
 - You can use `adk web` UI to view the agents involved.
+- If idle resource list is not generated correctly, make your instructions more specific.
 
 ## Challenge 5: MCP: Universal Tooling
 
@@ -185,7 +187,7 @@ We have built and referenced our own tool in the second challenge, but what abou
 
 There's a plethora of various MCP Tool providers (for example see this [list](https://mcpservers.org/)), which can run locally as well as remotely. For this challenge we'll use a sample tool that we have developed for this hack using [FastMCP](https://gofastmcp.com/getting-started/welcome) library and running remotely on [Cloud Run](https://cloud.google.com/run/docs/host-mcp-servers).
 
-In this challenge we'll make sure that idle resources are tagged so that we can give the developers time to verify if we can stop them. In order to do that we'll use an MCP tool that adds a new label with a termination date in the future to the idle resource.
+Goal of this challenge is to make sure that idle resources are tagged so that we can give the developers time to verify if we can stop them. In order to do that we'll use an MCP tool that adds a new label with a termination date in the future, to the idle resource.
 
 ### Description
 
@@ -204,7 +206,7 @@ Then add the `resource_labeler_agent` to the `orchestrator_agent` sequence.
 
 ### Learning Resources
 
-- [MCP Tools in ADK](https://google.github.io/adk-docs/tools/mcp-tools/)
+- [MCP Tools in ADK](https://adk.dev/tools-custom/mcp-tools)
 
 ### Tips
 
@@ -239,7 +241,7 @@ Create a new agent `resource_cleaner_agent` that uses A2A protocol to connect to
 
 ### Learning Resources
 
-- [Using A2A Agents in ADK](https://google.github.io/adk-docs/a2a/quickstart-consuming/)
+- [Using A2A Agents in ADK](https://adk.dev/a2a/quickstart-consuming/)
 
 ### Tips
 

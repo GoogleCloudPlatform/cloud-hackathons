@@ -38,6 +38,9 @@ Since we're using Cloud Source Repositories, the authentication is done automati
 
 If they get the message `warning: You appear to have cloned an empty repository`, they were too quick. The repository is initialized asynchronously at project startup and takes a minute or so. In that case they should retry (after deleting the empty repository, the `ghacks-adk-intro` directory).
 
+> [!NOTE]  
+> We have had issues where the initialization of the project was not successful when using QL. So if no Git repository is created after a few minutes restart the lab so the project gets re-created and re-initialized.
+
 Once the repository is cloned, although it's not a hard requirement, the best practice is to start with a virtual environment. There are multiple tools to create virtual environments and install packages but we'll stick to the defaults.
 
 ```shell
@@ -92,6 +95,9 @@ root_agent = resource_scanner_agent
 Now we can run the `adk web` command and preview it by clicking the web preview icon in the Cloud Shell menu and selecting Preview and Change Port to 8000.
 
 If you get authentication errors, make sure that the environment variables as defined above (in the `.env` file) are set and have been sourced.
+
+> [!NOTE]  
+> At the time of this writing the latest Gemini model is only available in the `global` region, so we have hardcoded the location to be `global` for the model (see the `settings.py` for the implementation details). The location that's configured through the `.env` file is ignored (although it would be used as the deployment location if the agent was deployed to the Agent Runtime).
 
 ## Challenge 2: Equipping the Scanner
 
@@ -150,7 +156,7 @@ Again the new driver should follow the same steps for the first challenge to clo
 ```python
 # keep other imports
 
-from google.adk.agents import SequentialAgent
+from google.adk import Workflow
 
 # keep resource_scanner_agent as is
 resource_monitor_agent = Agent(
@@ -166,9 +172,12 @@ resource_monitor_agent = Agent(
     output_schema=schemas.VMStatsList,
 )
 
-orchestrator_agent = SequentialAgent(
+orchestrator_agent = Workflow(
     name="orchestrator_agent",
-    sub_agents=[resource_scanner_agent, resource_monitor_agent]
+    edges=[
+        ("START", resource_scanner_agent),
+        (resource_scanner_agent, resource_monitor_agent),
+    ]
 )
 
 root_agent = orchestrator_agent
@@ -195,12 +204,12 @@ The following snippet indicates what needs to be changed.
 
 ```python
 # keep other imports
-from google.adk.tools.mcp_tool import MCPToolset
+from google.adk.tools.mcp_tool import McpToolset
 from google.adk.tools.mcp_tool import StreamableHTTPConnectionParams
 
 # keep resource_scanner_agent and idle_checker_agent as is
 
-mcp_tool_set = MCPToolset(
+mcp_tool_set = McpToolset(
     connection_params=StreamableHTTPConnectionParams(
         url="http://localhost:8888/"
     )
@@ -217,12 +226,11 @@ resource_labeler_agent = Agent(
     tools=[mcp_tool_set, tools.get_current_date, tools.add_days_to_date]
 )
 
-orchestrator_agent = SequentialAgent(
+orchestrator_agent = Workflow(
     name="orchestrator_agent",
-    sub_agents=[
-        resource_scanner_agent,
-        resource_monitor_agent,
-        resource_labeler_agent
+    edges=[
+        ("START", resource_scanner_agent),
+        (resource_scanner_agent, resource_monitor_agent, resource_labeler_agent),
     ]
 )
 ```
@@ -233,29 +241,30 @@ The proxy solves the authenticaton part of this simple tool. It's also possible 
 import google.auth.transport.requests
 import google.oauth2.id_token
 
-def get_bearer_token(audience: str) -> str:
+def get_auth_headers(readonly_context=None) -> dict[str, str]:
+    """Returns http headers for authenticating against MCP toolset servers."""
     request = google.auth.transport.requests.Request()
-    token = google.oauth2.id_token.fetch_id_token(request, audience)
-    return token
+    token = google.oauth2.id_token.fetch_id_token(request, MCP_SERVER_CLOUD_RUN_URL)
+    return {"Authorization": f"Bearer {token}"}
 ```
 
-ADK provides many different classes and methods for handling the authentication configuration, but we'll stick to the simple method of providing the bearer token in the header of the request.
+ADK provides many different classes and methods for handling the authentication configuration, but we'll stick to the simple method of providing the bearer token in the header of the request. Note that the parameter `header_provider` is passed the function reference for `get_auth_headers` as a callable.
 
 ```python
 MCP_SERVER_CLOUD_RUN_URL="..." # typically https://mcp-server-$PROJECT_NUMBER.$REGION.run.app
 
-mcp_tool_set = MCPToolset(
+mcp_tool_set = McpToolset(
     connection_params=StreamableHTTPConnectionParams(
-        url=f"{MCP_SERVER_CLOUD_RUN_URL}/",
-        headers={"Authorization": f"Bearer {tools.get_bearer_token(MCP_SERVER_CLOUD_RUN_URL)}"},
-    )
+        url=f"{MCP_SERVER_CLOUD_RUN_URL}/"
+    ),
+    header_provider=get_auth_headers
 )
 ```
 
 > [!NOTE]  
 > At the time of this writing using the `auth_scheme` and `auth_credentials` for bearer tokens doesn't work well with MCP servers, as those credentials are not utilized for listing the tools, tracked [here](https://github.com/google/adk-python/issues/2168).
 
-As our tool is simple, this approach works fine, but in real world, you might need to use OAuth flows, API keys etc. And there will be cases where the currently authenticated user's credentials need to be forwarded to remote agents/tools so that they can perform actions on behalf of the user (see the official [docs](https://google.github.io/adk-docs/safety/#identity-and-authorization) for more details).
+As our tool is simple, this approach works fine, but in real world, you might need to use OAuth flows, API keys etc. And there will be cases where the currently authenticated user's credentials need to be forwarded to remote agents/tools so that they can perform actions on behalf of the user (see the official [docs](https://adk.dev/safety/#identity-and-authorization) for more details).
 
 In order to verify if the labels have been set correctly, you can either navigate to the relevant section on Google Cloud Console or run the following command:
 
@@ -297,14 +306,11 @@ resource_cleaner_agent = RemoteA2aAgent(
         f"http://localhost:8080/a2a/resource_cleaner_agent{AGENT_CARD_WELL_KNOWN_PATH}"
     )
 )
-
-orchestrator_agent = SequentialAgent(
+orchestrator_agent = Workflow(
     name="orchestrator_agent",
-    sub_agents=[
-        resource_scanner_agent,
-        resource_monitor_agent,
-        resource_labeler_agent,
-        resource_cleaner_agent
+    edges=[
+        ("START", resource_scanner_agent),
+        (resource_scanner_agent, resource_monitor_agent, resource_labeler_agent, resource_cleaner_agent),
     ]
 )
 ```
@@ -324,7 +330,7 @@ resource_cleaner_agent = RemoteA2aAgent(
     name="resource_cleaner_agent",
     description="This agent stops idle instances that have been scheduled for cleanup",
     agent_card=(
-        f"http://localhost:8080/a2a/resource_cleaner_agent{AGENT_CARD_WELL_KNOWN_PATH}"
+        f"https://{A2A_SERVER_CLOUD_RUN_URL}/a2a/resource_cleaner_agent{AGENT_CARD_WELL_KNOWN_PATH}"
     ),
     httpx_client=httpx_client
 )
