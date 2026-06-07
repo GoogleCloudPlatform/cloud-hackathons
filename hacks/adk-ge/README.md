@@ -2,34 +2,34 @@
 
 ## Introduction
 
-In this hack, you will take on the role of a developer helping Sara, a Product Owner at a retail bank. Sara needs to analyze numbers for a newly launched product, and she wants to use a conversational interface that can tap into the bank's data. You will build an end-to-end business solution using the Agent Development Kit (ADK) and Gemini Enterprise.
+In this hack, you will step into the shoes of a developer tasked with building an agentic solution for Sara, a Product Owner at a retail bank. Sara needs to track and analyze performance metrics for a newly launched banking product. Instead of relying on static dashboards or waiting for manual database reports, she wants a conversational interface that can securely interact with live banking data in real-time.
+
+To solve this end-to-end business problem, you will leverage the *Agent Development Kit (ADK)* to build a custom AI agent, run and test it securely on Google Cloud's enterprise-grade infrastructure, and deliver it directly to Sara inside her existing *Gemini Enterprise* workspace.
 
 ![Architecture Overview](./images/ge-adk-arch.png)
 
 ## Learning Objectives
 
-1. Set up and deploy an ADK agent to Agent Runtime on Google Cloud.  
-2. Integrate BigQuery with natural language querying capabilities.  
-3. Extend agent capabilities using MCP (Model Context Protocol) servers.  
-4. Integration with Gemini Enterprise app.  
-5. Implement A2UI for data visualization.  
+1. Set up and test an ADK agent locally.
+2. Integrate BigQuery using a secure *MCP (Model Context Protocol) server* for natural language database querying.
+3. Deploy and host agents securely in Google Cloud using *Agent Runtime* with managed Agent identities.
+4. Integration with Gemini Enterprise app.
+5. Implement A2UI for data visualization.
 
 ## Challenges
 
-- Challenge 1: Getting Started with ADK  
-  - Clone skeleton code, run it locally in Cloud Shell.  
+- Challenge 1: Getting Started with ADK
+  - Clone skeleton code, run it locally in Cloud Shell.
 - Challenge 2: What's the date?
-  - Basic tools
-- Challenge 3: Talking to BigQuery  
-  - Integrate the BigQuery toolset to query banking data using natural language.  
-- Challagen 4: Agent Runtime
-  - Scalable Agent hosting platform
-- Challenge 5: Knowledge Catalog Integration  
-  - Connect an MCP server to provide the agent with metadata and knowledge.  
-- Challenge 6: Gemini Enterprise Integration  
-  - Make the agent A2A compatible and register it as a custom agent in Gemini Enterprise.  
-- Challenge 7: Visualizing Data (A2UI)  
-  - Generate and visualize charts directly in the chat interface.  
+  - Implement a basic custom function tool in Python to fetch the current date.
+- Challenge 3: Talking to BigQuery
+  - Connect the Google-managed *BigQuery MCP Server* to query banking data using natural language.  
+- Challenge 4: Agent Runtime
+  - Deploy your agent to Agent Runtime and configure secure identity and access.
+- Challenge 5: Gemini Enterprise Integration  
+  - Make the agent A2A compatible and register it as a custom agent in the Gemini Enterprise app.
+- Challenge 6: Visualizing Data (A2UI)
+  - Generate and visualize charts directly in the chat interface using native A2UI.  
 
 ## Prerequisites
 
@@ -41,11 +41,13 @@ In this hack, you will take on the role of a developer helping Sara, a Product O
 
 ### Introduction
 
-The first step is to get familiar with the [ADK](https://adk.dev/) (Agent Development Kit) and the deployment process. You will start with a skeleton project and see how to run it in your local environment before moving it to the cloud.  
+Before building advanced features, you need to understand the foundation. The [Agent Development Kit (ADK)](https://adk.dev/) is an open-source framework designed to help developers build, test, and run production-ready AI agents.
+
+In this challenge, you will configure your local development environment by running an ADK agent inside Cloud Shell before we scale our architecture to the cloud.
 
 ### Description
 
-We’ve already prepared a code base for you and put it in a Git repository (your coach will provide you the link). Clone that on Cloud Shell, create a virtual environment, activate it and install the Python dependencies from the `requirements.txt`. Configure the agent to use user credentials for local development through Agent Platform.
+We've already prepared a code base for you and put it in a Git repository (your coach will provide you the link). Clone that on Cloud Shell, create a virtual environment, activate it and install the Python dependencies from the `requirements.txt`. Configure the agent to use *user credentials* for local development through Agent Platform (formerly known as Vertex AI).
 
 Once everything is set up, run `adk web` and make sure that the agent responds back.
 
@@ -58,7 +60,7 @@ Once everything is set up, run `adk web` and make sure that the agent responds b
 ### Tips
 
 - The utility `adk web` is part of ADK CLI that gets installed when you install the dependencies in your virtual environment.
-- Newer versions of the `adk web` feature require you to set the `--allow_origins` to `"*"`
+- Newer versions of the `adk web` feature require you to set the `--allow_origins` to `"*"` to prevent CORS errors.
 
 ### Learning Resources
 
@@ -72,11 +74,13 @@ Once everything is set up, run `adk web` and make sure that the agent responds b
 
 ### Introduction
 
-Although LLMs by themselves are powerful, they're not omniscient nor omnipotent. They need additional capabilities to get access to real-time data and to execute actions. This is where *Tools* play a role, they provide a way for LLMs/agents to access external systems, databases, or APIs; basically augmenting the LLM's knowledge base and enabling it to perform more complex operations.
+Large Language Models (LLMs) are incredibly capable, but they are limited to the data they were trained on, meaning they don't have access to real-time information or the ability to execute actions in the physical world. To overcome this, agents use *Tools*.
+
+Tools are basically external interfaces (functions, APIs, or scripts) that the agent can choose to invoke dynamically when it needs real-time context. To see this in action, you will write a custom Python function to supply the current date, allowing the agent to handle references such as last month, last quarter based on current date.
 
 ### Description
 
-If we'd ask our agent the current date, it would emit a date from the past. In order for our agent to be informed, we'll introduce a new function tool that returns the current date.
+If our users would ask our agent the current date, it would emit a date from the past. In order for our agent to be informed, we'll introduce a new *function tool* that returns the current date.
 
 Create a new Python function `get_current_date` that returns the current date in `YYYY-MM-DD` format. Add a [docstring](https://peps.python.org/pep-0257/#one-line-docstrings) to that function explaining what it returns and in which format. Make that function available as a tool to the agent.
 
@@ -95,38 +99,40 @@ Commit and push your changes to the Git repository when you're done.
 
 ### Introduction
 
-Our end user, Sara, needs to know how the new product is performing. Instead of writing SQL queries, she wants to ask questions in plain English.
+Sara's goal is to analyze how the new banking product is performing, which requires querying a secure corporate database. Since she is a product owner, not a database administrator, she wants to converse with her data in plain, natural English.
 
-We need a tool that can execute SQL queries. Luckily ADK comes pre-packaged with a toolset that can interact with BigQuery.
+Writing custom code to map user queries to database schemas can be incredibly tedious. Instead, you will use the *Model Context Protocol (MCP)*, an open-standard protocol that securely connects LLMs to external data sources. By integrating the Google-managed *BigQuery MCP Server* into your agent, you will empower the LLM to inspect tables, structure SQL queries, and fetch results automatically, all while adhering to security best practices.
 
 ### Description
 
-Update your agent to include the `BigQueryToolset` and filter the tools to use **only** the `execute_sql` tool.
-
-Once the agent can run SQL queries successfully, commit and push your changes.
+Integrate the *BigQuery MCP Server* into your ADK agent. Once the agent is equipped with the BigQuery MCP tools, and can run SQL queries successfully, commit and push your changes.
 
 ### Success Criteria
 
-- Ask the agent: *How many accounts were created in the last 10 days not including today?*. This should result in 10 or 11 (data is randomly generated).
+- Ask the agent: *How many accounts were created in the last 10 days not including today?*. This should successfully retrieve the result from BigQuery (around 10 or 11, as data is randomly generated).
+- Verify the agent utilizes the MCP tools to inspect and query the database under the hood.
 - All the changes are committed and pushed to the Git repository.
 
 ### Tips
 
-- You should stick to the Application Default Credentials authentication method, we have provided some utility methods in `helpers.py`, you might want to have a look at that.
+- Keep in mind that this MCP server is a remote server available through Streamable HTTP.
 
 ### Learning Resources
 
-- [BigQuery Toolset in ADK](https://adk.dev/integrations/bigquery/)
+- [MCP Toolset in ADK](https://adk.dev/tools-custom/mcp-tools)
+- [BigQuery MCP Server Reference](https://docs.cloud.google.com/bigquery/docs/reference/mcp)
 
 ## Challenge 4: Agent Runtime
 
 ### Introduction
 
-So far we have been running things locally, it's now time to move it to the cloud so it can be hosted in a scalable and a secure way. We'll use Agent Platform [Agent Runtime](https://docs.cloud.google.com/gemini-enterprise-agent-platform/build/runtime) for that.
+Running agents locally with personal user credentials is great for prototyping, but enterprise-grade business applications require a secure, reliable, and scalable hosting environment.
+
+In this challenge, you will move your agent off your local machine and deploy it to Google Cloud's *Agent Runtime* (part of the Gemini Enterprise Agent Platform). You will configure a dedicated *Agent Identity*, a managed principal, and grant it the precise, minimum IAM permissions required to access BigQuery. This ensures your agent runs securely under its own cloud identity without exposing personal user credentials.
 
 ### Description
 
-Deploy your agent to Agent Runtime using the ADK CLI, make sure that the Agent Runtime uses Agent Identity. Grant the required permissions to the identity of the Agent so that it can read data from and run jobs on BigQuery.
+Deploy your agent to Agent Runtime using the ADK CLI, make sure that the Agent Runtime uses Agent Identity. Grant the required permissions to the identity of the Agent so that it can read data from and run jobs on BigQuery, and can use the BigQuery MCP tools.
 
 Once the agent can run SQL queries successfully on Agent Runtime (through the Playground section), commit and push your changes.
 
@@ -145,40 +151,11 @@ Once the agent can run SQL queries successfully on Agent Runtime (through the Pl
 - [Deploying with ADK CLI](https://adk.dev/api-reference/cli/#adk-deploy)
 - [Agent Identity](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/agent-identity)
 
-## Challenge 5: Knowledge Catalog Integration
+## Challenge 5: Gemini Enterprise Integration
 
 ### Introduction
 
-We have some cryptic abbreviations in our data. If we ask a follow up question to our agent, it would gladly make up terminology. However we want it to use our own Business Glossary. Typically this is done through [Knowledge Catalog](https://docs.cloud.google.com/dataplex/docs/introduction) on Google Cloud. And luckily again, we can access that as a tool.
-
-Google Cloud provides various MCP (Model Context Protocol) servers with various tools, one of them being the Knowledge Catalog that provides metadata about the data.
-
-### Description
-
-We have already created a Business Glossary in Knowledge Catalog. Integrate the Knowledge Catalog MCP server into your agent and verify that you can resolve abbreviations. If everything works fine locally, redeploy your agent to Agent Runtime. Don't forget to grant the required permissions to the identity of the Agent (to read from Knowledge Catalog and use MCP Tools).
-
-Once the agent can resolve abbreviations and run SQL queries successfully, commit and push your changes.
-
-### Tips
-
-- Keep in mind that this MCP server is a remote server available through Streamable HTTP.
-
-### Success Criteria
-
-- Ask the agent on Agent Runtime: "What's the adoption rate of Advantage Plus accounts in the last quarter?" and verify that the result is around ~20%.
-- All the changes are committed and pushed to the Git repository.
-
-### Learning Resources
-
-- [MCP Toolset](https://adk.dev/tools-custom/mcp-tools)
-- [Knowledge Catalog MCP](https://docs.cloud.google.com/dataplex/docs/use-remote-mcp)
-- [Knowledge Catalog MCP Server reference](https://docs.cloud.google.com/dataplex/docs/reference/mcp)
-
-## Challenge 6: Gemini Enterprise Integration
-
-### Introduction
-
-Now that your agent is powerful, it's time to make it available where Sara works: Gemini Enterprise app.
+A powerful agent is only useful if business users can easily access it. Instead of forcing Sara to open a terminal or use a developer-focused console, we want to deliver this agent directly into the communication hub she uses every day: the *Gemini Enterprise* app.
 
 ### Description
 
@@ -188,35 +165,39 @@ Import your agent into Gemini Enterprise app, and verify that the Agent is avail
 
 ### Success Criteria
 
-- In the Gemini Enterprise app, ask the agent: "What are the available banking products?" and verify the response is: `TODO`  
+- In the Gemini Enterprise app, ask the agent: "What are the available banking products?" and verify the response list.
+- Verify that the agent successfully interacts with Sara.
 
 ### Learning Resources
 
-- Gemini Enterprise app import custom agent
+- [Creating a Gemini Enterprise app](https://docs.cloud.google.com/gemini/enterprise/docs/create-app)
+- [Registering a custom agent in Gemini Enterprise app](https://docs.cloud.google.com/gemini/enterprise/docs/register-and-manage-an-adk-agent)
 
-## Challenge 7: Visualizing Data (A2UI)
+## Challenge 6: Visualizing Data (A2UI)
 
 ### Introduction
 
-Numbers are great, but charts are better. Sara wants to see visual trends of the product's performance. Now, typically we’d have to build a custom UI or a dashboard to show various UI elements, but the [A2UI project](https://a2ui.org/) enables AI agents to generate rich, interactive user interfaces that render natively across web, mobile, and desktop, without executing arbitrary code. And Gemini Enterprise app has support for [basic UI components](https://a2ui-composer.ag-ui.com/basic-catalog) as well as charts.
+While reading numbers or CSV tables in a chat window is helpful, business trends are best understood visually. Sara wants to see product performance represented in clean, interactive charts.
+
+Traditionally, displaying visualizations from a chat agent required building bespoke web applications or executing unsafe client-side scripts. The *Agent-to-User Interface (A2UI)* project solves this by defining an open, secure, and declarative standard for rendering native interface components.
 
 ### Description
 
-In principle our agent could generate A2UI specs (the declarative model for a UI) if we prompted it properly. However, we’re going to keep things simple, and we’ll put the data in A2UI format ourselves using the ADK callback functionality.
+In principle our agent could generate A2UI specs (the declarative model for a UI) if we prompted it properly. However, we're going to keep things simple, and we'll put the data in A2UI format ourselves using the ADK callback functionality.
 
-Update the agent instructions to return data in csv format surrounded with `<chart></chart>` tags *only* when the user asks for a bar chart. Here's an example:
+Update the agent instructions to return data in csv format surrounded with `<bar_chart></bar_chart>` tags *only* when the user asks for a bar chart. Here's an example:
 
-```text  
-<chart>  
+```text
+<bar_chart> 
 category,amount  
 A, 5
 B, 20
 C, 35
 D, 15
-</chart>  
+</bar_chart>  
 ```
 
-We’ve already provided a callback function that can detect these blocks in the model response and replace them with A2UI components. Go ahead and make sure that this function is called after the model is run.
+We've already provided a function that can detect these blocks in the model response and replace them with A2UI components. Go ahead and make sure that this function is called after the model is run.
 
 Redeploy your agent and verify that charts are rendered correctly within the Gemini Enterprise app.
 
@@ -229,4 +210,4 @@ Finally commit and push your changes.
 
 ### Learning Resources
 
-- Callbacks
+- [ADK Callbacks](https://adk.dev/callbacks/)

@@ -260,7 +260,7 @@ ALTER TABLE `retail_banking.core_accounts_v2`
   ALTER COLUMN customer_id SET OPTIONS(description="Foreign key referencing the customer who owns this account.");
 
 ALTER TABLE `retail_banking.core_accounts_v2`
-  ALTER COLUMN account_type SET OPTIONS(description="The account product type code.");
+  ALTER COLUMN account_type SET OPTIONS(description="The account product type code (AP = Advantage Plus, BS = Basic Savings, SC = Standard Checking).");
 
 ALTER TABLE `retail_banking.core_accounts_v2`
   ALTER COLUMN balance SET OPTIONS(description="Current ledger balance of the account in EUR.");
