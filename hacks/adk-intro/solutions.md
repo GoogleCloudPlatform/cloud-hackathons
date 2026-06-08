@@ -162,8 +162,8 @@ from google.adk.agents.callback_context import CallbackContext
 from google.genai.types import Content, Part
 
 
-def gatekeeper(callback_context: CallbackContext) -> Content | None:
-    if "resources" in callback_context.state:
+def gatekeeper(context: CallbackContext) -> Content | None:
+    if "resources" in context.state:
         return Content(parts=[Part.from_text(text="Already scanned!")])
     return None
 
@@ -301,7 +301,7 @@ mcp_tool_set = McpToolset(
 ```
 
 > [!NOTE]  
-> At the time of this writing using the `auth_scheme` and `auth_credentials` for bearer tokens doesn't work well with MCP servers, as those credentials are not utilized for listing the tools, tracked [here](https://github.com/google/adk-python/issues/2168).
+> When we originally designed this challenge, the `auth_scheme` and `auth_credentials` for bearer tokens didn't work well with MCP servers, as those credentials were not utilized for listing the tools, tracked [here](https://github.com/google/adk-python/issues/2168). This issue has been resolved, so participants are free to use that approach too.
 
 As our tool is simple, this approach works fine, but in real world, you might need to use OAuth flows, API keys etc. And there will be cases where the currently authenticated user's credentials need to be forwarded to remote agents/tools so that they can perform actions on behalf of the user (see the official [docs](https://adk.dev/safety/#identity-and-authorization) for more details).
 
