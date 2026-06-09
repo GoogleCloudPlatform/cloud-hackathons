@@ -151,15 +151,15 @@ Modify the `resource_scanner_agent` to save the list of all virtual machines in 
 
 In the previous challenge, we saved the scanned resources to the session state under the `resources` key.
 
-While our LLM is intelligent enough to inspect the conversation history and recognize that we already scanned the resources, asking the agent about them still triggers a model invocation. This wastes Gemini tokens and adds unnecessary latency. To prevent this, we'll introduce a *callback*. These are specialized lifecycle hooks that intercept execution of agents, models and tools.
+While our LLM is intelligent enough to inspect the conversation history and recognize that we already scanned the resources, asking the agent about them still triggers a model invocation. This wastes Gemini tokens and adds unnecessary latency. To prevent this, we'll introduce a *callback*. Callbacks are specialized lifecycle hooks that intercept execution of agents, models and tools.
 
-Callbacks can be used for many different purposes, such as to modify data flowing through the agent or even to bypass certain steps entirely based on your logic. You can use them to log detailed information at every step, enforce guardrails, cache things and manage state. In this challenge we'll skip the agent execution altogether if the state indicates that a certain step has already run.
+Callbacks can be used for many different purposes, such as to modify data flowing through the agent, or even to bypass certain steps entirely based on your logic. You can use them to log detailed information at every step, enforce guardrails, cache things and manage state. In this challenge we'll skip the agent execution altogether if the state indicates that a certain step has already run.
 
 ### Description
 
 Create a new callback function named `gatekeeper` that returns `Already scanned!` *if and only if* the session state contains the `resources` key.
 
-Make sure that this function is called everytime before the agent runs.
+Make sure that this function is called every time *before* the agent runs.
 
 ### Success Criteria
 
@@ -177,6 +177,7 @@ Make sure that this function is called everytime before the agent runs.
 
 - Returning `None` from the callback causes the agent to proceed with the normal execution flow.
 - You cannot return a string from a callback function, it has to be wrapped into an appropriate object.
+- Callback function parameter names must match the [documented names exactly](https://adk.dev/callbacks/types-of-callbacks/#agent-lifecycle-callbacks) because ADK passes callback arguments by keyword.
 
 ## Challenge 5: Agent Symphony
 

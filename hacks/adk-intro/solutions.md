@@ -124,6 +124,13 @@ Format of the response is not relevant for this challenge as long as all of the 
 
 Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
 
+Note that Git requires users to set up their identity before anything can be committed. So users need do the following before they can commit their changes:
+
+```shell
+git config --global user.name "$USER"  # or participant's real name
+git config --global user.email "$USER_EMAIL"  # or participant's real email address
+```
+
 ## Challenge 3: Sticky Notes
 
 ### Notes & Guidance
@@ -162,8 +169,8 @@ from google.adk.agents.callback_context import CallbackContext
 from google.genai.types import Content, Part
 
 
-def gatekeeper(context: CallbackContext) -> Content | None:
-    if "resources" in context.state:
+def gatekeeper(callback_context: CallbackContext) -> Content | None:
+    if "resources" in callback_context.state:
         return Content(parts=[Part.from_text(text="Already scanned!")])
     return None
 
