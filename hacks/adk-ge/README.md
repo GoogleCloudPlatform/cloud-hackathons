@@ -201,13 +201,13 @@ In principle our agent could generate A2UI specs (the declarative model for a UI
 Update the agent instructions to return data in csv format surrounded with `<bar_chart></bar_chart>` tags *only* when the user asks for a bar chart. Here's an example:
 
 ```text
-<bar_chart> 
-category,amount  
+<bar_chart>
+category,amount
 A, 5
 B, 20
 C, 35
 D, 15
-</bar_chart>  
+</bar_chart>
 ```
 
 We've already provided a function that can detect these blocks in the model response and replace them with A2UI components. Go ahead and make sure that this function is called after the model is run.
