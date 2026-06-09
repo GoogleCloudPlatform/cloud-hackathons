@@ -116,7 +116,7 @@ echo '{ "identity_type": "AGENT_IDENTITY" }' > retail_bank_agent/.agent_engine_c
 To deploy to Agent Runtime (Agent Platform):
 
 ```shell
-adk deploy agent_engine --agent_engine_id="..." retail_bank_agent
+adk deploy agent_engine retail_bank_agent
 ```
 
 Typically users would navigate to the Console and retrieve the principal information and grant permissions, but for automation the following could be used (note that currently only REST APIs exist, no `gcloud` or ADK CLI commands are available):
@@ -154,8 +154,7 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
 
 ### Notes & Guidance
 
-This should be rather straight-forward.
-Register the agent in the Gemini Enterprise console using the deployed A2A endpoint.
+This should be rather straight-forward. Register the agent in the Gemini Enterprise configuration page (Agents section) using the deployed Agent Runtime resource name.
 
 ## Challenge 6: Visualizing Data (A2UI)
 
@@ -177,4 +176,10 @@ root_agent = Agent(
     tools=[get_current_date, mcp_toolset],
     after_model_callback=helpers.convert_to_a2ui
 )
+```
+
+And in order to redeploy to Agent Runtime, make sure to include the `agent_engine_id` parameter, otherwise there will be a new instance with a new identity. The easiest way to get the agent engine id is through the Console (you can see it as resource name on the Deployments page), otherwise see the commands above to get it through REST APIs.
+
+```shell
+adk deploy agent_engine --agent_engine_id="$AGENT_ENGINE_ID" retail_bank_agent
 ```
