@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,21 +34,60 @@ resource "google_project_service" "default" {
     "observability.googleapis.com",
     "saasservicemgmt.googleapis.com",
     "texttospeech.googleapis.com",
-    "geminidataanalytics.googleapis.com"
+    "geminidataanalytics.googleapis.com",
+    "sourcerepo.googleapis.com"
   ])
   service = each.key
 
   disable_on_destroy = false
 }
 
-# "roles/bigquery.dataViewer" BQ Toolset
-# "roles/bigquery.user" BQ Toolset (Job User also fine)
-# "roles/cloudaicompanion.user" x
-# "roles/dataplex.catalogAdmin" MCP KC (Viewer also fine)
-# "roles/geminidataanalytics.dataAgentStatelessUser" BQ Toolset ask_data_insights
-# "roles/geminidataanalytics.dataAgentUser" BQ Toolset ask_data_insights
-# "roles/mcp.toolUser" MCP KC
+# In case a default network is not present in the project the variable `create_default_network` needs to be set.
+resource "google_compute_network" "default_network_created" {
+  name                    = "default"
+  auto_create_subnetworks = true
+  count                   = var.create_default_network ? 1 : 0
+  depends_on = [
+    google_project_service.default
+  ]
+}
 
+resource "google_compute_firewall" "fwr_allow_custom" {
+  name          = "fwr-ingress-allow-custom"
+  network       = google_compute_network.default_network_created[0].self_link
+  count         = var.create_default_network ? 1 : 0
+  source_ranges = ["10.128.0.0/9"]
+  allow {
+    protocol = "all"
+  }
+}
+
+resource "google_compute_firewall" "fwr_allow_iap" {
+  name          = "fwr-ingress-allow-iap"
+  network       = google_compute_network.default_network_created[0].self_link
+  count         = var.create_default_network ? 1 : 0
+  source_ranges = ["35.235.240.0/20"]
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+}
+
+# This piece of code makes it possible to deal with the default network the same way, 
+# regardless of how it has been created. Make sure to refer to the default network through
+# this resource when needed.
+data "google_compute_network" "default_network" {
+  name = "default"
+  depends_on = [
+    google_project_service.default,
+    google_compute_network.default_network_created
+  ]
+}
+
+resource "google_sourcerepo_repository" "repo" {
+  name       = "ghacks-adk-ge"
+  depends_on = [google_project_service.default]
+}
 
 resource "google_bigquery_dataset" "retail_banking" {
   dataset_id                 = "retail_banking"
@@ -74,10 +113,65 @@ resource "google_bigquery_job" "generate_data" {
   location = var.gcp_region
 
   query {
-    query              = file("${path.module}/generate_data.sql")
+    query = templatefile("${path.module}/generate_data.sql", {
+      dataset_id = google_bigquery_dataset.retail_banking.dataset_id
+    })
     create_disposition = ""
     write_disposition  = ""
   }
 
   depends_on = [google_bigquery_dataset.retail_banking]
 }
+
+resource "google_service_account" "startup_vm_sa" {
+  account_id   = "sa-startup-vm"
+  display_name = "Startup VM Service Account"
+}
+
+resource "google_project_iam_member" "startup_vm_sa_roles" {
+  project = var.gcp_project_id
+  for_each = toset([
+    "roles/source.admin",
+    "roles/logging.logWriter"
+  ])
+  role   = each.key
+  member = "serviceAccount:${google_service_account.startup_vm_sa.email}"
+}
+
+
+resource "google_compute_instance" "startup_vm" {
+  name         = "gce-lnx-env-setup"
+  machine_type = "e2-micro"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-12"
+    }
+  }
+
+  shielded_instance_config {
+    enable_secure_boot = true
+    enable_vtpm        = true
+  }
+
+  network_interface {
+    network = data.google_compute_network.default_network.self_link
+    access_config {}
+  }
+
+  service_account {
+    email  = google_service_account.startup_vm_sa.email
+    scopes = ["cloud-platform"]
+  }
+
+  metadata_startup_script = templatefile("${path.module}/setup.tftpl", {
+    gcp_project_id = var.gcp_project_id,
+    gcp_region     = var.gcp_region,
+    source_repo    = google_sourcerepo_repository.repo.url
+  })
+
+  depends_on = [
+    google_project_iam_member.startup_vm_sa_roles
+  ]
+}
+

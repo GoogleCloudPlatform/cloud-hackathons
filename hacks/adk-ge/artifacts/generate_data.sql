@@ -11,7 +11,7 @@ SET prev_q_end = LAST_DAY(DATE_SUB(today, INTERVAL 3 MONTH), QUARTER);
 -- ==========================================
 -- 1. Create and populate the CUSTOMERS table
 -- ==========================================
-CREATE OR REPLACE TABLE `retail_banking.customers`
+CREATE OR REPLACE TABLE `${dataset_id}.customers`
 OPTIONS(
   description = "Retail banking customer profiles, containing demographic information and join dates."
 ) AS
@@ -55,7 +55,7 @@ SELECT customer_id, age, gender, region, join_date FROM customers_pre;
 -- ==============================================
 -- 2. Create and populate the CORE_ACCOUNTS_V2 table
 -- ==============================================
-CREATE OR REPLACE TABLE `retail_banking.core_accounts_v2`
+CREATE OR REPLACE TABLE `${dataset_id}.core_accounts_v2`
 OPTIONS(
   description = "Core deposit accounts representing products held by customers, with balances and statuses."
 ) AS
@@ -89,7 +89,7 @@ part1 AS (
     p.rand_status,
     p.rand_txn_days
   FROM part1_raw p
-  JOIN `retail_banking.customers` c ON p.customer_id = c.customer_id
+  JOIN `${dataset_id}.customers` c ON p.customer_id = c.customer_id
 ),
 part1_processed AS (
   SELECT
@@ -160,7 +160,7 @@ part2 AS (
     p.rand_status,
     p.rand_txn_days
   FROM part2_raw p
-  JOIN `retail_banking.customers` c ON p.customer_id = c.customer_id
+  JOIN `${dataset_id}.customers` c ON p.customer_id = c.customer_id
 ),
 part2_processed AS (
   SELECT
@@ -236,41 +236,41 @@ ORDER BY account_id;
 -- ==============================================================================
 
 -- Column descriptions for CUSTOMERS table
-ALTER TABLE `retail_banking.customers`
+ALTER TABLE `${dataset_id}.customers`
   ALTER COLUMN customer_id SET OPTIONS(description="Unique identifier for the customer.");
 
-ALTER TABLE `retail_banking.customers`
+ALTER TABLE `${dataset_id}.customers`
   ALTER COLUMN age SET OPTIONS(description="Customer age in years.");
 
-ALTER TABLE `retail_banking.customers`
+ALTER TABLE `${dataset_id}.customers`
   ALTER COLUMN gender SET OPTIONS(description="Customer gender code (M = Male, F = Female, U = Unknown).");
 
-ALTER TABLE `retail_banking.customers`
+ALTER TABLE `${dataset_id}.customers`
   ALTER COLUMN region SET OPTIONS(description="Geographic region of the customer's branch location.");
 
-ALTER TABLE `retail_banking.customers`
+ALTER TABLE `${dataset_id}.customers`
   ALTER COLUMN join_date SET OPTIONS(description="The date the customer joined the retail bank.");
 
 
 -- Column descriptions for CORE_ACCOUNTS_V2 table
-ALTER TABLE `retail_banking.core_accounts_v2`
+ALTER TABLE `${dataset_id}.core_accounts_v2`
   ALTER COLUMN account_id SET OPTIONS(description="Unique identifier for the account.");
 
-ALTER TABLE `retail_banking.core_accounts_v2`
+ALTER TABLE `${dataset_id}.core_accounts_v2`
   ALTER COLUMN customer_id SET OPTIONS(description="Foreign key referencing the customer who owns this account.");
 
-ALTER TABLE `retail_banking.core_accounts_v2`
+ALTER TABLE `${dataset_id}.core_accounts_v2`
   ALTER COLUMN account_type SET OPTIONS(description="The account product type code (AP = Advantage Plus, BS = Basic Savings, SC = Standard Checking).");
 
-ALTER TABLE `retail_banking.core_accounts_v2`
+ALTER TABLE `${dataset_id}.core_accounts_v2`
   ALTER COLUMN balance SET OPTIONS(description="Current ledger balance of the account in EUR.");
 
-ALTER TABLE `retail_banking.core_accounts_v2`
+ALTER TABLE `${dataset_id}.core_accounts_v2`
   ALTER COLUMN open_date SET OPTIONS(description="The date the account was officially opened.");
 
-ALTER TABLE `retail_banking.core_accounts_v2`
+ALTER TABLE `${dataset_id}.core_accounts_v2`
   ALTER COLUMN status SET OPTIONS(description="The current status of the account (Active, Closed).");
 
-ALTER TABLE `retail_banking.core_accounts_v2`
+ALTER TABLE `${dataset_id}.core_accounts_v2`
   ALTER COLUMN last_transaction_date SET OPTIONS(description="The date of the last financial transaction on this account (NULL for closed or inactive accounts).");
 

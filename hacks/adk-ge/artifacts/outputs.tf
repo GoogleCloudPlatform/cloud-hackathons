@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,3 +14,8 @@
 output "project_id" {
     value = var.gcp_project_id
 }
+
+output "source_repo" {
+    value = google_sourcerepo_repository.repo.url
+}
+

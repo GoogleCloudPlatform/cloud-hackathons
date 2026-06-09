@@ -87,6 +87,7 @@ environment:
     reference: user_5.username
   - label: Password 5
     reference: user_5.password
-
+  - label: Source repository
+    reference: project.startup_script.source_repo
   - label: Project ID
     reference: project.project_id

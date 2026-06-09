@@ -88,8 +88,12 @@ Commit and push your changes to the Git repository when you're done.
 
 ### Success Criteria
 
-- When you ask the agent what the current date is, it returns today's date (it's okay if the UI shows it formatted differently).
+- When you ask the agent what the current date is, it returns today's date (it's okay if the UI shows it formatted differently, but the tool output should be the correct format).
 - All the changes are committed and pushed to the Git repository.
+
+### Tips
+
+- The ADK web UI lets you inspect every step, you can hover over the steps and see the details.
 
 ### Learning Resources
 
@@ -99,9 +103,13 @@ Commit and push your changes to the Git repository when you're done.
 
 ### Introduction
 
-Sara's goal is to analyze how the new banking product is performing, which requires querying a secure corporate database. Since she is a product owner, not a database administrator, she wants to converse with her data in plain, natural English.
+Sara's goal is to analyze how the new banking product is performing, which requires querying a secure corporate data store. Since she is a product owner, not a database administrator, she wants to converse with her data in plain, natural English.
 
-Writing custom code to map user queries to database schemas can be incredibly tedious. Instead, you will use the *Model Context Protocol (MCP)*, an open-standard protocol that securely connects LLMs to external data sources. By integrating the Google-managed *BigQuery MCP Server* into your agent, you will empower the LLM to inspect tables, structure SQL queries, and fetch results automatically, all while adhering to security best practices.
+Writing custom code to map user queries to database schemas can be incredibly tedious. Instead, we'll let our model generate the SQL queries and use a tool to access the underlying data source and run queries.
+
+We could build our own tool, but there's also a plethora of tools available built by others. This is where the *Model Context Protocol (MCP)* plays a role; it offers a standardized method for agents to comprehend and engage with the functionalities of external tools and services developed by others.
+
+For this challenge we'll use the the Google-managed *BigQuery MCP Server* to acess the data source.
 
 ### Description
 
@@ -109,7 +117,7 @@ Integrate the *BigQuery MCP Server* into your ADK agent. Once the agent is equip
 
 ### Success Criteria
 
-- Ask the agent: *How many accounts were created in the last 10 days not including today?*. This should successfully retrieve the result from BigQuery (around 10 or 11, as data is randomly generated).
+- Ask the agent: *How many accounts were created in the last quarter?*. This should successfully retrieve the result from BigQuery (around 150, exact numbers might be different to randomly generated data).
 - Verify the agent utilizes the MCP tools to inspect and query the database under the hood.
 - All the changes are committed and pushed to the Git repository.
 
@@ -132,24 +140,26 @@ In this challenge, you will move your agent off your local machine and deploy it
 
 ### Description
 
-Deploy your agent to Agent Runtime using the ADK CLI, make sure that the Agent Runtime uses Agent Identity. Grant the required permissions to the identity of the Agent so that it can read data from and run jobs on BigQuery, and can use the BigQuery MCP tools.
+Deploy your agent to Agent Runtime, using the ADK CLI. Make sure that the Agent Runtime uses Agent Identity. Grant the required permissions to the identity of the Agent so that it can read data from and run jobs on BigQuery, and can use the BigQuery MCP tools.
 
-Once the agent can run SQL queries successfully on Agent Runtime (through the Playground section), commit and push your changes.
+Once the agent on Agent Runtime can successfully answer questions that require accessing BigQuery, commit and push your changes.
 
 ### Success Criteria
 
-- Ask the agent on Agent Runtime: *How many customers joined last year?*.
+- Ask the agent on Agent Runtime: *How many customers do we have in total?*. This should run a query on the `customers` table and return `1000`.
 - All the changes are committed and pushed to the Git repository.
 
 ### Tips
 
 - Agent Runtime used to be called Agent Engine, some ADK CLI options still use that terminology
 - If you need to redeploy your agent, provide the `--agent_engine_id` option so that it *replaces* your deployment (and doesn't create a new agent with a new identity)
+- You can use the *Playground* section in Agent Runtime interface to have a similar experience as locally testing through ADK web UI.
+- Easiest option to configure the Agent Identity is to through the agent config file `.agent_engine_config.json`.
 
 ### Learning Resources
 
 - [Deploying with ADK CLI](https://adk.dev/api-reference/cli/#adk-deploy)
-- [Agent Identity](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/agent-identity)
+- [Creating an Agent with Agent Identity](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/agent-identity#create-agent-identity)
 
 ## Challenge 5: Gemini Enterprise Integration
 
@@ -159,14 +169,17 @@ A powerful agent is only useful if business users can easily access it. Instead 
 
 ### Description
 
-First create a new Gemini Enterprise app instance and choose Google Managed Identity model.
+First create a new Gemini Enterprise app instance (use the 30-day trial option) and choose Google Identity model.
 
-Import your agent into Gemini Enterprise app, and verify that the Agent is available and functional from Gemini Enterprise app.
+Add our agent to the Gemini Enterprise app, and verify that the agent is available and functional from Gemini Enterprise app.
 
 ### Success Criteria
 
-- In the Gemini Enterprise app, ask the agent: "What are the available banking products?" and verify the response list.
-- Verify that the agent successfully interacts with Sara.
+- In the Gemini Enterprise app, ask the agent: "What was the adoption rate of Advantage Plus accounts last quarter?" and verify that the agent returns something like `90%` (exact numbers might vary due to random data).
+
+### Tips
+
+- You can see all the sessions and their details in Agent Runtime UI under the *Sessions* section, including the ones started from Gemini Enterprise app.
 
 ### Learning Resources
 
@@ -199,9 +212,13 @@ D, 15
 
 We've already provided a function that can detect these blocks in the model response and replace them with A2UI components. Go ahead and make sure that this function is called after the model is run.
 
-Redeploy your agent and verify that charts are rendered correctly within the Gemini Enterprise app.
+Verify that a bar chart is generated on the Gemini Enterprise app when the user request a bar chart.
 
 Finally commit and push your changes.
+
+### Tips
+
+- If you update your existing deployment, Gemini Enterprise app will use the latest version of your agent. But if you create another deployment, you'll need to grant the required roles to run queries as you'll have a new Agent Identity and you'll have to add the new Agent to the Gemini Enterprise app.
 
 ### Success Criteria
 
