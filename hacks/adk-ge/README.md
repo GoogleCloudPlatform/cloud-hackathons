@@ -66,7 +66,8 @@ Once everything is set up, run `adk web` and make sure that the agent responds b
 
 - [Cloud Shell](https://cloud.google.com/shell/docs/launching-cloud-shell)  
 - [Cloud Shell Editor](https://cloud.google.com/shell/docs/launching-cloud-shell-editor)  
-- [Previewing web apps](https://cloud.google.com/shell/docs/using-web-preview)  
+- [Previewing web apps](https://cloud.google.com/shell/docs/using-web-preview)
+- [Creating and activating Python virtual environments](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments)
 - [Setting up authentication for ADK](https://adk.dev/agents/models/google-gemini/#google-cloud-agent-platform)
 - [ADK CLI](https://adk.dev/api-reference/cli/#adk)
 
@@ -74,13 +75,13 @@ Once everything is set up, run `adk web` and make sure that the agent responds b
 
 ### Introduction
 
-Large Language Models (LLMs) are incredibly capable, but they are limited to the data they were trained on, meaning they don't have access to real-time information or the ability to execute actions in the physical world. To overcome this, agents use *Tools*.
+Large Language Models (LLMs) are incredibly capable, but they are limited to the data they were trained on, meaning they don't have access to real-time information or the ability to execute actions. To overcome this, agents use *Tools*.
 
-Tools are basically external interfaces (functions, APIs, or scripts) that the agent can choose to invoke dynamically when it needs real-time context. To see this in action, you will write a custom Python function to supply the current date, allowing the agent to handle references such as last month, last quarter based on current date.
+Tools are basically external interfaces (functions, APIs, or scripts) that the agent can invoke dynamically when it needs real-time context. To see this in action, you will write a custom Python function to get the current date, allowing the agent to handle references such as last month, last quarter based on current date.
 
 ### Description
 
-If our users would ask our agent the current date, it would emit a date from the past. In order for our agent to be informed, we'll introduce a new *function tool* that returns the current date.
+At the moment if our users would ask our agent the current date, it would emit a date from the past. In order to make our agent aware of the current date, we'll introduce a new *function tool* that dynamically calculates and returns the current date.
 
 Create a new Python function `get_current_date` that returns the current date in `YYYY-MM-DD` format. Add a [docstring](https://peps.python.org/pep-0257/#one-line-docstrings) to that function explaining what it returns and in which format. Make that function available as a tool to the agent.
 
@@ -103,13 +104,13 @@ Commit and push your changes to the Git repository when you're done.
 
 ### Introduction
 
-Sara's goal is to analyze how the new banking product is performing, which requires querying a secure corporate data store. Since she is a product owner, not a database administrator, she wants to converse with her data in plain, natural English.
+Sara's goal is to analyze how the new banking product is performing, which requires querying a company data store. Since she is a product owner, not a database administrator, she wants to use natural language instead of SQL.
 
 Writing custom code to map user queries to database schemas can be incredibly tedious. Instead, we'll let our model generate the SQL queries and use a tool to access the underlying data source and run queries.
 
-We could build our own tool, but there's also a plethora of tools available built by others. This is where the *Model Context Protocol (MCP)* plays a role; it offers a standardized method for agents to comprehend and engage with the functionalities of external tools and services developed by others.
+We could build our own tool as we did in the previous challenge, but there's also a plethora of tools available built by others. This is where the *Model Context Protocol (MCP)* plays a role; it offers a standardized abstraction layer for tools so that any agent can use them.
 
-For this challenge we'll use the the Google-managed *BigQuery MCP Server* to acess the data source.
+For this challenge we'll use the the Google-managed *BigQuery MCP Server* to access the company data source with customer data.
 
 ### Description
 
@@ -140,7 +141,9 @@ In this challenge, you will move your agent off your local machine and deploy it
 
 ### Description
 
-Deploy your agent to Agent Runtime, using the ADK CLI. Make sure that the Agent Runtime uses Agent Identity. Grant the required permissions to the identity of the Agent so that it can read data from and run jobs on BigQuery, and can use the BigQuery MCP tools.
+Deploy your agent to Agent Runtime, using the ADK CLI. Make sure that the Agent Runtime uses Agent Identity.
+
+Grant the required permissions to the identity of the Agent so that it can read data from and run jobs on BigQuery, and can use the BigQuery MCP tools.
 
 Once the agent on Agent Runtime can successfully answer questions that require accessing BigQuery, commit and push your changes.
 
@@ -165,13 +168,13 @@ Once the agent on Agent Runtime can successfully answer questions that require a
 
 ### Introduction
 
-A powerful agent is only useful if business users can easily access it. Instead of forcing Sara to open a terminal or use a developer-focused console, we want to deliver this agent directly into the communication hub she uses every day: the *Gemini Enterprise* app.
+Our agent is only useful if business users can easily access it. Instead of forcing Sara to open a terminal or use a developer-focused console, we want to deliver this agent directly into the communication hub she uses every day: the *Gemini Enterprise* app.
 
 ### Description
 
-First create a new Gemini Enterprise app instance (use the 30-day trial option) and choose Google Identity model.
+First create a new Gemini Enterprise app instance (use the 30-day trial option) and choose Google Identity when setting up identity.
 
-Add our agent to the Gemini Enterprise app, and verify that the agent is available and functional from Gemini Enterprise app.
+Add our agent to the Gemini Enterprise app through the *Custom agent via Agent Runtime* option, and verify that the agent is available and functional from Gemini Enterprise app.
 
 ### Success Criteria
 

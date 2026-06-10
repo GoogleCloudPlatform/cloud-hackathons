@@ -8,7 +8,10 @@ This guide provides notes, guidance, and solutions for the Gemini Enterprise wit
 
 ### Notes & Guidance
 
-Participants should clone the repository and run it locally:
+Participants should clone the repository and run it locally.
+
+> [!NOTE]  
+> It's possible to run these challenges on a local machine too as long as it's been configured and authenticated with `gcloud`. Cloud Shell is the easy option as it already provides these pre-requisites.
 
 ```shell
 # Clone the skeleton code
@@ -37,12 +40,8 @@ adk web --allow_origins="*"
 Participants implement a basic custom function tool that returns the current date using Python's datetime.
 
 ```python
+# Keep the existing imports
 from datetime import date
-
-from google.adk import Agent
-
-from . import helpers
-
 
 def get_current_date() -> str:
     """Returns the current date in YYYY-MM-DD format.
@@ -70,6 +69,14 @@ The very first time someone needs to commit anything to the Git repository they'
 ```shell
 git config --global user.name "$USER"  # or their own name
 git config --global user.email "$USER_EMAIL" # or their own email
+```
+
+Adding, committing and pushing the changes should be trivial, but see the following commands for the sake of completeness.
+
+```shell
+git add .  # stage everything that's changed in this directory and sub-directories
+git commit -m "YOUR COMMIT MESSAGE"
+git push
 ```
 
 ## Challenge 3: Talking to BigQuery
@@ -119,6 +126,9 @@ To deploy to Agent Runtime (Agent Platform):
 adk deploy agent_engine retail_bank_agent
 ```
 
+> [!NOTE]  
+> If you need to redeploy your agent, provide the `--agent_engine_id` option so that it *replaces* your deployment (and doesn't create a new agent with a new identity)
+
 Typically users would navigate to the Console and retrieve the principal information and grant permissions, but for automation the following could be used (note that currently only REST APIs exist, no `gcloud` or ADK CLI commands are available):
 
 ```shell
@@ -154,7 +164,38 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
 
 ### Notes & Guidance
 
-This should be rather straight-forward. Register the agent in the Gemini Enterprise configuration page (Agents section) using the deployed Agent Runtime resource name.
+This should be rather straight-forward. Enabling Gemini Enterprise app is just a matter of navigating to the Gemini Enterprise (search bar helps), choosing the trial option, and picking a region (`global` is fine). After that choosing the identity provider from the landing page should be self-explanatory.
+
+Once those steps have been taken, you can register the agent in the Gemini Enterprise configuration page (Agents section) using the deployed Agent Runtime resource name, no authorization setup is needed. These [instuctions](https://docs.cloud.google.com/gemini/enterprise/docs/register-and-manage-an-adk-agent#register-an-adk-agent) should be easy to follow.
+
+We expect participants to use the Console, but for automation purposes you can use the following REST API commands.
+
+```shell
+LOCATION=global
+BASE_URL="https://$LOCATION-discoveryengine.googleapis.com/v1alpha"
+
+APP_URL=$(curl -s -X GET \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: application/json" \
+    -H "X-Goog-User-Project: $GOOGLE_CLOUD_PROJECT" \
+    "$BASE_URL/projects/$GOOGLE_CLOUD_PROJECT/locations/$LOCATION/collections/default_collection/engines" | jq -r .engines[0].name
+)
+
+curl -X POST \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: application/json" \
+    -H "X-Goog-User-Project: $GOOGLE_CLOUD_PROJECT" \
+    "$BASE_URL/$APP_URL/assistants/default_assistant/agents" \
+    -d "{
+        \"displayName\": \"Retail Bank Agent\",
+        \"description\": \"A digital assistant for Retail Bank related questions.\",
+        \"adkAgentDefinition\": {
+            \"provisionedReasoningEngine\": {
+                \"reasoningEngine\": \"$AGENT_ENGINE_ID\"
+            }
+        }
+    }"
+```
 
 ## Challenge 6: Visualizing Data (A2UI)
 
