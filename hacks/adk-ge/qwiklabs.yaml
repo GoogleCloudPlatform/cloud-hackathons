@@ -13,8 +13,10 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "[gHacks] ADK with Gemini Enterprise"
-description: ""
+title: "[gHacks] Custom ADK Agents and Gemini Enterprise app"
+description: "In this hack, you will leverage the Agent Development Kit (ADK) 
+  to develop a custom AI agent, run and test it securely on Agent Platform, 
+  and deliver it to business users through the Gemini Enterprise app."
 instruction:
   type: md
   uri: instructions/en.md

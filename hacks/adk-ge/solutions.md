@@ -1,4 +1,4 @@
-# Gemini Enterprise with ADK - Coach's Guide
+# Custom ADK Agents and Gemini Enterprise app - Coach's Guide
 
 ## Introduction
 

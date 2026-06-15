@@ -1,4 +1,4 @@
-# Gemini Enterprise with ADK
+# Custom ADK Agents and Gemini Enterprise app
 
 ## Introduction
 
