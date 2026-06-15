@@ -26,6 +26,8 @@ Teams are not left on their own to solve the challenges. Coaches work with each 
   > In this hack, we'll step into the role of a creative director at a cutting-edge ad agency. Our mission is to create a compelling 20-30 second video advertisement for a revolutionary new product using Google Cloud's generative AI tools.
 - [Introduction to Agents with ADK](./hacks/adk-intro/README.md)
   > **UPDATED FOR ADK 2** This is an introduction to Agentic AI using Agent Development Kit (ADK) framework. We'll be introducing various ADK concepts step-by-step, starting with a single agent and progressively building a tool-using, collaborative multi-agent system.
+- [Custom ADK Agents and Gemini Enterprise app](./hacks/adk-ge/README.md)
+  > In this hack, you will leverage the Agent Development Kit (ADK) to develop a custom AI agent, and deliver it to business users through the Gemini Enterprise. During the development of the agent we'll build custom tools, use BigQuery MCP server, deploy our agent to Agent Platform, integrate it with Gemini Enterprise app and experience how to build custom visualizations through A2UI.
 - [Modernizing Classic Data Warehousing with BigQuery](./hacks/bq-dwh/README.md)
   > In this hack we'll implement a classic data warehouse using modern tools, such as Cloud Storage, BigQuery, Dataform and Looker Studio. We'll start with a modified version of the well known AdventureWorks OLTP database, and we'll implement a dimensional model to report on business questions using a BI visualization tool.
 - [Open Lakehouse with Apache Iceberg](./hacks/bq-olh/README.md)

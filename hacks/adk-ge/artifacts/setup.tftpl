@@ -1,0 +1,22 @@
+#!/bin/bash
+export PROJECT_ID=${gcp_project_id}
+export REGION=${gcp_region}
+export SOURCE_REPO=${source_repo}
+
+# Suppressing some warnings
+echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
+# Installing the OS dependencies
+apt-get update && apt-get install -y git
+
+# Initialize the repo
+echo "Retrieving the source code..."
+git clone https://github.com/meken/gcp-adk-ge-agent.git adk-agent
+
+echo "Configuring the repo credentials..."
+cd adk-agent
+git config credential.helper gcloud.sh
+
+echo "Pushing the cloned repo to the new remote..."
+git remote add google $SOURCE_REPO
+git push google main:master
