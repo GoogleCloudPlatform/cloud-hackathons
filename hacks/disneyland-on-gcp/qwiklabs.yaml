@@ -65,6 +65,24 @@ environment:
     - project: project
       roles:
       - roles/owner
+  - type: gcp_user
+    id: user_6
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+  - type: gcp_user
+    id: user_7
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
+  - type: gcp_user
+    id: user_8
+    permissions:
+    - project: project
+      roles:
+      - roles/owner
 
   student_visible_outputs:
   - label: Open Console
