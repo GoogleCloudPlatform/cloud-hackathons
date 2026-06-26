@@ -12,9 +12,9 @@ In this gHack, your mission is to transform raw data—visitor reviews, attracti
 
 This gHack is designed to be highly challenging and is structured into **7 challenges** that can be parallelized across **3 key team personas** to optimize development speed:
 
-* **DB & Platform Engineers** will build the operational database in AlloyDB, configure Datastream replication, set up the database agentic layer (MCP Toolbox), and assemble the final ADK agent and web UI on Cloud Run (Challenges 1, 2, and 7).
-* **Data Scientists & Analysts** will train predictive models, perform sentiment analysis, cluster attractions in BigQuery, and design the semantic layer/Conversational Analytics agent for park managers (Challenges 3 and 6).
-* **AI & Graph Engineers** will construct RAG pipelines, classify multimodal images, and model/query visitor movement patterns using property graphs in BigQuery (Challenges 4 and 5).
+- **DB & Platform Engineers** will build the operational database in AlloyDB, configure Datastream replication, set up the database agentic layer (MCP Toolbox), and assemble the final ADK agent and web UI on Cloud Run (Challenges 1, 2, and 7).
+- **Data Scientists & Analysts** will train predictive models, perform sentiment analysis, cluster attractions in BigQuery, and design the semantic layer/Conversational Analytics agent for park managers (Challenges 3 and 6).
+- **AI & Graph Engineers** will construct RAG pipelines, classify multimodal images, and model/query visitor movement patterns using property graphs in BigQuery (Challenges 4 and 5).
 
 Get ready to build an agentic data pipeline that would make Mickey proud! Let the magic begin! ✨
 
@@ -37,29 +37,29 @@ In this hack, you will build an end-to-end agentic data pipeline leveraging AI/M
 
 ## Challenges
 
-* Challenge 1: Data Foundation (Operational to Analytical)
-* Challenge 2: Exposing AlloyDB via QueryData & MCP Toolbox (Database Agentic Layer)
-* Challenge 3: Data Science & ML (Predictive & Sentiment)
-* Challenge 4: Multimodal & RAG Analytics
-* Challenge 5: Graph Analytics (Visitor Movement)
-* Challenge 6: Conversational Analytics (The Internal AI Analyst)
-* Challenge 7: Building the Real-Time Guest Assistant
+- Challenge 1: Data Foundation (Operational to Analytical)
+- Challenge 2: Exposing AlloyDB via QueryData & MCP Toolbox (Database Agentic Layer)
+- Challenge 3: Data Science & ML (Predictive & Sentiment)
+- Challenge 4: Multimodal & RAG Analytics
+- Challenge 5: Graph Analytics (Visitor Movement)
+- Challenge 6: Conversational Analytics (The Internal AI Analyst)
+- Challenge 7: Building the Real-Time Guest Assistant
 
 ---
 
 ## Prerequisites
 
-* Basic knowledge of Google Cloud services (AlloyDB, BigQuery, Datastream, Cloud Run)
-* Intermediate knowledge of SQL and PostgreSQL
-* Basic familiarity with Python and Agentic AI concepts (MCP, ADK)
-* Access to a Google Cloud project with the necessary APIs and resources provisioned
+- Basic knowledge of Google Cloud services (AlloyDB, BigQuery, Datastream, Cloud Run)
+- Intermediate knowledge of SQL and PostgreSQL
+- Basic familiarity with Python and Agentic AI concepts (MCP, ADK)
+- Access to a Google Cloud project with the necessary APIs and resources provisioned
 
 ---
 
 ## Contributors
 
-* Matt Cornillon
-* Rayhane Rezgui
+- Matt Cornillon
+- Rayhane Rezgui
 
 ---
 
@@ -75,19 +75,19 @@ Here is how you can divide and conquer based on your team size:
 
 #### 🧩 Option 1: The 3-Group Split (Recommended)
 
-* **Group A (Platform & DB Engineers):** Focuses on the core transactional and serving loop.
-  * *Path:* [Challenge 1](#challenge-1-data-foundation-operational-to-analytical) -> [Challenge 2](#challenge-2-exposing-alloydb-via-querydata--mcp-toolbox-database-agentic-layer) -> [Challenge 7](#challenge-7-building-the-real-time-guest-assistant)
-* **Group B (Data Scientists):** Focuses on analytics, forecasting, and clustering.
-  * *Path:* [Challenge 3](#challenge-3-data-science--ml-predictive--sentiment) -> Assist Group C with [Challenge 6](#challenge-6-conversational-analytics-the-internal-ai-analyst) or Group A with [Challenge 7](#challenge-7-building-the-real-time-guest-assistant)
-* **Group C (AI & Graph Engineers):** Focuses on unstructured data, graphs, and internal conversational search.
-  * *Path:* [Challenge 4](#challenge-4-multimodal--rag-analytics) -> [Challenge 5](#challenge-5-graph-analytics-visitor-movement) -> [Challenge 6](#challenge-6-conversational-analytics-the-internal-ai-analyst)
+- **Group A (Platform & DB Engineers):** Focuses on the core transactional and serving loop.
+  - *Path:* [Challenge 1](#challenge-1-data-foundation-operational-to-analytical) -> [Challenge 2](#challenge-2-exposing-alloydb-via-querydata--mcp-toolbox-database-agentic-layer) -> [Challenge 7](#challenge-7-building-the-real-time-guest-assistant)
+- **Group B (Data Scientists):** Focuses on analytics, forecasting, and clustering.
+  - *Path:* [Challenge 3](#challenge-3-data-science--ml-predictive--sentiment) -> Assist Group C with [Challenge 6](#challenge-6-conversational-analytics-the-internal-ai-analyst) or Group A with [Challenge 7](#challenge-7-building-the-real-time-guest-assistant)
+- **Group C (AI & Graph Engineers):** Focuses on unstructured data, graphs, and internal conversational search.
+  - *Path:* [Challenge 4](#challenge-4-multimodal--rag-analytics) -> [Challenge 5](#challenge-5-graph-analytics-visitor-movement) -> [Challenge 6](#challenge-6-conversational-analytics-the-internal-ai-analyst)
 
 #### 👥 Option 2: The 2-Group Split
 
-* **Group A (Database & Application Developers):** Focuses on database setup, agentic tool serving, and app integration.
-  * *Path:* [Challenge 1](#challenge-1-data-foundation-operational-to-analytical) -> [Challenge 2](#challenge-2-exposing-alloydb-via-querydata--mcp-toolbox-database-agentic-layer) -> [Challenge 7](#challenge-7-building-the-real-time-guest-assistant)
-* **Group B (AI, ML & Analytics Engineers):** Focuses on all BigQuery-centric analytics, ML models, RAG, and property graphs.
-  * *Path:* [Challenge 4](#challenge-4-multimodal--rag-analytics) -> [Challenge 3](#challenge-3-data-science--ml-predictive--sentiment) -> [Challenge 5](#challenge-5-graph-analytics-visitor-movement) -> [Challenge 6](#challenge-6-conversational-analytics-the-internal-ai-analyst)
+- **Group A (Database & Application Developers):** Focuses on database setup, agentic tool serving, and app integration.
+  - *Path:* [Challenge 1](#challenge-1-data-foundation-operational-to-analytical) -> [Challenge 2](#challenge-2-exposing-alloydb-via-querydata--mcp-toolbox-database-agentic-layer) -> [Challenge 7](#challenge-7-building-the-real-time-guest-assistant)
+- **Group B (AI, ML & Analytics Engineers):** Focuses on all BigQuery-centric analytics, ML models, RAG, and property graphs.
+  - *Path:* [Challenge 4](#challenge-4-multimodal--rag-analytics) -> [Challenge 3](#challenge-3-data-science--ml-predictive--sentiment) -> [Challenge 5](#challenge-5-graph-analytics-visitor-movement) -> [Challenge 6](#challenge-6-conversational-analytics-the-internal-ai-analyst)
 
 ---
 
@@ -136,17 +136,17 @@ First, let's connect to your **AlloyDB for PostgreSQL** cluster.
 > [!TIP]
 > **AlloyDB Postgres Credentials:**
 >
-> * **Database:** `postgres`
-> * **Username:** `postgres`
-> * **Password:** `buildwithgemini2026`
+> - **Database:** `postgres`
+> - **Username:** `postgres`
+> - **Password:** `buildwithgemini2026`
 
 Connect using **AlloyDB Studio** or `psql` and perform the following tasks:
 
 1. **Create the Tables:**
-    * **`disneyland_reviews`**: Represents visitor reviews.
-        * Columns: `review_id` (integer, Primary Key), `rating` (integer), `year_month` (text), `reviewer_location` (text), `review_text` (text), `branch` (text).
-    * **`disneyland_attractions`**: Represents the park's attractions.
-        * Columns: `attraction_id` (integer, Primary Key), `branch` (text), `name` (text), `description` (text).
+    - **`disneyland_reviews`**: Represents visitor reviews.
+        - Columns: `review_id` (integer, Primary Key), `rating` (integer), `year_month` (text), `reviewer_location` (text), `review_text` (text), `branch` (text).
+    - **`disneyland_attractions`**: Represents the park's attractions.
+        - Columns: `attraction_id` (integer, Primary Key), `branch` (text), `name` (text), `description` (text).
 2. **Add a Full-Text Search Vector:**
     To enable high-performance hybrid search later, add a generated `tsvector` column to the attractions table:
 
@@ -158,8 +158,8 @@ Connect using **AlloyDB Studio** or `psql` and perform the following tasks:
 
 3. **Import Data from Cloud Storage:**
     Use the AlloyDB Import API (via UI or `gcloud`) or the tool of your choice to import the data from these public CSVs:
-    * `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/reviews.csv` into `disneyland_reviews`
-    * `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/attractions.csv` into `disneyland_attractions`
+    - `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/reviews.csv` into `disneyland_reviews`
+    - `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/attractions.csv` into `disneyland_attractions`
 
 #### Task 1.2: Generate Vector Embeddings at the Source
 
@@ -192,10 +192,10 @@ To support semantic searches on our attractions, we need to generate and store v
 To stream our data from AlloyDB to BigQuery in near real-time, we will use **Google Datastream** via the **One-Click Datastream Integration**.
 
 1. **Create the Stream (One-Click Setup):**
-    * In the Google Cloud Console, navigate to **AlloyDB > Clusters**.
-    * Select your cluster, and look for the **Replicate to BigQuery** or **One-Click Datastream Integration** option.
-    * Follow the guided wizard. It will automatically detect your publication and replication slot, create the source profile, the destination profile, and start the stream.
-    * Ensure the target dataset is named **`disney`** and is located in the **`europe-west1`** (Belgium) region. Set the stream write mode to **Merge** and staleness limit to **0 seconds**.
+    - In the Google Cloud Console, navigate to **AlloyDB > Clusters**.
+    - Select your cluster, and look for the **Replicate to BigQuery** or **One-Click Datastream Integration** option.
+    - Follow the guided wizard. It will automatically detect your publication and replication slot, create the source profile, the destination profile, and start the stream.
+    - Ensure the target dataset is named **`disney`** and is located in the **`europe-west1`** (Belgium) region. Set the stream write mode to **Merge** and staleness limit to **0 seconds**.
 
 #### Task 1.4: Prove the Flow with Data Canvas
 
@@ -210,10 +210,10 @@ Once the stream is running, the data will begin replicating to BigQuery.
 
 To validate this challenge, you must demonstrate the following:
 
-* Verify that `disneyland_reviews` has ~20,000 rows and `disneyland_attractions` has ~73 rows in AlloyDB.
-* Provide the SQL query you used to generate the embeddings natively in AlloyDB.
-* Run a similarity search query in AlloyDB demonstrating the top 5 attractions similar to `'thrilling dark ride in space'`.
-* Show a screenshot or visualization of your BigQuery Data Canvas showing the replicated reviews.
+- Verify that `disneyland_reviews` has ~20,000 rows and `disneyland_attractions` has ~73 rows in AlloyDB.
+- Provide the SQL query you used to generate the embeddings natively in AlloyDB.
+- Run a similarity search query in AlloyDB demonstrating the top 5 attractions similar to `'thrilling dark ride in space'`.
+- Show a screenshot or visualization of your BigQuery Data Canvas showing the replicated reviews.
 
 ---
 
@@ -236,15 +236,15 @@ Because this challenge can be run in parallel with the BigQuery analytical chall
 Instead of setting up an active replication pipeline going backward (Reverse-ETL), we will implement a highly elegant, pull-based bridge using **BigQuery Foreign Data Wrapper (FDW)** inside AlloyDB. This allows AlloyDB to query the analytical tables in BigQuery on-demand with low latency.
 
 1. **Grant IAM Privileges to AlloyDB:**
-    * Run the following command to describe your AlloyDB cluster and locate its service account (`serviceAccountEmail`):
+    - Run the following command to describe your AlloyDB cluster and locate its service account (`serviceAccountEmail`):
 
         ```bash
         gcloud beta alloydb clusters describe <CLUSTER_ID> --region=europe-west1
         ```
 
-    * In the Google Cloud Console (IAM page), grant this service account the following roles:
-        * **BigQuery Data Viewer** (`roles/bigquery.dataViewer`)
-        * **BigQuery Read Session User** (`roles/bigquery.readSessionUser`)
+    - In the Google Cloud Console (IAM page), grant this service account the following roles:
+        - **BigQuery Data Viewer** (`roles/bigquery.dataViewer`)
+        - **BigQuery Read Session User** (`roles/bigquery.readSessionUser`)
 
 > [Tip]
 > **Recommendation:** Use the built-in SQL query editor and database schema explorer interface in **AlloyDB Studio** to run these configuration steps and verify that your foreign tables are correctly mapped in the schema tree.
@@ -254,8 +254,8 @@ Instead of setting up an active replication pipeline going backward (Reverse-ETL
     *(Refer to the Solutions Reference for the required DDL statements).*
 2. **Map the BigQuery Tables as Foreign Tables:**
     Create foreign tables in AlloyDB mapped directly to your analytical tables in BigQuery:
-    * **`bq_forecasted_waiting_times`**: Mapped to the BigQuery table `disney.forecasted_waiting_times` (columns: `attraction_id` int, `forecasted_timestamp` timestamp, `predicted_wait_time` numeric).
-    * **`bq_graph_recommendations`**: Mapped to the BigQuery table `disney.graph_recommendations` (columns: `attraction_id` int, `recommended_next_attraction_id` int, `congestion_level` text).
+    - **`bq_forecasted_waiting_times`**: Mapped to the BigQuery table `disney.forecasted_waiting_times` (columns: `attraction_id` int, `forecasted_timestamp` timestamp, `predicted_wait_time` numeric).
+    - **`bq_graph_recommendations`**: Mapped to the BigQuery table `disney.graph_recommendations` (columns: `attraction_id` int, `recommended_next_attraction_id` int, `congestion_level` text).
 
 #### Task 2.2: Set Up the QueryData Context Set in AlloyDB
 
@@ -325,10 +325,10 @@ To bring predictability and eliminate SQL hallucinations, you will configure **Q
     ```
 
 2. **Upload Context Set to AlloyDB:**
-    * In the Google Cloud Console, open **AlloyDB Studio** connected to the `postgres` database.
-    * In the left sidebar, click **Context sets**.
-    * Click **Create context set**, name it `disney-context`, and upload the `querydata_disney_context.json` file.
-    * Validate the setup by using the **Test context set** feature with variations of your natural language templates.
+    - In the Google Cloud Console, open **AlloyDB Studio** connected to the `postgres` database.
+    - In the left sidebar, click **Context sets**.
+    - Click **Create context set**, name it `disney-context`, and upload the `querydata_disney_context.json` file.
+    - Validate the setup by using the **Test context set** feature with variations of your natural language templates.
 
 #### Task 2.3: Expose AlloyDB AI Operators
 
@@ -488,9 +488,9 @@ You will now expose all these database capabilities (both operational tables and
 
 To validate this challenge, you must demonstrate the following:
 
-* Show a screenshot or validation proof of the **QueryData Context Set Test UI** displaying a successful natural-language-to-SQL translation.
-* Provide the SQL DDL definition for the `filter_attractions_semantically` function in AlloyDB Studio.
-* Show the **MCP Toolbox UI** with the five tools (`search_attractions_hybrid`, `semantic_ride_filter`, `add_attraction_review`, `get_wait_time_forecast`, and `get_next_ride_recommendation`) defined and tested successfully (all showing a green status).
+- Show a screenshot or validation proof of the **QueryData Context Set Test UI** displaying a successful natural-language-to-SQL translation.
+- Provide the SQL DDL definition for the `filter_attractions_semantically` function in AlloyDB Studio.
+- Show the **MCP Toolbox UI** with the five tools (`search_attractions_hybrid`, `semantic_ride_filter`, `add_attraction_review`, `get_wait_time_forecast`, and `get_next_ride_recommendation`) defined and tested successfully (all showing a green status).
 
 ---
 
@@ -520,8 +520,8 @@ We want our guest assistant to predict wait times for any hour of the day.
 1. Load the historical wait times dataset from:
     `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/waiting_times.csv` into a BigQuery table named `waiting_times`.
 2. Use BigQuery ML to train a time-series forecasting model. You can choose either:
-    * **ARIMA_PLUS**: The classic, fast statistical forecasting model.
-    * **TimesFM**: Google's state-of-the-art foundation model for time-series forecasting (using `AI.FORECAST`).
+    - **ARIMA_PLUS**: The classic, fast statistical forecasting model.
+    - **TimesFM**: Google's state-of-the-art foundation model for time-series forecasting (using `AI.FORECAST`).
 3. Forecast the wait times for all attractions for the next 24 hours in 30-minute intervals, and save the results in a table named `forecasted_waiting_times`.
 
 #### Task 3.3: Ride Clustering (Intensity & Popularity)
@@ -536,11 +536,11 @@ To better classify our rides, we will group attractions into logical clusters us
 
 To validate this challenge, you must demonstrate the following:
 
-* Show the prompt and the resulting SQL/Python code generated by the Data Science Agent.
-* Show the trained forecasting model and a query displaying the forecasted wait times for the next 24 hours.
-* Verify the creation and content of the following two tables:
-  * `thrill_class`: containing a column `class` with the extracted category.
-  * `thrill_score`: containing a column `rank` with the numerical thrill rank score.
+- Show the prompt and the resulting SQL/Python code generated by the Data Science Agent.
+- Show the trained forecasting model and a query displaying the forecasted wait times for the next 24 hours.
+- Verify the creation and content of the following two tables:
+  - `thrill_class`: containing a column `class` with the extracted category.
+  - `thrill_score`: containing a column `rank` with the numerical thrill rank score.
 
 ---
 
@@ -581,9 +581,9 @@ We want our assistant to answer detailed questions based on the official park br
 
 To validate this challenge, you must demonstrate the following:
 
-* Verify the BQ Object Tables created for both photos and PDFs.
-* Show the results from the `images_classification` table displaying at least 5 images, their classification, and the reason.
-* Show the final SQL query performing the vector search and RAG generation, along with the grounded text response answering the Tex-Mex question.
+- Verify the BQ Object Tables created for both photos and PDFs.
+- Show the results from the `images_classification` table displaying at least 5 images, their classification, and the reason.
+- Show the final SQL query performing the vector search and RAG generation, along with the grounded text response answering the Tex-Mex question.
 
 ---
 
@@ -607,8 +607,8 @@ Understanding visitor movement patterns is key to optimizing park operations and
 Using BigQuery's new native **SQL Graph** capabilities, you will define a property graph over the attractions and movements.
 
 1. Define the **Property Graph** schema.
-    * **Nodes (Vertices):** Attractions (from the replicated `disneyland_attractions` table).
-    * **Edges (Relationships):** Movements (from `visitor_movements`).
+    - **Nodes (Vertices):** Attractions (from the replicated `disneyland_attractions` table).
+    - **Edges (Relationships):** Movements (from `visitor_movements`).
 2. Write the DDL to create the property graph `disney_movement_graph`.
 
 #### Task 5.3: Query the Graph for Patterns
@@ -629,10 +629,10 @@ Write graph queries using `GRAPH_TABLE` and GPML match patterns to solve the fol
 
 To validate this challenge, you must demonstrate the following:
 
-* Show the SQL DDL statement used to define and create the Property Graph `disney_movement_graph`.
-* Provide the SQL graph query for the "Flow Analysis" (top 3 rides after Space Mountain) and its corresponding output.
-* Provide the SQL graph query for "Bottleneck Detection" at 2:00 PM and its corresponding output.
-* Show the schema and sample rows of the `graph_recommendations` routing table.
+- Show the SQL DDL statement used to define and create the Property Graph `disney_movement_graph`.
+- Provide the SQL graph query for the "Flow Analysis" (top 3 rides after Space Mountain) and its corresponding output.
+- Provide the SQL graph query for "Bottleneck Detection" at 2:00 PM and its corresponding output.
+- Show the schema and sample rows of the `graph_recommendations` routing table.
 
 ---
 
@@ -657,8 +657,8 @@ To prevent the agent from hallucinating, you must fill the universal context lay
 
 1. **Metadata Descriptions:** Use Gemini to generate and save rich descriptions for all tables and columns.
 2. **Synonyms & Vocabulary:** Define synonyms in the agent's vocabulary. For example, ensure the agent knows that:
-    * "rollercoaster" or "thrill ride" maps to attractions like "Space Mountain" or "Big Thunder Mountain".
-    * "queue" or "line" maps to the `waiting_time` metric.
+    - "rollercoaster" or "thrill ride" maps to attractions like "Space Mountain" or "Big Thunder Mountain".
+    - "queue" or "line" maps to the `waiting_time` metric.
 3. **Metrics Definition:** Explicitly define key metrics (e.g., how "Average Wait Time" is calculated).
 
 #### Task 6.3: Define Golden Queries
@@ -667,22 +667,22 @@ Train the agent's SQL generation engine by providing **Golden Queries**—pre-ap
 
 Provide golden queries for:
 
-* Joining the attractions table with the wait-time forecasts.
-* Querying the graph routing table.
+- Joining the attractions table with the wait-time forecasts.
+- Querying the graph routing table.
 
 #### Task 6.4: Execute Multi-Silo Prompts
 
 Once configured, test the agent in the chat interface. Ask complex, cross-dataset questions like:
 
-* *« Which attractions have the highest negative sentiment today, and what is the most common path visitors take after leaving them? »*
+- *« Which attractions have the highest negative sentiment today, and what is the most common path visitors take after leaving them? »*
 
 ### Success Criteria
 
 To validate this challenge, you must demonstrate the following:
 
-* Show the Conversational Analytics agent `disney_park_analyst` configured in the BigQuery Console.
-* List the synonyms and Golden Queries you defined in the agent's configuration.
-* Show a screenshot or proof of the chat interface successfully answering the complex multi-silo prompt without any SQL syntax errors.
+- Show the Conversational Analytics agent `disney_park_analyst` configured in the BigQuery Console.
+- List the synonyms and Golden Queries you defined in the agent's configuration.
+- Show a screenshot or proof of the chat interface successfully answering the complex multi-silo prompt without any SQL syntax errors.
 
 ---
 
@@ -733,10 +733,10 @@ Using the **Agent Development Kit (ADK)**, you will construct the conversational
 Rather than a generic, plain interface, you will **vibe-code a stunning, premium web application** (using a framework like React + Vite or Streamlit) that hooks into your ADK agent.
 
 1. **Design Guidelines:**
-    * **Rich Aesthetics:** Use deep, premium colors (harmonious dark modes, dark blues, gold accents, glassmorphism/backdrop-filters).
-    * **Dynamic UI:** Add smooth animations, interactive cards for attractions, real-time wait-time indicators, and a clean chat interface to talk to the guest assistant.
-    * **Typography:** Import premium Google Fonts (e.g., *Outfit*, *Inter*).
-    * **No Placeholders:** If you need icons or images, pull them from working assets or use clean vector SVGs.
+    - **Rich Aesthetics:** Use deep, premium colors (harmonious dark modes, dark blues, gold accents, glassmorphism/backdrop-filters).
+    - **Dynamic UI:** Add smooth animations, interactive cards for attractions, real-time wait-time indicators, and a clean chat interface to talk to the guest assistant.
+    - **Typography:** Import premium Google Fonts (e.g., *Outfit*, *Inter*).
+    - **No Placeholders:** If you need icons or images, pull them from working assets or use clean vector SVGs.
 2. **Run Locally:**
     Run the frontend development server and connect it to your ADK agent:
 
@@ -765,9 +765,9 @@ To complete the gHack and make the guest assistant publicly accessible, you will
 
 To validate this challenge, you must demonstrate the following:
 
-* Show a screenshot or proof of the **Vibe-Coded Web App** running, showcasing a premium design with glassmorphism, animations, and a rich, responsive layout.
-* Provide a live **Cloud Run URL** hosting the application.
-* Show a full conversation demonstration in your application UI where the agent uses hybrid search, checks wait times, recommends a next-ride, and records a review—all working flawlessly in one session.
+- Show a screenshot or proof of the **Vibe-Coded Web App** running, showcasing a premium design with glassmorphism, animations, and a rich, responsive layout.
+- Provide a live **Cloud Run URL** hosting the application.
+- Show a full conversation demonstration in your application UI where the agent uses hybrid search, checks wait times, recommends a next-ride, and records a review—all working flawlessly in one session.
 
 ---
 
