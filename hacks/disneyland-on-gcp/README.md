@@ -38,7 +38,7 @@ In this hack, you will build an end-to-end agentic data pipeline leveraging AI/M
 ## Challenges
 
 - Challenge 1: Setting up AlloyDB and replicating data to BigQuery
-- Challenge 2: Exposing database tools via MCP
+- Challenge 2: Creating the agentic database layer
 - Challenge 3: Sentiment and wait-time forecasting
 - Challenge 4: Image classification and brochure RAG
 - Challenge 5: Graph analytics and visitor flow
@@ -75,7 +75,7 @@ Here is how you can divide and conquer based on your team size:
 
 #### 🧩 Option 1: The 3-Group Split (Recommended)
 - **Group A (Platform & DB Engineers):** Focuses on the core transactional and serving loop.
-  - *Path:* [Challenge 1](#challenge-1-setting-up-alloydb-and-replicating-data-to-bigquery) -> [Challenge 2](#challenge-2-exposing-database-tools-via-mcp) -> [Challenge 7](#challenge-7-building-the-guest-assistant-app)
+  - *Path:* [Challenge 1](#challenge-1-setting-up-alloydb-and-replicating-data-to-bigquery) -> [Challenge 2](#challenge-2-creating-the-agentic-database-layer) -> [Challenge 7](#challenge-7-building-the-guest-assistant-app)
 - **Group B (Data Scientists):** Focuses on analytics, forecasting, and clustering.
   - *Path:* [Challenge 3](#challenge-3-sentiment-and-wait-time-forecasting) -> Assist Group C with [Challenge 6](#challenge-6-conversational-analytics-for-insights) or Group A with [Challenge 7](#challenge-7-building-the-guest-assistant-app)
 - **Group C (AI & Graph Engineers):** Focuses on unstructured data, graphs, and internal conversational search.
@@ -84,7 +84,7 @@ Here is how you can divide and conquer based on your team size:
 #### 👥 Option 2: The 2-Group Split
 
 - **Group A (Database & Application Developers):** Focuses on database setup, agentic tool serving, and app integration.
-  - *Path:* [Challenge 1](#challenge-1-setting-up-alloydb-and-replicating-data-to-bigquery) -> [Challenge 2](#challenge-2-exposing-database-tools-via-mcp) -> [Challenge 7](#challenge-7-building-the-guest-assistant-app)
+  - *Path:* [Challenge 1](#challenge-1-setting-up-alloydb-and-replicating-data-to-bigquery) -> [Challenge 2](#challenge-2-creating-the-agentic-database-layer) -> [Challenge 7](#challenge-7-building-the-guest-assistant-app)
 - **Group B (AI, ML & Analytics Engineers):** Focuses on all BigQuery-centric analytics, ML models, RAG, and property graphs.
   - *Path:* [Challenge 4](#challenge-4-image-classification-and-brochure-rag) -> [Challenge 3](#challenge-3-sentiment-and-wait-time-forecasting) -> [Challenge 5](#challenge-5-graph-analytics-and-visitor-flow) -> [Challenge 6](#challenge-6-conversational-analytics-for-insights)
 
@@ -216,7 +216,7 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## Challenge 2: Exposing database tools via MCP
+## Challenge 2: Creating the agentic database layer
 
 **Target Persona:** DBA / Database Developer | **Estimated Duration:** 60 minutes | *Prerequisite: Challenge 1*
 
