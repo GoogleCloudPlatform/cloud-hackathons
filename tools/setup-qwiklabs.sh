@@ -17,23 +17,45 @@ while :; do
     shift
 done
 
-if [ -z ${HACK} ] || [ -z ${SLUG} ]; then
-    echo "Usage: ${0} --hack=<string> --slug=<string>" 1>&2; exit 1
-fi
-
-if [[ ${SLUG} =~ ^ghacks[0-9]{3}$ ]]; then
-    SLUG=${SLUG}-${HACK}
-fi
-
-if [[ ! ${SLUG} =~ ^ghacks[0-9]{3}-${HACK}$ ]]; then
-    echo "Slug '${SLUG}' has to match pattern 'ghacks[0-9]{3}-${HACK}'" 1>&2; exit 1
+if [ -z "${HACK}" ]; then
+    echo "Usage: ${0} --hack=<string> [--slug=<string>]" 1>&2; exit 1
 fi
 
 HACK_DIR="${SRC_DIR}/hacks/${HACK}"
 
-if [ ! -d ${HACK_DIR} ] || [ ! -d ${DST_DIR} ]; then
+if [ ! -d "${HACK_DIR}" ] || [ ! -d "${DST_DIR}" ]; then
     echo "${HACK_DIR} and/or ${DST_DIR} missing, are you in the right directory?" 1>&2; exit 1
 fi
+
+if [ -z "${SLUG}" ]; then
+    # Check if there is an existing directory matching ghacks[0-9]{3}-${HACK}
+    EXISTING_DIR=$(ls "${DST_DIR}/labs" | grep -E "ghacks[0-9]{3}-${HACK}" | head -n 1)
+
+    if [ -n "${EXISTING_DIR}" ]; then
+        SLUG="${EXISTING_DIR}"
+        echo "Found existing directory for hack '${HACK}': ${SLUG}"
+    else
+        # Detect the latest ghacks number in the target repository and increment it
+        LATEST_NUM=$(ls "${DST_DIR}/labs" | grep -E "ghacks[0-9]{3}-*" | \
+            sed -E 's/^ghacks([0-9]{3})-.*/\1/' | sort -n | tail -n 1)
+        if [ -z "${LATEST_NUM}" ]; then
+            NEXT_NUM=1
+        else
+            NEXT_NUM=$((10#${LATEST_NUM} + 1))
+        fi
+        SLUG=$(printf "ghacks%03d-${HACK}" ${NEXT_NUM})
+        echo "Detected next slug: ${SLUG}"
+    fi
+else
+    if [[ ${SLUG} =~ ^ghacks[0-9]{3}$ ]]; then
+        SLUG=${SLUG}-${HACK}
+    fi
+
+    if [[ ! ${SLUG} =~ ^ghacks[0-9]{3}-${HACK}$ ]]; then
+        echo "Slug '${SLUG}' has to match pattern 'ghacks[0-9]{3}-${HACK}'" 1>&2; exit 1
+    fi
+fi
+
 
 LAB_DIR="${DST_DIR}/labs/${SLUG}"
 mkdir -p ${LAB_DIR}
@@ -58,6 +80,8 @@ BLOCK=`cat<<EOF
 ## Lab resources for the participants
 
 <ql-code-block bash templated noWrap>
+Latest instructions: https://ghacks.dev/hacks/${HACK}
+
 $OUTPUTS
 </ql-code-block>
 EOF
