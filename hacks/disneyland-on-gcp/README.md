@@ -37,13 +37,13 @@ In this hack, you will build an end-to-end agentic data pipeline leveraging AI/M
 
 ## Challenges
 
-- Challenge 1: Data Foundation (Operational to Analytical)
-- Challenge 2: Exposing AlloyDB via QueryData & MCP Toolbox (Database Agentic Layer)
-- Challenge 3: Data Science & ML (Predictive & Sentiment)
-- Challenge 4: Multimodal & RAG Analytics
-- Challenge 5: Graph Analytics (Visitor Movement)
-- Challenge 6: Conversational Analytics (The Internal AI Analyst)
-- Challenge 7: Building the Real-Time Guest Assistant
+- Challenge 1: Replicating data to BigQuery
+- Challenge 2: Exposing database tools via MCP
+- Challenge 3: Sentiment and wait-time forecasting
+- Challenge 4: Image classification and brochure RAG
+- Challenge 5: Graph analytics and visitor flow
+- Challenge 6: Conversational analytics for insights
+- Challenge 7: Building the guest assistant app
 
 ---
 
@@ -74,20 +74,19 @@ Here is how you can divide and conquer based on your team size:
 ![3-Group Parallelization Timeline](images/parallelization_timeline.png)
 
 #### 🧩 Option 1: The 3-Group Split (Recommended)
-
 - **Group A (Platform & DB Engineers):** Focuses on the core transactional and serving loop.
-  - *Path:* [Challenge 1](#challenge-1-data-foundation-operational-to-analytical) -> [Challenge 2](#challenge-2-exposing-alloydb-via-querydata--mcp-toolbox-database-agentic-layer) -> [Challenge 7](#challenge-7-building-the-real-time-guest-assistant)
+  - *Path:* [Challenge 1](#challenge-1-replicating-data-to-bigquery) -> [Challenge 2](#challenge-2-exposing-database-tools-via-mcp) -> [Challenge 7](#challenge-7-building-the-guest-assistant-app)
 - **Group B (Data Scientists):** Focuses on analytics, forecasting, and clustering.
-  - *Path:* [Challenge 3](#challenge-3-data-science--ml-predictive--sentiment) -> Assist Group C with [Challenge 6](#challenge-6-conversational-analytics-the-internal-ai-analyst) or Group A with [Challenge 7](#challenge-7-building-the-real-time-guest-assistant)
+  - *Path:* [Challenge 3](#challenge-3-sentiment-and-wait-time-forecasting) -> Assist Group C with [Challenge 6](#challenge-6-conversational-analytics-for-insights) or Group A with [Challenge 7](#challenge-7-building-the-guest-assistant-app)
 - **Group C (AI & Graph Engineers):** Focuses on unstructured data, graphs, and internal conversational search.
-  - *Path:* [Challenge 4](#challenge-4-multimodal--rag-analytics) -> [Challenge 5](#challenge-5-graph-analytics-visitor-movement) -> [Challenge 6](#challenge-6-conversational-analytics-the-internal-ai-analyst)
+  - *Path:* [Challenge 4](#challenge-4-image-classification-and-brochure-rag) -> [Challenge 5](#challenge-5-graph-analytics-and-visitor-flow) -> [Challenge 6](#challenge-6-conversational-analytics-for-insights)
 
 #### 👥 Option 2: The 2-Group Split
 
 - **Group A (Database & Application Developers):** Focuses on database setup, agentic tool serving, and app integration.
-  - *Path:* [Challenge 1](#challenge-1-data-foundation-operational-to-analytical) -> [Challenge 2](#challenge-2-exposing-alloydb-via-querydata--mcp-toolbox-database-agentic-layer) -> [Challenge 7](#challenge-7-building-the-real-time-guest-assistant)
+  - *Path:* [Challenge 1](#challenge-1-replicating-data-to-bigquery) -> [Challenge 2](#challenge-2-exposing-database-tools-via-mcp) -> [Challenge 7](#challenge-7-building-the-guest-assistant-app)
 - **Group B (AI, ML & Analytics Engineers):** Focuses on all BigQuery-centric analytics, ML models, RAG, and property graphs.
-  - *Path:* [Challenge 4](#challenge-4-multimodal--rag-analytics) -> [Challenge 3](#challenge-3-data-science--ml-predictive--sentiment) -> [Challenge 5](#challenge-5-graph-analytics-visitor-movement) -> [Challenge 6](#challenge-6-conversational-analytics-the-internal-ai-analyst)
+  - *Path:* [Challenge 4](#challenge-4-image-classification-and-brochure-rag) -> [Challenge 3](#challenge-3-sentiment-and-wait-time-forecasting) -> [Challenge 5](#challenge-5-graph-analytics-and-visitor-flow) -> [Challenge 6](#challenge-6-conversational-analytics-for-insights)
 
 ---
 
@@ -119,7 +118,7 @@ To prevent teams from blocking each other, utilize these coordination strategies
 
 ---
 
-## Challenge 1: Data Foundation (Operational to Analytical)
+## Challenge 1: Replicating data to BigQuery
 
 **Target Persona:** Data Engineer / DBA | **Estimated Duration:** 45 minutes
 
@@ -217,7 +216,7 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## Challenge 2: Exposing AlloyDB via QueryData & MCP Toolbox (Database Agentic Layer)
+## Challenge 2: Exposing database tools via MCP
 
 **Target Persona:** DBA / Database Developer | **Estimated Duration:** 60 minutes | *Prerequisite: Challenge 1*
 
@@ -494,7 +493,7 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## Challenge 3: Data Science & ML (Predictive & Sentiment)
+## Challenge 3: Sentiment and wait-time forecasting
 
 **Target Persona:** Data Scientist / Data Analyst | **Estimated Duration:** 45 minutes | *Note: Can be parallelized immediately using raw CSVs in BigQuery.*
 
@@ -544,7 +543,7 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## Challenge 4: Multimodal & RAG Analytics
+## Challenge 4: Image classification and brochure RAG
 
 **Target Persona:** AI Developer / Data Scientist | **Estimated Duration:** 45 minutes
 
@@ -587,7 +586,7 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## Challenge 5: Graph Analytics (Visitor Movement)
+## Challenge 5: Graph analytics and visitor flow
 
 **Target Persona:** Graph Specialist / Data Analyst | **Estimated Duration:** 45 minutes
 
@@ -636,7 +635,7 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## Challenge 6: Conversational Analytics (The Internal AI Analyst)
+## Challenge 6: Conversational analytics for insights
 
 **Target Persona:** Data Analyst / Product Manager | **Estimated Duration:** 30 minutes
 
@@ -686,7 +685,7 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## Challenge 7: Building the Real-Time Guest Assistant
+## Challenge 7: Building the guest assistant app
 
 **Target Persona:** Full-Stack AI / App Developer | **Estimated Duration:** 90 minutes | *Prerequisites: Challenge 2 must be completed. Challenges 3 and 5 must be completed to integrate live forecasts and graph routings (or mock data can be used).*
 
