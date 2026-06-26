@@ -89,6 +89,18 @@ environment:
     reference: user_5.username
   - label: Password 5
     reference: user_5.password
+  - label: Username 6
+    reference: user_6.username
+  - label: Password 6
+    reference: user_6.password
+  - label: Username 7
+    reference: user_7.username
+  - label: Password 7
+    reference: user_7.password
+  - label: Username 8
+    reference: user_8.username
+  - label: Password 8
+    reference: user_8.password
 
   - label: Project ID
     reference: project.project_id
