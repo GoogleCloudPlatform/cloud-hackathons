@@ -35,7 +35,13 @@ Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you
 
 ##### Table Creation
 
-Participants can use `psql` from Cloud Shell, but the recommendation would be to use SQL Studio in the AlloyDB Console. In order to connect built-in authentication with the user `postgres` and database `postgres` should be used. Password should be provided by the coach.
+Participants can use `psql` from Cloud Shell, but the recommendation would be to use SQL Studio in the AlloyDB Console. In order to connect, built-in authentication with the user `postgres` and the default database `postgres` should be used. Password should be provided by the coach.
+
+Once connected, participants must first create a new dedicated database `disney` and reconnect to it. All subsequent tables, extensions, and queries in this hackathon must be run within this `disney` database:
+
+```sql
+CREATE DATABASE disney;
+```
 
 Creating the tables is rather straight-forward; in case the participants struggle with the syntax, remind them to use the Gemini powered *Generate SQL* capability in the SQL Editor.
 
