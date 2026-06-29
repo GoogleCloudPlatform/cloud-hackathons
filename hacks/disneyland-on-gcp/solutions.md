@@ -1,56 +1,45 @@
-# Disneyland Data Analytics
+# Disneyland Agentic Data Cloud - Coach's Guide & Solutions
 
-## Introduction
-
-Welcome to the coach's guide for the *Disneyland Data Analytics* gHack. Here you will find links to specific guidance for coaches for each of the challenges.
+Welcome to the coach's guide for the *Disneyland Agentic Data Cloud* gHack. This guide contains the complete reference implementations, SQL queries, configurations, and code blocks for all 9 challenges of the hackathon.
 
 > [!NOTE]  
 > If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
 
 ## Coach's Guides
 
-- Challenge 1: Data Ingestion in AlloyDB
-- Challenge 2: Semantic Search with Embeddings
-- Challenge 3: Real-time Sync with Datastream
-- Challenge 4: Data Discovery & Metadata Management
-- Challenge 5: Data Profiling & Quality
-- Challenge 6: Data Preparation with Gemini
-- Challenge 7: Sentiment & Category Analysis
-- Challenge 8: Visualization with Data Canvas
-- Challenge 9: Multimodal Image Analysis
-- Challenge 10: PDF Document Intelligence (RAG)
-- Challenge 11: Time-Series Forecasting
-- Challenge 12: Intelligent Classification & Ranking
-- Challenge 13: Operationalizing Insights with Reverse-ETL
-- Challenge 14: Automated Data Engineering Agents
-- Challenge 15: Conversational Analytics Agents
-- Challenge 16: Rapid Development with Gemini-CLI
-- Challenge 17: Custom Agent Development (ADK & MCP)
+* Challenge 1: Setting up AlloyDB and replicating data to BigQuery
+* Challenge 2: Creating the agentic database layer
+* Challenge 3: Sentiment and wait-time forecasting
+* Challenge 4: Image classification and brochure RAG
+* Challenge 5: Graph analytics and visitor flow
+* Challenge 6: Conversational analytics for insights
+* Challenge 7: From insights to action, syncing BigQuery and AlloyDB
+* Challenge 8: Exposing Database Tools via MCP
+* Challenge 9: Building the guest assistant app
 
-## Challenge 1: Data Ingestion in AlloyDB
+---
 
-### Notes & Guidance
+## Challenge 1: Setting up AlloyDB and replicating data to BigQuery
 
-#### 1. Data Loading in AlloyDB
+### 1.1 Ingest Data into AlloyDB
 
-##### Table Creation
+#### 1. Create a Dedicated Database
 
-Participants can use `psql` from Cloud Shell, but the recommendation would be to use SQL Studio in the AlloyDB Console. In order to connect, built-in authentication with the user `postgres` and the default database `postgres` should be used. Password should be provided by the coach.
-
-Once connected, participants must first create a new dedicated database `disney` and reconnect to it. All subsequent tables, extensions, and queries in this hackathon must be run within this `disney` database:
+Connect to the default `postgres` database in AlloyDB Studio or `psql`, and run:
 
 ```sql
 CREATE DATABASE disney;
 ```
 
-Creating the tables is rather straight-forward; in case the participants struggle with the syntax, remind them to use the Gemini powered *Generate SQL* capability in the SQL Editor.
+Once created, **disconnect and reconnect** to the new `disney` database. All subsequent tables, extensions, and queries must be run within this `disney` database.
 
-> [!NOTE]  
-> The CSV file that's imported in the next step contains duplicates for `review_id`, if that columnn is made a primary key or has any other unique constraints import will fail.
+#### 2. Create the Tables
+
+Create the two primary operational tables with primary keys:
 
 ```sql
 CREATE TABLE disneyland_reviews (
-    review_id INT,
+    review_id INT PRIMARY KEY,
     rating INT,
     year_month TEXT,
     reviewer_location TEXT,
@@ -59,159 +48,257 @@ CREATE TABLE disneyland_reviews (
 );
 
 CREATE TABLE disneyland_attractions (
-    attraction_id INT,
+    attraction_id INT PRIMARY KEY,
     branch TEXT,
     name TEXT,
     description TEXT
 );
 ```
 
-##### Data Import
+#### 3. Add a Full-Text Search Vector
 
-Students can use the AlloyDB UI *Import* feature from the Console (on cluster overview page, top navbar) or `gcloud alloydb instances import`.
-
-## Challenge 2: Semantic Search with Embeddings
-
-### Notes & Guidance
-
-#### Generating the Embeddings
-
-First we need to install the `vector` extension in AlloyDB
+Add a generated `tsvector` column to the attractions table to support hybrid search:
 
 ```sql
-CREATE EXTENSION IF NOT EXISTS vector;
+ALTER TABLE disneyland_attractions 
+ADD COLUMN description_tsvector tsvector 
+GENERATED ALWAYS AS (to_tsvector('english', description)) STORED;
 ```
 
-Then a new `vector` column is added to the table.
+#### 4. Import Data from Cloud Storage
 
-> [!NOTE]  
-> The `text-embedding-005` model below is an example, participants can use any supported embbedding model version, as long as the same model and version is also used when doing the search. Also keep in mind the vector length (size of the embedding) depends on the specific model and can vary from 768 (`text-embedding-005`) to 3072 (`gemini-embedding-001`) unless otherwise specified.
+Use the AlloyDB Import API (via the Cloud Console UI or `gcloud`) to import the public CSV files:
+
+* Import `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/reviews.csv` into `disneyland_reviews`
+* Import `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/attractions.csv` into `disneyland_attractions`
+
+---
+
+### 1.2 Generate Vector Embeddings at the Source
+
+#### 1. Enable Extensions
 
 ```sql
-ALTER TABLE disneyland_attractions ADD COLUMN embedding vector;
-
-UPDATE 
-    disneyland_attractions
-SET
-    embedding = google_ml.embedding('text-embedding-005', description)::vector;
+CREATE EXTENSION IF NOT EXISTS vector CASCADE;
+CREATE EXTENSION IF NOT EXISTS google_ml_integration CASCADE;
 ```
 
-#### Searching in Embeddings
+#### 2. Add the Embedding Column
 
-Searching is similar to generating the embeddings, make sure that the same model and version is used.
+Add a vector column of size 3072 (corresponding to the dimension of `gemini-embedding-001`):
 
 ```sql
-SELECT
-  name,
--- description,
-  branch
-FROM
-  disneyland_attractions
-ORDER BY
-  embedding <=> google_ml.embedding('text-embedding-005', 'Dark ride in space')::vector ASC
-LIMIT
- 5;
+ALTER TABLE disneyland_attractions ADD COLUMN embedding vector(3072);
 ```
 
-The search should return something like this:
+#### 3. Generate Embeddings
 
-| name | branch |
-| --- | --- |
-| Space Mountain | Disneyland_California |
-| Hyperspace Mountain | Disneyland_HongKong |
-| Star Tours: The Adventures Continue | Disneyland_Paris |
-| Les Voyages de Pinocchio | Disneyland_Paris |
-| Blanche-Neige et les Sept Nains | Disneyland_Paris |
-
-## Challenge 3: Real-time Sync with Datastream
-
-### Notes & Guidance
-
-#### AlloyDB Preperation
-
-First we need to grant permissions to the `postgres` user.
+Populate the column by calling the Vertex AI embedding model natively:
 
 ```sql
-ALTER USER postgres WITH REPLICATION;
+UPDATE disneyland_attractions
+SET embedding = google_ml.embedding('gemini-embedding-001', description)::vector;
 ```
 
-And then we can create the publication and replication slot.
+#### 4. Verify Similarity Search (Checkpoint Validation)
+
+To verify the embeddings, run a similarity search for the top 5 attractions closest to `'thrilling dark ride in space'`:
+
+```sql
+SELECT name, description, 1 - (embedding <=> google_ml.embedding('gemini-embedding-001', 'thrilling dark ride in space')::vector) AS similarity
+FROM disneyland_attractions
+ORDER BY embedding <=> google_ml.embedding('gemini-embedding-001', 'thrilling dark ride in space')::vector ASC
+LIMIT 5;
+```
+
+---
+
+### 1.3 Set Up Real-Time Replication with One-Click Datastream
+
+1. In the Google Cloud Console, navigate to **AlloyDB > Clusters**.
+2. Select your cluster and click **Replicate data to BigQuery** on the top menu.
+3. Follow the wizard:
+   * **Region**: Same as your AlloyDB cluster (e.g., `us-central1` or `europe-west1`).
+   * **Tables**: Select `disneyland_reviews` and `disneyland_attractions`.
+   * **Write Mode**: **Merge**.
+   * **Staleness Limit**: **0 seconds** (real-time).
+   * **Destination Dataset**: **disney**.
+4. Start the stream.
+
+*(Optional: If configuring logical replication manually on the database)*:
 
 ```sql
 CREATE PUBLICATION pub_disney FOR TABLE disneyland_reviews, disneyland_attractions;
+ALTER USER postgres WITH REPLICATION;
 SELECT PG_CREATE_LOGICAL_REPLICATION_SLOT('slot_disney', 'pgoutput');
 ```
 
-> [!WARNING]  
-> Sometimes running the SQL commands above in a single run causes an error message: postgresql error: cannot create logical replication slot in transaction that has performed writes. Easiest way to solve that is to run the statements one by one.
+---
 
-#### Connectivity Preparation
+### 1.4 Prove the Flow with Data Canvas
 
-The easiest method to configure the Datastream to AlloydDB connection is through IP Allowlisting. During the initialization we've already configured the required firewall rules for the region `us-central1` using the following command.
+1. In the Google Cloud Console, navigate to **BigQuery Studio**.
+2. Click the **Data Canvas** tab.
+3. Load the replicated `disney.public_disneyland_reviews` table.
+4. Click **Visualize** or **Analyze** to generate a quick chart (e.g., a bar chart of the average rating per branch) to prove that the data has replicated successfully.
 
-```shell
-gcloud compute firewall-rules create fwr-ingress-allow-datastream-us-central1 \
-  --network=default \
-  --action=ALLOW \
-  --direction=INGRESS \
-  --source-ranges=34.72.28.29/32,34.67.234.134/32,34.67.6.157/32,34.72.239.218/32,34.71.242.81/32 \
-  --rules=tcp:5432 \
-  --description="Allow Datastream public IPs for us-central1 to access AlloyDB/PostgreSQL"
+---
+
+## Challenge 2: Creating the agentic database layer
+
+### 2.1 QueryData Context Set
+
+Create a file named `querydata_disney_context.json` with the following configuration and upload it in the AlloyDB Console under **Context Sets** (named `disney-context`):
+
+```json
+{
+  "templates": [
+    {
+      "nlQuery": "Show available attractions in Disneyland Paris",
+      "sql": "SELECT name, description FROM public.disneyland_attractions WHERE branch = 'Disneyland_Paris'",
+      "intent": "List all attractions for a specific park branch",
+      "manifest": "List attractions by branch",
+      "parameterized": {
+        "parameterized_intent": "Show available attractions in $1",
+        "parameterized_sql": "SELECT name, description FROM public.disneyland_attractions WHERE branch = $1"
+      }
+    },
+    {
+      "nlQuery": "Find reviews with rating 5 for Space Mountain",
+      "sql": "SELECT r.review_id, r.rating, r.review_text FROM public.disneyland_reviews r INNER JOIN public.disneyland_attractions a ON r.branch = a.branch WHERE a.name = 'Space Mountain' AND r.rating = 5",
+      "intent": "Get reviews with a specific rating for a named attraction",
+      "manifest": "Get reviews by attraction and rating",
+      "parameterized": {
+        "parameterized_intent": "Find reviews with rating $2 for $1",
+        "parameterized_sql": "SELECT r.review_id, r.rating, r.review_text FROM public.disneyland_reviews r INNER JOIN public.disneyland_attractions a ON r.branch = a.branch WHERE a.name = $1 AND r.rating = $2"
+      }
+    },
+    {
+      "nlQuery": "Average rating of attractions in California Adventure",
+      "sql": "SELECT AVG(rating) FROM public.disneyland_reviews WHERE branch = 'Disneyland_California'",
+      "intent": "Calculate the average review rating for a specific branch",
+      "manifest": "Average rating by branch",
+      "parameterized": {
+        "parameterized_intent": "Average rating of attractions in $1",
+        "parameterized_sql": "SELECT AVG(rating) FROM public.disneyland_reviews WHERE branch = $1"
+      }
+    }
+  ],
+  "facets": [
+    {
+      "sql_snippet": "r.rating >= 4",
+      "intent": "highly rated reviews",
+      "manifest": "Filter reviews by a minimum rating threshold",
+      "parameterized": {
+        "parameterized_intent": "reviews with rating greater than or equal to $1",
+        "parameterized_sql_snippet": "r.rating >= $1"
+      }
+    }
+  ],
+  "value_searches": [
+    {
+      "query": "SELECT DISTINCT T.name as value, 'public.disneyland_attractions.name' as columns, 'Attraction Name' as concept_type, (1.0 - ts_rank(to_tsvector('english', T.name), plainto_tsquery('english', $value))) as distance, '{}'::text as context FROM public.disneyland_attractions T WHERE to_tsvector('english', T.name) @@ plainto_tsquery('english', $value)",
+      "concept_type": "Attraction Name",
+      "description": "Full-text search for attraction names"
+    },
+    {
+      "query": "SELECT DISTINCT T.branch as value, 'public.disneyland_attractions.branch' as columns, 'Branch Name' as concept_type, (1.0 - ts_rank(to_tsvector('english', T.branch), plainto_tsquery('english', $value))) as distance, '{}'::text as context FROM public.disneyland_attractions T WHERE to_tsvector('english', T.branch) @@ plainto_tsquery('english', $value)",
+      "concept_type": "Branch Name",
+      "description": "Full-text search for park branches"
+    }
+  ]
+}
 ```
 
-In case any other region is used, a similar rule needs to be created, where the `source-ranges` will depend on the chosen region (and will be displayed in Datastream UI).
+---
 
-#### Datastream configuration
+### 2.2 Expose AlloyDB AI Operators
 
-Participants can either create the source & destination connection profiles separately and refer to them when creating the *Stream*, or just start with *Create Stream* and configure those during the setup. All of the required configuration is in the instructions, so it should be rather straight forward. Depending on which method is chosen (defining the profiles in the *Create stream* wizard or individually, the order of some of the parameters might be different).
+#### 1. Install Extensions and Create Indexes for Hybrid Search
 
-> [!WARNING]  
-> Make sure that the participants use the public IP of the database proxy as the hostname and validate that the connection is successfull
+```sql
+-- Install required extensions
+CREATE EXTENSION IF NOT EXISTS alloydb_scann CASCADE;
+CREATE EXTENSION IF NOT EXISTS rum CASCADE;
+-- Index RUM for Keyword FTS
+CREATE INDEX IF NOT EXISTS attractions_tsvector_idx ON disneyland_attractions USING RUM (description_tsvector rum_tsvector_ops);
 
-## Challenge 4: Data Discovery & Metadata Management
+-- Index ScaNN for Vector Cosine Similarity
+CREATE INDEX IF NOT EXISTS attractions_vector_idx ON disneyland_attractions USING scann (embedding cosine) WITH (num_leaves=10);
+```
 
-### Notes & Guidance
+#### 2. Create the Semantic Filtering Function
 
-- **Semantic Search:** Use the "Search" tab in BQ Studio.
-- **Data Insights:** Click on the `disneyland_reviews` table and select the "Insights" tab.
-- **Metadata Generation:** Click on the "Edit" button for dataset/table descriptions and use the "Suggest with Gemini" option.
+Define a custom SQL function utilizing `google_ml.if` to filter attractions semantically:
 
-## Challenge 5: Data Profiling & Quality
+```sql
+CREATE OR REPLACE FUNCTION check_attraction_suitability(attraction_name TEXT, suitability_profile TEXT)
+RETURNS TABLE(name TEXT, description TEXT) AS $$
+  SELECT name, description 
+  FROM disneyland_attractions 
+  WHERE name = attraction_name
+    AND google_ml.if(
+      prompt => 'Is this attraction ' || suitability_profile || '? Description: ' || description
+    );
+$$ LANGUAGE SQL;
+```
 
-### Notes & Guidance
+#### 3. Test and Validate the Capabilities
 
-#### Data Profiling
+To verify these features in AlloyDB Studio, you can run the following test queries:
 
-Quick profile with 10% sampling should be sufficient and we expect the following results
+**Hybrid Search Test:**
 
-- What's the average rating of Disneyland? *4.44*
-- Where are reviewers located the most? *United_States*
-- Are all reviews unique? *No, uniquness is not 100%*
-- What's the percentage of "missing" data from the year_month column? *~3.98%*
+```sql
+SET google_ml_integration.enable_preview_ai_functions = true;
+SELECT a.name, a.description, search_results.score
+FROM disneyland_attractions a
+JOIN ai.hybrid_search(
+  search_inputs => ARRAY[
+      '{
+        "data_type": "vector",
+        "table_name": "disneyland_attractions",
+        "key_column": "attraction_id",
+        "vec_column": "embedding",
+        "distance_operator": "public.<=>",
+        "limit": 5,
+        "query_vector": "ai.embedding(''gemini-embedding-001'', ''thrilling space roller coaster'')::vector"
+      }'::JSONB,
+      '{
+        "data_type": "text",
+        "table_name": "disneyland_attractions",
+        "key_column": "attraction_id",
+        "text_column": "description_tsvector",
+        "limit": 5,
+        "ranking_function": "<=>",
+        "query_text_input": "thrilling space roller coaster"
+      }'::JSONB
+  ],
+  id_type => NULL::BIGINT
+) AS search_results ON a.attraction_id = search_results.id;
+```
 
-> [!WARNING]  
-> Since quick profile does a 10% sample, there might be some small discrepancies in the expected values above.
+**Semantic Filtering Function Test:**
 
-#### Quality Scan
+```sql
+-- This should return 0 rows (Space Mountain is not safe for pregnant women)
+SELECT * FROM check_attraction_suitability('Space Mountain', 'safe for pregnant women');
 
-Add 3 built-in rule types, *Null check* for `branch` column, *Value set check* for `rating` column, and *Uniqueness check* for `review_id` column. Once you have created these rule types, you need to edit the `rating` column rule to include the set of allowed values. Once this runs, the uniqueness check for the `review_id` should fail.
+-- This should return 1 row (it's a small world is suitable for toddlers)
+SELECT * FROM check_attraction_suitability('it''s a small world', 'suitable for toddlers');
+```
 
-## Challenge 6: Data Preparation with Gemini
+---
 
-### Notes & Guidance
+## Challenge 3: Sentiment and wait-time forecasting
 
-- Click on *Filter* end ask Gemini *filter out rows where `branch` is NULL or empty*, this should yield `branch IS NOT NULL AND branch != ''`
-- *Transform*, replace "missing" with NULL values: `NULLIF(year_month, 'missing')`
-- *Transform*, replace all underscores with spaces in the branch column: `REPLACE(branch, '_', ' ')`
-- *Destination*, `disney` dataset, `disneyland_reviews_cleaned` table
+### 3.1 Automated Sentiment Analysis with BQ Studio Data Science Agent
 
-## Challenge 7: Sentiment & Category Analysis
+> [!IMPORTANT]
+> **Dependency Note:**
+> This task queries the `disneyland_reviews` table in BigQuery, which is replicated from AlloyDB. This requires **Challenge 1** (specifically the Datastream replication in Task 1.3) to be completed first.
 
-### Notes & Guidance
-
-#### 1. Analyze Reviews with Gemini
-
-##### Create the Model
+#### 1. Create the Remote Model
 
 ```sql
 CREATE OR REPLACE MODEL `disney.gemini_flash`
@@ -219,108 +306,160 @@ CREATE OR REPLACE MODEL `disney.gemini_flash`
   OPTIONS (ENDPOINT = 'gemini-2.5-flash');
 ```
 
-##### Extract Categories
+#### 2. Classify Sentiments (Sample of 100)
+
+Using the BigQuery Studio Data Science Agent, generate and run the following query:
 
 ```sql
-CREATE OR REPLACE TABLE `disney.reviews_categories` AS
-SELECT
-  review_id, rating, year_month, reviewer_location, review_text, branch, result AS categories 
-FROM
-  AI.GENERATE_TEXT(
-    MODEL `disney.gemini_flash`,
-    (
-      SELECT
-        *,
-        """Identify categories (e.g., cleanliness, food, waiting time) in the following review text 
-        and return thme as a comma separated list. Review: 
-        """ || review_text AS prompt
-      FROM `disney.public_disneyland_reviews`
-      LIMIT 100
-    )
-  )
-```
-
-##### Sentiment Analysis
-
-```sql
-CREATE OR REPLACE TABLE `disney.reviews_analysis` AS
+CREATE OR REPLACE TABLE `disney.reviews_sentiment_analysis` AS
 SELECT 
-  review_id, rating, year_month, reviewer_location, review_text, branch, result AS sentiment
+  review_id, rating, year_month, reviewer_location, review_text, branch,
+  ml_generate_text_result AS sentiment
 FROM 
-  AI.GENERATE_TEXT(
+  ML.GENERATE_TEXT(
     MODEL `disney.gemini_flash`,
     (
       SELECT *,
-      """Classify the sentiment of this review as Positive, Negative, or Neutral 
-      and only output single word. Review:
-      """ || review_text AS prompt
+      'Classify the sentiment of this review as Positive, Negative, or Neutral. Output ONLY the single word. Review: ' || review_text AS prompt
       FROM `disney.public_disneyland_reviews` 
       LIMIT 100
-    )
-  )
+    ),
+    STRUCT(0.0 AS temperature, 10 AS max_output_tokens)
+  );
 ```
 
-## Challenge 8: Visualization with Data Canvas
+---
 
-### Notes & Guidance
+### 3.2 Time-Series Wait Time Forecasting
 
-#### Visualize with Data Canvas
+#### 1. Load Data
 
-Participants should navigate to the *Data Canvas* tab in BigQuery Studio, add the `reviews_analysis` table, and use the "Visualize" or "Analyze" buttons to generate the requested charts. The *Canvas assistant* is very useful. Using the task descriptions as prompt works pretty good, just make sure that join is mentioned (or performed before) for the second graph.
+```sql
+LOAD DATA OVERWRITE `disney.waiting_times`
+FROM FILES (
+  format = 'CSV',
+  uris = ['gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/waiting_times.csv']
+);
+```
 
-## Challenge 9: Multimodal Image Analysis
+#### 2. Train the ARIMA_PLUS Model
 
-### Notes & Guidance
+```sql
+CREATE OR REPLACE MODEL `disney.waiting_time_forecast_model`
+  OPTIONS(
+    model_type='ARIMA_PLUS',
+    time_series_timestamp_col='time_bucket',
+    time_series_data_col='avg_wait_time',
+    time_series_id_col='attraction',
+    data_frequency='AUTO_FREQUENCY'
+  ) AS
+  SELECT
+    TIMESTAMP_SECONDS(1800 * DIV(UNIX_SECONDS(timestamp), 1800)) AS time_bucket, -- 30-min intervals
+    attraction,
+    AVG(waiting_time) AS avg_wait_time
+  FROM `disney.waiting_times`
+  GROUP BY 1, 2;
+```
 
-#### 1. Image Analysis
+#### 3. Generate 24-Hour Forecast (48 intervals of 30 mins)
 
-##### Create Object Table for Images
+Join the forecast results with the attractions table to resolve the `attraction_id` for FDW compatibility:
+
+```sql
+CREATE OR REPLACE TABLE `disney.forecasted_waiting_times` AS
+SELECT
+  a.attraction_id,
+  f.forecast_timestamp AS forecasted_timestamp,
+  f.forecast_value AS predicted_wait_time
+FROM
+  ML.FORECAST(MODEL `disney.waiting_time_forecast_model`, STRUCT(48 AS horizon, 0.95 AS confidence_level)) f
+JOIN
+  `disney.public_disneyland_attractions` a ON f.attraction = a.name;
+```
+
+---
+
+### 3.3 Ride Clustering (Intensity & Popularity)
+
+#### 1. Categorize Attractions using `AI.CLASSIFY`
+
+```sql
+CREATE OR REPLACE TABLE `disney.thrill_class` AS
+SELECT
+  attraction_id,
+  name,
+  AI.CLASSIFY(
+    description,
+    categories => ['easy-peasy', 'thrilling', 'extreme']
+  ) AS class
+FROM
+  `disney.public_disneyland_attractions`;
+```
+
+#### 2. Rank Attractions using `AI.SCORE`
+
+```sql
+CREATE OR REPLACE TABLE `disney.thrill_score` AS
+SELECT
+  attraction_id,
+  name,
+  CAST(AI.SCORE(
+    'Score attractions on a thrill level from 1 to 10 based on their description. Description: ' || description
+  ) AS INT64) AS rank
+FROM
+  `disney.public_disneyland_attractions`;
+```
+
+---
+
+## Challenge 4: Image classification and brochure RAG
+
+### 4.1 Multimodal Image Classification
+
+#### 1. Create the Object Table
 
 ```sql
 CREATE OR REPLACE EXTERNAL TABLE `disney.attraction_images`
 WITH CONNECTION `us-central1.conn`
 OPTIONS (
   object_metadata = 'SIMPLE',
-  uris = ['gs://<YOUR_BUCKET>/attraction_parc_photos/*']
+  uris = ['gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/attraction_parc_photos/*']
 );
 ```
 
-##### Analyze Images
+#### 2. Classify Images
 
 ```sql
-CREATE OR REPLACE TABLE disney.images_analysis AS
+CREATE OR REPLACE TABLE `disney.images_classification` AS
 SELECT
   uri,
-  result AS is_disneyland
+  ml_generate_text_result AS classification_json
 FROM
-  AI.GENERATE_TEXT(
+  ML.GENERATE_TEXT(
     MODEL `disney.gemini_flash`,
     TABLE `disney.attraction_images`,
     STRUCT(
-      'Is this photo from a Disneyland park? Answer with true or false, output only true or false and if unsure stick to false'
-        AS prompt
+      'Is this image from a Disneyland park? Answer with a JSON object containing keys ''is_disneyland'' (boolean) and ''reason'' (string).' AS prompt
     )
-  )
+  );
 ```
 
-## Challenge 10: PDF Document Intelligence (RAG)
+---
 
-### Notes & Guidance
+### 4.2 PDF Brochure Ingestion & RAG Pipeline
 
-#### 1. RAG System for Brochures
-
-##### Create Object Table for PDFs
+#### 1. Create the Object Table for PDFs
 
 ```sql
 CREATE OR REPLACE EXTERNAL TABLE `disney.brochures_pdf`
 WITH CONNECTION `us-central1.conn`
 OPTIONS (
   object_metadata = 'SIMPLE',
-  uris = ['gs://<YOUR_BUCKET>/disneyland_brochures/*.pdf']
+  uris = ['gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/disneyland_brochures/*.pdf']
 );
 ```
 
-##### Chunk PDFs (Using pre-provided UDF)
+#### 2. Chunk PDFs using Pre-provided UDF
 
 ```sql
 CREATE OR REPLACE TABLE disney.brochures_chunks AS
@@ -339,16 +478,14 @@ FROM
   ) AS chunk;
 ```
 
-##### Generate Embeddings
+#### 3. Generate Embeddings
 
 ```sql
 CREATE OR REPLACE MODEL `disney.embedding_model`
   REMOTE WITH CONNECTION `us-central1.conn`
   OPTIONS (ENDPOINT = 'gemini-embedding-001');
-```
 
-```sql
-CREATE OR REPLACE TABLE disney.brochures_embeddings AS
+CREATE OR REPLACE TABLE disney.brochure_embeddings AS
 SELECT *
 FROM
   AI.GENERATE_EMBEDDING(
@@ -359,172 +496,659 @@ FROM
   );
 ```
 
-##### Vector Search
+---
+
+### 4.3 Vector Search & RAG Validation
+
+Run a single, end-to-end RAG query that finds the relevant chunks using vector search, aggregates them, and passes them to Gemini Flash to answer: *"Where to eat a tex-mex meal buffet-style?"*:
 
 ```sql
-SELECT query.query, base.content, distance
+WITH context_chunks AS (
+  SELECT base.content AS chunk
+  FROM
+    VECTOR_SEARCH(
+      TABLE `disney.brochure_embeddings`,
+      'embedding',
+      (
+        SELECT embedding
+        FROM
+          AI.GENERATE_EMBEDDING(
+            MODEL `disney.embedding_model`,
+            (SELECT 'Where to eat a tex-mex meal buffet-style?' AS content)
+          )
+      ),
+      top_k => 3
+    )
+),
+assembled_context AS (
+  SELECT STRING_AGG(chunk, '\n\n') AS context FROM context_chunks
+)
+SELECT
+  ml_generate_text_result AS grounded_response
 FROM
-  VECTOR_SEARCH(
-    TABLE `disney.brochures_embeddings`,
-    'embedding',
-    (
-      SELECT embedding, content AS query
-      FROM
-        AI.GENERATE_EMBEDDING(
-          MODEL `disney.embedding_model`,
-          (SELECT 'Where to eat a tex-mex meal buffet-style?' AS content)
-        )
-    ),
-    top_k => 3
-  );
-```
-
-## Challenge 11: Time-Series Forecasting
-
-### Notes & Guidance
-
-#### 1. Forecast Waiting Times
-
-```sql
--- Load data first (or using the UI or bq load)
-LOAD DATA OVERWRITE `disney.waiting_times`
-FROM FILES (
-  format = 'CSV',
-  uris = ['gs://<YOUR_BUCKET>/waiting_time.csv']
-);
-
-CREATE OR REPLACE TABLE disney.forecasted_wait_times AS
-SELECT *
-FROM
-  AI.FORECAST(
+  ML.GENERATE_TEXT(
+    MODEL `disney.gemini_flash`,
     (
       SELECT
-        TIMESTAMP_TRUNC(usage_start_time, HOUR) AS time_bucket,
-        attraction,
-        AVG(waiting_time) AS avg_wait_time
-      FROM `disney.waiting_times`
-      GROUP BY 1, 2
-    ),
-    horizon => 15,
-    confidence_level => 0.95,
-    timestamp_col => 'time_bucket',
-    id_cols => ['attraction'],
-    data_col => 'avg_wait_time'
-    -- output_historical_time_series => true
+        'Answer the following question using only the provided context. If the answer cannot be found in the context, say "I don''t know".\n\nQuestion: Where to eat a tex-mex meal buffet-style?\n\nContext:\n' || context AS prompt
+      FROM assembled_context
+    )
   );
-
 ```
 
-## Challenge 12: Intelligent Classification & Ranking
+---
 
-### Notes & Guidance
+## Challenge 5: Graph analytics and visitor flow
 
-#### 1. Classify and Rank Rides
+### 5.1 Ingest Visitor Movement Data
 
 ```sql
-CREATE OR REPLACE TABLE `disney.attractions_classified` AS
+LOAD DATA OVERWRITE `disney.visitor_movements`
+FROM FILES (
+  format = 'CSV',
+  uris = ['gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/visitor_movements.csv']
+);
+```
+
+---
+
+### 5.2 Build a Property Graph in BigQuery
+
+> [!IMPORTANT]
+> **Dependency Note:**
+> Creating the Property Graph requires the `disneyland_attractions` table to exist in BigQuery. This requires **Challenge 1** (Datastream replication) to be completed first.
+
+Define a property graph over the attractions and movements. Specify explicit keys for the node and edge tables to handle tables lacking primary key constraints:
+
+```sql
+CREATE OR REPLACE PROPERTY GRAPH disney.disney_movement_graph
+NODE TABLES (
+  disney.public_disneyland_attractions
+    KEY (attraction_id)
+    LABEL Attraction
+)
+EDGE TABLES (
+  disney.visitor_movements
+    KEY (visitor_id, timestamp)
+    SOURCE KEY (from_attraction_id) REFERENCES public_disneyland_attractions (attraction_id)
+    DESTINATION KEY (to_attraction_id) REFERENCES public_disneyland_attractions (attraction_id)
+    LABEL Moved
+);
+```
+
+---
+
+### 5.3 Query the Graph for Patterns
+
+#### 1. Flow Analysis: Top 3 Rides after Space Mountain
+
+Identify where visitors head immediately after riding "Space Mountain":
+
+```sql
+SELECT b_name, COUNT(*) AS transition_count
+FROM GRAPH_TABLE(
+  disney.disney_movement_graph
+  MATCH (a:Attraction) -[e:Moved]-> (b:Attraction)
+  WHERE a.name = 'Space Mountain'
+  RETURN b.name AS b_name
+)
+GROUP BY b_name
+ORDER BY transition_count DESC
+LIMIT 3;
+```
+
+#### 2. Bottleneck Detection: Highest Incoming Density at 2:00 PM
+
+Analyze edges matching a specific time window:
+
+```sql
+SELECT target_name, COUNT(*) AS incoming_count
+FROM GRAPH_TABLE(
+  disney.disney_movement_graph
+  MATCH (a:Attraction) -[e:Moved]-> (b:Attraction)
+  RETURN b.name AS target_name, e.timestamp AS move_time
+)
+WHERE EXTRACT(HOUR FROM move_time) = 14
+GROUP BY target_name
+ORDER BY incoming_count DESC
+LIMIT 5;
+```
+
+---
+
+### 5.4 Generate a Next-Ride Routing Table
+
+Compute transitions and assign recommendations for different congestion levels (`Low`, `Medium`, `High`) based on popularity ranks:
+
+```sql
+CREATE OR REPLACE TABLE disney.graph_recommendations AS
+WITH transition_ranks AS (
+  SELECT
+    from_attraction_id AS attraction_id,
+    to_attraction_id AS recommended_next_attraction_id,
+    ROW_NUMBER() OVER(PARTITION BY from_attraction_id ORDER BY COUNT(*) DESC) AS rank
+  FROM
+    disney.visitor_movements
+  GROUP BY
+    from_attraction_id,
+    to_attraction_id
+)
 SELECT
-  *,
-  AI.CLASSIFY(
-    description,
-    categories => ['easy-peasy', 'thrilling', 'extreme']
-  ) AS category,
-  AI.SCORE(
-    """
-    Score attractions on a **thrill level** from 1 to 10 based on their description. Description: 
-    """ || description
-  ) as thrill_level
+  attraction_id,
+  recommended_next_attraction_id,
+  'Low' AS congestion_level
 FROM
-  `disney.attractions`
+  transition_ranks
+WHERE
+  rank = 1
 
+UNION ALL
+
+SELECT
+  attraction_id,
+  recommended_next_attraction_id,
+  'Medium' AS congestion_level
+FROM
+  transition_ranks
+WHERE
+  rank = 2
+
+UNION ALL
+
+SELECT
+  attraction_id,
+  recommended_next_attraction_id,
+  'High' AS congestion_level
+FROM
+  transition_ranks
+WHERE
+  rank = 3;
 ```
 
-## Challenge 13: Operationalizing Insights with Reverse-ETL
+---
 
-### Notes & Guidance
+## Challenge 6: Conversational analytics for insights
 
-#### 1. Reverse-ETL to AlloyDB
+### 6.1 Initialize Agent
 
-##### Install Extension
+In BigQuery Studio, go to the **Agents** tab, create a new agent named `disney_park_analyst` and connect it to the `disney` dataset.
 
-As this functionality is not part of the documentation, you can use the following to get things working:
+### 6.2 Configure Knowledge Catalog
+
+* **Synonyms**:
+  * "rollercoaster", "thrill ride" -> "Space Mountain", "Big Thunder Mountain"
+  * "queue", "line" -> `waiting_time`
+
+### 6.3 Define Golden Queries
+
+Add these pre-approved SQL templates to train the agent's SQL generation:
+
+#### Golden Query 1: Attractions + Wait Time Forecasts
 
 ```sql
-CREATE EXTENSION bigquery_fdw; 
-
-CREATE SERVER bq_disney FOREIGN DATA WRAPPER bigquery_fdw; 
-
-CREATE USER MAPPING FOR postgres SERVER bq_disney;
+SELECT 
+  a.name AS attraction_name,
+  a.branch,
+  f.forecasted_timestamp,
+  f.predicted_wait_time
+FROM 
+  `disney.public_disneyland_attractions` a
+JOIN 
+  `disney.forecasted_waiting_times` f ON a.attraction_id = f.attraction_id
+WHERE 
+  a.name = 'Space Mountain'
+ORDER BY 
+  f.forecasted_timestamp ASC;
 ```
 
-You can now create a *foreign table* that will be mapped to a specific table in BigQuery.
+#### Golden Query 2: Graph Routing
 
 ```sql
-CREATE FOREIGN TABLE reviews_analysis (
-    "review_id" int,
-    "sentiment" text
-  ) 
-  SERVER bq_disney OPTIONS (
-    PROJECT '<YOUR PROJECT ID>',
-    DATASET 'disney',
-    TABLE 'reviews_analysis'
-  );
+SELECT 
+  a1.name AS current_attraction,
+  a2.name AS recommended_next_attraction,
+  r.congestion_level
+FROM 
+  `disney.graph_recommendations` r
+JOIN 
+  `disney.public_disneyland_attractions` a1 ON r.attraction_id = a1.attraction_id
+JOIN 
+  `disney.public_disneyland_attractions` a2 ON r.recommended_next_attraction_id = a2.attraction_id
+WHERE 
+  a1.name = 'Space Mountain' AND r.congestion_level = 'High';
 ```
 
-And before you can use this table, you'll need to grant a service account the required permissions, running from Cloud Shell:
+---
 
-```shell
-SA=$(gcloud beta alloydb clusters describe disney-cluster --region=us-central1 --format="value(serviceAccountEmail)")
-for ROLE in "roles/bigquery.dataViewer" "roles/bigquery.readSessionUser"; do
-  gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
-    --member="serviceAccount:$SA" \
-    --role="$ROLE"
-done
-```
+### 6.4 Execute Multi-Silo Prompts
 
-Now you can just run queries on the table from AlloyDB:
+Test the agent with the complex prompt: *"Which attractions have the highest negative sentiment today, and what is the most common path visitors take after leaving them?"*
+
+The agent should resolve this to a SQL query similar to:
 
 ```sql
-SELECT * FROM reviews_analysis
+WITH negative_attractions AS (
+  SELECT 
+    a.attraction_id,
+    a.name AS attraction_name,
+    COUNT(*) AS negative_count
+  FROM 
+    `disney.reviews_sentiment_analysis` s
+  JOIN 
+    `disney.public_disneyland_attractions` a ON s.branch = a.branch
+  WHERE 
+    s.sentiment = 'Negative'
+    AND s.review_text ILIKE '%' || a.name || '%'
+  GROUP BY 
+    a.attraction_id, a.name
+  ORDER BY 
+    negative_count DESC
+  LIMIT 1
+),
+next_steps AS (
+  SELECT 
+    b.name AS next_attraction_name,
+    COUNT(*) AS transition_count
+  FROM 
+    GRAPH_TABLE(
+      disney.disney_movement_graph
+      MATCH (a:Attraction) -[e:Moved]-> (b:Attraction)
+      RETURN a.attraction_id AS from_id, b.name AS name
+    )
+  WHERE 
+    from_id = (SELECT attraction_id FROM negative_attractions)
+  GROUP BY 
+    next_attraction_name
+  ORDER BY 
+    transition_count DESC
+  LIMIT 1
+)
+SELECT 
+  (SELECT attraction_name FROM negative_attractions) AS worst_attraction,
+  (SELECT next_attraction_name FROM next_steps) AS most_common_next_attraction;
 ```
 
-## Challenge 14: Automated Data Engineering Agents
+---
 
-### Notes & Guidance
+## Challenge 7: From insights to action, syncing BigQuery and AlloyDB
 
-- **Data Engineering Agent:** Open BigQuery Studio, click on *Pipelines*, and use the Gemini icon to prompt for the view creation.
+### 7.1 Create Local Analytical Tables in AlloyDB
 
-## Challenge 15: Conversational Analytics Agents
+Run the following DDL in AlloyDB Studio inside the `disney` database:
 
-### Notes & Guidance
+```sql
+CREATE TABLE IF NOT EXISTS public.forecasted_waiting_times (
+    attraction_id INT,
+    forecasted_timestamp TIMESTAMP,
+    predicted_wait_time NUMERIC
+);
 
-- **Conversational Analytics Agent:** Go to the *Agents* tab, select the `disney` dataset, and configure the agent with instructions.
+CREATE TABLE IF NOT EXISTS public.graph_recommendations (
+    attraction_id INT,
+    recommended_next_attraction_id INT,
+    congestion_level TEXT
+);
+```
 
-## Challenge 16: Rapid Development with Gemini-CLI
+### 7.2 Grant IAM Privileges to AlloyDB
 
-### Notes & Guidance
-
-#### 1. Gemini-CLI
-
-Participants should install the CLI via `npm install -g @google/gemini-cli` (or as instructed in the tool's documentation).
-Configuring extensions:
+Find your AlloyDB cluster's service account:
 
 ```bash
-gemini mcp add bigquery
-gemini mcp add alloydb
+gcloud beta alloydb clusters describe <CLUSTER_ID> --region=<REGION> --format="value(serviceAccountEmail)"
 ```
 
-Prompts for HTML generation:
+Grant this service account the following roles in your project:
 
-- *"Generate a single HTML page with a dashboard summarizing the Disneyland reviews from BigQuery."*
-- *"Generate a single HTML page summarizing the attractions and their descriptions from AlloyDB."*
+* **BigQuery Data Viewer** (`roles/bigquery.dataViewer`)
+* **BigQuery Read Session User** (`roles/bigquery.readSessionUser`)
 
-## Challenge 17: Custom Agent Development (ADK & MCP)
+### 7.3 Map BigQuery Tables using the AlloyDB Studio Wizard
 
-### Notes & Guidance
+1. In the Google Cloud Console, navigate to **AlloyDB** -> **Clusters** -> select your cluster -> **AlloyDB Studio**.
+2. Connect to the `disney` database.
+3. Click on the **Query BigQuery** button (or look for the **External Data** / **BigQuery** integration option in the explorer pane).
+4. Follow the wizard to link your BigQuery dataset `disney` and map the tables. Name the foreign tables `bq_forecasted_waiting_times` and `bq_graph_recommendations` to match the sync queries.
 
-#### 1. ADK & MCP Toolbox
+*Alternative (Manual DDL):*
+If you prefer to run the DDLs manually instead of using the wizard:
 
-- **MCP Toolbox:** Use the provided GitHub repository link to deploy the toolbox. Configure sources to point to your project's AlloyDB and BigQuery.
-- **ADK Agent:** Use the ADK documentation to create a new agent. The core is the `agent.yaml` or code where tools are defined as MCP calls.
-- **Verification:** Ensure the agent can answer: *"What is the best time to join the queue for Space Mountain?"* (This requires the agent to call the tool that queries the forecast data).
+```sql
+CREATE EXTENSION IF NOT EXISTS bigquery_fdw;
+CREATE SERVER bq_disney_server FOREIGN DATA WRAPPER bigquery_fdw;
+CREATE USER MAPPING FOR postgres SERVER bq_disney_server;
+
+CREATE FOREIGN TABLE bq_forecasted_waiting_times (
+    attraction_id INT,
+    forecasted_timestamp TIMESTAMP,
+    predicted_wait_time NUMERIC
+) SERVER bq_disney_server OPTIONS (
+    project '<YOUR_PROJECT_ID>',
+    dataset 'disney',
+    table 'forecasted_waiting_times'
+);
+
+CREATE FOREIGN TABLE bq_graph_recommendations (
+    attraction_id INT,
+    recommended_next_attraction_id INT,
+    congestion_level TEXT
+) SERVER bq_disney_server OPTIONS (
+    project '<YOUR_PROJECT_ID>',
+    dataset 'disney',
+    table 'graph_recommendations'
+);
+```
+
+### 7.4 Sync Data from BigQuery to AlloyDB
+
+Run the following queries in AlloyDB Studio to copy the analytical insights locally:
+
+```sql
+-- Sync wait time forecasts
+INSERT INTO public.forecasted_waiting_times (attraction_id, forecasted_timestamp, predicted_wait_time)
+SELECT attraction_id, forecasted_timestamp, predicted_wait_time 
+FROM public.bq_forecasted_waiting_times;
+
+-- Sync graph recommendations
+INSERT INTO public.graph_recommendations (attraction_id, recommended_next_attraction_id, congestion_level)
+SELECT attraction_id, recommended_next_attraction_id, congestion_level 
+FROM public.bq_graph_recommendations;
+```
+
+---
+
+## Challenge 8: Exposing Database Tools via MCP
+
+### 8.1 Configure `tools.yaml`
+
+Create a `tools.yaml` file to configure the **MCP Toolbox** for database access. This file defines five tools mapping to the operational and local analytical tables (not the FDW tables directly):
+
+```yaml
+kind: source
+name: disney-db
+type: alloydb-postgres
+project: "[YOUR_PROJECT_ID]"
+region: "europe-west1"
+cluster: "[YOUR_CLUSTER]"
+instance: "[YOUR_INSTANCE]"
+ipType: "public"
+database: "disney"
+user: "postgres"
+password: "buildwithgemini2026"
+---
+# Tool 1: Hybrid Search using ScaNN and Full-Text Search
+kind: tool
+name: search_attractions_hybrid
+type: postgres-sql
+source: disney-db
+description: "Performs a high-performance hybrid (vector + keyword) search on park attractions based on user interests."
+parameters:
+  - name: vector_query
+    type: string
+    description: "Semantic search term (e.g., 'thrilling space roller coaster')"
+  - name: text_query
+    type: string
+    description: "Keyword search term (e.g., 'Space Mountain')"
+statement: |
+  SET google_ml_integration.enable_preview_ai_functions = true;
+  SELECT a.name, a.description, search_results.score
+  FROM disneyland_attractions a
+  JOIN ai.hybrid_search(
+    search_inputs => ARRAY[
+        ( '{
+          "data_type": "vector",
+          "table_name": "disneyland_attractions",
+          "key_column": "attraction_id",
+          "vec_column": "embedding",
+          "distance_operator": "public.<=>",
+          "limit": 5,
+          "query_vector": "ai.embedding(''gemini-embedding-001'', ''' || $1 || ''')::vector"
+        }' )::JSONB,
+        ( '{
+          "data_type": "text",
+          "table_name": "disneyland_attractions",
+          "key_column": "attraction_id",
+          "text_column": "description_tsvector",
+          "limit": 5,
+          "ranking_function": "<=>",
+          "query_text_input": "' || $2 || '"
+        }' )::JSONB
+    ],
+    id_type => NULL::BIGINT
+  ) AS search_results ON a.attraction_id = search_results.id;
+---
+# Tool 2: Semantic Filtering using AlloyDB AI operator (google_ml.if)
+kind: tool
+name: check_ride_suitability
+type: postgres-sql
+source: disney-db
+description: "Evaluates if a specific attraction is safe or suitable based on a guest's profile (e.g., 'pregnant women' or 'toddlers')."
+parameters:
+  - name: attraction_name
+    type: string
+  - name: suitability_profile
+    type: string
+statement: |
+  SELECT * FROM check_attraction_suitability($1, $2);
+---
+# Tool 3: Transactional Tool to record new reviews
+kind: tool
+name: add_attraction_review
+type: postgres-sql
+source: disney-db
+description: "Saves a new customer review for an attraction into the operational database."
+parameters:
+  - name: rating
+    type: integer
+  - name: review_text
+    type: string
+  - name: branch
+    type: string
+statement: |
+  INSERT INTO public.disneyland_reviews (review_id, rating, review_text, branch, year_month)
+  VALUES ((SELECT COALESCE(MAX(review_id), 0) + 1 FROM public.disneyland_reviews), $1, $2, $3, TO_CHAR(CURRENT_DATE, 'YYYY-MM'))
+  RETURNING review_id, rating, branch;
+---
+# Tool 4: Analytical Tool checking Wait Time Forecasts (Local Table)
+kind: tool
+name: get_wait_time_forecast
+type: postgres-sql
+source: disney-db
+description: "Queries the local database to get forecasted wait times for a specific attraction."
+parameters:
+  - name: attraction_id
+    type: integer
+statement: |
+  SELECT predicted_wait_time 
+  FROM public.forecasted_waiting_times 
+  WHERE attraction_id = $1 
+  ORDER BY forecasted_timestamp ASC LIMIT 1;
+---
+# Tool 5: Analytical Tool checking Graph Recommendations (Local Table)
+kind: tool
+name: get_next_ride_recommendation
+type: postgres-sql
+source: disney-db
+description: "Gets next-ride routing recommendations for a guest leaving a specific attraction to avoid queues."
+parameters:
+  - name: attraction_id
+    type: integer
+statement: |
+  SELECT recommended_next_attraction_id, congestion_level 
+  FROM public.graph_recommendations 
+  WHERE attraction_id = $1;
+---
+kind: toolset
+name: disneyland_operational_tools
+tools:
+  - search_attractions_hybrid
+  - check_ride_suitability
+  - add_attraction_review
+  - get_wait_time_forecast
+  - get_next_ride_recommendation
+```
+
+### 8.2 Start the Server
+
+Run the toolbox server:
+
+```bash
+./toolbox --config tools.yaml --ui
+```
+
+---
+
+## Challenge 9: Building the guest assistant app
+
+### 9.1 Scaffold the Guest Assistant with ADK (`agent.py`)
+
+Scaffold the agent using the Python ADK SDK, loading the tools from the local MCP Toolbox server:
+
+```python
+from google.adk.agents import Agent
+from toolbox_core import ToolboxSyncClient
+
+# 1. Connect to the MCP server running on port 5000
+toolbox = ToolboxSyncClient("http://127.0.0.1:5000")
+
+# 2. Load all tools (operational + analytical)
+disney_tools = toolbox.load_toolset('disneyland_operational_tools')
+
+# 3. Define the Guest Guide Agent
+visitor_guide = Agent(
+    name='disney_guide_agent',
+    model="gemini-2.5-flash",
+    description='A helpful, friendly guide for Disneyland visitors.',
+    instruction="""
+    You are a friendly Disneyland Guest Assistant. Your goal is to help visitors plan their day.
+    Use the tools at your disposal to:
+    - Search for attractions (using hybrid search) or filter them semantically.
+    - Check forecasted wait times for attractions.
+    - Recommend the next ride to avoid queues based on graph recommendations.
+    - Add customer reviews if they want to review a ride.
+
+    Always maintain a magical, helpful, and friendly tone.
+    """,
+    tools=disney_tools,
+)
+```
+
+---
+
+### 9.2 Vibe-Coding a Premium Web Application
+
+An example **Streamlit** dashboard/chat application that integrates the ADK agent:
+
+```python
+import streamlit as st
+import asyncio
+from google.genai import types
+from google.adk.runners import Runner
+from google.adk.sessions import InMemorySessionService
+from agent import visitor_guide
+
+st.set_page_config(page_title="Disneyland Guest Assistant", page_icon="🪄", layout="wide")
+
+# Styling for a premium "vibe-coded" look
+st.markdown("""
+    <style>
+    .stApp {
+        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+        color: #f8fafc;
+    }
+    .attraction-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: transform 0.2s;
+    }
+    .attraction-card:hover {
+        transform: translateY(-5px);
+        border-color: #fbbf24;
+    }
+    </style>
+    """, unsafe_gradient=True)
+
+st.title("🪄 Disneyland Magical Guest Assistant")
+st.write("Plan your perfect day at Disneyland with real-time AI guidance, crowd forecasts, and smart routing.")
+
+# Initialize Session State
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+if "runner" not in st.session_state:
+    session_service = InMemorySessionService()
+    st.session_state.runner = Runner(agent=visitor_guide, app_name="disney_app", session_service=session_service)
+    st.session_state.session_id = "guest_session"
+
+# Sidebar or main layout elements
+# (e.g. displaying featured attractions, wait times, or map recommendations)
+
+# Chat Interface
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+
+if prompt := st.chat_input("Ask your magical guide..."):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.write(prompt)
+
+    async def get_agent_response():
+        response_text = ""
+        async for event in st.session_state.runner.run_async(
+            user_id="visitor",
+            session_id=st.session_state.session_id,
+            new_message=types.Content(role="user", parts=[types.Part.from_text(text=prompt)])
+        ):
+            if event.is_final_response():
+                response_text = event.content.parts[0].text
+        return response_text
+
+    with st.chat_message("assistant"):
+        with st.spinner("Consulting the magic mirror..."):
+            response = asyncio.run(get_agent_response())
+            st.write(response)
+            st.session_state.messages.append({"role": "assistant", "content": response})
+```
+
+---
+
+### 9.3 Deploy to Google Cloud Run
+
+#### 1. Write the Dockerfile
+
+```dockerfile
+FROM python:3.11-slim
+
+# Install system dependencies (e.g., git if needed)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    software-properties-common \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8080
+
+# Run Streamlit or your web server
+CMD ["streamlit", "run", "app.py", "--server.port=8080", "--server.address=0.0.0.0"]
+```
+
+#### 2. Deploy Command
+
+```bash
+gcloud run deploy disneyland-guest-assistant \
+  --source . \
+  --platform managed \
+  --region europe-west1 \
+  --allow-unauthenticated
+```
