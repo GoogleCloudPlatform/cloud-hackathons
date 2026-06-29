@@ -215,15 +215,60 @@ To validate this challenge, you must demonstrate the following:
 
 ### Introduction
 
-In this challenge, you will establish the **operational database layer** directly on top of your AlloyDB instance. This involves configuring **QueryData** to guarantee predictable SQL generation for common queries, and exposing advanced database capabilities (like hybrid search and semantic filtering) as SQL functions.
+In this challenge, you will establish the **agentic database layer** directly on top of your AlloyDB instance. This involves configuring **QueryData** to guarantee predictable SQL generation for common queries (NL2SQL), and exposing advanced database capabilities (like hybrid search and semantic filtering) as SQL functions.
 
-By preparing these operational capabilities now, you lay the foundation for the agent to interact securely and deterministically with your transactional data (attractions and reviews).
+By preparing these operational capabilities now, you lay the foundation for the agent to interact securely and deterministically with your data.
 
 ### Description
 
-#### Task 2.1: Set Up the QueryData Context Set in AlloyDB
+**QueryData** is an intelligent natural language-to-SQL (NL2SQL) engine in AlloyDB that translates conversational questions into precise, secure SQL queries. Rather than just matching static "golden queries", it uses a **Context Set** (a JSON file defining your schema's business logic) to dynamically construct queries using:
 
-To bring predictability and eliminate SQL hallucinations, you will configure **QueryData** templates. This maps common natural language questions about attractions and reviews to strict SQL structures.
+- **Query Templates:** Parameterized QA pairs (using `$1`, `$2`) that allow the engine to generalize query patterns.
+- **Query Facets:** Reusable filters (e.g., mapping "highly rated" to `rating >= 4`) that can be dynamically appended.
+- **Value Search Queries:** Background queries (exact, fuzzy, or semantic) that map user-typed entities to actual database values.
+
+For more details, see the [AlloyDB QueryData Documentation](https://cloud.google.com/alloydb/docs/ai/querydata).
+
+#### Task 2.1: Register IAM Users in AlloyDB
+
+To interact with the database, QueryData relies on **IAM Database Authentication**. This means both you (the developer) and the AI agent must be registered as database users.
+
+Specifically, you must register:
+
+1. **Your Google Account** – to manage Context Sets via the AlloyDB Console.
+2. **The Agent's Service Account** – to allow the agent to connect and execute queries.
+
+To register these users, follow these steps:
+
+1. **Log in using Basic Authentication:**
+   - In the Google Cloud Console, navigate to **AlloyDB > Clusters** and select your cluster.
+   - Click **AlloyDB Studio** in the left menu.
+   - Sign in to the `disney` database using **Basic Authentication** (Username: `postgres`, Password: `<your_cluster_password>`).
+
+2. **Register the IAM Users:**
+   Open a new query editor and run the following SQL commands to register your own Google account (so you can manage context sets) and the agent's Service Account (so the agent can connect), granting them the necessary table privileges:
+
+   ```sql
+   -- 1. Register your own Google account (replace with your actual GCP login email)
+   CREATE USER "your-email@domain.com" WITH FLAGS ('IAMUser');
+   GRANT USAGE ON SCHEMA public TO "your-email@domain.com";
+   GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO "your-email@domain.com";
+
+   -- 2. Register the dedicated Agent Service Account (replace with your project ID)
+   CREATE USER "disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com" WITH FLAGS ('IAMUser');
+   GRANT USAGE ON SCHEMA public TO "disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com";
+   GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO "disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com";
+
+   -- 3. Ensure future tables grant access automatically
+   ALTER DEFAULT PRIVILEGES IN SCHEMA public 
+   GRANT SELECT, INSERT, UPDATE ON TABLES TO "your-email@domain.com";
+   ALTER DEFAULT PRIVILEGES IN SCHEMA public 
+   GRANT SELECT, INSERT, UPDATE ON TABLES TO "disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com";
+   ```
+
+   *(Note: Replace `<YOUR_PROJECT_ID>` with your actual Google Cloud Project ID, and `your-email@domain.com` with the email you use to log into the Google Cloud Console.)*
+
+#### Task 2.2: Set Up the QueryData Context Set in AlloyDB
 
 1. **Create the JSON Context Set File:**
    Create a file named `querydata_disney_context.json` on your local system. Fill in the SQL templates and queries according to the requirements:
@@ -275,33 +320,46 @@ To bring predictability and eliminate SQL hallucinations, you will configure **Q
       ],
       "value_searches": [
         {
-          "query": "/* TODO: Write value search SQL query for public.disneyland_attractions.name (ILIKE $value) */",
+          "query": "SELECT DISTINCT T.name as value, 'public.disneyland_attractions.name' as columns, 'Attraction Name' as concept_type, (1.0 - ts_rank(to_tsvector('english', T.name), plainto_tsquery('english', $value))) as distance, '{}'::text as context FROM public.disneyland_attractions T WHERE to_tsvector('english', T.name) @@ plainto_tsquery('english', $value)",
           "concept_type": "Attraction Name",
-          "description": "Search for attraction names"
+          "description": "Full-text search for attraction names"
         },
         {
-          "query": "/* TODO: Write value search SQL query for public.disneyland_attractions.branch (ILIKE $value) */",
+          "query": "SELECT DISTINCT T.branch as value, 'public.disneyland_attractions.branch' as columns, 'Branch Name' as concept_type, (1.0 - ts_rank(to_tsvector('english', T.branch), plainto_tsquery('english', $value))) as distance, '{}'::text as context FROM public.disneyland_attractions T WHERE to_tsvector('english', T.branch) @@ plainto_tsquery('english', $value)",
           "concept_type": "Branch Name",
-          "description": "Search for park branches"
+          "description": "Full-text search for park branches"
         }
       ]
     }
     ```
 
-2. **Upload Context Set to AlloyDB:**
-    - In the Google Cloud Console, open **AlloyDB Studio** connected to the `disney` database.
-    - In the left sidebar, click **Context sets**.
+2. **Upload Context Set to AlloyDB (via IAM Authentication):**
+    - In the Google Cloud Console, open **AlloyDB Studio** again.
+    - This time, sign in using **IAM Authentication** (this will use your logged-in Google account, which you registered in Task 2.1). You can click on the "Switch user/database" button (icon with a person and database) to switch to IAM authentication.
+    - In the left sidebar, check for **Context sets**.
     - Click **Create context set**, name it `disney-context`, and upload the `querydata_disney_context.json` file.
     - Validate the setup by using the **Test context set** feature with variations of your natural language templates.
 
-#### Task 2.2: Expose AlloyDB AI Operators
+#### Task 2.3: Expose AlloyDB AI Operators
 
 You will prepare SQL queries that leverage AlloyDB's advanced AI features (vector search and hybrid search) to expose them as tools.
 
+> [!TIP]
+> Remember to switch back to **basic authentication** (logging in as the `postgres` user) in AlloyDB Studio before executing the SQL queries in this task.
+
 1. **Hybrid Search (ScaNN + FTS):**
-   Ensure the indexes are created in AlloyDB:
+   Before setting up hybrid search, you need to install the required extensions in AlloyDB.
+
+   **What is Hybrid Search (`ai.hybrid_search`)?**
+   Hybrid search combines the strengths of **semantic search** (vector similarity) and **keyword search** (Full-Text Search) to deliver highly relevant results. While vector search excels at understanding the conceptual meaning of a query, keyword search ensures exact matches (like names or specific terms) aren't missed. The `ai.hybrid_search` function, provided by the `ai` extension, executes both searches in parallel and merges their results using Reciprocal Rank Fusion (RRF) to produce a single, unified relevance score.
+
+   Run the following SQL commands in AlloyDB Studio to install the extensions and create the necessary indexes:
 
     ```sql
+    -- Install required extensions
+    CREATE EXTENSION IF NOT EXISTS alloydb_scann CASCADE;
+    CREATE EXTENSION IF NOT EXISTS rum CASCADE;
+
     -- Index RUM for Keyword FTS
     CREATE INDEX IF NOT EXISTS attractions_tsvector_idx ON disneyland_attractions USING RUM (description_tsvector rum_tsvector_ops);
 
@@ -309,18 +367,28 @@ You will prepare SQL queries that leverage AlloyDB's advanced AI features (vecto
     CREATE INDEX IF NOT EXISTS attractions_vector_idx ON disneyland_attractions USING scann (embedding cosine) WITH (num_leaves=10);
     ```
 
-   This hybrid search capability will be mapped directly to an MCP tool.
+   After creating the indexes, try running a hybrid search query using the `ai.hybrid_search` function to see it in action (try searching for a "thrilling space roller coaster").
 
-2. **Semantic Filtering (`ai.if`):**
-   Create a SQL function to easily filter attractions based on natural language safety or suitability profiles:
+   This hybrid search capability will be mapped later directly to an MCP tool. Save it as a SQL file for later reference.
+
+2. **Semantic Filtering (`google_ml.if`):**
+   Create a SQL function to easily evaluate if a specific attraction is suitable or safe based on a guest's natural language profile (e.g., checking if a specific ride is safe for pregnant women or suitable for toddlers).
+
+   **What is Semantic Filtering (`google_ml.if`)?**
+   Semantic filtering allows you to evaluate complex, natural language conditions directly within your SQL queries. Unlike vector similarity searches that rank results by closeness, `google_ml.if` uses a generative AI model to evaluate a prompt against your data on a row-by-row basis, returning a simple boolean (`true` or `false`). This is extremely powerful for ad-hoc safety or suitability checks where pre-defined categories or labels do not exist.
+
+   > [!TIP]
+   > Before writing the reusable SQL function, it is highly recommended to build and run a standalone test query in AlloyDB Studio. This allows you to verify the behavior of `google_ml.if` on a single attraction (for example, testing if "Space Mountain" is suitable for "pregnant women") before embedding it in the function.
+
+   Create the SQL function:
 
     ```sql
-    CREATE OR REPLACE FUNCTION filter_attractions_semantically(prompt_text TEXT, max_id INT)
+    CREATE OR REPLACE FUNCTION check_attraction_suitability(attraction_name TEXT, suitability_profile TEXT)
     RETURNS TABLE(name TEXT, description TEXT) AS $$
       SELECT name, description 
       FROM disneyland_attractions 
-      WHERE attraction_id <= max_id
-        AND /* TODO: Add the google_ml.if operator logic here to filter descriptions semantically based on prompt_text */;
+      WHERE name = attraction_name
+        AND /* TODO: Add the google_ml.if operator logic here to evaluate description against suitability_profile */;
     $$ LANGUAGE SQL;
     ```
 
@@ -328,10 +396,10 @@ You will prepare SQL queries that leverage AlloyDB's advanced AI features (vecto
 
 To validate this challenge, you must demonstrate the following:
 
-- Show a screenshot or validation proof of the **QueryData Context Set Test UI** displaying a successful natural-language-to-SQL translation.
-- Provide the SQL DDL definition for the `filter_attractions_semantically` function in AlloyDB Studio.
+- Show a screenshot or validation proof of the **QueryData** displaying a successful natural-language-to-SQL translation.
+- Provide the SQL DDL definition for the `check_attraction_suitability` function in AlloyDB Studio.
 - Provide the SQL query you used to run and test the hybrid search (ScaNN + FTS) in AlloyDB Studio, along with its results.
-- Provide the SQL query showing how you called and tested the `filter_attractions_semantically` function in AlloyDB Studio, along with its results.
+- Provide the SQL query showing how you called and tested the `check_attraction_suitability` function in AlloyDB Studio, along with its results.
 
 ---
 
@@ -541,7 +609,7 @@ To validate this challenge, you must demonstrate the following:
 
 ### Introduction
 
-To serve analytical insights (like wait time forecasts and next-ride recommendations) with sub-millisecond latency and without overloading BigQuery, we will NOT query BigQuery directly from the agent. Instead, we will use **BigQuery Foreign Data Wrapper (FDW)** to copy the analytical insights from BigQuery into **local tables** inside AlloyDB. 
+To serve analytical insights (like wait time forecasts and next-ride recommendations) with sub-millisecond latency and without overloading BigQuery, we will not query BigQuery directly from the agent. Instead, we will use **BigQuery Foreign Data Wrapper (FDW)** to copy the analytical insights from BigQuery into **local tables** inside AlloyDB.
 
 This ensures that AlloyDB remains the single, high-performance serving layer for the agent, while BigQuery is used purely for heavy analytical processing.
 
@@ -646,6 +714,11 @@ chmod +x toolbox
 Create a `tools.yaml` file outlining all the operational and analytical tools. Note that the analytical tools now query the **local** AlloyDB tables, ensuring low-latency responses.
 
 ```yaml
+# ==========================================
+# SOURCES
+# ==========================================
+
+# Source 1: Standard Postgres Connection (used for Tools 1-5)
 kind: source
 name: disney-db
 type: alloydb-postgres
@@ -657,6 +730,19 @@ ipType: "public"
 database: "disney"
 user: "postgres"
 password: "buildwithgemini2026"
+
+---
+
+# Source 2: Gemini Data Analytics API (used for QueryData)
+kind: source
+name: gda-api-source
+type: cloud-gemini-data-analytics
+projectId: "[YOUR_PROJECT_ID]"
+
+# ==========================================
+# TOOLS
+# ==========================================
+
 ---
 # Tool 1: Hybrid Search using ScaNN and Full-Text Search
 kind: tool
@@ -676,19 +762,19 @@ statement: |
   -- combining the vector cosine similarity index and the full-text search index.
   -- (Hint: Pass the vector query embedded via google_ml.embedding)
 ---
-# Tool 2: Semantic Filtering using AlloyDB AI operator (ai.if)
+# Tool 2: Semantic Filtering using AlloyDB AI operator (google_ml.if)
 kind: tool
-name: semantic_ride_filter
+name: check_ride_suitability
 type: postgres-sql
 source: disney-db
-description: "Filters attractions semantically based on a natural language safety or suitability prompt (e.g., 'suitable for pregnant women')."
+description: "Evaluates if a specific attraction is safe or suitable based on a guest's profile (e.g., 'pregnant women' or 'toddlers')."
 parameters:
-  - name: prompt_text
+  - name: attraction_name
     type: string
-  - name: max_id
-    type: integer
+  - name: suitability_profile
+    type: string
 statement: |
-  -- TODO: Call your filter_attractions_semantically function with the appropriate parameters
+  -- TODO: Call your check_attraction_suitability function with the appropriate parameters
 ---
 # Tool 3: Transactional Tool to record new reviews
 kind: tool
@@ -730,21 +816,54 @@ parameters:
 statement: |
   -- TODO: Query the local table public.graph_recommendations to retrieve recommendations
 ---
+# Tool 6: QueryData Natural Language Search
+kind: tool
+name: query_disney_data
+type: cloud-gemini-data-analytics-query
+source: gda-api-source
+description: "Use this tool to ask natural language questions about the Disneyland reviews, attractions, and wait times. It will translate your question into SQL, execute it, and return the answer."
+location: "europe-west1"
+context:
+  datasourceReferences:
+    alloydb:
+      databaseReference:
+        projectId: "[YOUR_PROJECT_ID]"
+        region: "europe-west1"
+        clusterId: "[YOUR_CLUSTER]"
+        instanceId: "[YOUR_INSTANCE]"
+        databaseId: "disney"
+  agentContextReference:
+    contextSetId: "disney-context"
+  generationOptions:
+    generateQueryResult: true
+    generateNaturalLanguageAnswer: true
+    generateExplanation: true
+    generateDisambiguationQuestion: true
+
+---
+# ==========================================
+# TOOLSET
+# ==========================================
 kind: toolset
 name: disneyland_operational_tools
 tools:
   - search_attractions_hybrid
-  - semantic_ride_filter
+  - check_ride_suitability
   - add_attraction_review
   - get_wait_time_forecast
   - get_next_ride_recommendation
+  - query_disney_data
 ```
 
 #### Task 8.3: Start and Validate the Server
 
-Run MCP Toolbox locally:
+Before running the toolbox, you must authenticate your local environment and configure it to impersonate the dedicated Agent Service Account. This allows the toolbox to call the QueryData API using the service account's identity:
 
 ```bash
+# 1. Authenticate and set up service account impersonation
+gcloud auth application-default login --impersonate-service-account=disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com
+
+# 2. Start the toolbox
 ./toolbox --config tools.yaml --ui
 ```
 
@@ -754,7 +873,7 @@ Open the visual web interface, execute each of the tools, and verify that they a
 
 To validate this challenge, you must demonstrate the following:
 
-- Show the **MCP Toolbox UI** with the five tools (`search_attractions_hybrid`, `semantic_ride_filter`, `add_attraction_review`, `get_wait_time_forecast`, and `get_next_ride_recommendation`) defined and tested successfully (all showing a green status).
+- Show the **MCP Toolbox UI** with the five tools (`search_attractions_hybrid`, `check_ride_suitability`, `add_attraction_review`, `get_wait_time_forecast`, and `get_next_ride_recommendation`) defined and tested successfully (all showing a green status).
 
 ---
 
@@ -823,13 +942,14 @@ To complete the gHack and make the guest assistant publicly accessible, you will
 1. **Write the Dockerfile:**
    Create a `Dockerfile` that packages both the ADK python backend (exposing the agent API) and the built frontend assets.
 2. **Deploy Command:**
-   Use `gcloud run deploy` to push the application in one step:
+   Use `gcloud run deploy` to push the application in one step, making sure to associate it with the dedicated Agent Service Account so it can authenticate to AlloyDB QueryData:
 
     ```bash
     gcloud run deploy disneyland-guest-assistant \
       --source . \
       --platform managed \
       --region europe-west1 \
+      --service-account=disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com \
       --allow-unauthenticated
     ```
 
