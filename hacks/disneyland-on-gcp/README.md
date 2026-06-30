@@ -20,20 +20,20 @@ Get ready to build an agentic data pipeline that would make Mickey proud! Let th
 
 ---
 
-## Learning Objectives
+## Learning objectives
 
-In this hack, you will build an end-to-end agentic data pipeline leveraging AI/ML and database capabilities on Google Cloud:
+In this hack, you will build an end-to-end data pipeline with AI and database capabilities on Google Cloud:
 
-1. **Operational Database Serving with AlloyDB AI**: Ingest operational data into AlloyDB, add full-text search vector, and generate vector embeddings natively using AlloyDB AI.
-2. **Real-Time CDC Replication**: Set up real-time CDC replication from AlloyDB to BigQuery using Datastream, and verify the data flow using BigQuery Data Canvas.
-3. **Agentic Database Layer**: Configure a QueryData context set in AlloyDB to guarantee SQL generation predictability, and expose database capabilities as tools.
-4. **Predictive Analytics & Forecasting**: Train sentiment classification and time-series wait time forecasting models using BigQuery ML (ARIMA_PLUS/TimesFM) and the BigQuery Studio Data Science Agent.
-5. **Multimodal & RAG Pipelines**: Build an object table for images and brochures, classify images with multimodal models, and build a vector search RAG pipeline for PDF brochures.
-6. **Property Graphs & Flow Analysis**: Define a property graph over visitor movements, query movement patterns with GQL, and generate optimal routing recommendations.
-7. **Conversational Semantic Layer**: Build a natural language conversational analytics agent for business users with the BigQuery Knowledge Catalog and Golden Queries.
-8. **From Insights to Action (Syncing BigQuery and AlloyDB)**: Use BigQuery FDW to copy analytical insights from BigQuery into local AlloyDB tables for high-performance serving.
-9. **Exposing Database Tools via MCP**: Expose all database capabilities (operational + analytical) as tools using the MCP Toolbox.
-10. **App Integration & Cloud Deployment**: Build a premium, vibe-coded web application utilizing the Agent Development Kit (ADK) and deploy it to Cloud Run.
+1. **AlloyDB AI**: Ingest operational data and generate vector embeddings natively.
+2. **Real-time replication**: Set up CDC from AlloyDB to BigQuery using Datastream.
+3. **Agentic database**: Configure predictable SQL generation in AlloyDB and expose it as tools.
+4. **Predictive analytics**: Train forecasting and sentiment models using BigQuery ML.
+5. **Multimodal RAG**: Build image classification and PDF search pipelines.
+6. **Graph analysis**: Map visitor movements and query patterns using GQL.
+7. **Conversational analytics**: Build a natural language assistant using the BigQuery and Knowledge Catalog.
+8. **AlloyDB sync**: Copy insights back to AlloyDB using FDW for fast serving.
+9. **MCP tools**: Expose database capabilities using the MCP Toolbox.
+10. **App deployment**: Build a web app with the ADK and deploy it to Cloud Run.
 
 ---
 
