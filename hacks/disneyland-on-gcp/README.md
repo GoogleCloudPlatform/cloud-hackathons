@@ -553,32 +553,88 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## Challenge 6: Conversational analytics for insights
+## **Challenge 6: Preparing the Context Layer**
+
+**Target Persona:** Data Engineer / AI Architect | **Estimated Duration:** 40 minutes
+
+### **Introduction**
+
+Before creating your conversational AI agents, you need to build a centralized context layer. This layer ensures your agents understand your business terminology, operational metadata, and data asset structures, leading to higher accuracy and fewer hallucinations.
+
+#### **Task 6.1: Technical Metadata Enrichment**
+
+1. Navigate to your BigQuery dataset.  
+2. Enrich your chosen data assets (such as `disneyland_reviews`) by adding schema descriptions to columns.  
+3. Ensure critical columns like your vector embeddings, image analysis JSON fields, and source URIs have clear technical metadata descriptions.
+
+#### **Task 6.2: Business Glossary Alignment**
+
+To align raw technical structures with organizational understanding, you must map your catalog to a standardized business vocabulary.
+
+1. **Glossary Creation:** Create a centralized Business Glossary for the Disneyland analytics ecosystem.  
+2. **Core Definitions:** Define core business terms and definitions inside the glossary (e.g., define terms like *"Rollercoaster"*, *"Premium visitor"*, or *"Buffet Dining Category"*  
+   *An example: “Premium visitor”: A visitor who left more than 2 reviews*).  
+3. **Asset Mapping to BigQuery:** Link these business terms directly to their corresponding BigQuery columns to map technical metadata to business language.  
+4. **Asset Mapping to AlloyDB:** Try mapping some terms to AlloyDB assets as well to see how Knowledge Catalog equally integrates to operational & analytical databases.
+
+#### **Task 6.3: Automated profiling & quality**
+
+It’s very important to understand the distribution of the values in a column and quality rules in order to better discover the data.
+
+1. Run a data profile scan on the disneyland\_reviews table. Analyze the results.  
+2. Define & run an automatic data quality scan with different rules (profile-based, predefined generic, custom, etc) 
+
+#### **Task 6.4: Automated GCS Metadata Generation**
+
+Set up an automated extraction pipeline to handle documentation and unstructured assets within your environment.
+
+> [!TIP]
+> **This can be done in the BigQuery Metadata Curation tab.**
+
+3. Configure the pipeline to analyze your unstructured `gs://hackathon_data_disneyland_<YOUR_PROJECT_3DIGITS>/disneyland_brochures/` directory.  
+4. Automatically generate and attach metadata tags (such as language, document type, target audience, and revision date) to the PDF assets, use semantic inference for better results.
+
+#### **Task 6.5: ContextLookup API Integration**
+
+Once your technical, business, and object storage metadata are established, wire them into your execution layer for application discovery.
+
+1. Utilize the ContextLookup API to fetch operational and structural context dynamically. Test the API against a standard BigQuery data asset and an AlloyDB transactional database table. You can use Python or a rest API  
+2. Verify that the API returns detailed, low-latency context maps that an LLM agent can ingest to understand the underlying database schemas and table relationships.
+
+### **Success Criteria**
+
+To validate this challenge, you must demonstrate the following:
+
+* Show the enriched schema descriptions for your target tables directly within the BigQuery Console.  
+* Provide a summary or export of the linked terms inside your centralized Disneyland Business Glossary.  
+* Show the successful pipeline logs or sample metadata tags generated for the PDF assets in Cloud Storage.  
+* Provide the API JSON response payload from a successful `ContextLookup` call showing the multi-database schema mapping.
+
+---
+
+## Challenge 7: Conversational analytics for insights
 
 **Target Persona:** Data Analyst / Product Manager | **Estimated Duration:** 30 minutes
 
 ### Introduction
 
-Disneyland park managers need to query this complex multi-silo dataset (reviews, wait times, graph movements, classifications) without writing SQL. In this challenge, you will build an internal semantic layer using BigQuery's Conversational Analytics. You will enrich the Knowledge Catalog, configure synonyms and metrics, define Golden Queries, and test multi-silo prompts.
+Disneyland park managers need to query this complex multi-silo dataset (reviews, wait times, graph movements, classifications) without writing SQL. In this challenge, you will build a data agent using BigQuery's Conversational Analytics. You will leverage the context layer defined in the Knowledge Catalog.
 
 ### Description
 
-#### Task 6.1: Initialize the Conversational Analytics Agent
+#### Task 7.1: Initialize the Conversational Analytics Agent
 
 1. In BigQuery Studio, navigate to the **Agents** tab.
 2. Create a new agent named `disney_park_analyst` and connect it to your `disney` dataset containing all your tables.
 
-#### Task 6.2: Configure the Knowledge Catalog
+#### Task 7.2: Use the Knowledge Catalog
 
-To prevent the agent from hallucinating, you must fill the universal context layer with technical and semantic metadata.
+To prevent the agent from hallucinating, you can leverage the previously configured Knowledge Catalog.
 
-1. **Metadata Descriptions:** Use Gemini to generate and save rich descriptions for all tables and columns.
-2. **Synonyms & Vocabulary:** Define synonyms in the agent's vocabulary. For example, ensure the agent knows that:
-    - "rollercoaster" or "thrill ride" maps to attractions like "Space Mountain" or "Big Thunder Mountain".
-    - "queue" or "line" maps to the `waiting_time` metric.
-3. **Metrics Definition:** Explicitly define key metrics (e.g., how "Average Wait Time" is calculated).
+1. **Metadata Descriptions:** Choose sources with curated metadata.
+2. **Synonyms & Vocabulary:** Make sure business terms are imported.
 
-#### Task 6.3: Define Golden Queries
+#### Task 7.3: Define Golden Queries
 
 Train the agent's SQL generation engine by providing **Golden Queries**—pre-approved, highly accurate SQL templates that the model can reference.
 
@@ -587,7 +643,7 @@ Provide golden queries for:
 - Joining the attractions table with the wait-time forecasts.
 - Querying the graph routing table.
 
-#### Task 6.4: Execute Multi-Silo Prompts
+#### Task 7.4: Execute Multi-Silo Prompts
 
 Once configured, test the agent in the chat interface. Ask complex, cross-dataset questions like:
 
@@ -603,7 +659,7 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## Challenge 7: From insights to action, syncing BigQuery and AlloyDB
+## Challenge 8: From insights to action, syncing BigQuery and AlloyDB
 
 **Target Persona:** DBA / Database Developer | **Estimated Duration:** 45 minutes | *Prerequisites: Challenge 1 and 2 must be completed. Challenge 3 and 5 must be completed (or mock tables used in BigQuery).*
 
@@ -615,7 +671,7 @@ This ensures that AlloyDB remains the single, high-performance serving layer for
 
 ### Description
 
-#### Task 7.1: Create Local Analytical Tables in AlloyDB
+#### Task 8.1: Create Local Analytical Tables in AlloyDB
 
 First, you need to create the local tables in AlloyDB that will store the synced analytical data.
 
@@ -636,7 +692,7 @@ First, you need to create the local tables in AlloyDB that will store the synced
     );
     ```
 
-#### Task 7.2: Grant IAM Privileges to AlloyDB
+#### Task 8.2: Grant IAM Privileges to AlloyDB
 
 AlloyDB needs permission to read from BigQuery to pull the data.
 
@@ -650,7 +706,7 @@ AlloyDB needs permission to read from BigQuery to pull the data.
     - **BigQuery Data Viewer** (`roles/bigquery.dataViewer`)
     - **BigQuery Read Session User** (`roles/bigquery.readSessionUser`)
 
-#### Task 7.3: Map BigQuery Tables using the AlloyDB Studio Wizard
+#### Task 8.3: Map BigQuery Tables using the AlloyDB Studio Wizard
 
 Use the built-in wizard to easily map the BigQuery tables as foreign tables.
 
@@ -660,7 +716,7 @@ Use the built-in wizard to easily map the BigQuery tables as foreign tables.
     - Map `disney.forecasted_waiting_times` to a foreign table named `bq_forecasted_waiting_times`.
     - Map `disney.graph_recommendations` to a foreign table named `bq_graph_recommendations`.
 
-#### Task 7.4: Sync Data from BigQuery to AlloyDB
+#### Task 8.4: Sync Data from BigQuery to AlloyDB
 
 Now, copy the data from the foreign tables into your local AlloyDB tables.
 
@@ -689,7 +745,7 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## Challenge 8: Exposing Database Tools via MCP
+## Challenge 9: Exposing Database Tools via MCP
 
 **Target Persona:** Platform Engineer / DBA | **Estimated Duration:** 30 minutes | *Prerequisites: Challenge 2 and Challenge 7 must be completed.*
 
@@ -699,7 +755,7 @@ Now that all operational and analytical data resides locally in AlloyDB, you wil
 
 ### Description
 
-#### Task 8.1: Install MCP Toolbox
+#### Task 9.1: Install MCP Toolbox
 
 In your Cloud Shell terminal, download and make the toolbox executable:
 
@@ -709,7 +765,7 @@ curl -L -o toolbox https://storage.googleapis.com/mcp-toolbox-for-databases/v$VE
 chmod +x toolbox
 ```
 
-#### Task 8.2: Configure `tools.yaml`
+#### Task 9.2: Configure `tools.yaml`
 
 Create a `tools.yaml` file outlining all the operational and analytical tools. Note that the analytical tools now query the **local** AlloyDB tables, ensuring low-latency responses.
 
@@ -855,7 +911,7 @@ tools:
   - query_disney_data
 ```
 
-#### Task 8.3: Start and Validate the Server
+#### Task 9.3: Start and Validate the Server
 
 Before running the toolbox, you must authenticate your local environment and configure it to impersonate the dedicated Agent Service Account. This allows the toolbox to call the QueryData API using the service account's identity:
 
@@ -877,7 +933,7 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## Challenge 9: Building the guest assistant app
+## Challenge 10: Building the guest assistant app
 
 **Target Persona:** Full-Stack AI / App Developer | **Estimated Duration:** 90 minutes | *Prerequisites: Challenge 2, 7, and 8 must be completed.*
 
@@ -891,7 +947,7 @@ In this architecture, the ADK Guest Assistant agent only queries AlloyDB (using 
 
 ### Description
 
-#### Task 9.1: Scaffold the Guest Assistant with ADK
+#### Task 10.1: Scaffold the Guest Assistant with ADK
 
 Using the **Agent Development Kit (ADK)**, you will construct the conversational agent that consumes your MCP tools.
 
@@ -919,7 +975,7 @@ Using the **Agent Development Kit (ADK)**, you will construct the conversational
     )
     ```
 
-#### Task 9.2: Vibe-Coding a Premium Web Application
+#### Task 10.2: Vibe-Coding a Premium Web Application
 
 Rather than a generic, plain interface, you will **vibe-code a stunning, premium web application** (using a framework like React + Vite or Streamlit) that hooks into your ADK agent.
 
@@ -935,7 +991,7 @@ Rather than a generic, plain interface, you will **vibe-code a stunning, premium
     npm run dev
     ```
 
-#### Task 9.3: Deploy to Google Cloud Run
+#### Task 10.3: Deploy to Google Cloud Run
 
 To complete the gHack and make the guest assistant publicly accessible, you will containerize and push the application to **Cloud Run**.
 
