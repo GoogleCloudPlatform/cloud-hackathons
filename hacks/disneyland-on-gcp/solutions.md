@@ -234,11 +234,11 @@ Define a custom SQL function utilizing `google_ml.if` to filter attractions sema
 ```sql
 CREATE OR REPLACE FUNCTION check_attraction_suitability(attraction_name TEXT, suitability_profile TEXT)
 RETURNS TABLE(name TEXT, description TEXT) AS $$
-  SELECT name, description 
-  FROM disneyland_attractions 
-  WHERE name = attraction_name
+  SELECT a.name, a.description 
+  FROM disneyland_attractions a
+  WHERE a.name = attraction_name
     AND google_ml.if(
-      prompt => 'Is this attraction ' || suitability_profile || '? Description: ' || description
+      prompt => 'Is this attraction ' || suitability_profile || '? Description: ' || a.description
     );
 $$ LANGUAGE SQL;
 ```

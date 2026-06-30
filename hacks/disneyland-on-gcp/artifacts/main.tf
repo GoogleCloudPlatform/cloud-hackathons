@@ -158,7 +158,7 @@ resource "google_storage_bucket" "disney" {
 resource "google_bigquery_dataset" "disney" {
   dataset_id                 = "disney"
   friendly_name              = "Disneyland Data"
-  description                = "Dataset for Disneyland Data Analytics"
+  description                = "Dataset for Disneyland Data Cloud"
   location                   = var.gcp_region
   delete_contents_on_destroy = true
 

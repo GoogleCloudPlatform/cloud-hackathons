@@ -13,7 +13,7 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "[gHacks] Disneyland Data Analytics"
+title: "[gHacks] Disneyland Data Cloud"
 description: "In this gHack, you're building your ultimate Disneyland planning tool. We've got the data: reviews 
   from visitors across global branches, historical waiting times, and attendance figures. Your mission? 
   Transform this raw data into actionable insights leveraging the power of AI and Data on Google Cloud."
