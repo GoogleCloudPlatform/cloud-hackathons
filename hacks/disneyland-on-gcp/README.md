@@ -228,8 +228,21 @@ By preparing these operational capabilities now, you lay the foundation for the 
 - **Value Search Queries:** Background queries (exact, fuzzy, or semantic) that map user-typed entities to actual database values.
 
 For more details, see the [AlloyDB QueryData Documentation](https://cloud.google.com/alloydb/docs/ai/querydata).
+#### Task 2.1: Enable the AlloyDB Data API
 
-#### Task 2.1: Register IAM Users in AlloyDB
+QueryData and downstream API integration require the **AlloyDB Data API** (also known as the `executesql` API) to be explicitly enabled on your AlloyDB instance. Run the following `curl` command in your Cloud Shell to enable it:
+
+```bash
+curl -X PATCH \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  "https://alloydb.googleapis.com/v1alpha/projects/\${GOOGLE_CLOUD_PROJECT}/locations/<YOUR_REGION>/clusters/disney-cluster/instances/disney-instance?updateMask=dataApiAccess" \
+  -d '{"dataApiAccess": "ENABLED"}'
+```
+
+*(Note: Replace `<YOUR_REGION>` with the region where your cluster is deployed, e.g. `europe-west1`. The project ID is automatically resolved via the `GOOGLE_CLOUD_PROJECT` environment variable in Cloud Shell.)*
+
+#### Task 2.2: Register IAM Users in AlloyDB
 
 To interact with the database, QueryData relies on **IAM Database Authentication**. This means both you (the developer) and the AI agent must be registered as database users.
 
@@ -268,7 +281,7 @@ To register these users, follow these steps:
 
    *(Note: Replace `<YOUR_PROJECT_ID>` with your actual Google Cloud Project ID, and `your-email@domain.com` with the email you use to log into the Google Cloud Console.)*
 
-#### Task 2.2: Set Up the QueryData Context Set in AlloyDB
+#### Task 2.3: Set Up the QueryData Context Set in AlloyDB
 
 1. **Create the JSON Context Set File:**
    Create a file named `querydata_disney_context.json` on your local system. Fill in the SQL templates and queries according to the requirements:
@@ -335,12 +348,12 @@ To register these users, follow these steps:
 
 2. **Upload Context Set to AlloyDB (via IAM Authentication):**
     - In the Google Cloud Console, open **AlloyDB Studio** again.
-    - This time, sign in using **IAM Authentication** (this will use your logged-in Google account, which you registered in Task 2.1). You can click on the "Switch user/database" button (icon with a person and database) to switch to IAM authentication.
+    - This time, sign in using **IAM Authentication** (this will use your logged-in Google account, which you registered in Task 2.2). You can click on the "Switch user/database" button (icon with a person and database) to switch to IAM authentication.
     - In the left sidebar, check for **Context sets**.
     - Click **Create context set**, name it `disney-context`, and upload the `querydata_disney_context.json` file.
     - Validate the setup by using the **Test context set** feature with variations of your natural language templates.
 
-#### Task 2.3: Expose AlloyDB AI Operators
+#### Task 2.4: Expose AlloyDB AI Operators
 
 You will prepare SQL queries that leverage AlloyDB's advanced AI features to expose them as tools.
 
