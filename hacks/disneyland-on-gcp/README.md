@@ -160,6 +160,7 @@ To support semantic searches on our attractions, we need to generate and store v
     ```sql
     CREATE EXTENSION IF NOT EXISTS vector CASCADE;
     CREATE EXTENSION IF NOT EXISTS google_ml_integration CASCADE;
+    ALTER DATABASE disney SET google_ml_integration.enable_preview_ai_functions = 'on';
     ```
 
 2. **Add the Embedding Column:**
@@ -557,6 +558,13 @@ Now, let's explore GQL's path capabilities to analyze journeys taken by visitors
 1. **Specific Journey Tracking:** Write a graph query using quantified path patterns to find how many rides visitor `'11613'` took to get from `'Dumbo the Flying Elephant'` to `'Disneyland Railroad'`.
 2. **Reachable Journeys:** Write a graph query using quantified path patterns to find all unique visitor IDs who moved from `'Space Mountain'` to `'Indiana Jones Adventure'` within 5 transitions (hops).
 
+#### Task 5.4: Graph-Based Recommendations
+
+To power our intelligent guest assistant, we need to provide next-ride recommendations based on real visitor behavior.
+
+1. **Extract Recommendations:** Write a graph query to find the most recurrent next attraction visitors go to after visiting each specific attraction.
+2. **Build the Recommendation Table:** Save the results of this query into a new BigQuery table named `graph_recommendations`. This table should include the current attraction, the recommended next attraction, and a ranking score (e.g., based on frequency). This table will be synced and used later by the agent.
+
 ### Success Criteria
 
 To validate this challenge, you must demonstrate the following:
@@ -565,6 +573,7 @@ To validate this challenge, you must demonstrate the following:
 - Provide the SQL graph query for the "Flow Analysis" (top 3 rides after Space Mountain) and its corresponding output.
 - Provide the SQL graph query for "Multi-Hop Journeys" starting from Space Mountain and its corresponding output.
 - Provide the SQL graph queries for "Visitor Journey Tracking" and "Reachable Journeys", and display their outputs.
+- Verify the creation and content of the `graph_recommendations` table showing the most recurrent next attractions.
 
 ---
 
@@ -707,31 +716,18 @@ First, you need to create the local tables in AlloyDB that will store the synced
     );
     ```
 
-#### Task 8.2: Grant IAM Privileges to AlloyDB
-
-AlloyDB needs permission to read from BigQuery to pull the data.
-
-1. Run the following command in Cloud Shell to find your AlloyDB cluster's service account:
-
-    ```bash
-    gcloud beta alloydb clusters describe <CLUSTER_ID> --region=europe-west1 --format="value(serviceAccountEmail)"
-    ```
-
-2. In the Google Cloud Console (IAM page), grant this service account the following roles:
-    - **BigQuery Data Viewer** (`roles/bigquery.dataViewer`)
-    - **BigQuery Read Session User** (`roles/bigquery.readSessionUser`)
-
-#### Task 8.3: Map BigQuery Tables using the AlloyDB Studio Wizard
+#### Task 8.2: Map BigQuery Tables using the AlloyDB Studio Wizard
 
 Use the built-in wizard to easily map the BigQuery tables as foreign tables.
 
-1. In **AlloyDB Studio**, click on the **Query BigQuery** button (or **External Data** in the explorer).
-2. Follow the wizard to connect to your BigQuery dataset `disney`.
+1. In **AlloyDB Studio**, click on the **BigQuery Tables**  three-dots button in the Data Explorer pane on the left-hand-side.
+2. Follow the wizard to connect to your BigQuery tables.
 3. Map the following tables, naming the foreign tables with a `bq_` prefix to distinguish them from your local tables:
     - Map `disney.forecasted_waiting_times` to a foreign table named `bq_forecasted_waiting_times`.
     - Map `disney.graph_recommendations` to a foreign table named `bq_graph_recommendations`.
+4. Query the foreign tables to verify the connection.
 
-#### Task 8.4: Sync Data from BigQuery to AlloyDB
+#### Task 8.3: Sync Data from BigQuery to AlloyDB
 
 Now, copy the data from the foreign tables into your local AlloyDB tables.
 
@@ -782,7 +778,7 @@ chmod +x toolbox
 
 #### Task 9.2: Configure `tools.yaml`
 
-Create a `tools.yaml` file outlining all the operational and analytical tools. Note that the analytical tools now query the **local** AlloyDB tables, ensuring low-latency responses.
+Create a `tools.yaml` file outlining all the tools.
 
 ```yaml
 # ==========================================
@@ -842,8 +838,10 @@ description: "Evaluates if a specific attraction is safe or suitable based on a 
 parameters:
   - name: attraction_name
     type: string
+    description: "Name of the attraction"
   - name: suitability_profile
     type: string
+    description: "Profile of the guest (e.g., 'pregnant women', 'toddlers')"
 statement: |
   -- TODO: Call your check_attraction_suitability function with the appropriate parameters
 ---
@@ -856,10 +854,13 @@ description: "Saves a new customer review for an attraction into the operational
 parameters:
   - name: rating
     type: integer
+    description: "Numerical rating out of 5"
   - name: review_text
     type: string
+    description: "Customer review text"
   - name: branch
     type: string
+    description: "The park branch location"
 statement: |
   -- TODO: Write an INSERT statement that records a new review into the disneyland_reviews table.
 ---
@@ -872,6 +873,7 @@ description: "Queries the local database to get forecasted wait times for a spec
 parameters:
   - name: attraction_id
     type: integer
+    description: "Unique ID of the attraction"
 statement: |
   -- TODO: Query the local table public.forecasted_waiting_times for the attraction's predicted wait time
 ---
@@ -884,6 +886,7 @@ description: "Gets next-ride routing recommendations for a guest leaving a speci
 parameters:
   - name: attraction_id
     type: integer
+    description: "Unique ID of the attraction"
 statement: |
   -- TODO: Query the local table public.graph_recommendations to retrieve recommendations
 ---
@@ -903,13 +906,15 @@ context:
         clusterId: "[YOUR_CLUSTER]"
         instanceId: "[YOUR_INSTANCE]"
         databaseId: "disney"
-  agentContextReference:
-    contextSetId: "disney-context"
-  generationOptions:
-    generateQueryResult: true
-    generateNaturalLanguageAnswer: true
-    generateExplanation: true
-    generateDisambiguationQuestion: true
+      agentContextReference:
+        # Tip: You can find this ID in AlloyDB Studio by clicking on 'Edit Context'
+        # It should be in this format: projects/[YOUR_PROJECT_ID]/locations/[LOCATION]/contextSets/[CONTEXT_NAME]
+        contextSetId: "projects/[YOUR_PROJECT_ID]/locations/europe-west4/contextSets/disney-context"
+generationOptions:
+  generateQueryResult: true
+  generateNaturalLanguageAnswer: true
+  generateExplanation: true
+  generateDisambiguationQuestion: true
 
 ---
 # ==========================================
@@ -938,13 +943,16 @@ gcloud auth application-default login --impersonate-service-account=disney-agent
 ./toolbox --config tools.yaml --ui
 ```
 
-Open the visual web interface, execute each of the tools, and verify that they are pulling/pushing data successfully.
+Open the visual web interface in Cloud Shell (default port is 5000), execute each of the tools, and verify that they are pulling/pushing data successfully.
+
+> [!TIP]
+> When using the Cloud Shell web preview, be sure to append `/ui` to the end of the URL in your browser to access the MCP toolbox interface.
 
 ### Success Criteria
 
 To validate this challenge, you must demonstrate the following:
 
-- Show the **MCP Toolbox UI** with the five tools (`search_attractions_hybrid`, `check_ride_suitability`, `add_attraction_review`, `get_wait_time_forecast`, and `get_next_ride_recommendation`) defined and tested successfully (all showing a green status).
+- Show the **MCP Toolbox UI** with the six tools (`search_attractions_hybrid`, `check_ride_suitability`, `add_attraction_review`, `get_wait_time_forecast`, and `get_next_ride_recommendation`) defined and tested successfully (all showing a green status).
 
 ---
 
