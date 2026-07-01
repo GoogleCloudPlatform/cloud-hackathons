@@ -17,9 +17,14 @@ while :; do
     shift
 done
 
+HACK="${HACK:-$1}"
+
 if [ -z "${HACK}" ]; then
-    echo "Usage: ${0} --hack=<string> [--slug=<string>]" 1>&2; exit 1
+    echo "Usage: ${0} <hack> [--slug=<string>]" 1>&2; exit 1
 fi
+
+# Sanitize in case a path is passed
+HACK=$(basename "${HACK}")
 
 HACK_DIR="${SRC_DIR}/hacks/${HACK}"
 
@@ -27,6 +32,7 @@ if [ ! -d "${HACK_DIR}" ] || [ ! -d "${DST_DIR}" ]; then
     echo "${HACK_DIR} and/or ${DST_DIR} missing, are you in the right directory?" 1>&2; exit 1
 fi
 
+# If slug is not provided, find it or generate it (for new hacks)
 if [ -z "${SLUG}" ]; then
     # Check if there is an existing directory matching ghacks[0-9]{3}-${HACK}
     EXISTING_DIR=$(ls "${DST_DIR}/labs" | grep -E "ghacks[0-9]{3}-${HACK}" | head -n 1)
@@ -81,7 +87,6 @@ BLOCK=`cat<<EOF
 
 <ql-code-block bash templated noWrap>
 Latest instructions: https://ghacks.dev/hacks/${HACK}
-
 $OUTPUTS
 </ql-code-block>
 EOF
