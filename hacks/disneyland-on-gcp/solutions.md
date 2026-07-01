@@ -616,29 +616,30 @@ LIMIT 5;
 
 ---
 
-### 5.3 Generate a Next-Ride Routing Table
+### 5.3 Visitor Journey Tracking & Path Analysis
 
-Use `GRAPH_TABLE` to query transitions on the property graph `disney_movement_graph`, and generate the top 2 recommendations (ranks 1 and 2) for each attraction using BQ's `QUALIFY` filter:
+#### 1. Specific Journey Tracking
+Trace the journey of visitor `'11613'` starting from `'Dumbo the Flying Elephant'` to `'Disneyland Railroad'` and count the total transitions:
 
 ```sql
-CREATE OR REPLACE TABLE disney.graph_recommendations AS
-SELECT
-  from_id AS attraction_id,
-  to_id AS recommended_next_attraction_id,
-  ROW_NUMBER() OVER(PARTITION BY from_id ORDER BY transition_count DESC) AS recommendation_rank
-FROM (
-  SELECT
-    from_id,
-    to_id,
-    COUNT(*) AS transition_count
-  FROM GRAPH_TABLE(
-    disney.disney_movement_graph
-    MATCH (a:Attraction) -[e:Moved]-> (b:Attraction)
-    RETURN a.attraction_id AS from_id, b.attraction_id AS to_id
-  )
-  GROUP BY from_id, to_id
-)
-QUALIFY recommendation_rank <= 2;
+SELECT * FROM GRAPH_TABLE(
+  disney.disney_movement_graph
+  MATCH (src:Attraction) -[e:Moved {visitor_id: '11613'}]->{1,10} (dst:Attraction)
+  WHERE src.name = 'Dumbo the Flying Elephant' AND dst.name = 'Disneyland Railroad'
+  RETURN src.name AS start_ride, dst.name AS end_ride, ARRAY_LENGTH(e) AS total_hops
+);
+```
+
+#### 2. Reachable Journeys
+Find all unique visitor IDs who traveled from `'Space Mountain'` to `'Indiana Jones Adventure'` in 5 hops or less:
+
+```sql
+SELECT DISTINCT visitor_id
+FROM GRAPH_TABLE(
+  disney.disney_movement_graph
+  MATCH (a:Attraction {name: 'Space Mountain'}) -[e:Moved]->{1,5} (b:Attraction {name: 'Indiana Jones Adventure'})
+  RETURN e[SAFE_OFFSET(0)].visitor_id AS visitor_id
+);
 ```
 
 ---
