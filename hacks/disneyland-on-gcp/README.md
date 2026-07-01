@@ -1,6 +1,6 @@
 # Disneyland Agentic Data Cloud
 
-![Disneyland Agentic Data Cloud 9-Challenge Architecture](images/ghack_9challenge_architecture.jpg)
+![Disneyland Agentic Data Cloud 10-Challenge Architecture](images/ghack_challenge_architecture.png)
 
 ## Introduction
 
@@ -77,7 +77,7 @@ This gHack is designed to be highly challenging but is **fully parallelizable** 
 
 Here is how you can divide and conquer based on your team size:
 
-![3-Group Parallelization Timeline](images/parallelization_timeline.jpg)
+![3-Group Parallelization Timeline](images/parallelization_timeline.png)
 
 #### 🧩 Option 1: The 3-Group Split (Recommended)
 
@@ -556,7 +556,7 @@ Write graph queries using `GRAPH_TABLE` and GQL match patterns to solve the foll
 Now, let's explore GQL's path capabilities to analyze journeys taken by visitors.
 
 1. **Specific Journey Tracking:** Write a graph query using quantified path patterns to find how many rides visitor `'11613'` took to get from `'Dumbo the Flying Elephant'` to `'Disneyland Railroad'`.
-2. **Reachable Journeys:** Write a graph query using quantified path patterns to find all unique visitor IDs who moved from `'Space Mountain'` to `'Indiana Jones Adventure'` within 5 transitions (hops).
+2. **Multi-Hop Journeys by Visitor:** Write a graph query to find all unique visitor IDs who traveled from `'Space Mountain'` to `'Indiana Jones Adventure'` through an intermediate attraction in a 2-hop journey (A -> B -> C) where both transitions are made by the same visitor.
 
 #### Task 5.4: Graph-Based Recommendations
 
@@ -758,7 +758,7 @@ To validate this challenge, you must demonstrate the following:
 
 ## Challenge 9: Exposing Database Tools via MCP
 
-**Target Persona:** Platform Engineer / DBA | **Estimated Duration:** 30 minutes | *Prerequisites: Challenge 2 and Challenge 7 must be completed.*
+**Target Persona:** Platform Engineer / DBA | **Estimated Duration:** 30 minutes | *Prerequisites: Challenges 2, 7, and 8 must be completed.*
 
 ### Introduction
 
@@ -952,21 +952,19 @@ Open the visual web interface in Cloud Shell (default port is 5000), execute eac
 
 To validate this challenge, you must demonstrate the following:
 
-- Show the **MCP Toolbox UI** with the six tools (`search_attractions_hybrid`, `check_ride_suitability`, `add_attraction_review`, `get_wait_time_forecast`, and `get_next_ride_recommendation`) defined and tested successfully (all showing a green status).
+- Show the **MCP Toolbox UI** with the six tools (`search_attractions_hybrid`, `check_ride_suitability`, `add_attraction_review`, `get_wait_time_forecast`, `get_next_ride_recommendation`, and `query_disney_data`) defined and tested successfully (all showing a green status).
 
 ---
 
 ## Challenge 10: Building the guest assistant app
 
-**Target Persona:** Full-Stack AI / App Developer | **Estimated Duration:** 90 minutes | *Prerequisites: Challenge 2, 7, and 8 must be completed.*
+**Target Persona:** Full-Stack AI / App Developer | **Estimated Duration:** 90 minutes | *Prerequisites: Challenges 2, 7, 8, and 9 must be completed.*
 
 ### Introduction
 
-This is the final integration and application challenge! Because the entire database agentic layer—including BigQuery FDW data sync, operational/analytical SQL tools, and MCP Toolbox—has already been securely structured in Challenges 7 and 8, this challenge focuses exclusively on the developer's magic: constructing the conversational guest assistant, vibe-coding a premium web application, and deploying it to **Cloud Run**.
+This is the final integration and application challenge! Because the entire database agentic layer—including BigQuery FDW data sync, operational/analytical SQL tools, and MCP Toolbox—has already been securely structured in Challenges 7, 8, and 9, this challenge focuses exclusively on the developer's magic: constructing the conversational guest assistant, vibe-coding a premium web application, and deploying it to **Cloud Run**.
 
-In this architecture, the ADK Guest Assistant agent only queries AlloyDB (using the MCP Toolbox server). It does not contain any direct BigQuery connections or tools. All BigQuery analytical insights (forecasting, graph routings) are served instantly to the user because they have been synced to local AlloyDB tables, ensuring high performance, security, and low agent complexity.
-
-![Challenge 9 Architecture](images/track7_architecture.png)
+![Challenge 10 Architecture](images/challenge10_architecture.png)
 
 ### Description
 
@@ -1000,21 +998,15 @@ Using the **Agent Development Kit (ADK)**, you will construct the conversational
 
 #### Task 10.2: Vibe-Coding a Premium Web Application
 
-Rather than a generic, plain interface, you will **vibe-code a stunning, premium web application** (using a framework like React + Vite or Streamlit) that hooks into your ADK agent.
+Rather than a generic, plain interface, you will **vibe-code a stunning, premium web application** that hooks into your ADK agent.
 
-1. **Design Guidelines:**
-    - **Rich Aesthetics:** Use deep, premium colors (harmonious dark modes, dark blues, gold accents, glassmorphism/backdrop-filters).
-    - **Dynamic UI:** Add smooth animations, interactive cards for attractions, real-time wait-time indicators, and a clean chat interface to talk to the guest assistant.
-    - **Typography:** Import premium Google Fonts (e.g., *Outfit*, *Inter*).
-    - **No Placeholders:** If you need icons or images, pull them from working assets or use clean vector SVGs.
-2. **Run Locally:**
-   Run the frontend development server and connect it to your ADK agent:
+**Leverage the Google AI Stack for Vibe-Coding:**
+  - **Stitch:** Use Stitch to rapidly design and iterate on the premium web interface (dark modes, glassmorphism, animations) and export production-ready components.
+  - **Google Antigravity 2.0 & CLI:** Use the `antigravity` CLI and its Agentic IDE capabilities to autonomously scaffold and vibe-code the frontend logic, hooking it directly to your ADK agent.
+  - **Google AI Studio:** Prototype, experiment, and fine-tune any complex conversational interactions or multimodal prompts before integrating them into your codebase.
 
-    ```bash
-    npm run dev
-    ```
 
-#### Task 10.3: Deploy to Google Cloud Run
+#### Task 10.3: Deploy to Google Cloud Run (Optional)
 
 To complete the gHack and make the guest assistant publicly accessible, you will containerize and push the application to **Cloud Run**.
 
@@ -1037,7 +1029,6 @@ To complete the gHack and make the guest assistant publicly accessible, you will
 To validate this challenge, you must demonstrate the following:
 
 - Show a screenshot or proof of the **Vibe-Coded Web App** running, showcasing a premium design with glassmorphism, animations, and a rich, responsive layout.
-- Provide a live **Cloud Run URL** hosting the application.
 - Show a full conversation demonstration in your application UI where the agent uses hybrid search, checks wait times, recommends a next-ride, and records a review—all working flawlessly in one session.
 
 ---
