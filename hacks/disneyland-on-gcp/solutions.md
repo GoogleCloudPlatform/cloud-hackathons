@@ -53,6 +53,14 @@ CREATE TABLE disneyland_attractions (
     name TEXT,
     description TEXT
 );
+
+CREATE TABLE visitor_movements (
+    visitor_id INT,
+    from_attraction_id INT,
+    to_attraction_id INT,
+    timestamp TIMESTAMP,
+    PRIMARY KEY (visitor_id, timestamp)
+);
 ```
 
 #### 3. Add a Full-Text Search Vector
@@ -69,8 +77,9 @@ GENERATED ALWAYS AS (to_tsvector('english', description)) STORED;
 
 Use the AlloyDB Import API (via the Cloud Console UI or `gcloud`) to import the public CSV files:
 
-* Import `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/reviews.csv` into `disneyland_reviews`
-* Import `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/attractions.csv` into `disneyland_attractions`
+* Import `gs://ghacks-disneyland-on-gcp/reviews.csv` into `disneyland_reviews`
+* Import `gs://ghacks-disneyland-on-gcp/attractions.csv` into `disneyland_attractions`
+* Import `gs://ghacks-disneyland-on-gcp/visitor_movements.csv` into `visitor_movements`
 
 ---
 
@@ -119,7 +128,7 @@ LIMIT 5;
 2. Select your cluster and click **Replicate data to BigQuery** on the top menu.
 3. Follow the wizard:
    * **Region**: Same as your AlloyDB cluster (e.g., `us-central1` or `europe-west1`).
-   * **Tables**: Select `disneyland_reviews` and `disneyland_attractions`.
+   * **Tables**: Select `disneyland_reviews`, `disneyland_attractions`, and `visitor_movements`.
    * **Write Mode**: **Merge**.
    * **Staleness Limit**: **0 seconds** (real-time).
    * **Destination Dataset**: **disney**.
@@ -128,7 +137,7 @@ LIMIT 5;
 *(Optional: If configuring logical replication manually on the database)*:
 
 ```sql
-CREATE PUBLICATION pub_disney FOR TABLE disneyland_reviews, disneyland_attractions;
+CREATE PUBLICATION pub_disney FOR TABLE disneyland_reviews, disneyland_attractions, visitor_movements;
 ALTER USER postgres WITH REPLICATION;
 SELECT PG_CREATE_LOGICAL_REPLICATION_SLOT('slot_disney', 'pgoutput');
 ```
@@ -338,7 +347,7 @@ FROM
 LOAD DATA OVERWRITE `disney.waiting_times`
 FROM FILES (
   format = 'CSV',
-  uris = ['gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/waiting_times.csv']
+  uris = ['gs://ghacks-disneyland-on-gcp/waiting_times.csv']
 );
 ```
 
@@ -423,7 +432,7 @@ CREATE OR REPLACE EXTERNAL TABLE `disney.attraction_images`
 WITH CONNECTION `us-central1.conn`
 OPTIONS (
   object_metadata = 'SIMPLE',
-  uris = ['gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/attraction_parc_photos/*']
+  uris = ['gs://ghacks-disneyland-on-gcp/attraction_parc_photos/*']
 );
 ```
 
@@ -455,7 +464,7 @@ CREATE OR REPLACE EXTERNAL TABLE `disney.brochures_pdf`
 WITH CONNECTION `us-central1.conn`
 OPTIONS (
   object_metadata = 'SIMPLE',
-  uris = ['gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/disneyland_brochures/*.pdf']
+  uris = ['gs://ghacks-disneyland-on-gcp/disneyland_brochures/*.pdf']
 );
 ```
 
@@ -540,25 +549,13 @@ FROM
 
 ## Challenge 5: Graph analytics and visitor flow
 
-### 5.1 Ingest Visitor Movement Data
-
-```sql
-LOAD DATA OVERWRITE `disney.visitor_movements`
-FROM FILES (
-  format = 'CSV',
-  uris = ['gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/visitor_movements.csv']
-);
-```
-
----
-
-### 5.2 Build a Property Graph in BigQuery
+### 5.1 Build a Property Graph in BigQuery
 
 > [!IMPORTANT]
 > **Dependency Note:**
-> Creating the Property Graph requires the `disneyland_attractions` table to exist in BigQuery. This requires **Challenge 1** (Datastream replication) to be completed first.
+> Creating the Property Graph requires both `public_disneyland_attractions` and `public_visitor_movements` tables to exist in BigQuery. This requires **Challenge 1** (Datastream replication) to be completed first.
 
-Define a property graph over the attractions and movements. Specify explicit keys for the node and edge tables to handle tables lacking primary key constraints:
+Define a property graph over the attractions and movements. Specify explicit keys for the node and edge tables:
 
 ```sql
 CREATE OR REPLACE PROPERTY GRAPH disney.disney_movement_graph
@@ -568,7 +565,7 @@ NODE TABLES (
     LABEL Attraction
 )
 EDGE TABLES (
-  disney.visitor_movements
+  disney.public_visitor_movements
     KEY (visitor_id, timestamp)
     SOURCE KEY (from_attraction_id) REFERENCES public_disneyland_attractions (attraction_id)
     DESTINATION KEY (to_attraction_id) REFERENCES public_disneyland_attractions (attraction_id)
@@ -578,7 +575,7 @@ EDGE TABLES (
 
 ---
 
-### 5.3 Query the Graph for Patterns
+### 5.2 Query the Graph for Patterns
 
 #### 1. Flow Analysis: Top 3 Rides after Space Mountain
 
@@ -597,89 +594,107 @@ ORDER BY transition_count DESC
 LIMIT 3;
 ```
 
-#### 2. Bottleneck Detection: Highest Incoming Density at 2:00 PM
+#### 2. Multi-Hop Journeys: Top 3-Ride Sequences from Space Mountain
 
-Analyze edges matching a specific time window:
+Identify the most common sequences of 3 rides starting from "Space Mountain" taken by the same visitor within a 2-hour window:
 
 ```sql
-SELECT target_name, COUNT(*) AS incoming_count
+SELECT mid_ride, end_ride, COUNT(*) AS journey_count
 FROM GRAPH_TABLE(
   disney.disney_movement_graph
-  MATCH (a:Attraction) -[e:Moved]-> (b:Attraction)
-  RETURN b.name AS target_name, e.timestamp AS move_time
+  MATCH (a:Attraction) -[e1:Moved]-> (b:Attraction) -[e2:Moved]-> (c:Attraction)
+  WHERE a.name = 'Space Mountain'
+    AND e1.visitor_id = e2.visitor_id
+    AND e1.timestamp < e2.timestamp
+    AND TIMESTAMP_DIFF(e2.timestamp, e1.timestamp, MINUTE) <= 120
+  RETURN b.name AS mid_ride, c.name AS end_ride
 )
-WHERE EXTRACT(HOUR FROM move_time) = 14
-GROUP BY target_name
-ORDER BY incoming_count DESC
+GROUP BY mid_ride, end_ride
+ORDER BY journey_count DESC
 LIMIT 5;
 ```
 
 ---
 
-### 5.4 Generate a Next-Ride Routing Table
+### 5.3 Generate a Next-Ride Routing Table
 
-Compute transitions and assign recommendations for different congestion levels (`Low`, `Medium`, `High`) based on popularity ranks:
+Use `GRAPH_TABLE` to query transitions on the property graph `disney_movement_graph`, and generate the top 2 recommendations (ranks 1 and 2) for each attraction using BQ's `QUALIFY` filter:
 
 ```sql
 CREATE OR REPLACE TABLE disney.graph_recommendations AS
-WITH transition_ranks AS (
+SELECT
+  from_id AS attraction_id,
+  to_id AS recommended_next_attraction_id,
+  ROW_NUMBER() OVER(PARTITION BY from_id ORDER BY transition_count DESC) AS recommendation_rank
+FROM (
   SELECT
-    from_attraction_id AS attraction_id,
-    to_attraction_id AS recommended_next_attraction_id,
-    ROW_NUMBER() OVER(PARTITION BY from_attraction_id ORDER BY COUNT(*) DESC) AS rank
-  FROM
-    disney.visitor_movements
-  GROUP BY
-    from_attraction_id,
-    to_attraction_id
+    from_id,
+    to_id,
+    COUNT(*) AS transition_count
+  FROM GRAPH_TABLE(
+    disney.disney_movement_graph
+    MATCH (a:Attraction) -[e:Moved]-> (b:Attraction)
+    RETURN a.attraction_id AS from_id, b.attraction_id AS to_id
+  )
+  GROUP BY from_id, to_id
 )
-SELECT
-  attraction_id,
-  recommended_next_attraction_id,
-  'Low' AS congestion_level
-FROM
-  transition_ranks
-WHERE
-  rank = 1
-
-UNION ALL
-
-SELECT
-  attraction_id,
-  recommended_next_attraction_id,
-  'Medium' AS congestion_level
-FROM
-  transition_ranks
-WHERE
-  rank = 2
-
-UNION ALL
-
-SELECT
-  attraction_id,
-  recommended_next_attraction_id,
-  'High' AS congestion_level
-FROM
-  transition_ranks
-WHERE
-  rank = 3;
+QUALIFY recommendation_rank <= 2;
 ```
 
 ---
 
-## Challenge 6: Conversational analytics for insights
+## Challenge 6: Preparing the Context Layer
 
-### 6.1 Initialize Agent
+This challenge is performed using the BigQuery and Dataplex console interfaces.
+
+### 6.1 Technical Metadata Enrichment
+
+Add descriptions to the columns of the `disneyland_reviews` table in the BigQuery schema editor to help the agent interpret data types and purposes (e.g., describing the vector embeddings or sentiment labels).
+
+### 6.2 Business Glossary Alignment
+
+1. Create a Business Glossary inside Dataplex.
+2. Define key terms like "Rollercoaster" or "Premium visitor" (e.g., `Premium visitor: A visitor who left more than 2 reviews`).
+3. Link the business terms to the target columns in BigQuery and AlloyDB tables.
+
+### 6.3 Automated profiling & quality
+
+1. Create and execute a Dataplex Data Profile scan on `disney.public_disneyland_reviews`.
+2. Define Data Quality rules (e.g., checking that `rating` is between 1 and 5, or that `reviewer_location` is not null) and run a Data Quality scan.
+
+### 6.4 Automated GCS Metadata Generation
+
+1. Go to the BigQuery Metadata Curation tab.
+2. Link your GCS object table pointing to brochures.
+3. Run the automated tag inference to attach metadata tags to the PDF brochure files.
+
+### 6.5 Lookup Context API
+
+Verify you can query the LookupContext API. An example call:
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer \$(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  https://dataplex.googleapis.com/v1/projects/YOUR_PROJECT_ID/locations/YOUR_LOCATION/entryGroups/YOUR_ENTRY_GROUP/entries/YOUR_ENTRY_ID:lookup \
+  -d '{"aspectTypes": ["business-context"]}'
+```
+
+---
+
+## Challenge 7: Conversational analytics for insights
+
+### 7.1 Initialize Agent
 
 In BigQuery Studio, go to the **Agents** tab, create a new agent named `disney_park_analyst` and connect it to the `disney` dataset.
 
-### 6.2 Configure Knowledge Catalog
+### 7.2 Configure Knowledge Catalog
 
 * **Synonyms**:
   * "rollercoaster", "thrill ride" -> "Space Mountain", "Big Thunder Mountain"
   * "queue", "line" -> `waiting_time`
 
-### 6.3 Define Golden Queries
+### 7.3 Define Golden Queries
 
 Add these pre-approved SQL templates to train the agent's SQL generation:
 
@@ -707,7 +722,7 @@ ORDER BY
 SELECT 
   a1.name AS current_attraction,
   a2.name AS recommended_next_attraction,
-  r.congestion_level
+  r.recommendation_rank
 FROM 
   `disney.graph_recommendations` r
 JOIN 
@@ -715,12 +730,12 @@ JOIN
 JOIN 
   `disney.public_disneyland_attractions` a2 ON r.recommended_next_attraction_id = a2.attraction_id
 WHERE 
-  a1.name = 'Space Mountain' AND r.congestion_level = 'High';
+  a1.name = 'Space Mountain' AND r.recommendation_rank = 1;
 ```
 
 ---
 
-### 6.4 Execute Multi-Silo Prompts
+### 7.4 Execute Multi-Silo Prompts
 
 Test the agent with the complex prompt: *"Which attractions have the highest negative sentiment today, and what is the most common path visitors take after leaving them?"*
 
@@ -770,9 +785,9 @@ SELECT
 
 ---
 
-## Challenge 7: From insights to action, syncing BigQuery and AlloyDB
+## Challenge 8: From insights to action, syncing BigQuery and AlloyDB
 
-### 7.1 Create Local Analytical Tables in AlloyDB
+### 8.1 Create Local Analytical Tables in AlloyDB
 
 Run the following DDL in AlloyDB Studio inside the `disney` database:
 
@@ -786,11 +801,11 @@ CREATE TABLE IF NOT EXISTS public.forecasted_waiting_times (
 CREATE TABLE IF NOT EXISTS public.graph_recommendations (
     attraction_id INT,
     recommended_next_attraction_id INT,
-    congestion_level TEXT
+    recommendation_rank INT
 );
 ```
 
-### 7.2 Grant IAM Privileges to AlloyDB
+### 8.2 Grant IAM Privileges to AlloyDB
 
 Find your AlloyDB cluster's service account:
 
@@ -803,7 +818,7 @@ Grant this service account the following roles in your project:
 * **BigQuery Data Viewer** (`roles/bigquery.dataViewer`)
 * **BigQuery Read Session User** (`roles/bigquery.readSessionUser`)
 
-### 7.3 Map BigQuery Tables using the AlloyDB Studio Wizard
+### 8.3 Map BigQuery Tables using the AlloyDB Studio Wizard
 
 1. In the Google Cloud Console, navigate to **AlloyDB** -> **Clusters** -> select your cluster -> **AlloyDB Studio**.
 2. Connect to the `disney` database.
@@ -831,7 +846,7 @@ CREATE FOREIGN TABLE bq_forecasted_waiting_times (
 CREATE FOREIGN TABLE bq_graph_recommendations (
     attraction_id INT,
     recommended_next_attraction_id INT,
-    congestion_level TEXT
+    recommendation_rank INT
 ) SERVER bq_disney_server OPTIONS (
     project '<YOUR_PROJECT_ID>',
     dataset 'disney',
@@ -839,7 +854,7 @@ CREATE FOREIGN TABLE bq_graph_recommendations (
 );
 ```
 
-### 7.4 Sync Data from BigQuery to AlloyDB
+### 8.4 Sync Data from BigQuery to AlloyDB
 
 Run the following queries in AlloyDB Studio to copy the analytical insights locally:
 
@@ -850,16 +865,16 @@ SELECT attraction_id, forecasted_timestamp, predicted_wait_time
 FROM public.bq_forecasted_waiting_times;
 
 -- Sync graph recommendations
-INSERT INTO public.graph_recommendations (attraction_id, recommended_next_attraction_id, congestion_level)
-SELECT attraction_id, recommended_next_attraction_id, congestion_level 
+INSERT INTO public.graph_recommendations (attraction_id, recommended_next_attraction_id, recommendation_rank)
+SELECT attraction_id, recommended_next_attraction_id, recommendation_rank 
 FROM public.bq_graph_recommendations;
 ```
 
 ---
 
-## Challenge 8: Exposing Database Tools via MCP
+## Challenge 9: Exposing Database Tools via MCP
 
-### 8.1 Configure `tools.yaml`
+### 9.1 Configure `tools.yaml`
 
 Create a `tools.yaml` file to configure the **MCP Toolbox** for database access. This file defines five tools mapping to the operational and local analytical tables (not the FDW tables directly):
 
@@ -974,7 +989,7 @@ parameters:
   - name: attraction_id
     type: integer
 statement: |
-  SELECT recommended_next_attraction_id, congestion_level 
+  SELECT recommended_next_attraction_id, recommendation_rank 
   FROM public.graph_recommendations 
   WHERE attraction_id = $1;
 ---
@@ -988,7 +1003,7 @@ tools:
   - get_next_ride_recommendation
 ```
 
-### 8.2 Start the Server
+### 9.2 Start the Server
 
 Run the toolbox server:
 
@@ -998,9 +1013,9 @@ Run the toolbox server:
 
 ---
 
-## Challenge 9: Building the guest assistant app
+## Challenge 10: Building the guest assistant app
 
-### 9.1 Scaffold the Guest Assistant with ADK (`agent.py`)
+### 10.1 Scaffold the Guest Assistant with ADK (`agent.py`)
 
 Scaffold the agent using the Python ADK SDK, loading the tools from the local MCP Toolbox server:
 
@@ -1035,7 +1050,7 @@ visitor_guide = Agent(
 
 ---
 
-### 9.2 Vibe-Coding a Premium Web Application
+### 10.2 Vibe-Coding a Premium Web Application
 
 An example **Streamlit** dashboard/chat application that integrates the ADK agent:
 
@@ -1116,7 +1131,7 @@ if prompt := st.chat_input("Ask your magical guide..."):
 
 ---
 
-### 9.3 Deploy to Google Cloud Run
+### 10.3 Deploy to Google Cloud Run
 
 #### 1. Write the Dockerfile
 
