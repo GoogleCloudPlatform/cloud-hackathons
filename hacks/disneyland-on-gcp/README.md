@@ -82,18 +82,18 @@ Here is how you can divide and conquer based on your team size:
 #### 🧩 Option 1: The 3-Group Split (Recommended)
 
 - **Group A (Platform & DB Engineers):** Focuses on the core transactional and serving loop.
-  - *Path:* [Challenge 1](#challenge-1-setting-up-alloydb-and-replicating-data-to-bigquery) -> [Challenge 2](#challenge-2-creating-the-agentic-database-layer) -> [Challenge 7](#challenge-7-from-insights-to-action-syncing-bigquery-and-alloydb) -> [Challenge 8](#challenge-8-exposing-database-tools-via-mcp) -> [Challenge 9](#challenge-9-building-the-guest-assistant-app)
+  - *Path:* [Challenge 1](#challenge-1-setting-up-alloydb-and-replicating-data-to-bigquery) -> [Challenge 2](#challenge-2-creating-the-agentic-database-layer) -> [Challenge 8](#challenge-8-from-insights-to-action-syncing-bigquery-and-alloydb) -> [Challenge 9](#challenge-9-exposing-database-tools-via-mcp) -> [Challenge 10](#challenge-10-building-the-guest-assistant-app)
 - **Group B (Data Scientists):** Focuses on analytics, forecasting, and clustering.
-  - *Path:* [Challenge 3](#challenge-3-sentiment-and-wait-time-forecasting) -> Assist Group C with [Challenge 6](#challenge-6-conversational-analytics-for-insights) or Group A with [Challenge 9](#challenge-9-building-the-guest-assistant-app)
+  - *Path:* [Challenge 3](#challenge-3-sentiment-and-wait-time-forecasting) -> Assist Group C with [Challenge 7](#challenge-7-conversational-analytics-for-insights) or Group A with [Challenge 10](#challenge-10-building-the-guest-assistant-app)
 - **Group C (AI & Graph Engineers):** Focuses on unstructured data, graphs, and internal conversational search.
-  - *Path:* [Challenge 4](#challenge-4-image-classification-and-brochure-rag) -> [Challenge 5](#challenge-5-graph-analytics-and-visitor-flow) -> [Challenge 6](#challenge-6-conversational-analytics-for-insights)
+  - *Path:* [Challenge 4](#challenge-4-image-classification-and-brochure-rag) -> [Challenge 5](#challenge-5-graph-analytics-and-visitor-flow) -> [Challenge 6](#challenge-6-preparing-the-context-layer) -> [Challenge 7](#challenge-7-conversational-analytics-for-insights)
 
 #### 👥 Option 2: The 2-Group Split
 
 - **Group A (Database & Application Developers):** Focuses on database setup, agentic tool serving, and app integration.
-  - *Path:* [Challenge 1](#challenge-1-setting-up-alloydb-and-replicating-data-to-bigquery) -> [Challenge 2](#challenge-2-creating-the-agentic-database-layer) -> [Challenge 7](#challenge-7-from-insights-to-action-syncing-bigquery-and-alloydb) -> [Challenge 8](#challenge-8-exposing-database-tools-via-mcp) -> [Challenge 9](#challenge-9-building-the-guest-assistant-app)
+  - *Path:* [Challenge 1](#challenge-1-setting-up-alloydb-and-replicating-data-to-bigquery) -> [Challenge 2](#challenge-2-creating-the-agentic-database-layer) -> [Challenge 8](#challenge-8-from-insights-to-action-syncing-bigquery-and-alloydb) -> [Challenge 9](#challenge-9-exposing-database-tools-via-mcp) -> [Challenge 10](#challenge-10-building-the-guest-assistant-app)
 - **Group B (AI, ML & Analytics Engineers):** Focuses on all BigQuery-centric analytics, ML models, RAG, and property graphs.
-  - *Path:* [Challenge 4](#challenge-4-image-classification-and-brochure-rag) -> [Challenge 3](#challenge-3-sentiment-and-wait-time-forecasting) -> [Challenge 5](#challenge-5-graph-analytics-and-visitor-flow) -> [Challenge 6](#challenge-6-conversational-analytics-for-insights)
+  - *Path:* [Challenge 4](#challenge-4-image-classification-and-brochure-rag) -> [Challenge 3](#challenge-3-sentiment-and-wait-time-forecasting) -> [Challenge 5](#challenge-5-graph-analytics-and-visitor-flow) -> [Challenge 6](#challenge-6-preparing-the-context-layer) -> [Challenge 7](#challenge-7-conversational-analytics-for-insights)
 
 ---
 
@@ -568,7 +568,7 @@ To validate this challenge, you must demonstrate the following:
 
 ---
 
-## **Challenge 6: Preparing the Context Layer**
+## Challenge 6: Preparing the Context Layer
 
 **Target Persona:** Data Engineer / AI Architect | **Estimated Duration:** 40 minutes
 
