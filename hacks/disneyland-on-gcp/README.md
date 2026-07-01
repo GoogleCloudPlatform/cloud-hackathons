@@ -604,14 +604,14 @@ Set up an automated extraction pipeline to handle documentation and unstructured
 > [!TIP]
 > **This can be done in the BigQuery Metadata Curation tab.**
 
-3. Configure the pipeline to analyze your unstructured `gs://hackathon_data_disneyland_<YOUR_PROJECT_3DIGITS>/disneyland_brochures/` directory.  
-4. Automatically generate and attach metadata tags (such as language, document type, target audience, and revision date) to the PDF assets, use semantic inference for better results.
+1. Configure the pipeline to analyze your unstructured `gs://hackathon_data_disneyland_<YOUR_PROJECT_3DIGITS>/` bucket.  
+2. Automatically generate and attach metadata tags (such as language, document type, target audience, and revision date) to the PDF assets, use semantic inference for better results.
 
-#### **Task 6.5: ContextLookup API Integration**
+#### **Task 6.5: lookup context API Integration**
 
 Once your technical, business, and object storage metadata are established, wire them into your execution layer for application discovery.
 
-1. Utilize the ContextLookup API to fetch operational and structural context dynamically. Test the API against a standard BigQuery data asset and an AlloyDB transactional database table. You can use Python or a rest API  
+1. Utilize the LookupContext API to fetch operational and structural context dynamically. Test the API against a standard BigQuery data asset and an AlloyDB transactional database table. You can use Python or a rest API  
 2. Verify that the API returns detailed, low-latency context maps that an LLM agent can ingest to understand the underlying database schemas and table relationships.
 
 ### **Success Criteria**
@@ -621,7 +621,7 @@ To validate this challenge, you must demonstrate the following:
 * Show the enriched schema descriptions for your target tables directly within the BigQuery Console.  
 * Provide a summary or export of the linked terms inside your centralized Disneyland Business Glossary.  
 * Show the successful pipeline logs or sample metadata tags generated for the PDF assets in Cloud Storage.  
-* Provide the API JSON response payload from a successful `ContextLookup` call showing the multi-database schema mapping.
+* Provide the API JSON response payload from a successful `LookupContext` call showing the multi-database schema mapping.
 
 ---
 
@@ -636,9 +636,9 @@ Disneyland park managers need to query this complex multi-silo dataset (reviews,
 ### Description
 
 #### Task 7.1: Initialize the Conversational Analytics Agent
-
+ 
 1. In BigQuery Studio, navigate to the **Agents** tab.
-2. Create a new agent named `disney_park_analyst` and connect it to your `disney` dataset containing all your tables.
+2. Create a new agent named `disney_park_analyst` and connect it to the table under disney dataset. You can also put the previously created BQ graph as a knowledge source. (You can either choose tables or a Graph, not both)
 
 #### Task 7.2: Use the Knowledge Catalog
 
