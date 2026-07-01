@@ -140,6 +140,13 @@ resource "google_alloydb_instance" "default" {
     cpu_count = 2
   }
 
+  network_config {
+    enable_public_ip = true
+    authorized_external_networks {
+      cidr_range = "0.0.0.0/0"
+    }
+  }
+
   depends_on = [google_alloydb_cluster.default]
 }
 

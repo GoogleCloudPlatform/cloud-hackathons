@@ -260,7 +260,7 @@ To verify these features in AlloyDB Studio, you can run the following test queri
 **Hybrid Search Test:**
 
 ```sql
-SET google_ml_integration.enable_preview_ai_functions = true;
+ALTER DATABASE disney SET google_ml_integration.enable_preview_ai_functions = 'on';
 SELECT a.name, a.description, search_results.score
 FROM disneyland_attractions a
 JOIN ai.hybrid_search(
@@ -643,6 +643,31 @@ FROM GRAPH_TABLE(
 );
 ```
 
+#### Task 5.4: Graph-Based Recommendations
+
+To extract the most frequent next rides and build the recommendation table, run the following query:
+
+```sql
+CREATE OR REPLACE TABLE disney.graph_recommendations AS
+SELECT 
+  start_ride_id as attraction_id, 
+  next_ride_id as recommended_next_attraction_id,
+  DENSE_RANK() OVER(PARTITION BY start_ride_id ORDER BY journey_count DESC) as recommendation_rank
+FROM (
+  SELECT 
+    start_ride_id, 
+    next_ride_id, 
+    COUNT(*) as journey_count
+  FROM GRAPH_TABLE(
+    disney.disney_movement_graph
+    MATCH (a:Attraction) -[e:Moved]-> (b:Attraction)
+    RETURN a.attraction_id AS start_ride_id, b.attraction_id AS next_ride_id
+  )
+  GROUP BY start_ride_id, next_ride_id
+)
+WHERE start_ride_id != next_ride_id;
+```
+
 ---
 
 ## Challenge 6: Preparing the Context Layer
@@ -893,6 +918,13 @@ database: "disney"
 user: "postgres"
 password: "buildwithgemini2026"
 ---
+# Source 2: Gemini Data Analytics API (used for QueryData)
+kind: source
+name: gda-api-source
+type: cloud-gemini-data-analytics
+projectId: "[YOUR_PROJECT_ID]"
+
+---
 # Tool 1: Hybrid Search using ScaNN and Full-Text Search
 kind: tool
 name: search_attractions_hybrid
@@ -907,7 +939,7 @@ parameters:
     type: string
     description: "Keyword search term (e.g., 'Space Mountain')"
 statement: |
-  SET google_ml_integration.enable_preview_ai_functions = true;
+  ALTER DATABASE disney SET google_ml_integration.enable_preview_ai_functions = 'on';
   SELECT a.name, a.description, search_results.score
   FROM disneyland_attractions a
   JOIN ai.hybrid_search(
@@ -943,8 +975,10 @@ description: "Evaluates if a specific attraction is safe or suitable based on a 
 parameters:
   - name: attraction_name
     type: string
+    description: "Name of the attraction"
   - name: suitability_profile
     type: string
+    description: "Profile of the guest (e.g., 'pregnant women', 'toddlers')"
 statement: |
   SELECT * FROM check_attraction_suitability($1, $2);
 ---
@@ -957,10 +991,13 @@ description: "Saves a new customer review for an attraction into the operational
 parameters:
   - name: rating
     type: integer
+    description: "Numerical rating out of 5"
   - name: review_text
     type: string
+    description: "Customer review text"
   - name: branch
     type: string
+    description: "The park branch location"
 statement: |
   INSERT INTO public.disneyland_reviews (review_id, rating, review_text, branch, year_month)
   VALUES ((SELECT COALESCE(MAX(review_id), 0) + 1 FROM public.disneyland_reviews), $1, $2, $3, TO_CHAR(CURRENT_DATE, 'YYYY-MM'))
@@ -975,6 +1012,7 @@ description: "Queries the local database to get forecasted wait times for a spec
 parameters:
   - name: attraction_id
     type: integer
+    description: "Unique ID of the attraction"
 statement: |
   SELECT predicted_wait_time 
   FROM public.forecasted_waiting_times 
@@ -990,10 +1028,38 @@ description: "Gets next-ride routing recommendations for a guest leaving a speci
 parameters:
   - name: attraction_id
     type: integer
+    description: "Unique ID of the attraction"
 statement: |
   SELECT recommended_next_attraction_id, recommendation_rank 
   FROM public.graph_recommendations 
   WHERE attraction_id = $1;
+---
+# Tool 6: QueryData Natural Language Search
+kind: tool
+name: query_disney_data
+type: cloud-gemini-data-analytics-query
+source: gda-api-source
+description: "Use this tool to ask natural language questions about the Disneyland reviews, attractions, and wait times. It will translate your question into SQL, execute it, and return the answer."
+location: "europe-west1"
+context:
+  datasourceReferences:
+    alloydb:
+      databaseReference:
+        projectId: "[YOUR_PROJECT_ID]"
+        region: "europe-west1"
+        clusterId: "[YOUR_CLUSTER]"
+        instanceId: "[YOUR_INSTANCE]"
+        databaseId: "disney"
+      agentContextReference:
+        # Tip: You can find this ID in AlloyDB Studio by clicking on 'Edit Context'
+        # It should be in this format: projects/[YOUR_PROJECT_ID]/locations/[LOCATION]/contextSets/[CONTEXT_NAME]
+        contextSetId: "projects/[YOUR_PROJECT_ID]/locations/europe-west4/contextSets/disney-context"
+generationOptions:
+  generateQueryResult: true
+  generateNaturalLanguageAnswer: true
+  generateExplanation: true
+  generateDisambiguationQuestion: true
+
 ---
 kind: toolset
 name: disneyland_operational_tools
@@ -1003,6 +1069,7 @@ tools:
   - add_attraction_review
   - get_wait_time_forecast
   - get_next_ride_recommendation
+  - query_disney_data
 ```
 
 ### 9.2 Start the Server
