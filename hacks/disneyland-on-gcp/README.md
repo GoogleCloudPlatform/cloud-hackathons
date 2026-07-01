@@ -342,7 +342,7 @@ To register these users, follow these steps:
 
 #### Task 2.3: Expose AlloyDB AI Operators
 
-You will prepare SQL queries that leverage AlloyDB's advanced AI features (vector search and hybrid search) to expose them as tools.
+You will prepare SQL queries that leverage AlloyDB's advanced AI features to expose them as tools.
 
 > [!TIP]
 > Remember to switch back to **basic authentication** (logging in as the `postgres` user) in AlloyDB Studio before executing the SQL queries in this task.
