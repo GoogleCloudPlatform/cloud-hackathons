@@ -620,6 +620,7 @@ LIMIT 5;
 ### 5.3 Visitor Journey Tracking & Path Analysis
 
 #### 1. Specific Journey Tracking
+
 Trace the journey of visitor `'11613'` starting from `'Dumbo the Flying Elephant'` to `'Disneyland Railroad'` and count the total transitions:
 
 ```sql
@@ -632,6 +633,7 @@ SELECT * FROM GRAPH_TABLE(
 ```
 
 #### 2. Multi-Hop Journeys by Visitor
+
 Find all unique visitor IDs who traveled from `'Space Mountain'` to `'Indiana Jones Adventure'` in a 2-hop journey (Space Mountain -> intermediate ride -> Indiana Jones Adventure) where both transitions are made by the same visitor:
 
 ```sql
