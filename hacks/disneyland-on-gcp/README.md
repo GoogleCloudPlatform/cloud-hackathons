@@ -550,10 +550,12 @@ Write graph queries using `GRAPH_TABLE` and GQL match patterns to solve the foll
 2. **Multi-Hop Journeys:** *Find the most common 3-ride sequences (A -> B -> C) starting from "Space Mountain" taken by the same visitor within a 2-hour window.*
    Analyze paths matching: `(a:Attraction {name: 'Space Mountain'}) -[e1:Moved]-> (b:Attraction) -[e2:Moved]-> (c:Attraction)` where both movements are made by the same visitor.
 
-#### Task 5.3: Generate a Next-Ride Routing Table
+#### Task 5.3: Visitor Journey Tracking & Path Analysis
 
-1. Using `GRAPH_TABLE` and matching the transitions in the property graph `disney_movement_graph`, write a query to compute the transition counts between attractions.
-2. Create a routing table `graph_recommendations` that stores the top 2 next-ride recommendations (ranks 1 and 2) for every attraction.
+Now, let's explore GQL's path capabilities to analyze journeys taken by visitors.
+
+1. **Specific Journey Tracking:** Write a graph query using quantified path patterns to find how many rides visitor `'11613'` took to get from `'Dumbo the Flying Elephant'` to `'Disneyland Railroad'`.
+2. **Reachable Journeys:** Write a graph query using quantified path patterns to find all unique visitor IDs who moved from `'Space Mountain'` to `'Indiana Jones Adventure'` within 5 transitions (hops).
 
 ### Success Criteria
 
@@ -562,7 +564,7 @@ To validate this challenge, you must demonstrate the following:
 - Show the SQL DDL statement used to define and create the Property Graph `disney_movement_graph`.
 - Provide the SQL graph query for the "Flow Analysis" (top 3 rides after Space Mountain) and its corresponding output.
 - Provide the SQL graph query for "Multi-Hop Journeys" starting from Space Mountain and its corresponding output.
-- Provide the SQL graph query used to generate the `graph_recommendations` routing table from the property graph, and display its schema and sample rows.
+- Provide the SQL graph queries for "Visitor Journey Tracking" and "Reachable Journeys", and display their outputs.
 
 ---
 
