@@ -140,10 +140,6 @@ resource "google_alloydb_instance" "default" {
     cpu_count = 2
   }
 
-  data_api_access {
-    enabled = true
-  }
-
   depends_on = [google_alloydb_cluster.default]
 }
 
