@@ -234,6 +234,7 @@ By preparing these operational capabilities now, you lay the foundation for the 
 - **Value Search Queries:** Background queries (exact, fuzzy, or semantic) that map user-typed entities to actual database values.
 
 For more details, see the [AlloyDB QueryData Documentation](https://cloud.google.com/alloydb/docs/ai/querydata).
+
 #### Task 2.1: Enable the AlloyDB Data API
 
 QueryData and downstream API integration require the **AlloyDB Data API** (also known as the `executesql` API) to be explicitly enabled on your AlloyDB instance. Run the following `curl` command in your Cloud Shell to enable it:
@@ -606,7 +607,7 @@ To align raw technical structures with organizational understanding, you must ma
 It’s very important to understand the distribution of the values in a column and quality rules in order to better discover the data.
 
 1. Run a data profile scan on the disneyland\_reviews table. Analyze the results.  
-2. Define & run an automatic data quality scan with different rules (profile-based, predefined generic, custom, etc) 
+2. Define & run an automatic data quality scan with different rules (profile-based, predefined generic, custom, etc)
 
 #### **Task 6.4: Automated GCS Metadata Generation**
 
@@ -629,10 +630,10 @@ Once your technical, business, and object storage metadata are established, wire
 
 To validate this challenge, you must demonstrate the following:
 
-* Show the enriched schema descriptions for your target tables directly within the BigQuery Console.  
-* Provide a summary or export of the linked terms inside your centralized Disneyland Business Glossary.  
-* Show the successful pipeline logs or sample metadata tags generated for the PDF assets in Cloud Storage.  
-* Provide the API JSON response payload from a successful `LookupContext` call showing the multi-database schema mapping.
+- Show the enriched schema descriptions for your target tables directly within the BigQuery Console.  
+- Provide a summary or export of the linked terms inside your centralized Disneyland Business Glossary.  
+- Show the successful pipeline logs or sample metadata tags generated for the PDF assets in Cloud Storage.  
+- Provide the API JSON response payload from a successful `LookupContext` call showing the multi-database schema mapping.
 
 ---
 
@@ -647,7 +648,7 @@ Disneyland park managers need to query this complex multi-silo dataset (reviews,
 ### Description
 
 #### Task 7.1: Initialize the Conversational Analytics Agent
- 
+
 1. In BigQuery Studio, navigate to the **Agents** tab.
 2. Create a new agent named `disney_park_analyst` and connect it to the table under disney dataset. You can also put the previously created BQ graph as a knowledge source. (You can either choose tables or a Graph, not both)
 
@@ -1001,10 +1002,10 @@ Using the **Agent Development Kit (ADK)**, you will construct the conversational
 Rather than a generic, plain interface, you will **vibe-code a stunning, premium web application** that hooks into your ADK agent.
 
 **Leverage the Google AI Stack for Vibe-Coding:**
-  - **Stitch:** Use Stitch to rapidly design and iterate on the premium web interface (dark modes, glassmorphism, animations) and export production-ready components.
-  - **Google Antigravity 2.0 & CLI:** Use the `antigravity` CLI and its Agentic IDE capabilities to autonomously scaffold and vibe-code the frontend logic, hooking it directly to your ADK agent.
-  - **Google AI Studio:** Prototype, experiment, and fine-tune any complex conversational interactions or multimodal prompts before integrating them into your codebase.
 
+- **Stitch:** Use Stitch to rapidly design and iterate on the premium web interface (dark modes, glassmorphism, animations) and export production-ready components.
+- **Google Antigravity 2.0 & CLI:** Use the `antigravity` CLI and its Agentic IDE capabilities to autonomously scaffold and vibe-code the frontend logic, hooking it directly to your ADK agent.
+- **Google AI Studio:** Prototype, experiment, and fine-tune any complex conversational interactions or multimodal prompts before integrating them into your codebase.
 
 #### Task 10.3: Deploy to Google Cloud Run (Optional)
 
