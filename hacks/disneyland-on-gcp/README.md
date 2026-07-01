@@ -10,10 +10,10 @@ Planning the perfect Disneyland trip is a complex optimization problem. Visitors
 
 In this gHack, your mission is to transform raw data—visitor reviews, attraction catalogs, historical wait times, park brochures, and visitor movement logs—into an end-to-end, intelligent guest assistance system.
 
-This gHack is designed to be highly challenging and is structured into **9 challenges** that can be parallelized across **3 key team personas** to optimize development speed:
+This gHack is designed to be highly challenging and is structured into **10 challenges** that can be parallelized across **3 key team personas** to optimize development speed:
 
-- **DB & Platform Engineers** will build the operational database in AlloyDB, configure Datastream replication, set up the database agentic layer, sync analytical insights, and assemble the final agent and web UI (Challenges 1, 2, 7, 8, and 9).
-- **Data Scientists & Analysts** will train predictive models, perform sentiment analysis, cluster attractions in BigQuery, and design the semantic layer/Conversational Analytics agent for park managers (Challenges 3 and 6).
+- **DB & Platform Engineers** will build the operational database in AlloyDB, configure Datastream replication, set up the database agentic layer, sync analytical insights, and assemble the final agent and web UI (Challenges 1, 2, 8, 9, and 10).
+- **Data Scientists & Analysts** will train predictive models, perform sentiment analysis, cluster attractions in BigQuery, and design the semantic layer/Conversational Analytics agent for park managers (Challenges 3, 6, and 7).
 - **AI & Graph Engineers** will construct RAG pipelines, classify multimodal images, and model/query visitor movement patterns using property graphs in BigQuery (Challenges 4 and 5).
 
 Get ready to build an agentic data pipeline that would make Mickey proud! Let the magic begin! ✨
@@ -44,10 +44,11 @@ In this hack, you will build an end-to-end data pipeline with AI and database ca
 - Challenge 3: Sentiment and wait-time forecasting
 - Challenge 4: Image classification and brochure RAG
 - Challenge 5: Graph analytics and visitor flow
-- Challenge 6: Conversational analytics for insights
-- Challenge 7: From insights to action, syncing BigQuery and AlloyDB
-- Challenge 8: Exposing Database Tools via MCP
-- Challenge 9: Building the guest assistant app
+- Challenge 6: Preparing the Context Layer
+- Challenge 7: Conversational analytics for insights
+- Challenge 8: From insights to action, syncing BigQuery and AlloyDB
+- Challenge 9: Exposing Database Tools via MCP
+- Challenge 10: Building the guest assistant app
 
 ---
 
@@ -132,6 +133,8 @@ Connect using **AlloyDB Studio** or `psql` and perform the following tasks:
         - Columns: `review_id` (integer, Primary Key), `rating` (integer), `year_month` (text), `reviewer_location` (text), `review_text` (text), `branch` (text).
     - **`disneyland_attractions`**: Represents the park's attractions.
         - Columns: `attraction_id` (integer, Primary Key), `branch` (text), `name` (text), `description` (text).
+    - **`visitor_movements`**: Represents visitor movements in the park.
+        - Columns: `visitor_id` (integer), `from_attraction_id` (integer), `to_attraction_id` (integer), `timestamp` (timestamp).
 3. **Add a Full-Text Search Vector:**
    To enable high-performance hybrid search later, add a generated `tsvector` column to the attractions table:
 
@@ -143,8 +146,9 @@ Connect using **AlloyDB Studio** or `psql` and perform the following tasks:
 
 4. **Import Data from Cloud Storage:**
    Use the AlloyDB Import API (via UI or `gcloud`) or the tool of your choice to import the data from these public CSVs:
-    - `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/reviews.csv` into `disneyland_reviews`
-    - `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/attractions.csv` into `disneyland_attractions`
+    - `gs://ghacks-disneyland-on-gcp/reviews.csv` into `disneyland_reviews`
+    - `gs://ghacks-disneyland-on-gcp/attractions.csv` into `disneyland_attractions`
+    - `gs://ghacks-disneyland-on-gcp/visitor_movements.csv` into `visitor_movements`
 
 #### Task 1.2: Generate Vector Embeddings at the Source
 
@@ -184,7 +188,7 @@ To stream our data from AlloyDB to BigQuery in near real-time, we will use **Goo
 4. Ensure to
    - Create the stream in the same region as your AlloyDB cluster
    - Use **Built-in database authentication**
-   - Select the two tables you just created
+   - Select the three tables you just created
    - Configure the write mode select **Merge**, staleness limit to **0 seconds** and a single datatset for all schemas named **disney**.
 
 The stream will be created and started automatically, do not wait until its finished. You can start challenge 2 and come back to this step later.
@@ -444,7 +448,7 @@ Rather than writing Python code from scratch, you will leverage the new **Data S
 We want our guest assistant to predict wait times for any hour of the day.
 
 1. Load the historical wait times dataset from:
-   `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/waiting_times.csv` into a BigQuery table named `waiting_times`.
+   `gs://ghacks-disneyland-on-gcp/waiting_times.csv` into a BigQuery table named `waiting_times`.
 2. Use BigQuery ML to train a time-series forecasting model. You can choose either:
     - **ARIMA_PLUS**: The classic, fast statistical forecasting model.
     - **TimesFM**: Google's state-of-the-art foundation model for time-series forecasting (using `AI.FORECAST`).
@@ -482,7 +486,7 @@ Disneyland managers have a collection of visitor photos and PDF brochures. In th
 
 #### Task 4.1: Multimodal Image Classification
 
-You have a GCS bucket containing park photos: `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/attraction_parc_photos/`.
+You have a GCS bucket containing park photos: `gs://ghacks-disneyland-on-gcp/attraction_parc_photos/`.
 
 1. Create a **BigQuery Object Table** pointing to the GCS bucket.
 2. Create a remote model in BigQuery pointing to a multimodal model (e.g., `gemini-2.5-flash`).
@@ -491,7 +495,7 @@ You have a GCS bucket containing park photos: `gs://gHack_data_disneyland_<YOUR_
 
 #### Task 4.2: PDF Brochure Ingestion & RAG Pipeline
 
-We want our assistant to answer detailed questions based on the official park brochures (PDFs) located in `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/disneyland_brochures/`.
+We want our assistant to answer detailed questions based on the official park brochures (PDFs) located in `gs://ghacks-disneyland-on-gcp/disneyland_brochures/`.
 
 1. Create an **Object Table** pointing to the brochures bucket.
 2. Create a **Python UDF** in BigQuery to extract text and chunk the PDF files. You can use `pypdf` inside the UDF environment.
@@ -519,41 +523,36 @@ To validate this challenge, you must demonstrate the following:
 
 ### Introduction
 
-Understanding visitor movement patterns is key to optimizing park operations and recommending optimal paths to avoid long queues. In this challenge, you will load visitor movement logs, define a Property Graph in BigQuery using BigQuery's new native SQL Graph capabilities, query the graph for flow patterns and bottlenecks, and construct a routing recommendation table.
+Understanding visitor movement patterns is key to optimizing park operations and recommending optimal paths to avoid long queues. In this challenge, you will define a Property Graph in BigQuery using BigQuery's new native SQL Graph capabilities over the replicated visitor movement logs, query the graph for flow patterns and multi-hop journeys, and construct a routing recommendation table.
 
 ### Description
 
-#### Task 5.1: Ingest Visitor Movement Data
-
-1. Load the visitor movement dataset from:
-   `gs://gHack_data_disneyland_<YOUR_PROJECT_3DIGITS>/visitor_movements.csv` into a BigQuery table named `visitor_movements` (columns: `visitor_id`, `from_attraction_id`, `to_attraction_id`, `timestamp`).
-
-#### Task 5.2: Build a Property Graph in BigQuery
+#### Task 5.1: Build a Property Graph in BigQuery
 
 Using BigQuery's new native **SQL Graph** capabilities, you will define a property graph over the attractions and movements.
 
 > [!IMPORTANT]
 > **Dependency Note:**
-> Creating the Property Graph requires the `disneyland_attractions` table to exist in BigQuery. This requires **Challenge 1** (Datastream replication) to be completed first.
+> Creating the Property Graph requires both `public_disneyland_attractions` and `public_visitor_movements` tables to exist in BigQuery. This requires **Challenge 1** (Datastream replication) to be committed first.
 
 1. Define the **Property Graph** schema.
-    - **Nodes (Vertices):** Attractions (from the replicated `disneyland_attractions` table).
-    - **Edges (Relationships):** Movements (from `visitor_movements`).
+    - **Nodes (Vertices):** Attractions (from the replicated `public_disneyland_attractions` table).
+    - **Edges (Relationships):** Movements (from the replicated `public_visitor_movements` table).
 2. Write the DDL to create the property graph `disney_movement_graph`.
 
-#### Task 5.3: Query the Graph for Patterns
+#### Task 5.2: Query the Graph for Patterns
 
-Write graph queries using `GRAPH_TABLE` and GPML match patterns to solve the following analytical questions:
+Write graph queries using `GRAPH_TABLE` and GQL match patterns to solve the following analytical questions:
 
 1. **Flow Analysis:** *What are the top 3 attractions visitors run to immediately after leaving "Space Mountain"?*
    Write a query matching paths: `(a:Attraction {name: 'Space Mountain'}) -[e:Moved]-> (b:Attraction)`.
-2. **Bottleneck Detection:** *Which attractions have the highest density of incoming movements at 2:00 PM (14:00)?*
-   Analyze edges matching a specific time window.
+2. **Multi-Hop Journeys:** *Find the most common 3-ride sequences (A -> B -> C) starting from "Space Mountain" taken by the same visitor within a 2-hour window.*
+   Analyze paths matching: `(a:Attraction {name: 'Space Mountain'}) -[e1:Moved]-> (b:Attraction) -[e2:Moved]-> (c:Attraction)` where both movements are made by the same visitor.
 
-#### Task 5.4: Generate a Next-Ride Routing Table
+#### Task 5.3: Generate a Next-Ride Routing Table
 
-1. Based on the graph density and historical transitions, compute the transition probabilities between rides.
-2. Create a routing table `graph_recommendations` that stores the optimal "Next Ride" suggestion for every attraction under different congestion scenarios.
+1. Using `GRAPH_TABLE` and matching the transitions in the property graph `disney_movement_graph`, write a query to compute the transition counts between attractions.
+2. Create a routing table `graph_recommendations` that stores the top 2 next-ride recommendations (ranks 1 and 2) for every attraction.
 
 ### Success Criteria
 
@@ -561,8 +560,8 @@ To validate this challenge, you must demonstrate the following:
 
 - Show the SQL DDL statement used to define and create the Property Graph `disney_movement_graph`.
 - Provide the SQL graph query for the "Flow Analysis" (top 3 rides after Space Mountain) and its corresponding output.
-- Provide the SQL graph query for "Bottleneck Detection" at 2:00 PM and its corresponding output.
-- Show the schema and sample rows of the `graph_recommendations` routing table.
+- Provide the SQL graph query for "Multi-Hop Journeys" starting from Space Mountain and its corresponding output.
+- Provide the SQL graph query used to generate the `graph_recommendations` routing table from the property graph, and display its schema and sample rows.
 
 ---
 
@@ -604,7 +603,7 @@ Set up an automated extraction pipeline to handle documentation and unstructured
 > [!TIP]
 > **This can be done in the BigQuery Metadata Curation tab.**
 
-1. Configure the pipeline to analyze your unstructured `gs://hackathon_data_disneyland_<YOUR_PROJECT_3DIGITS>/` bucket.  
+1. Configure the pipeline to analyze your unstructured `gs://ghacks-disneyland-on-gcp/` bucket.  
 2. Automatically generate and attach metadata tags (such as language, document type, target audience, and revision date) to the PDF assets, use semantic inference for better results.
 
 #### **Task 6.5: lookup context API Integration**
@@ -701,7 +700,7 @@ First, you need to create the local tables in AlloyDB that will store the synced
     CREATE TABLE IF NOT EXISTS public.graph_recommendations (
         attraction_id INT,
         recommended_next_attraction_id INT,
-        congestion_level TEXT
+        recommendation_rank INT
     );
     ```
 
@@ -742,8 +741,8 @@ Now, copy the data from the foreign tables into your local AlloyDB tables.
     FROM public.bq_forecasted_waiting_times;
 
     -- Sync graph recommendations
-    INSERT INTO public.graph_recommendations (attraction_id, recommended_next_attraction_id, congestion_level)
-    SELECT attraction_id, recommended_next_attraction_id, congestion_level 
+    INSERT INTO public.graph_recommendations (attraction_id, recommended_next_attraction_id, recommendation_rank)
+    SELECT attraction_id, recommended_next_attraction_id, recommendation_rank 
     FROM public.bq_graph_recommendations;
     ```
 
