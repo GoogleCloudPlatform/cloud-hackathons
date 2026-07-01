@@ -30,10 +30,11 @@ In this hack, you will build an end-to-end data pipeline with AI and database ca
 4. **Predictive analytics**: Train forecasting and sentiment models using BigQuery ML.
 5. **Multimodal RAG**: Build image classification and PDF search pipelines.
 6. **Graph analysis**: Map visitor movements and query patterns using GQL.
-7. **Conversational analytics**: Build a natural language assistant using the BigQuery and Knowledge Catalog.
-8. **AlloyDB sync**: Copy insights back to AlloyDB using FDW for fast serving.
-9. **MCP tools**: Expose database capabilities using the MCP Toolbox.
-10. **App deployment**: Build a web app with the ADK and deploy it to Cloud Run.
+7. **Context layer (Knowledge Catalog)**: Build a centralized metadata context layer, business glossary, and profiling rules.
+8. **Conversational analytics**: Build a natural language assistant using BigQuery Studio.
+9. **AlloyDB sync**: Copy insights back to AlloyDB using FDW for fast serving.
+10. **MCP tools**: Expose database capabilities using the MCP Toolbox.
+11. **App deployment**: Build a web app with the ADK and deploy it to Cloud Run.
 
 ---
 
