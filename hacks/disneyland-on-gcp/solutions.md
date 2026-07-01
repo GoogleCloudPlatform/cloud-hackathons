@@ -12,10 +12,11 @@ Welcome to the coach's guide for the *Disneyland Agentic Data Cloud* gHack. This
 * Challenge 3: Sentiment and wait-time forecasting
 * Challenge 4: Image classification and brochure RAG
 * Challenge 5: Graph analytics and visitor flow
-* Challenge 6: Conversational analytics for insights
-* Challenge 7: From insights to action, syncing BigQuery and AlloyDB
-* Challenge 8: Exposing Database Tools via MCP
-* Challenge 9: Building the guest assistant app
+* Challenge 6: Preparing the Context Layer
+* Challenge 7: Conversational analytics for insights
+* Challenge 8: From insights to action, syncing BigQuery and AlloyDB
+* Challenge 9: Exposing Database Tools via MCP
+* Challenge 10: Building the guest assistant app
 
 ---
 
