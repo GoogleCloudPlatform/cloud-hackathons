@@ -631,15 +631,16 @@ SELECT * FROM GRAPH_TABLE(
 );
 ```
 
-#### 2. Reachable Journeys
-Find all unique visitor IDs who traveled from `'Space Mountain'` to `'Indiana Jones Adventure'` in 5 hops or less:
+#### 2. Multi-Hop Journeys by Visitor
+Find all unique visitor IDs who traveled from `'Space Mountain'` to `'Indiana Jones Adventure'` in a 2-hop journey (Space Mountain -> intermediate ride -> Indiana Jones Adventure) where both transitions are made by the same visitor:
 
 ```sql
 SELECT DISTINCT visitor_id
 FROM GRAPH_TABLE(
   disney.disney_movement_graph
-  MATCH (a:Attraction {name: 'Space Mountain'}) -[e:Moved]->{1,5} (b:Attraction {name: 'Indiana Jones Adventure'})
-  RETURN e[SAFE_OFFSET(0)].visitor_id AS visitor_id
+  MATCH (a:Attraction {name: 'Space Mountain'}) -[e1:Moved]-> (b:Attraction) -[e2:Moved]-> (c:Attraction {name: 'Indiana Jones Adventure'})
+  WHERE e1.visitor_id = e2.visitor_id
+  RETURN e1.visitor_id AS visitor_id
 );
 ```
 
@@ -1115,124 +1116,4 @@ visitor_guide = Agent(
     """,
     tools=disney_tools,
 )
-```
-
----
-
-### 10.2 Vibe-Coding a Premium Web Application
-
-An example **Streamlit** dashboard/chat application that integrates the ADK agent:
-
-```python
-import streamlit as st
-import asyncio
-from google.genai import types
-from google.adk.runners import Runner
-from google.adk.sessions import InMemorySessionService
-from agent import visitor_guide
-
-st.set_page_config(page_title="Disneyland Guest Assistant", page_icon="🪄", layout="wide")
-
-# Styling for a premium "vibe-coded" look
-st.markdown("""
-    <style>
-    .stApp {
-        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-        color: #f8fafc;
-    }
-    .attraction-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 15px;
-        padding: 20px;
-        margin-bottom: 15px;
-        transition: transform 0.2s;
-    }
-    .attraction-card:hover {
-        transform: translateY(-5px);
-        border-color: #fbbf24;
-    }
-    </style>
-    """, unsafe_gradient=True)
-
-st.title("🪄 Disneyland Magical Guest Assistant")
-st.write("Plan your perfect day at Disneyland with real-time AI guidance, crowd forecasts, and smart routing.")
-
-# Initialize Session State
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-if "runner" not in st.session_state:
-    session_service = InMemorySessionService()
-    st.session_state.runner = Runner(agent=visitor_guide, app_name="disney_app", session_service=session_service)
-    st.session_state.session_id = "guest_session"
-
-# Sidebar or main layout elements
-# (e.g. displaying featured attractions, wait times, or map recommendations)
-
-# Chat Interface
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.write(msg["content"])
-
-if prompt := st.chat_input("Ask your magical guide..."):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.write(prompt)
-
-    async def get_agent_response():
-        response_text = ""
-        async for event in st.session_state.runner.run_async(
-            user_id="visitor",
-            session_id=st.session_state.session_id,
-            new_message=types.Content(role="user", parts=[types.Part.from_text(text=prompt)])
-        ):
-            if event.is_final_response():
-                response_text = event.content.parts[0].text
-        return response_text
-
-    with st.chat_message("assistant"):
-        with st.spinner("Consulting the magic mirror..."):
-            response = asyncio.run(get_agent_response())
-            st.write(response)
-            st.session_state.messages.append({"role": "assistant", "content": response})
-```
-
----
-
-### 10.3 Deploy to Google Cloud Run
-
-#### 1. Write the Dockerfile
-
-```dockerfile
-FROM python:3.11-slim
-
-# Install system dependencies (e.g., git if needed)
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    curl \
-    software-properties-common \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-EXPOSE 8080
-
-# Run Streamlit or your web server
-CMD ["streamlit", "run", "app.py", "--server.port=8080", "--server.address=0.0.0.0"]
-```
-
-#### 2. Deploy Command
-
-```bash
-gcloud run deploy disneyland-guest-assistant \
-  --source . \
-  --platform managed \
-  --region europe-west1 \
-  --allow-unauthenticated
 ```
