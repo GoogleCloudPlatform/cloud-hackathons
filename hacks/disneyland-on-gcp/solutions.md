@@ -348,7 +348,7 @@ FROM
 LOAD DATA OVERWRITE `disney.waiting_times`
 FROM FILES (
   format = 'CSV',
-  uris = ['gs://ghacks-disneyland-on-gcp/waiting_times.csv']
+  uris = ['gs://ghacks-disneyland-on-gcp/waiting_time.csv']
 );
 ```
 
