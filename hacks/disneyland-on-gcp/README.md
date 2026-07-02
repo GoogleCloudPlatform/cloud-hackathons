@@ -481,10 +481,14 @@ We want our assistant to answer detailed questions based on the official park br
 
 Create an **Object Table** in BigQuery pointing to the brochures bucket.
 
-**Option 1: AI.SEARCH with OBJECTREF**
+##### Option 1: AI.SEARCH with OBJECTREF
+
 - Use `AI.SEARCH` to find *"Where can I find a buffet-style Tex-Mex meal?"*
 
-**Option 2: For a more streamlined pipeline, let’s create chunks of the pdfs, then generate embeddings. Finally use Vector search to find similarities.**
+##### Option 2: Chunking, Embeddings, and Vector Search
+
+For a more streamlined pipeline, let's create chunks of the PDFs, then generate embeddings. Finally, use Vector search to find similarities:
+
 - Extract chunks of the PDF files (using `AI.GENERATE`, `AI.PARSE_DOCUMENT` or a UDF Function).
 - Generate embeddings for each text chunk using a remote BQML embedding model (`gemini-embedding-001`).
 - Store the chunks and their vector embeddings in a table `brochure_embeddings`.
