@@ -34,7 +34,7 @@ In this hack, you will build an end-to-end data pipeline with AI and database ca
 8. **Conversational analytics**: Build a natural language assistant using BigQuery Studio.
 9. **AlloyDB sync**: Copy insights back to AlloyDB using FDW for fast serving.
 10. **MCP tools**: Expose database capabilities using the MCP Toolbox.
-11. **App deployment**: Build a web app with the ADK and deploy it to Cloud Run.
+11. **App deployment**: Build a web app with the ADK and deploy it locally.
 
 ---
 
@@ -55,7 +55,7 @@ In this hack, you will build an end-to-end data pipeline with AI and database ca
 
 ## Prerequisites
 
-- Basic knowledge of Google Cloud services (AlloyDB, BigQuery, Datastream, Cloud Run)
+- Basic knowledge of Google Cloud services (AlloyDB, BigQuery, Datastream)
 - Intermediate knowledge of SQL and PostgreSQL
 - Basic familiarity with Python and Agentic AI concepts (MCP, ADK)
 - Access to a Google Cloud project with the necessary APIs and resources provisioned
@@ -251,22 +251,17 @@ curl -X PATCH \
 
 #### Task 2.2: Register IAM Users in AlloyDB
 
-To interact with the database, QueryData relies on **IAM Database Authentication**. This means both you (the developer) and the AI agent must be registered as database users.
+To interact with the database, QueryData relies on **IAM Database Authentication**. This means that each user that needs to use querydata must be registered as a database user and given privileges. We will just use personal accounts for querydata.
 
-Specifically, you must register:
-
-1. **Your Google Account** – to manage Context Sets via the AlloyDB Console.
-2. **The Agent's Service Account** – to allow the agent to connect and execute queries.
-
-To register these users, follow these steps:
+To register your user, follow these steps:
 
 1. **Log in using Basic Authentication:**
    - In the Google Cloud Console, navigate to **AlloyDB > Clusters** and select your cluster.
    - Click **AlloyDB Studio** in the left menu.
    - Sign in to the `disney` database using **Basic Authentication** (Username: `postgres`, Password: `<your_cluster_password>`).
 
-2. **Register the IAM Users:**
-   Open a new query editor and run the following SQL commands to register your own Google account (so you can manage context sets) and the agent's Service Account (so the agent can connect), granting them the necessary table privileges:
+2. **Register the IAM User:**
+   Open a new query editor and run the following SQL commands to register your own Google account (so you can manage context sets and allow the agent to connect) and grant it the necessary table privileges:
 
    ```sql
    -- 1. Register your own Google account (replace with your actual GCP login email)
@@ -274,19 +269,12 @@ To register these users, follow these steps:
    GRANT USAGE ON SCHEMA public TO "your-email@domain.com";
    GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO "your-email@domain.com";
 
-   -- 2. Register the dedicated Agent Service Account (replace with your project ID)
-   CREATE USER "disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com" WITH FLAGS ('IAMUser');
-   GRANT USAGE ON SCHEMA public TO "disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com";
-   GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO "disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com";
-
-   -- 3. Ensure future tables grant access automatically
+   -- 2. Ensure future tables grant access automatically
    ALTER DEFAULT PRIVILEGES IN SCHEMA public 
    GRANT SELECT, INSERT, UPDATE ON TABLES TO "your-email@domain.com";
-   ALTER DEFAULT PRIVILEGES IN SCHEMA public 
-   GRANT SELECT, INSERT, UPDATE ON TABLES TO "disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com";
    ```
 
-   *(Note: Replace `<YOUR_PROJECT_ID>` with your actual Google Cloud Project ID, and `your-email@domain.com` with the email you use to log into the Google Cloud Console.)*
+   *(Note: Replace `your-email@domain.com` with the email you use to log into the Google Cloud Console.)*
 
 #### Task 2.3: Set Up the QueryData Context Set in AlloyDB
 
@@ -934,13 +922,8 @@ tools:
 
 #### Task 9.3: Start and Validate the Server
 
-Before running the toolbox, you must authenticate your local environment and configure it to impersonate the dedicated Agent Service Account. This allows the toolbox to call the QueryData API using the service account's identity:
-
 ```bash
-# 1. Authenticate and set up service account impersonation
-gcloud auth application-default login --impersonate-service-account=disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com
-
-# 2. Start the toolbox
+# Start the toolbox
 ./toolbox --config tools.yaml --ui
 ```
 
@@ -963,7 +946,7 @@ To validate this challenge, you must demonstrate the following:
 
 ### Introduction
 
-This is the final integration and application challenge! Because the entire database agentic layer—including BigQuery FDW data sync, operational/analytical SQL tools, and MCP Toolbox—has already been securely structured in Challenges 7, 8, and 9, this challenge focuses exclusively on the developer's magic: constructing the conversational guest assistant, vibe-coding a premium web application, and deploying it to **Cloud Run**.
+This is the final integration and application challenge! Because the entire database agentic layer—including BigQuery FDW data sync, operational/analytical SQL tools, and MCP Toolbox—has already been securely structured in Challenges 7, 8, and 9, this challenge focuses exclusively on the developer's magic: constructing the conversational guest assistant, vibe-coding a premium web application, and deploying it **locally**.
 
 ![Challenge 10 Architecture](images/challenge10_architecture.png)
 
@@ -1006,24 +989,6 @@ Rather than a generic, plain interface, you will **vibe-code a stunning, premium
 - **Stitch:** Use Stitch to rapidly design and iterate on the premium web interface (dark modes, glassmorphism, animations) and export production-ready components.
 - **Google Antigravity 2.0 & CLI:** Use the `antigravity` CLI and its Agentic IDE capabilities to autonomously scaffold and vibe-code the frontend logic, hooking it directly to your ADK agent.
 - **Google AI Studio:** Prototype, experiment, and fine-tune any complex conversational interactions or multimodal prompts before integrating them into your codebase.
-
-#### Task 10.3: Deploy to Google Cloud Run (Optional)
-
-To complete the gHack and make the guest assistant publicly accessible, you will containerize and push the application to **Cloud Run**.
-
-1. **Write the Dockerfile:**
-   Create a `Dockerfile` that packages both the ADK python backend (exposing the agent API) and the built frontend assets.
-2. **Deploy Command:**
-   Use `gcloud run deploy` to push the application in one step, making sure to associate it with the dedicated Agent Service Account so it can authenticate to AlloyDB QueryData:
-
-    ```bash
-    gcloud run deploy disneyland-guest-assistant \
-      --source . \
-      --platform managed \
-      --region europe-west1 \
-      --service-account=disney-agent-sa@<YOUR_PROJECT_ID>.iam.gserviceaccount.com \
-      --allow-unauthenticated
-    ```
 
 ### Success Criteria
 
