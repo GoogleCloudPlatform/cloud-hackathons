@@ -261,20 +261,11 @@ To register your user, follow these steps:
    - Sign in to the `disney` database using **Basic Authentication** (Username: `postgres`, Password: `<your_cluster_password>`).
 
 2. **Register the IAM User:**
-   Open a new query editor and run the following SQL commands to register your own Google account (so you can manage context sets and allow the agent to connect) and grant it the necessary table privileges:
-
-   ```sql
-   -- 1. Register your own Google account (replace with your actual GCP login email)
-   CREATE USER "your-email@domain.com" WITH FLAGS ('IAMUser');
-   GRANT USAGE ON SCHEMA public TO "your-email@domain.com";
-   GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO "your-email@domain.com";
-
-   -- 2. Ensure future tables grant access automatically
-   ALTER DEFAULT PRIVILEGES IN SCHEMA public 
-   GRANT SELECT, INSERT, UPDATE ON TABLES TO "your-email@domain.com";
-   ```
-
-   *(Note: Replace `your-email@domain.com` with the email you use to log into the Google Cloud Console.)*
+   - In your AlloyDB console, navigate to **Users**
+   - Click **Add user account**
+   - Select **Cloud IAM**
+   - Enter the email you use to log into the Google Cloud Console in the **User ID** field
+   - Click **Save**
 
 #### Task 2.3: Set Up the QueryData Context Set in AlloyDB
 
@@ -439,7 +430,7 @@ Rather than writing Python code from scratch, you will leverage the new **Data S
 We want our guest assistant to predict wait times for any hour of the day.
 
 1. Load the historical wait times dataset from:
-   `gs://ghacks-disneyland-on-gcp/waiting_times.csv` into a BigQuery table named `waiting_times`.
+   `gs://ghacks-disneyland-on-gcp/waiting_time.csv` into a BigQuery table named `waiting_times`.
 2. Use BigQuery ML to train a time-series forecasting model. You can choose either:
     - **ARIMA_PLUS**: The classic, fast statistical forecasting model.
     - **TimesFM**: Google's state-of-the-art foundation model for time-series forecasting (using `AI.FORECAST`).
@@ -484,18 +475,27 @@ You have a GCS bucket containing park photos: `gs://ghacks-disneyland-on-gcp/att
 3. Use `AI.GENERATE_TEXT` to pass the image URIs to the model with a prompt asking: *"Is this image from a Disneyland park? Answer with a JSON object containing keys 'is_disneyland' (boolean) and 'reason' (string)."*
 4. Save the structured results into a table `images_classification`.
 
-#### Task 4.2: PDF Brochure Ingestion & RAG Pipeline
+#### Task 4.2: Streamlined PDF Document Processing
 
-We want our assistant to answer detailed questions based on the official park brochures (PDFs) located in `gs://ghacks-disneyland-on-gcp/disneyland_brochures/`.
+We want our assistant to answer detailed questions based on the official park brochures (PDFs) located in `gs://ghacks-disneyland-on-gcp/disneyland_brochures/`. You can choose between two options.
 
-1. Create an **Object Table** pointing to the brochures bucket.
-2. Create a **Python UDF** in BigQuery to extract text and chunk the PDF files. You can use `pypdf` inside the UDF environment.
-3. Chunk the PDFs, and generate embeddings for each text chunk using a remote BQML embedding model (`gemini-embedding-001`).
-4. Store the chunks and their vector embeddings in a table `brochure_embeddings`.
+Create an **Object Table** in BigQuery pointing to the brochures bucket.
 
-#### Task 4.3: Vector Search & RAG Validation
+##### Option 1: AI.SEARCH with OBJECTREF
 
-1. Perform a vector search query on `brochure_embeddings` to find the most relevant brochure chunks for the question: *"Where can I find a buffet-style Tex-Mex meal?"* (or French: *"Où manger un repas tex-mex à volonté ?"*).
+- Use `AI.SEARCH` to find *"Where can I find a buffet-style Tex-Mex meal?"*
+
+##### Option 2: Chunking, Embeddings, and Vector Search
+
+For a more streamlined pipeline, let's create chunks of the PDFs, then generate embeddings. Finally, use Vector search to find similarities:
+
+- Extract chunks of the PDF files (using `AI.GENERATE`, `AI.PARSE_DOCUMENT` or a UDF Function).
+- Generate embeddings for each text chunk using a remote BQML embedding model (`gemini-embedding-001`).
+- Store the chunks and their vector embeddings in a table `brochure_embeddings`.
+
+#### Task 4.3: Intelligent Search and Response with AI.SEARCH & AI.GENERATE_TEXT
+
+1. Perform a vector search over the `brochure_embeddings` table. Find the most relevant document chunks for the question: *"Where can I find a buffet-style Tex-Mex meal?"* (or French: *"Où manger un repas tex-mex à volonté ?"*).
 2. Pass the retrieved chunks as context along with the question to `gemini-2.5-flash` using `AI.GENERATE_TEXT` to generate a grounded, accurate response.
 
 ### Success Criteria
