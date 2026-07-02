@@ -134,6 +134,7 @@ resource "google_alloydb_instance" "default" {
     "alloydb.logical_decoding" = "on" # needed for replication
     "bigquery_fdw.enabled"     = "on" # needed for connecting to bq
     "alloydb.iam_authentication" = "on"
+    "password.enforce_complexity" = "on"
   }
 
   machine_config {
@@ -224,38 +225,3 @@ resource "google_project_iam_member" "alloydb_sa_roles" {
   role    = each.key
   member  = "serviceAccount:${google_project_service_identity.alloydb_sa.email}"
 }
-
-# =========================================================================
-# Dedicated SA for the agent & QueryData
-# =========================================================================
-
-# 1. Create the Service Account
-resource "google_service_account" "agent_sa" {
-  account_id   = "disney-agent-sa"
-  display_name = "Disneyland Guest Assistant Agent Service Account"
-}
-
-# 2. Grant required roles to the Service Account
-resource "google_project_iam_member" "agent_sa_roles" {
-  for_each = toset([
-    "roles/geminidataanalytics.queryDataUser",
-    "roles/alloydb.databaseUser",
-    "roles/serviceusage.serviceUsageConsumer",
-    "roles/aiplatform.user"
-  ])
-  project = var.gcp_project_id
-  role    = each.key
-  member  = "serviceAccount:${google_service_account.agent_sa.email}"
-}
-
-# 3. Allow all Project Editors and Owners to impersonate this Service Account
-resource "google_service_account_iam_binding" "sa_impersonation" {
-  service_account_id = google_service_account.agent_sa.name
-  role               = "roles/iam.serviceAccountTokenCreator"
-
-  members = [
-    "projectEditor:${var.gcp_project_id}",
-    "projectOwner:${var.gcp_project_id}"
-  ]
-}
-
