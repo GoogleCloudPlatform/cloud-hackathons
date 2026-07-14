@@ -17,9 +17,10 @@ Welcome to the coach's guide for Introduction to Agents with ADK gHack. Here you
 - Challenge 1: First Scan
 - Challenge 2: Equipping the Scanner
 - Challenge 3: Sticky Notes
-- Challenge 4: Agent Symphony
-- Challenge 5: MCP: Universal Tooling
-- Challenge 6: A2A: Remote Agent Power
+- Challenge 4: The Gatekeeper
+- Challenge 5: Agent Symphony
+- Challenge 6: MCP: Universal Tooling
+- Challenge 7: A2A: Remote Agent Power
 
 ## Challenge 1: First Scan
 
@@ -123,6 +124,13 @@ Format of the response is not relevant for this challenge as long as all of the 
 
 Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
 
+Note that Git requires users to set up their identity before anything can be committed. So users need do the following before they can commit their changes:
+
+```shell
+git config --global user.name "$USER"  # or participant's real name
+git config --global user.email "$USER_EMAIL"  # or participant's real email address
+```
+
 ## Challenge 3: Sticky Notes
 
 ### Notes & Guidance
@@ -147,7 +155,45 @@ resource_scanner_agent = Agent(
 
 Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
 
-## Challenge 4: Agent Symphony
+## Challenge 4: The Gatekeeper
+
+### Notes & Guidance
+
+Again the new driver should follow the same steps for the first challenge to clone the repository (or pull the latest changes if they have already cloned it) and set up their environment (if they haven't done that already).
+
+Then edit the `janitor/agent.py` to define the callback and register it on the scanner agent.
+
+```python
+# Keep other imports
+from google.adk.agents.callback_context import CallbackContext
+from google.genai.types import Content, Part
+
+
+def gatekeeper(callback_context: CallbackContext) -> Content | None:
+    if "resources" in callback_context.state:
+        return Content(parts=[Part.from_text(text="Already scanned!")])
+    return None
+
+
+resource_scanner_agent = Agent(
+    name="resource_scanner_agent",
+    model=settings.GEMINI_MODEL,
+    instruction="""
+    You are a Cloud Resource Scanner. 
+    Return *all* resources.
+    """,
+    tools=[tools.get_compute_instances_list],
+    output_key="resources",
+    output_schema=schemas.VMInstanceList,
+    before_agent_callback=gatekeeper
+)
+
+root_agent = resource_scanner_agent
+```
+
+Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
+
+## Challenge 5: Agent Symphony
 
 ### Notes & Guidance
 
@@ -184,11 +230,11 @@ root_agent = orchestrator_agent
 ```
 
 > [!NOTE]  
-> Sometimes after running both agents, the `resources` state variable seems to be empty, but as long as `idle_resources` provides the correct set of instances, it should be fine.
+> Sometimes after running both agents, the `resources` state variable seems to be empty, but as long as `idle_resources` provides the correct set of instances, it should be fine. If the callback causees issues, because it will skip the agent execution if the `resources` is set, it can be updated to check for the length of the list and override execution only if the list exists and it is not empty.
 
 Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
 
-## Challenge 5: MCP: Universal Tooling
+## Challenge 6: MCP: Universal Tooling
 
 ### Notes & Guidance
 
@@ -262,7 +308,7 @@ mcp_tool_set = McpToolset(
 ```
 
 > [!NOTE]  
-> At the time of this writing using the `auth_scheme` and `auth_credentials` for bearer tokens doesn't work well with MCP servers, as those credentials are not utilized for listing the tools, tracked [here](https://github.com/google/adk-python/issues/2168).
+> When we originally designed this challenge, the `auth_scheme` and `auth_credentials` for bearer tokens didn't work well with MCP servers, as those credentials were not utilized for listing the tools, tracked [here](https://github.com/google/adk-python/issues/2168). This issue has been resolved, so participants are free to use that approach too.
 
 As our tool is simple, this approach works fine, but in real world, you might need to use OAuth flows, API keys etc. And there will be cases where the currently authenticated user's credentials need to be forwarded to remote agents/tools so that they can perform actions on behalf of the user (see the official [docs](https://adk.dev/safety/#identity-and-authorization) for more details).
 
@@ -276,7 +322,7 @@ gcloud compute instances list  \
 
 Make sure that the changes are pushed to the repository so the next driver can pick up the changes.
 
-## Challenge 6: A2A: Remote Agent Power
+## Challenge 7: A2A: Remote Agent Power
 
 ### Notes & Guidance
 

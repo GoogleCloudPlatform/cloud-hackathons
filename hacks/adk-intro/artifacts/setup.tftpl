@@ -65,5 +65,24 @@ gcloud run deploy a2a-server \
 echo "Setup done!"
 
 echo "Starting CPU hogging..."
-# Hog the cpu after 2 minutes (120 seconds = 120,000,000 microseconds)
-stress -c 1 --backoff 120000000 &
+cat << EOF > /etc/systemd/system/cpu-hog.service
+[Unit]
+Description=My CPU Hogging Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/stress -c 1
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sleep 120
+
+# Reload systemd, enable and start the service
+systemctl daemon-reload
+systemctl enable cpu-hog.service
+systemctl start cpu-hog.service
+
+echo "CPU hogging started!"
