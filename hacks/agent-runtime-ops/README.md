@@ -61,15 +61,15 @@ In this hack, you will learn how to:
 
 ## Challenges
 
-- [Challenge 1: Local Agent Verification](#challenge-1-local-agent-verification)
+- Challenge 1: It Works on My Machine!
   - Inspect the provided complete ADK agent and verify its tool execution locally with zero code changes.
-- [Challenge 2: Containerize & Deploy to Agent Runtime (BYOC)](#challenge-2-containerize--deploy-to-agent-runtime-byoc)
+- Challenge 2: Contain Your Excitement
   - Build a custom container image, push to Artifact Registry, and deploy to Agent Runtime with optimized scaling.
-- [Challenge 3: Granular Access Control with Agent Identity](#challenge-3-granular-access-control-with-agent-identity)
+- Challenge 3: Badge, Please!
   - Configure SPIFFE-based Agent Identity and enforce the principle of least privilege for cloud resources.
-- [Challenge 4: Ingress & Egress Security with Agent Gateway and Model Armor](#challenge-4-ingress--egress-security-with-agent-gateway-and-model-armor)
+- Challenge 4: Bouncer at the Gate
   - Protect your agent against prompt injections, jailbreaks, and PII leakage with Agent Gateway and Model Armor.
-- [Challenge 5: Continuous Quality Assurance with Online Evaluation](#challenge-5-continuous-quality-assurance-with-online-evaluation)
+- Challenge 5: Keeping It Real (Time)
   - Set up Online Monitors on Agent Platform to continuously score production traffic on task success, tool usage, and safety.
 
 ## Prerequisites
@@ -86,7 +86,7 @@ In this hack, you will learn how to:
 
 - Murat Eken
 
-## Challenge 1: Local Agent Verification
+## Challenge 1: It Works on My Machine!
 
 ### Introduction
 
@@ -120,7 +120,7 @@ The sample agent can be found [TODO: Git repo](https://github.com), clone it to 
 - If using `adk web` in Cloud Shell, pass `--allow_origins="*"` to ensure the Cloud Shell web preview works smoothly.
 - Ensure your Google Cloud authentication is configured (`gcloud auth application-default login` or setting `GOOGLE_GENAI_USE_VERTEXAI=true` with your project ID).
 
-## Challenge 2: Containerize & Deploy to Agent Runtime (BYOC)
+## Challenge 2: Contain Your Excitement
 
 ### Introduction
 
@@ -161,7 +161,7 @@ Once the image is on Artifact Registry, deploy the containerized agent to **Agen
 - The `container_spec` in the Python SDK takes `{"image_uri": "<IMAGE_URI>"}`.
 - You can inspect your deployed reasoning engine in the Google Cloud Console under **Agent Platform > Deployments** (or Vertex AI Agent Engine).
 
-## Challenge 3: Granular Access Control with Agent Identity
+## Challenge 3: Badge, Please!
 
 ### Introduction
 
@@ -195,7 +195,7 @@ Find the identity of your Agent and grant it the following permissions: TODO: fi
 
 - If deploying via the Python SDK or CLI, ensure the `--agent-identity` flag or identity configuration is enabled.
 
-## Challenge 4: Ingress & Egress Security with Agent Gateway and Model Armor
+## Challenge 4: Bouncer at the Gate
 
 ### Introduction
 
@@ -242,7 +242,7 @@ Create and configure an **Agent Gateway** resource in Client-to-Agent (ingress) 
 - Model Armor and Agent Gateway must be in the same Google Cloud region.
 - You can inspect blocked requests in the Google Cloud Console under **Security > Model Armor** or via Cloud Logging.
 
-## Challenge 5: Continuous Quality Assurance with Online Evaluation
+## Challenge 5: Keeping It Real (Time)
 
 ### Introduction
 

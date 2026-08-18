@@ -6,7 +6,7 @@ This guide provides coaches with reference solutions, estimated timings, common 
 
 In this hack, participants scale, govern, and monitor a production-ready Python ADK agent for Cymbal Retail without needing to write or alter agent code. They focus on infrastructure, security, networking, and operations.
 
-## Challenge 1: Local Agent Verification
+## Challenge 1: It Works on My Machine!
 
 ### Solution Steps
 
@@ -52,7 +52,7 @@ In this hack, participants scale, govern, and monitor a production-ready Python 
 - **Missing Authentication:** If students get `DefaultCredentialsError`, guide them to run `gcloud auth application-default login` or ensure `GOOGLE_CLOUD_PROJECT` is set.
 - **Code Changes:** Remind students that **no code edits** in `app/agent.py` or `app/tools.py` are required.
 
-## Challenge 2: Containerize & Deploy to Agent Runtime (BYOC)
+## Challenge 2: Contain Your Excitement
 
 ### Solution Steps
 
@@ -127,7 +127,7 @@ In this hack, participants scale, govern, and monitor a production-ready Python 
 - **Port Matching:** Ensure the container exposes port 8080 and that FastAPI serves the standard reasoning engine routes.
 - **Missing Container Spec:** If deploying programmatically, remind students that BYOC requires `container_spec={"image_uri": ...}`.
 
-## Challenge 3: Granular Access Control with Agent Identity
+## Challenge 3: Badge, Please!
 
 ### Solution Steps
 
@@ -180,7 +180,7 @@ In this hack, participants scale, govern, and monitor a production-ready Python 
 - **IAM Propagation Delay:** IAM role bindings can take 60-90 seconds to propagate across Google Cloud global IAM caches. Advise students to wait a moment if they see a transient 403.
 - **Service Account vs Agent Identity:** Emphasize to students the difference between traditional service accounts and SPIFFE-based per-agent identities with Context-Aware Access mTLS token binding.
 
-## Challenge 4: Ingress & Egress Security with Agent Gateway and Model Armor
+## Challenge 4: Bouncer at the Gate
 
 ### Solution Steps
 
@@ -225,7 +225,7 @@ In this hack, participants scale, govern, and monitor a production-ready Python 
 - **Regional Colocation:** Ensure the Model Armor template and Agent Gateway are created in the **exact same region** (e.g. `us-central1`).
 - **Inspection Logs:** Show students how Model Armor logs violations into Security Command Center and Cloud Logging.
 
-## Challenge 5: Continuous Quality Assurance with Online Evaluation
+## Challenge 5: Keeping It Real (Time)
 
 ### Solution Steps
 
