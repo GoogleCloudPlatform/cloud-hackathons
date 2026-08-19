@@ -1,4 +1,4 @@
-# Coach's Guide: Enterprise Agent Operations (Scale, Govern, Monitor)
+# Coach's Guide: Agents: Beyond the Basics
 
 ## Overview
 
@@ -10,47 +10,35 @@ In this hack, participants scale, govern, and monitor a production-ready Python 
 
 ### Solution Steps
 
-1. Extract the provided starter files and create a Python virtual environment:
+1. Download/clone the sample repository, and run the following command in the top level directory:
 
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
-   pip install --upgrade pip
-   pip install -r requirements.txt
+   ```shell
+   uv sync --dev  # --dev is optional
    ```
 
-2. Configure Application Default Credentials for local ADK testing:
+1. In principle it's sufficient to run `export GOOGLE_GENAI_USE_ENTERPRISE=true` in the terminal to configure the authentication on Cloud Shell. Keep in mind that Cloud Shell automatically populates the `GOOGLE_CLOUD_PROJECT` variable, so you don't have to set it. And we don't use the `GOOGLE_CLOUD_LOCATION` as we've hard-coded our model to the `global` location. However, if you follow the directions from the documentation, you should run the following:
 
-   ```bash
-   gcloud auth application-default login
-   export GOOGLE_GENAI_USE_VERTEXAI=true
-   export GOOGLE_CLOUD_PROJECT=$(gcloud config get-value project)
-   export GOOGLE_CLOUD_LOCATION=us-central1
+   ```shell
+   REGION=us-central1  # or any other valid location
+   cat > retail_agent/.env <<EOF
+   GOOGLE_GENAI_USE_ENTERPRISE=true
+   GOOGLE_CLOUD_PROJECT=$GOOGLE_CLOUD_PROJECT
+   GOOGLE_CLOUD_LOCATION=$REGION
+   EOF
+   source retail_agent/.env  # might be omitted
    ```
 
-3. Run the local test client:
+1. Start the Firestore emulator
 
-   ```bash
-   python test_client.py --mode local --prompt "What is the status of my order ORD-1001?"
+   ```shell
+   scripts/setup-emulator.sh
    ```
 
-4. Test refund and inventory queries:
+1. Run the ADK Web UI:
 
-   ```bash
-   python test_client.py --mode local --prompt "How many Wireless Headphones are in stock?"
-   python test_client.py --mode local --prompt "I want to return order ORD-1001 because the headphones were defective. Please refund $199.99."
+   ```shell
+   uv run adk web retail_agent --allow_origins="*"
    ```
-
-5. (Optional) Run the ADK Web UI:
-
-   ```bash
-   adk web app --allow_origins="*"
-   ```
-
-### Known Blockers & Coaching Tips
-
-- **Missing Authentication:** If students get `DefaultCredentialsError`, guide them to run `gcloud auth application-default login` or ensure `GOOGLE_CLOUD_PROJECT` is set.
-- **Code Changes:** Remind students that **no code edits** in `app/agent.py` or `app/tools.py` are required.
 
 ## Challenge 2: Contain Your Excitement
 

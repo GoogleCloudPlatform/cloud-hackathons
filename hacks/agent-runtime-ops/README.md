@@ -1,4 +1,4 @@
-# Enterprise Agent Operations: Scale, Govern, and Monitor on Agent Runtime
+# Agents: Beyond the Basics
 
 ## Introduction
 
@@ -85,20 +85,24 @@ In this hack, you will learn how to:
 
 ### Introduction
 
-We'll start with a complete Python agent built with the Google Agent Development Kit (ADK). The agent includes tools for looking up customer orders (`lookup_order`), checking warehouse inventory (`check_inventory`), reviewing store policies (`search_product_faq`), and processing refunds (`process_refund`).
+We already have a complete Python agent built with the Google Agent Development Kit (ADK). The agent includes tools for looking up customer orders (`lookup_order`), checking warehouse inventory (`check_inventory`), reviewing store policies (`search_product_faq`), and processing refunds (`process_refund`).
 
 Before containerizing and deploying to the cloud, we'll verify that the agent behaves correctly and executes its tools in a local development environment.
 
 ### Description
 
-The sample agent can be found [TODO: Git repo](https://github.com), clone it to your Cloud Shell. Create and activate a Python virtual environment, and install the required dependencies. Set up the authentication to use Agent Platform Authentication and start running the playground.
+The sample agent can be found [TODO: Git repo](https://github.com), clone it to your Cloud Shell. Install its dependencies in a Python virtual environment.
 
-> [!NOTE]  
-> By default the agent will use the default Firestore database in the project. Typically during development you'de either use an [emulator](https://docs.cloud.google.com/firestore/native/docs/emulator) or have a test detabase; if you prefer to go on that path don't forget to seed the database with test data.
+> [!NOTE] We recommend using `uv`, which is already installed on CloudShell, to manage dependencies and virtual environments.
+
+Set up the authentication to use Agent Platform Authentication (API keys are not allowed). Start and seed the Firestore emulator using the provided `setup-emulator.sh` script and launch the ADK web playground.
+
+Verify that you get relevant answers when the agent is prompted with the test queries.
 
 ### Success Criteria
 
 - Python virtual environment is created and dependencies are installed without errors.
+- Authentication for Agent Platform is set up (without API keys!).
 - The agent successfully answers the following test queries and executes the appropriate tool functions
   - Order lookup: *"What is the status of order ORD-1001?"*
   - Inventory check: *"How many Wireless Headphones are in stock?"*
