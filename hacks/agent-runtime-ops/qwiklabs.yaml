@@ -13,8 +13,8 @@
 # limitations under the License.
 schema_version: 2
 default_locale: en
-title: "[gHacks] Operating and Governing Agents on Agent Runtime"
-description: ""
+title: "[gHacks] Agents: Beyond the Basics"
+description: "Learn how to scale, govern, and operate autonomous AI agents in production"
 instruction:
   type: md
   uri: instructions/en.md
