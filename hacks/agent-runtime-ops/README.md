@@ -2,12 +2,12 @@
 
 ## Introduction
 
-Welcome to Cymbal Retail! As a leading global e-commerce enterprise, Cymbal Retail is modernizing its customer operations with autonomous AI agents. The engineering team has built a comprehensive customer support and order management agent using the Google Agent Development Kit (ADK). This agent handles real-time order inquiries, checks warehouse stock, answers store policies, and processes refunds.
+Welcome to Cymbal Retail! As a leading global e-commerce enterprise, Cymbal Retail is modernizing its customer operations with autonomous AI agents. The engineering team has built a customer support and order management agent using the Google Agent Development Kit (ADK). This agent handles real-time order inquiries, checks warehouse stock, answers store policies, and processes refunds.
 
-While building a prototype agent locally is straightforward, running agentic workloads in an enterprise production environment introduces critical architectural, security, and operational questions:
+While building a prototype agent locally is straightforward, running agentic workloads in an enterprise production environment introduces architectural, security, and operational questions:
 
-- **How do we scale and operate custom agent runtimes without managing VMs or Kubernetes clusters?** Enterprise workloads require custom dependencies, specific Python runtimes, and controlled build pipelines through Bring Your Own Container (BYOC) deployments.
-- **How do we enforce least-privilege governance?** Autonomous agents must not use broad, shared service account keys. They require dedicated cryptographic identities (Agent Identity) with granular access control tied directly to the agent's lifecycle.
+- **How do we scale and operate the agent runtimes without managing VMs or Kubernetes clusters?** Enterprise workloads require custom dependencies, specific Python runtimes, and controlled build pipelines through Bring Your Own Container (BYOC) deployments.
+- **How do we enforce least-privilege governance?** Autonomous agents must not use broad, shared service account keys. They require dedicated identities (Agent Identity) with granular access control tied directly to the agent's lifecycle.
 - **How do we protect agents from adversarial attacks and data leaks?** We need centralized network-level security via Agent Gateway and Model Armor to actively intercept and neutralize prompt injections, jailbreaks, toxic responses, and PII leakage without cluttering agent application code.
 - **How do we guarantee quality and detect drift once deployed?** In production, user queries and data distribution change. We must continuously evaluate live interactions using Online Evaluation to assess task success, tool accuracy, and safety policies in real time.
 
@@ -42,7 +42,7 @@ While building a prototype agent locally is straightforward, running agentic wor
                            ▼
  ┌─────────────────────────────────────────────────────────┐
  │       Agent Platform Online Evaluation & Monitors       │
- │  • multi_turn_task_success   • tool_use_quality          │
+ │  • multi_turn_task_success   • tool_use_quality         │
  │  • safety                    • Quality Drift Detection  │
  └─────────────────────────────────────────────────────────┘
 ```
@@ -62,15 +62,10 @@ In this hack, you will learn how to:
 ## Challenges
 
 - Challenge 1: It Works on My Machine!
-  - Inspect the provided complete ADK agent and verify its tool execution locally with zero code changes.
 - Challenge 2: Contain Your Excitement
-  - Build a custom container image, push to Artifact Registry, and deploy to Agent Runtime with optimized scaling.
 - Challenge 3: Badge, Please!
-  - Configure SPIFFE-based Agent Identity and enforce the principle of least privilege for cloud resources.
 - Challenge 4: Bouncer at the Gate
-  - Protect your agent against prompt injections, jailbreaks, and PII leakage with Agent Gateway and Model Armor.
 - Challenge 5: Keeping It Real (Time)
-  - Set up Online Monitors on Agent Platform to continuously score production traffic on task success, tool usage, and safety.
 
 ## Prerequisites
 
@@ -98,6 +93,9 @@ Before containerizing and deploying to the cloud, we'll verify that the agent be
 
 The sample agent can be found [TODO: Git repo](https://github.com), clone it to your Cloud Shell. Create and activate a Python virtual environment, and install the required dependencies. Set up the authentication to use Agent Platform Authentication and start running the playground.
 
+> [!NOTE]  
+> By default the agent will use the default Firestore database in the project. Typically during development you'de either use an [emulator](https://docs.cloud.google.com/firestore/native/docs/emulator) or have a test detabase; if you prefer to go on that path don't forget to seed the database with test data.
+
 ### Success Criteria
 
 - Python virtual environment is created and dependencies are installed without errors.
@@ -124,7 +122,7 @@ The sample agent can be found [TODO: Git repo](https://github.com), clone it to 
 
 ### Introduction
 
-Running agents locally is suitable only for development. Enterprise workloads require high availability, auto-scaling, low latency, and robust runtime isolation.
+Running agents locally is fine for development but enterprise workloads require high availability, auto-scaling, low latency, and robust runtime isolation.
 
 **Agent Runtime** (part of Gemini Enterprise Agent Platform) provides a managed, serverless execution environment purpose-built for AI agents. While Agent Runtime can deploy from source, enterprise platforms often require the **Bring Your Own Container (BYOC)** pattern to maintain full control over base images, security vulnerability scanning, system packages, and language runtime versions.
 
