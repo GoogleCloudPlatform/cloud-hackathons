@@ -10,158 +10,129 @@ In this hack, participants scale, govern, and monitor a production-ready Python 
 
 ### Solution Steps
 
-1. Download/clone the sample repository, and run the following command in the top level directory:
+Download/clone the sample repository, and run the following command in the top level directory:
 
-   ```shell
-   uv sync --dev  # --dev is optional
-   ```
+```shell
+uv sync --dev  # --dev is optional
+```
 
-1. In principle it's sufficient to run `export GOOGLE_GENAI_USE_ENTERPRISE=true` in the terminal to configure the authentication on Cloud Shell. Keep in mind that Cloud Shell automatically populates the `GOOGLE_CLOUD_PROJECT` variable, so you don't have to set it. And we don't use the `GOOGLE_CLOUD_LOCATION` as we've hard-coded our model to the `global` location. However, if you follow the directions from the documentation, you should run the following:
+In principle it's sufficient to run `export GOOGLE_GENAI_USE_ENTERPRISE=true` in the terminal to configure the authentication on Cloud Shell. Keep in mind that Cloud Shell automatically populates the `GOOGLE_CLOUD_PROJECT` variable, so you don't have to set it. And we don't use the `GOOGLE_CLOUD_LOCATION` as we've hard-coded our model to the `global` location. However, if you follow the directions from the documentation, you should run the following:
 
-   ```shell
-   REGION=us-central1  # or any other valid location
-   cat > retail_agent/.env <<EOF
-   GOOGLE_GENAI_USE_ENTERPRISE=true
-   GOOGLE_CLOUD_PROJECT=$GOOGLE_CLOUD_PROJECT
-   GOOGLE_CLOUD_LOCATION=$REGION
-   EOF
-   source retail_agent/.env  # might be omitted
-   ```
+```shell
+REGION=us-central1  # or any other valid location
+cat > retail_agent/.env <<EOF
+GOOGLE_GENAI_USE_ENTERPRISE=true
+GOOGLE_CLOUD_PROJECT=$GOOGLE_CLOUD_PROJECT
+GOOGLE_CLOUD_LOCATION=$REGION
+EOF
+source retail_agent/.env  # might be omitted
+```
 
-1. Start the Firestore emulator
+Start the Firestore emulator
 
-   ```shell
-   scripts/setup-emulator.sh
-   ```
+```shell
+scripts/setup-emulator.sh
+```
 
-1. Run the ADK Web UI:
+Run the ADK Web UI:
 
-   ```shell
-   uv run adk web retail_agent --allow_origins="*"
-   ```
+```shell
+uv run adk web retail_agent --allow_origins="*"
+```
 
 ## Challenge 2: Contain Your Excitement
 
 ### Solution Steps
 
-1. Build and push the container image to Artifact Registry:
+Build and push the container image to Artifact Registry:
 
-   ```bash
-   PROJECT_ID=$(gcloud config get-value project)
-   REGION="us-central1"
-   IMAGE_URI="${REGION}-docker.pkg.dev/${PROJECT_ID}/agent-images/retail-support-agent:v1"
+```bash
+IMAGE_URI="${REGION}-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/agent-images/retail-support-agent:v1"
 
-   # Using Cloud Build
-   gcloud builds submit --tag "${IMAGE_URI}" .
-   ```
+# Using Cloud Build
+gcloud builds submit --tag "${IMAGE_URI}" .
+```
 
-2. Deploy to Agent Runtime with BYOC using the Python SDK (`vertexai`):
-   Create a deployment script or run in Python:
+Deploy to Agent Runtime with BYOC using the Python SDK (`agentplatform`), create a deployment script or run in Python:
 
-   ```python
-   import vertexai
-   from vertexai import Client
+```python
+cat > deploy.py <<EOF
+from agentplatform import Client
 
-   PROJECT_ID = "YOUR_PROJECT_ID"
-   LOCATION = "us-central1"
-   IMAGE_URI = f"{LOCATION}-docker.pkg.dev/{PROJECT_ID}/agent-images/retail-support-agent:v1"
+client = Client(project="$GOOGLE_CLOUD_PROJECT", location="$REGION")
 
-   client = Client(project=PROJECT_ID, location=LOCATION)
+agent_engine = client.agent_engines.create(
+      config = {
+         "display_name": "cymbal-retail-support-agent",
+         "container_spec": {
+            "image_uri": "$IMAGE_URI",
+         },
+         "min_instances": 1,
+         "max_instances": 5,
+         "container_concurrency": 4,
+         "resource_limits": {
+            "cpu":"1",
+            "memory": "4Gi",
+         },
+         "agent_framework": "google-adk"
+      }
+)
 
-   agent_engine = client.agent_engines.create(
-       display_name="cymbal-retail-support-agent",
-       container_spec={
-           "image_uri": IMAGE_URI,
-       },
-       # Production Sizing & Scaling configuration
-       min_instance_count=1,
-       max_instance_count=5,
-       cpu_limit="1",
-       memory_limit="4Gi",
-       concurrency=8,
-   )
-
-   print(f"Agent Engine created: {agent_engine.resource_name}")
-   ```
-
-3. Alternatively, deploy via `agents-cli`:
-
-   ```bash
-   agents-cli deploy \
-     --project=${PROJECT_ID} \
-     --region=${REGION} \
-     --service-name="cymbal-retail-support-agent" \
-     --min-instances=1 \
-     --max-instances=5 \
-     --cpu=1 \
-     --memory=4Gi \
-     --concurrency=8 \
-     --no-confirm-project
-   ```
-
-4. Verify the deployment using the remote test client:
-
-   ```bash
-   python test_client.py \
-     --mode remote \
-     --resource-name "projects/${PROJECT_ID}/locations/${REGION}/reasoningEngines/<ENGINE_ID>" \
-     --location ${REGION} \
-     --prompt "What is the status of my order ORD-1002?"
-   ```
+print(f"Agent Engine created: {agent_engine}")
+EOF
+```
 
 ### Known Blockers & Coaching Tips
 
 - **Deployment Duration:** Agent Runtime provisioning typically takes 5 to 8 minutes. Inform teams to let the operation complete server-side without interrupting the process.
-- **Port Matching:** Ensure the container exposes port 8080 and that FastAPI serves the standard reasoning engine routes.
-- **Missing Container Spec:** If deploying programmatically, remind students that BYOC requires `container_spec={"image_uri": ...}`.
 
 ## Challenge 3: Badge, Please!
 
 ### Solution Steps
 
-1. Inspect the deployed Agent Runtime instance and retrieve its Agent Identity:
+Let's first get the resource name for our agent (can also be retrieved from the console):
 
-   ```bash
-   gcloud logging read 'resource.type="aiplatform.googleapis.com/ReasoningEngine"' --limit=10
-   ```
+```shell
+BASE_URL="https://$REGION-aiplatform.googleapis.com/v1"
+# Retrieve the Agent Engine ID, assumes that there's only one
+AGENT_ENGINE_ID=$(curl -s -X GET \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    "$BASE_URL/projects/$GOOGLE_CLOUD_PROJECT/locations/$REGION/reasoningEngines" | \
+    jq -r '.reasoningEngines[0].name')
+```
 
-   Or via the Vertex AI Python SDK / Console:
+Now we can update it to use the agent identity:
 
-   ```python
-   engine = client.agent_engines.get(name=RESOURCE_NAME)
-   print("Agent Identity:", engine.agent_identity)
-   ```
+```python
+cat > update.py <<EOF
+from agentplatform import Client
 
-2. Grant the principle of least privilege:
-   Assign only the necessary roles to the Agent Identity principal:
+client = Client(project="$GOOGLE_CLOUD_PROJECT", location="$REGION")
 
-   ```bash
-   AGENT_IDENTITY_PRINCIPAL="<AGENT_IDENTITY_PRINCIPAL>"
+agent_engine = client.agent_engines.update(
+   name="$AGENT_ENGINE_ID",
+   config={
+      "identity_type": "AGENT_IDENTITY"
+   }
+)
+print(f"Agent Engine updated: {agent_engine}")
+EOF
+```
 
-   # Cloud Trace Agent (for emitting traces)
-   gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-     --member="${AGENT_IDENTITY_PRINCIPAL}" \
-     --role="roles/cloudtrace.agent"
+Grant the principle of least privilege, assign only the necessary roles to the Agent Identity principal:
 
-   # Logging Log Writer
-   gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-     --member="${AGENT_IDENTITY_PRINCIPAL}" \
-     --role="roles/logging.logWriter"
+```bash
+# Retrieve the Agent Identity details
+AGENT_IDENTITY_PRINCIPAL=$(curl -s -X GET \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    "$BASE_URL/$AGENT_ENGINE_ID" | \
+    jq -r '.spec.effectiveIdentity')
 
-   # Vertex AI User (for invoking Gemini models)
-   gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-     --member="${AGENT_IDENTITY_PRINCIPAL}" \
-     --role="roles/aiplatform.user"
-   ```
-
-3. Verify audit logging:
-   Execute a query and inspect Cloud Audit Logs:
-
-   ```bash
-   gcloud logging read 'protoPayload.serviceName="aiplatform.googleapis.com" AND protoPayload.authenticationInfo.principalSubject:*' \
-     --limit=5 \
-     --format="table(timestamp, protoPayload.authenticationInfo.principalSubject, protoPayload.methodName)"
-   ```
+# Grant permissions to access firestore database
+gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
+   --member="principal://$AGENT_IDENTITY_PRINCIPAL" \
+   --role="roles/datastore.editor"
+```
 
 ### Known Blockers & Coaching Tips
 

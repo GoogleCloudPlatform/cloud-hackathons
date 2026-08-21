@@ -14,7 +14,7 @@
 
 # Enable all required APIs for Agent Runtime, Agent Identity, Agent Gateway, Model Armor, and Online Evaluation
 resource "google_project_service" "default" {
-  project  = var.gcp_project_id
+  project = var.gcp_project_id
   for_each = toset([
     "cloudresourcemanager.googleapis.com",
     "serviceusage.googleapis.com",
@@ -29,7 +29,20 @@ resource "google_project_service" "default" {
     "networksecurity.googleapis.com",
     "cloudtrace.googleapis.com",
     "logging.googleapis.com",
-    "monitoring.googleapis.com"
+    "monitoring.googleapis.com",
+    "agentregistry.googleapis.com",
+    "agentplatform.googleapis.com",
+    "apphub.googleapis.com",
+    "apptopology.googleapis.com",
+    "cloudapiregistry.googleapis.com",
+    "iamconnectors.googleapis.com",
+    "iap.googleapis.com",
+    "notebooks.googleapis.com",
+    "observability.googleapis.com",
+    "saasservicemgmt.googleapis.com",
+    "securitycenter.googleapis.com",
+    "texttospeech.googleapis.com",
+    "firestore.googleapis.com"
   ])
   service = each.key
 
@@ -48,3 +61,54 @@ resource "google_artifact_registry_repository" "agent_repo" {
     google_project_service.default
   ]
 }
+
+data "google_project" "project" {
+  project_id = var.gcp_project_id
+}
+
+# IAM permissions for the Compute Engine default service account used by Cloud Build
+resource "google_project_iam_member" "cloudbuild_roles" {
+  for_each = toset([
+    "roles/storage.objectViewer",
+    "roles/logging.logWriter",
+    "roles/artifactregistry.writer"
+  ])
+
+  project = var.gcp_project_id
+  role    = each.key
+  member  = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+
+  depends_on = [
+    google_project_service.default
+  ]
+}
+
+# IAM permissions for the AgentRuntime default service agent to retrieve images
+resource "google_project_iam_member" "agentruntime_roles" {
+  for_each = toset([
+    "roles/artifactregistry.reader"
+  ])
+
+  project = var.gcp_project_id
+  role    = each.key
+  member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-aiplatform-re.iam.gserviceaccount.com"
+
+  depends_on = [
+    google_project_service.default
+  ]
+}
+
+# Firestore (default) database in Native mode
+resource "google_firestore_database" "default" {
+  project                 = var.gcp_project_id
+  name                    = "(default)"
+  location_id             = var.gcp_region
+  type                    = "FIRESTORE_NATIVE"
+  delete_protection_state = "DELETE_PROTECTION_DISABLED"
+  deletion_policy         = "DELETE"
+
+  depends_on = [
+    google_project_service.default
+  ]
+}
+

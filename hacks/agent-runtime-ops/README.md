@@ -113,9 +113,8 @@ Verify that you get relevant answers when the agent is prompted with the test qu
 
 ### Learning Resources
 
-- [TODO: Python venvs?](https://example.com)
-- [TODO: ADK Authentication](https://adk.dev/)
-- [TODO: adk web or agent-cli playground](https://adk.dev)
+- [Setting up authentication for ADK](https://adk.dev/agents/models/google-gemini/#google-cloud-agent-platform)
+- [ADK CLI](https://adk.dev/api-reference/cli/#adk)
 
 ### Tips
 
@@ -130,7 +129,7 @@ Running agents locally is fine for development but enterprise workloads require 
 
 **Agent Runtime** (part of Gemini Enterprise Agent Platform) provides a managed, serverless execution environment purpose-built for AI agents. While Agent Runtime can deploy from source, enterprise platforms often require the **Bring Your Own Container (BYOC)** pattern to maintain full control over base images, security vulnerability scanning, system packages, and language runtime versions.
 
-In this challenge, you will package the agent into a container image and deploy it to Agent Runtime using `container_spec`.
+In this challenge, you will package the agent into a container image and deploy it to Agent Runtime.
 
 ### Description
 
@@ -142,14 +141,15 @@ Once the image is on Artifact Registry, deploy the containerized agent to **Agen
 - Memory: 4 GiB
 - Min instances: 1
 - Max instances: 5
-- Concurrency: 8 requests per instance
+- Concurrency: 4 requests per instance
 
 ### Success Criteria
 
 - Custom container image is built and stored in Artifact Registry.
 - An Agent Runtime Reasoning Engine resource is successfully created and in `ACTIVE` / ready state.
 - Sizing configuration (CPU, Memory, Concurrency, Min/Max instances) is correctly applied.
-- The deployed agent successfully processes remote queries and returns streaming responses using its tools.
+- The deployed agent successfully processes remote queries and returns streaming responses using its tools
+  > You can ignore any permission denied errors when the tools access the Firestore database, we'll address those in the next challenge.
 
 ### Learning Resources
 
@@ -160,8 +160,7 @@ Once the image is on Artifact Registry, deploy the containerized agent to **Agen
 ### Tips
 
 - Agent Runtime deployments can take 4 to 8 minutes as Google Cloud provisions the serverless container infrastructure.
-- The `container_spec` in the Python SDK takes `{"image_uri": "<IMAGE_URI>"}`.
-- You can inspect your deployed reasoning engine in the Google Cloud Console under **Agent Platform > Deployments** (or Vertex AI Agent Engine).
+- You can inspect your deployed reasoning engine in the Google Cloud Console under **Agent Platform > Deployments**.
 
 ## Challenge 3: Badge, Please!
 
@@ -192,10 +191,6 @@ Find the identity of your Agent and grant it the following permissions: TODO: fi
 - [Use Agent Identity with Agent Runtime](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/agent-identity)
 - [Agent Identity Overview & SPIFFE Architecture](https://docs.cloud.google.com/gemini-enterprise-agent-platform/govern/agent-identity-overview)
 - [Managing Access for Deployed Agents](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/manage-agent-access)
-
-### Tips
-
-- If deploying via the Python SDK or CLI, ensure the `--agent-identity` flag or identity configuration is enabled.
 
 ## Challenge 4: Bouncer at the Gate
 
