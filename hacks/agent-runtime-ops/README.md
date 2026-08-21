@@ -119,7 +119,6 @@ Verify that you get relevant answers when the agent is prompted with the test qu
 ### Tips
 
 - If using `adk web` in Cloud Shell, pass `--allow_origins="*"` to ensure the Cloud Shell web preview works smoothly.
-- Ensure your Google Cloud authentication is configured (`gcloud auth application-default login` or setting `GOOGLE_GENAI_USE_VERTEXAI=true` with your project ID).
 
 ## Challenge 2: Contain Your Excitement
 
@@ -149,7 +148,7 @@ Once the image is on Artifact Registry, deploy the containerized agent to **Agen
 - An Agent Runtime Reasoning Engine resource is successfully created and in `ACTIVE` / ready state.
 - Sizing configuration (CPU, Memory, Concurrency, Min/Max instances) is correctly applied.
 - The deployed agent successfully processes remote queries and returns streaming responses using its tools
-  > You can ignore any permission denied errors when the tools access the Firestore database, we'll address those in the next challenge.
+  > You can ignore any permission denied errors when the tools access the Firestore database, we'll address that in the next challenge.
 
 ### Learning Resources
 
@@ -178,7 +177,7 @@ In this challenge, you will govern your deployed agent by configuring its Agent 
 
 ### Description
 
-Find the identity of your Agent and grant it the following permissions: TODO: firestore, aiplatform etc.
+Enable agent identity for your agent, find its principal and grant it the permission to access the Firestore database.
 
 ### Success Criteria
 
@@ -215,7 +214,7 @@ Create a **Model Armor Template** (`retail-agent-security-template`) with the fo
 - **PII / Sensitive Data Filter:** Set to `REDACT` or `BLOCK` for Credit Cards, SSNs, and sensitive identifiers.
 - **Harm & Toxicity Filter:** Block Hate Speech, Dangerous Content, and Harassment.
 
-Create and configure an **Agent Gateway** resource in Client-to-Agent (ingress) and/or Agent-to-Anywhere (egress) mode and attach the Model Armor security template to the Agent Gateway. Route traffic to your Agent Runtime instance through the governed Agent Gateway.
+Create and configure an **Agent Gateway** resource for ingress mode and attach the Model Armor security template to the Agent Gateway. Route traffic to your Agent Runtime instance through the governed Agent Gateway.
 
 ### Success Criteria
 
