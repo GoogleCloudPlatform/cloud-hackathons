@@ -42,7 +42,8 @@ resource "google_project_service" "default" {
     "saasservicemgmt.googleapis.com",
     "securitycenter.googleapis.com",
     "texttospeech.googleapis.com",
-    "firestore.googleapis.com"
+    "firestore.googleapis.com",
+    "dlp.googleapis.com"
   ])
   service = each.key
 
@@ -112,3 +113,58 @@ resource "google_firestore_database" "default" {
   ]
 }
 
+# Model Armor Service Agent
+resource "google_project_service_identity" "model_armor_sa" {
+  provider = google-beta
+  project  = var.gcp_project_id
+  service  = "modelarmor.googleapis.com"
+
+  depends_on = [
+    google_project_service.default
+  ]
+}
+
+# IAM permissions for the Model Armor Service Agent to inspect data using Sensitive Data Protection (Cloud DLP)
+resource "google_project_iam_member" "model_armor_dlp_roles" {
+  for_each = toset([
+    "roles/dlp.user",
+    "roles/dlp.reader"
+  ])
+
+  project = var.gcp_project_id
+  role    = each.key
+  member  = google_project_service_identity.model_armor_sa.member
+
+  depends_on = [
+    google_project_service_identity.model_armor_sa
+  ]
+}
+
+# IAM permissions for the Service Extensions / Agent Gateway Data Plane (DEP) service agent to invoke Model Armor callouts
+resource "google_project_iam_member" "dep_service_agent_roles" {
+  for_each = toset([
+    "roles/modelarmor.calloutUser",
+    "roles/serviceusage.serviceUsageConsumer",
+    "roles/modelarmor.user"
+  ])
+
+  project = var.gcp_project_id
+  role    = each.key
+  member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-dep.iam.gserviceaccount.com"
+
+  depends_on = [
+    google_project_service.default
+  ]
+}
+
+# Manage the pre-existing _Default log bucket and ensure Log Analytics is enabled
+resource "google_logging_project_bucket_config" "default_log_bucket" {
+  project          = var.gcp_project_id
+  location         = "global"
+  bucket_id        = "_Default"
+  enable_analytics = true
+
+  depends_on = [
+    google_project_service.default
+  ]
+}

@@ -13,7 +13,7 @@ In this hack, participants scale, govern, and monitor a production-ready Python 
 Download/clone the sample repository, and run the following command in the top level directory:
 
 ```shell
-uv sync --dev  # --dev is optional
+uv sync --dev  # --dev is for pytest
 ```
 
 In principle it's sufficient to run `export GOOGLE_GENAI_USE_ENTERPRISE=true` in the terminal to configure the authentication on Cloud Shell. Keep in mind that Cloud Shell automatically populates the `GOOGLE_CLOUD_PROJECT` variable, so you don't have to set it. And we don't use the `GOOGLE_CLOUD_LOCATION` as we've hard-coded our model to the `global` location. However, if you follow the directions from the documentation, you should run the following:
@@ -61,6 +61,7 @@ from agentplatform import Client
 
 client = Client(project="$GOOGLE_CLOUD_PROJECT", location="$REGION")
 
+# TODO add class_methods, see below
 agent_engine = client.agent_engines.create(
       config = {
          "display_name": "cymbal-retail-support-agent",
@@ -74,7 +75,24 @@ agent_engine = client.agent_engines.create(
             "cpu":"1",
             "memory": "4Gi",
          },
-         "agent_framework": "google-adk"
+         "agent_framework": "google-adk",
+         "class_methods": [
+            # For convenience to interact with the agent through the Python SDK
+            # https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/use-an-adk-agent
+            {"api_mode": "", "name": "get_session"},
+            {"api_mode": "", "name": "list_sessions"},
+            {"api_mode": "", "name": "create_session"},
+            {"api_mode": "", "name": "delete_session"},
+            {"api_mode": "async", "name": "async_get_session"},
+            {"api_mode": "async", "name": "async_list_sessions"},
+            {"api_mode": "async", "name": "async_create_session"},
+            {"api_mode": "async", "name": "async_delete_session"},
+            {"api_mode": "async", "name": "async_add_session_to_memory"},
+            {"api_mode": "async", "name": "async_search_memory"},
+            {"api_mode": "stream", "name": "stream_query"},
+            {"api_mode": "async_stream", "name": "async_stream_query"},
+            {"api_mode": "async_stream", "name": "streaming_agent_run_with_events"},
+        ],
       }
 )
 
@@ -95,7 +113,7 @@ Let's first get the resource name for our agent (can also be retrieved from the 
 ```shell
 BASE_URL="https://$REGION-aiplatform.googleapis.com/v1"
 # Retrieve the Agent Engine ID, assumes that there's only one
-AGENT_ENGINE_ID=$(curl -s -X GET \
+AGENT_RESOURCE_NAME=$(curl -s -X GET \
     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
     "$BASE_URL/projects/$GOOGLE_CLOUD_PROJECT/locations/$REGION/reasoningEngines" | \
     jq -r '.reasoningEngines[0].name')
@@ -110,7 +128,7 @@ from agentplatform import Client
 client = Client(project="$GOOGLE_CLOUD_PROJECT", location="$REGION")
 
 agent_engine = client.agent_engines.update(
-   name="$AGENT_ENGINE_ID",
+   name="$AGENT_RESOURCE_NAME",
    config={
       "identity_type": "AGENT_IDENTITY"
    }
@@ -126,7 +144,7 @@ Grant the principle of least privilege, assign only the necessary roles to the A
 # Retrieve the Agent Identity details
 AGENT_IDENTITY_PRINCIPAL=$(curl -s -X GET \
     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-    "$BASE_URL/$AGENT_ENGINE_ID" | \
+    "$BASE_URL/$AGENT_RESOURCE_NAME" | \
     jq -r '.spec.effectiveIdentity')
 
 # Grant permissions to access firestore database
@@ -147,18 +165,6 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
 You can create a Model Armor template either on the Console (Security > Model Armor > Templates), or using the `gcloud` CLI:
 
 ```shell
-# TODO Move to TF
-MA_SA=$(gcloud beta services identity create  \
-   --service=modelarmor.googleapis.com \
-   --project=$GOOGLE_CLOUD_PROJECT \
-   --format="value(email)")
-gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
-    --member=serviceAccount:$MA_SA \
-    --role=roles/dlp.user
-gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
-    --member=serviceAccount:$MA_SA \
-    --role=roles/dlp.reader
-
 # This seems essential!
 gcloud config set api_endpoint_overrides/modelarmor "https://modelarmor.$REGION.rep.googleapis.com/"
 
@@ -233,7 +239,7 @@ from agentplatform import Client
 client = Client(project="$GOOGLE_CLOUD_PROJECT", location="$REGION")
 gateway_uri = "projects/$GOOGLE_CLOUD_PROJECT/locations/$REGION/agentGateways/$GATEWAY_NAME"
 updated_agent = client.agent_engines.update(
-    name="$AGENT_ENGINE_ID",
+    name="$AGENT_RESOURCE_NAME",
     config={
          "container_spec": {
             "image_uri": "$IMAGE_URI",
@@ -251,13 +257,7 @@ EOF
 uv run update_gateway.py
 ```
 
-Verify test outputs:
-
-- `SEC-01` (Benign Query): **PASS (ALLOW)**
-- `SEC-02` (Prompt Injection - Unauthorized Refund): **PASS (BLOCK / Neutralized)**
-- `SEC-03` (Jailbreak Attempt): **PASS (BLOCK / Neutralized)**
-- `SEC-04` (PII / Sensitive Data Exfiltration): **PASS (BLOCK / Neutralized)**
-- `SEC-05` (Benign Stock Query): **PASS (ALLOW)**
+Verify test outputs by running `pytest -m sanitization` after making sure that the environment variables `GOOGLE_CLOUD_PROJECT` (should be there on Cloud Shell by default), `GOOGLE_CLOUD_LOCATION` and `AGENT_RESOURCE_NAME`. All tests should pass.
 
 ### Known Blockers & Coaching Tips
 
@@ -268,45 +268,24 @@ Verify test outputs:
 
 ### Solution Steps
 
-1. Ensure container telemetry environment variables were present during build:
-   - `OTEL_SEMCONV_STABILITY_OPT_IN=gen_ai_latest_experimental`
-   - `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=EVENT_ONLY`
+Configure Online Monitor in Google Cloud Console, this should be trivial.
 
-2. Configure Online Monitor in Google Cloud Console:
-   - Navigate to **Agent Platform > Agents > Evaluation > Online monitors**.
-   - Click **New monitor**.
-   - Select the deployed Agent Runtime Reasoning Engine (`cymbal-retail-support-agent`).
-   - Add Metrics:
-     - `MULTI_TURN_TASK_SUCCESS`
-     - `MULTI_TURN_TOOL_USE_QUALITY`
-     - `SAFETY`
-   - Set Sampling: 100% sampling for immediate test feedback (in production 5-10% is typical), with a cap of 50 samples per run.
-   - Click **Create**.
+Generate production traffic with the simulator:
 
-3. Generate production traffic with the simulator:
+```bash
+scripts/simulate-traffic.sh \
+   --resource-name "$AGENT_RESOURCE_NAME" \
+   --location "$REGION" \
+   --sessions 20 \
+   --delay 1.0
+```
 
-   ```bash
-   python simulate_traffic.py \
-     --resource-name "projects/${PROJECT_ID}/locations/us-central1/reasoningEngines/<ENGINE_ID>" \
-     --location us-central1 \
-     --sessions 10 \
-     --delay 1.5
-   ```
+View Results in Cloud Console, Dashboard->Evaluation should show a degraded Tool Use Quality score.
 
-4. View Results in Cloud Console:
-   - Navigate to **Cloud Trace** to see the OpenTelemetry span hierarchy (`invoke_agent` -> `call_llm` -> `execute_tool`).
-   - Navigate to **Agent Platform > Evaluation > Online monitors** to review score charts, AutoRater evaluations, and loss clusters.
+Rule 2 in the agent prompt calls `lookup_order` on any identifier provided by the customer without format validation. Update the prompt to indicate that that SKU- codes are productidentifiers, and only call lookup_order on valid ORD-IDs.
 
 ### Known Blockers & Coaching Tips
 
 - **Schedule Interval:** Online Monitors run on a periodic polling schedule (evaluating batches every 5-10 minutes). Coaches can explain that in a real enterprise setting, this runs 24/7 in the background.
 - **Trace Export:** If traces do not appear, verify that the runtime identity has the `roles/cloudtrace.agent` role.
 - **Loss Cluster Interpretation:** Walk students through how loss clusters categorize failing conversations (e.g. invalid refund requests on undelivered items), demonstrating how operations teams can fine-tune instructions based on empirical data.
-
-## Complete Solution Verification Checklist
-
-- [ ] Artifact Registry repository `agent-images` contains the built Docker image.
-- [ ] Agent Runtime instance is `ACTIVE` with `min_instance_count=1` and `concurrency=8`.
-- [ ] Agent Identity principal is assigned `roles/cloudtrace.agent`, `roles/logging.logWriter`, and `roles/aiplatform.user`.
-- [ ] Model Armor template is active and blocking prompt injection / jailbreak attempts on `adversarial_test.py`.
-- [ ] Online Monitor is enabled and capturing evaluation metrics from simulated traffic in `simulate_traffic.py`.
