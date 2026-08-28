@@ -57,7 +57,7 @@ Before containerizing and deploying to the cloud, we'll verify that the agent be
 
 ### Description
 
-The sample agent can be found [TODO: Git repo](https://github.com), clone it to your Cloud Shell. Install its dependencies in a Python virtual environment.
+The sample agent can be found [here](https://github.com/meken/gcp-agentops-demo/archive/refs/heads/main.zip), download it to your Cloud Shell. Install its dependencies in a Python virtual environment.
 
 Set up the authentication to use Agent Platform Authentication (API keys are not allowed!). Start the database emulator using the provided `start-database-emulator.sh` script and launch the ADK web playground.
 

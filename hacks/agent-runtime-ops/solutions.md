@@ -17,7 +17,15 @@ Welcome to the coach's guide for *Agents: Beyond the Basics* gHack. Here you wil
 
 ## Challenge 1: It Works on My Machine!
 
-Download/clone the sample repository, and run the following command in the top level directory:
+Download the sample repository:
+
+```shell
+wget https://github.com/meken/gcp-agentops-demo/archive/refs/heads/main.zip
+unzip main.zip
+cd gcp-agentops-demo-main
+```
+
+Create and set up the virtual environment (`pip` version):
 
 ```shell
 python -m venv .venv
@@ -30,7 +38,7 @@ pip install --group dev .
 Or alternatively use the standard `uv` ecosystem
 
 ```shell
-uv sync --dev  # --dev is for pytest
+uv sync --locked --dev  # --dev is for pytest, --locked checks uv.lock
 . .venv/bin/activate  # otherwise instead of python use uv run
 ```
 
