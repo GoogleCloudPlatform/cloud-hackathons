@@ -31,7 +31,6 @@ resource "google_project_service" "default" {
     "logging.googleapis.com",
     "monitoring.googleapis.com",
     "agentregistry.googleapis.com",
-    "agentplatform.googleapis.com",
     "apphub.googleapis.com",
     "apptopology.googleapis.com",
     "cloudapiregistry.googleapis.com",
@@ -84,6 +83,26 @@ resource "google_project_iam_member" "cloudbuild_roles" {
   ]
 }
 
+# Agent Runtime Service Identity (provisions gcp-sa-aiplatform and gcp-sa-aiplatform-re service agents)
+resource "google_project_service_identity" "agent_runtime_sa" {
+  provider = google-beta
+  project  = var.gcp_project_id
+  service  = "aiplatform.googleapis.com"
+
+  depends_on = [
+    google_project_service.default
+  ]
+}
+
+# Wait for the Agent Runtime service agent to be fully created and propagated in IAM backend
+resource "time_sleep" "wait_for_agent_runtime_sa" {
+  create_duration = "1m"
+
+  depends_on = [
+    google_project_service_identity.agent_runtime_sa
+  ]
+}
+
 # IAM permissions for the AgentRuntime default service agent to retrieve images
 resource "google_project_iam_member" "agentruntime_roles" {
   for_each = toset([
@@ -95,7 +114,7 @@ resource "google_project_iam_member" "agentruntime_roles" {
   member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-aiplatform-re.iam.gserviceaccount.com"
 
   depends_on = [
-    google_project_service.default
+    time_sleep.wait_for_agent_runtime_sa
   ]
 }
 
@@ -140,6 +159,26 @@ resource "google_project_iam_member" "model_armor_dlp_roles" {
   ]
 }
 
+# Network Services Service Identity (provisions gcp-sa-dep service agent)
+resource "google_project_service_identity" "networkservices_sa" {
+  provider = google-beta
+  project  = var.gcp_project_id
+  service  = "networkservices.googleapis.com"
+
+  depends_on = [
+    google_project_service.default
+  ]
+}
+
+# Wait for the Network Services / DEP service agent to propagate in IAM backend
+resource "time_sleep" "wait_for_networkservices_sa" {
+  create_duration = "1m"
+
+  depends_on = [
+    google_project_service_identity.networkservices_sa
+  ]
+}
+
 # IAM permissions for the Service Extensions / Agent Gateway Data Plane (DEP) service agent to invoke Model Armor callouts
 resource "google_project_iam_member" "dep_service_agent_roles" {
   for_each = toset([
@@ -153,7 +192,7 @@ resource "google_project_iam_member" "dep_service_agent_roles" {
   member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-dep.iam.gserviceaccount.com"
 
   depends_on = [
-    google_project_service.default
+    time_sleep.wait_for_networkservices_sa
   ]
 }
 

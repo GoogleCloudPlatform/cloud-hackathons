@@ -21,6 +21,10 @@ terraform {
       source  = "hashicorp/google-beta"
       version = "~> 7.24.0"
     }
+    time = {
+      source  = "hashicorp/time"
+      version = ">= 0.9.0"
+    }
   }
 }
 

@@ -263,4 +263,11 @@ Run the `simulate-traffic.sh` script for `20` sessions and `1.0` second of delay
 
 ### Tips
 
-- Ignore the potential evaluation errors in the logs, you can filter on `jsonPayload.candidateResult.score < 1` to find relevant telemetry. Read the rubric verditcts in the telemetry to find the root causes.
+- You can filter the telemetry using the following conditions:
+
+  ```text
+    labels."gen_ai.evaluation.name" = xxxx
+    labels."gen_ai.evaluation.score.value" < 1
+  ```
+
+  And look for a rubric around `SEMANTIC_CORRECTNESS`.

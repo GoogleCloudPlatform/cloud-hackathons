@@ -13,7 +13,18 @@ In this hack, participants scale, govern, and monitor a production-ready Python 
 Download/clone the sample repository, and run the following command in the top level directory:
 
 ```shell
+python -m venv .venv
+. .venv/bin/activate
+# Cloud Shell has an older pip that doesn't suport dependency groups, upgrade first
+python -m pip install --upgrade pip 
+pip install --group dev .
+```
+
+Or alternatively use the standard `uv` ecosystem
+
+```shell
 uv sync --dev  # --dev is for pytest
+. .venv/bin/activate  # otherwise instead of python use uv run
 ```
 
 In principle it's sufficient to run `export GOOGLE_GENAI_USE_ENTERPRISE=true` in the terminal to configure the authentication on Cloud Shell. Keep in mind that Cloud Shell automatically populates the `GOOGLE_CLOUD_PROJECT` variable, so you don't have to set it. And we don't use the `GOOGLE_CLOUD_LOCATION` as we've hard-coded our model to the `global` location. However, if you follow the directions from the documentation, you should run the following:
@@ -31,13 +42,13 @@ source retail_agent/.env  # might be omitted
 Start the Firestore emulator
 
 ```shell
-scripts/setup-emulator.sh
+source scripts/start-database-emulator.sh
 ```
 
 Run the ADK Web UI:
 
 ```shell
-uv run adk web retail_agent --allow_origins="*"
+adk web retail_agent --allow_origins="*"
 ```
 
 ## Challenge 2: Contain Your Excitement
@@ -61,8 +72,7 @@ from agentplatform import Client
 
 client = Client(project="$GOOGLE_CLOUD_PROJECT", location="$REGION")
 
-# TODO add class_methods, see below
-agent_engine = client.agent_engines.create(
+agent = client.agent_engines.create(
       config = {
          "display_name": "cymbal-retail-support-agent",
          "container_spec": {
@@ -96,13 +106,15 @@ agent_engine = client.agent_engines.create(
       }
 )
 
-print(f"Agent Engine created: {agent_engine}")
+print(f"Agent deployed: {agent}")
 EOF
+python deploy.py
 ```
 
-### Known Blockers & Coaching Tips
+> [!WARNING]  
+> Sometimes deployment fails with a very vague message (code 3), in that case re-running the deploy script usually fixes it.
 
-- **Deployment Duration:** Agent Runtime provisioning typically takes 5 to 8 minutes. Inform teams to let the operation complete server-side without interrupting the process.
+Keep in mind Agent Runtime provisioning typically takes ~5 minutes. Inform teams to let the operation complete server-side without interrupting the process.
 
 ## Challenge 3: Badge, Please!
 
@@ -113,7 +125,7 @@ Let's first get the resource name for our agent (can also be retrieved from the 
 ```shell
 BASE_URL="https://$REGION-aiplatform.googleapis.com/v1"
 # Retrieve the Agent Engine ID, assumes that there's only one
-AGENT_RESOURCE_NAME=$(curl -s -X GET \
+export AGENT_RESOURCE_NAME=$(curl -s -X GET \
     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
     "$BASE_URL/projects/$GOOGLE_CLOUD_PROJECT/locations/$REGION/reasoningEngines" | \
     jq -r '.reasoningEngines[0].name')
@@ -127,15 +139,15 @@ from agentplatform import Client
 
 client = Client(project="$GOOGLE_CLOUD_PROJECT", location="$REGION")
 
-agent_engine = client.agent_engines.update(
+agent = client.agent_engines.update(
    name="$AGENT_RESOURCE_NAME",
    config={
       "identity_type": "AGENT_IDENTITY"
    }
 )
-print(f"Agent Engine updated: {agent_engine}")
+print(f"Agent updated: {agent}")
 EOF
-uv run updated_identity.py
+python update_identity.py
 ```
 
 Grant the principle of least privilege, assign only the necessary roles to the Agent Identity principal:
@@ -153,19 +165,20 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
    --role="roles/datastore.editor"
 ```
 
-### Known Blockers & Coaching Tips
-
-- **IAM Propagation Delay:** IAM role bindings can take 60-90 seconds to propagate across Google Cloud global IAM caches. Advise students to wait a moment if they see a transient 403.
-- **Service Account vs Agent Identity:** Emphasize to students the difference between traditional service accounts and SPIFFE-based per-agent identities with Context-Aware Access mTLS token binding.
+> [!WARNING]  
+> IAM role bindings can take 60-90 seconds to propagate across Google Cloud global IAM caches. Advise participants to wait a moment if they see a transient 403.
 
 ## Challenge 4: Bouncer at the Gate
 
 ### Solution Steps
 
+> [!IMPORTANT]  
+> Model Armor template and Agent Gateway must be created in the **exact same region** (e.g. `us-central1`).
+
 You can create a Model Armor template either on the Console (Security > Model Armor > Templates), or using the `gcloud` CLI:
 
 ```shell
-# This seems essential!
+# This is essential!
 gcloud config set api_endpoint_overrides/modelarmor "https://modelarmor.$REGION.rep.googleapis.com/"
 
 gcloud model-armor templates create retail-agent-security-template \
@@ -228,6 +241,9 @@ customProvider:
 EOF
 ```
 
+> [!NOTE]  
+> It's much easier to do this from the UI.
+
 Attach the Agent Runtime deployment to the Agent Gateway.
 
 ```python
@@ -238,7 +254,7 @@ from agentplatform import Client
 
 client = Client(project="$GOOGLE_CLOUD_PROJECT", location="$REGION")
 gateway_uri = "projects/$GOOGLE_CLOUD_PROJECT/locations/$REGION/agentGateways/$GATEWAY_NAME"
-updated_agent = client.agent_engines.update(
+agent = client.agent_engines.update(
     name="$AGENT_RESOURCE_NAME",
     config={
          "container_spec": {
@@ -249,26 +265,33 @@ updated_agent = client.agent_engines.update(
                 "agent_gateway": gateway_uri
             }
         },
-        "agent_framework": "google-adk"
+        "env_vars": {
+            "GOOGLE_CLOUD_AGENT_ENGINE_ENABLE_TELEMETRY": "true" 
+        },
+        "agent_framework": "google-adk",
     }
 )
-print(f"Agent successfully linked to Gateway: {updated_agent}")
+print(f"Agent successfully linked to Gateway: {agent}")
 EOF
-uv run update_gateway.py
+python update_gateway.py
 ```
 
-Verify test outputs by running `pytest -m sanitization` after making sure that the environment variables `GOOGLE_CLOUD_PROJECT` (should be there on Cloud Shell by default), `GOOGLE_CLOUD_LOCATION` and `AGENT_RESOURCE_NAME`. All tests should pass.
+> [!WARNING]  
+> For some strange reason, updating the gateway causes env variables and agent framework to be lost, so those need to be included in the config block.
 
-### Known Blockers & Coaching Tips
+Verify test outputs by running `pytest -m sanitization` after making sure that the environment variables `GOOGLE_CLOUD_PROJECT` (should be there on Cloud Shell by default), `GOOGLE_CLOUD_LOCATION` and `AGENT_RESOURCE_NAME` are *exported*. All tests should pass.
 
-- **Regional Colocation:** Ensure the Model Armor template and Agent Gateway are created in the **exact same region** (e.g. `us-central1`).
-- **Inspection Logs:** Show students how Model Armor logs violations into Security Command Center and Cloud Logging.
+> [!NOTE]  
+> Immediately after creating the Model Armor & Gateway the tests might not pass, try it again after a few minutes.
 
 ## Challenge 5: Keeping It Real (Time)
 
 ### Solution Steps
 
 Configure Online Monitor in Google Cloud Console, this should be trivial.
+
+> [!WARNING]  
+> Immediately after creating the monitor for the first time, its status might be *Failed*, if you click on that it will say *Permission Denied when querying traces (this might be transient if the OnlineEvaluator was recently created)*, so you can ignore it. It can take more than 10 minutes for the status to be *Active*.
 
 Generate production traffic with the simulator:
 
@@ -282,10 +305,6 @@ scripts/simulate-traffic.sh \
 
 View Results in Cloud Console, Dashboard->Evaluation should show a degraded Tool Use Quality score.
 
-Rule 2 in the agent prompt calls `lookup_order` on any identifier provided by the customer without format validation. Update the prompt to indicate that that SKU- codes are productidentifiers, and only call lookup_order on valid ORD-IDs.
+Rule 2 in the agent prompt calls `lookup_order` on any identifier provided by the customer without format validation. Update the prompt to indicate that that SKU- codes are product identifiers, and only call lookup_order on valid ORD-IDs.
 
-### Known Blockers & Coaching Tips
-
-- **Schedule Interval:** Online Monitors run on a periodic polling schedule (evaluating batches every 5-10 minutes). Coaches can explain that in a real enterprise setting, this runs 24/7 in the background.
-- **Trace Export:** If traces do not appear, verify that the runtime identity has the `roles/cloudtrace.agent` role.
-- **Loss Cluster Interpretation:** Walk students through how loss clusters categorize failing conversations (e.g. invalid refund requests on undelivered items), demonstrating how operations teams can fine-tune instructions based on empirical data.
+Keep in mind that Online Monitors run on a periodic polling schedule (evaluating batches every 10 minutes). You can explain that in a real enterprise setting, this runs 24/7 in the background.
