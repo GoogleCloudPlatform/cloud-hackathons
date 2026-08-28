@@ -11,41 +11,7 @@ While building a prototype agent locally is straightforward, running agentic wor
 - *How do we protect agents from adversarial attacks and data leaks?*
 - *How do we guarantee quality and detect drift once deployed?*
 
-```text
-[ Customer / Client ]
-         │
-         ▼
- ┌─────────────────────────────────────────────────────────┐
- │                     Agent Gateway                       │
- │  ┌───────────────────────────────────────────────────┐  │
- │  │        Model Armor Security Screening             │  │
- │  │  (Prompt Injection, Jailbreak, PII Redaction)     │  │
- │  └───────────────────────────────────────────────────┘  │
- └─────────────────────────┬───────────────────────────────┘
-                           │ Authenticated & Sanitized Traffic
-                           ▼
- ┌─────────────────────────────────────────────────────────┐
- │               Agent Runtime (BYOC)                      │
- │  ┌───────────────────────────────────────────────────┐  │
- │  │  FastAPI + ADK Container (Cymbal Retail Agent)    │  │
- │  │  • FunctionTools                                  │  │
- │  │  • OpenTelemetry Spans & Inference Events         │  │
- │  └───────────────────────────────────────────────────┘  │
- │                     ▲                                   │
- │                     │ Identity & Auth                   │
- │  ┌──────────────────┴────────────────────────────────┐  │
- │  │              Agent Identity                       │  │
- │  │    (SPIFFE Standard, Least-Privilege IAM)         │  │
- │  └───────────────────────────────────────────────────┘  │
- └─────────────────────────┬───────────────────────────────┘
-                           │ Telemetry Traces
-                           ▼
- ┌─────────────────────────────────────────────────────────┐
- │       Agent Platform Online Evaluation & Monitors       │
- │  • multi_turn_task_success   • tool_use_quality         │
- │  • safety                    • Quality Drift Detection  │
- └─────────────────────────────────────────────────────────┘
-```
+![Overview of the components involved](./images/arch-overview.png)
 
 In this gHack, you will take an existing, complete Python ADK agent and implement the full scale, governance, and operations lifecycle on Google Cloud's Gemini Enterprise Agent Platform.
 
@@ -54,10 +20,10 @@ In this gHack, you will take an existing, complete Python ADK agent and implemen
 In this hack, you will learn how to:
 
 1. Package a complete ADK Python agent into a custom container and deploy it to *Agent Runtime* with a custom container.
-2. Optimize resource allocation, scaling limits, and request concurrency for production agentic workloads.
-3. Establish strong, least-privilege security and auditability using *Agent Identity*.
-4. Govern ingress and egress traffic, and block prompt injections, jailbreaks, and sensitive data leakage by integrating *Agent Gateway* with *Model Armor*.
-5. Establish continuous quality assurance in production by configuring *Online Monitors* in Agent Platform to score live telemetry traces against multi-turn AutoRater metrics.
+2. Optimize resource allocation for production agentic workloads.
+3. Establish least-privilege security and auditability using *Agent Identity*.
+4. Govern ingress traffic, and block prompt injections, jailbreaks, and sensitive data leakage by integrating *Agent Gateway* with *Model Armor*.
+5. Establish continuous quality in production by configuring *Online Monitors* in Agent Platform to score live telemetry traces against multi-turn AutoRater metrics.
 
 ## Challenges
 
@@ -93,7 +59,7 @@ Before containerizing and deploying to the cloud, we'll verify that the agent be
 
 The sample agent can be found [TODO: Git repo](https://github.com), clone it to your Cloud Shell. Install its dependencies in a Python virtual environment.
 
-Set up the authentication to use Agent Platform Authentication (API keys are not allowed). Start and seed the Firestore emulator using the provided `setup-emulator.sh` script and launch the ADK web playground.
+Set up the authentication to use Agent Platform Authentication (API keys are not allowed!). Start the database emulator using the provided `start-database-emulator.sh` script and launch the ADK web playground.
 
 Verify that you get relevant answers when the agent is prompted with the test queries.
 
@@ -124,15 +90,15 @@ Verify that you get relevant answers when the agent is prompted with the test qu
 
 Running agents locally is fine for development but enterprise workloads require high availability, auto-scaling, low latency, and robust runtime isolation.
 
-*Agent Runtime* (part of Gemini Enterprise Agent Platform) provides a managed, serverless execution environment purpose-built for AI agents. While Agent Runtime can deploy from source, enterprise platforms often require the *Bring Your Own Container (BYOC)* pattern to maintain full control over base images, security vulnerability scanning, system packages, and language runtime versions.
+*Agent Runtime* (part of Gemini Enterprise Agent Platform) provides a managed, serverless execution environment specifically built for AI agents. While Agent Runtime can deploy from source, enterprise platforms often require the *Bring Your Own Container (BYOC)* pattern to maintain full control over base images, security vulnerability scanning, system packages, and language runtime versions.
 
 In this challenge, you will package the agent into a container image and deploy it to Agent Runtime.
 
 ### Description
 
-The sample agent already contains the necessary files to build a container image. Build the container image using Google Cloud Build (or Docker) and push it to Artifact Registry repository `agent-images` that's in your project.
+The sample agent already contains the necessary files to build a container image. Build the container image using Google Cloud Build (or Docker) and push it to the *Artifact Registry* repository `agent-images` that's in your project.
 
-Once the image is on Artifact Registry, deploy the containerized agent to *Agent Runtime* using the BYOC option. Make sure to use the following production sizing and concurrency parameters:
+Once the image is on Artifact Registry, deploy the containerized agent to *Agent Runtime* using the BYOC option. Make sure to use the following parameters:
 
 - CPU: 1 vCPU
 - Memory: 4 GiB
@@ -140,10 +106,13 @@ Once the image is on Artifact Registry, deploy the containerized agent to *Agent
 - Max instances: 5
 - Concurrency: 4 requests per instance
 
+> [!NOTE]  
+> The deployment might take ~5 minutes.
+
 ### Success Criteria
 
 - Custom container image is built and stored in Artifact Registry.
-- An Agent Runtime Reasoning Engine resource is successfully created and in `ACTIVE` / ready state.
+- An Agent Runtime resource is successfully created and in ready state.
 - Sizing configuration (CPU, Memory, Concurrency, Min/Max instances) is correctly applied.
 - The deployed agent successfully processes remote queries and returns streaming responses using its tools
   > You can ignore any permission denied errors when the tools access the Firestore database, we'll address that in the next challenge.
@@ -154,11 +123,6 @@ Once the image is on Artifact Registry, deploy the containerized agent to *Agent
 - [Deploy an agent on Agent Runtime](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/deploy-an-agent)
 - [Agent Runtime BYOC Setup](https://docs.cloud.google.com/gemini-enterprise-agent-platform/build/runtime/setup#byoc)
 - [Sizing and Concurrency for Agent Runtime](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/optimize-and-scale)
-
-### Tips
-
-- Agent Runtime deployments can take 4 to 8 minutes as Google Cloud provisions the serverless container infrastructure.
-- You can inspect your deployed reasoning engine in the Google Cloud Console under *Agent Platform > Deployments*.
 
 ## Challenge 3: Badge, Please!
 
@@ -177,6 +141,9 @@ In this challenge, you will govern your deployed agent by configuring its Agent 
 ### Description
 
 Enable agent identity for your agent, find its principal and grant it the permission to access the Firestore database.
+
+> [!NOTE]  
+> Run the `seed-cloud-database.sh` script before you test your agent.
 
 ### Success Criteria
 
@@ -218,7 +185,6 @@ Route traffic to your Agent Runtime instance through the governed Agent Gateway.
 - Model Armor template is created with prompt injection, jailbreak, and PII protection rules.
 - Agent Gateway is deployed with the Model Armor template attached.
 - Verify that the setup is working by running the `sanitization` tets, they should all pass successfully.
-- Security findings and policy actions are visible in the Model Armor / Cloud Logging dashboard.
 - No code was modified.
 
 ### Learning Resources
@@ -231,7 +197,6 @@ Route traffic to your Agent Runtime instance through the governed Agent Gateway.
 ### Tips
 
 - Model Armor and Agent Gateway must be in the same Google Cloud region.
-- You can inspect blocked requests in the Google Cloud Console under **Security > Model Armor** or via Cloud Logging.
 
 ## Challenge 5: Keeping It Real (Time)
 
@@ -239,7 +204,7 @@ Route traffic to your Agent Runtime instance through the governed Agent Gateway.
 
 Our agent is now protected against malicious vectors and hosted on a scalable infrastructre, but we're not done yet. In real world customers can phrase their requests in unexpected ways and underlying foundation models or external APIs can introduce subtle behavior changes or hallucinations.
 
-In order to make sure that our agent keeps working properly we need to continously monitor its **behavior**. *Online Monitors* sample real user conversations from Cloud Trace / Cloud Logging and score them asynchronously against multi-turn AutoRater metrics. This creates a closed-loop *Quality Flywheel* to proactively catch quality drift before customers are impacted.
+In order to make sure that our agent keeps working properly we need to continously monitor its *behavior*. *Online Monitors* sample conversations from Cloud Trace / Cloud Logging and score them against multi-turn AutoRater metrics. This way we can proactively catch quality drift before customers are impacted.
 
 ### Description
 

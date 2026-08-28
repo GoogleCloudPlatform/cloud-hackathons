@@ -1,14 +1,21 @@
 # Coach's Guide: Agents: Beyond the Basics
 
-## Overview
+## Introduction
 
-This guide provides coaches with reference solutions, estimated timings, common blockers, and coaching tips for the **Enterprise Agent Operations on Agent Runtime** gHack.
+Welcome to the coach's guide for *Agents: Beyond the Basics* gHack. Here you will find links to specific guidance for coaches for each of the challenges.
 
-In this hack, participants scale, govern, and monitor a production-ready Python ADK agent for Cymbal Retail without needing to write or alter agent code. They focus on infrastructure, security, networking, and operations.
+> [!NOTE]  
+> If you are a gHacks participant, this is the answer guide. Don't cheat yourself by looking at this guide during the hack!
+
+## Coach's Guides
+
+- Challenge 1: It Works on My Machine!
+- Challenge 2: Contain Your Excitement
+- Challenge 3: Badge, Please!
+- Challenge 4: Bouncer at the Gate
+- Challenge 5: Keeping It Real (Time)
 
 ## Challenge 1: It Works on My Machine!
-
-### Solution Steps
 
 Download/clone the sample repository, and run the following command in the top level directory:
 
@@ -52,8 +59,6 @@ adk web retail_agent --allow_origins="*"
 ```
 
 ## Challenge 2: Contain Your Excitement
-
-### Solution Steps
 
 Build and push the container image to Artifact Registry:
 
@@ -170,8 +175,6 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
 
 ## Challenge 4: Bouncer at the Gate
 
-### Solution Steps
-
 > [!IMPORTANT]  
 > Model Armor template and Agent Gateway must be created in the **exact same region** (e.g. `us-central1`).
 
@@ -285,8 +288,6 @@ Verify test outputs by running `pytest -m sanitization` after making sure that t
 > Immediately after creating the Model Armor & Gateway the tests might not pass, try it again after a few minutes.
 
 ## Challenge 5: Keeping It Real (Time)
-
-### Solution Steps
 
 Configure Online Monitor in Google Cloud Console, this should be trivial.
 
