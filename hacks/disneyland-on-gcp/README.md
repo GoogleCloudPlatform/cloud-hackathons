@@ -146,7 +146,7 @@ Connect using **AlloyDB Studio** or `psql` and perform the following tasks:
     ```
 
 4. **Import Data from Cloud Storage:**
-   Use the AlloyDB Import API (via UI or `gcloud`) or the tool of your choice to import the data from these public CSVs:
+   Use the [AlloyDB Import API](https://docs.cloud.google.com/alloydb/docs/import-csv-file#import-csv-file) (via UI or `gcloud`) or the tool of your choice to import the data from these public CSVs:
     - `gs://ghacks-disneyland-on-gcp/reviews.csv` into `disneyland_reviews`
     - `gs://ghacks-disneyland-on-gcp/attractions.csv` into `disneyland_attractions`
     - `gs://ghacks-disneyland-on-gcp/visitor_movements.csv` into `visitor_movements`
@@ -171,7 +171,7 @@ To support semantic searches on our attractions, we need to generate and store v
     ```
 
 3. **Generate Embeddings:**
-   Populate the `embedding` column by calling Gemini Enterprise Agent Platform's embedding model natively from SQL:
+   Populate the `embedding` column by calling Gemini Enterprise Agent Platform's embedding model [natively from SQL](https://docs.cloud.google.com/alloydb/docs/ai/work-with-embeddings?resource=google_ml):
 
     ```sql
     -- TODO: Write an UPDATE query that populates the `embedding` column by calling 
@@ -190,8 +190,8 @@ To stream our data from AlloyDB to BigQuery in near real-time, we will use **Goo
 4. Ensure to
    - Create the stream in the same region as your AlloyDB cluster
    - Use **Built-in database authentication**
-   - Select the three tables you just created
-   - Configure the write mode select **Merge**, staleness limit to **0 seconds** and a single datatset for all schemas named **disney**.
+   - Select the **three tables** you just created
+   - Configure the write mode select **Merge**, staleness limit to **0 seconds** and a **single dataset** for all schemas named **disney**.
 
 The stream will be created and started automatically, do not wait until its finished. You can start challenge 2 and come back to this step later.
 
@@ -210,7 +210,7 @@ To validate this challenge, you must demonstrate the following:
 
 - Verify that `disneyland_reviews` has ~20,000 rows and `disneyland_attractions` has ~73 rows in AlloyDB.
 - Provide the SQL query you used to generate the embeddings natively in AlloyDB.
-- Run a similarity search query in AlloyDB demonstrating the top 5 attractions similar to `'thrilling dark ride in space'`.
+- Run a [similarity search query](https://docs.cloud.google.com/alloydb/docs/ai/run-vector-similarity-search) in AlloyDB demonstrating the top 5 attractions similar to `'thrilling dark ride in space'`.
 - Show a visualization of your BigQuery Data Canvas showing the replicated reviews.
 
 ---
@@ -243,7 +243,7 @@ QueryData and downstream API integration require the **AlloyDB Data API** (also 
 curl -X PATCH \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
-  "https://alloydb.googleapis.com/v1alpha/projects/\${GOOGLE_CLOUD_PROJECT}/locations/<YOUR_REGION>/clusters/disney-cluster/instances/disney-instance?updateMask=dataApiAccess" \
+  "https://alloydb.googleapis.com/v1alpha/projects/$GOOGLE_CLOUD_PROJECT/locations/<YOUR_REGION>/clusters/disney-cluster/instances/disney-instance?updateMask=dataApiAccess" \
   -d '{"dataApiAccess": "ENABLED"}'
 ```
 
@@ -366,7 +366,7 @@ You will prepare SQL queries that leverage AlloyDB's advanced AI features to exp
     CREATE INDEX IF NOT EXISTS attractions_vector_idx ON disneyland_attractions USING scann (embedding cosine) WITH (num_leaves=10);
     ```
 
-   After creating the indexes, try running a hybrid search query using the `ai.hybrid_search` function to see it in action (try searching for a "thrilling space roller coaster").
+   After creating the indexes, try [running a hybrid search query](https://docs.cloud.google.com/alloydb/docs/ai/run-hybrid-vector-similarity-search#usage-examples) using the `ai.hybrid_search` function to see it in action (try searching for a "thrilling space roller coaster").
 
    This hybrid search capability will be mapped later directly to an MCP tool. Save it as a SQL file for later reference.
 
@@ -408,11 +408,11 @@ To validate this challenge, you must demonstrate the following:
 
 ### Introduction
 
-Analyzing visitor sentiment and forecasting ride waiting times are crucial to improving the guest experience. In this challenge, you will use BigQuery ML and the new BigQuery Studio Data Science Agent to perform automated sentiment classification on reviews, train a time-series forecasting model to predict future waiting times, and build unsupervised classification and ranking models to categorize attractions by intensity.
+Analyzing visitor sentiment and forecasting ride waiting times are crucial to improving the guest experience. In this challenge, you will use BigQuery ML and the BigQuery Data Science Agent to perform automated sentiment classification on reviews, train a time-series forecasting model to predict future waiting times, and build unsupervised classification and ranking models to categorize attractions by intensity.
 
 ### Description
 
-#### Task 3.1: Automated Sentiment Analysis with BQ Studio Data Science Agent
+#### Task 3.1: Automated Sentiment Analysis with BigQuery Data Science Agent
 
 Rather than writing Python code from scratch, you will leverage the new **Data Science Agent** in BigQuery Studio to accelerate your analysis.
 
@@ -420,10 +420,10 @@ Rather than writing Python code from scratch, you will leverage the new **Data S
 > **Dependency Note:**
 > This task queries the `disneyland_reviews` table in BigQuery, which is replicated from AlloyDB. This requires **Challenge 1** (specifically the Datastream replication in Task 1.3) to be completed first.
 
-1. Open the **Data Science Agent** panel in BigQuery Studio.
-2. Using natural language, prompt the agent to write a SQL query or a Python notebook that classifies the sentiment of the reviews in `disneyland_reviews` into `Positive`, `Negative`, or `Neutral`.
+1. Create a new **empty notebook** in BigQuery Studio.
+2. Using natural language, prompt the agent in the side panel to write a SQL query or a Python notebook that classifies the sentiment of the reviews in `disneyland_reviews` into `Positive`, `Negative`, or `Neutral`.
 3. The agent should suggest using `AI.GENERATE_TEXT` or `AI.GENERATE` with a Gemini model (e.g., `gemini-2.5-flash`) to perform the sentiment classification.
-4. Run the generated query on a sample of **100 reviews** and save the results into a new table `reviews_sentiment_analysis`.
+4. Run the generated query on a sample of **100 reviews** and save the results into a new table `reviews_sentiment_analysis`. 
 
 #### Task 3.2: Time-Series Wait Time Forecasting
 
@@ -431,18 +431,18 @@ We want our guest assistant to predict wait times for any hour of the day.
 
 1. Load the historical wait times dataset from:
    `gs://ghacks-disneyland-on-gcp/waiting_time.csv` into a BigQuery table named `waiting_times`.
-2. Use BigQuery ML to train a time-series forecasting model. You can choose either:
-    - **ARIMA_PLUS**: The classic, fast statistical forecasting model.
-    - **TimesFM**: Google's state-of-the-art foundation model for time-series forecasting (using `AI.FORECAST`).
-3. Forecast the wait times for all attractions for the next 24 hours in 30-minute intervals, and save the results in a table named `forecasted_waiting_times`.
+2. Bucket the time-series data in intervals of 30 minutes so the model uses the desired interval. Example: `TIMESTAMP_SECONDS(1800 * DIV(UNIX_SECONDS(timestamp), 1800)) AS time_bucket`.
+3. Use BigQuery ML to train a time-series forecasting model. You can choose either:
+    - **[ARIMA_PLUS](https://docs.cloud.google.com/bigquery/docs/arima-single-time-series-forecasting-tutorial)**: The classic, fast statistical forecasting model.
+    - **[TimesFM](https://docs.cloud.google.com/bigquery/docs/timesfm-time-series-forecasting-tutorial)**: Google's state-of-the-art foundation model for time-series forecasting (using `AI.FORECAST`).
+4. Forecast the wait times for all attractions for the next 24 hours in 30-minute intervals, and save the results in a table named `forecasted_waiting_times`. This table should contain attraction_id, forecasted_timestamp, and predicated_wait_time as columns.
 
 #### Task 3.3: Ride Clustering (Intensity & Popularity)
 
 To better classify our rides, we will group attractions into logical clusters using unsupervised learning.
 
-1. Build a query that aggregates statistics for each attraction: average wait time, total review count, and average rating.
-2. Use `AI.CLASSIFY` to categorize rides based on their descriptions into one of three magical categories: `[easy-peasy, thrilling, extreme]`.
-3. Use `AI.SCORE` to compare and order attractions based on a thrill level, where Rank 10 is the most extreme and Rank 1 is the least.
+1. Use [`AI.CLASSIFY`](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-classify) to categorize rides based on their descriptions into one of three magical categories: `[easy-peasy, thrilling, extreme]`.
+2. Use [`AI.SCORE`](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-score) to compare and order attractions based on a thrill level, where Rank 10 is the most extreme and Rank 1 is the least.
 
 ### Success Criteria
 
@@ -470,9 +470,9 @@ Disneyland managers have a collection of visitor photos and PDF brochures. In th
 
 You have a GCS bucket containing park photos: `gs://ghacks-disneyland-on-gcp/attraction_parc_photos/`.
 
-1. Create a **BigQuery Object Table** pointing to the GCS bucket.
-2. Create a remote model in BigQuery pointing to a multimodal model (e.g., `gemini-2.5-flash`).
-3. Use `AI.GENERATE_TEXT` to pass the image URIs to the model with a prompt asking: *"Is this image from a Disneyland park? Answer with a JSON object containing keys 'is_disneyland' (boolean) and 'reason' (string)."*
+1. Create a **[BigQuery Object Table](https://docs.cloud.google.com/bigquery/docs/object-tables#create-object-table)** pointing to the GCS bucket.
+2. Create a [remote model](https://docs.cloud.google.com/bigquery/docs/generate-text-tutorial-gemini#create_the_remote_model) in BigQuery pointing to a multimodal model (e.g., `gemini-2.5-flash`). A pre-made connection `us-central1.conn` is provided.
+3. Use [`AI.GENERATE_TEXT`](https://docs.cloud.google.com/bigquery/docs/image-analysis#analyze_the_movie_posters) to pass the image URIs to the model with a prompt asking: *"Is this image from a Disneyland park? Answer with a JSON object containing keys 'is_disneyland' (boolean) and 'reason' (string)."*
 4. Save the structured results into a table `images_classification`.
 
 #### Task 4.2: Streamlined PDF Document Processing
@@ -483,19 +483,19 @@ Create an **Object Table** in BigQuery pointing to the brochures bucket.
 
 ##### Option 1: AI.SEARCH with OBJECTREF
 
-- Use `AI.SEARCH` to find *"Where can I find a buffet-style Tex-Mex meal?"*
+- Use [`AI.SEARCH`](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-search) to find *"Where can I find a buffet-style Tex-Mex meal?"*
 
 ##### Option 2: Chunking, Embeddings, and Vector Search
 
 For a more streamlined pipeline, let's create chunks of the PDFs, then generate embeddings. Finally, use Vector search to find similarities:
 
-- Extract chunks of the PDF files (using `AI.GENERATE`, `AI.PARSE_DOCUMENT` or a UDF Function).
-- Generate embeddings for each text chunk using a remote BQML embedding model (`gemini-embedding-001`).
-- Store the chunks and their vector embeddings in a table `brochure_embeddings`.
+- Extract chunks of the PDF files using the pre-provided `chunk_pdf` UDF. The UDF expects the [uri of the object](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/objectref_functions).
+- Create a remote embedding model in BigQuery using (`gemini-embedding-001`).
+- [Generate embeddings](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-generate-embedding) for each text chunk and save these in a table called `brochure_embeddings`.
 
-#### Task 4.3: Intelligent Search and Response with AI.SEARCH & AI.GENERATE_TEXT
+#### Task 4.3: Intelligent Search and Response with VECTOR_SEARCH & AI.GENERATE_TEXT
 
-1. Perform a vector search over the `brochure_embeddings` table. Find the most relevant document chunks for the question: *"Where can I find a buffet-style Tex-Mex meal?"* (or French: *"Où manger un repas tex-mex à volonté ?"*).
+1. Perform a [vector search](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/search_functions#vector_search) over the `brochure_embeddings` table. Find the most relevant document chunks for the question: *"Where can I find a buffet-style Tex-Mex meal?"* (or French: *"Où manger un repas tex-mex à volonté ?"*).
 2. Pass the retrieved chunks as context along with the question to `gemini-2.5-flash` using `AI.GENERATE_TEXT` to generate a grounded, accurate response.
 
 ### Success Criteria
@@ -514,13 +514,13 @@ To validate this challenge, you must demonstrate the following:
 
 ### Introduction
 
-Understanding visitor movement patterns is key to optimizing park operations and recommending optimal paths to avoid long queues. In this challenge, you will define a Property Graph in BigQuery using BigQuery's new native SQL Graph capabilities over the replicated visitor movement logs, query the graph for flow patterns and multi-hop journeys, and construct a routing recommendation table.
+Understanding visitor movement patterns is key to optimizing park operations and recommending optimal paths to avoid long queues. In this challenge, you will define a Property Graph in BigQuery using BigQuery's new native Graph capabilities over the replicated visitor movement logs, query the graph for flow patterns and multi-hop journeys, and construct a routing recommendation table.
 
 ### Description
 
 #### Task 5.1: Build a Property Graph in BigQuery
 
-Using BigQuery's new native **SQL Graph** capabilities, you will define a property graph over the attractions and movements.
+Using BigQuery's new native [**Graph**](https://docs.cloud.google.com/bigquery/docs/graph-overview) capabilities, you will [define a property graph](https://docs.cloud.google.com/bigquery/docs/graph-create) over the attractions and movements.
 
 > [!IMPORTANT]
 > **Dependency Note:**
@@ -533,7 +533,7 @@ Using BigQuery's new native **SQL Graph** capabilities, you will define a proper
 
 #### Task 5.2: Query the Graph for Patterns
 
-Write graph queries using `GRAPH_TABLE` and GQL match patterns to solve the following analytical questions:
+[Write graph queries](https://docs.cloud.google.com/bigquery/docs/graph-query-overview) using `GRAPH_TABLE` and GQL match patterns to solve the following analytical questions:
 
 1. **Flow Analysis:** *What are the top 3 attractions visitors run to immediately after leaving "Space Mountain"?*
    Write a query matching paths: `(a:Attraction {name: 'Space Mountain'}) -[e:Moved]-> (b:Attraction)`.
@@ -552,7 +552,7 @@ Now, let's explore GQL's path capabilities to analyze journeys taken by visitors
 To power our intelligent guest assistant, we need to provide next-ride recommendations based on real visitor behavior.
 
 1. **Extract Recommendations:** Write a graph query to find the most recurrent next attraction visitors go to after visiting each specific attraction.
-2. **Build the Recommendation Table:** Save the results of this query into a new BigQuery table named `graph_recommendations`. This table should include the current attraction, the recommended next attraction, and a ranking score (e.g., based on frequency). This table will be synced and used later by the agent.
+2. **Build the Recommendation Table:** Save the results of this query into a new BigQuery table named `graph_recommendations`. This table should include the current attraction (`attraction_id`), the recommended next attraction (`recommended_next_attraction_id`), and a [ranking score](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/numbering_functions#dense_rank) based on frequency (`recommendation_rank`). This table will be synced and used later by the agent.
 
 ### Success Criteria
 
@@ -561,7 +561,7 @@ To validate this challenge, you must demonstrate the following:
 - Show the SQL DDL statement used to define and create the Property Graph `disney_movement_graph`.
 - Provide the SQL graph query for the "Flow Analysis" (top 3 rides after Space Mountain) and its corresponding output.
 - Provide the SQL graph query for "Multi-Hop Journeys" starting from Space Mountain and its corresponding output.
-- Provide the SQL graph queries for "Visitor Journey Tracking" and "Reachable Journeys", and display their outputs.
+- Provide the SQL graph queries for "Specific Journey Tracking" and "Multi-Hop Journeys by Visitor", and display their outputs.
 - Verify the creation and content of the `graph_recommendations` table showing the most recurrent next attractions.
 
 ---
@@ -572,7 +572,7 @@ To validate this challenge, you must demonstrate the following:
 
 ### **Introduction**
 
-Before creating your conversational AI agents, you need to build a centralized context layer. This layer ensures your agents understand your business terminology, operational metadata, and data asset structures, leading to higher accuracy and fewer hallucinations.
+Before creating your conversational AI agents, you need to build a centralized context layer. In Google Cloud, Knowledge Catalog allows you to store technical and business metadata, making it well suited for this purpose. This layer ensures your agents understand your business terminology, operational metadata, and data asset structures, leading to higher accuracy and fewer hallucinations.
 
 #### **Task 6.1: Technical Metadata Enrichment**
 
