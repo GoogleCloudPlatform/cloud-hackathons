@@ -572,47 +572,39 @@ To validate this challenge, you must demonstrate the following:
 
 ### **Introduction**
 
-Before creating your conversational AI agents, you need to build a centralized context layer. In Google Cloud, Knowledge Catalog allows you to store technical and business metadata, making it well suited for this purpose. This layer ensures your agents understand your business terminology, operational metadata, and data asset structures, leading to higher accuracy and fewer hallucinations.
+Before creating your conversational AI agents, you need to build a centralized context layer. In Google Cloud, [Knowledge Catalog](https://docs.cloud.google.com/dataplex/docs/introduction) allows you to store technical and business metadata, making it well suited for this purpose. This layer ensures your agents understand your business terminology, operational metadata, and data asset structures, leading to higher accuracy and fewer hallucinations.
 
 #### **Task 6.1: Technical Metadata Enrichment**
 
-1. Navigate to your BigQuery dataset.  
-2. Enrich your chosen data assets (such as `disneyland_reviews`) by adding schema descriptions to columns.  
-3. Ensure critical columns like your vector embeddings, image analysis JSON fields, and source URIs have clear technical metadata descriptions.
+1. Navigate to your BigQuery dataset in BigQuery Studio. Due to the integration between the two services, when you [add metadata in BigQuery](https://docs.cloud.google.com/dataplex/docs/add-metadata-quickstart), it is also visible in Knowledge Catalog.  
+2. Enrich the table `disneyland_reviews` by adding schema descriptions to the columns.  
+3. Add clear technical metadata descriptions to your vector embedding, image analysis JSON, and source URI columns across the various tables.
 
 #### **Task 6.2: Business Glossary Alignment**
 
-To align raw technical structures with organizational understanding, you must map your catalog to a standardized business vocabulary.
+Conversational agents often struggle when user prompts use everyday business terminology (e.g., "frequent visitor") that does not match physical database column names. Using Dataplex Business Glossaries, you will create a unified semantic layer that bridges business definitions directly to both analytical engines (BigQuery) and transactional databases (AlloyDB).
 
-1. **Glossary Creation:** Create a centralized Business Glossary for the Disneyland analytics ecosystem.  
-2. **Core Definitions:** Define core business terms and definitions inside the glossary (e.g., define terms like *"Rollercoaster"*, *"Premium visitor"*, or *"Buffet Dining Category"*  
+1. **Glossary Creation:** [Create a centralized Business Glossary](https://docs.cloud.google.com/dataplex/docs/quickstart-business-glossary) in Knowledge Catalog.  
+2. **Core Definitions:** Define core business terms and definitions inside the glossary" define the terms *"Rollercoaster"*, *"Premium visitor"*, & *"Buffet Dining Category"*  
    *An example: “Premium visitor”: A visitor who left more than 2 reviews*).  
 3. **Asset Mapping to BigQuery:** Link these business terms directly to their corresponding BigQuery columns to map technical metadata to business language.  
 4. **Asset Mapping to AlloyDB:** Try mapping some terms to AlloyDB assets as well to see how Knowledge Catalog equally integrates to operational & analytical databases.
 
 #### **Task 6.3: Automated profiling & quality**
 
-It’s very important to understand the distribution of the values in a column and quality rules in order to better discover the data.
+Feeding unvalidated or drifting data into an AI context window directly causes hallucinated answers and unreliable agent behavior. Dataplex Auto Data Quality & Data Profiling automates the inspection of data distributions, custom business logic, and more. By running automated profiling and enforcing quality assertions before data reaches the retrieval layer, you protect downstream AI agents from faulty context and ensure every generated insight is backed by verified data.
 
-1. Run a data profile scan on the disneyland\_reviews table. Analyze the results.  
-2. Define & run an automatic data quality scan with different rules (profile-based, predefined generic, custom, etc)
+1. Run a [data profile scan](https://docs.cloud.google.com/dataplex/docs/data-profiling-overview) on the disneyland_reviews table. Analyze the results.  
+2. Define two [data quality rules](https://docs.cloud.google.com/dataplex/docs/auto-data-quality-overview) (rating = \[1-5], reviewer_location != NULL) and run a Data Quality Scan to ensure the reviews table matches these criteria.
 
 #### **Task 6.4: Automated GCS Metadata Generation**
 
-Set up an automated extraction pipeline to handle documentation and unstructured assets within your environment.
+Sometimes there is too much data and not enough humans to enrich your data. BigQuery offers automatic discovery and metadata generation for data in Cloud Storage, such as our PDFs and images. Set up an automated extraction pipeline to handle documentation and unstructured assets within your environment. This turns raw object storage into an intelligent, searchable document repository that AI agents can effortlessly discover and retrieve.
 
 > [!TIP]
 > **This can be done in the BigQuery Metadata Curation tab.**
 
-1. Configure the pipeline to analyze your unstructured `gs://ghacks-disneyland-on-gcp/` bucket.  
-2. Automatically generate and attach metadata tags (such as language, document type, target audience, and revision date) to the PDF assets, use semantic inference for better results.
-
-#### **Task 6.5: lookup context API Integration**
-
-Once your technical, business, and object storage metadata are established, wire them into your execution layer for application discovery.
-
-1. Utilize the LookupContext API to fetch operational and structural context dynamically. Test the API against a standard BigQuery data asset and an AlloyDB transactional database table. You can use Python or a rest API  
-2. Verify that the API returns detailed, low-latency context maps that an LLM agent can ingest to understand the underlying database schemas and table relationships.
+1. [Configure the pipeline](https://docs.cloud.google.com/bigquery/docs/automatic-discovery) to analyze your unstructured `gs://ghacks-disneyland-on-gcp/` bucket and generate metadata automatically.
 
 ### **Success Criteria**
 
@@ -620,8 +612,7 @@ To validate this challenge, you must demonstrate the following:
 
 - Show the enriched schema descriptions for your target tables directly within the BigQuery Console.  
 - Provide a summary or export of the linked terms inside your centralized Disneyland Business Glossary.  
-- Show the successful pipeline logs or sample metadata tags generated for the PDF assets in Cloud Storage.  
-- Provide the API JSON response payload from a successful `LookupContext` call showing the multi-database schema mapping.
+- Show the successful pipeline logs or sample metadata tags generated for the PDF assets in Cloud Storage. 
 
 ---
 
@@ -631,35 +622,21 @@ To validate this challenge, you must demonstrate the following:
 
 ### Introduction
 
-Disneyland park managers need to query this complex multi-silo dataset (reviews, wait times, graph movements, classifications) without writing SQL. In this challenge, you will build a data agent using BigQuery's Conversational Analytics. You will leverage the context layer defined in the Knowledge Catalog.
+Disneyland park managers need to query this complex multi-silo dataset (reviews, wait times, graph movements, classifications) without writing SQL. In this challenge, you will build a data agent using [BigQuery's Conversational Analytics](https://docs.cloud.google.com/bigquery/docs/conversational-analytics). We will link our agent to the Knowledge Catalog so it can access the technical and business metadata to help translate natural language questions into accurate queries.
 
 ### Description
 
 #### Task 7.1: Initialize the Conversational Analytics Agent
 
 1. In BigQuery Studio, navigate to the **Agents** tab.
-2. Create a new agent named `disney_park_analyst` and connect it to the table under disney dataset. You can also put the previously created BQ graph as a knowledge source. (You can either choose tables or a Graph, not both)
+2. [Create a new agent](https://docs.cloud.google.com/bigquery/docs/create-data-agents) named `disney_park_analyst` and connect it to the tables within the disney dataset.
+3. In the Glossary section of the agent creation, add terms by importing them from the Knowledge Catalog.
+4. Add a Verified query, which will function as an example for the agent.
+	- Join the attractions table with the wait-time forecasts.
 
-#### Task 7.2: Use the Knowledge Catalog
+#### Task 7.2: Execute Multi-Silo Prompts
 
-To prevent the agent from hallucinating, you can leverage the previously configured Knowledge Catalog.
-
-1. **Metadata Descriptions:** Choose sources with curated metadata.
-2. **Synonyms & Vocabulary:** Make sure business terms are imported.
-
-#### Task 7.3: Define Golden Queries
-
-Train the agent's SQL generation engine by providing **Golden Queries**—pre-approved, highly accurate SQL templates that the model can reference.
-
-Provide golden queries for:
-
-- Joining the attractions table with the wait-time forecasts.
-- Querying the graph routing table.
-
-#### Task 7.4: Execute Multi-Silo Prompts
-
-Once configured, test the agent in the chat interface. Ask complex, cross-dataset questions like:
-
+Now that our agent is configured, it is time to test the agent in the chat interface. Ask complex, cross-dataset questions like:
 - *« Which attractions have the highest negative sentiment today, and what is the most common path visitors take after leaving them? »*
 
 ### Success Criteria
@@ -667,7 +644,7 @@ Once configured, test the agent in the chat interface. Ask complex, cross-datase
 To validate this challenge, you must demonstrate the following:
 
 - Show the Conversational Analytics agent `disney_park_analyst` configured in the BigQuery Console.
-- List the synonyms and Golden Queries you defined in the agent's configuration.
+- Show the verified queries and glossary terms you defined in the agent's configuration.
 - Show a screenshot or proof of the chat interface successfully answering the complex multi-silo prompt without any SQL syntax errors.
 
 ---
@@ -678,7 +655,7 @@ To validate this challenge, you must demonstrate the following:
 
 ### Introduction
 
-To serve analytical insights (like wait time forecasts and next-ride recommendations) with sub-millisecond latency and without overloading BigQuery, we will not query BigQuery directly from the agent. Instead, we will use **BigQuery Foreign Data Wrapper (FDW)** to copy the analytical insights from BigQuery into **local tables** inside AlloyDB.
+To serve analytical insights (like wait time forecasts and next-ride recommendations) with sub-millisecond latency and without overloading BigQuery, we will not query BigQuery directly from the agent. Instead, we will [synchronize our data from BigQuery into **local tables** inside AlloyDB.](https://docs.cloud.google.com/alloydb/docs/sync-bigquery-data-to-alloydb)
 
 This ensures that AlloyDB remains the single, high-performance serving layer for the agent, while BigQuery is used purely for heavy analytical processing.
 
@@ -739,8 +716,6 @@ Now, copy the data from the foreign tables into your local AlloyDB tables.
 ### Success Criteria
 
 To validate this challenge, you must demonstrate the following:
-
-- Show the DDL used to create the local tables in AlloyDB.
 - Provide a screenshot of AlloyDB Studio showing the local tables populated with synced data from BigQuery.
 
 ---
@@ -751,7 +726,7 @@ To validate this challenge, you must demonstrate the following:
 
 ### Introduction
 
-Now that all operational and analytical data resides locally in AlloyDB, you will expose these capabilities as tools using the **MCP Toolbox for databases**. This allows any downstream AI agent to securely and efficiently interact with the database.
+Now that all the operational and analytical data resides locally in AlloyDB, you will expose these capabilities as tools using the [**MCP Toolbox for databases**](https://github.com/googleapis/mcp-toolbox). This allows any downstream AI agent to securely and efficiently interact with the database.
 
 ### Description
 
@@ -785,7 +760,7 @@ instance: "[YOUR_INSTANCE]"
 ipType: "public"
 database: "disney"
 user: "postgres"
-password: "buildwithgemini2026"
+password: "[YOUR_PASSWORD]"
 
 ---
 
@@ -946,7 +921,7 @@ To validate this challenge, you must demonstrate the following:
 
 ### Introduction
 
-This is the final integration and application challenge! Because the entire database agentic layer—including BigQuery FDW data sync, operational/analytical SQL tools, and MCP Toolbox—has already been securely structured in Challenges 7, 8, and 9, this challenge focuses exclusively on the developer's magic: constructing the conversational guest assistant, vibe-coding a premium web application, and deploying it **locally**.
+This is the final integration and application challenge! Because the entire database agentic layer—including BigQuery data sync, operational/analytical SQL tools, and MCP Toolbox—has already been securely structured in Challenges 7, 8, and 9, this challenge focuses exclusively on the developer's magic: constructing the conversational guest assistant, vibe-coding a premium web application, and deploying it **locally**.
 
 ![Challenge 10 Architecture](images/challenge10_architecture.png)
 
@@ -954,7 +929,7 @@ This is the final integration and application challenge! Because the entire data
 
 #### Task 10.1: Scaffold the Guest Assistant with ADK
 
-Using the **Agent Development Kit (ADK)**, you will construct the conversational agent that consumes your MCP tools.
+Using the [**Agent Development Kit (ADK)**](https://adk.dev/), you will construct a conversational agent that consumes your MCP tools.
 
 1. **Create `agent.py`:**
    Set up the agent, pointing it to your local MCP server to load the toolset:
@@ -982,19 +957,18 @@ Using the **Agent Development Kit (ADK)**, you will construct the conversational
 
 #### Task 10.2: Vibe-Coding a Premium Web Application
 
-Rather than a generic, plain interface, you will **vibe-code a stunning, premium web application** that hooks into your ADK agent.
+Rather than a generic, plain interface, you will **vibe code a stunning, premium web application** that hooks into your ADK agent.
 
 **Leverage the Google AI Stack for Vibe-Coding:**
 
 - **Stitch:** Use Stitch to rapidly design and iterate on the premium web interface (dark modes, glassmorphism, animations) and export production-ready components.
 - **Google Antigravity 2.0 & CLI:** Use the `antigravity` CLI and its Agentic IDE capabilities to autonomously scaffold and vibe-code the frontend logic, hooking it directly to your ADK agent.
-- **Google AI Studio:** Prototype, experiment, and fine-tune any complex conversational interactions or multimodal prompts before integrating them into your codebase.
 
 ### Success Criteria
 
 To validate this challenge, you must demonstrate the following:
 
-- Show a screenshot or proof of the **Vibe-Coded Web App** running, showcasing a premium design with glassmorphism, animations, and a rich, responsive layout.
+- Show a screenshot or proof of a **Vibe Coded Web App** running, showcasing a premium design with a rich, responsive layout.
 - Show a full conversation demonstration in your application UI where the agent uses hybrid search, checks wait times, recommends a next-ride, and records a review—all working flawlessly in one session.
 
 ---
