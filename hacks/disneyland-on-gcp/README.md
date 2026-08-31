@@ -423,7 +423,7 @@ Rather than writing Python code from scratch, you will leverage the new **Data S
 1. Create a new **empty notebook** in BigQuery Studio.
 2. Using natural language, prompt the agent in the side panel to write a SQL query or a Python notebook that classifies the sentiment of the reviews in `disneyland_reviews` into `Positive`, `Negative`, or `Neutral`.
 3. The agent should suggest using `AI.GENERATE_TEXT` or `AI.GENERATE` with a Gemini model (e.g., `gemini-2.5-flash`) to perform the sentiment classification.
-4. Run the generated query on a sample of **100 reviews** and save the results into a new table `reviews_sentiment_analysis`. 
+4. Run the generated query on a sample of **100 reviews** and save the results into a new table `reviews_sentiment_analysis`.
 
 #### Task 3.2: Time-Series Wait Time Forecasting
 
@@ -612,7 +612,7 @@ To validate this challenge, you must demonstrate the following:
 
 - Show the enriched schema descriptions for your target tables directly within the BigQuery Console.  
 - Provide a summary or export of the linked terms inside your centralized Disneyland Business Glossary.  
-- Show the successful pipeline logs or sample metadata tags generated for the PDF assets in Cloud Storage. 
+- Show the successful pipeline logs or sample metadata tags generated for the PDF assets in Cloud Storage.
 
 ---
 
@@ -631,12 +631,12 @@ Disneyland park managers need to query this complex multi-silo dataset (reviews,
 1. In BigQuery Studio, navigate to the **Agents** tab.
 2. [Create a new agent](https://docs.cloud.google.com/bigquery/docs/create-data-agents) named `disney_park_analyst` and connect it to the tables within the disney dataset.
 3. In the Glossary section of the agent creation, add terms by importing them from the Knowledge Catalog.
-4. Add a Verified query, which will function as an example for the agent.
-	- Join the attractions table with the wait-time forecasts.
+4. Add a Verified query, which will function as an example for the agent: join the attractions table with the wait-time forecasts.
 
 #### Task 7.2: Execute Multi-Silo Prompts
 
 Now that our agent is configured, it is time to test the agent in the chat interface. Ask complex, cross-dataset questions like:
+
 - *« Which attractions have the highest negative sentiment today, and what is the most common path visitors take after leaving them? »*
 
 ### Success Criteria
@@ -716,6 +716,7 @@ Now, copy the data from the foreign tables into your local AlloyDB tables.
 ### Success Criteria
 
 To validate this challenge, you must demonstrate the following:
+
 - Provide a screenshot of AlloyDB Studio showing the local tables populated with synced data from BigQuery.
 
 ---
