@@ -140,10 +140,7 @@ In this challenge, you will govern your deployed agent by configuring its Agent 
 
 ### Description
 
-Enable agent identity for your agent, find its principal and grant it the permission to access the Firestore database.
-
-> [!NOTE]  
-> Run the `seed-cloud-database.sh` script before you test your agent.
+Enable agent identity for your agent, find its principal and grant it the permission to access the Firestore database. Run the `seed-cloud-database.sh` script before you test your agent.
 
 ### Success Criteria
 
@@ -184,7 +181,7 @@ Route traffic to your Agent Runtime instance through the governed Agent Gateway.
 
 - Model Armor template is created with prompt injection, jailbreak, and PII protection rules.
 - Agent Gateway is deployed with the Model Armor template attached.
-- Verify that the setup is working by running the `sanitization` tets, they should all pass successfully.
+- Verify that the setup is working by running the `sanitization` tests, they should all pass successfully.
 - No code was modified.
 
 ### Learning Resources

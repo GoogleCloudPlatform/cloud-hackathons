@@ -85,7 +85,7 @@ from agentplatform import Client
 
 client = Client(project="$GOOGLE_CLOUD_PROJECT", location="$REGION")
 
-agent = client.agent_engines.create(
+agent = client.runtimes.create(
       config = {
          "display_name": "cymbal-retail-support-agent",
          "container_spec": {
@@ -152,7 +152,7 @@ from agentplatform import Client
 
 client = Client(project="$GOOGLE_CLOUD_PROJECT", location="$REGION")
 
-agent = client.agent_engines.update(
+agent = client.runtimes.update(
    name="$AGENT_RESOURCE_NAME",
    config={
       "identity_type": "AGENT_IDENTITY"
@@ -180,6 +180,12 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
 
 > [!WARNING]  
 > IAM role bindings can take 60-90 seconds to propagate across Google Cloud global IAM caches. Advise participants to wait a moment if they see a transient 403.
+
+And make sure to seed the database so there's some test data.
+
+```shell
+scripts/seed-cloud-database.sh
+```
 
 ## Challenge 4: Bouncer at the Gate
 
@@ -265,7 +271,7 @@ from agentplatform import Client
 
 client = Client(project="$GOOGLE_CLOUD_PROJECT", location="$REGION")
 gateway_uri = "projects/$GOOGLE_CLOUD_PROJECT/locations/$REGION/agentGateways/$GATEWAY_NAME"
-agent = client.agent_engines.update(
+agent = client.runtimes.update(
     name="$AGENT_RESOURCE_NAME",
     config={
          "container_spec": {
