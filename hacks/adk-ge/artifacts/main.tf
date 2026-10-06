@@ -35,7 +35,10 @@ resource "google_project_service" "default" {
     "saasservicemgmt.googleapis.com",
     "texttospeech.googleapis.com",
     "geminidataanalytics.googleapis.com",
-    "sourcerepo.googleapis.com"
+    "sourcerepo.googleapis.com",
+    "agentidentity.googleapis.com",
+    "agentidentitycredentials.googleapis.com"
+
   ])
   service = each.key
 

@@ -19,7 +19,7 @@ instruction:
   type: md
   uri: instructions/en.md
 duration: 420
-max_duration: 600
+max_duration: 420
 credits: 0
 level: fundamental
 tags:
@@ -30,6 +30,7 @@ environment:
   resources:
   - type: gcp_project
     id: project
+    variant: gcp_medium_extra
     startup_script:
       type: qwiklabs
       path: artifacts
