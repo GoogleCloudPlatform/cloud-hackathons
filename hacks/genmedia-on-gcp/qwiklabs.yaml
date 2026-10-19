@@ -38,30 +38,35 @@ environment:
       path: artifacts
   - type: gcp_user
     id: user_1
+    variant: extra
     permissions:
     - project: project
       roles:
       - roles/owner
   - type: gcp_user
     id: user_2
+    variant: extra
     permissions:
     - project: project
       roles:
       - roles/owner
   - type: gcp_user
     id: user_3
+    variant: extra
     permissions:
     - project: project
       roles:
       - roles/owner
   - type: gcp_user
     id: user_4
+    variant: extra
     permissions:
     - project: project
       roles:
       - roles/owner
   - type: gcp_user
     id: user_5
+    variant: extra
     permissions:
     - project: project
       roles:

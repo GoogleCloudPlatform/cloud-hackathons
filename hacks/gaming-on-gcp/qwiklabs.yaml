@@ -14,7 +14,9 @@
 schema_version: 2
 default_locale: en
 title: "[gHacks] Gaming on Google Cloud"
-description: ""
+description: "We will experience the power of Google Cloud's gaming services 
+  and help you create innovative gaming solutions using technologies like the
+  Agones Game Server, Open Match, Cloud Spanner, and BigQuery."
 instruction:
   type: md
   uri: instructions/en.md
@@ -30,6 +32,7 @@ environment:
   resources:
   - type: gcp_project
     id: project
+    variant: gcp_medium_extra
     startup_script:
       type: qwiklabs
       path: artifacts
