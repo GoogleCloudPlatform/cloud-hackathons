@@ -82,6 +82,33 @@ Use the AlloyDB Import API (via the Cloud Console UI or `gcloud`) to import the 
 * Import `gs://ghacks-disneyland-on-gcp/attractions.csv` into `disneyland_attractions`
 * Import `gs://ghacks-disneyland-on-gcp/visitor_movements.csv` into `visitor_movements`
 
+**Option A: Cloud Console UI.** Go to **AlloyDB > Clusters > disney-cluster > Import**. Select the CSV file in Cloud Storage, the `disney` database and the target table. Repeat for each file.
+
+**Option B: Cloud Shell / CLI.**
+
+```bash
+gcloud alloydb clusters import disney-cluster \
+    --region=us-central1 \
+    --database=disney \
+    --gcs-uri=gs://ghacks-disneyland-on-gcp/attractions.csv \
+    --csv \
+    --table=disneyland_attractions
+
+gcloud alloydb clusters import disney-cluster \
+    --region=us-central1 \
+    --database=disney \
+    --gcs-uri=gs://ghacks-disneyland-on-gcp/reviews.csv \
+    --csv \
+    --table=disneyland_reviews
+
+gcloud alloydb clusters import disney-cluster \
+    --region=us-central1 \
+    --database=disney \
+    --gcs-uri=gs://ghacks-disneyland-on-gcp/visitor_movements.csv \
+    --csv \
+    --table=visitor_movements
+```
+
 ---
 
 ### 1.2 Generate Vector Embeddings at the Source
@@ -156,7 +183,7 @@ SELECT PG_CREATE_LOGICAL_REPLICATION_SLOT('slot_disney', 'pgoutput');
 
 ## Challenge 2: Creating the agentic database layer
 
-### 2.1 QueryData Context Set
+### 2.3 QueryData Context Set
 
 Create a file named `querydata_disney_context.json` with the following configuration and upload it in the AlloyDB Console under **Context Sets** (named `disney-context`):
 
@@ -222,7 +249,16 @@ Create a file named `querydata_disney_context.json` with the following configura
 
 ---
 
-### 2.2 Expose AlloyDB AI Operators
+### 2.4 Expose AlloyDB AI Operators
+
+> [!TIP]
+> If the IAM user gets a table owner error (for example `must be owner of table disneyland_attractions`), sign in to AlloyDB Studio as the `postgres` user and make the IAM user the owner of the table:
+>
+> ```sql
+> ALTER TABLE disneyland_attractions OWNER TO "<IAM_USER_EMAIL>";
+> ```
+>
+> Replace `<IAM_USER_EMAIL>` with the email of the IAM user registered in Task 2.2 (for example `student-xx-xxxxxxxxxxxx@qwiklabs.net`).
 
 #### 1. Install Extensions and Create Indexes for Hybrid Search
 
@@ -364,7 +400,7 @@ CREATE OR REPLACE MODEL `disney.waiting_time_forecast_model`
     data_frequency='AUTO_FREQUENCY'
   ) AS
   SELECT
-    TIMESTAMP_SECONDS(1800 * DIV(UNIX_SECONDS(timestamp), 1800)) AS time_bucket, -- 30-min intervals
+    TIMESTAMP_SECONDS(1800 * DIV(UNIX_SECONDS(usage_start_time), 1800)) AS time_bucket, -- 30-min intervals
     attraction,
     AVG(waiting_time) AS avg_wait_time
   FROM `disney.waiting_times`
@@ -449,7 +485,7 @@ FROM
     MODEL `disney.gemini_flash`,
     TABLE `disney.attraction_images`,
     STRUCT(
-      'Is this image from a Disneyland park? Answer with a JSON object containing keys ''is_disneyland'' (boolean) and ''reason'' (string).' AS prompt
+      'Is this image from a Disneyland park? Answer with a JSON object containing keys \'is_disneyland\' (boolean) and \'reason\' (string).' AS prompt
     )
   );
 ```
@@ -457,6 +493,9 @@ FROM
 ---
 
 ### 4.2 PDF Brochure Ingestion & RAG Pipeline
+
+> [!TIP]
+> Make sure the team completes **Task 4.1** first. If `AI.SEARCH` doesn't work in the project, **skip Tasks 4.2 and 4.3** and move on to Challenge 5.
 
 #### 1. Create the Object Table for PDFs
 
@@ -469,82 +508,69 @@ OPTIONS (
 );
 ```
 
-#### 2. Chunk PDFs using Pre-provided UDF
+#### 2. AI.SEARCH with OBJECTREF
+
+`AI.SEARCH` needs a base table with [autonomous embedding generation](https://docs.cloud.google.com/bigquery/docs/autonomous-embedding-generation) on a `STRING` or `ObjectRef` column. Create a standard table from the object table, with a generated embedding column on the `ObjectRef`, then search it:
 
 ```sql
-CREATE OR REPLACE TABLE disney.brochures_chunks AS
-SELECT 
-  uri, chunk
-FROM
-  `disney.brochures_pdf`,
-  UNNEST(
-    disney.chunk_pdf(
-      TO_JSON_STRING(
-        OBJ.GET_ACCESS_URL(OBJ.MAKE_REF(uri, 'us-central1.conn'), 'r')
-      ),
-      1000,
-      100
-    )
-  ) AS chunk;
-```
+CREATE OR REPLACE TABLE `disney.brochures` (
+  uri STRING,
+  brochure ObjectRef,
+  brochure_embedding STRUCT<result ARRAY<FLOAT64>, status STRING>
+    GENERATED ALWAYS AS (AI.EMBED(
+      brochure,
+      connection_id => 'us-central1.conn',
+      endpoint => '<MULTIMODAL_EMBEDDING_ENDPOINT>'  -- an embedding model that accepts PDF input
+    ))
+    STORED OPTIONS (asynchronous = TRUE)
+);
 
-#### 3. Generate Embeddings
+INSERT INTO `disney.brochures` (uri, brochure)
+SELECT uri, ref FROM `disney.brochures_pdf`;
 
-```sql
-CREATE OR REPLACE MODEL `disney.embedding_model`
-  REMOTE WITH CONNECTION `us-central1.conn`
-  OPTIONS (ENDPOINT = 'gemini-embedding-001');
-
-CREATE OR REPLACE TABLE disney.brochure_embeddings AS
-SELECT *
-FROM
-  AI.GENERATE_EMBEDDING(
-    MODEL `disney.embedding_model`,
-    (
-      SELECT uri, chunk AS content FROM disney.brochures_chunks
-    )
-  );
+-- Wait until brochure_embedding.status is populated, then:
+SELECT base.uri, distance
+FROM AI.SEARCH(
+  TABLE `disney.brochures`,
+  'brochure',
+  'Where can I find a buffet-style Tex-Mex meal?',
+  top_k => 3
+);
 ```
 
 ---
 
-### 4.3 Vector Search & RAG Validation
+### 4.3 Grounded Answer with AI.SEARCH & AI.GENERATE_TEXT
 
-Run a single, end-to-end RAG query that finds the relevant chunks using vector search, aggregates them, and passes them to Gemini Flash to answer: *"Where to eat a tex-mex meal buffet-style?"*:
+Run one RAG query from start to finish. It uses `AI.SEARCH` to find the 3 most relevant brochures. Then it passes those PDFs (as `ObjectRef` values) together with the question to Gemini Flash, to answer *"Where can I find a buffet-style Tex-Mex meal?"*:
 
 ```sql
-WITH context_chunks AS (
-  SELECT base.content AS chunk
-  FROM
-    VECTOR_SEARCH(
-      TABLE `disney.brochure_embeddings`,
-      'embedding',
-      (
-        SELECT embedding
-        FROM
-          AI.GENERATE_EMBEDDING(
-            MODEL `disney.embedding_model`,
-            (SELECT 'Where to eat a tex-mex meal buffet-style?' AS content)
-          )
-      ),
-      top_k => 3
-    )
-),
-assembled_context AS (
-  SELECT STRING_AGG(chunk, '\n\n') AS context FROM context_chunks
+WITH top_brochures AS (
+  SELECT base.uri, base.brochure
+  FROM AI.SEARCH(
+    TABLE `disney.brochures`,
+    'brochure',
+    'Where can I find a buffet-style Tex-Mex meal?',
+    top_k => 3
+  )
 )
 SELECT
-  ml_generate_text_result AS grounded_response
+  result AS grounded_response
 FROM
-  ML.GENERATE_TEXT(
+  AI.GENERATE_TEXT(
     MODEL `disney.gemini_flash`,
     (
-      SELECT
-        'Answer the following question using only the provided context. If the answer cannot be found in the context, say "I don''t know".\n\nQuestion: Where to eat a tex-mex meal buffet-style?\n\nContext:\n' || context AS prompt
-      FROM assembled_context
+      SELECT (
+        'Answer the following question using only the attached park brochures. Name the restaurant and the park. If the answer cannot be found in the brochures, say "I don\'t know".\n\nQuestion: Where can I find a buffet-style Tex-Mex meal?',
+        ARRAY_AGG(brochure)
+      ) AS prompt
+      FROM top_brochures
     )
   );
 ```
+
+> [!NOTE]
+> The `prompt` column is a `STRUCT` that combines the question text and an `ARRAY<ObjectRef>` of the retrieved PDFs. Gemini reads the PDFs directly, so you don't need to chunk them. The `ObjectRef` values come from the object table's `ref` column, which already carries the `us-central1.conn` connection as authorizer.
 
 ---
 
@@ -621,30 +647,41 @@ LIMIT 5;
 
 #### 1. Specific Journey Tracking
 
-Trace the journey of visitor `'11613'` starting from `'Dumbo the Flying Elephant'` to `'Disneyland Railroad'` and count the total transitions:
+Trace the journey of visitor `11613` starting from `'Dumbo the Flying Elephant'` to `'Disneyland Railroad'` and count the total transitions:
 
 ```sql
 SELECT * FROM GRAPH_TABLE(
   disney.disney_movement_graph
-  MATCH (src:Attraction) -[e:Moved {visitor_id: '11613'}]->{1,10} (dst:Attraction)
+  MATCH (src:Attraction) -[e:Moved {visitor_id: 11613}]->{1,10} (dst:Attraction)
   WHERE src.name = 'Dumbo the Flying Elephant' AND dst.name = 'Disneyland Railroad'
   RETURN src.name AS start_ride, dst.name AS end_ride, ARRAY_LENGTH(e) AS total_hops
 );
 ```
 
+> [!NOTE]
+> `visitor_id` is an `INT64` column. Use `11613` without quotes; the string `'11613'` doesn't match.
+>
+> Expected result: `total_hops = 4` (Dumbo the Flying Elephant -> Mad Hatter Tea Cups -> Casey Jr. Circus Train -> Space Mountain -> Disneyland Railroad).
+
 #### 2. Multi-Hop Journeys by Visitor
 
-Find all unique visitor IDs who traveled from `'Space Mountain'` to `'Indiana Jones Adventure'` in a 2-hop journey (Space Mountain -> intermediate ride -> Indiana Jones Adventure) where both transitions are made by the same visitor:
+Find all unique visitor IDs who traveled from `'Space Mountain'` to `'Indiana Jones Adventure: Temple of the Forbidden Eye'` in a 2-hop journey (Space Mountain -> intermediate ride -> Indiana Jones Adventure) where both transitions are made by the same visitor:
 
 ```sql
 SELECT DISTINCT visitor_id
 FROM GRAPH_TABLE(
   disney.disney_movement_graph
-  MATCH (a:Attraction {name: 'Space Mountain'}) -[e1:Moved]-> (b:Attraction) -[e2:Moved]-> (c:Attraction {name: 'Indiana Jones Adventure'})
+  MATCH (a:Attraction {name: 'Space Mountain'}) -[e1:Moved]-> (b:Attraction) -[e2:Moved]-> (c:Attraction {name: 'Indiana Jones Adventure: Temple of the Forbidden Eye'})
   WHERE e1.visitor_id = e2.visitor_id
   RETURN e1.visitor_id AS visitor_id
-);
+)
+ORDER BY visitor_id;
 ```
+
+> [!NOTE]
+> There is no attraction named exactly `'Indiana Jones Adventure'`. The full name in `attractions.csv` is `'Indiana Jones Adventure: Temple of the Forbidden Eye'` (Disneyland California). With the short name, the query returns no rows.
+>
+> Expected result: 11 visitors (`10030, 10236, 10395, 10601, 10760, 10966, 11125, 11331, 11490, 11696, 11855`).
 
 #### Task 5.4: Graph-Based Recommendations
 
@@ -694,9 +731,17 @@ Add descriptions to the columns of the `disneyland_reviews` table in the BigQuer
 
 ### 6.4 Automated GCS Metadata Generation
 
-1. Go to the BigQuery Metadata Curation tab.
-2. Link your GCS object table pointing to brochures.
-3. Run the automated tag inference to attach metadata tags to the PDF brochure files.
+> [!IMPORTANT]
+> **Known issue:** `gs://ghacks-disneyland-on-gcp/` is a public bucket in another project. Automatic discovery can't scan it from the team's project. Copy the data to a bucket in the team's project first. The setup already creates a bucket named after the project ID:
+>
+> ```bash
+> gcloud storage cp -r "gs://ghacks-disneyland-on-gcp/*" "gs://${GOOGLE_CLOUD_PROJECT}/"
+> ```
+
+1. Copy the public bucket into the project bucket (see above).
+2. Go to the BigQuery Metadata Curation tab.
+3. Configure automatic discovery on `gs://<PROJECT_ID>/` (the local copy, not the public bucket).
+4. Run the automated tag inference to attach metadata tags to the PDF brochure files.
 
 ### 6.5 Lookup Context API
 

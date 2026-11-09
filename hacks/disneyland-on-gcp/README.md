@@ -431,7 +431,7 @@ We want our guest assistant to predict wait times for any hour of the day.
 
 1. Load the historical wait times dataset from:
    `gs://ghacks-disneyland-on-gcp/waiting_time.csv` into a BigQuery table named `waiting_times`.
-2. Bucket the time-series data in intervals of 30 minutes so the model uses the desired interval. Example: `TIMESTAMP_SECONDS(1800 * DIV(UNIX_SECONDS(timestamp), 1800)) AS time_bucket`.
+2. Bucket the time-series data in intervals of 30 minutes so the model uses the desired interval. Example: `TIMESTAMP_SECONDS(1800 * DIV(UNIX_SECONDS(usage_start_time), 1800)) AS time_bucket`.
 3. Use BigQuery ML to train a time-series forecasting model. You can choose either:
     - **[ARIMA_PLUS](https://docs.cloud.google.com/bigquery/docs/arima-single-time-series-forecasting-tutorial)**: The classic, fast statistical forecasting model.
     - **[TimesFM](https://docs.cloud.google.com/bigquery/docs/timesfm-time-series-forecasting-tutorial)**: Google's state-of-the-art foundation model for time-series forecasting (using `AI.FORECAST`).
@@ -477,26 +477,18 @@ You have a GCS bucket containing park photos: `gs://ghacks-disneyland-on-gcp/att
 
 #### Task 4.2: Streamlined PDF Document Processing
 
-We want our assistant to answer detailed questions based on the official park brochures (PDFs) located in `gs://ghacks-disneyland-on-gcp/disneyland_brochures/`. You can choose between two options.
+We want our assistant to answer detailed questions based on the official park brochures (PDFs) located in `gs://ghacks-disneyland-on-gcp/disneyland_brochures/`.
 
 Create an **Object Table** in BigQuery pointing to the brochures bucket.
 
-##### Option 1: AI.SEARCH with OBJECTREF
+##### AI.SEARCH with OBJECTREF
 
 - Use [`AI.SEARCH`](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-search) to find *"Where can I find a buffet-style Tex-Mex meal?"*
 
-##### Option 2: Chunking, Embeddings, and Vector Search
+#### Task 4.3: Intelligent Search and Response with AI.SEARCH & AI.GENERATE_TEXT
 
-For a more streamlined pipeline, let's create chunks of the PDFs, then generate embeddings. Finally, use Vector search to find similarities:
-
-- Extract chunks of the PDF files using the pre-provided `chunk_pdf` UDF. The UDF expects the [uri of the object](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/objectref_functions).
-- Create a remote embedding model in BigQuery using (`gemini-embedding-001`).
-- [Generate embeddings](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-generate-embedding) for each text chunk and save these in a table called `brochure_embeddings`.
-
-#### Task 4.3: Intelligent Search and Response with VECTOR_SEARCH & AI.GENERATE_TEXT
-
-1. Perform a [vector search](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/search_functions#vector_search) over the `brochure_embeddings` table. Find the most relevant document chunks for the question: *"Where can I find a buffet-style Tex-Mex meal?"* (or French: *"Où manger un repas tex-mex à volonté ?"*).
-2. Pass the retrieved chunks as context along with the question to `gemini-2.5-flash` using `AI.GENERATE_TEXT` to generate a grounded, accurate response.
+1. Reuse your `AI.SEARCH` query from Task 4.2 to get the most relevant brochures for the question: *"Where can I find a buffet-style Tex-Mex meal?"* (or French: *"Où manger un repas tex-mex à volonté ?"*).
+2. Pass the retrieved brochures (as [`ObjectRef`](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/objectref_functions) values) as context along with the question to Gemini using [`AI.GENERATE_TEXT`](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-generate-text) to generate a grounded, accurate response.
 
 ### Success Criteria
 
@@ -504,7 +496,7 @@ To validate this challenge, you must demonstrate the following:
 
 - Verify the BQ Object Tables created for both photos and PDFs.
 - Show the results from the `images_classification` table displaying at least 5 images, their classification, and the reason.
-- Show the final SQL query performing the vector search and RAG generation, along with the grounded text response answering the Tex-Mex question.
+- Show the final SQL query performing the `AI.SEARCH` retrieval and RAG generation, along with the grounded text response answering the Tex-Mex question.
 
 ---
 
@@ -544,8 +536,8 @@ Using BigQuery's new native [**Graph**](https://docs.cloud.google.com/bigquery/d
 
 Now, let's explore GQL's path capabilities to analyze journeys taken by visitors.
 
-1. **Specific Journey Tracking:** Write a graph query using quantified path patterns to find how many rides visitor `'11613'` took to get from `'Dumbo the Flying Elephant'` to `'Disneyland Railroad'`.
-2. **Multi-Hop Journeys by Visitor:** Write a graph query to find all unique visitor IDs who traveled from `'Space Mountain'` to `'Indiana Jones Adventure'` through an intermediate attraction in a 2-hop journey (A -> B -> C) where both transitions are made by the same visitor.
+1. **Specific Journey Tracking:** Write a graph query using quantified path patterns to find how many rides visitor `11613` took to get from `'Dumbo the Flying Elephant'` to `'Disneyland Railroad'`. Note that `visitor_id` is an integer.
+2. **Multi-Hop Journeys by Visitor:** Write a graph query to find all unique visitor IDs who traveled from `'Space Mountain'` to `'Indiana Jones Adventure: Temple of the Forbidden Eye'` through an intermediate attraction in a 2-hop journey (A -> B -> C) where both transitions are made by the same visitor.
 
 #### Task 5.4: Graph-Based Recommendations
 
@@ -604,7 +596,13 @@ Sometimes there is too much data and not enough humans to enrich your data. BigQ
 > [!TIP]
 > **This can be done in the BigQuery Metadata Curation tab.**
 
-1. [Configure the pipeline](https://docs.cloud.google.com/bigquery/docs/automatic-discovery) to analyze your unstructured `gs://ghacks-disneyland-on-gcp/` bucket and generate metadata automatically.
+1. Automatic discovery can only scan buckets in your own project, and `gs://ghacks-disneyland-on-gcp/` is a public bucket in another project. Copy its content to the bucket named after your project ID (created during setup):
+
+    ```bash
+    gcloud storage cp -r "gs://ghacks-disneyland-on-gcp/*" "gs://${GOOGLE_CLOUD_PROJECT}/"
+    ```
+
+2. [Configure the pipeline](https://docs.cloud.google.com/bigquery/docs/automatic-discovery) to analyze your unstructured data in your project bucket (`gs://<YOUR_PROJECT_ID>/`) and generate metadata automatically.
 
 ### **Success Criteria**
 
