@@ -83,6 +83,7 @@ Verify that you get relevant answers when the agent is prompted with the test qu
 ### Tips
 
 - If using `adk web` in Cloud Shell, pass `--allow_origins="*"` to ensure the Cloud Shell web preview works smoothly.
+- Using `source` to start the Firestore emulator exports the required environment variable for the emulator, otherwise you need to set it yourself.
 
 ## Challenge 2: Contain Your Excitement
 
@@ -123,6 +124,11 @@ Once the image is on Artifact Registry, deploy the containerized agent to *Agent
 - [Deploy an agent on Agent Runtime](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/deploy-an-agent)
 - [Agent Runtime BYOC Setup](https://docs.cloud.google.com/gemini-enterprise-agent-platform/build/runtime/setup#byoc)
 - [Sizing and Concurrency for Agent Runtime](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/optimize-and-scale)
+- [REST API for using ADK Agents](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/use-an-adk-agent#rest-api)
+
+### Tips
+
+- You can use Agent Runtime Playground or the REST APIs to test your agent.
 
 ## Challenge 3: Badge, Please!
 
@@ -141,6 +147,9 @@ In this challenge, you will govern your deployed agent by configuring its Agent 
 ### Description
 
 Enable agent identity for your agent, find its principal and grant it the permission to access the Firestore database. Run the `seed-cloud-database.sh` script before you test your agent.
+
+> [!WARNING]  
+> If you deploy an agent, using the same name for the agent doesn't update your existing agent, you need to make sure that you're passing the **resource name** so that your existing agent is updated.
 
 ### Success Criteria
 
@@ -170,12 +179,15 @@ In this challenge we'll start protecting our agent against the mentioned attack 
 Create a *Model Armor Template*, call it `retail-agent-security-template` and configure it with the following filters:
 
 - *Prompt Injection & Jailbreak Filter:* Set to `BLOCK` on high confidence.
-- *PII / Sensitive Data Filter:* Set to `REDACT` or `BLOCK` for Credit Cards, SSNs, and sensitive identifiers.
-- *Harm & Toxicity Filter:* Block Hate Speech, Dangerous Content, and Harassment.
+- *PII / Sensitive Data Filter:* Enable *Basic* sensitive data protection.
+- *Responsible AI Filter:* Block Hate Speech, Dangerous, Sexually Explicit, and Harassment Content on high confidence.
 
 Create and configure an *Agent Gateway* resource for **ingress mode** and attach the Model Armor security template to the Agent Gateway.
 
 Route traffic to your Agent Runtime instance through the governed Agent Gateway.
+
+> [!NOTE]  
+> You need to export a few environment variables before running the sanitization tests, otherwise the tests will be skipped with warnings.
 
 ### Success Criteria
 
@@ -193,6 +205,7 @@ Route traffic to your Agent Runtime instance through the governed Agent Gateway.
 
 ### Tips
 
+- Use Google Cloud Console for configuring the Model Armor template and the Agent Gateway; the CLI route is not trivial.
 - Model Armor and Agent Gateway must be in the same Google Cloud region.
 
 ## Challenge 5: Keeping It Real (Time)
@@ -208,6 +221,9 @@ In order to make sure that our agent keeps working properly we need to continous
 Create a new *Online Monitor* for the agent and enable only the following metrics to track: *Final Response Quality* and *Tool Use Quality*. Set sampling percentage to `100%` and configure a sample cap of 50.
 
 Run the `simulate-traffic.sh` script for `20` sessions and `1.0` second of delay and wait for the evaluation to be triggered. Find the metric with the lowest value and investigate its root cause. Fix that and redeploy the agent with the fix. Run the script again to verify if the impacted metric is improved.
+
+> [!NOTE]  
+> Make sure to either set environment variables for AGENT_RESOURCE_NAME and GOOGLE_CLOUD_LOCATION or pass them as parameters to the simulate-traffic.sh script
 
 ### Success Criteria
 
