@@ -62,6 +62,14 @@ source scripts/start-database-emulator.sh
 
 Run the ADK Web UI:
 
+### With `agents-cli`
+
+```shell
+agents-cli playground
+```
+
+### With `adk web`
+
 ```shell
 adk web retail_agent --allow_origins="*"
 ```
@@ -77,7 +85,24 @@ IMAGE_URI="${REGION}-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/agent-images/retail-
 gcloud builds submit --tag "${IMAGE_URI}" .
 ```
 
-Deploy to Agent Runtime with BYOC using the Python SDK (`agentplatform`), create a deployment script or run in Python:
+Deploy to Agent Runtime with BYOC using the Python SDK (`agentplatform`), create a deployment script in Python or use `agents-cli`:
+
+### With `agents-cli`
+
+```shell
+agents-cli deploy \
+  --deployment-target agent_runtime \
+  --project $GOOGLE_CLOUD_PROJECT \
+  --region $REGION \
+  --image $IMAGE_URI \
+  --min-instances 1 \
+  --max-instances 5 \
+  --concurrency 4 \
+  --cpu 1 \
+  --memory 4Gi
+```
+
+### With Python
 
 ```python
 cat > deploy.py <<EOF
@@ -131,7 +156,19 @@ Keep in mind Agent Runtime provisioning typically takes ~5 minutes. Inform teams
 
 ## Challenge 3: Badge, Please!
 
-### Solution Steps
+### With `agents-cli`
+
+```shell
+google-agents-cli deploy \
+  --deployment-target agent_runtime \
+  --project $GOOGLE_CLOUD_PROJECT \
+  --region $REGION \
+  --image $IMAGE_URI \
+  --agent-identity \
+  --update-only
+```
+
+### With Python
 
 Let's first get the resource name for our agent (can also be retrieved from the console):
 
@@ -162,6 +199,8 @@ print(f"Agent updated: {agent}")
 EOF
 python update_identity.py
 ```
+
+### Granting roles
 
 Grant the principle of least privilege, assign only the necessary roles to the Agent Identity principal:
 
@@ -203,10 +242,10 @@ gcloud model-armor templates create retail-agent-security-template \
       --basic-config-filter-enforcement=enabled \
       --pi-and-jailbreak-filter-settings-enforcement=enabled \
       --pi-and-jailbreak-filter-settings-confidence-level=high \
-      --rai-settings-filters=filterType=HATE_SPEECH,confidenceLevel=LOW_AND_ABOVE \
-      --rai-settings-filters=filterType=DANGEROUS,confidenceLevel=LOW_AND_ABOVE \
-      --rai-settings-filters=filterType=HARASSMENT,confidenceLevel=LOW_AND_ABOVE \
-      --rai-settings-filters=filterType=SEXUALLY_EXPLICIT,confidenceLevel=LOW_AND_ABOVE \
+      --rai-settings-filters=filterType=HATE_SPEECH,confidenceLevel=HIGH \
+      --rai-settings-filters=filterType=DANGEROUS,confidenceLevel=HIGH \
+      --rai-settings-filters=filterType=HARASSMENT,confidenceLevel=HIGH \
+      --rai-settings-filters=filterType=SEXUALLY_EXPLICIT,confidenceLevel=HIGH \
       --template-metadata-log-sanitize-operations
 ```
 
@@ -260,6 +299,20 @@ EOF
 
 > [!NOTE]  
 > It's much easier to do this from the UI.
+
+### With `agents-cli`
+
+```shell
+agents-cli deploy\
+  --deployment-target agent_runtime \
+  --project $GOOGLE_CLOUD_PROJECT \
+  --region $REGION \
+  --image $IMAGE_URI \
+  --agent-gateway-ingress projects/$GOOGLE_CLOUD_PROJECT/locations/$REGION/agentGateways/$GATEWAY_NAME \
+  --update-only
+```
+
+### With Python
 
 Attach the Agent Runtime deployment to the Agent Gateway.
 

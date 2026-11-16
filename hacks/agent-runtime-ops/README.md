@@ -59,7 +59,7 @@ Before containerizing and deploying to the cloud, we'll verify that the agent be
 
 The sample agent can be found [here](https://github.com/meken/gcp-agentops-demo/archive/refs/heads/main.zip), download it to your Cloud Shell. Install its dependencies in a Python virtual environment.
 
-Set up the authentication to use Agent Platform Authentication (API keys are not allowed!). Start the database emulator using the provided `start-database-emulator.sh` script and launch the ADK web playground.
+Set up the authentication to use Agent Platform Authentication (API keys are not allowed!). Start the database emulator using the provided `start-database-emulator.sh` script and launch the ADK playground (either with `adk` cli or `agents-cli`).
 
 Verify that you get relevant answers when the agent is prompted with the test queries.
 
@@ -78,12 +78,14 @@ Verify that you get relevant answers when the agent is prompted with the test qu
 ### Learning Resources
 
 - [Setting up authentication for ADK](https://adk.dev/agents/models/google-gemini/#google-cloud-agent-platform)
-- [ADK CLI](https://adk.dev/api-reference/cli/#adk)
+- [Reference for ADK CLI](https://adk.dev/api-reference/cli/#adk)
+- [Reference for `agents-cli`](https://google.github.io/agents-cli/cli/)
 
 ### Tips
 
-- If using `adk web` in Cloud Shell, pass `--allow_origins="*"` to ensure the Cloud Shell web preview works smoothly.
+- If you're using `adk web` in Cloud Shell, pass `--allow_origins="*"` to ensure the Cloud Shell web preview works smoothly.
 - Using `source` to start the Firestore emulator exports the required environment variable for the emulator, otherwise you need to set it yourself.
+- Cloud Shell should have `agents-cli` already installed, if your environment is missing it you can install it by following [these instructions](https://google.github.io/agents-cli/guide/getting-started/#install).
 
 ## Challenge 2: Contain Your Excitement
 
@@ -108,12 +110,12 @@ Once the image is on Artifact Registry, deploy the containerized agent to *Agent
 - Concurrency: 4 requests per instance
 
 > [!NOTE]  
-> The deployment might take ~5 minutes.
+> You can do the deployment using various methods, Python SDK, REST APIs, Terraform etc. For this, and the remaining challenges, we suggest that you use `agents-cli` as that's the easiest method to deploy/update the agent.
 
 ### Success Criteria
 
 - Custom container image is built and stored in Artifact Registry.
-- An Agent Runtime resource is successfully created and in ready state.
+- An Agent Runtime resource, using the custom container image from the Artifact Registry, is successfully created and in ready state.
 - Sizing configuration (CPU, Memory, Concurrency, Min/Max instances) is correctly applied.
 - The deployed agent successfully processes remote queries and returns streaming responses using its tools
   > You can ignore any permission denied errors when the tools access the Firestore database, we'll address that in the next challenge.
@@ -121,13 +123,11 @@ Once the image is on Artifact Registry, deploy the containerized agent to *Agent
 
 ### Learning Resources
 
-- [Deploy an agent on Agent Runtime](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/deploy-an-agent)
-- [Agent Runtime BYOC Setup](https://docs.cloud.google.com/gemini-enterprise-agent-platform/build/runtime/setup#byoc)
-- [Sizing and Concurrency for Agent Runtime](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/optimize-and-scale)
-- [REST API for using ADK Agents](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/use-an-adk-agent#rest-api)
+- [Deploy an agent on Agent Runtime using `agents-cli`](https://google.github.io/agents-cli/guide/deployment/#deployment-targets)
 
 ### Tips
 
+- The `agents-cli` documentation for the deployment parameters is quite concise, use the `--help` parameter to find out all of the supported parameters.
 - You can use Agent Runtime Playground or the REST APIs to test your agent.
 
 ## Challenge 3: Badge, Please!
@@ -149,7 +149,7 @@ In this challenge, you will govern your deployed agent by configuring its Agent 
 Enable agent identity for your agent, find its principal and grant it the permission to access the Firestore database. Run the `seed-cloud-database.sh` script before you test your agent.
 
 > [!WARNING]  
-> If you deploy an agent, using the same name for the agent doesn't update your existing agent, you need to make sure that you're passing the **resource name** so that your existing agent is updated.
+> Make sure that you're *updating* your deployed agent, do not re-create it; `agents-cli` has a specific parameter for that.
 
 ### Success Criteria
 
@@ -205,7 +205,7 @@ Route traffic to your Agent Runtime instance through the governed Agent Gateway.
 
 ### Tips
 
-- Use Google Cloud Console for configuring the Model Armor template and the Agent Gateway; the CLI route is not trivial.
+- Use Google Cloud Console for configuring the Model Armor template and the Agent Gateway; the CLI route is not trivial. However once those resources are created, you can use `agents-cli` to update the agent's configuration to start using the newly configured Agent Gateway.
 - Model Armor and Agent Gateway must be in the same Google Cloud region.
 
 ## Challenge 5: Keeping It Real (Time)
