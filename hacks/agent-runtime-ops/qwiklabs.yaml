@@ -29,6 +29,7 @@ domain_tags:
 environment:
   resources:
   - type: gcp_project
+    variant: gcp_medium_extra
     id: project
     startup_script:
       type: qwiklabs

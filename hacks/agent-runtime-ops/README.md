@@ -110,7 +110,7 @@ Once the image is on Artifact Registry, deploy the containerized agent to *Agent
 - Concurrency: 4 requests per instance
 
 > [!NOTE]  
-> You can do the deployment using various methods, Python SDK, REST APIs, Terraform etc. For this, and the remaining challenges, we suggest that you use `agents-cli` as that's the easiest method to deploy/update the agent.
+> You can do the deployment using various methods, Python SDK, REST APIs, Terraform etc. For this, and the remaining challenges, we suggest that you use `agents-cli` as that's the easiest method to deploy/update the agent. Make sure that its version is >= 1.13 as that's when the BYOC support was introduced.
 
 ### Success Criteria
 
@@ -129,6 +129,7 @@ Once the image is on Artifact Registry, deploy the containerized agent to *Agent
 
 - The `agents-cli` documentation for the deployment parameters is quite concise, use the `--help` parameter to find out all of the supported parameters.
 - You can use Agent Runtime Playground or the REST APIs to test your agent.
+- If the deployment fails the very first time with `code 13`, retry it as this is [a known issue](https://docs.cloud.google.com/gemini-enterprise-agent-platform/troubleshooting/agent-creation#byoc-first-creation-error)
 
 ## Challenge 3: Badge, Please!
 
@@ -205,7 +206,7 @@ Route traffic to your Agent Runtime instance through the governed Agent Gateway.
 
 ### Tips
 
-- Use Google Cloud Console for configuring the Model Armor template and the Agent Gateway; the CLI route is not trivial. However once those resources are created, you can use `agents-cli` to update the agent's configuration to start using the newly configured Agent Gateway.
+- Use Google Cloud Console for configuring the Model Armor template and the Agent Gateway; the CLI route is not trivial. Once those resources are created, you can use `agents-cli` to update the agent's configuration to start using the newly configured Agent Gateway.
 - Model Armor and Agent Gateway must be in the same Google Cloud region.
 
 ## Challenge 5: Keeping It Real (Time)

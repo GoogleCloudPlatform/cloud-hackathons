@@ -64,6 +64,9 @@ Run the ADK Web UI:
 
 ### With `agents-cli`
 
+> [!IMPORTANT]  
+> At the time of this writing the version of `agents-cli` on Cloud Shell is 1.12, which doesn't support BYOC deployments to Agent Runtime. In order to upgrade it you can run `uv tool install google-agents-cli` and either restart the shell or export the PATH with the new version.
+
 ```shell
 agents-cli playground
 ```
@@ -85,9 +88,9 @@ IMAGE_URI="${REGION}-docker.pkg.dev/${GOOGLE_CLOUD_PROJECT}/agent-images/retail-
 gcloud builds submit --tag "${IMAGE_URI}" .
 ```
 
-Deploy to Agent Runtime with BYOC using the Python SDK (`agentplatform`), create a deployment script in Python or use `agents-cli`:
+In order to deploy to Agent Runtime with BYOC you can create a deployment script in Python or use `agents-cli`:
 
-### With `agents-cli`
+### Deploy with `agents-cli`
 
 ```shell
 agents-cli deploy \
@@ -102,7 +105,7 @@ agents-cli deploy \
   --memory 4Gi
 ```
 
-### With Python
+### Deploy with Python
 
 ```python
 cat > deploy.py <<EOF
@@ -150,13 +153,24 @@ python deploy.py
 ```
 
 > [!WARNING]  
-> Sometimes deployment fails with a very vague message (code 3), in that case re-running the deploy script usually fixes it.
+> Sometimes deployment fails with a very vague message (code 13), in that case re-running the deploy script usually fixes it. This is a known issue and [included in official docs](https://docs.cloud.google.com/gemini-enterprise-agent-platform/troubleshooting/agent-creation#byoc-first-creation-error).
 
 Keep in mind Agent Runtime provisioning typically takes ~5 minutes. Inform teams to let the operation complete server-side without interrupting the process.
 
 ## Challenge 3: Badge, Please!
 
-### With `agents-cli`
+Let's first get the resource name for our agent (can also be retrieved from the console) which we will use to grant roles later:
+
+```shell
+BASE_URL="https://$REGION-aiplatform.googleapis.com/v1"
+# Retrieve the Agent Engine ID, assumes that there's only one
+export AGENT_RESOURCE_NAME=$(curl -s -X GET \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    "$BASE_URL/projects/$GOOGLE_CLOUD_PROJECT/locations/$REGION/reasoningEngines" | \
+    jq -r '.reasoningEngines[0].name')
+```
+
+### Update with `agents-cli`
 
 ```shell
 google-agents-cli deploy \
@@ -168,18 +182,7 @@ google-agents-cli deploy \
   --update-only
 ```
 
-### With Python
-
-Let's first get the resource name for our agent (can also be retrieved from the console):
-
-```shell
-BASE_URL="https://$REGION-aiplatform.googleapis.com/v1"
-# Retrieve the Agent Engine ID, assumes that there's only one
-export AGENT_RESOURCE_NAME=$(curl -s -X GET \
-    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-    "$BASE_URL/projects/$GOOGLE_CLOUD_PROJECT/locations/$REGION/reasoningEngines" | \
-    jq -r '.reasoningEngines[0].name')
-```
+### Update with Python
 
 Now we can update it to use the agent identity:
 
@@ -300,7 +303,7 @@ EOF
 > [!NOTE]  
 > It's much easier to do this from the UI.
 
-### With `agents-cli`
+### Update with `agents-cli`
 
 ```shell
 agents-cli deploy\
@@ -312,7 +315,7 @@ agents-cli deploy\
   --update-only
 ```
 
-### With Python
+### Update with Python
 
 Attach the Agent Runtime deployment to the Agent Gateway.
 

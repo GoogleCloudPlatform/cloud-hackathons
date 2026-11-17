@@ -34,7 +34,6 @@ resource "google_project_service" "default" {
     "apphub.googleapis.com",
     "apptopology.googleapis.com",
     "cloudapiregistry.googleapis.com",
-    "iamconnectors.googleapis.com",
     "iap.googleapis.com",
     "notebooks.googleapis.com",
     "observability.googleapis.com",
@@ -103,9 +102,25 @@ resource "time_sleep" "wait_for_agent_runtime_sa" {
   ]
 }
 
-# IAM permissions for the AgentRuntime default service agent to retrieve images
+# IAM permissions for the AgentPlatform default service agent to operate
+resource "google_project_iam_member" "aiplatform_roles" {
+  for_each = toset([
+    "roles/aiplatform.serviceAgent",
+  ])
+
+  project = var.gcp_project_id
+  role    = each.key
+  member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+
+  depends_on = [
+    time_sleep.wait_for_agent_runtime_sa
+  ]
+}
+
+# IAM permissions for the AgentRuntime default service agent to retrieve images (and to operate)
 resource "google_project_iam_member" "agentruntime_roles" {
   for_each = toset([
+    "roles/aiplatform.reasoningEngineServiceAgent",
     "roles/artifactregistry.reader"
   ])
 
