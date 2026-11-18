@@ -13,7 +13,7 @@ While building a prototype agent locally is straightforward, running agentic wor
 
 ![Overview of the components involved](./images/arch-overview.png)
 
-In this gHack, you will take an existing, complete Python ADK agent and implement the full scale, governance, and operations lifecycle on Google Cloud's Gemini Enterprise Agent Platform.
+In this gHack, you will take an existing, complete Python ADK agent and implement the full scale, governance, and operations lifecycle on Google Cloud's Gemini Platform.
 
 ## Learning Objectives
 
@@ -93,7 +93,7 @@ Verify that you get relevant answers when the agent is prompted with the test qu
 
 Running agents locally is fine for development but enterprise workloads require high availability, auto-scaling, low latency, and robust runtime isolation.
 
-*Agent Runtime* (part of Gemini Enterprise Agent Platform) provides a managed, serverless execution environment specifically built for AI agents. While Agent Runtime can deploy from source, enterprise platforms often require the *Bring Your Own Container (BYOC)* pattern to maintain full control over base images, security vulnerability scanning, system packages, and language runtime versions.
+*Agent Runtime* (part of Gemini Platform) provides a managed, serverless execution environment specifically built for AI agents. While Agent Runtime can deploy from source, enterprise platforms often require the *Bring Your Own Container (BYOC)* pattern to maintain full control over base images, security vulnerability scanning, system packages, and language runtime versions.
 
 In this challenge, you will package the agent into a container image and deploy it to Agent Runtime.
 
@@ -171,7 +171,7 @@ Enable agent identity for your agent, find its principal and grant it the permis
 
 Agents connected to business systems introduce new security vectors, such as prompt injections, jailbreaks, leakage of sensitive data etc. Hardcoding defenses into every individual agent can be brittle and error-prone.
 
-*Agent Gateway* serves as the centralized network ingress/egress control plane for Gemini Enterprise Agent Platform. Integrating *Model Armor* with Agent Gateway provides real-time, inline content inspection and filtering. Model Armor can sanitize prompts on ingress (before they reach the agent) and filters responses on egress (before they reach the client), enforcing security policies across your entire agent fleet without touching a single line of agent code.
+*Agent Gateway* serves as the centralized network ingress/egress control plane for Gemini Platform. Integrating *Model Armor* with Agent Gateway provides real-time, inline content inspection and filtering. Model Armor can sanitize prompts on ingress (before they reach the agent) and filters responses on egress (before they reach the client), enforcing security policies across your entire agent fleet without touching a single line of agent code.
 
 In this challenge we'll start protecting our agent against the mentioned attack vectors.
 
@@ -213,7 +213,7 @@ Route traffic to your Agent Runtime instance through the governed Agent Gateway.
 
 ### Introduction
 
-Our agent is now protected against malicious vectors and hosted on a scalable infrastructre, but we're not done yet. In real world customers can phrase their requests in unexpected ways and underlying foundation models or external APIs can introduce subtle behavior changes or hallucinations.
+Our agent is now protected against malicious vectors and hosted on a scalable infrastructre, but we're not done yet. In real world, customers can phrase their requests in unexpected ways and underlying foundation models or external APIs can introduce subtle behavior changes or hallucinations.
 
 In order to make sure that our agent keeps working properly we need to continously monitor its *behavior*. *Online Monitors* sample conversations from Cloud Trace / Cloud Logging and score them against multi-turn AutoRater metrics. This way we can proactively catch quality drift before customers are impacted.
 
@@ -230,7 +230,7 @@ Run the `simulate-traffic.sh` script for `20` sessions and `1.0` second of delay
 
 - An Online Monitor is created and active on Agent Platform.
 - The metrics *Final Response Quality* and *Tool Use Quality* are configured.
-- The (subtle) issue with the agent is detected through investigation of evaluations and fixed.
+- The (subtle) issue with the agent is detected through investigation of evaluations, and it's fixed.
 - The Online Monitor metrics are above `90%` after the fix.
 
 ### Learning Resources
